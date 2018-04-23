@@ -1,7 +1,6 @@
 btn:
   post: Tilføj en ny kommentar
   reply: Besvar
-  cancel: Annuller
 confirmation:
   remove:
     comment: Er du sikker på du vil slette denne kommentar?

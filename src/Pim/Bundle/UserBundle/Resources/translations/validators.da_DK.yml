@@ -1,0 +1,2 @@
+"You must select at least {{ limit }} role": Du skal vælge mindst {{ limit }} rolle. | Du skal vælge mindst {{ limit }} roller.
+"The password fields must match.": "De indtastede adgangskoder stemte ikke overens."

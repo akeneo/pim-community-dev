@@ -1,10 +1,8 @@
 pim_dashboard:
   widget:
     last_operations:
-      empty: Non ci sono operazioni
-      status: Stato
+      empty: Nessuna operazione trovata
       date: Data
-      type: Tipo
       profile_name: Nome profilo
       details: Dettagli
       warning_count: Avvisi

@@ -35,7 +35,7 @@ oro.user.grid.groups:
 pim_title:
   user.index: Brugere
   user_role.index: Roller
-  user_group.index: Grupper
+  user_group.index: Brugergrupper
   system_configuration.index: Konfiguration
 user.title: Bruger
 user.overview: Bruger
@@ -57,8 +57,8 @@ Date of birth: Fødselsdato
 Avatar: Avatar
 Additional emails: Yderligere e-mails
 Add another email: Tilføje en anden e-mail
-Catalog locale: Catalog locale
-Catalog scope: Catalog scope
+Catalog locale: Katalog landestandard
+Catalog scope: Katalog anvendelsesområde
 Default tree: Standardtræ
 Business Units: Afdelinger
 Email synchronization settings: Email synkroniseringsindstillinger
@@ -134,25 +134,51 @@ DELETE: Slet
 ASSIGN: Tildel
 SHARE: Del
 oro:
-  security:
-    access-level:
-      BASIC: Bruger
-      LOCAL: Afdeling
-      DEEP: Division
-      GLOBAL: Organisation
-      SYSTEM: System
-      NONE: Ingen
-Create group: Opret gruppe
+  user:
+    controller:
+      group:
+        message:
+          saved: "Gruppe gemt"
+      role:
+        message:
+          saved: "Rolle gemt"
+      user:
+        message:
+          saved: "Brugeren gemt"
+      status:
+        message:
+          saved: "Status gemt"
+    grid:
+      users:
+        columns:
+          username: "Brugernavn"
+          email: "E-mail"
+          firstName: "Fornavn"
+          lastName: "Efternavn"
+          createdAt: "Oprettet den"
+          updatedAt: "Opdateret den"
+          enabled: "Status"
+      roles:
+        columns:
+          label: "Etiket"
+      groups:
+        columns:
+          name: "Navn"
+"Create group": "Opret gruppe"
 btn.create.user-group: Opret gruppe
 Has group: Har gruppen
 Save and Close: Gem og luk
-user-group.overview: Grupper
+user-group.overview: Brugergrupper
 Log in: Log på
 Remember me on this computer: Husk mig på denne computer
 Forgot your password?: Glemt din adgangskode?
 Username or Email: Brugernavn eller e-mail
-Forgot Password: Glemt adgangskode
+"Forgot Password": "Glemt adgangskode"
 Request: Anmodning
 Check Email: Tjek Email
 password_reset_email_sent: En e-mail er blevet sendt til % e-mail %. Den indeholder et link du skal klikke på for at nulstille din adgangskode.
 Go to homepage: Gå til hjemmeside
+Login: Login
+"Create role": "Opret rolle"
+"Edit role": "Rediger rolle"
+"Logout": "Log ud"

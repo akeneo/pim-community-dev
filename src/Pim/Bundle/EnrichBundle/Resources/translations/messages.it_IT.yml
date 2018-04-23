@@ -1,3 +1,5 @@
+pim_common:
+  cancel: Annulla
 pim_enrich:
   product:
     tab:
@@ -100,7 +102,7 @@ pim_enrich:
       launched_flash: L'azione di massa "aggiungi alle categorie" è stata lanciata. Sarai avvisato quando finisce.
     classify-move:
       label: Sposta tra categorie
-      description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
+      description: I prodotti saranno posizionati nelle seguenti categorie, il posizionamento attuale viene perso.
       success_flash: Il prodotto/i prodotti è stato spostato/sono stati spostati nelle categorie selezionate
       launched_flash: L'azione di massa "sposta nelle categorie" è stata lanciata. Sarai avvisato quando finisce.
     classify-remove:
@@ -130,7 +132,7 @@ pim_enrich:
   sequential_edit_action:
     product:
       previous: Torna indietro a "%product%" senza salvare.
-      next: Vai a "%product%" senza salvare.
+      next: Torna a "%product%" senza salvare.
   acl:
     locale:
       index: Elenco formato impostazioni locali
@@ -151,7 +153,7 @@ pim_enrich:
       mass_edit: Azione di modifica di massa dell'articolo
       comment: Commenta i prodotti
       download: Scarica il prodotto in formato PDF
-      history: Visualizza la storia del prodotto
+      history: Visualizza lo storico del prodotto
     product_model:
       edit_attributes: Modifica gli attributi di modello di prodotto
       categories_view: Consulta le categorie di un modello di prodotto
@@ -170,7 +172,7 @@ pim_enrich:
       create: Creare un canale
       edit: Modificare un canale
       remove: Rimuovere un canale
-      history: Visualizza la storia del canale
+      history: Visualizza lo storico del canale
     family:
       index: Elenco famiglie
       create: Creare una famiglia
@@ -231,7 +233,7 @@ pim_enrich:
   reference_data:
     empty_value:
       reference_data_type:
-        label: Scegli il tipo di dati di riferimento
+        label: Sceglii il tipo di dati di riferimento
 attribute:
   title: attributo
   edit: Modifica attributo
@@ -302,7 +304,7 @@ btn:
     group: Crea gruppo
     association type: Crea tipo associazione
     group type: Crea tipo gruppo
-    drag_or_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+    drag_or_upload: Drag and drop per caricare un file o fai click qui
   edit: modifica
   save: salva
   save and create: salva e crea nuovo
@@ -324,7 +326,6 @@ confirmation:
   leave: Sei sicuro di voler lasciare questa pagina?
   discard changes: Perderai le modifiche a %entity% se lasci la pagina.
   remove:
-    item: Sei sicuro di voler eliminare questo articolo?
     attribute: Sei sicuro di che voler eliminare l'attributo %name%?
     attribute group: Sei sicuro di voler eliminare il gruppo attributi %name%?
     category: Sei sicuro di voler eliminare la categoria %name%?
@@ -499,7 +500,6 @@ Active: Attivo
 Inactive: Inattivo
 Do not convert: Non convertire
 Create: Crea
-Cancel: Annulla
 Choose a family: Scegli una famiglia
 Choose a unit: Scegli un'unità
 No matches found: Nessuna corrispondenza trovata
@@ -604,7 +604,7 @@ Disable: Disabilita
 pim_enrich.sequential_edit_action:
   product:
     previous: Torna indietro a "%product%" senza salvare.
-    next: Vai a "%product%" senza salvare.
+    next: Torna a "%product%" senza salvare.
 pim_enrich.mass_edit_action:
   limit_exceeded: Si prega di scegliere meno di %limit% elementi da modificare
   product:
@@ -716,7 +716,6 @@ Format address by address country: Formato indirizzo a seconda del Paese
 Language: Lingua
 Timezone: Fuso orario
 Currency: Valuta
-settings: Impostazioni
 oro.locale:
   address_format:
     region_name_type:
@@ -742,8 +741,8 @@ pim_mass_edit:
   notification:
     mass_edit:
       error: Modifica di massa <strong>%label%</strong> non riuscita
-      warning: La modifica di massa <strong>%label%</strong> è stata completata con alcuni avvisi
-      success: La modifica di massa <strong>%label%</strong> è stata completata
+      warning: Modifica di massa <strong>%label%</strong> completata con alcuni avvisi
+      success: Modifica di massa <strong>%label%</strong> completata
     quick_export:
       error: Esportazione rapida <strong>%label%</strong> non riuscita
       warning: Esportazione rapida <strong>%label%</strong> completata con alcuni avvisi
@@ -756,44 +755,11 @@ job_execution.summary:
   skipped_families: Famiglie saltate
 pim_mass_edit_execution_show: Esecuzione modifiche di massa | Dettagli
 edit_common_attributes.steps.edit_common_attributes_processor.title: Modificare gli attributi
-update_product_value.steps.update_product_value_processor.title: Aggiorna il valore di prodotto
-remove_product_value.steps.update_product_value_processor.title: Rimuovi il valore di prodotto
+update_product_value.steps.update_product_value_processor.title: Modifica un valore di prodotto
+remove_product_value.steps.update_product_value_processor.title: Rimuovi un valore di prodotto
 edit_common_attributes: Modificare gli attributi
 perform.steps.duplicated.title: Dimensione Duplicata
 perform.steps.excluded.title: Prodotto escluso
-batch_jobs:
-  add_product_value:
-    label: Aggiungi un valore di prodotto
-    perform:
-      label: Aggiungi un valore di prodotto
-  update_product_value:
-    label: Aggiorna il valore di prodotto
-    perform:
-      label: Aggiorna il valore di prodotto
-  edit_common_attributes:
-    label: Modificare gli attributi
-    perform:
-      label: Modificare gli attributi
-  set_attribute_requirements:
-    label: Imposta i requisiti degli attributi
-    perform:
-      label: Imposta i requisiti degli attributi
-  csv_product_quick_export:
-    quick_export.label: Esportazione rapida prodotti in Csv
-    perform:
-      label: Esportazione rapida prodotti in Csv
-  csv_product_grid_context_quick_export:
-    quick_export.label: Esportazione rapida prodotti in Csv presenti nel contesto griglia
-    perform:
-      label: Esportazione rapida prodotti in Csv presenti nel contesto griglia
-  xlsx_product_quick_export:
-    quick_export.label: Esportazione rapida prodotti in Xlsx
-    perform:
-      label: Esportazione rapida prodotti in Xlsx
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: Esportazione rapida prodotti in Xlsx presenti nel contesto griglia
-    perform:
-      label: Esportazione rapida prodotti in Xlsx presenti nel contesto griglia
 mass_edit report:
   overview: Modifica di massa dei report
 job_tracker:

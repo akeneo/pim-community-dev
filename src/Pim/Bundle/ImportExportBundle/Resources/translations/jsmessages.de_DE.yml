@@ -8,10 +8,6 @@ pim_connector:
       selector:
         modal:
           title: Kategorienauswahl
-          cancel: Abbrechen
-          confirm: Bestätigen
-        label: "{0} Alle Produkte |{1} eine Kategorie ausgewählt |] 1, Inf [{{ count }} Kategorien ausgewählt"
-        edit: Bearbeiten
         title: Kategorie(n) auswählen
     locales:
       validation:

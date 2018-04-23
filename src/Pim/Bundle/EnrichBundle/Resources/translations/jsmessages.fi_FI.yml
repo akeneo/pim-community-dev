@@ -1,9 +1,63 @@
+pim_common:
+  add: Lisää
+  add_attributes: Lisää attribuutteja
+  all: Kaikki
+  and: ja
+  apply: Valitse
+  attributes: Attribuutit
+  attribute_groups: Attribuuttiryhmät
+  cancel: Peruuta
+  categories: Kategoriat
+  channel: Kanava
+  code: Koodi
+  confirm: Vahvista
+  confirm_deletion: Vahvista poisto
+  create: Luo
+  created: Luotu
+  delete: Poista
+  done: Valmis
+  edit: Muokkaa
+  from: Lähettäjä
+  general_properties: Yleiset ominaisuudet
+  history: Historia
+  label: Nimike
+  label_translations: Nimikkeiden käännökset
+  less_than: Vähemmän kuin
+  loading: Ladataan...
+  locales: Alueet
+  more_than: Enemmän kuin
+  "no": "Ei"
+  none: Ei yhtään
+  not_available: Ei mitään
+  now: Nyt
+  ok: OK
+  properties: Ominaisuudet
+  products: Tuotteet
+  save: Tallenna
+  status: Status
+  to: mihin
+  type: Tyyppi
+  update: Päivitä
+  "yes": "Kyllä"
+  operator: Operaattori
+  operators:
+    "=": Yhtä kuin
+    "!=": Erisuuri kuin
+    ">=": Suurempi tai yhtäsuuri kuin
+    ">": Suurempi kuin
+    "<=": Pienempi tai yhtäsuuri kuin
+    "<": Pienempi kuin
+    EMPTY: Tyhjä
+    NOT EMPTY: Ei tyhjä
+    CONTAINS: Sisältää
+    DOES NOT CONTAIN: Ei sisällä
+    STARTS WITH: Alkaa
+    ENDS WITH: Päättyy
 confirmation:
-  title: Vahvista
   remove:
     item: Oletko varma että haluat poistaa tämän kohteen?
     association_type: Oletko varma, että haluat poistaa tämän assosiaatiotyypin?
-    attribute: Oletko varma, että haluat poistaa tämän attribuutin?
+    attribute: Oletko varma, että haluat poistaa tämän määritteen?
     attribute_group: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
     family: Oletko varma, että haluat poistaa tämän ryhmän?
     product: Oletko varma, että haluat poistaa tämän tuotteen?
@@ -25,16 +79,17 @@ pim_datagrid:
       label: Nopea vienti
   mass_action:
     delete:
-      label: Poista
       confirm_content: Oletko varma, että haluat poistaa valitut tuotteet?
       success: Valitut tuotteet poistettiin.
       error: Virhe yritettäessä poistaa valitut tuotteet, yritä uudelleen.
   view_selector:
     view: Näkymät
-    create_view_modal:
-      create: Luo
-      confirm: OK
-      cancel: Peruuta
+  actions:
+    edit_product_attributes: Muokkaa tuotteen ominaisuuksia
+    classify_product: Luokittele tuote
+    delete_product: Poista tuote
+    change_status: Muuta tuotteen tila
+    toggle_status: Vaihda tuotteen tilaa
 flash:
   item:
     removed: Kohde poistettu
@@ -85,9 +140,9 @@ error:
     export profile: Vientiprofiilia ei voi poistaa
     user: Käyttäjää ei voi poistaa
     role: Roolia ei voi poistaa
-    attribute_option: Virhe attribuutin vaihtoehdon poistossa
+    attribute_option: Määriteasetuksen poistossa virhe
   saving:
-    attribute_option: Attribuutin vaihtoehtoa ei voi tallentaa
+    attribute_option: Määriteasennusta ei voi tallentaa
     export_profile: Vientiprofiilia ei voi tallentaa. Tarkista että suodattimet on täytetty oikein
 alert:
   attribute_option:
@@ -102,34 +157,20 @@ confirm:
 label:
   attribute_option:
     add_option: Lisää vaihtoehto
-Code: Koodi
-Edit: Muokkaa
-Delete: Poista
-Edit attributes of the product: Muokkaa tuotteen ominaisuuksia
-Classify the product: Luokittele tuote
-Delete the product: Poista tuote
-Change status: Muuta tuotteen tila
-Toggle status: Vaihda tuotteen tilaa
 pim:
   grid:
     mass_action:
       quick_export:
-        csv_all: CSV (kaikki attribuutit)
+        csv_all: CSV (kaikki määritteet)
         csv_grid_context: CSV (Ruudukon konteksti)
         xlsx_all: Excel (Kaikki attribuutit)
         xlsx_grid_context: Excel (Ruudukon konteksti)
-      delete: Poista
       mass_edit: Massamuokkaus
       category_edit: Siirrä tuotteita kategorioihin
       sequential_edit: Peräkkäinen muokkaus
-jstree.create: Luo
-jstree.done: Valmis
-switch_on: "Kyllä"
-switch_off: "Ei"
 pim_enrich:
   item:
     list:
-      delete.label: Poista
       delete.error: Virhe kohteen poistamisessa
     delete:
       confirm.content: Oletko varma, että haluat poistaa tämän {{ itemName }}? Tätä toimintoa ei voida kumota
@@ -139,17 +180,9 @@ pim_enrich:
       back_to_grid: Takaisin ruudukkoon
     other_actions: Muut toiminnot
   entity:
-    save:
-      label: Tallenna
     info:
       update_failed: Päivitys epäonnistui
       update_successful: Päivitys onnistui
-    create_popin:
-      code: Koodi
-      label: Nimike
-      labels:
-        save: Tallenna
-        cancel: Peruuta
     product:
       navigation: Tuotenavigaatio
       infos: Tuoteinformaatio
@@ -157,7 +190,6 @@ pim_enrich:
       title: tuote
       locale: Lokaatio
       category: Kategoria
-      create: Luo
       subTitle: Luo tuote
       modalTitle: Valitse toiminto
       filters: Suodattimet
@@ -168,12 +200,10 @@ pim_enrich:
         disabled: Poistettu käytöstä
         download_pdf: PDF
         compare_translate: Vertaa / Käännä
-        delete: Poista
-        save: Tallenna
       history:
         version: Versio
         author: Tekijä
-        logged_at: Kirjautunut
+        logged_at: Kirjattu
         from: Lähettäjä
         modified: Muutettu
         old_value: Vanha arvo
@@ -185,36 +215,27 @@ pim_enrich:
         update_successful: Tuote päivitetty.
         update_failed: Tuotetta ei voitu päivittää.
         field_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
-        already_in_upload: Tiedosto on jo ladattu attribuutin lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
+        already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
       meta:
-        created: Luotu
         created_by: Luoja
         updated_by: Luoja
         updated: Viimeisin päivitys
         family:
           title: Perhe
-          none: Ei yhtään
         family_variant:
           title: Tuotevariaatio
-          none: Ei yhtään
         groups:
           title: Ryhmät
           modal:
             title: Ryhmä {{ group }}
             view_group: Näytä ryhmä
-            group_label: Nimike
             more_products: '{{ count }} lisää tuotteita...'
-            close: Sulje
-        status: Status
-        scope: Kanava
         locale: Lokaatio
       copy:
         select: Valitse
-        all: Kaikki
         all_visible: Kaikki näkyvillä olevat
-        none: Ei yhtään
         copy: Kopioi
       optional_attribute:
         remove: Poista tämä attribuutti
@@ -226,12 +247,9 @@ pim_enrich:
         upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
       create_popin:
         type: Tuote
-        title: Luo
         labels:
           family: Valitse perhe
           family_variant: Valitse varianttiperhe
-          save: Tallenna
-          cancel: Peruuta
       message:
         created: Tuote luotu
       completeness: Valmis
@@ -249,17 +267,13 @@ pim_enrich:
         deletion_successful: Tuotemallin poisto onnistui.
         update_failed: Tuotemallia ei voitu päivittää.
         field_not_ready: "Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-      read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
       variant_axis: Varianttiulottuvuus
       title: tuotemallit
       add_child:
         create: Luo uusi
-        cancel: Peruuta
-        confirm: Vahvista
         create_label: "Luo uusi {{ axes }}"
         fields:
           required_label: (varianttiulottuvuus)
-          code: Koodi
     association_type:
       info:
         deletion_successful: Assosiaatiotyyppi poistettu.
@@ -267,16 +281,7 @@ pim_enrich:
         update_successful: Assosiaatiotyyppi päivitetty.
         update_failed: Assosiaatiotyyppiä ei voitu päivittää.
         field_not_ready: "Assosiaatiotyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-      meta:
-        created: Luotu
-        created_by: Luoja
-        updated: Päivitetty
-        updated_by: Päivittäjä
-      btn:
-        save: Tallenna
       title: sidoksen tyyppi
-      create_popin:
-        title: Luo
       message:
         created: Sidostyyppi luotu onnistuneesti
     group_type:
@@ -286,20 +291,10 @@ pim_enrich:
         update_successful: Ryhmätyypin päivittäminen onnistui.
         update_failed: Ryhmätyyppiä ei voitu päivittää.
         field_not_ready: "Ryhmätyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-      meta:
-        created: Luotu
-        created_by: Luoja
-        updated: Päivitetty
-        updated_by: Päivittäjä
-      btn:
-        save: Tallenna
       title: ryhmän tyyppi
-      create_popin:
-        title: Luo
       message:
         created: Ryhmätyyppi lisätty onnistuneesti
     channel:
-      title: kanava
       info:
         deletion_successful: Kanava poistettu.
         deletion_failed: Kanavaa ei voitu poistaa.
@@ -308,13 +303,6 @@ pim_enrich:
         create_successful: Kanava luotu.
         create_failed: Kanavaa ei voitu luoda.
         field_not_ready: "Kanavaa ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-      meta:
-        created: Luotu
-        created_by: Luoja
-        updated: Päivitetty
-        updated_by: Päivittäjä
-      btn:
-        save: Tallenna
     family:
       title: tuoteperhe
       selected: valitut perheet
@@ -326,15 +314,6 @@ pim_enrich:
         cant_remove_attribute_as_image: Pääkuvana käytettyä attribuuttia ei voi poistaa
         attribute_edit_permission_is_not_granted: Sinulla ei ole oikeuksia muokata tuoteperheen attribuutteja
         cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
-      meta:
-        created: Luotu
-        created_by: Luoja
-        updated: Päivitetty
-        updated_by: Päivittäjä
-      btn:
-        save: Tallenna
-      create_popin:
-        title: Luo
       message:
         created: Tuoteperhe luotu
       variant:
@@ -348,10 +327,6 @@ pim_enrich:
         create_label: Luo uusi varianttiperhe
         create_description: Varianttiperheelle voit määrittää tuoterakenteen varianteille. Valitse ylläpidettävien varianttitulottuvuuksien määrä, valitse varianttiulottuvuuksien eri tasoilla käytetyt määrittävät attribuutit ja valitse sitten miten attribuutit on jaettu eri tasoille.
         update_description: Vedä ja pudota attribuutit valitulle tasolle, jotta niiden rikastaminen tapahtuu varianttien tasolla.
-        create: Luo
-        cancel: Peruuta
-        code: Koodi
-        label: Nimike
         levels: Varianttitasot
         axis_level: Varianttiulottuvuuden taso
         required: vaadittu
@@ -362,8 +337,6 @@ pim_enrich:
       info:
         update_successful: Varianttiperhe päivitetty onnistuneesti. Tuotteet ja variantit päivitetään tekemilläsi muutoksilla.
     attribute_option:
-      code: Koodi
-      label: Nimike
       actions: Toiminnot
     group:
       title: Ryhmä
@@ -373,16 +346,6 @@ pim_enrich:
         update_successful: Ryhmä päivitetty.
         update_failed: Ryhmää ei voitu päivittää.
         field_not_ready: "Ryhmää ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-      btn:
-        save: Tallenna
-      meta:
-        product_count: Tuotteet
-        created: Luotu
-        created_by: Luoja
-        updated: Päivitetty
-        updated_by: Päivittäjä
-      create_popin:
-        title: Luo
       message:
         created: Ryhmä luotu onnistuneesti
     job_instance:
@@ -399,7 +362,7 @@ pim_enrich:
         create_successful: Attribuutin luominen onnistui.
         create_failed: Attribuuttia ei voitu luoda.
         field_not_ready: "Attribuuttia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-      scopable: Scopable
+      scopable: Kanavakohtainen
       type:
         pim_catalog_identifier: Tunniste
         pim_catalog_text: Teksti
@@ -425,20 +388,15 @@ pim_enrich:
         update_failed: Attribuuttiyhmää ei voitu päivittää
         update_successful: Attribuuttiryhmän päivittäminen onnistui
     api_connection:
-      create_popin:
-        title: Luo
       message:
         created: API -yhteyden luominen onnistui
   confirmation:
     leave: Oletko varma että haluat poistua sivulta?
     discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
-    delete_item: Vahvista poisto
     remove_item: Vahvista poisto
-    remove: Poista
     delete:
-      attribute: Oletko varma, että haluat poistaa tämän attribuutin tuotteesta?
+      attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
       attribute_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
-      product_model: Vahvista poisto
   info:
     not_applicable: Ei mitään
     entity:
@@ -465,20 +423,14 @@ pim_enrich:
         associations:
           title: Assosiaatiot
           info:
-            none_exist: Sidostyyppiä ei ole olemassa.
-            show_products: Näytä tuotteet
+            none_exist: Assosiaatiotyyppiä ei ole olemassa.
             show_groups: Näytä ryhmät
-            number_of_associations: "{{ productCount }} tuotetta, {{ productModelCount }} tuotemallia ja {{ groupCount }} ryhmää"
           association_type_selector: Assosiaatiotyyppi
           target: Kohde
           manage: Lisää {{ associationType }} assosiaatiot
           manage_description: Valitse tuotteet, jotka haluat liittää nykyiseen tuotteeseen
           add_associations: Lisää assosiaatiot
         attributes:
-          title: Attribuutit
-          btn:
-            add: Lisää
-            add_attributes: Lisää attribuutteja
           info:
             search_attributes: Hae...
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
@@ -486,29 +438,19 @@ pim_enrich:
             no_match: Vastaavuuksia ei löydy
             load_more: Ladataan lisää tuloksia...
           attribute_group_selector: Attribuuttiryhmä
-          attribute_group_all: Kaikki
-          attribute_group.to_fill_count: "{1}1 vaadittu attribuutti puuttuu|]1, Inf [{{ count }} vaadittua attribuuttia puuttuu"
           attribute_filter:
             display: Näytä
             all: Kaikki attribuutit
             missing_required: Kaikki puuttuvat vaaditut attribuutit
-        categories:
-          title: Kategoriat
       panel:
         completeness:
           title: Valmistumisaste
           info:
-            no_family: Perhettä ei ole määritelty. Määritä perhe, jotta voit laskea tuotteen täyttöasteen.
+            no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
             no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
           missing_values: "{1}1 puuttuva arvo|] 1, Inf [{{ count }} puuttuvaa arvoa"
-        history:
-          title: Historia
-      switch:
-        "no": "Ei"
-        "yes": "Kyllä"
       sequential_edit:
         info:
-          products: tuotteet
           previous: Siirry takaisin {{ product }} tallentamatta.
           next: Siirry {{ product }} tallentamatta.
         btn:
@@ -522,60 +464,29 @@ pim_enrich:
           change_family_to: Vaihda perhe olemaan
           empty_selection: Valitse perhe
       flash:
-        attribute_deletion_error: Attribuutin poistamisessa tapahtui virhe
+        attribute_deletion_error: Määritteen poistamisen aikana tapahtui virhe
       mass_edit:
         select_attributes: Valitse attribuutit
         select: Valitse
-    association_type:
-      tab:
-        properties:
-          title: Ominaisuudet
-          general: Yleiset ominaisuudet
-          code: Koodi
-          label_translations: Nimikkeiden käännökset
-        history:
-          title: Historia
-    group_type:
-      tab:
-        properties:
-          title: Ominaisuudet
-          general: Yleiset ominaisuudet
-          code: Koodi
-          label_translations: Nimikkeiden käännökset
-        history:
-          title: Historia
     channel:
       tab:
-        history:
-          title: Historia
         properties:
-          title: Ominaisuudet
           general: Yleinen
-          code: Koodi
           currencies: Valuutat
-          locales: Alueet
           category_tree: Kategoriahierarkia
-          label_translations: Nimikkeiden käännökset
-          label_conversion_units: Valitse muunnosyksikkö jokaisella metriselle attribuutille, jota käytetään tuotteen viennin yhteydessä
+          label_conversion_units: Valitse muunnosyksikkö jokaisella metrimääritteelle jota käytetään tuotteen viennin yhteydessä
           conversion_unit:
             do_not_convert: Älä muunna
     family:
       tab:
         properties:
-          title: Ominaisuudet
           general: Yleinen
-          code: Koodi
-          attribute_as_label: Attribuutti käytössä otsikkona
+          attribute_as_label: Otsikkona käytettävä attribuutti
           attribute_as_image: Pääkuvana käytettävä attribuutti
           empty_attribute_as_image: Ei ole valittu
-          label_translations: Nimikkeiden käännökset
         attributes:
-          title: Attribuutit
-          label_label: Nimike
           toolbox:
             select_attributes_by_groups: Lisää ryhmittäin
-            select_attributes: Lisää attribuutteja
-            add: Lisää
             attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
           not_required_label: Ei vaadittu
           required_label: Vaadittu
@@ -583,72 +494,40 @@ pim_enrich:
           title: Variantit
           flash:
             family_variant_created: Varianttiperhe onnistuneesti luotu
-        history:
-          title: Historia
     attribute_option:
       flash:
-        option_created: Attribuutin vaihtoehdon luominen onnistui
-        error_creating_option: Virhe yritettäessä luoda attribuutin vaihtoehtoa
+        option_created: Määritteen asetuksen luominen onnistui
+        error_creating_option: Virhe yritettäessä luoda määritteen asetusta
       add_option_modal:
-        title: Lisää attribuutin vaihtoehto
-        confirm: Lisää
-        cancel: Peruuta
-    entity:
-      switch:
-        "no": "Ei"
-        "yes": "Kyllä"
-    group:
-      tab:
-        properties:
-          title: Ominaisuudet
-          general: Yleiset ominaisuudet
-          code: Koodi
-          type: Tyyppi
-          label_translations: Nimikkeiden käännökset
-        history:
-          title: Historia
-        products:
-          title: Tuotteet
+        title: Lisää määritteen vaihtoehto
     attribute_group:
       tab:
-        properties:
-          title: Ominaisuudet
-          general: Yleiset ominaisuudet
-          code: Koodi
-          label_translations: Nimikkeiden käännökset
         attribute:
-          title: Attribuutit
           table:
             name: Nimi
             type: Tyyppi
-            scopable: Scopable
+            scopable: Kanavakohtainen
             localizable: Lokalisoitavissa
-        history.title: Historia
     common:
       tab:
         attributes:
           btn:
-            add: Lisää
             add_attributes: Lisää attribuutteja
           info:
             search_attributes: Hae...
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
     job_execution:
-      loading: Ladataan...
       title.details: Suorittamisen yksityiskohdat
       refreshBtn.title: Päivitä
-      meta:
-        status.title: Status
       button:
         show_profile.title: Näytä profiili
-        download_log.title: Latauslogi
+        download_log.title: Lataa loki
         download_file.title: Lataa viety tiedosto
         download_archive.title: Lataa viety tallenne
       summary:
         fetching: Kerää tietoja työsuorituksesta...
         warning: Varoitus
         header.step: Vaihe
-        header.status: Status
         header.warnings: Varoitus
         header.summary: Yhteenveto
         header.start: Aloitus
@@ -661,7 +540,6 @@ pim_enrich:
         import: Tuontiprofiili
         export: Vientiprofiili
       button:
-        edit.title: Muokkaa
         export.title: Vie nyt
         import.launch: Tuo nyt
         import.upload: Lataa ja tuo nyt
@@ -675,11 +553,6 @@ pim_enrich:
         content:
           title: Sisältö
         properties:
-          title: Ominaisuudet
-          code:
-            title: Koodi
-          label:
-            title: Nimike
           decimal_separator:
             title: Desimaalierotin
             help: Määritä desimaalierotin
@@ -712,7 +585,7 @@ pim_enrich:
             help: Kategoriasarakkeen nimi
           escape:
             title: Koodinvaihto
-            help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
+            help: Ohjausmerkki
           family_column:
             title: Perhesarake
             help: Perhesarakkeen nimi
@@ -730,18 +603,14 @@ pim_enrich:
             help: Tarkoittaa että tuotehistoria on automaattisesti päivitetty, voidaan laittaa pois päältä suorituskyvyn parantamiseksi
           family_variant_column:
             title: Varianttiperheen sarake
-        history:
-          title: Historia
       file_path: Tiedostopolku
     attribute:
       meta:
-        created: Luotu
         created_by: tehnyt
         updated: Viimeisin päivitys
         updated_by: tehnyt
       tab:
         properties:
-          title: Ominaisuudet
           section:
             common: Yleiset parametrit
             type_specific: Tyyppikohtaiset parametrit
@@ -750,7 +619,6 @@ pim_enrich:
             allowed_extensions: Sallitut laajennukset
             auto_option_sorting: Järjestä vaihtoehdot automaattisesti aakkosjärjestykseen
             available_locales: Saatavilla olevat alueet
-            code: Koodi
             date_max: Max päivämäärä
             date_min: Min päivämäärä
             decimals_allowed: Desimaaliarvot sallittu
@@ -767,7 +635,6 @@ pim_enrich:
             number_min: Min numero
             reference_data_name: Referenssidatan tyyppi
             scopable: Kanavakohtainen arvo
-            type: Tyyppi
             unique: Yksilöllinen arvo
             useable_as_grid_filter: Käytettävissä ruudukossa
             validation_regexp: Tavallinen virke
@@ -778,20 +645,13 @@ pim_enrich:
             group: Valitse attribuuttiryhmä
             metric_family: Valitse perhe
             reference_data_name: Valitse viite-datatyyppi
-        labels:
-          title: Nimikkeiden käännökset
         choices:
           title: Vaihtoehdot
-        history:
-          title: Historia
     mass_edit:
       family:
         attributes:
-          label_label: Nimike
           toolbox:
             select_attributes_by_groups: Lisää ryhmittäin
-            select_attributes: Lisää attribuutteja
-            add: Lisää
             attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
     basket:
       title: Kori
@@ -804,33 +664,23 @@ pim_enrich:
         title: Suodata tuotteet
       structure:
         title: Suodata arvot
-        attributes:
-          title: Attribuutit
       filter:
         channel:
-          title: Kanava
           help: Kanava määrittää tuotearvojen laajuuden, arvojen lokaation ja tuotepuun, jolla rajataan mukaan otettavat tuotteet.
         locales:
-          title: Alueet
           help: "Lokaatiot määrittävät minkäkieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot."
         attributes:
-          title: Attribuutit
-          edit: Muokkaa
           label: "{0}Kaikki attribuutit|{1}Yksi attribuutti valittu|]1,Inf[ {{ count }} attribuuttia valittu"
           help: "Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit."
           empty: Kaikki attribuutit viedään
           modal:
-            apply: Valitse
-            cancel: Peruuta
             title: Attribuuttivalinta
         attributes_selector:
-          attribute_group: Attribuuttiryhmät
           attributes: "Hae {{ attributeCount }} attribuutista"
           selected: "Valitut attribuutit"
           clear: Tyhjennä
           all_group: Kaikki ryhmät
           empty_selection: Kaikki attribuutit viedään
-          title: Attribuutit
           description: Valitse tuotetiedot vientiin
         family:
           title: Perhe
@@ -852,7 +702,6 @@ pim_enrich:
           title: Status
           help: "Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta."
           value:
-            all: Kaikki
             enabled: Käytössä
             disabled: Poistettu käytöstä
         completeness:
@@ -870,72 +719,16 @@ pim_enrich:
         identifier:
           title: Tunniste
           help: Vietävien tuotteiden tunnisteet eroteltuna pilkuilla, välilyönneillä tai rivinvaihdoilla
-        metric:
-          operators:
-            "=": Yhtä kuin
-            "!=": Erisuuri kuin
-            ">=": Suurempi tai yhtäsuuri kuin
-            ">": Suurempi kuin
-            "<=": Pienempi tai yhtäsuuri kuin
-            "<": Pienempi kuin
-            EMPTY: Tyhjä
-            NOT EMPTY: Ei tyhjä
         string:
           operators:
             ALL: Kaikki
-            CONTAINS: Sisältää
-            DOES NOT CONTAIN: Ei sisällä
-            "=": Yhtä kuin
-            STARTS WITH: Alkaa
-            ENDS WITH: Päättyy
-            EMPTY: Tyhjä
-            NOT EMPTY: Ei tyhjä
-        price-collection:
-          operators:
-            "=": Yhtä kuin
-            "!=": Erisuuri kuin
-            ">=": Suurempi tai yhtäsuuri kuin
-            ">": Suurempi kuin
-            "<=": Pienempi tai yhtäsuuri kuin
-            "<": Pienempi kuin
-            EMPTY: Tyhjä
-            NOT EMPTY: Ei tyhjä
-        multi_select:
+        select:
           operators:
             IN: Luettelossa
-            EMPTY: Tyhjä
-            NOT EMPTY: Ei tyhjä
-        media:
-          operators:
-            CONTAINS: Sisältää
-            DOES NOT CONTAIN: Ei sisällä
-            "=": Yhtä kuin
-            STARTS WITH: Alkaa
-            ENDS WITH: Päättyy
-            EMPTY: Tyhjä
-            NOT EMPTY: Ei tyhjä
         date:
           operators:
-            ">": Suurempi kuin
-            "<": Pienempi kuin
-            "=": Yhtä kuin
-            "!=": Erisuuri kuin
             BETWEEN: Välillä
             NOT BETWEEN: Ei välillä
-            EMPTY: Tyhjä
-            NOT EMPTY: Ei tyhjä
-        number:
-          operators:
-            "=": Yhtä kuin
-            "!=": Erisuuri kuin
-            ">=": Suurempi tai yhtäsuuri kuin
-            ">": Suurempi kuin
-            "<=": Pienempi tai yhtäsuuri kuin
-            "<": Pienempi kuin
-            EMPTY: Tyhjä
-            NOT EMPTY: Ei tyhjä
-      properties:
-        title: Ominaisuudet
       global_settings:
         title: Yleiset asetukset
   mass_edit_action:
@@ -949,8 +742,6 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} tuontiprofiili|] 1, Inf [{{ count }} tuontiprofiilia"
       create_btn: Luo tuontiprofiili
       list: Valitse työ
-      create_popin:
-        title: Luo
       message:
         created: Tuontiprofiilin tallentaminen onnistui
     import_history:
@@ -961,8 +752,6 @@ pim_enrich:
     export_profiles:
       title: "] -Inf, 1] {{ count }} vientiprofiili|] 1, Inf [{{ count }} vientiprofiilia"
       create_btn: Luo vientiprofiili
-      create_popin:
-        title: Luo
       message:
         created: Vientiprofiilin tallentaminen onnistui
     export_history:
@@ -995,17 +784,11 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} attribuutti|] 1, Inf [{{ count }} attribuuttia"
       create_btn: Luo attribuutti
       modal_title: Valitse attribuutin tyyppi
-    attribute_group:
-      title: Attribuuttiryhmät
-      create_btn: Luo
     api_connection:
       title: "] -Inf, 1] {{ count }} API-yhteys|] 1, Inf [{{ count }} API-yhteyttä"
-      create_btn: Luo
   mass_edit:
     next: Seuraava
     previous: Takaisin
-    cancel: Peruuta
-    confirm: Vahvista
     product:
       title: Tuotteiden massamuokkaus
       confirm: "{1}Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet päivittämässä tuotteita {{ itemsCount }} seuraavilla tiedoilla, ole hyvä ja vahvista."
@@ -1044,11 +827,9 @@ pim_enrich:
         add_to_category:
           label: Lisää kategorioihin
           label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> to categories|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioihin"
-          description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa oleva liitokset säilytetään.
         move_to_category:
           label: Siirrä kategorioihin
           label_count: "{1}Siirrä <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioihin|] 1, Inf [Siirrä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioihin"
-          description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan.
         remove_from_category:
           label: Poista kategorioista
           label_count: "{1}Poista <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioista|] 1, Inf [Poista <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioista"
@@ -1057,11 +838,6 @@ pim_enrich:
           label: Lisää olemassaolevaan tuotemalliin
           label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> olemassa olevaan tuotemalliin|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> olemassa olevaan tuotemalliin"
           description: Valittu tuotemalli kokoaa tuotteet ja mahdollistaa niiden yhteisten attribuuttien rikastamisen.
-        associate_to_product_and_product_model:
-          label: Luo assosiaatio tuotteisiin
-          label_count: "{1}Liitä <span class=\"AknFullPage-title--highlight\">1 tuote</span> tuotteisiin tai tuotemalleihin|] 1, Inf [Liitä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> tuotteisiin tai tuotemalleihin"
-          description: Tuoteruudukossa valittuihin tuotteisiin luodaan valitsemasi tyyppinen assosiaatio niiltä tuotteilta tai tuotemalleilta, jotka seuraavaksi valitset
-          validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
     family:
       title: Perheiden massamuokkaus
       confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
@@ -1114,72 +890,108 @@ page_title:
   pim_enrich_associationtype_edit: Assosiaatiotyyppi {{ association type.label }} | Muokkaa
   pim_enrich_grouptype_index: Ryhmätyypit
   pim_enrich_grouptype_edit: Ryhmätyyppi {{ group type.label }} | Muokkaa
-  pim_enrich_mass_edit_action_choose: Massaedit | Valitse
-  pim_enrich_mass_edit_action_configure: Massaedit | Määritä
+  pim_enrich_mass_edit_action_choose: Massamuokkaus | Valitse
+  pim_enrich_mass_edit_action_configure: Massamuokkaus | Määritä
   pim_enrich_mass_edit_action_perform: Massamuokkas | Suorita
   pim_enrich_job_tracker_index: Prosessiseurain
   pim_enrich_job_tracker_show: Prosessin tracker | Näytä työ
   pim_enrich_api_connection_index: API -yhteydet
   pim_enrich_api_connection_create: API -yhteydet| Luo
-  pim_enrich_mass_edit_action: Massaedit
+  pim_enrich_mass_edit_action: Massamuokkaus
   pim_analytics_system_info_index: Järjestelmätiedot
+job_tracker:
+  download_archive:
+    archive: Lataa viety tallenne
+    output: Lataa viedyt tiedostot
+    input: Lataa tuodut tiedostot
+    invalid_xlsx: Lataa virheelliset tiedot
+    invalid_csv: Lataa virheelliset tiedot
+pim_menu:
+  tab:
+    activity: Tapahtumat
+    imports: Tuonnit
+    exports: Viennit
+    settings: Asetukset
+    system: Järjestelmä
+    help:
+      title: Ohjeet
+      helper: Akeneo Help center
+  item:
+    association_type: Assosiaatiotyypit
+    attribute_group: Attribuuttiryhmät
+    channel: Kanavat
+    currency: Valuutat
+    dashboard: Ohjauspaneeli
+    family: Perheet
+    group: Ryhmät
+    group_type: Ryhmätyypit
+    product_model: Tuotemallit
+    published_product: Julkaistut tuotteet
+    export_history: Vientihistoria
+    export_profile: Vientiprofiili
+    import_history: Tuontihistoria
+    import_profile: Tuontiprofiilit
+    configuration: Kokoonpano
+    user_management: Käyttäjähallinta
+    user: Käyttäjät
+    user_group: Käyttäjäryhmät
+    user_role: Roolit
+    info: Järjestelmätiedot
+    job_tracker: Prosessiseurain
+    api_connection: API -yhteydet
+  navigation:
+    activity: Tapahtumanavigaatio
+    system: Järjestelmänavigaatio
+    user: Käyttäjähallinnan navigaatio
+    settings: Asetuksien navigaatio
+  user:
+    logout: Kirjaudu ulos
+    user_account: Oma tili
+pim_notification:
+  mark_all_as_read: Merkitse kaikki luetuiksi
+  no_notifications: Ei ilmoituksia
+  types:
+    import: Tuonti
+    export: Vienti
+    quick_export: Nopea vienti
+    mass_edit: Massamuokkaus
+grid:
+  empty_results:
+    associated_product:
+      hint: Tuotteen assosiaatioita ei ole
+      subHint: 'Klikkaa "Lisää assosiaatioita" lisätäksesi assosiaatioita tälle tuotteelle'
 batch_jobs:
   add_product_value:
     label: Lisää tuotteen arvo
-    perform:
-      label: Lisää tuotteen arvo
+    perform.label: Lisää tuotteen arvo
   update_product_value:
     label: Päivitä tuotteen arvo
-    perform:
-      label: Päivitä tuotteen arvo
+    perform.label: Päivitä tuotteen arvo
   edit_common_attributes:
     label: Muokkaa attribuutteja
-    perform:
-      label: Muokkaa attribuutteja
-  add_to_category:
-    label: Lisää kategorioihin
-    perform:
-      label: Lisää kategorioihin
-  move_to_category:
-    label: Siirrä kategorioihin
-    perform:
-      label: Siirrä kategorioihin
-  remove_from_category:
-    label: Poista kategorioista
-    perform:
-      label: Poista kategorioista
-  add_association:
-    label: Luo assosiaatio tuotteisiin
-    perform:
-      label: Luo assosiaatio tuotteisiin
+    perform.label: Muokkaa attribuutteja
   add_to_existing_product_model:
     label: Lisää olemassaolevaan tuotemalliin
-    perform:
-      label: Lisää olemassaolevaan tuotemalliin
+    perform.label: Lisää olemassaolevaan tuotemalliin
   set_attribute_requirements:
     label: Aseta vaaditut attribuutit
-    perform:
-      label: Aseta vaaditut attribuutit
+    perform.label: Aseta vaaditut attribuutit
   csv_product_quick_export:
     quick_export.label: Tuotteen nopea vienti CSV-muodossa
     quick_export_product_model.label: Tuotemallin nopea vienti CSV-muodossa
-    perform:
-      label: Tuotteen nopea vienti CSV-muodossa
+    perform.label: Tuotteen nopea vienti CSV-muodossa
   csv_product_grid_context_quick_export:
     quick_export.label: Tuoteruudukon kontekstin nopea vienti CSV-muodossa
     quick_export_product_model.label: Tuotemalliruudukon kontekstin nopea vienti CSV-muodossa
-    perform:
-      label: Tuoteruudukon kontekstin nopea vienti CSV-muodossa
+    perform.label: Tuoteruudukon kontekstin nopea vienti CSV-muodossa
   xlsx_product_quick_export:
     quick_export.label: Tuotteen nopea vienti XLSX-muodossa
     quick_export_product_model.label: Tuotemallin nopea vienti XLSX-muodossa
-    perform:
-      label: Tuotteen nopea vienti XLSX-muodossa
+    perform.label: Tuotteen nopea vienti XLSX-muodossa
   xlsx_product_grid_context_quick_export:
     quick_export.label: Tuoteruudukon kontekstin nopea vienti XLSX-muodossa
     quick_export_product_model.label: Tuotemalliruudukon kontekstin nopea vienti XLSX-muodossa
-    perform:
-      label: Tuoteruudukon kontekstin nopea vienti XLSX-muodossa
+    perform.label: Tuoteruudukon kontekstin nopea vienti XLSX-muodossa
   csv_product_export:
     label: Tuotteiden vienti CSV-muodossa
     export.label: Tuotteiden vienti
@@ -1193,8 +1005,8 @@ batch_jobs:
     label: Attribuuttien vienti CSV-muodossa
     export.label: Attribuuttien vienti
   csv_attribute_option_export:
-    label: Attribuutin vaihtoehtojen vienti CSV-muodossa
-    export.label: Attribuutin vaihtoehtojen vienti
+    label: Attribuuttien määritteiden vienti CSV-muodossa
+    export.label: Attribuuttien määritteiden vienti
   csv_association_type_export:
     label: Liitännäistyyppien vienti CSV-muodossa
     export.label: Liitännäistyyppien vienti
@@ -1209,38 +1021,30 @@ batch_jobs:
     export.label: Varianttiperheen vienti
   csv_product_import:
     label: Tuotteiden tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
   csv_product_model_import:
     label: Tuotemallien tuonti CSV-muodossa
   csv_category_import:
     label: Kategorioiden tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Kategorioiden tuonti
   csv_attribute_import:
     label: Attribuuttien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttien tuonti
   csv_attribute_option_import:
-    label: Attribuutin vaihtoehtojen tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien vaihtoehtojen tuonti
+    label: Attribuuttien määritteiden tuonti CSV-muodossa
+    import.label: Attribuuttien määritteiden tuonti
   csv_association_type_import:
     label: Liitännäistyyppien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Liitännäistyyppien tuonti
   csv_family_import:
     label: Ryhmän tuonti CSV-tiedostona
-    validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
   csv_family_variant_import:
     label: Varianttiperheen tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Varianttiperheen tuonti
   csv_group_import:
     label: Ryhmien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmien tuonti
   csv_channel_export:
     label: Kanavavienti CSV-muodossa
@@ -1259,47 +1063,36 @@ batch_jobs:
     export.label: Ryhmätyyppivienti
   csv_channel_import:
     label: Kanavatuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Kanavatuonti
   csv_locale_import:
     label: Lokaatiotuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Lokaatiotuonti
   csv_attribute_group_import:
     label: Attribuuttiryhmätuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttiryhmätuonti
   csv_currency_import:
     label: Valuuttatuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Valuuttatuonti
   csv_group_type_import:
     label: Ryhmätyyppituonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätyyppituonti
   xlsx_category_import:
     label: Kategorioiden tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Kategorioiden tuonti
   xlsx_association_type_import:
     label: Liitännäistyyppien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Liitännäistyyppien tuonti
   xlsx_attribute_import:
     label: Attribuuttien tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttien tuonti
   xlsx_attribute_option_import:
-    label: Attribuuttien vaihtoehtojen tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Attribuuttien vaihtoehtojen tuonti
+    label: Attribuuttien määritteiden tuonti XLSX-muodossa
+    import.label: Attribuuttien määritteiden tuonti
   xlsx_family_import:
     label: Perheiden tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
   xlsx_family_variant_import:
     label: Varianttiperheen tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Varianttiperheen tuonti
   xlsx_product_export:
     label: Tuotteiden vienti XLSX-muodossa
@@ -1309,7 +1102,6 @@ batch_jobs:
     export.label: Tuotemallien vienti
   xlsx_product_import:
     label: Tuotteiden tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
   xlsx_product_model_import:
@@ -1319,7 +1111,6 @@ batch_jobs:
     export.label: Ryhmän vienti
   xlsx_group_import:
     label: Ryhmätuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmien tuonti
   xlsx_family_export:
     label: Perhevienti XLSX-muodossa
@@ -1334,8 +1125,8 @@ batch_jobs:
     label: Attribuuttivienti XLSX-muodossa
     export.label: Attribuuttivienti XLSX-muodossa
   xlsx_attribute_option_export:
-    label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
-    export.label: Attribuuttien vaihtoehtojen vienti XLSX-muodossa
+    label: Attribuuttien määritteiden vienti XLSX-muodossa
+    export.label: Attribuuttien määritteiden vienti XLSX-muodossa
   xlsx_association_type_export:
     label: Liitännäistyyppien vienti XLSX-muodossa
     export.label: Liitännäistyyppien vienti XLSX-muodossa
@@ -1356,78 +1147,16 @@ batch_jobs:
     export.label: Ryhmätyyppivienti
   xlsx_channel_import:
     label: Kanavatuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Kanavatuonti
   xlsx_locale_import:
     label: Lokaatiotuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Lokaatiotuonti
   xlsx_attribute_group_import:
     label: Attribuuttiryhmätuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttiryhmätuonti
   xlsx_currency_import:
     label: Valuuttatuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Valuuttatuonti
   xlsx_group_type_import:
     label: Ryhmätyyppituonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätyyppituonti
-job_tracker:
-  download_archive:
-    archive: Lataa viety tallenne
-    output: Lataa viedyt tiedostot
-    input: Lataa tuodut tiedostot
-    invalid_xlsx: Lataa virheelliset tiedot
-    invalid_csv: Lataa virheelliset tiedot
-pim_menu:
-  tab:
-    activity: Tapahtumat
-    imports: Tuonnit
-    products: Tuotteet
-    exports: Viennit
-    settings: Asetukset
-    system: Järjestelmä
-    help:
-      title: Ohjeet
-      helper: Akeneo Help center
-  item:
-    association_type: Assosiaatiotyypit
-    attribute: Attribuutit
-    attribute_group: Attribuuttiryhmät
-    category: Kategoriat
-    channel: Kanavat
-    currency: Valuutat
-    dashboard: Ohjauspaneeli
-    family: Perheet
-    group: Ryhmät
-    group_type: Ryhmätyypit
-    locale: Alueet
-    product: Tuotteet
-    product_model: Tuotemallit
-    published_product: Julkaistut tuotteet
-    export_history: Vientihistoria
-    export_profile: Vientiprofiili
-    import_history: Tuontihistoria
-    import_profile: Tuontiprofiilit
-    configuration: Kokoonpano
-    user_management: Käyttäjähallinta
-    user: Käyttäjät
-    user_group: Ryhmät
-    user_role: Roolit
-    info: Järjestelmätiedot
-    job_tracker: Prosessiseurain
-    api_connection: API -yhteydet
-  navigation:
-    activity: Tapahtumanavigaatio
-    system: Järjestelmänavigaatio
-    user: Käyttäjähallinnan navigaatio
-    settings: Asetuksien navigaatio
-  user:
-    logout: Kirjaudu ulos
-    user_account: Oma tili
-pim_notification:
-  mark_all_as_read: Merkitse kaikki luetuiksi
-  no_notifications: Ei ilmoituksia
-  loading: Ladataan...

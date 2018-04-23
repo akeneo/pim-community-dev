@@ -1,3 +1,5 @@
+pim_common:
+  cancel: Cancelar
 pim_enrich:
   product:
     tab:
@@ -150,6 +152,8 @@ pim_enrich:
       comment: Comentario de Productos
       download: Descargar el producto en formato PDF
       history: Ver historial de producto
+    product_model:
+      create: Cree un modelo de producto
     category:
       list: Lista de categorías
       create: Crear una categoría
@@ -315,7 +319,6 @@ confirmation:
   leave: '¿Está seguro que desea salir de esta página?'
   discard changes: Perderá los cambios en %entity% si abandona esta página.
   remove:
-    item: '¿Está seguro de que desea borrar este elemento?'
     attribute: '¿Está seguro que desea eliminar el atributo %name%?'
     attribute group: '¿Está seguro que desea eliminar el grupo de atributos %name%?'
     category: '¿Está seguro que desea eliminar la categoría %name%?'
@@ -490,7 +493,6 @@ Active: Activo
 Inactive: Inactivo
 Do not convert: No convertir
 Create: Crear
-Cancel: Cancelar
 Choose a family: Elija una familia
 Choose a unit: Elegir una unidad
 No matches found: No se encuentran coincidencias
@@ -703,7 +705,6 @@ Format address by address country: Formatear dirección por dirección del país
 Language: idioma
 Timezone: Zona horaria
 Currency: Moneda
-settings: Configuración
 oro.locale:
   address_format:
     region_name_type:
@@ -748,35 +749,6 @@ remove_product_value.steps.update_product_value_processor.title: Quitar el valor
 edit_common_attributes: Editar atributos
 perform.steps.duplicated.title: Eje duplicado
 perform.steps.excluded.title: Producto excluido
-batch_jobs:
-  add_product_value:
-    label: Agregar un valor de producto
-    perform:
-      label: Agregar un valor de producto
-  update_product_value:
-    label: Actualizar el valor del producto
-    perform:
-      label: Actualizar el valor del producto
-  edit_common_attributes:
-    label: Editar atributos
-    perform:
-      label: Editar atributos
-  csv_product_quick_export:
-    quick_export.label: Exportación rápida de producto en CSV
-    perform:
-      label: Exportación rápida de producto en CSV
-  csv_product_grid_context_quick_export:
-    quick_export.label: Exportación rápida de la grilla de productos en CSV
-    perform:
-      label: Exportación rápida de la grilla de productos en CSV
-  xlsx_product_quick_export:
-    quick_export.label: Exportación rápida de producto en XLSX
-    perform:
-      label: Exportación rápida de producto en XLSX
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: Exportación rápida de la grilla de productos en XLSX
-    perform:
-      label: Exportación rápida de la grilla de productos en XLSX
 mass_edit report:
   overview: Reportes de edición en masa
 job_tracker:

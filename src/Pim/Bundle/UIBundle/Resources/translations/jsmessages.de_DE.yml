@@ -1,24 +1,16 @@
-Close: Schließen
-Update: Aktualisieren
-Selected Rows: Ausgewählte Zeilen
-"Yes": "Ja"
 "Yes, Delete": "Ja, löschen"
 "Yes, I Agree": "Ja, ich stimme zu"
 "Yes, do it": "Ja, ausführen"
-"No": "Nein"
 "Ok, got it.": "Ja, verstanden."
-"Cancel": "Abbrechen"
 "Delete Confirmation": "Löschbestätigung"
 "Edit": "Bearbeiten"
 "Unexpected error occured. Please contact system administrator.": "Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator."
 "Yes, revoke": "Ja, widerrufen"
 "Revoke Confirmation": "Bestätigung widerrufen"
-Now: Jetzt
 Prev: Zurück
 Next: Vor
 Today: Heute
 Wk: KW
-Done: Fertig
 AM: AM
 A: A
 PM: PM
@@ -33,8 +25,7 @@ Microsecond: Mikrosekunde
 "Time Zone": "Zeitzone"
 Localized value: Vom Gebietsschema abhängiger Wert
 Columns: Spalten
-Datagrid Configuration: Tabellen-Konfiguration
-Apply: Anwenden
+Datagrid Configuration: Konfiguration Tabellenansicht
 Action: Aktion
 Unit: Einheit
 Currency: Währung
@@ -46,7 +37,6 @@ jstree:
     unclassified: Nicht klassifizierte Produkte
   no_tree: Kein Strukturbaum verfügbar
   include_sub: Unterkategorien einschließen
-  loading: Lädt ...
 datetimepicker:
   days:
     Sunday: Sonntag

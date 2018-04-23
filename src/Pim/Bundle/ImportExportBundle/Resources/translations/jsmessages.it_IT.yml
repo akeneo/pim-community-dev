@@ -8,10 +8,6 @@ pim_connector:
       selector:
         modal:
           title: Selezione categorie
-          cancel: Annulla
-          confirm: Conferma
-        label: "{0} Tutti i prodotti|{1} Una categoria selezionata |] 1, Inf[ {{ count }} categorie selezionate"
-        edit: Modifica
         title: Seleziona categorie
     locales:
       validation:

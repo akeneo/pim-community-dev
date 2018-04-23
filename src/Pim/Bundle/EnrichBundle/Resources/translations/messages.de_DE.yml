@@ -1,3 +1,5 @@
+pim_common:
+  cancel: Abbrechen
 pim_enrich:
   product:
     tab:
@@ -310,7 +312,7 @@ btn:
   next: Vor
   back: Zurück
   confirm: Bestätigen
-  to grid: Zurück zur Übersicht
+  to grid: Zurück zur Tabellenansicht
   to parent: Zurück zur übergeordneten Ebene
   download_pdf: PDF
   download: Download
@@ -320,7 +322,6 @@ confirmation:
   leave: Möchten Sie diese Seite wirklich verlassen?
   discard changes: Änderungen an der %entity% gehen verloren, wenn Sie die Seite verlassen.
   remove:
-    item: Möchten Sie dieses Element wirklich löschen?
     attribute: Sind Sie sicher, dass Sie das Attribut %name% entfernen möchten?
     attribute group: Sind Sie sicher, dass Sie die Attributgruppe %name% löschen möchten?
     category: Sind Sie sicher, dass Sie die Kategorie %name% löschen möchten?
@@ -449,7 +450,7 @@ Required: Erforderlich
 Unique: Eindeutig
 Not required: Nicht erforderlich
 Translatable: Übersetzbar
-Scopable: Je Ausgabekanal individualisierbar
+Scopable: Wert je Ausgabekanal
 Localizable: Lokalisierbar
 Unique value: Eindeutiger Wert
 Attribute group: Attributgruppe
@@ -472,10 +473,10 @@ Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
 Useable as grid column: Verwendbar als Spalte in der Übersicht
-Useable as grid filter: Verwendbar im Raster
+Useable as grid filter: Verwendbar in der Tabellenansicht
 Family: Produktfamilie
 Available locales: Verfügbare Gebietsschemata
-Locale specific: Gebietsschema-spezifisch
+Locale specific: Gebietsschemaspezifisch
 default: Standard
 Axis: Achse
 Add attributes: Attribute hinzufügen
@@ -495,7 +496,6 @@ Active: Aktiv
 Inactive: Inaktiv
 Do not convert: Werden nicht konvertiert
 Create: Anlegen
-Cancel: Abbrechen
 Choose a family: Wählen Sie eine Produktfamilie
 Choose a unit: Wählen Sie eine Einheit
 No matches found: Keine Treffer gefunden
@@ -525,7 +525,7 @@ Negative allowed: Negative Werte zulassen
 Date min: Min. Datum
 Date max: Max. Datum
 Metric family: Metrische Gruppe
-Default metric unit: Standard-Maßeinheit
+Default metric unit: Standardmaßeinheit
 Max file size: Maximale Dateigröße (MB)
 Allowed extensions: Zulässige Dateiendungen
 None: Keine
@@ -547,7 +547,6 @@ pim_title.category:
 pim_title.attribute:
   index: "Attribute"
   create: "Attribute | Anlegen"
-  edit: "Attributee %attribute.label% | Bearbeiten"
 pim_title.product:
   index: "Produkte"
 pim_title.family:
@@ -650,7 +649,7 @@ pim_enrich.mass_edit_action:
     label: Benötigte Attribute auswählen
     description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
     success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
-To enable: Aktivieren
+To enable: Zu aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
 Remove this attribute: Dieses Attribut löschen
@@ -709,7 +708,6 @@ Format address by address country: Formatiere nach Land der Adresse
 Language: Sprache
 Timezone: Zeitzone
 Currency: Währung
-settings: Einstellungen
 oro.locale:
   address_format:
     region_name_type:
@@ -754,39 +752,6 @@ remove_product_value.steps.update_product_value_processor.title: Produktwert ent
 edit_common_attributes: Attribute bearbeiten
 perform.steps.duplicated.title: Doppelte Achse
 perform.steps.excluded.title: Ausgeschlossene Produkte
-batch_jobs:
-  add_product_value:
-    label: Produktwert hinzufügen
-    perform:
-      label: Produktwert hinzufügen
-  update_product_value:
-    label: Wert des Produkts aktualisieren
-    perform:
-      label: Wert des Produkts aktualisieren
-  edit_common_attributes:
-    label: Attribute bearbeiten
-    perform:
-      label: Attribute bearbeiten
-  set_attribute_requirements:
-    label: Benötigte Attribute auswählen
-    perform:
-      label: Benötigte Attribute auswählen
-  csv_product_quick_export:
-    quick_export.label: CSV Produkt-Schnellexport
-    perform:
-      label: CSV Produkt-Schnellexport
-  csv_product_grid_context_quick_export:
-    quick_export.label: CSV Produkt-Schnellexport kontextabhängig
-    perform:
-      label: CSV Produkt-Schnellexport kontextabhängig
-  xlsx_product_quick_export:
-    quick_export.label: Xlsx Produkt-Schnellexport
-    perform:
-      label: Xlsx Produkt-Schnellexport
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: Xlsx Produkt-Schnellexport kontextabhängig
-    perform:
-      label: Xlsx Produkt-Schnellexport kontextabhängig
 mass_edit report:
   overview: Massenbearbeitung Reports
 job_tracker:
@@ -802,6 +767,6 @@ pim_enrich_attribute_form:
   localizable: Wert je Gebietsschema
   unique: Eindeutiger Wert
   availableLocales: Verfügbare Gebietsschemata
-  locale_specific: Gebietsschema-spezifisch
+  locale_specific: Gebietsschemaspezifisch
   group: Attributgruppe
-  useableAsGridFilter: Verwendbar im Raster
+  useableAsGridFilter: Verwendbar in der Tabellenansicht

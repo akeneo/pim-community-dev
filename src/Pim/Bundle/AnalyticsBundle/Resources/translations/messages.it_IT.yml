@@ -1,5 +1,5 @@
 pim_analytics:
-  new_patch_available: Nuovo patch disponibile
+  new_patch_available: Nuova patch disponibile
   system_config:
     group:
       notification.title: Notifiche
@@ -19,7 +19,6 @@ pim_analytics:
     registered_bundles: Bundle registrati
     nb_channels: Numero di canali
     nb_products: Numero di prodotti
-    nb_product_models: Numero di modelli di prodotto
     nb_attributes: Numero di attributi
     nb_scopable_attributes: Numero di attributi customizzabili per canale
     nb_localizable_attributes: Numero di attributi localizzabili
@@ -29,7 +28,7 @@ pim_analytics:
     nb_users: Numero di utenti
     pim_storage_version: Versione del motore di storage
     os_version: Versione OS
-    php_version: Versione PHP
+    php_version: Versione di PHP
     mysql_version: Versione di MySQL
     mariadb_version: Versione di MariaDB
     mongodb_version: Versione di MongoDB

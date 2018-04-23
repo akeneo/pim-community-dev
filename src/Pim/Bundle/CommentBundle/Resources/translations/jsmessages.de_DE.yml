@@ -1,7 +1,6 @@
 btn:
   post: Einen neuen Kommentar hinzufügen
   reply: Antworten
-  cancel: Abbrechen
 confirmation:
   remove:
     comment: Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?
