@@ -33,7 +33,6 @@ class PimEnterpriseCatalogExtension extends Extension
         $loader->load('completeness.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('managers.yml');
-        $loader->load('security/mergers.yml');
         $loader->load('security/query_builders.yml');
         $loader->load('security/savers.yml');
         $loader->load('security/updaters.yml');
