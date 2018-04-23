@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog.security.factory.filtered_entity.class: PimEnterprise\Component\Catalog\Security\Factory\FilteredEntityFactory
+    pimee_catalog.security.factory.filtered_entity.class: PimEnterprise\Component\Security\Factory\FilteredEntityFactory
 
 services:
     pimee_catalog.security.factory.filtered_product:

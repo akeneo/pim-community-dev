@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\Catalog\Security\Filter;
 
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use PimEnterprise\Component\Catalog\Security\Factory\FilteredEntityFactory;
+use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 
 /**

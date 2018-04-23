@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Catalog\Security\Factory;
+namespace PimEnterprise\Component\Security\Factory;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;

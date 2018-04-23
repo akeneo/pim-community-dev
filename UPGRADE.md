@@ -5,6 +5,7 @@
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
 ```bash
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catalog\\Security/PimEnterprise\\Component\\Security/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\VersioningBundle/PimEnterprise\\Bundle\\RevertBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\VersioningBundle\\UpdateGuesser/PimEnterprise\\Bundle\\SecurityBundle\\UpdateGuesser/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\VersioningBundle\\EventSubscriber\\AddVersionSubscriber/PimEnterprise\\Bundle\\WorkflowBundle\\EventSubscriber\\PublishedProduct\\SkipVersionSubscriber/g'

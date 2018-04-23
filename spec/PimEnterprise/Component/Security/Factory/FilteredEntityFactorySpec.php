@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Factory;
+namespace spec\PimEnterprise\Component\Security\Factory;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;

@@ -7,7 +7,7 @@ namespace spec\PimEnterprise\Component\Catalog\Security\Filter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use PimEnterprise\Component\Catalog\Security\Factory\FilteredEntityFactory;
+use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
 use PimEnterprise\Component\Catalog\Security\Filter\NotGrantedParentFilter;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 

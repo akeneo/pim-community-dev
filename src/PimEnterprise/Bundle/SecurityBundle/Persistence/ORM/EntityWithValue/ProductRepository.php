@@ -20,7 +20,7 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Component\Catalog\Security\Factory\FilteredEntityFactory;
+use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
 use PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity;
 
 /**

@@ -53,7 +53,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *      ]
  *    }
  * }
- * (@see \PimEnterprise\Component\Catalog\Security\Factory\ValueCollectionFactory)
+ * (@see \PimEnterprise\Component\Security\Factory\ValueCollectionFactory)
  *
  * When user will update "my_product":
  * {
