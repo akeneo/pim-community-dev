@@ -22,6 +22,13 @@ services:
         tags:
             - { name: pim_serializer.normalizer }
 
+    pimee_enrich.normalizer.published_product:
+        class: '\PimEnterprise\Component\Workflow\Normalizer\InternalApi\PublishedProductNormalizer'
+        arguments:
+            - '@pimee_enrich.normalizer.product'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 130 }
+
     # Versioning
     pimee_workflow.normalizer.published_product_version:
         class: '%pimee_workflow.normalizer.published_product_version.class%'

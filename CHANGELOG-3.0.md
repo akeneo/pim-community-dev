@@ -128,3 +128,4 @@
 - Move `PimEnterprise\Bundle\SecurityBundle\Controller\PermissionRestController` to `PimEnterprise\Bundle\SecurityBundle\Controller\InternalApi\PermissionRestController`
 - Move `PimEnterprise\Bundle\PdfGeneratorBundle\Controller\ProductController` to `PimEnterprise\Bundle\SecurityBundle\Controller\ProductController`
 - Move `PimEnterprise\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer` to `PimEnterprise\Bundle\SecurityBundle\Pdf\ProductPdfRenderer`
+- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\PublishedProductNormalizer` to `PimEnterprise\Component\Workflow\Normalizer\InternalApi\PublishedProductNormalizer`
