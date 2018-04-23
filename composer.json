@@ -22,7 +22,11 @@
             "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/",
             "Pim\\Upgrade\\": "upgrades/"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/AppKernelTest.php"]
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/AppKernelTest.php"],
+        "exclude-from-classmap": [
+            "vendor/akeneo/pim-community-dev/app/AppKernel.php",
+            "vendor/akeneo/pim-community-dev/app/AppCache.php"
+        ]
     },
     "autoload-dev": {
         "files": [
