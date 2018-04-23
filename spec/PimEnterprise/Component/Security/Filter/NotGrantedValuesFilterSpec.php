@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Filter;
+namespace spec\PimEnterprise\Component\Security\Filter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
@@ -18,6 +18,7 @@ use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
+use PimEnterprise\Component\Security\Filter\NotGrantedValuesFilter;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -36,7 +37,7 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Filter\NotGrantedValuesFilter');
+        $this->shouldHaveType(NotGrantedValuesFilter::class);
     }
 
     function it_removes_not_granted_values_from_an_entity_with_values_without_variation(

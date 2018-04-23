@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Catalog\Security\Filter;
+namespace PimEnterprise\Component\Security\Filter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;

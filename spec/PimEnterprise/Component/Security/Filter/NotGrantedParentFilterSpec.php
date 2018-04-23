@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Filter;
+namespace spec\PimEnterprise\Component\Security\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
-use PimEnterprise\Component\Catalog\Security\Filter\NotGrantedParentFilter;
+use PimEnterprise\Component\Security\Filter\NotGrantedParentFilter;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 
 class NotGrantedParentFilterSpec extends ObjectBehavior

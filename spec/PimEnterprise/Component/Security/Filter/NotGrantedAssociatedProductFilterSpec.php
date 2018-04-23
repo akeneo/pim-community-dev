@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Filter;
+namespace spec\PimEnterprise\Component\Security\Filter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
 use PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter;
 use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Security\Filter\NotGrantedAssociatedProductFilter;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

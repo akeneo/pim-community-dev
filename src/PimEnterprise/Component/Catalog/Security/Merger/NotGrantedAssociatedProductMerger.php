@@ -38,7 +38,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  *      "products": ["product_b", "product_c"]
  *    }
  * }
- * (@see \PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter)
+ * (@see \PimEnterprise\Component\Security\Filter\NotGrantedAssociatedProductFilter)
  *
  * When user will update "my_product":
  * {

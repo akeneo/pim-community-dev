@@ -1,8 +1,8 @@
 parameters:
-    pimee_catalog.security.filter.not_granted_category.class: PimEnterprise\Component\Catalog\Security\Filter\NotGrantedCategoryFilter
-    pimee_catalog.security.filter.not_granted_associated_product.class: PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter
-    pimee_catalog.security.filter.not_granted_values.class: PimEnterprise\Component\Catalog\Security\Filter\NotGrantedValuesFilter
-    pimee_catalog.security.filter.not_granted_parent.class: PimEnterprise\Component\Catalog\Security\Filter\NotGrantedParentFilter
+    pimee_catalog.security.filter.not_granted_category.class: PimEnterprise\Component\Security\Filter\NotGrantedCategoryFilter
+    pimee_catalog.security.filter.not_granted_associated_product.class: PimEnterprise\Component\Security\Filter\NotGrantedAssociatedProductFilter
+    pimee_catalog.security.filter.not_granted_values.class: PimEnterprise\Component\Security\Filter\NotGrantedValuesFilter
+    pimee_catalog.security.filter.not_granted_parent.class: PimEnterprise\Component\Security\Filter\NotGrantedParentFilter
 
 services:
     pimee_catalog.security.filter.not_granted_category:

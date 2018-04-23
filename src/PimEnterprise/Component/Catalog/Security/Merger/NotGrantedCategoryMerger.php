@@ -33,7 +33,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * {
  *    "categories": ["category_b", "category_c"]
  * }
- * (@see \PimEnterprise\Component\Catalog\Security\Filter\NotGrantedCategoryFilter)
+ * (@see \PimEnterprise\Component\Security\Filter\NotGrantedCategoryFilter)
  *
  * When user will update "my_product":
  * {

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Catalog\Security\Filter;
+namespace spec\PimEnterprise\Component\Security\Filter;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
+use PimEnterprise\Component\Security\Filter\NotGrantedCategoryFilter;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -30,7 +31,7 @@ class NotGrantedCategoryFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\Catalog\Security\Filter\NotGrantedCategoryFilter');
+        $this->shouldHaveType(NotGrantedCategoryFilter::class);
     }
 
     function it_removes_not_granted_categories_from_a_product(

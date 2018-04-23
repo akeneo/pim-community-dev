@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Component\Catalog\Security\Filter;
+namespace PimEnterprise\Component\Security\Filter;
 
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
