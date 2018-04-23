@@ -19,6 +19,10 @@ parameters:
     pimee_security.filter.job_instance_edit_right.class: PimEnterprise\Bundle\SecurityBundle\Filter\JobInstanceEditRightFilter
     pimee_security.filter.attribute_group_edit.class: PimEnterprise\Bundle\SecurityBundle\Filter\EntityWithPermissionsEditFilter
     pimee_security.filter.job_instance_edit.class: PimEnterprise\Bundle\SecurityBundle\Filter\EntityWithPermissionsEditFilter
+    pimee_catalog.security.filter.not_granted_category.class: PimEnterprise\Component\Security\Filter\NotGrantedCategoryFilter
+    pimee_catalog.security.filter.not_granted_associated_product.class: PimEnterprise\Component\Security\Filter\NotGrantedAssociatedProductFilter
+    pimee_catalog.security.filter.not_granted_values.class: PimEnterprise\Component\Security\Filter\NotGrantedValuesFilter
+    pimee_catalog.security.filter.not_granted_parent.class: PimEnterprise\Component\Security\Filter\NotGrantedParentFilter
 
 services:
     pimee_security.filter.granted_product_attribute_filter:
@@ -162,3 +166,28 @@ services:
             - ['permissions']
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.job_instance.edit }
+
+    pimee_catalog.security.filter.not_granted_category:
+        class: '%pimee_catalog.security.filter.not_granted_category.class%'
+        arguments:
+            - '@security.authorization_checker'
+
+    pimee_catalog.security.filter.not_granted_associated_product:
+        class: '%pimee_catalog.security.filter.not_granted_associated_product.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pimee_security.query.product_category_access'
+            - '@pimee_security.query.product_model_category_access'
+            - '@security.token_storage'
+
+    pimee_catalog.security.filter.not_granted_values:
+        class: '%pimee_catalog.security.filter.not_granted_values.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_locale'
+
+    pimee_catalog.security.filter.not_granted_parent:
+        class: '%pimee_catalog.security.filter.not_granted_parent.class%'
+        arguments:
+            - '@pimee_catalog.security.factory.filtered_product_model'
+        lazy: true
