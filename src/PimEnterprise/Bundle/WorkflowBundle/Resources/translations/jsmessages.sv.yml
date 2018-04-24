@@ -38,3 +38,22 @@ pimee_workflow:
         label: Lägg till kommentar (frivilligt)
         error: Ett fel uppstod, förslaget har delvis inte godkänts
         success: Ändringarna har avvisats
+batch_jobs:
+  csv_published_product_export:
+    label: Utgiven produkt exportera i CSV-filen
+    export.label: Utgiven produkt export
+  csv_product_proposal_import:
+    label: Produkt förslag import i CSV
+    import.label: Produkt förslag import
+  approve_product_draft:
+    label: Godkänna förslag
+    perform.label: Godkänna förslag
+  refuse_product_draft:
+    label: Vägra förslag
+    perform.label: Vägra förslag
+  xlsx_published_product_export:
+    label: Utgiven produkt export i XLSX
+    export.label: Utgiven produkt export
+  xlsx_product_proposal_import:
+    label: Produkt förslag import i XLSX
+    import.label: Produkt förslag import i XLSX

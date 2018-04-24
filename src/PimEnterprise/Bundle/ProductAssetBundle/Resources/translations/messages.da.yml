@@ -99,9 +99,9 @@ pimee_product_asset:
   createdAt:
     label: Oprettet den
   updatedAt:
-    label: Sidste opdatering på
+    label: Sidst opdateret på
   tags:
-    label: Tags
+    label: Etiketter
   tabs:
     properties.title: Egenskaber
     variations.title: Variationer
@@ -181,4 +181,4 @@ mass_upload: Masse indlæs aktiver
 pim_analytics:
   info_type:
     nb_assets: Antallet af aktiver
-pim_assets_collection: Aktive samling
+pim_assets_collection: Aktiver samling
