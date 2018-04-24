@@ -1,6 +1,8 @@
 legacy:
     suites:
         TEST-pim:
+            paths:
+                - '%paths.base%/tests/legacy/features/'
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
                 - Context\FeatureContext:
@@ -104,7 +106,7 @@ legacy:
                 selenium2:
                     selenium2: ~
             base_url: http://akeneo-pim-behat.local/
-            files_path: 'features/Context/fixtures/'
+            files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
                 env: behat
@@ -115,12 +117,14 @@ legacy:
             factory:
                 page_parameters:
                     base_url: http://akeneo-pim-behat.local/
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
 
 acceptance:
     suites:
         acceptance:
             paths:
-                - '%paths.base%/tests/back/features/'
+                - '%paths.base%/tests/features/'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
@@ -136,3 +140,5 @@ acceptance:
         FriendsOfBehat\SymfonyExtension:
             kernel:
                 env: acceptance
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~

@@ -108,7 +108,7 @@ legacy:
                     selenium2:
                         wd_host: 'http://127.0.0.1:4444/wd/hub'
             base_url: 'http://127.0.0.1/'
-            files_path: 'features/Context/fixtures/'
+            files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
                 env: behat
@@ -131,10 +131,11 @@ acceptance:
     suites:
         acceptance:
             paths:
-                - '%paths.base%/tests/back/features/'
+                - '%paths.base%/tests/features/'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+                - test.catalog_volume_limits.attribute_per_family_context
             filters:
                 tags: '@acceptance-back'
 
@@ -143,6 +144,7 @@ acceptance:
         FriendsOfBehat\ContextServiceExtension:
            imports:
                - "tests/back/Acceptance/Resources/config/behat/services.yml"
+               - "src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:

@@ -100,7 +100,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         ProductInterface $product,
         FileInfoInterface $fileInfo
     ) {
-        $data = realpath(__DIR__ . '/../../../../../../../features/Context/fixtures/akeneo.jpg');
+        $data = realpath(__DIR__ . '/../../../../../../../tests/legacy/features/Context/fixtures/akeneo.jpg');
         $attribute->getCode()->willReturn('attributeCode');
 
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
@@ -124,7 +124,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attributeCode');
         $product->getValue('attributeCode', Argument::cetera())->willReturn(null);
 
-        $data = realpath(__DIR__.'/../../../../../../../features/Context/fixtures/akeneo.jpg');
+        $data = realpath(__DIR__.'/../../../../../../../tests/legacy/features/Context/fixtures/akeneo.jpg');
 
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
         $storer->store(Argument::cetera())->willReturn($fileInfo);
