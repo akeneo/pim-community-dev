@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Updater\Setter;
@@ -24,6 +25,7 @@ class ParentFieldSetter extends AbstractFieldSetter
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
+     * @param string[]                              $supportedFields
      */
     public function __construct(IdentifiableObjectRepositoryInterface $productModelRepository, array $supportedFields)
     {
@@ -43,8 +45,7 @@ class ParentFieldSetter extends AbstractFieldSetter
             );
         }
 
-        // TODO: This is to be removed in PIM-6350.
-        if (null !== $product->getParent() && $data !== $product->getParent()->getCode()) {
+        if ($product->isVariant() && null === $data) {
             throw ImmutablePropertyException::immutableProperty($field, $data, static::class);
         }
 
@@ -63,6 +64,18 @@ class ParentFieldSetter extends AbstractFieldSetter
         }
 
         $familyVariant = $parent->getFamilyVariant();
+
+        if (null !== $familyVariant && $product->isVariant() && $product->getFamilyVariant() !== $familyVariant) {
+            throw InvalidPropertyException::expected(
+                sprintf(
+                    'New parent "%s" of variant product "%s" must have the same family variant "%" than the previous parent',
+                    $parent->getCode(),
+                    $product->getIdentifier(),
+                    $product->getFamilyVariant()->getCode()
+                ),
+                static::class
+            );
+        }
 
         $product->setParent($parent);
         $product->setFamilyVariant($familyVariant);

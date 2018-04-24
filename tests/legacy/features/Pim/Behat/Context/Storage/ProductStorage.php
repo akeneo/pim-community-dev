@@ -68,12 +68,12 @@ class ProductStorage implements Context
     /**
      * @Given the parent of the product :productIdentifier should be :parentCode
      */
-    public function productHaveParent(string $productIdentifier, string $parentCode)
+    public function productHasParent(string $productIdentifier, string $parentCode)
     {
         $this->entityManager->clear();
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
 
-        Assert::assertEquals($product->getParent()->getCode(), $parentCode);
+        Assert::assertEquals($parentCode, $product->getParent()->getCode());
     }
 
     /**
