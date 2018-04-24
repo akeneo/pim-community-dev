@@ -50,7 +50,7 @@ RUN apt-get update && apt-get install -y apt-transport-https \
   imagemagick \
   libicu52 \
   libmcrypt4 \
-  mysql-server="5.7.21-1debian8" \
+  mysql-server \
   nodejs \
   perceptualdiff \
   xauth \
