@@ -126,6 +126,85 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                 }
                 $this->searchQueryBuilder->addFilter(['bool' => ['must' => $mustClauses]]);
                 break;
+
+            case Operators::EQUALS:
+                $shouldClauses = [];
+
+                foreach ($locales as $locale) {
+                    $field = sprintf('completeness.%s.%s', $channel, $locale);
+                    $clause = [
+                        'term' => [
+                            $field => $value
+                        ]
+                    ];
+
+                    $shouldClauses[] = $clause;
+                }
+
+                $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
+                break;
+
+            case Operators::LOWER_THAN:
+                $shouldClauses = [];
+
+                foreach ($locales as $locale) {
+                    $field = sprintf('completeness.%s.%s', $channel, $locale);
+                    $clause = [
+                        'range' => [
+                            $field => [
+                                'lt' => $value
+                            ]
+                        ]
+                    ];
+
+                    $shouldClauses[] = $clause;
+                }
+                $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
+                break;
+
+            case Operators::GREATER_THAN:
+                $shouldClauses = [];
+
+                foreach ($locales as $locale) {
+                    $field = sprintf('completeness.%s.%s', $channel, $locale);
+                    $clause = [
+                        'range' => [
+                            $field => [
+                                'gt' => $value
+                            ]
+                        ]
+                    ];
+
+                    $shouldClauses[] = $clause;
+                }
+                $this->searchQueryBuilder->addFilter(['bool' => ['should' => $shouldClauses]]);
+                break;
+
+            case Operators::NOT_EQUAL:
+                $filterClauses = [];
+                foreach ($locales as $locale) {
+                    $field = sprintf('completeness.%s.%s', $channel, $locale);
+                    $filterClauses[] = [
+                        'term' => [
+                            $field => $value,
+                        ],
+                    ];
+
+                    $completenessExists = [
+                        'exists' => [
+                            'field' => $field,
+                        ],
+                    ];
+                    $this->searchQueryBuilder->addFilter($completenessExists);
+                }
+                $mustNotClause = [
+                    'bool' => [
+                        'filter' => $filterClauses,
+                    ],
+                ];
+                $this->searchQueryBuilder->addMustNot($mustNotClause);
+                break;
+
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }
