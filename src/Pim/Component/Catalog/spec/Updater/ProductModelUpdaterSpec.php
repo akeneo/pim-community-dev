@@ -124,6 +124,36 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         ]]);
     }
 
+    function it_throws_an_exception_when_giving_a_new_parent_with_a_different_family_variant(
+        ProductModelInterface $productModel,
+        ProductModelInterface $currentParent,
+        ProductModelInterface $newParent,
+        $productModelRepository,
+        FamilyVariantInterface $familyVariant,
+        FamilyVariantInterface $familyVariant2
+    ) {
+
+        $productModel->getId()->willReturn(42);
+        $productModel->isRootProductModel()->willReturn(false);
+        $productModel->getParent()->willReturn($currentParent);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+        $familyVariant->getCode()->willReturn('current_family_variant');
+
+        $productModel->getParent()->willReturn($currentParent);
+
+        $currentParent->getCode()->willReturn('parent');
+        $currentParent->getFamilyVariant()->willReturn($familyVariant);
+
+        $newParent->getFamilyVariant()->willReturn($familyVariant2);
+        $familyVariant2->getCode()->willReturn('new_family_variant');
+
+        $productModelRepository->findOneByIdentifier('new_parent')->willreturn($newParent);
+
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [$productModel, [
+            'parent' => 'new_parent',
+        ]]);
+    }
+
     function it_throws_an_exception_if_the_family_variant_code_is_invalid(
         $familyVariantRepository,
         ProductModelInterface $productModel

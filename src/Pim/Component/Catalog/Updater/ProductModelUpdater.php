@@ -13,6 +13,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
@@ -212,7 +213,8 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
-        if (null === $parentProductModel = $this->productModelRepository->findOneByIdentifier($parentCode)) {
+        $newParentModel = $this->productModelRepository->findOneByIdentifier($parentCode);
+        if (null === $newParentModel) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 'parent',
                 'parent code',
@@ -222,7 +224,20 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
-        $productModel->setParent($parentProductModel);
+        if($productModel->getFamilyVariant() instanceof FamilyVariantInterface &&
+           $productModel->getFamilyVariant()->getCode() !== $newParentModel->getFamilyVariant()->getCode()
+        )
+        {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'parent',
+                'parent code',
+                'The new parent of the product model must be of the same family variant',
+                static::class,
+                $parentCode
+            );
+        }
+
+        $productModel->setParent($newParentModel);
     }
 
     /**

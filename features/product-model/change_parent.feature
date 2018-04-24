@@ -27,5 +27,16 @@ Feature: Change the parent of a product model
     And the following sub product model:
       | code             | parent     | family_variant    | color |
       | white_round_neck | round_neck | tshirts_variant_2 | white |
-    When the parent of variant product white_round_neck is changed for v_neck root product model
+    When the parent of product model white_round_neck is changed for root product model v_neck
     Then the parent of the product model white_round_neck should be v_neck
+
+  Scenario: Fail to change the parent of a product model with parent with a different family variant
+    Given the following root product models:
+      | code       | family_variant    |
+      | round_neck | tshirts_variant_2 |
+      | v_neck     | tshirts_variant |
+    And the following sub product model:
+      | code             | parent     | family_variant    | color |
+      | white_round_neck | round_neck | tshirts_variant_2 | white |
+    When the parent of product model white_round_neck is changed for invalid root product model v_neck
+    Then the parent of the product model white_round_neck should be round_neck

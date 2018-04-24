@@ -12,6 +12,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 
 class ProductModelContext extends PimContext
 {
@@ -68,15 +69,28 @@ class ProductModelContext extends PimContext
     }
 
     /**
-     * @When the parent of variant product :productModelCode is changed for :rootProductModelCode root product model
+     * @When the parent of product model :productModelCode is changed for root product model :rootProductModelCode
      */
     public function changeProductModelParent(string $productModelCode, string $rootProductModelCode)
     {
-        $entity = $this->getProductModel($productModelCode);
+        $productModel = $this->getProductModel($productModelCode);
 
-        $this->productModelUpdater->update($entity, ['parent' => $rootProductModelCode]);
-        $this->validateProduct($entity);
-        $this->productSaver->save($entity);
+        $this->productModelUpdater->update($productModel, ['parent' => $rootProductModelCode]);
+        $this->validateProduct($productModel);
+        $this->productSaver->save($productModel);
+    }
+
+    /**
+     * @When the parent of product model :productModelCode is changed for invalid root product model :rootProductModelCode
+     */
+    public function changeInvalidProductModelParent(string $productModelCode, string $rootProductModelCode)
+    {
+        $productModel = $this->getProductModel($productModelCode);
+        try {
+            $this->productModelUpdater->update($productModel, ['parent' => $rootProductModelCode]);
+        } catch(InvalidPropertyException $e) {
+            //Updater sends an exception because of the invalid root product model
+        }
     }
 
     /**
