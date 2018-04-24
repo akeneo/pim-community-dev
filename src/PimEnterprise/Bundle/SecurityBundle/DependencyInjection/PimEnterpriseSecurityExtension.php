@@ -36,7 +36,7 @@ class PimEnterpriseSecurityExtension extends Extension
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
-        $loader->load('form_types.yml');
+        $loader->load('form.yml');
         $loader->load('guessers.yml');
         $loader->load('managers.yml');
         $loader->load('processors.yml');
@@ -52,5 +52,8 @@ class PimEnterpriseSecurityExtension extends Extension
         $loader->load('writers.yml');
         $loader->load('filters.yml');
         $loader->load('query_builder.yml');
+        $loader->load('datagrid.yml');
+        $loader->load('mass_edit.yml');
+        $loader->load('renderers.yml');
     }
 }

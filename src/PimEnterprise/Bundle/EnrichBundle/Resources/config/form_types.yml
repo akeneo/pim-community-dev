@@ -1,10 +1,6 @@
 parameters:
     ## Form Types
-    pimee_enrich.form.type.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupPermissionsType
-    pimee_enrich.form.type.category_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType
-    pimee_enrich.form.type.locale_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocalePermissionsType
     pimee_enrich.form.type.locale.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocaleType
-    pimee_enrich.form.type.product_grid_filter_choice.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType
 
 services:
     pim_enrich.form.type.category:
@@ -15,39 +11,17 @@ services:
         tags:
             - { name: form.type, alias: pim_category }
         calls:
-            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.category_permissions']]
+            - [addEventSubscriber, ['@pimee_security.form.subscriber.category_permissions']]
 
     ##
     # New forms
     ##
-    pimee_enrich.form.type.attribute_group_permissions:
-        class: '%pimee_enrich.form.type.attribute_group_permissions.class%'
-        tags:
-            - { name: form.type, alias: pimee_enrich_attribute_group_permissions }
-
-    pimee_enrich.form.type.category_permissions:
-        class: '%pimee_enrich.form.type.category_permissions.class%'
-        tags:
-            - { name: form.type, alias: pimee_enrich_category_permissions }
-
     pimee_enrich.form.type.locale:
         class: '%pimee_enrich.form.type.locale.class%'
         tags:
             - { name: form.type, alias: pimee_enrich_locale }
         calls:
-            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.locale_permissions']]
+            - [addEventSubscriber, ['@pimee_security.form.subscriber.locale_permissions']]
 
-    pimee_enrich.form.type.locale_permissions:
-        class: '%pimee_enrich.form.type.locale_permissions.class%'
-        tags:
-            - { name: form.type, alias: pimee_enrich_locale_permissions }
 
-    pimee_enrich.form.type.product_grid_filter_choice:
-        class: '%pimee_enrich.form.type.product_grid_filter_choice.class%'
-        arguments:
-            - '@pimee_enrich.repository.attribute'
-            - '@oro_datagrid.datagrid.manager'
-            - 'product-grid'
-            - ['scope', 'locale']
-        tags:
-            - { name: form.type, alias: pim_enrich_product_grid_filter_choice }
+

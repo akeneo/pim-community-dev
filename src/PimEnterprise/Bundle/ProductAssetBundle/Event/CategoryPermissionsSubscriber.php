@@ -11,9 +11,8 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Event;
 
-use PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\CategoryPermissionsSubscriber as
-    BaseCategoryPermissionsSubscriber;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CategoryPermissionsType;
+use PimEnterprise\Bundle\SecurityBundle\Form\EventListener\CategoryPermissionsSubscriber as BaseCategoryPermissionsSubscriber;
 use Symfony\Component\Form\FormEvent;
 
 /**

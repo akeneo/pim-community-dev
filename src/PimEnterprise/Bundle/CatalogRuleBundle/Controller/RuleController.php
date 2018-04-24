@@ -134,18 +134,18 @@ class RuleController
         $parameters = $this->parameterParser->parse($request);
         $filters = $this->gridFilterAdapter->adapt($parameters);
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(self::MASS_RULE_IMPACTED_PRODUCTS);
-        $user =  $this->tokenStorage->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
 
         $configuration = [
             'ruleIds' => $filters['values'],
-            'user_to_notify' => $user->getUsername()
+            'user_to_notify' => $user->getUsername(),
         ];
 
         $this->simpleJobLauncher->launch($jobInstance, $user, $configuration);
 
         return new JsonResponse(
             [
-                'message'    => 'flash.rule.impacted_product_count',
+                'message' => 'flash.rule.impacted_product_count',
                 'successful' => true,
             ]
         );
@@ -176,7 +176,7 @@ class RuleController
 
         return new JsonResponse(
             [
-                'message'    => 'flash.rule.executed',
+                'message' => 'flash.rule.executed',
                 'successful' => true,
             ]
         );

@@ -10,3 +10,12 @@ pim_analytics:
         nb_custom_locale_accesses: Number of custom locale accesses
         nb_custom_category_accesses: Number of custom category accesses
         nb_custom_attribute_group_accesses: Number of custom attribute group accesses
+
+job_profile.permissions:
+    execute.label: Allowed to execute job profile
+    edit.label: Allowed to edit job profile
+
+pimee_import_export:
+    job_profile:
+        tab:
+            permission.title: Permissions

@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\DataGridBundle\Adapter;
 
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter as BaseAdapter;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Transform Oro filters into Akeneo PIM filters

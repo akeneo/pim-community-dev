@@ -1,11 +1,12 @@
 parameters:
     # Datagrid
-    pimee_security.event_subscriber.datagrid.product_category_access.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\ProductCategoryAccessSubscriber
+    pimee_security.event_subscriber.datagrid.product_category_access.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ProductCategoryAccessSubscriber
 
     # Enrich
     pimee_security.event_subscriber.enrich.job_permissions.class:            PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\JobPermissionsSubscriber
 
     pimee_security.event_subscriber.add_default_permissions.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\AddDefaultPermissionsSubscriber
+    pimee_security.subscriber.save_permissions.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\SavePermissionsSubscriber
 
 services:
     # Datagrid
@@ -33,5 +34,14 @@ services:
             - '@pimee_security.manager.job_profile_access'
             - '@pimee_security.manager.category_access'
             - '@pimee_product_asset.manager.category_access'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_security.subscriber.save_permissions:
+        class: '%pimee_security.subscriber.save_permissions.class%'
+        arguments:
+            - '@pim_user.repository.group'
+            - '@pimee_security.manager.attribute_group_access'
+            - '@pimee_security.manager.job_profile_access'
         tags:
             - { name: kernel.event_subscriber }

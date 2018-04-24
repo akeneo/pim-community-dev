@@ -38,3 +38,8 @@ asset:
 asset-tag:
     resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/external_api/asset_tag.yml'
     prefix: /api/rest/v1
+
+# CE Override
+pim_ui_ajaxentity_list:
+    path: /list.json
+    defaults: { _controller: pimee_product_asset.controller.ajax_option:listAction, _format: json }

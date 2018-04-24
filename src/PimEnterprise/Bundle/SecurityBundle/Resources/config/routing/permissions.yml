@@ -4,3 +4,10 @@ pimee_security_permissions_rest:
     methods: [GET]
     requirements:
         _format: json
+
+pim_pdf_generator_download_product_pdf:
+    path: /enrich/product/{id}/download-pdf
+    defaults: { _controller: pimee_security.controller.product:downloadPdfAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [GET]

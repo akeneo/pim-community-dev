@@ -1,8 +1,0 @@
-jstree:
-  asset:
-    all: Все медиафайлы
-    unclassified: Неклассифицированные медиафайлы
-asset_grid:
-  label: Медиафайлы продуктов
-create_asset:
-  title: Создать медиафайл

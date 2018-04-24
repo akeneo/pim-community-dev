@@ -1,3 +1,0 @@
-pim_ui_ajaxentity_list:
-    path: /list.json
-    defaults: { _controller: pimee_ui.controller.ajax_option:listAction, _format: json }

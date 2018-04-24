@@ -1,7 +1,5 @@
 parameters:
-    pim_datagrid.datagrid.configuration.product.context_configurator.class:       PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator
-    pimee_datagrid.datagrid.configuration.product.filters_configurator.class:     PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator
-    pimee_datagrid.datagrid.configuration.product.row_actions_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator
+    pim_datagrid.datagrid.configuration.product.context_configurator.class:       PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\ContextConfigurator
 
 services:
     pim_datagrid.datagrid.configuration.product.context_configurator:
@@ -15,22 +13,3 @@ services:
             - '@pim_catalog.repository.group'
             - '@request_stack'
             - '@pimee_security.repository.attribute_group_access'
-
-    pimee_datagrid.datagrid.configuration.product.filters_configurator:
-        class: '%pimee_datagrid.datagrid.configuration.product.filters_configurator.class%'
-        decorates: pim_datagrid.datagrid.configuration.product.filters_configurator
-        decoration_inner_name: pim_datagrid.datagrid.configuration.product.filters_configurator.ce
-        arguments:
-            - '@pim_datagrid.datagrid.configuration.product.filters_configurator.ce'
-            - '@request_stack'
-            - '@pimee_teamwork_assistant.repository.project'
-            - '@security.token_storage'
-
-    pimee_datagrid.datagrid.configuration.product.row_actions_configurator:
-        class: '%pimee_datagrid.datagrid.configuration.product.row_actions_configurator.class%'
-        arguments:
-            - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
-            - '@security.authorization_checker'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.product_model'
