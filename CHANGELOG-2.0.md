@@ -21,6 +21,7 @@
 ## Improvements
 
 - PIM-7321: Prevent concurrent calculation of the completeness
+- GITHUB-7179: Add index_hosts to the incenteev parameters (cheers [Jan Schneider](https://github.com/yunosh))
 
 # 2.0.21 (2018-04-10)
 
