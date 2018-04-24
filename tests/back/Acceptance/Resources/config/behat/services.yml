@@ -28,6 +28,20 @@ services:
             - '@__symfony__.pim_catalog.updater.currency'
             - '@__symfony__.validator'
 
+    test.attribute.builder:
+        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        arguments:
+            - '@__symfony__.pim_catalog.factory.attribute'
+            - '@__symfony__.pim_catalog.updater.attribute'
+            - '@__symfony__.validator'
+
+    test.attribute_group.builder:
+        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        arguments:
+            - '@__symfony__.pim_catalog.factory.attribute_group'
+            - '@__symfony__.pim_catalog.updater.attribute_group'
+            - '@__symfony__.validator'
+
     ### Behat context, don't forget to tag them (fob.context_service)
     test.locale.context:
         class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
@@ -49,3 +63,14 @@ services:
             - '@test.currency.builder'
         tags:
             - { name: fob.context_service }
+
+    test.attribute.context:
+        class: 'Akeneo\Test\Acceptance\Attribute\AttributeContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.attribute'
+            - '@test.attribute.builder'
+            - '@__symfony__.pim_catalog.repository.attribute_group'
+            - '@test.attribute_group.builder'
+        tags:
+            - { name: fob.context_service }
+
