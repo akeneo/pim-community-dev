@@ -2,17 +2,17 @@
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Context\Spin\SpinCapableTrait;
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 
 class ProductModelContext extends PimContext
 {
@@ -90,9 +90,9 @@ class ProductModelContext extends PimContext
             $this->productModelUpdater->update($productModel, ['parent' => $rootProductModelCode]);
             $this->validateProduct($productModel);
             $this->productSaver->save($productModel);
-        } catch(InvalidPropertyException $e) {
+        } catch (InvalidPropertyException $e) {
             //The updater sends an exception because of the invalid root product model
-        }catch(\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             //The validator sends an exception because of the invalid root product model
         }
     }
