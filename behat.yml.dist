@@ -2,8 +2,8 @@ legacy:
     suites:
         TEST-enterprise-pim:
             paths:
-                - '%paths.base%/features'
-                - '%paths.base%/vendor/akeneo/pim-community-dev/features'
+                - '%paths.base%/tests/legacy/features'
+                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/legacy/features'
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
                 - Context\EnterpriseFeatureContext:
@@ -117,7 +117,7 @@ legacy:
                 selenium2:
                     selenium2: ~
             base_url: 'http://akeneo-pim-enterprise-behat.local/'
-            files_path: 'features/Context/fixtures/'
+            files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
                 env: behat
@@ -128,6 +128,8 @@ legacy:
             factory:
                 page_parameters:
                     base_url: 'http://akeneo-pim-enterprise-behat.local/'
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
 
 acceptance:
     suites:
@@ -138,6 +140,7 @@ acceptance:
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+                - test.catalog_volume_limits.attribute_per_family_context
             filters:
                 tags: '@acceptance-back'
     extensions:
@@ -145,7 +148,10 @@ acceptance:
            imports:
                - "tests/back/Acceptance/Resources/config/behat/services.yml"
                - "vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml"
+               - "vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:
                 env: acceptance
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~

@@ -114,6 +114,10 @@ class Catalog implements CatalogInterface
         $catalogDirectories = [realpath(
             $this->getRootDirectory() .
             DIRECTORY_SEPARATOR .
+            'tests'.
+            DIRECTORY_SEPARATOR .
+            'legacy'.
+            DIRECTORY_SEPARATOR .
             'features'.
             DIRECTORY_SEPARATOR .
             'Context' .
@@ -124,7 +128,11 @@ class Catalog implements CatalogInterface
         )];
 
         $fixtureDirectories = [realpath(
-        $this->getRootDirectory() .
+            $this->getRootDirectory() .
+            DIRECTORY_SEPARATOR .
+            'tests'.
+            DIRECTORY_SEPARATOR .
+            'legacy'.
             DIRECTORY_SEPARATOR .
             'features'.
             DIRECTORY_SEPARATOR .
@@ -132,6 +140,7 @@ class Catalog implements CatalogInterface
             DIRECTORY_SEPARATOR .
             'fixtures'
         )];
+
 
         return new Configuration(
             array_merge($communityConfig->getCatalogDirectories(), $catalogDirectories),

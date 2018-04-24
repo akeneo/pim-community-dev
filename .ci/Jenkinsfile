@@ -24,7 +24,7 @@ stage("Build") {
                 choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
-                string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
+                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Behat scenarios to build', name: 'features'),
             ])
 
             ceBranch = userInput['ce_branch']
@@ -63,8 +63,10 @@ stage("Build") {
                         sh "yarn run webpack"
                     }
                     container("docker") {
+                        String featureEscaped = ""
                         for (feature in features) {
-                            sh "sed -i \"/paths/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" .ci/behat.ci.yml"
+                            featureEscaped = feature.replaceAll("/", "\\\\/");
+                            sh "sed -i \'0,/paths\\:/s//paths\\:\\n\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ \"${featureEscaped}\"/\' .ci/behat.ci.yml"
                         }
 
                         sh "cp .ci/parameters.ci.yml app/config/parameters_test.yml"

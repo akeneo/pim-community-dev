@@ -11,7 +11,7 @@ class VariationIntegration extends AbstractStandardNormalizerTestCase
         $asset = $this->get('pimee_product_asset.repository.asset')->findOneByIdentifier('dog');
         $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('ecommerce');
 
-        $file = new \SplFileInfo($this->getParameter('kernel.root_dir') . '/../features/Context/fixtures/dog.jpg');
+        $file = new \SplFileInfo($this->getParameter('kernel.root_dir') . '/../tests/legacy/features/Context/fixtures/dog.jpg');
         $fileInfo = $this->get('akeneo_file_storage.file_storage.file_info_factory')
             ->createFromRawFile($file, 'assetStorage');
 

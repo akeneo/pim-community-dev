@@ -16,6 +16,6 @@ return PhpCsFixer\Config::create()
             ->name('*.php')
             ->notName('*Spec.php')
             ->notName('*Integration.php')
-            ->in(__DIR__ . '/features')
+            ->in(__DIR__ . '/tests/legacy/features')
             ->in(__DIR__ . '/src')
     );
