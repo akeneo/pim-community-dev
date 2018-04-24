@@ -71,6 +71,12 @@ stage("Build") {
 stage("Test") {
     try {
         parallel(
+            // UNIT TESTS & MISC
+            "php-coupling-detector": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
+            )},
             "phpunit": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
@@ -94,6 +100,8 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && yarn run lint"
             )},
+
+            // ACCEPTANCE TESTS
             "frontend-acceptance-ce": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
@@ -104,6 +112,8 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
             )},
+
+            // INTEGRATION TESTS
             "frontend-integration-ce": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
@@ -113,11 +123,6 @@ stage("Test") {
                 condition: launchUnitTests.equals("yes") && editions.contains("ee"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
-            )},
-            "php-coupling-detector": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
             )},
             "phpunit-integration-ce": {queue(
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ce"),
@@ -131,6 +136,8 @@ stage("Test") {
                 container: "${tag}-ee",
                 fetcher: {return pimIntegrationFetcher(testsuites: ["PIM_Integration_Test"])}
             )},
+
+            // END TO END TESTS
             "behat-ce": {queue(
                 condition: launchBehatTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
