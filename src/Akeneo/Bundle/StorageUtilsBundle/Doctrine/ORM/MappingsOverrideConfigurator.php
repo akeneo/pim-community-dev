@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Mapping\ClassMetadata as OrmClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Pim\Component\Catalog\Model\AbstractProduct;
 
 /**
  * Configure the ORM mappings of the metadata classes.
