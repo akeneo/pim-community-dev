@@ -9,10 +9,11 @@ const createLocale = (localeCode) => (new LocaleBuilder()).setCode(localeCode).b
  *
  * const ChannelBuilder = require('../../common/builder/channel');
  * const channel = (new ChannelBuilder())
- *   .setCode('ecommerce')
- *   .setLocales(['en_AU'])
- *   .setLabels({ en_AU: 'comm' })
- *   .setCategoryTree('child');
+ *   .withCode('ecommerce')
+ *   .withLocales(['en_AU'])
+ *   .withLabels({ en_AU: 'comm' })
+ *   .withCategoryTree('child')
+ *   .build();
  */
 class ChannelBuilder {
   constructor() {
@@ -23,28 +24,45 @@ class ChannelBuilder {
     this.conversionUnits = [];
   }
 
-  setLocales(locales) {
+  withCode(code) {
+    this.code = code;
+
+    return this;
+  }
+
+  withLocales(locales) {
     this.locales = locales;
+
+    return this;
   }
 
-  setLabels(labels) {
+  withLabels(labels) {
     this.labels = labels;
+
+    return this;
   }
 
-  setCategoryTree(categoryTree) {
+  withCategoryTree(categoryTree) {
     this.categoryTree = categoryTree;
+
+    return this;
   }
 
-  setCurrencies(currencies) {
+  withCurrencies(currencies) {
     this.currencies = currencies;
+
+    return this;
   }
 
-  setConversionUnits(conversionUnits) {
+  withConversionUnits(conversionUnits) {
     this.conversionUnits = conversionUnits;
+
+    return this;
   }
 
   build() {
-    const activatedLocaleCode = ['en_US', 'fr_FR', 'de_DE']:
+    const activatedLocaleCode = ['en_US', 'fr_FR', 'de_DE'];
+    const localeCodes = 0 === this.locales.length ? activatedLocaleCode : this.locales;
 
     return {
       code: this.code,
@@ -52,7 +70,7 @@ class ChannelBuilder {
       locales: localeCodes.map(localeCode => createLocale(localeCode)),
       category_tree: this.categoryTree,
       conversion_units: this.conversionUnits,
-      labels: this.labels || this.activatedLocaleCode.reduce((result, localeCode) => {
+      labels: this.labels || activatedLocaleCode.reduce((result, localeCode) => {
           result[localeCode] = capitalize(this.code);
 
           return result;
@@ -60,3 +78,5 @@ class ChannelBuilder {
     };
   }
 }
+
+module.exports = ChannelBuilder;

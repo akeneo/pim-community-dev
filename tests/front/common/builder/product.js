@@ -3,7 +3,7 @@
  *
  * Example:
  * const ProductBuilder = require('../../common/builder/product.js');
- * const product = (new ProductBuilder()).setIdentifier('shirt').build();
+ * const product = (new ProductBuilder()).withIdentifier('shirt').build();
  */
 
 class ProductBuilder {
@@ -20,36 +20,52 @@ class ProductBuilder {
     }
   }
 
-  setIdentifier(identifier) {
+  withIdentifier(identifier) {
     this.product.identifier = identifier;
+
+    return this;
   }
 
-  setValues(values) {
+  withValues(values) {
     this.product.values = values;
+
+    return this;
   }
 
-  setEnabled(enabled) {
+  withEnabled(enabled) {
     this.product.enabled = enabled;
+
+    return this;
   }
 
-  setFamily(family) {
+  withFamily(family) {
     this.product.family = family;
+
+    return this;
   }
 
-  setLabel(label) {
+  withLabel(label) {
     this.product.label = label;
+
+    return this;
   }
 
-  setModelTypel(modelType) {
+  withModelTypel(modelType) {
     this.product.model_type = modelType;
+
+    return this;
   }
 
-  setImage(image) {
+  withImage(image) {
     this.product.image = image;
+
+    return this;
   }
 
-  setCompleteness(completeness) {
+  withCompleteness(completeness) {
     this.product.completeness = completeness;
+
+    return this;
   }
 
   build() {

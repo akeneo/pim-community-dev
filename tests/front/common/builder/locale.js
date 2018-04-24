@@ -4,16 +4,18 @@
  * Example:
  *
  * const LocaleBuilder = require('../../common/builder/locale');
- * const locale = (new LocaleBuilder()).setCode('en_US').build();
+ * const locale = (new LocaleBuilder()).withCode('en_US').build();
  */
 class LocaleBuilder {
   constructor() {
     this.languages = { de: 'German', fr: 'French', en: 'English'};
-    this.regions = { de: 'Germany', fr: 'France', us: 'United States'};
+    this.regions = { DE: 'Germany', FR: 'France', US: 'United States'};
   }
 
-  setCode(code) {
+  withCode(code) {
     this.code = code;
+
+    return this;
   }
 
   build() {
