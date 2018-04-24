@@ -68,6 +68,7 @@ class ProductModelUpdaterSpec extends ObjectBehavior
 
         $familyVariantRepository->findOneByIdentifier('clothing_color_size')->willreturn($familyVariant);
         $productModel->setFamilyVariant($familyVariant)->shouldBeCalled();
+        $parentProductModel->isRootProductModel()->willReturn(true);
 
         $valuesUpdater->update($productModel, [
             'name' => [
@@ -112,6 +113,35 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         ]]);
     }
 
+    function it_throws_an_exception_if_the_new_parent_is_not_a_root_product_model(
+        ProductModelInterface $productModel,
+        ProductModelInterface $currentParent,
+        ProductModelInterface $newParent,
+        $productModelRepository,
+        FamilyVariantInterface $familyVariant,
+        FamilyVariantInterface $familyVariant2
+    )
+    {
+        $productModel->getId()->willReturn(42);
+        $productModel->isRootProductModel()->willReturn(false);
+        $productModel->getParent()->willReturn($currentParent);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+
+        $productModel->getParent()->willReturn($currentParent);
+
+        $currentParent->getCode()->willReturn('parent');
+        $currentParent->getFamilyVariant()->willReturn($familyVariant);
+
+        $newParent->getFamilyVariant()->willReturn($familyVariant2);
+        $newParent->isRootProductModel()->willReturn(false);
+
+        $productModelRepository->findOneByIdentifier('new_parent')->willreturn($newParent);
+
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [$productModel, [
+            'parent' => 'new_parent',
+        ]]);
+    }
+
     function it_throws_an_exception_if_a_non_existing_parent_is_set_to_a_product_model(
         $productModelRepository,
         ProductModelInterface $productModel
@@ -146,6 +176,7 @@ class ProductModelUpdaterSpec extends ObjectBehavior
 
         $newParent->getFamilyVariant()->willReturn($familyVariant2);
         $familyVariant2->getCode()->willReturn('new_family_variant');
+        $newParent->isRootProductModel()->willReturn(true);
 
         $productModelRepository->findOneByIdentifier('new_parent')->willreturn($newParent);
 

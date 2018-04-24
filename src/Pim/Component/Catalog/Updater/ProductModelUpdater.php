@@ -224,6 +224,17 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
+        if(!$newParentModel->isRootProductModel())
+        {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'parent',
+                'parent code',
+                'The new parent of the product model must be a root product model',
+                static::class,
+                $parentCode
+            );
+        }
+
         if($productModel->getFamilyVariant() instanceof FamilyVariantInterface &&
            $productModel->getFamilyVariant()->getCode() !== $newParentModel->getFamilyVariant()->getCode()
         )
