@@ -88,8 +88,12 @@ class ProductModelContext extends PimContext
         $productModel = $this->getProductModel($productModelCode);
         try {
             $this->productModelUpdater->update($productModel, ['parent' => $rootProductModelCode]);
+            $this->validateProduct($productModel);
+            $this->productSaver->save($productModel);
         } catch(InvalidPropertyException $e) {
-            //Updater sends an exception because of the invalid root product model
+            //The updater sends an exception because of the invalid root product model
+        }catch(\InvalidArgumentException $e) {
+            //The validator sends an exception because of the invalid root product model
         }
     }
 
