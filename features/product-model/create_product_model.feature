@@ -128,3 +128,49 @@ Feature: Create a product model
     And I am on the products grid
     And I press the "Create product and product models" button
     Then I should see the SKU and Family fields
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7299
+  Scenario: Search family variants in the product model create form
+    Given the following family:
+      | code                      | label-en_US   | attributes      |
+      | family_with_many_variants | Many variants | sku,color,image |
+    And the following family variants:
+      | code       | family                    | variant-axes_1 | variant-attributes_1 |
+      | variant_1  | family_with_many_variants | color          | sku,image            |
+      | variant_2  | family_with_many_variants | color          | sku,image            |
+      | variant_3  | family_with_many_variants | color          | sku,image            |
+      | variant_4  | family_with_many_variants | color          | sku,image            |
+      | variant_5  | family_with_many_variants | color          | sku,image            |
+      | variant_6  | family_with_many_variants | color          | sku,image            |
+      | variant_7  | family_with_many_variants | color          | sku,image            |
+      | variant_8  | family_with_many_variants | color          | sku,image            |
+      | variant_9  | family_with_many_variants | color          | sku,image            |
+      | variant_10 | family_with_many_variants | color          | sku,image            |
+      | variant_11 | family_with_many_variants | color          | sku,image            |
+      | variant_12 | family_with_many_variants | color          | sku,image            |
+      | variant_13 | family_with_many_variants | color          | sku,image            |
+      | variant_14 | family_with_many_variants | color          | sku,image            |
+      | variant_15 | family_with_many_variants | color          | sku,image            |
+      | variant_16 | family_with_many_variants | color          | sku,image            |
+      | variant_17 | family_with_many_variants | color          | sku,image            |
+      | variant_18 | family_with_many_variants | color          | sku,image            |
+      | variant_19 | family_with_many_variants | color          | sku,image            |
+      | variant_20 | family_with_many_variants | color          | sku,image            |
+      | variant_21 | family_with_many_variants | color          | sku,image            |
+      | variant_22 | family_with_many_variants | color          | sku,image            |
+      | variant_23 | family_with_many_variants | color          | sku,image            |
+      | variant_24 | family_with_many_variants | color          | sku,image            |
+      | variant_25 | family_with_many_variants | color          | sku,image            |
+      | variant_26 | family_with_many_variants | color          | sku,image            |
+      | variant_27 | family_with_many_variants | color          | sku,image            |
+      | variant_28 | family_with_many_variants | color          | sku,image            |
+      | variant_29 | family_with_many_variants | color          | sku,image            |
+      | variant_30 | family_with_many_variants | color          | sku,image            |
+    When I create a product model
+    And I fill in the following information in the popin:
+      | Family | Many variants |
+    And I open the Variant select field
+    Then I should see 20 items in the autocomplete
+    And I should not see the choices [variant_23] and [variant_30] in Variant
+    When I search "3" in the Variant select field
+    Then I should see the choices [variant_3], [variant_13], [variant_23] and [variant_30] in Variant

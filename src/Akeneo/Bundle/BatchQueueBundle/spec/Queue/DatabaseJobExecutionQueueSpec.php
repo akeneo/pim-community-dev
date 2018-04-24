@@ -41,22 +41,13 @@ class DatabaseJobExecutionQueueSpec extends ObjectBehavior
 
     function it_consumes_a_job_execution_message(
         $jobExecutionMessageRepository,
-        $connection,
-        JobExecutionMessage $jobExecutionMessage,
-        Statement $stmt
+        JobExecutionMessage $jobExecutionMessage
     ) {
         $jobExecutionMessageRepository->getAvailableJobExecutionMessage()->willReturn($jobExecutionMessage);
-        $jobExecutionMessageRepository->updateJobExecutionMessage($jobExecutionMessage)->shouldBeCalled();
+        $jobExecutionMessageRepository->updateJobExecutionMessage($jobExecutionMessage)->willReturn(true);
 
-        $jobExecutionMessage->getJobExecutionId()->willReturn(1);
         $jobExecutionMessage->consumedBy('consumer_name')->shouldBeCalled();
 
-        $connection->prepare(Argument::type('string'))->willReturn($stmt);
-        $stmt->bindValue('lock', DatabaseJobExecutionQueue::LOCK_PREFIX . '1')->shouldBeCalled();
-        $stmt->execute()->shouldBeCalled();
-
-        $stmt->fetch()->willReturn(['1']);
-
-        $this->consume('consumer_name');
+        $this->consume('consumer_name')->shouldReturn($jobExecutionMessage);
     }
 }
