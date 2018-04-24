@@ -10,16 +10,6 @@ Feature: Validate identifier attribute of a product
     And a "bar" product
     And I am logged in as "Mary"
 
-  Scenario: Validate the unique constraint of identifier attribute
-    Given I am on the "foo" product page
-    And I change the SKU to "sku-001"
-    And I save the product
-    When I am on the "bar" product page
-    And I change the SKU to "sku-001"
-    And I save the product
-    Then I should see validation tooltip "The same identifier is already set on another product"
-    And there should be 1 error in the "Other" tab
-
   Scenario: Validate the max characters constraint of identifier attribute
     Given I am on the "sku" attribute page
     And I change the "Max characters" to "10"
