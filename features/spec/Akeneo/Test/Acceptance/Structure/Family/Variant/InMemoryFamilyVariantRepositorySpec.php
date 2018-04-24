@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\Test\Acceptance\FamilyVariant;
+namespace spec\Akeneo\Test\Acceptance\Structure\Family\Variant;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantRepository;
+use Akeneo\Test\Acceptance\Structure\Family\Variant\InMemoryFamilyVariantRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
@@ -15,7 +15,7 @@ class InMemoryFamilyVariantRepositorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(InMemoryFamilyVariantRepository::class);
+        $this->shouldHaveType(\Akeneo\Test\Acceptance\Structure\Family\Variant\InMemoryFamilyVariantRepository::class);
     }
 
     function it_is_an_identifiable_repository()

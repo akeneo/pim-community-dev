@@ -11,10 +11,10 @@ parameters:
 
 services:
     pim_catalog.repository.family:
-        class: 'Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository'
+        class: 'Akeneo\Test\Acceptance\Structure\Family\InMemoryFamilyRepository'
 
     pim_catalog.repository.family_variant:
-        class: 'Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantRepository'
+        class: 'Akeneo\Test\Acceptance\Structure\Family\Variant\InMemoryFamilyVariantRepository'
 
     pim_catalog.repository.product:
         class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'
@@ -23,10 +23,10 @@ services:
         class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository'
 
     pim_catalog.repository.attribute:
-        class: 'Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository'
+        class: 'Akeneo\Test\Acceptance\Structure\Attribute\InMemoryAttributeRepository'
 
     pim_catalog.repository.attribute_option:
-        class: 'Akeneo\Test\Acceptance\AttributeOption\InMemoryAttributeOptionRepository'
+        class: 'Akeneo\Test\Acceptance\Structure\Attribute\Option\InMemoryAttributeOptionRepository'
 
     pim_catalog.repository.attribute_group:
-        class: 'Akeneo\Test\Acceptance\AttributeGroup\InMemoryAttributeGroupRepository'
+        class: 'Akeneo\Test\Acceptance\Structure\Attribute\Group\InMemoryAttributeGroupRepository'

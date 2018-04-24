@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\Test\Acceptance\Family;
+namespace spec\Akeneo\Test\Acceptance\Structure\Family;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
+use Akeneo\Test\Acceptance\Structure\Family\InMemoryFamilyRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
