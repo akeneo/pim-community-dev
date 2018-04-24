@@ -7,8 +7,8 @@ namespace Akeneo\Test\Acceptance\Channel;
 use Akeneo\Test\Acceptance\Catalog\Category\InMemoryCategoryRepository;
 use Akeneo\Test\Common\Builder\EntityBuilder;
 use Akeneo\Test\Acceptance\Common\ListOfCodes;
-use Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository;
-use Akeneo\Test\Acceptance\Locale\InMemoryLocaleRepository;
+use Akeneo\Test\Acceptance\Channel\Currency\InMemoryCurrencyRepository;
+use Akeneo\Test\Acceptance\Channel\Locale\InMemoryLocaleRepository;
 use Behat\Behat\Context\Context;
 
 final class ChannelContext implements Context

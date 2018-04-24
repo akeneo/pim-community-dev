@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\Locale;
+namespace Akeneo\Test\Acceptance\Channel\Locale;
 
+use Akeneo\Test\Acceptance\Channel\Locale\InMemoryLocaleRepository;
 use Akeneo\Test\Common\Builder\EntityBuilder;
 use Akeneo\Test\Acceptance\Common\ListOfCodes;
 use Behat\Behat\Context\Context;
