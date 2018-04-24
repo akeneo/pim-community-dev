@@ -9,6 +9,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
+ * Check that another product model does not have the same identifier
+ *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -16,14 +18,14 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class UniqueProductModelEntityValidator extends ConstraintValidator
 {
     /** @var IdentifiableObjectRepositoryInterface */
-    private $objectRepository;
+    private $productModelRepository;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $objectRepository
+     * @param IdentifiableObjectRepositoryInterface $productModelRepository
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $objectRepository)
+    public function __construct(IdentifiableObjectRepositoryInterface $productModelRepository)
     {
-        $this->objectRepository = $objectRepository;
+        $this->productModelRepository = $productModelRepository;
     }
 
     /**
@@ -39,7 +41,7 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ProductModelInterface::class);
         }
 
-        if (null === $entityInDatabase = $this->objectRepository->findOneByIdentifier($entity->getCode())) {
+        if (null === $entityInDatabase = $this->productModelRepository->findOneByIdentifier($entity->getCode())) {
             return;
         }
 

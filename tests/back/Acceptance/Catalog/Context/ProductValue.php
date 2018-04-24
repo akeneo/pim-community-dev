@@ -24,7 +24,7 @@ final class ProductValue implements Context
     private const IDENTIFIER_ATTRIBUTE = 'sku';
 
     /** @var ProductInterface */
-    protected $updatedProduct;
+    private $updatedProduct;
 
     /** @var Builder\Product */
     private $productBuilder;
@@ -58,7 +58,7 @@ final class ProductValue implements Context
     /**
      * @Given a product with an identifier :identifier
      */
-    public function aProductWithAnIdentifier(string $identifier)
+    public function aProductWithAnIdentifier(string $identifier): void
     {
         $attribute = $this->attributeBuilder->aIdentifier()
             ->withCode(self::IDENTIFIER_ATTRIBUTE)
@@ -73,7 +73,7 @@ final class ProductValue implements Context
     /**
      * @When a product is created with identifier :identifier
      */
-    public function aProductIsCreatedWithIdentifier($identifier)
+    public function aProductIsCreatedWithIdentifier($identifier): void
     {
         $this->updatedProduct = $this->productBuilder->withIdentifier($identifier)->build(false);
     }
@@ -83,7 +83,7 @@ final class ProductValue implements Context
      *
      * @throws \Exception
      */
-    public function anErrorShouldBeRaisedBecauseOf($errorMessage)
+    public function anErrorShouldBeRaisedBecauseOf($errorMessage): void
     {
         $violations = $this->productValidator->validate($this->updatedProduct);
 

@@ -52,7 +52,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $this->validate($product, $constraint)->shouldReturn(null);
     }
 
-    function it_do_nothing_if_the_product_does_not_exist_in_database(
+    function it_does_nothing_if_the_product_does_not_exist_in_database(
         $context,
         $objectRepository,
         ProductInterface $product
