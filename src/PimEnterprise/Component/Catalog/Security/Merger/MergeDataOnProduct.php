@@ -41,10 +41,10 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
     private $productModelRepository;
 
     /**
-     * @param NotGrantedDataMergerInterface[]  $mergers
-     * @param AttributeRepositoryInterface     $attributeRepository
-     * @param AddParent                        $addParent
-     * @param ProductModelRepositoryInterface  $productModelRepository
+     * @param NotGrantedDataMergerInterface[] $mergers
+     * @param AttributeRepositoryInterface    $attributeRepository
+     * @param AddParent                       $addParent
+     * @param ProductModelRepositoryInterface $productModelRepository
      */
     public function __construct(
         array $mergers,
@@ -58,14 +58,20 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
         $this->productModelRepository = $productModelRepository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function merge($filteredProduct, $fullProduct = null)
     {
         if (!$filteredProduct instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredProduct), ProductInterface::class);
+            throw InvalidObjectException::objectExpected(
+                ClassUtils::getClass($filteredProduct),
+                ProductInterface::class
+            );
         }
 
         if ($filteredProduct instanceof EntityWithFamilyVariantInterface) {
-            $filteredProduct = $this->setParent($filteredProduct);
+            $this->setParent($filteredProduct);
         }
 
         if (null === $fullProduct) {
@@ -93,11 +99,11 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
         if ($filteredProduct->isVariant()) {
             if ($fullProduct->isVariant()) {
                 $fullProduct->setFamilyVariant($filteredProduct->getFamilyVariant());
-            } elseif (null !== $filteredProduct->getParent()) {
+                $fullProduct->setParent($filteredProduct->getParent());
+            } else {
                 $fullProduct = $this->addParent->to($fullProduct, $filteredProduct->getParent()->getCode());
+                $this->setParent($fullProduct);
             }
-
-            $fullProduct = $this->setParent($fullProduct);
         }
 
         foreach ($this->mergers as $merger) {
@@ -109,19 +115,14 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
 
     /**
      * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     *
-     * @return EntityWithFamilyVariantInterface
-     *
      */
-    private function setParent(EntityWithFamilyVariantInterface $entityWithFamilyVariant): EntityWithFamilyVariantInterface
+    private function setParent(EntityWithFamilyVariantInterface $entityWithFamilyVariant): void
     {
         if (null === $entityWithFamilyVariant->getParent()) {
-            return $entityWithFamilyVariant;
+            return;
         }
 
         $parent = $this->productModelRepository->find($entityWithFamilyVariant->getParent()->getId());
         $entityWithFamilyVariant->setParent($parent);
-
-        return $entityWithFamilyVariant;
     }
 }
