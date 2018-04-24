@@ -110,7 +110,7 @@ class ProductAssetController extends Controller
     /** @var FileInfoFactoryInterface */
     protected $fileInfoFactory;
 
-    /** @var \PimEnterprise\Bundle\SecurityBundle\User\UserContext */
+    /** @var UserContext */
     protected $userContext;
 
     /** @var FileController */

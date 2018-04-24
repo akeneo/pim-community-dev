@@ -38,7 +38,7 @@ class FilterExtension extends BaseFilterExtension
     /** @var AttributeGroupAccessRepository */
     protected $accessRepository;
 
-    /** @var \PimEnterprise\Bundle\SecurityBundle\User\UserContext */
+    /** @var UserContext */
     protected $userContext;
 
     /** @var DatagridViewRepositoryInterface */

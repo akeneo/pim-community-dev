@@ -53,16 +53,16 @@ class CategoryTreeController extends BaseCategoryTreeController
     protected $tokenStorage;
 
     /**
-     * @param EventDispatcherInterface                              $eventDispatcher
-     * @param \PimEnterprise\Bundle\SecurityBundle\User\UserContext $userContext
-     * @param SaverInterface                                        $categorySaver
-     * @param RemoverInterface                                      $categoryRemover
-     * @param SimpleFactoryInterface                                $categoryFactory
-     * @param CategoryRepositoryInterface                           $categoryRepository
-     * @param SecurityFacade                                        $securityFacade
-     * @param array                                                 $rawConfiguration
-     * @param CategoryAccessRepository                              $categoryAccessRepo
-     * @param TokenStorageInterface                                 $tokenStorage
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param UserContext                 $userContext
+     * @param SaverInterface              $categorySaver
+     * @param RemoverInterface            $categoryRemover
+     * @param SimpleFactoryInterface      $categoryFactory
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param SecurityFacade              $securityFacade
+     * @param array                       $rawConfiguration
+     * @param CategoryAccessRepository    $categoryAccessRepo
+     * @param TokenStorageInterface       $tokenStorage
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
