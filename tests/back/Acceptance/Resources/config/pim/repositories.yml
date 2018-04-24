@@ -1,13 +1,13 @@
 parameters:
     pim_catalog.repository.locale.class: Akeneo\Test\Acceptance\Locale\InMemoryLocaleRepository
     pim_catalog.repository.channel.class: Akeneo\Test\Acceptance\Channel\InMemoryChannelRepository
-    pim_catalog.repository.category.class: Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository
+    pim_catalog.repository.category.class: Akeneo\Test\Acceptance\Catalog\Category\InMemoryCategoryRepository
     pim_catalog.repository.currency.class: Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository
     pim_user.repository.role: Akeneo\Test\Acceptance\User\InMemoryRoleRepository
     pim_user.repository.user: Akeneo\Test\Acceptance\User\InMemoryUserRepository
     pim_user.repository.group: Akeneo\Test\Acceptance\User\InMemoryGroupRepository
-    pim_catalog.repository.group_type: Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository
-    pim_catalog.repository.group: Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository
+    pim_catalog.repository.group_type: Akeneo\Test\Acceptance\Catalog\Group\Type\InMemoryGroupTypeRepository
+    pim_catalog.repository.group: Akeneo\Test\Acceptance\Catalog\Group\InMemoryGroupRepository
 
 services:
     pim_catalog.repository.family:
@@ -17,10 +17,10 @@ services:
         class: 'Akeneo\Test\Acceptance\Structure\Family\Variant\InMemoryFamilyVariantRepository'
 
     pim_catalog.repository.product:
-        class: 'Akeneo\Test\Acceptance\Product\InMemoryProductRepository'
+        class: 'Akeneo\Test\Acceptance\Catalog\Product\InMemoryProductRepository'
 
     pim_catalog.repository.product_model:
-        class: 'Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository'
+        class: 'Akeneo\Test\Acceptance\Catalog\Product\Model\InMemoryProductModelRepository'
 
     pim_catalog.repository.attribute:
         class: 'Akeneo\Test\Acceptance\Structure\Attribute\InMemoryAttributeRepository'

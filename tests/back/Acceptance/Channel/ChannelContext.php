@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Channel;
 
-use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
+use Akeneo\Test\Acceptance\Catalog\Category\InMemoryCategoryRepository;
 use Akeneo\Test\Common\Builder\EntityBuilder;
 use Akeneo\Test\Acceptance\Common\ListOfCodes;
 use Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository;

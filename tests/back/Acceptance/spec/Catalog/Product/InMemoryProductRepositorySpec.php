@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\Test\Acceptance\Product;
+namespace spec\Akeneo\Test\Acceptance\Catalog\Product;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
+use Akeneo\Test\Acceptance\Catalog\Product\InMemoryProductRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Group;
@@ -18,7 +18,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(InMemoryProductRepository::class);
+        $this->shouldHaveType(\Akeneo\Test\Acceptance\Catalog\Product\InMemoryProductRepository::class);
     }
 
     function it_is_an_identifiable_repository()

@@ -2,35 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\Catalog;
+namespace Akeneo\Test\Acceptance\Catalog\Group;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InMemoryGroupTypeRepository implements SaverInterface, GroupTypeRepositoryInterface
+class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterface
 {
-    /** @var GroupType[] */
-    private $groupTypes;
+    /** @var Group[] */
+    private $groups;
 
     public function __construct()
     {
-        $this->groupTypes = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     public function save($group, array $options = [])
     {
-        if(!$group instanceof GroupTypeInterface) {
-            throw new \InvalidArgumentException('Only group type objects are supported.');
+        if(!$group instanceof GroupInterface) {
+            throw new \InvalidArgumentException('Only group objects are supported.');
         }
-        $this->groupTypes->set($group->getCode(), $group);
+        $this->groups->set($group->getCode(), $group);
     }
 
     /**
@@ -46,13 +47,21 @@ class InMemoryGroupTypeRepository implements SaverInterface, GroupTypeRepository
      */
     public function findOneByIdentifier($identifier)
     {
-        return $this->groupTypes->get($identifier);
+        return $this->groups->get($identifier);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findTypeIds()
+    public function createAssociationDatagridQueryBuilder()
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = [])
     {
         throw new NotImplementedException(__METHOD__);
     }
