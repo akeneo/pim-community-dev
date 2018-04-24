@@ -98,9 +98,11 @@ final class Product
         $product = $this->productBuilder->createProduct((string) $this->identifier, (string) $this->family);
         $this->productUpdater->update($product, $productStandardFormat);
 
-        $errors = $this->validator->validate($product);
-        if ($dataValidation && 0 < $errors->count()) {
-            throw new \InvalidArgumentException(sprintf('The given product data are invalid: %s', $errors));
+        if ($dataValidation) {
+            $errors = $this->validator->validate($product);
+            if (0 < $errors->count()) {
+                throw new \InvalidArgumentException(sprintf('The given product data are invalid: %s', $errors));
+            }
         }
 
         return $product;

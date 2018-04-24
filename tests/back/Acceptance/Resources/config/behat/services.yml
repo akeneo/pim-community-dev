@@ -93,13 +93,20 @@ services:
         tags:
             - { name: fob.context_service }
 
-    test.catalog.product_value.context:
-        class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductValue'
+    test.catalog.product_creation.context:
+        class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductCreation'
         arguments:
             - '@__symfony__.pim_catalog.repository.attribute'
             - '@test.catalog.product.builder'
             - '@__symfony__.pim_catalog.repository.product'
-            - '@__symfony__.validator'
             - '@test.structure.attribute.builder'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog.product_validation.context:
+        class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductValidation'
+        arguments:
+            - '@test.catalog.product.builder'
+            - '@__symfony__.validator'
         tags:
             - { name: fob.context_service }

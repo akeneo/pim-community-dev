@@ -45,7 +45,7 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
             return;
         }
 
-        // here this is an update, we need to update the same object
+        // You don't add violation if it is a product model update
         if ($entity->getId() !== $entityInDatabase->getId()) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('code')

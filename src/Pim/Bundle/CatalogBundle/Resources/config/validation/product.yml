@@ -5,7 +5,8 @@ Pim\Component\Catalog\Model\Product:
         - UniqueAxis
         - api
     constraints:
-        - Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductEntity: ~
+        - Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductEntity:
+            message: pim_catalog.constraint.pim_immutable_product_validator
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyFamily:
             groups:
               - api

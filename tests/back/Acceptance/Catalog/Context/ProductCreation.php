@@ -15,16 +15,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Akeneo\Test\Common\Structure\Attribute;
 
 /**
+ * Use this context to create products
+ *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ProductValue implements Context
+final class ProductCreation implements Context
 {
     private const IDENTIFIER_ATTRIBUTE = 'sku';
-
-    /** @var ProductInterface */
-    private $updatedProduct;
 
     /** @var Builder\Product */
     private $productBuilder;
@@ -35,9 +34,6 @@ final class ProductValue implements Context
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
-    /** @var ValidatorInterface */
-    private $productValidator;
-
     /** @var Attribute\Builder */
     private $attributeBuilder;
 
@@ -45,13 +41,11 @@ final class ProductValue implements Context
         SaverInterface $attributeSaver,
         Builder\Product $productBuilder,
         InMemoryProductRepository $productRepository,
-        ValidatorInterface $productValidator,
         Attribute\Builder $attributeBuilder
     ) {
         $this->attributeSaver = $attributeSaver;
         $this->productBuilder = $productBuilder;
         $this->productRepository = $productRepository;
-        $this->productValidator = $productValidator;
         $this->attributeBuilder = $attributeBuilder;
     }
 
@@ -68,42 +62,5 @@ final class ProductValue implements Context
 
         $product = $this->productBuilder->withIdentifier($identifier)->build();
         $this->productRepository->save($product);
-    }
-
-    /**
-     * @When a product is created with identifier :identifier
-     */
-    public function aProductIsCreatedWithIdentifier($identifier): void
-    {
-        $this->updatedProduct = $this->productBuilder->withIdentifier($identifier)->build(false);
-    }
-
-    /**
-     * @Then an error should be raised because of :errorMessage
-     *
-     * @throws \Exception
-     */
-    public function anErrorShouldBeRaisedBecauseOf($errorMessage): void
-    {
-        $violations = $this->productValidator->validate($this->updatedProduct);
-
-        $messages = [];
-        $isFoundMessage = false;
-        foreach ($violations as $violation) {
-            $message = $violation->getMessage();
-            $messages[] = $message;
-            if ($message === $errorMessage) {
-                $isFoundMessage = true;
-            }
-        }
-
-        if (!$isFoundMessage) {
-            throw new \Exception(
-                sprintf(
-                    'Expected error message "%s" was not found, %s given', $errorMessage,
-                    implode(',', $messages)
-                )
-            );
-        }
     }
 }

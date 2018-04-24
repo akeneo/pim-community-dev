@@ -3,8 +3,8 @@ Feature: Validate identifier attribute of a product
   As a regular user
   I need to be able to see validation errors for identifier attribute
 
-  @acceptance
+  @acceptance-back
   Scenario: Validate the unique constraint of identifier attribute
     Given a product with an identifier "foo"
-    When a product is created with identifier "foo"
-    Then an error should be raised because of "The same identifier is already set on another product"
+    When another product is created with identifier "foo"
+    Then the error "The same identifier is already set on another product" is raised
