@@ -7,7 +7,7 @@ pimee_product_asset:
           title: Administrer formue
           cancel: Annuller
           confirm: Bekræft
-        title: Administrer formue
+        title: Administrer aktiver
         description: Vælge de aktiver, du vil vedhæfte til dit produkt
     asset:
       not_empty: Koden er påkrævet. Det kan ikke være tom.
@@ -45,7 +45,7 @@ pimee_product_asset:
       code: Ugyldig kodeformat for aktiv
       locale: Et aktiv eksisterer, men kan ikke lokaliseres
       invalid_locale: Landestandarden er deaktiveret eller ugyldig
-      exists: En fil med samme navn allerede er importeret
+      exists: En fil med samme navn er allerede importeret
       conflicts: Fil navne konflikt
     grid:
       medias: medier
@@ -80,15 +80,15 @@ page_title:
   pimee_product_asset_mass_upload: Indlæs aktiver
 batch_jobs:
   apply_assets_mass_upload:
-    label: Masse indlæs aktiver
+    label: Aktiver masse indlæs
     perform.label: Masse upload
   yml_asset_channel_configuration_import:
     label: Aktiv kanal konfiguration import i Yaml
     validation.label: Filvalidering
     import_asset.label: Aktiv kanal konfiguration import i Yaml
   yml_asset_channel_configuration_export:
-    label: Aktiver kanal konfiguration import i Yaml
-    export.label: Aktiver kanal konfiguration import i Yaml
+    label: Aktiv kanal konfiguration import i Yaml
+    export.label: Aktiv kanal konfiguration import i Yaml
   csv_asset_import:
     label: Aktiv import i CSV-
     validation.label: Filvalidering
@@ -109,28 +109,28 @@ batch_jobs:
     validation.label: Filvalidering
     import_asset_category.label: Aktiver kategori import i CSV-
   csv_asset_configuration_import:
-    label: Aktiver kanal konfiguration import i Yaml
+    label: Aktiv kanal konfiguration import i Yaml
     validation.label: Filvalidering
-    import_asset.label: Aktiver kanal konfiguration import i Yaml
+    import_asset.label: Aktiv kanal konfiguration import i Yaml
   csv_asset_category_export:
     label: Aktiver kategori import i CSV-
     export.label: Aktiver kategori import i CSV-
   xlsx_tag_import:
-    label: Etiket import i XLSX
+    label: Tag import i XLSX
     validation.label: Filvalidering
-    import.label: Etiket import i XLSX
+    import.label: Tag import i XLSX
   xlsx_asset_import:
-    label: Aktiver import i XLSX
+    label: Aktiv import i XLSX
     validation.label: Filvalidering
-    import_tags.label: Etiket import i XLSX
-    import_asset.label: Aktiver import i XLSX
+    import_tags.label: Tag import i XLSX
+    import_asset.label: Aktiv import i XLSX
   xlsx_asset_category_import:
     label: Aktiver kategori import i XLSX
     validation.label: Filvalidering
     import_asset_category.label: Aktiver kategori import i XLSX
   xlsx_asset_export:
-    label: Aktiver import i XLSX
-    export.label: Aktiver import i XLSX
+    label: Aktiv import i XLSX
+    export.label: Aktiv import i XLSX
   xlsx_asset_category_export:
     label: Aktiver kategori import i XLSX
     export.label: Aktiver kategori import i XLSX
@@ -140,4 +140,4 @@ batch_jobs:
   classify_assets:
     perform.label: Flytte aktiver til kategorier
   add_tags_to_assets:
-    perform.label: Tilføj etiketter til aktiver
+    perform.label: Tilføje tags til aktiver

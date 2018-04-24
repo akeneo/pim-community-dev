@@ -15,7 +15,7 @@ pimee_catalog_rule:
           no_yet_calculated: Endnu ikke beregnet
       mass_edit_action:
         impacted_product_count: Beregn de berørte produkter
-        execute: Udfør
+        execute: Eksekvér
         delete: Slet
   actions:
     type:

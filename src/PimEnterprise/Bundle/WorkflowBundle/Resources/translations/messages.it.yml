@@ -14,7 +14,7 @@ pimee_workflow:
       in_progress: In corso
       ready: In attesa di approvazione
       can_be_partially_reviewed: Può essere parzialmente rivisto
-      can_not_be_approved: Non può essere revisionato
+      can_not_be_approved: Non può essere rivisto
       can_not_be_deleted: Non può essere eliminato
     status_message:
       can_be_partially_reviewed: È possibile revisionare questa proposta solo parzialmente perché alcune modifiche sono state fatte su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
@@ -73,7 +73,7 @@ pimee_workflow:
       page_title: Prodotti pubblicati
       page_subtitle: Modifica di massa (1 prodotto pubblicato) | Modifica di massa (%count% prodotti pubblicati)
       title: Scegli l'operazione
-      subtitle: Scegli l'operazione che si desidera eseguire sul prodotto pubblicato selezionato|Scegli l'operazione che si desidera eseguire sui %count% prodotti pubblicati selezionati
+      subtitle: Scegli l'operazione che si desidera eseguire sul prodooto pubblicato selezionato|Scegli l'operazione che si desidera eseguire sui %count% prodotti pubblicati selezionati
       confirm: Stai per aggiornare un prodotto pubblicato con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% prodotti pubblicati con le seguenti informazioni, si prega di confermare.
       steps:
         first: Scegli i prodotti pubblicati
@@ -119,7 +119,7 @@ btn.editworkingcopy: Modifica la copia di lavoro
 confirmation:
   product:
     publish: Sei sicuro di voler pubblicare questo prodotto?
-    unpublish: Sei sicuro di voler annullare la pubblicazione di questo prodotto?
+    unpublish: Sei sicuro di voler ritirare questo prodotto?
 Attributes.title: Attributi
 Completeness.title: Completamento
 publish_product.steps.publish_product_tasklet.title: Pubblica prodotto

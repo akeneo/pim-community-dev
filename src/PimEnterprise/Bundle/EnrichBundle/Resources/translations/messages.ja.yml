@@ -48,7 +48,7 @@ pim_enrich:
         third: 構成
         fourth: 確認
     publish:
-      label: 公開
+      label: 公開する
       description: 選択した製品を公開し、現在公開されているデータは、現在の作業コピーによって消去されます。
       success_flash: 選択した製品は、正常に公開されています。
       launched_flash: 製品を公開するジョブが現在実行されています。
@@ -100,7 +100,7 @@ pimee_enrich:
     label: 所有者グループ
     empty: なし
   asset_transformation:
-    not_found: 変更を発見できませんでした
+    not_found: 変換を発見できませんでした
     title:
       transformation: 変換
       options: オプション
