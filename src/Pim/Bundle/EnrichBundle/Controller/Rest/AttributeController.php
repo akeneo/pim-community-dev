@@ -191,16 +191,21 @@ class AttributeController
     /**
      * Get attribute by identifier
      *
-     * @param string $identifier
+     * @param Request $request
+     * @param string  $identifier
+     *
+     * @throws NotFoundHttpException
      *
      * @return JsonResponse
      */
-    public function getAction($identifier)
+    public function getAction(Request $request, $identifier)
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($identifier);
 
-        $attribute = $this->attributeFilter
-            ->filterObject($attribute, 'pim.internal_api.attribute.view') ? null : $attribute;
+        if ($request->query->getBoolean('apply_filters', true)) {
+            $attribute = $this->attributeFilter
+                ->filterObject($attribute, 'pim.internal_api.attribute.view') ? null : $attribute;
+        }
 
         if (null === $attribute) {
             throw new NotFoundHttpException(sprintf('Attribute with code "%s" not found', $identifier));
@@ -222,6 +227,10 @@ class AttributeController
      */
     public function createAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $attribute = $this->factory->create();
 
         $data = json_decode($request->getContent(), true);
@@ -262,6 +271,10 @@ class AttributeController
      */
     public function postAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $attribute = $this->getAttributeOr404($identifier);
 
         $data = json_decode($request->getContent(), true);

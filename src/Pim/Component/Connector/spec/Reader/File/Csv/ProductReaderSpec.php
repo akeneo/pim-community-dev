@@ -40,7 +40,7 @@ class  ProductReaderSpec extends ObjectBehavior
         JobParameters $jobParameters,
         $mediaPath
     ) {
-        $filePath = __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv';
+        $filePath = __DIR__ . '/../../../../../../tests/legacy/features/Context/fixtures/with_media.csv';
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn($filePath);
         $jobParameters->get('enclosure')->willReturn('"');
@@ -78,7 +78,7 @@ class  ProductReaderSpec extends ObjectBehavior
             'manual-fr_FR' => 'fixtures/sku-001.txt',
         ];
 
-        $directoryPath = __DIR__ . '/../../../../../../features/Context/fixtures';
+        $directoryPath = __DIR__ . '/../../../../../../tests/legacy/features/Context/fixtures';
         $fileIterator->getDirectoryPath()->willReturn($directoryPath);
         $mediaPath->transform($data, $directoryPath)->willReturn($absolutePath);
 

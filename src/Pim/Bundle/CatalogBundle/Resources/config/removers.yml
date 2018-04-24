@@ -72,11 +72,11 @@ services:
             - '%pim_catalog.entity.category.class%'
 
     pim_catalog.remover.family:
-        class: '%pim_catalog.remover.base.class%'
+        class: 'Pim\Component\Catalog\Updater\Remover\FamilyRemover'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '%pim_catalog.entity.family.class%'
+            - '@pim_catalog.doctrine.query.count_products_with_family'
 
     pim_catalog.remover.group:
         class: '%pim_catalog.remover.base.class%'

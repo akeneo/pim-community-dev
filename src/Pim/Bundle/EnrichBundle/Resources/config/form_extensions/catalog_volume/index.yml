@@ -1,0 +1,85 @@
+extensions:
+    pim-catalog-volume-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-catalog-volume-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-catalog-volume-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-catalog-volume-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-catalog-volume-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-catalog-volume-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-catalog-volume-index
+        targetZone: title
+        config:
+            countable: false
+            title: pim_menu.item.catalog_volume
+
+    pim-catalog-volume-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-catalog-volume-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-catalog-volume
+
+    pim-catalog-volume-axes-header:
+        parent: pim-catalog-volume-index
+        module: pim/catalog-volume/header
+        targetZone: content
+        position: 10
+        config:
+            title: catalog_volume.product_values
+            description: catalog_volume.product_values_description
+
+    pim-catalog-volume-product-values-section:
+        module: pim/catalog-volume/section
+        parent: pim-catalog-volume-index
+        template: pim/template/catalog-volume/section
+        targetZone: content
+        position: 20
+        config:
+            align: right
+            title: catalog_volume.section.product_values.title
+            hint:
+                code: hint-product-values
+                title: catalog_volume.section.product_values.hint
+            axes: [count_products, count_channels, count_scopable_attributes, average_max_attributes_per_family, count_locales, count_localizable_and_scopable_attributes, count_localizable_attributes]
+
+    pim-catalog-volume-catalog-structure-section:
+        module: pim/catalog-volume/section
+        parent: pim-catalog-volume-index
+        template: pim/template/catalog-volume/section
+        targetZone: content
+        position: 30
+        config:
+            title: catalog_volume.section.catalog_structure.title
+            hint:
+                code: hint-catalog-structure
+                title: catalog_volume.section.catalog_structure.hint
+            axes: [count_families, count_attributes, average_max_options_per_attribute, count_categories, count_category_trees]
+
+    pim-catalog-volume-variant-modelling-section:
+        module: pim/catalog-volume/section
+        parent: pim-catalog-volume-index
+        template: pim/template/catalog-volume/section
+        targetZone: content
+        position: 40
+        config:
+            title: catalog_volume.section.variant_modelling.title
+            hint:
+                code: hint-variant-modelling
+                title: catalog_volume.section.variant_modelling.hint
+            axes: [count_variant_products, count_product_models]

@@ -2,10 +2,9 @@ legacy:
     suites:
         all:
             paths:
-                - features
-                - tests/features
+                - tests/legacy/features/
             filters:
-                tags: "~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@acceptance"
+                tags: "~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated"
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
                 - Context\FeatureContext:
@@ -90,10 +89,13 @@ legacy:
                     - '@pim_catalog.saver.product_model'
                 - Pim\Behat\Context\Domain\Enrich\FamilyVariantConfigurationContext:
                     - 'Context\FeatureContext'
-                - Pim\Behat\Context\Storage\VariantProductStorage:
-                    - '@pim_catalog.repository.product'
                 - Pim\Behat\Context\Domain\Enrich\ItemPickerContext:
                     - 'Context\FeatureContext'
+                - Pim\Behat\Context\Storage\VariantProductStorage:
+                    - '@pim_catalog.repository.product'
+                - Pim\Behat\Context\Storage\AttributeOptionStorage:
+                    - '@pim_catalog.repository.attribute_option'
+                    - '@doctrine.orm.default_entity_manager'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
@@ -107,7 +109,7 @@ legacy:
                     selenium2:
                         wd_host: 'http://127.0.0.1:4444/wd/hub'
             base_url: 'http://127.0.0.1/'
-            files_path: 'features/Context/fixtures/'
+            files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
                 env: behat
@@ -130,13 +132,13 @@ acceptance:
     suites:
         acceptance:
             paths:
-                - tests/back/features
+                - tests/features
             contexts_services:
                 - test.locale.context
                 - test.channel.context
                 - test.catalog_volume_limits.attribute_per_family_context
             filters:
-                tags: '@acceptance'
+                tags: '@acceptance-back'
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:

@@ -24,7 +24,6 @@ class ProductModelDescendantsWriterSpec extends ObjectBehavior
 
     function it_handles_product_model_descendants(
         $descendantsSaver,
-        $cacheClearer,
         $stepExecution,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2
@@ -33,8 +32,6 @@ class ProductModelDescendantsWriterSpec extends ObjectBehavior
         $descendantsSaver->save($productModel2)->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(2);
-
-        $cacheClearer->clear()->shouldBeCalled();
 
         $this->write([$productModel1, $productModel2]);
     }

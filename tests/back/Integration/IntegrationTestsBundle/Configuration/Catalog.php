@@ -71,11 +71,11 @@ class Catalog implements CatalogInterface
     public function useFunctionalCatalog(string $catalog): Configuration
     {
         $catalogDirectories = [
-            (string) new Path('..', 'features', 'Context', 'catalog', $catalog),
+            (string) new Path('..', 'tests', 'legacy', 'features', 'Context', 'catalog', $catalog),
         ];
 
         $fixtureDirectories = [
-            (string) new Path('..', 'features', 'Context'),
+            (string) new Path('..', 'tests', 'legacy', 'features', 'Context'),
             $this->getReferenceDataFixtures()
         ];
 

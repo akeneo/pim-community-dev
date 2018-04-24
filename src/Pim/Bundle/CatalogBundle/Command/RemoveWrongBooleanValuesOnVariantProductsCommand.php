@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\Command;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Command to fix PIM-7263.
@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCommand
 {
-    private const PRODUCT_BULK_SIZE = 100;
+    private const DEFAULT_PRODUCT_BULK_SIZE = 100;
 
     /**
      * {@inheritdoc}
@@ -32,7 +32,8 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
     {
         $this
             ->setHidden(true)
-            ->setName('pim:catalog:remove-wrong-values-on-variant-products')
+            ->setName('pim:catalog:remove-wrong-boolean-values-on-variant-products')
+            ->setAliases(['pim:catalog:remove-wrong-values-on-variant-products'])
             ->setDescription('Remove boolean values on variant products that should belong to their parents')
         ;
     }
@@ -42,24 +43,29 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
      */
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
-        $output->writeln("<info>Cleaning wrong boolean values on variant products...</info>");
+        $io = new SymfonyStyle($input, $output);
+        $io->text('Cleaning wrong boolean values on variant products...');
+
+        $progressBatchSize = 50;
+        $productBatchSize = $this->getContainer()->hasParameter('pim_job_product_batch_size') ?
+            $this->getContainer()->getParameter('pim_job_product_batch_size') :
+            self::DEFAULT_PRODUCT_BULK_SIZE;
 
         $variantProducts = $this->getVariantProducts();
 
-        $totalProducts = 0;
-        $cleanProducts = 0;
+        $io->progressStart($variantProducts->count());
+
         $productsToSave = [];
+        $productsParsedCount = 0;
 
         foreach ($variantProducts as $variantProduct) {
-            $totalProducts++;
-            $isModified = false;
-
-            foreach ($variantProduct->getFamily()->getAttributes() as $attribute) {
-                if ($this->isProductImpacted($variantProduct, $attribute)) {
-                    $this->cleanProductForAttribute($variantProduct, $attribute);
-                    $isModified = true;
-                }
+            if (!$variantProduct instanceof ProductInterface || !$variantProduct->isVariant()) {
+                continue;
             }
+
+            $isModified = $this->getContainer()
+                ->get('pim_catalog.command.cleaner.wrong_boolean_value_on_variant_product')
+                ->cleanProduct($variantProduct);
 
             if ($isModified) {
                 $violations = $this->getContainer()->get('pim_catalog.validator.product')->validate($variantProduct);
@@ -74,23 +80,28 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
                 }
 
                 $productsToSave[] = $variantProduct;
-                $cleanProducts++;
             }
 
-            if (count($productsToSave) >= self::PRODUCT_BULK_SIZE) {
+            if (count($productsToSave) >= $productBatchSize) {
                 $this->getContainer()->get('pim_catalog.saver.product')->saveAll($productsToSave);
-                $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexAll($productsToSave);
-
                 $productsToSave = [];
+            }
+
+            $productsParsedCount++;
+            if ($productsParsedCount >= $progressBatchSize) {
+                $io->progressAdvance($productsParsedCount);
+                $productsParsedCount = 0;
             }
         }
 
         if (!empty($productsToSave)) {
             $this->getContainer()->get('pim_catalog.saver.product')->saveAll($productsToSave);
-            $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product')->indexAll($productsToSave);
         }
 
-        $output->writeln(sprintf('<info>%s variant products cleaned (over %s products parsed)</info>', $cleanProducts, $totalProducts));
+        $io->progressFinish();
+
+        $io->newLine();
+        $io->text(sprintf('%s variant products cleaned', count($productsToSave)));
     }
 
     /**
@@ -105,39 +116,5 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
         $pqb->addFilter('parent', Operators::IS_NOT_EMPTY, null);
 
         return $pqb->execute();
-    }
-
-    /**
-     * @param mixed              $variantProduct
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     */
-    private function isProductImpacted($variantProduct, AttributeInterface $attribute): bool
-    {
-        if ($attribute->getType() !== AttributeTypes::BOOLEAN) {
-            return false;
-        }
-
-        $familyVariant = $variantProduct->getFamilyVariant();
-        $attributeLevel = $familyVariant->getLevelForAttributeCode($attribute->getCode());
-        $attributeIsOnLastLevel = $attributeLevel === $familyVariant->getNumberOfLevel();
-
-        if ($attributeIsOnLastLevel) {
-            return false;
-        }
-
-        return null !== $variantProduct->getValuesForVariation()->getByCodes($attribute->getCode());
-    }
-
-    /**
-     * @param mixed              $variantProduct
-     * @param AttributeInterface $attribute
-     */
-    private function cleanProductForAttribute($variantProduct, AttributeInterface $attribute): void
-    {
-        $values = $variantProduct->getValues();
-        $values->removeByAttribute($attribute);
-        $variantProduct->setValues($values);
     }
 }

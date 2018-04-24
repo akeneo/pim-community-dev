@@ -25,7 +25,8 @@ interface ProductInterface extends
     ReferableInterface,
     CategoryAwareInterface,
     EntityWithFamilyInterface,
-    EntityWithFamilyVariantInterface
+    EntityWithFamilyVariantInterface,
+    AssociationAwareInterface
 {
     /**
      * Get the ID of the product
@@ -101,60 +102,6 @@ interface ProductInterface extends
      * @return array
      */
     public function getGroupCodes();
-
-    /**
-     * Get types of associations
-     *
-     * @return Collection
-     */
-    public function getAssociations();
-
-    /**
-     * Set types of associations
-     *
-     * @param Collection $associations
-     *
-     * @return ProductInterface
-     */
-    public function setAssociations(Collection $associations);
-
-    /**
-     * Add a type of an association
-     *
-     * @param AssociationInterface $association
-     *
-     * @throws \LogicException
-     *
-     * @return ProductInterface
-     */
-    public function addAssociation(AssociationInterface $association);
-
-    /**
-     * Remove a type of an association
-     *
-     * @param AssociationInterface $association
-     *
-     * @return ProductInterface
-     */
-    public function removeAssociation(AssociationInterface $association);
-
-    /**
-     * Get the product association for an Association type
-     *
-     * @param AssociationTypeInterface $type
-     *
-     * @return AssociationInterface|null
-     */
-    public function getAssociationForType(AssociationTypeInterface $type);
-
-    /**
-     * Get the product association for an association type code
-     *
-     * @param string $typeCode
-     *
-     * @return AssociationInterface|null
-     */
-    public function getAssociationForTypeCode($typeCode);
 
     /**
      * Setter for predicate enabled

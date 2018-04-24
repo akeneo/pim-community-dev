@@ -198,10 +198,14 @@ class JobInstanceController
      *
      * @AclAncestor("pim_importexport_import_profile_edit")
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function putImportAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         return $this->putAction($request, $identifier);
     }
 
@@ -213,10 +217,14 @@ class JobInstanceController
      *
      * @AclAncestor("pim_importexport_export_profile_edit")
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function putExportAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         return $this->putAction($request, $identifier);
     }
 
@@ -264,10 +272,14 @@ class JobInstanceController
      *
      * @AclAncestor("pim_importexport_import_profile_launch")
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function launchImportAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         return $this->launchAction($request, $code);
     }
 
@@ -279,10 +291,14 @@ class JobInstanceController
      *
      * @AclAncestor("pim_importexport_export_profile_launch")
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function launchExportAction(Request $request, $code)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         return $this->launchAction($request, $code);
     }
 
@@ -309,10 +325,14 @@ class JobInstanceController
      * @param Request $request
      * @param string  $identifier
      *
-     * @return JsonResponse
+     * @return Response
      */
     protected function putAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $jobInstance = $this->getJobInstance($identifier);
         if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.edit')) {
             throw new AccessDeniedHttpException();
@@ -368,10 +388,14 @@ class JobInstanceController
      *
      * @throws AccessDeniedHttpException
      *
-     * @return JsonResponse
+     * @return Response
      */
     protected function launchAction(Request $request, string $code) : JsonResponse
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new Response('/');
+        }
+
         $jobInstance = $this->getJobInstance($code);
         if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.execute')) {
             throw new AccessDeniedHttpException();
@@ -572,10 +596,14 @@ class JobInstanceController
      * @param Request $request
      * @param string  $type
      *
-     * @return JsonResponse
+     * @return Response
      */
     protected function createAction(Request $request, string $type)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $data = json_decode($request->getContent(), true);
         $jobInstance = $this->jobInstanceFactory->createJobInstance($type);
         $this->updater->update($jobInstance, $data);

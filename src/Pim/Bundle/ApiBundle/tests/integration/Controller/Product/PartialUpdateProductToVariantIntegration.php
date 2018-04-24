@@ -154,6 +154,14 @@ JSON;
 
     public function testProductHasNoValueForTheVariantAxis()
     {
+        $this->createProductModel(
+            [
+                'code' => 'parent_product_no_value',
+                'family_variant' => 'familyVariantA2',
+                'values'  => []
+            ]
+        );
+
         $this->createProduct('product_no_value', [
             'family' => 'familyA',
             'categories' => ['categoryA2'],
@@ -163,7 +171,7 @@ JSON;
         $data =
 <<<JSON
     {
-        "parent": "amor"
+        "parent": "parent_product_no_value"
     }
 JSON;
 
@@ -178,7 +186,7 @@ JSON;
                 'errors' => [
                     [
                         'property' => 'attribute',
-                        'message' => 'Attribute "a_yes_no" cannot be empty, as it is defined as an axis for this entity'
+                        'message' => 'Attribute "a_simple_select" cannot be empty, as it is defined as an axis for this entity'
                     ]
                 ]
             ],

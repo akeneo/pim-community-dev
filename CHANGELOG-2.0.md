@@ -1,3 +1,53 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7300: fix the status filter on product grid for products with parent.
+- PIM-7282: Add validation on the code value during the attribute creation to prohibit the "entity_type" value.
+
+# 2.0.21 (2018-04-10)
+
+## Improvements
+
+- PIM-7084: Add command to clean product values after attribute deletion
+
+## Bug fixes
+
+- PIM-7251: Fix history date on all grids (except product grid)
+- PIM-6993: Fix pagination on user grid in role and group edition
+- PIM-7275: Fix regression on group products grid filters
+- PIM-6962: Fix breadcrumb links issue after the save on the edit page
+- PIM-7267: Fix boolean attributes not added to variant product
+- PIM-7263: (BACKPORT for 2.0) Create a purging command (`pim:catalog:remove-wrong-boolean-values-on-variant-products`) for boolean values on variant products that should belong to parents
+- PIM-6999: Fix flash message on edit user
+
+## BC breaks
+
+- Add method signature from `Pim\Component\Catalog\Model\FamilyVariantInterface::getLevelForAttributeCode(string $attributeCode)`
+
+# 2.0.20 (2018-03-29)
+
+## Bug fixes
+
+- PIM-7240: Add subscriber to clear the cache between each job step batch
+- PIM-7257: Add missing translations in product grid
+- PIM-7241: Fix memory consumption issue when archiving an import file
+- PIM-7256: Add missing filters on product group grid
+- PIM-6945: Fix missing header elements on identifier attribute edit form
+- PIM-7259: Remove only attribute's option removed for multi select attribute
+- PIM-7270: Fix [object Object] empty filter value
+- PIM-7252: Fix permissions on attributes settings page
+- PIM-7260: Add form validation in the 'configure' step of mass edits
+
+# 2.0.19 (2018-03-23)
+
+## Bug fixes
+
+- PIM-7203: Fix bulk actions mass edit only some of the selection
+- PIM-7237: Fix integrity constraint violation during import
+- PIM-7243: Fix issue on currencies in CSV and XLSX product imports
+- PIM-7244: Fix duplicated entry during products import
+
 # 2.0.18 (2018-03-20)
 
 ## Bug fixes

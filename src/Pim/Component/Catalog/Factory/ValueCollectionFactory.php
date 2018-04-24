@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
+use Pim\Component\Catalog\Exception\InvalidOptionsException;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Psr\Log\LoggerInterface;
@@ -83,6 +84,17 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                                     $e->getPropertyValue()
                                 )
                             );
+                        } catch (InvalidOptionsException $e) {
+                            $this->logger->warning(
+                                sprintf(
+                                    'Tried to load a product value with the options "%s" that do not exist.',
+                                    $e->toString()
+                                )
+                            );
+                            $goodOptions = array_diff($data, $e->toArray());
+                            if (!empty($goodOptions)) {
+                                $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $goodOptions);
+                            }
                         } catch (InvalidAttributeException $e) {
                             $this->logger->warning(
                                 sprintf(

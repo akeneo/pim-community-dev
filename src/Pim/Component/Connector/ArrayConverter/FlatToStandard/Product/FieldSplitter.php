@@ -62,14 +62,23 @@ class FieldSplitter extends BaseFieldSplitter
     {
         $prices = [];
         if ('' !== $value) {
-            preg_match_all('/
-                (?P<prices>
-                    (-?[a-z0-9]+)  # int or blank (if there is no price defined)
-                    (?:[^0-9]\d+)? # decimal separator and decimal
-                    [a-z\s]+       # currency
-                )/ix', $value, $matches);
+            // Strip quotation marks
+            $cleanedValue = preg_replace('/["]/', '', $value);
 
-            if (empty($matches['prices'])) {
+            // Replace these types of commas with semicolon:
+            // Commas after currency type: 'EUR, ...'
+            // Commas between numbers and currency symbols: '123.00, $199...'
+            // Dots used as separators: '123,100 EUR.199 USD'
+            $matches = preg_replace('/
+                (?:,(?<=[a-z],)
+                |(?=,?\s?\p{Sc}),)
+                |(?:.(?<=[a-z]\.))
+             /ixm', '\1;', $cleanedValue);
+
+            // Get an array of values by exploding semicolon delimited values
+            $prices = explode(';', $matches);
+
+            if (empty($matches)) {
                 if (!is_array($value)) {
                     return [$value];
                 }
@@ -77,7 +86,7 @@ class FieldSplitter extends BaseFieldSplitter
                 return $value;
             }
 
-            $prices = $matches['prices'];
+
             array_walk($prices, function (&$price) {
                 $price = trim($price);
             });

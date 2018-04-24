@@ -76,24 +76,4 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->write([$product1, $product2]);
     }
-
-    function it_clears_cache(
-        $stepExecution,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        JobParameters $jobParameters
-    ) {
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('realTimeVersioning')->willReturn(true);
-
-        $items = [$product1, $product2];
-
-        $product1->getId()->willReturn('45');
-        $product2->getId()->willReturn(null);
-
-        $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
-
-        $this->write($items);
-    }
 }

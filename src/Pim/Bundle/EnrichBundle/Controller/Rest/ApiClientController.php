@@ -8,6 +8,7 @@ use FOS\OAuthServerBundle\Entity\ClientManager;
 use OAuth2\OAuth2;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -50,12 +51,16 @@ class ApiClientController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_api_connection_manage")
      */
-    public function createAction(Request $request): JsonResponse
+    public function createAction(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $client = $this->clientManager->createClient();
 
         $data = json_decode($request->getContent(), true);
@@ -84,12 +89,16 @@ class ApiClientController
      * @param Request $request
      * @param string  $publicId
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pim_enrich_api_connection_manage")
      */
     public function revokeAction(Request $request, string $publicId): JsonResponse
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $client = $this->clientManager->findClientByPublicId($publicId);
 
         if (null === $client) {

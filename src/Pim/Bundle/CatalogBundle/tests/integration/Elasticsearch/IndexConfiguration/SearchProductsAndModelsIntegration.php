@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
-
 /**
  * Search use cases of products and models in a "smart datagrid way".
  * It returns either products or models depending on where the information is stored.
@@ -36,20 +33,17 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
         $query = [
             'query' => [
                 'bool' => [
-                   'must_not' => [
-                       'exists' => [
-                           'field' => 'parent',
-                       ],
-                   ],
+                    'must_not' => [
+                        'exists' => [
+                            'field' => 'parent',
+                        ],
+                    ],
                 ],
             ],
         ];
 
         $productsFound = $this->getSearchQueryResults(
-            $query,
-            [
-                AbstractPimCatalogProductModelIntegration::DOCUMENT_TYPE,
-            ]
+            $query
         );
 
         $this->assertDocument(
@@ -70,20 +64,34 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'query_string' => [
-                                'default_field' => 'values.description-text.<all_channels>.<all_locales>',
-                                'query'         => '*T-shirt*',
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'query_string' => [
+                                        'default_field' => 'values.description-text.<all_channels>.<all_locales>',
+                                        'query'         => '*T-shirt*',
+                                    ],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['description']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
                             ],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['description']],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -111,17 +119,31 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['red']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['color']],
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['red']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -143,17 +165,31 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['color']],
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -165,17 +201,31 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['blue']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['color']],
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['blue']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -197,17 +247,31 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['size']],
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -230,17 +294,31 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['m']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['size']],
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['m']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -279,20 +357,37 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
-                        ],
-                        [
-                            'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['color', 'size']],
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
+                                ],
+                                [
+                                    'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -304,21 +399,39 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
-                        ],
-                        [
-                            'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['m']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['color', 'size']],
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
+                                ],
+                                [
+                                    'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['m']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
+
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -329,23 +442,40 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'query_string' => [
-                                'default_field' => 'values.description-text.<all_channels>.<all_locales>',
-                                'query'         => '*T-shirt*',
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'query_string' => [
+                                        'default_field' => 'values.description-text.<all_channels>.<all_locales>',
+                                        'query'         => '*T-shirt*',
+                                    ],
+                                ],
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['description']],
+                                                    ],
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
                             ],
-                        ],
-                        [
-                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['color', 'description']],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -357,17 +487,31 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'terms' => ['values.material-option.<all_channels>.<all_locales>' => ['cotton']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['material']],
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => ['values.material-option.<all_channels>.<all_locales>' => ['cotton']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['material']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -387,17 +531,31 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'terms' => ['values.material-option.<all_channels>.<all_locales>' => ['leather']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['material']],
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => ['values.material-option.<all_channels>.<all_locales>' => ['leather']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['material']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -415,20 +573,37 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['m']],
-                        ],
-                        [
-                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['white']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['size', 'color']],
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['m']],
+                                ],
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['white']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                    ],
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -441,23 +616,38 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
-                    'must_not' => [
-                        [
-                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
-                        ],
-                    ],
-                    'filter'   => [
-                        [
-                            'terms' => ['attributes_for_this_level' => ['color']],
-                        ],
-                        [
-                            'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'must_not' => [
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
+                                ],
+                            ],
+                            'filter' => [
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                [
+                                    'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
+
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -489,20 +679,37 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
+                'constant_score' => [
                     'filter' => [
-                        [
-                            'terms' => ['values.material-option.<all_channels>.<all_locales>' => ['cotton']],
-                        ],
-                        [
-                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['red']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['color', 'material']],
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'terms' => ['values.material-option.<all_channels>.<all_locales>' => ['cotton']],
+                                ],
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['red']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['material']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -521,25 +728,42 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
-                    'must_not' => [
-                        [
-                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
-                        ],
-                    ],
-                    'filter'   => [
-                        [
-                            'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
-                        ],
-                        [
-                            'terms' => ['attributes_for_this_level' => ['color', 'size']],
-                        ],
-                        [
-                            'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'must_not' => [
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
+                                ],
+                            ],
+                            'filter' => [
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                [
+                                    'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
+                                ],
+                                [
+                                    'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -563,28 +787,45 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
     {
         $query = [
             'query' => [
-                'bool' => [
-                    'must_not' => [
-                        [
-                            'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
-                        ],
-                        [
-                            'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
-                        ],
-                    ],
-                    'filter'   => [
-                        [
-                            'terms' => ['attributes_for_this_level' => ['color', 'size']],
-                        ],
-                        [
-                            'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
-                        ],
-                        [
-                            'exists' => ['field' => 'values.size-option.<all_channels>.<all_locales>'],
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'must_not' => [
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
+                                ],
+                                [
+                                    'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
+                                ],
+                            ],
+                            'filter' => [
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                [
+                                    'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
+                                ],
+                                [
+                                    'exists' => ['field' => 'values.size-option.<all_channels>.<all_locales>'],
+                                ],
+                            ],
                         ],
                     ],
                 ],
-            ],
+            ]
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
@@ -614,6 +855,290 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                 'biker-jacket-leather-l',
                 'biker-jacket-polyester-m',
                 'biker-jacket-polyester-l',
+            ]
+        );
+    }
+
+    public function testCategoryShoes()
+    {
+        $query = [
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter'   => [
+                                [
+                                    'terms' => [
+                                        'categories' => ['shoes']
+                                    ]
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['categories_of_ancestors' => ['shoes']]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertDocument(
+            $productsFound,
+            [
+                'model-running-shoes',
+            ]
+        );
+    }
+
+    public function testCategoryShoesAndSizeS()
+    {
+        $query = [
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter'   => [
+                                [
+                                    'terms' => ['categories' => ['shoes']],
+                                ],
+                                [
+                                    'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                    ],
+                                                    [
+                                                        'terms' => ['categories_of_ancestors' => ['shoes']]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertDocument(
+            $productsFound,
+            [
+                'model-running-shoes-s',
+            ]
+        );
+    }
+
+    public function testCategoryShoesAndColorWhite()
+    {
+        $query = [
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter'   => [
+                                [
+                                    'terms' => ['categories' => ['shoes']],
+                                ],
+                                [
+                                    'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['white']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                    ],
+                                                    [
+                                                        'terms' => ['categories_of_ancestors' => ['shoes']]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertDocument(
+            $productsFound,
+            [
+                'running-shoes-l-white',
+                'running-shoes-m-white',
+                'running-shoes-s-white'
+            ]
+        );
+    }
+
+    public function testCategoryMen()
+    {
+        $query = [
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter'   => [
+                                [
+                                    'terms' => ['categories' => ['men']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['categories_of_ancestors' => ['men']]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertDocument(
+            $productsFound,
+            [
+                'running-shoes-l-blue',
+                'running-shoes-l-white',
+                'running-shoes-m-blue',
+                'running-shoes-m-white',
+                'running-shoes-s-blue',
+                'running-shoes-s-white',
+            ]
+        );
+    }
+
+    public function testCategoryMenAndMaterialLeather()
+    {
+        $query = [
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter'   => [
+                                [
+                                    'terms' => ['categories' => ['men']],
+                                ],
+                                [
+                                    'terms' => ['values.material-option.<all_channels>.<all_locales>' => ['leather']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['categories_of_ancestors' => ['men']]
+                                                    ],
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['material']]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertDocument(
+            $productsFound,
+            [
+                'running-shoes-l-blue',
+                'running-shoes-l-white',
+                'running-shoes-m-blue',
+                'running-shoes-m-white',
+                'running-shoes-s-blue',
+                'running-shoes-s-white',
+            ]
+        );
+    }
+
+    public function testCategoryFootwearAndSizeS()
+    {
+        $query = [
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter'   => [
+                                [
+                                    'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
+                                ],
+                                [
+                                    'terms' => ['categories' => ['shoes']],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attribute_of_ancestors' => ['size']]
+                                                    ],
+                                                    [
+                                                        'terms' => ['categories_of_ancestors' => ['shoes']]
+                                                    ]
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertDocument(
+            $productsFound,
+            [
+                'model-running-shoes-s'
             ]
         );
     }

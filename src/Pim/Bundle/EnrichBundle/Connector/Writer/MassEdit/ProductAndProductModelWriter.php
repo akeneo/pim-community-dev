@@ -44,6 +44,8 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
      * @param BulkSaverInterface            $productSaver
      * @param BulkSaverInterface            $productModelSaver
      * @param EntityManagerClearerInterface $cacheClearer
+     *
+     * @todo @merge On master : remove $cacheClearer. It is not used anymore. The cache is now cleared in a dedicated subscriber.
      */
     public function __construct(
         VersionManager $versionManager,
@@ -75,7 +77,6 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
 
         $this->productSaver->saveAll($products);
         $this->productModelSaver->saveAll($productModels);
-        $this->cacheClearer->clear();
     }
 
     /**
