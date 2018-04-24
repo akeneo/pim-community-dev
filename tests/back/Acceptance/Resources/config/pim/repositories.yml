@@ -3,11 +3,11 @@ parameters:
     pim_catalog.repository.channel.class: Akeneo\Test\Acceptance\Channel\InMemoryChannelRepository
     pim_catalog.repository.category.class: Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository
     pim_catalog.repository.currency.class: Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository
-    pim_user.repository.role: Akeneo\Test\Acceptance\User\InMemoryRoleRepository
-    pim_user.repository.user: Akeneo\Test\Acceptance\User\InMemoryUserRepository
-    pim_user.repository.group: Akeneo\Test\Acceptance\User\InMemoryGroupRepository
-    pim_catalog.repository.group_type: Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository
-    pim_catalog.repository.group: Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository
+    pim_user.repository.role.class: Akeneo\Test\Acceptance\User\InMemoryRoleRepository
+    pim_user.repository.user.class: Akeneo\Test\Acceptance\User\InMemoryUserRepository
+    pim_user.repository.group.class: Akeneo\Test\Acceptance\User\InMemoryGroupRepository
+    pim_catalog.repository.group_type.class: Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository
+    pim_catalog.repository.group.class: Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository
 
 services:
     pim_catalog.repository.family:
