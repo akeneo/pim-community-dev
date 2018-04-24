@@ -8,13 +8,11 @@ use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTe
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
- * Test that the right product and product model are found depending
- *  - the completeness for a variant product
- *  - the number of complete variant product
+ * Test completeness filter with the operators '=', '!=', '<', '>'.
  *
  * Caution: We use product and product model query builder here
  *
- * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */

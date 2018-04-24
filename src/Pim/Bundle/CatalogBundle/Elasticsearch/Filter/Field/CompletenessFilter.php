@@ -54,6 +54,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
         // - All complete:            all_complete == true
         // - At least one incomplete: all_complete == false
         // - All incomplete:          all_incomplete == true
+        // - Equals, Not equal, lower than, and greater than are used to filter variant products on the completeness
         switch ($operator) {
             case Operators::AT_LEAST_COMPLETE:
                 $shouldClauses = [];
