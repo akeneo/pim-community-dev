@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
@@ -42,6 +43,10 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
      */
     public function save($channel, array $options = [])
     {
+        if(!$channel instanceof ChannelInterface) {
+            throw new \InvalidArgumentException('Only user objects are supported.');
+        }
+
         $this->channels->set($channel->getCode(), $channel);
     }
 

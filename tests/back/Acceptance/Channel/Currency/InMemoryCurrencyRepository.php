@@ -10,6 +10,7 @@ use Akeneo\Test\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Component\Catalog\Model\CurrencyInterface;
 
 final class InMemoryCurrencyRepository implements
     SaverInterface,
@@ -45,6 +46,10 @@ final class InMemoryCurrencyRepository implements
      */
     public function save($currency, array $options = [])
     {
+        if(!$currency instanceof CurrencyInterface) {
+            throw new \InvalidArgumentException('Only user objects are supported.');
+        }
+
         $this->currencies->set($currency->getCode(), $currency);
     }
 

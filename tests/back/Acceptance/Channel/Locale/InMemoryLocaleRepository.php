@@ -9,6 +9,7 @@ use Akeneo\Test\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 final class InMemoryLocaleRepository implements LocaleRepositoryInterface, SaverInterface
@@ -42,6 +43,10 @@ final class InMemoryLocaleRepository implements LocaleRepositoryInterface, Saver
      */
     public function save($locale, array $options = [])
     {
+        if(!$locale instanceof LocaleInterface) {
+            throw new \InvalidArgumentException('Only user objects are supported.');
+        }
+
         $this->locales->set($locale->getCode(), $locale);
     }
 
