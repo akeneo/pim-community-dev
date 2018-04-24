@@ -2,7 +2,6 @@
 
 namespace Pim\Component\User;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface EntityUploadedImageInterface
@@ -42,44 +41,4 @@ interface EntityUploadedImageInterface
      * @return string
      */
     public function getUploadDir();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAssetDelayReminder();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAssetDelayReminder($assetDelayReminder);
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultAssetTree();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultAssetTree(CategoryInterface $defaultAssetTree);
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasProposalsToReviewNotification();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProposalsToReviewNotification($proposalsToReviewNotification);
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasProposalsStateNotification();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProposalsStateNotification($proposalsStateNotification);
 }

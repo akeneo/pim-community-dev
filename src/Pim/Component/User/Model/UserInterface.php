@@ -568,7 +568,7 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setDefaultAssetTree(CategoryInterface $defaultAssetTree);
 
     /**
-     * Does the user want to be notified of new proposals to review ?
+     * Does the user want to be notified of new proposals to review?
      *
      * @return bool
      */
@@ -583,14 +583,14 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setProposalsToReviewNotification($proposalsToReviewNotification);
 
     /**
-     * Does the user want to be notified when its proposals are accepted or rejected ?
+     * Does the user want to be notified when his proposals are accepted or rejected?
      *
      * @return bool
      */
     public function hasProposalsStateNotification();
 
     /**
-     * Set whether the user wants to be notified when its proposals are accepted or rejected.
+     * Set whether the user wants to be notified when his proposals are accepted or rejected.
      *
      * @param bool $proposalsStateNotification
      *
