@@ -6,7 +6,7 @@ namespace Akeneo\Test\Acceptance\Structure\Family;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Test\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\ChannelInterface;

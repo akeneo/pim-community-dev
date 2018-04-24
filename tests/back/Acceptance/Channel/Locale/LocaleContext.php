@@ -6,7 +6,7 @@ namespace Akeneo\Test\Acceptance\Channel\Locale;
 
 use Akeneo\Test\Acceptance\Channel\Locale\InMemoryLocaleRepository;
 use Akeneo\Test\Common\Builder\EntityBuilder;
-use Akeneo\Test\Acceptance\Common\ListOfCodes;
+use Akeneo\Test\Common\ListOfCodes;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 

@@ -6,7 +6,7 @@ namespace Akeneo\Test\Acceptance\Channel;
 
 use Akeneo\Test\Acceptance\Catalog\Category\InMemoryCategoryRepository;
 use Akeneo\Test\Common\Builder\EntityBuilder;
-use Akeneo\Test\Acceptance\Common\ListOfCodes;
+use Akeneo\Test\Common\ListOfCodes;
 use Akeneo\Test\Acceptance\Channel\Currency\InMemoryCurrencyRepository;
 use Akeneo\Test\Acceptance\Channel\Locale\InMemoryLocaleRepository;
 use Behat\Behat\Context\Context;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\Common;
+namespace Akeneo\Test\Common;
 
 /**
  * Use this exception when you don't need all methods from an interface.

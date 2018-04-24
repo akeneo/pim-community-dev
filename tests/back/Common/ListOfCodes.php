@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\Common;
+namespace Akeneo\Test\Common;
 
 /**
  * Manage a list of code like 'EUR, USD' given to gherkins step

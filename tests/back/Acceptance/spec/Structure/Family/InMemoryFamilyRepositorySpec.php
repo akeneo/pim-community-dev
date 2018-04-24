@@ -4,7 +4,7 @@ namespace spec\Akeneo\Test\Acceptance\Structure\Family;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Test\Common\NotImplementedException;
 use Akeneo\Test\Acceptance\Structure\Family\InMemoryFamilyRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
