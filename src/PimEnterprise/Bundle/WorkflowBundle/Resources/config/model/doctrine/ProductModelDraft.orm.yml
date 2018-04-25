@@ -25,7 +25,7 @@ PimEnterprise\Component\Workflow\Model\ProductModelDraft:
             type: integer
             nullable: false
     manyToOne:
-        productModel:
+        entityWithValues:
             targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
             joinColumn:
                 name: product_model_id

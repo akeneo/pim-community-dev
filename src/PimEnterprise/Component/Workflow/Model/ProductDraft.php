@@ -27,7 +27,7 @@ class ProductDraft implements EntityWithValuesDraftInterface
     protected $id;
 
     /** @var EntityWithValuesInterface */
-    protected $product;
+    protected $entityWithValues;
 
     /** @var string */
     protected $author;
@@ -79,7 +79,7 @@ class ProductDraft implements EntityWithValuesDraftInterface
      */
     public function setEntityWithValue(EntityWithValuesInterface $entityWithValues): EntityWithValuesDraftInterface
     {
-        $this->product = $entityWithValues;
+        $this->entityWithValues = $entityWithValues;
 
         return $this;
     }
@@ -89,7 +89,7 @@ class ProductDraft implements EntityWithValuesDraftInterface
      */
     public function getEntityWithValue(): EntityWithValuesInterface
     {
-        return $this->product;
+        return $this->entityWithValues;
     }
 
     /**

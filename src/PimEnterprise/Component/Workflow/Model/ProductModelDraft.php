@@ -12,6 +12,7 @@
 namespace PimEnterprise\Component\Workflow\Model;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -19,13 +20,13 @@ use Pim\Component\Catalog\Model\ValueInterface;
 /**
  * Product model model draft
  */
-class ProductModelDraft implements ProductModelDraftInterface
+class ProductModelDraft implements EntityWithValuesDraftInterface
 {
     /** @var int */
     protected $id;
 
     /** @var ProductModelInterface */
-    protected $productModel;
+    protected $entityWithValues;
 
     /** @var string */
     protected $author;
@@ -53,7 +54,7 @@ class ProductModelDraft implements ProductModelDraftInterface
 
     public function __construct()
     {
-        $this->status = DraftInterface::IN_PROGRESS;
+        $this->status = EntityWithValuesDraftInterface::IN_PROGRESS;
     }
 
     /**
@@ -75,9 +76,9 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setProductModel(ProductModelInterface $productModel): ProductModelDraftInterface
+    public function setEntityWithValue(EntityWithValuesInterface $entityWithValues): EntityWithValuesDraftInterface
     {
-        $this->productModel = $productModel;
+        $this->entityWithValues = $entityWithValues;
 
         return $this;
     }
@@ -85,15 +86,15 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getProductModel(): ProductModelInterface
+    public function getEntityWithValue(): EntityWithValuesInterface
     {
-        return $this->productModel;
+        return $this->entityWithValues;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAuthor(string $author): DraftInterface
+    public function setAuthor(string $author): EntityWithValuesDraftInterface
     {
         $this->author = $author;
 
@@ -111,7 +112,7 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(\DateTime $createdAt): DraftInterface
+    public function setCreatedAt(\DateTime $createdAt): EntityWithValuesDraftInterface
     {
         $this->createdAt = $createdAt;
 
@@ -129,7 +130,7 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setRawValues(array $rawValues): productModelDraftInterface
+    public function setRawValues(array $rawValues): EntityWithValuesDraftInterface
     {
         $this->rawValues = $rawValues;
 
@@ -147,7 +148,7 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setChanges(array $changes): DraftInterface
+    public function setChanges(array $changes): EntityWithValuesDraftInterface
     {
         $this->changes = $changes;
 
@@ -198,7 +199,7 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChange(string $fieldCode, string $localeCode, string $channelCode): ?array
+    public function getChange(string $fieldCode, ?string $localeCode, ?string $channelCode): ?array
     {
         if (!isset($this->changes['values'])) {
             return null;
@@ -220,7 +221,7 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function removeChange(string $fieldCode, string $localeCode, string $channelCode)
+    public function removeChange(string $fieldCode, ?string $localeCode, ?string $channelCode)
     {
         if (!isset($this->changes['values'])) {
             return;
@@ -247,7 +248,7 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getReviewStatusForChange(string $fieldCode, string $localeCode, string $channelCode): ?array
+    public function getReviewStatusForChange(?string $fieldCode, ?string $localeCode, ?string $channelCode): ?string
     {
         if (!isset($this->changes['review_statuses'][$fieldCode])) {
             return null;
@@ -267,7 +268,7 @@ class ProductModelDraft implements ProductModelDraftInterface
      *
      * @throws \LogicException
      */
-    public function setReviewStatusForChange(string $status, string $fieldCode, string $localeCode, string $channelCode): DraftInterface
+    public function setReviewStatusForChange(string $status, string $fieldCode, ?string $localeCode, ?string $channelCode): EntityWithValuesDraftInterface
     {
         if (self::CHANGE_DRAFT !== $status && self::CHANGE_TO_REVIEW !== $status) {
             throw new \LogicException(sprintf('"%s" is not a valid review status', $status));
@@ -291,7 +292,7 @@ class ProductModelDraft implements ProductModelDraftInterface
      *
      * @throws \LogicException
      */
-    public function setAllReviewStatuses(string $status): DraftInterface
+    public function setAllReviewStatuses(string $status): EntityWithValuesDraftInterface
     {
         if (self::CHANGE_DRAFT !== $status && self::CHANGE_TO_REVIEW !== $status) {
             throw new \LogicException(sprintf('"%s" is not a valid review status', $status));
@@ -313,7 +314,7 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function removeReviewStatusForChange(string $fieldCode, string $localeCode, string $channelCode)
+    public function removeReviewStatusForChange(string $fieldCode, ?string $localeCode, ?string $channelCode): void
     {
         if (!isset($this->changes['review_statuses'][$fieldCode])) {
             return;
@@ -359,7 +360,7 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function markAsInProgress()
+    public function markAsInProgress(): void
     {
         $this->status = self::IN_PROGRESS;
     }
@@ -367,7 +368,7 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function markAsReady()
+    public function markAsReady(): void
     {
         $this->status = self::READY;
     }
@@ -375,7 +376,7 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getStatus(): string
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -407,7 +408,7 @@ class ProductModelDraft implements ProductModelDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(ValueCollectionInterface $values): productModelDraftInterface
+    public function setValues(ValueCollectionInterface $values): EntityWithValuesDraftInterface
     {
         $this->values = $values;
 
