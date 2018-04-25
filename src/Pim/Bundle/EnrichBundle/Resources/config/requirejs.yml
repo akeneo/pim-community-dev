@@ -676,6 +676,7 @@ config:
 
         pim/family-variant-edit-form/edit:                                  pimenrich/js/family-variant/form/edit
         pim/family-variant-edit-form/attribute-set:                         pimenrich/js/family-variant/form/attribute-set
+        pim/family-variant-edit-form/labels-container:                      pimenrich/js/family-variant/form/labels-container
         pim/family-variant-edit-form/save:                                  pimenrich/js/family-variant/form/save
         pim/family-variant-edit-form/delete:                                pimenrich/js/family-variant/form/delete
 
@@ -1080,6 +1081,7 @@ config:
         pim/template/family-variant/edit:                    pimenrich/templates/family-variant/edit.html
         pim/template/family-variant/attribute-set:           pimenrich/templates/family-variant/attribute-set.html
         pim/template/family-variant/attribute-group:         pimenrich/templates/family-variant/attribute-group.html
+        pim/template/family-variant/labels-container:        pimenrich/templates/family-variant/labels-container.html
 
         # Grid
         pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html

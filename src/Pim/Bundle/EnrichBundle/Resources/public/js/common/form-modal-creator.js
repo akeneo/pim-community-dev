@@ -14,10 +14,15 @@ define(
              *
              * @param {String} entityCode
              * @param {String} fetcherCode
+             * @param {String} className
              *
              * @return {Backbone.Modal}
              */
-            createModal: function(entityCode, fetcherCode) {
+            createModal: function(entityCode, fetcherCode, className) {
+                if (undefined === className) {
+                    className = 'modal modal--fullPage';
+                }
+
                 return fetcherRegistry.getFetcher(fetcherCode).fetch(
                     entityCode,
                     {cached: false}
@@ -25,7 +30,7 @@ define(
                     return formBuilder.build(entity.meta.form)
                         .then((form) => {
                             const modal = new Backbone.BootstrapModal({
-                                className: 'modal modal--fullPage',
+                                className: className,
                                 content: '',
                                 okCloses: false,
                                 buttons: false
