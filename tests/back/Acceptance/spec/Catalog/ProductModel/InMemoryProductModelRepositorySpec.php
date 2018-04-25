@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\Test\Acceptance\Catalog\Product\Model;
+namespace spec\Akeneo\Test\Acceptance\Catalog\ProductModel;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Common\NotImplementedException;
-use Akeneo\Test\Acceptance\Catalog\Product\Model\InMemoryProductModelRepository;
+use Akeneo\Test\Acceptance\Catalog\ProductModel\InMemoryProductModelRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Model\ProductModel;

@@ -47,7 +47,7 @@ final class InMemoryCurrencyRepository implements
     public function save($currency, array $options = [])
     {
         if(!$currency instanceof CurrencyInterface) {
-            throw new \InvalidArgumentException('Only user objects are supported.');
+            throw new \InvalidArgumentException('Only currency objects are supported.');
         }
 
         $this->currencies->set($currency->getCode(), $currency);

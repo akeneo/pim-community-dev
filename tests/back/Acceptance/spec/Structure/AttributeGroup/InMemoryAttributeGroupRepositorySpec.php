@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Test\Acceptance\Structure\Attribute\Group;
+namespace spec\Akeneo\Test\Acceptance\Structure\AttributeGroup;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;

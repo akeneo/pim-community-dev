@@ -26,7 +26,7 @@ class InMemoryCurrencyRepositorySpec extends ObjectBehavior
         $this->shouldImplement(SaverInterface::class);
     }
 
-    function it_saves_a_role()
+    function it_saves_a_currency()
     {
         $this->save(new Currency())->shouldReturn(null);
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\Structure\Attribute\Option;
+namespace Akeneo\Test\Acceptance\Structure\AttributeOption;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Common\NotImplementedException;

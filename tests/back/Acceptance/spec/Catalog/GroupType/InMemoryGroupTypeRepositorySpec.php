@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\Test\Acceptance\Catalog\Group\Type;
+namespace spec\Akeneo\Test\Acceptance\Catalog\GroupType;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Acceptance\Catalog\Group\Type\InMemoryGroupTypeRepository;
+use Akeneo\Test\Acceptance\Catalog\GroupType\InMemoryGroupTypeRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\Catalog\Group\Type;
+namespace Akeneo\Test\Acceptance\Catalog\GroupType;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Catalog\NotImplementedException;

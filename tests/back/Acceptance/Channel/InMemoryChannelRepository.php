@@ -44,7 +44,7 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
     public function save($channel, array $options = [])
     {
         if(!$channel instanceof ChannelInterface) {
-            throw new \InvalidArgumentException('Only user objects are supported.');
+            throw new \InvalidArgumentException('Only channel objects are supported.');
         }
 
         $this->channels->set($channel->getCode(), $channel);

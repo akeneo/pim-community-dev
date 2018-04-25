@@ -44,7 +44,7 @@ final class InMemoryLocaleRepository implements LocaleRepositoryInterface, Saver
     public function save($locale, array $options = [])
     {
         if(!$locale instanceof LocaleInterface) {
-            throw new \InvalidArgumentException('Only user objects are supported.');
+            throw new \InvalidArgumentException('Only locale objects are supported.');
         }
 
         $this->locales->set($locale->getCode(), $locale);
