@@ -25,7 +25,7 @@ class RemoveProductModelIntegration extends TestCase
         $subId = $subProductModel->getId();
         $variantId = $variant->getId();
 
-        sleep(1);
+        sleep(1); // the product need to be indexed...
 
         $this->getFromTestContainer('pim_catalog.remover.product_model')->remove($rootProductModel);
 
