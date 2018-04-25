@@ -5,6 +5,7 @@
 - PIM-6795: As Julia, I would like to display only the current level attributes.
 - PIM-7284: Be able to bulk change the status of children products if product models are selected.
 - PIM-7296: As Julia, I would like to change the parent of a variant product by import.
+- PIM-6989: As Julia, I would like to associate product models by import
 
 ## Technical improvements
 

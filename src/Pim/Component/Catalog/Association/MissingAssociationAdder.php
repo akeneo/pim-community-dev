@@ -38,7 +38,7 @@ class MissingAssociationAdder
     /**
      * @param AssociationAwareInterface $entity
      */
-    public function addMissingAssociations(AssociationAwareInterface $entity)
+    public function addMissingAssociations(AssociationAwareInterface $entity): void
     {
         $missingAssocTypes = $this->associationTypeRepository->findMissingAssociationTypes($entity);
 

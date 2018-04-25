@@ -97,9 +97,9 @@ class ProductModel implements ArrayConverterInterface
     protected function filterFields(array $mappedItem, $withAssociations): array
     {
         if (false === $withAssociations) {
-            $isGroupAssPattern = '/^\w+'.AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX.'$/';
-            $isProductAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX.'$/';
-            $isProductModelAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX.'$/';
+            $isGroupAssPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
+            $isProductAssPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
+            $isProductModelAssPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
             foreach (array_keys($mappedItem) as $field) {
                 $isGroup = (1 === preg_match($isGroupAssPattern, $field));
                 $isProduct = (1 === preg_match($isProductAssPattern, $field));
