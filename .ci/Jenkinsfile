@@ -4,8 +4,9 @@ String[] legacyFeatures = ["tests/legacy/features", "vendor/akeneo/pim-community
 String ceBranch = "master"
 String ceOwner = "akeneo"
 String launchUnitTests = "yes"
+String launchAcceptanceTests = "yes"
 String launchIntegrationTests = "yes"
-String launchBehatTests = "yes"
+String launchEndToEndTests = "yes"
 String verboseOutputs = "yes"
 String slackChannel = ""
 String tag = "eu.gcr.io/akeneo-ci/pim-enterprise-dev:${env.BRANCH_NAME}"
@@ -18,19 +19,21 @@ stage("Build") {
                 string(defaultValue: 'master', description: 'Community Edition branch used for the build', name: 'ce_branch'),
                 string(defaultValue: 'akeneo', description: 'Owner of the repository on GitHub', name: 'ce_owner'),
                 choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
+                choice(choices: 'yes\nno', description: 'Run acceptance tests', name: 'launchAcceptanceTests'),
                 choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
-                choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
+                choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchEndToEndTests'),
+                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end scenarios to run', name: 'legacyFeatures'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
-                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Behat scenarios to build', name: 'legacyFeatures'),
             ])
 
             ceBranch = userInput['ce_branch']
             ceOwner = userInput['ce_owner']
             legacyFeatures = userInput['legacyFeatures'].tokenize(',')
             launchUnitTests = userInput['launchUnitTests']
+            launchAcceptanceTests = userInput['launchAcceptanceTests']
             launchIntegrationTests = userInput['launchIntegrationTests']
-            launchBehatTests = userInput['launchBehatTests']
+            launchEndToEndTests = userInput['launchEndToEndTests']
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
         }
@@ -57,43 +60,49 @@ stage("Test") {
     try {
         parallel(
             // UNIT TESTS & MISC
-            "php-coupling-detector": {testif(
+            "back-php-coupling-detector": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
             )},
-            "phpspec": {testif(
+            "back-phpspec": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && su -s /bin/sh www-data -c './vendor/bin/phpspec run --no-interaction --format=junit' > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
-            "php-cs-fixer": {testif(
+            "back-php-cs-fixer": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
-            "grunt": {testif(
+            "front-grunt": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run lint"
             )},
 
             // ACCEPTANCE TESTS
-            "frontend-acceptance": {testif(
+            "front-acceptance": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance /var/www/pim/vendor/akeneo/pim-community-dev/tests/features /var/www/pim/tests/features"
             )},
+            "back-acceptance-ee": {queue(
+                condition: launchAcceptanceTests.equals("yes"),
+                verbose: (verboseOutputs == "yes"),
+                container: tag,
+                fetcher: {return pimBehatFetcher(profiles: ["acceptance"], features: ["tests/features", "vendor/akeneo/pim-community-dev/tests/features"])}
+            )},
 
             // INTEGRATION TESTS
-            "frontend-integration": {testif(
+            "front-integration": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
-            "phpunit-integration": {queue(
+            "back-legacy-integration-phpunit": {queue(
                 condition: launchIntegrationTests.equals("yes"),
                 container: tag,
                 verbose: (verboseOutputs == "yes"),
@@ -101,8 +110,8 @@ stage("Test") {
             )},
 
             // END TO END TESTS
-            "behat": {queue(
-                condition: launchBehatTests.equals("yes"),
+            "legacy-end-to-end-behat": {queue(
+                condition: launchEndToEndTests.equals("yes"),
                 container: tag,
                 verbose: (verboseOutputs == "yes"),
                 fetcher: {return pimBehatFetcher(profiles: ["legacy", "acceptance"], features: legacyFeatures)}
