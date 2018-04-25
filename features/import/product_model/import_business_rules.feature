@@ -38,7 +38,7 @@ Feature: Create product models through CSV import
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then I should see the text "created 1"
     Then I should see the text "skipped 1"
-    And I should see the text "Attribute \"color\" cannot be empty, as it is defined as an axis for this entity: Pim\Component\Catalog\Model\ProductModel"
+    And I should see the text "Attribute \"color\" cannot be empty, as it is defined as an axis for this entity"
 
   Scenario: Only the attributes with values defined as "common attributes" in the family variant are updated.
     Given the following CSV file to import:
