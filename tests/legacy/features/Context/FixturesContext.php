@@ -1550,7 +1550,7 @@ class FixturesContext extends BaseFixturesContext
     public function theProductModelShouldHaveTheFollowingAssociations($code, TableNode $table)
     {
         $this->getMainContext()->getSubcontext('hook')->clearUOW();
-        $filter = $this->getContainer()->get('pim_catalog.comparator.filter.product_model_association');
+        $filter = $this->getContainer()->get('pim_catalog.comparator.filter.product_association');
 
         $expected['associations'] = [];
         foreach ($table->getHash() as $row) {
