@@ -5,18 +5,19 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 
 /**
+ * Calculate the maximum and average number of product values for products and product models together.
+ *
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AggregatedAverageMaxProductValues implements AverageMaxQuery
+class AggregatedAverageMaxProductAndProductModelValues implements AverageMaxQuery
 {
-    private const VOLUME_NAME = 'average_max_product_values';
+    private const VOLUME_NAME = 'average_max_product_and_product_model_values';
 
     /** @var Connection */
     private $connection;
@@ -40,19 +41,29 @@ class AggregatedAverageMaxProductValues implements AverageMaxQuery
     public function fetch(): AverageMaxVolumes
     {
         $sql = <<<SQL
-SELECT JSON_EXTRACT(volume, '$.value.max') AS max, JSON_EXTRACT(volume, '$.value.average') AS average
-FROM pim_aggregated_volume WHERE volume_name = :volumeName;
+SELECT 
+(
+    SELECT MAX(JSON_EXTRACT(volume, '$.value.max'))
+    FROM pim_aggregated_volume
+    WHERE volume_name IN ('average_max_product_values', 'average_max_product_model_values')
+) AS max,
+CEIL(
+    (
+        SELECT SUM(JSON_EXTRACT(volume, '$.value'))
+        FROM pim_aggregated_volume
+        WHERE volume_name IN ('count_product_values', 'count_product_model_values')
+    ) /
+    (
+        SELECT SUM(JSON_EXTRACT(volume, '$.value'))
+        FROM pim_aggregated_volume
+        WHERE volume_name IN ('count_products', 'count_product_models')
+    )
+) AS average
 SQL;
-        $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('volumeName', self::VOLUME_NAME, Type::STRING);
-        $stmt->execute();
-        $sqlResult = $stmt->fetch();
-
+        $sqlResult = $this->connection->query($sql)->fetch();
         $maxValue = isset($sqlResult['max']) ? (int) $sqlResult['max'] : 0;
         $averageValue = isset($sqlResult['average']) ? (int) $sqlResult['average'] : 0;
 
-        $volume = new AverageMaxVolumes($maxValue, $averageValue, $this->limit, self::VOLUME_NAME);
-
-        return $volume;
+        return new AverageMaxVolumes($maxValue, $averageValue, $this->limit, self::VOLUME_NAME);
     }
 }

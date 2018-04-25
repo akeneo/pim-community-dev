@@ -31,11 +31,19 @@ services:
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query_to_aggregate }
 
-    pim_volume_monitoring.persistence.query.aggregated_average_max_product_values:
-        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AggregatedAverageMaxProductValues
+    pim_volume_monitoring.persistence.query.average_max_product_model_values:
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductModelValues
         arguments:
             - '@database_connection'
-            - '%average_max_product_values_limit%'
+            - '%average_max_product_model_values_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query_to_aggregate }
+
+    pim_volume_monitoring.persistence.query.aggregated_average_max_product_and_product_model_values:
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AggregatedAverageMaxProductAndProductModelValues
+        arguments:
+            - '@database_connection'
+            - '%average_max_product_model_values_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
@@ -118,6 +126,7 @@ services:
             - '%count_products_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
+            - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
 
     pim_volume_monitoring.persistence.query.count_product_models:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductModels'
@@ -126,6 +135,7 @@ services:
             - '%count_product_models_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
+            - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
 
     pim_volume_monitoring.persistence.query.count_variant_products:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountVariantProducts'
@@ -143,12 +153,19 @@ services:
         tags:
             - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
 
-    pim_volume_monitoring.persistence.query.aggregated_count_product_values:
-        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AggregatedCountProductValues
+    pim_volume_monitoring.persistence.query.count_product_model_values:
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductModelValues
         arguments:
             - '@database_connection'
-            - '%count_product_values_limit%'
+            - '%count_product_model_values_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
+
+    pim_volume_monitoring.persistence.query.aggregated_count_product_and_product_model_values:
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AggregatedCountProductAndProductModelValues
+        arguments:
+            - '@database_connection'
+            - '%count_product_and_product_model_values_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
-
 

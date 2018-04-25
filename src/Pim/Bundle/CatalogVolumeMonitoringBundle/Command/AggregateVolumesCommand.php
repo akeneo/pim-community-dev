@@ -34,6 +34,8 @@ class AggregateVolumesCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln('Aggregation in progress. It can take minutes or hours depending on the size of the catalog.');
+
         $volumeAggregation = $this->getContainer()->get('pim_volume_monitoring.volume.aggregation');
         $volumeAggregation->aggregate();
 
