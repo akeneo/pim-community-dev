@@ -98,6 +98,7 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\RevertBundle\PimEnterpriseRevertBundle(),
             new PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle(),
             new PimEnterprise\Bundle\ApiBundle\PimEnterpriseApiBundle(),
+            new PimEnterprise\Bundle\SuggestDataBundle\PimEnterpriseSuggestDataBundle(),
         ];
     }
 
