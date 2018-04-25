@@ -56,6 +56,12 @@ stage("Build") {
 stage("Test") {
     try {
         parallel(
+            // UNIT TESTS & MISC
+            "php-coupling-detector": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
+            )},
             "phpspec": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
@@ -73,20 +79,19 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && yarn run lint"
             )},
+
+            // ACCEPTANCE TESTS
             "frontend-acceptance": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance /var/www/pim/vendor/akeneo/pim-community-dev/tests/features /var/www/pim/tests/features"
             )},
+
+            // INTEGRATION TESTS
             "frontend-integration": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
-            )},
-            "php-coupling-detector": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
             )},
             "phpunit-integration": {queue(
                 condition: launchIntegrationTests.equals("yes"),
@@ -94,6 +99,8 @@ stage("Test") {
                 verbose: (verboseOutputs == "yes"),
                 fetcher: {return pimIntegrationFetcher(testsuites: ["PIM_Integration_Test"])}
             )},
+
+            // END TO END TESTS
             "behat": {queue(
                 condition: launchBehatTests.equals("yes"),
                 container: tag,
