@@ -7,8 +7,7 @@ namespace Akeneo\Test\Acceptance\User;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\UserBundle\Entity\Role;
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Pim\Component\User\Model\RoleInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -17,7 +16,7 @@ use Symfony\Component\Security\Core\Role\RoleInterface;
  */
 class InMemoryRoleRepository implements IdentifiableObjectRepositoryInterface, SaverInterface
 {
-    /** @var Role[] */
+    /** @var RoleInterface[] */
     private $roles;
 
     public function __construct()

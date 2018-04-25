@@ -7,7 +7,6 @@ namespace Akeneo\Test\Acceptance\User;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Component\User\Model\GroupInterface;
 
 /**
@@ -17,7 +16,7 @@ use Pim\Component\User\Model\GroupInterface;
  */
 class InMemoryGroupRepository implements IdentifiableObjectRepositoryInterface, SaverInterface
 {
-    /** @var Group[] */
+    /** @var GroupInterface[] */
     private $groups;
 
     public function __construct()

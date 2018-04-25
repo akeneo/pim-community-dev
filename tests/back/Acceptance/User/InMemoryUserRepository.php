@@ -8,9 +8,8 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
+use Pim\Component\User\Model\UserInterface;
+use Pim\Component\User\Repository\UserRepositoryInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -19,7 +18,7 @@ use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
  */
 class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, UserRepositoryInterface
 {
-    /** @var User[] */
+    /** @var UserInterface[] */
     private $users;
 
     public function __construct()

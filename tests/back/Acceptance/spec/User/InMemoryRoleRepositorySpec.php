@@ -5,8 +5,8 @@ namespace spec\Akeneo\Test\Acceptance\User;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\User\InMemoryRoleRepository;
-use Oro\Bundle\UserBundle\Entity\Role;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\User\Model\Role;
 use Prophecy\Argument;
 
 class InMemoryRoleRepositorySpec extends ObjectBehavior
