@@ -1,6 +1,6 @@
 #!groovy
 
-String[] features = ["features", "vendor/akeneo/pim-community-dev/tests/features", "vendor/akeneo/pim-community-dev/features"]
+String[] legacyFeatures = ["tests/legacy/features", "vendor/akeneo/pim-community-dev/tests/legacy/features"]
 String ceBranch = "master"
 String ceOwner = "akeneo"
 String launchUnitTests = "yes"
@@ -22,12 +22,12 @@ stage("Build") {
                 choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
-                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Behat scenarios to build', name: 'features'),
+                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Behat scenarios to build', name: 'legacyFeatures'),
             ])
 
             ceBranch = userInput['ce_branch']
             ceOwner = userInput['ce_owner']
-            features = userInput['features'].tokenize(',')
+            legacyFeatures = userInput['legacyFeatures'].tokenize(',')
             launchUnitTests = userInput['launchUnitTests']
             launchIntegrationTests = userInput['launchIntegrationTests']
             launchBehatTests = userInput['launchBehatTests']
@@ -78,6 +78,11 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance /var/www/pim/vendor/akeneo/pim-community-dev/tests/features /var/www/pim/tests/features"
             )},
+            "frontend-integration": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
+            )},
             "php-coupling-detector": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
@@ -93,7 +98,7 @@ stage("Test") {
                 condition: launchBehatTests.equals("yes"),
                 container: tag,
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimBehatFetcher(profiles: ["legacy", "acceptance"], features: features)}
+                fetcher: {return pimBehatFetcher(profiles: ["legacy", "acceptance"], features: legacyFeatures)}
             )}
         )
     } finally {
