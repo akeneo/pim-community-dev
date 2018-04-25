@@ -44,4 +44,17 @@ class ProductUniqueDataRepository extends EntityRepository implements ProductUni
 
         return 0 !== $count;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteUniqueDataForProduct(ProductInterface $product, string $uniqueDataClass)
+    {
+        $queryBuilder = $this->createQueryBuilder('ud')
+            ->delete($uniqueDataClass, 'ud')
+            ->where('ud.product = :product')
+            ->setParameters(['product' => $product->getId()])
+            ->getQuery()
+            ->execute();
+    }
 }

@@ -26,4 +26,12 @@ interface ProductUniqueDataRepositoryInterface extends ObjectRepository
      * @return bool
      */
     public function uniqueDataExistsInAnotherProduct(ValueInterface $value, ProductInterface $product);
+
+    /**
+     * Delete all unique data related to product
+     *
+     * @param ProductInterface $product
+     * @param string           $uniqueDataClass
+     */
+    public function deleteUniqueDataForProduct(ProductInterface $product, string $uniqueDataClass);
 }

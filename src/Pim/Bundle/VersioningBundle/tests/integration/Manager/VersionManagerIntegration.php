@@ -59,8 +59,11 @@ class VersionManagerIntegration extends TestCase
     {
         $product = $this->productRepository->findOneByIdentifier('bar');
         $this->productSaver->save($product);
-        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
-        $this->assertEmpty($productVersions);
+        $firstProductVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
+
+        $this->productSaver->save($product);
+        $secondProductVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId());
+        $this->assertTrue(count($firstProductVersions) === count($secondProductVersions));
     }
 
     public function testCreateProductVersionOnProductCreation()
