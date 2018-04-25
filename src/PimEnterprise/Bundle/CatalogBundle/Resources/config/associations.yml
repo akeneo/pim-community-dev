@@ -1,0 +1,8 @@
+services:
+    pim_catalog.association.class_resolver:
+        class: 'Pim\Component\Catalog\Association\AssociationClassResolver'
+        arguments:
+            -
+                PimEnterprise\Component\Workflow\Model\PublishedProductInterface: PimEnterprise\Component\Workflow\Model\PublishedProductAssociation
+                Pim\Component\Catalog\Model\ProductInterface: Pim\Component\Catalog\Model\ProductAssociation
+                Pim\Component\Catalog\Model\ProductModelInterface: Pim\Component\Catalog\Model\ProductModelAssociation
