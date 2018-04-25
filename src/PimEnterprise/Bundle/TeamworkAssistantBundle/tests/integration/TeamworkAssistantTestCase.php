@@ -40,7 +40,18 @@ class TeamworkAssistantTestCase extends TestCase
     {
         $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
         return new Configuration(
-            [$rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'teamwork_assistant']
+            [
+                $rootPath .
+                'tests' .
+                DIRECTORY_SEPARATOR .
+                'back' .
+                DIRECTORY_SEPARATOR .
+                'Integration' .
+                DIRECTORY_SEPARATOR .
+                'catalog' .
+                DIRECTORY_SEPARATOR .
+                'teamwork_assistant'
+            ]
         );
     }
 

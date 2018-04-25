@@ -1,8 +1,30 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7283: Fix slowness on count product in categories for the product grid 
+
+# 2.0.20 (2018-03-29)
+
+## Bug fixes
+
+- PIM-7269: Fix rendering of a proposal on an asset collection attribute
+- PIM-7249: Fix memory leak on mass upload assets
+- PIM-7050: Fix breadcrumb on user page
+
+# 2.0.19 (2018-03-23)
+
+## Bug fixes
+
+- PIM-7254: Fix teamwork assistant user notification when an attribute group permission has `All` group set
+- PIM-6919: Fix smart value and filter on attributes grid
+- PIM-6885: Display all product information to users having only view rights
+
 # 2.0.18 (2018-03-20)
 
 ## Bug fixes
 
-PIM-6885: Display all product information to users having only view rights
+- PIM-6885: Display all product information to users having only view rights
 
 # 2.0.17 (2018-03-06)
 
@@ -16,6 +38,7 @@ PIM-6885: Display all product information to users having only view rights
 
 - API: Apply permissions on products model and variant products
 - API-547: Standardization of the API responses when the user is no granted to view a product
+- AOB-63: Submit draft on variant product via the API
 
 # 2.0.16 (2018-02-22)
 

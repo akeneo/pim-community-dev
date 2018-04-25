@@ -87,23 +87,57 @@ class Version_2_2_180220105049 extends AbstractMigration implements ContainerAwa
         $productDraftRepository = $this->container->get('pimee_workflow.repository.product_draft');
         $productProposalIndexer = $this->container->get('pim_catalog.elasticsearch.product_proposal_indexer');
 
+        $localeRepository = $this->container->get('pim_catalog.repository.locale');
+        $activatedLocaleCodes = $localeRepository->getActivatedLocaleCodes();
+
+        $scopeRepository = $this->container->get('pim_catalog.repository.channel');
+        $scopeCodes = $scopeRepository->getChannelCodes();
+
         $updateSql = 'UPDATE pimee_workflow_product_draft as draft SET draft.raw_values = :rawValues WHERE draft.id = :id';
 
         foreach ($drafts as $draft) {
             $productValues = [];
             $changes = json_decode($draft['changes'], true);
             foreach ($changes['values'] as $attributeCode => $values) {
-                $attribute = $attributeRepository->findOneByIdentifier($attributeCode);
-                $productValues[] = $productValueFactory->create(
-                    $attribute,
-                    $values[0]['scope'],
-                    $values[0]['locale'],
-                    $values[0]['data']
-                );
+                foreach ($values as $value){
+                    $attribute = $attributeRepository->findOneByIdentifier($attributeCode);
+
+                    if (null !== $attribute) {
+                        if (!$attribute->isScopable() && !$attribute->isLocalizable()) {
+                            $productValues[] = $productValueFactory->create(
+                                $attribute,
+                                null,
+                                null,
+                                $value['data']
+                            );
+                        } elseif (($attribute->isScopable() && in_array($value['scope'], $scopeCodes)) && !$attribute->isLocalizable()) {
+                            $productValues[] = $productValueFactory->create(
+                                $attribute,
+                                $value['scope'],
+                                null,
+                                $value['data']
+                            );
+                        } elseif (($attribute->isLocalizable() && in_array($value['locale'], $activatedLocaleCodes)) && !$attribute->isScopable()) {
+                            $productValues[] = $productValueFactory->create(
+                                $attribute,
+                                null,
+                                $value['locale'],
+                                $value['data']
+                            );
+                        } elseif (in_array($value['scope'], $scopeCodes) && in_array($value['locale'], $activatedLocaleCodes)) {
+                            $productValues[] = $productValueFactory->create(
+                                $attribute,
+                                $value['scope'],
+                                $value['locale'],
+                                $value['data']
+                            );
+                        }
+                    }
+                }
             }
 
             $rawValues = $this->container->get('pim_serializer')->normalize($productValues, 'storage');
-            $rawValues = call_user_func_array('array_merge', $rawValues);
+            $rawValues = call_user_func_array('array_merge_recursive', $rawValues);
             $jsonValues = json_encode($rawValues);
 
             $updateStmt = $this->connection->prepare($updateSql);

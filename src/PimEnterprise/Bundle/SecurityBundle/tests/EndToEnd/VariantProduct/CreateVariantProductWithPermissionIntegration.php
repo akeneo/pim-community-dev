@@ -55,14 +55,24 @@ JSON;
                 'root_product_model_no_view_attribute' => [
                     ['locale' => 'fr_FR', 'scope' => null, 'data' => true],
                 ],
-                'sub_product_model_axis_attribute'  => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
-                ],
                 'sku'                                  => [
                     ['locale' => null, 'scope' => null, 'data' => 'variant_product_creation'],
                 ],
+                'sub_product_model_axis_attribute'  => [
+                    ['locale' => null, 'scope' => null, 'data' => true],
+                ],
                 'variant_product_axis_attribute'    => [
                     ['locale' => null, 'scope' => null, 'data' => false],
+                ],
+                'variant_product_edit_attribute'    => [
+                    ['locale' => 'en_US', 'scope' => null, 'data' => false],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => false],
+                    ['locale' => 'zh_CN', 'scope' => null, 'data' => false],
+                ],
+                'variant_product_view_attribute'    => [
+                    ['locale' => 'en_US', 'scope' => null, 'data' => false],
+                    ['locale' => 'fr_FR', 'scope' => null, 'data' => false],
+                    ['locale' => 'zh_CN', 'scope' => null, 'data' => false],
                 ],
             ],
             'created'      => '2016-06-14T13:12:50+02:00',

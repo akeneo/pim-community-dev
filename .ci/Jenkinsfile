@@ -22,7 +22,7 @@ stage("Build") {
                 choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
-                string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features,vendor/akeneo/pim-community-dev/tests/features', description: 'Behat scenarios to build', name: 'features'),
+                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Behat scenarios to build', name: 'features'),
             ])
 
             ceBranch = userInput['ce_branch']

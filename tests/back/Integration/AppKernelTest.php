@@ -28,6 +28,10 @@ class AppKernelTest extends AppKernel
     {
         return dirname(__DIR__)
             . DIRECTORY_SEPARATOR
+            . '..'
+            . DIRECTORY_SEPARATOR
+            . '..'
+            . DIRECTORY_SEPARATOR
             . 'var'
             . DIRECTORY_SEPARATOR
             . 'cache'
@@ -40,7 +44,15 @@ class AppKernelTest extends AppKernel
      */
     public function getLogDir(): string
     {
-        return dirname(__DIR__) . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'logs';
+        return dirname(__DIR__)
+            . DIRECTORY_SEPARATOR
+            . '..'
+            . DIRECTORY_SEPARATOR
+            . '..'
+            . DIRECTORY_SEPARATOR
+            . 'var'
+            . DIRECTORY_SEPARATOR
+            . 'logs';
     }
 
     /**

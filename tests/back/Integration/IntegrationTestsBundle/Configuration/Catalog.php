@@ -31,7 +31,18 @@ class Catalog implements CatalogInterface
     public function useTechnicalSqlCatalog(): Configuration
     {
         $communityConfig = $this->communityCatalog->useTechnicalSqlCatalog();
-        $catalogDirectories = [realpath($this->getRootDirectory() . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'technical_sql')];
+        $catalogDirectories = [realpath(
+            $this->getRootDirectory() .
+            'tests' .
+            DIRECTORY_SEPARATOR .
+            'back' .
+            DIRECTORY_SEPARATOR .
+            'Integration' .
+            DIRECTORY_SEPARATOR .
+            'catalog' .
+            DIRECTORY_SEPARATOR .
+            'technical_sql'
+        )];
 
         return new Configuration(
                 array_merge($communityConfig->getCatalogDirectories(), $catalogDirectories),
@@ -45,7 +56,18 @@ class Catalog implements CatalogInterface
     public function useTechnicalCatalog(): Configuration
     {
         $communityConfig = $this->communityCatalog->useTechnicalCatalog();
-        $catalogDirectories = [realpath($this->getRootDirectory() . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'technical')];
+        $catalogDirectories = [realpath(
+            $this->getRootDirectory() .
+            'tests' .
+            DIRECTORY_SEPARATOR .
+            'back' .
+            DIRECTORY_SEPARATOR .
+            'Integration' .
+            DIRECTORY_SEPARATOR .
+            'catalog' .
+            DIRECTORY_SEPARATOR .
+            'technical'
+        )];
 
         return new Configuration(
             array_merge($communityConfig->getCatalogDirectories(), $catalogDirectories),
@@ -59,9 +81,22 @@ class Catalog implements CatalogInterface
     public function useMinimalCatalog(): Configuration
     {
         $communityConfig = $this->communityCatalog->useMinimalCatalog();
-        $catalogDirectories = [realpath($this->getRootDirectory() . 'src' . DIRECTORY_SEPARATOR . 'PimEnterprise' .
-            DIRECTORY_SEPARATOR . 'Bundle' . DIRECTORY_SEPARATOR . 'InstallerBundle' . DIRECTORY_SEPARATOR .
-            'Resources' . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'minimal')];
+        $catalogDirectories = [realpath(
+            $this->getRootDirectory() .
+            'src' .
+            DIRECTORY_SEPARATOR .
+            'PimEnterprise' .
+            DIRECTORY_SEPARATOR .
+            'Bundle' .
+            DIRECTORY_SEPARATOR .
+            'InstallerBundle' .
+            DIRECTORY_SEPARATOR .
+            'Resources' .
+            DIRECTORY_SEPARATOR .
+            'fixtures' .
+            DIRECTORY_SEPARATOR .
+            'minimal'
+        )];
 
         return new Configuration(
             $catalogDirectories,
@@ -76,13 +111,36 @@ class Catalog implements CatalogInterface
     public function useFunctionalCatalog(string $catalog): Configuration
     {
         $communityConfig = $this->communityCatalog->useFunctionalCatalog($catalog);
-        $catalogDirectories = [realpath($this->getRootDirectory() . DIRECTORY_SEPARATOR . 'features'. DIRECTORY_SEPARATOR . 'Context' .
-            DIRECTORY_SEPARATOR .'catalog'. DIRECTORY_SEPARATOR . $catalog)];
+        $catalogDirectories = [realpath(
+            $this->getRootDirectory() .
+            DIRECTORY_SEPARATOR .
+            'tests'.
+            DIRECTORY_SEPARATOR .
+            'legacy'.
+            DIRECTORY_SEPARATOR .
+            'features'.
+            DIRECTORY_SEPARATOR .
+            'Context' .
+            DIRECTORY_SEPARATOR .
+            'catalog'.
+            DIRECTORY_SEPARATOR .
+            $catalog
+        )];
 
-        $fixtureDirectories = [
-            realpath($this->getRootDirectory() . DIRECTORY_SEPARATOR . 'features'. DIRECTORY_SEPARATOR . 'Context' .
-                DIRECTORY_SEPARATOR .'fixtures')
-        ];
+        $fixtureDirectories = [realpath(
+            $this->getRootDirectory() .
+            DIRECTORY_SEPARATOR .
+            'tests'.
+            DIRECTORY_SEPARATOR .
+            'legacy'.
+            DIRECTORY_SEPARATOR .
+            'features'.
+            DIRECTORY_SEPARATOR .
+            'Context' .
+            DIRECTORY_SEPARATOR .
+            'fixtures'
+        )];
+
 
         return new Configuration(
             array_merge($communityConfig->getCatalogDirectories(), $catalogDirectories),
@@ -95,6 +153,17 @@ class Catalog implements CatalogInterface
      */
     private function getRootDirectory()
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        return __DIR__ .
+            DIRECTORY_SEPARATOR .
+            '..' .
+            DIRECTORY_SEPARATOR .
+            '..' .
+            DIRECTORY_SEPARATOR .
+            '..' .
+            DIRECTORY_SEPARATOR .
+            '..' .
+            DIRECTORY_SEPARATOR .
+            '..' .
+            DIRECTORY_SEPARATOR;
     }
 }

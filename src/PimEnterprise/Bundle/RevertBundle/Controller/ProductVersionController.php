@@ -15,6 +15,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\RevertBundle\Reverter\ProductReverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -50,12 +53,16 @@ class ProductVersionController
      *
      * @param string|int $id
      *
-     * @return JsonResponse
+     * @return Response
      *
      * @AclAncestor("pimee_revert_product_version_revert")
      */
-    public function revertAction($id)
+    public function revertAction(Request $request, $id)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         try {
             $version = $this->findOr404($this->versionClass, $id);
             $this->reverter->revert($version);

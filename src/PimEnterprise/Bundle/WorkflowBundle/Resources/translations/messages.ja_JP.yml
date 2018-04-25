@@ -80,6 +80,8 @@ pimee_workflow:
         second: 操作を選択
         third: 構成
         fourth: 確認
+pimee_workflow_product_draft_notification_new_proposal: 新しい提案
+pimee_workflow_import_notification_new_proposals: インポートからの新しい提案
 btn.publish: 公開する
 btn.unpublish: 非公開
 flash:

@@ -26,6 +26,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -138,10 +139,14 @@ class ProjectController
     /**
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return Response
      */
     public function createAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $datagridViewFilters = [];
         $projectData = $request->request->get('project');
         $user = $this->tokenStorage->getToken()->getUser();
@@ -191,12 +196,17 @@ class ProjectController
     }
 
     /**
-     * @param string $identifier
+     * @param Request $request
+     * @param string  $identifier
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function removeAction($identifier)
+    public function removeAction(Request $request, $identifier)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $project = $this->projectRepository->findOneByIdentifier($identifier);
 
         if (null === $project || !$this->authorizationChecker->isGranted([ProjectVoter::OWN], $project)) {
