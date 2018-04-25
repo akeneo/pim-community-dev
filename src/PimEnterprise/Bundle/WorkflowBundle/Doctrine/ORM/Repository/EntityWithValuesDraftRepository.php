@@ -30,7 +30,7 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
     /**
      * {@inheritdoc}
      */
-    public function findUserEntityWithValues(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesInterface
+    public function findUserEntityWithValuesDraft(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesInterface
     {
         return $this->findOneBy(
             [
@@ -142,7 +142,7 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
     /**
      * {@inheritdoc}
      */
-    public function applyMassActionParameters(QueryBuilder $qb, bool $inset, array $values): void
+    public function applyMassActionParameters($qb, $inset, array $values)
     {
         if (!empty($values)) {
             $condition = $inset ? Operators::IN_LIST : Operators::NOT_IN_LIST;

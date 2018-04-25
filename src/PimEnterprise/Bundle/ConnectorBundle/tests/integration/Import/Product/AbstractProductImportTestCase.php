@@ -124,7 +124,7 @@ abstract class AbstractProductImportTestCase extends TestCase
      */
     protected function getProductDraft(ProductInterface $product, string $username): EntityWithValuesDraftInterface
     {
-        return $this->get('pimee_workflow.repository.product_draft')->findUserProductDraft($product, $username);
+        return $this->get('pimee_workflow.repository.product_draft')->findUserEntityWithValuesDraft($product, $username);
     }
 
     /**

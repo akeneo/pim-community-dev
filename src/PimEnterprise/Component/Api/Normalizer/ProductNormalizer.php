@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\Api\Normalizer;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -34,7 +34,7 @@ class ProductNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $productNormalizer;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productDraftRepository;
 
     /** @var AuthorizationCheckerInterface */
@@ -45,13 +45,13 @@ class ProductNormalizer implements NormalizerInterface
 
     /**
      * @param NormalizerInterface             $productNormalizer
-     * @param ProductDraftRepositoryInterface $productDraftRepository
+     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
      * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param TokenStorageInterface           $tokenStorage
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
-        ProductDraftRepositoryInterface $productDraftRepository,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage
     ) {
@@ -101,7 +101,7 @@ class ProductNormalizer implements NormalizerInterface
 
         if ($canEdit) {
             $userName = $this->tokenStorage->getToken()->getUsername();
-            $productDraft = $this->productDraftRepository->findUserProductDraft($product, $userName);
+            $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $userName);
 
             if (null === $productDraft) {
                 return static::WORKFLOW_STATUS_WORKING_COPY;

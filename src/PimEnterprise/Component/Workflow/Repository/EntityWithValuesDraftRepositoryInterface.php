@@ -24,7 +24,7 @@ interface EntityWithValuesDraftRepositoryInterface extends ObjectRepository
     /**
      * Return entities with values based on user
      */
-    public function findUserEntityWithValues(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesInterface;
+    public function findUserEntityWithValuesDraft(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesInterface;
 
     /**
      * Create the datagrid query builder
@@ -60,11 +60,6 @@ interface EntityWithValuesDraftRepositoryInterface extends ObjectRepository
      * Find all drafts corresponding to the specified ids
      */
     public function findByIds(array $ids): ?array;
-
-    /**
-     * Apply parameters
-     */
-    public function applyMassActionParameters(QueryBuilder $qb, bool $inset, array $values): void;
 
     /**
      * Returns the total count of entity with values drafts

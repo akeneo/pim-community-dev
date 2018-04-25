@@ -97,7 +97,7 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
     {
         $repository = $this->getContainer()->get('pimee_workflow.repository.product_draft');
 
-        return $repository->findUserProductDraft($product, $username);
+        return $repository->findUserEntityWithValuesDraft($product, $username);
     }
 
     /**

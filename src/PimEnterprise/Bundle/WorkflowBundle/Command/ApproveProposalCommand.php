@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -62,7 +62,7 @@ class ApproveProposalCommand extends ContainerAwareCommand
             return -1;
         }
 
-        $proposal = $this->getProductDraftRepository()->findUserProductDraft($product, $username);
+        $proposal = $this->getProductDraftRepository()->findUserEntityWithValuesDraft($product, $username);
         if (null === $proposal) {
             $output->writeln(sprintf(
                 '<error>Proposal with identifier "%s" and user "%s" not found<error>',
@@ -98,7 +98,7 @@ class ApproveProposalCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return ProductDraftRepositoryInterface
+     * @return EntityWithValuesDraftRepositoryInterface
      */
     protected function getProductDraftRepository()
     {

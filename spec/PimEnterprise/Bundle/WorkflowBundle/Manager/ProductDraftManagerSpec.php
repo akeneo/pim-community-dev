@@ -15,7 +15,7 @@ use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,7 +26,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         SaverInterface $workingCopySaver,
         UserContext $userContext,
         ProductDraftFactory $factory,
-        ProductDraftRepositoryInterface $repository,
+        EntityWithValuesDraftRepositoryInterface $repository,
         ProductDraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
         SaverInterface $draftSaver,
@@ -321,7 +321,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
-        $repository->findUserProductDraft($product, 'peter')->willReturn($productDraft);
+        $repository->findUserEntityWithValuesDraft($product, 'peter')->willReturn($productDraft);
 
         $this->findOrCreate($product);
     }
@@ -336,7 +336,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
-        $repository->findUserProductDraft($product, 'peter')->willReturn(null);
+        $repository->findUserEntityWithValuesDraft($product, 'peter')->willReturn(null);
         $factory->createProductDraft($product, 'peter')->willReturn($productDraft);
 
         $this->findOrCreate($product)->shouldReturn($productDraft);

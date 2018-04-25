@@ -12,7 +12,7 @@ class VariantProductBuilderIntegration extends TestCase
     public function testBuildAProductDraftForAVariantProduct()
     {
         $variantProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('my_variant_product');
-        $productDraft = $this->get('pimee_workflow.repository.product_draft')->findUserProductDraft($variantProduct, 'mary');
+        $productDraft = $this->get('pimee_workflow.repository.product_draft')->findUserEntityWithValuesDraft($variantProduct, 'mary');
 
         $this->assertEquals([
             'a_localized_and_scopable_text_area' => [
