@@ -18,12 +18,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class RegisterUserPreferencePass implements CompilerPassInterface
+class ConfigureUserServicesPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        $userPreferenceDefintion = $container->getDefinition('pim_user.form.type.user');
-        $userPreferenceDefintion->addMethodCall(
+        $userUpdater = $container->getDefinition('pim_user.updater.user');
+        $userUpdater->addArgument($container->getDefinition('pimee_product_asset.repository.category'));
+
+        $userFormType = $container->getDefinition('pim_user.form.type.user');
+        $userFormType->addMethodCall(
             'addEventSubscribers',
             [$container->getDefinition('pimee_product_asset.form_event_listener.user_preference_subscriber')]
         );

@@ -22,8 +22,8 @@ class RegisterUserPreferencePass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        $userPreferenceDefintion = $container->getDefinition('pim_user.form.type.user');
-        $userPreferenceDefintion->addMethodCall(
+        $userFormType = $container->getDefinition('pim_user.form.type.user');
+        $userFormType->addMethodCall(
             'addEventSubscribers',
             [$container->getDefinition('pimee_workflow.form.subscriber.user_preferences')]
         );
