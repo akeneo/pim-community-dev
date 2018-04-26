@@ -53,6 +53,9 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product_model'
                     - '@doctrine.orm.entity_manager'
+                    - '@pim_catalog.updater.product_model'
+                    - '@pim_catalog.saver.product_model'
+                    - '@pim_catalog.validator.product'
                 - Pim\Behat\Context\Domain\Enrich\VariantProductContext:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
