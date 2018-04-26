@@ -239,3 +239,9 @@ suites:
         psr4_prefix: Akeneo\Test\Acceptance
         spec_path: tests/back/Acceptance
         src_path: tests/back/Acceptance
+
+    Common:
+        namespace: Akeneo\Test\Common
+        psr4_prefix: Akeneo\Test\Common
+        spec_path: tests/back/Common
+        src_path: tests/back/Common
