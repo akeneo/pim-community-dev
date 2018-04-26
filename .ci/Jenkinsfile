@@ -1,4 +1,5 @@
 #!groovy
+@Library("k8s-utils@v1.3.0") _
 
 String[] editions = ["ce"]
 String[] legacyFeatures = ["tests/legacy/features"]
@@ -34,6 +35,7 @@ stage("Build") {
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
         }
+        notifySlack(slackChannel, "STARTED")
     }
     milestone 2
 
@@ -167,6 +169,6 @@ stage("Test") {
             )}
         )
     } finally {
-        notifySlack(slackChannel)
+        notifySlackResult(slackChannel)
     }
 }
