@@ -78,20 +78,13 @@ batch_jobs:
     csv_product_import_with_rules:
         label:                     Product import in CSV with rules
         import.label:              Product import
-        import_associations.label: Association import
     csv_product_model_import_with_rules:
         label: Product model import in CSV with rules
-        import_root_product_model.label: Root product model import
-        import_sub_product_model.label: Sub product model import
     xlsx_product_import_with_rules:
         label:                     Product import in XLSX with rules
         import.label:              Product import
-        import_associations.label: Association import
     xlsx_product_model_import_with_rules:
         label: Product model import in XLSX with rules
-        import_root_product_model.label: Root product model import
-        import_sub_product_model.label: Sub product model import
-
 
 pim_notification:
     types:
