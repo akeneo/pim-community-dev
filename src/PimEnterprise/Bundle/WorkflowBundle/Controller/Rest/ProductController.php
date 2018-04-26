@@ -78,7 +78,7 @@ class ProductController
         }
 
         return new JsonResponse($this->normalizer->normalize(
-            $this->repository->findByProduct($product),
+            $this->repository->findByEntityWithValues($product),
             'internal_api'
         ));
     }
