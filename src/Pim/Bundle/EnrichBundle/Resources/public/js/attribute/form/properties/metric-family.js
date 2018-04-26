@@ -86,12 +86,12 @@ function (
          * @param {Object} measures
          */
         formatChoices: function (measures) {
-            const metricFamilyCodes = _.keys(measures);
+            const metricFamilyCodes = Object.keys(measures);
 
             return _.object(
                 metricFamilyCodes,
                 metricFamilyCodes.map((metricFamilyCode) => {
-                    return __('pim_measure.families.' + metricFamilyCode);
+                    return __(`pim_measure.families.${metricFamilyCode}`);
                 })
             );
         },

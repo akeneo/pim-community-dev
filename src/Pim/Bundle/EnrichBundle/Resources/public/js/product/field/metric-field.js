@@ -11,10 +11,11 @@ define([
     'jquery',
     'pim/field',
     'underscore',
+    'oro/translator',
     'pim/fetcher-registry',
     'pim/template/product/field/metric',
     'pim/initselect2'
-], function ($, Field, _, FetcherRegistry, fieldTemplate, initSelect2) {
+], function ($, Field, _, __, FetcherRegistry, fieldTemplate, initSelect2) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         events: {

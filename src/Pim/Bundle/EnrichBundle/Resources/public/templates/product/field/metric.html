@@ -7,7 +7,7 @@
     <select class="AknMetricField-unit unit select-field" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- editMode === 'view' ? 'disabled' : '' %>>
         <% _.each(_.keys(measures[attribute.metric_family].units), function(unit) { %>
             <option value="<%- unit %>"<% if (value.data.unit === unit) { %> selected<% } %>>
-                <%- _.__('pim_measure.units.' + unit) %>
+                <%- __(`pim_measure.units.${unit}`) %>
             </option>
         <% }); %>
     </select>

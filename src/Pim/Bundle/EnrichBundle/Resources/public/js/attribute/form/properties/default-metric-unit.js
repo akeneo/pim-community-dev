@@ -97,12 +97,12 @@ function (
          * @param {Object} units
          */
         formatChoices: function (units) {
-            const unitCodes = _.keys(units);
+            const unitCodes = Object.keys(units);
 
             return _.object(
                 unitCodes,
                 unitCodes.map((unitCode) => {
-                    return __('pim_measure.units.' + unitCode);
+                    return __(`pim_measure.units.${unitCode}`);
                 })
             );
         },
