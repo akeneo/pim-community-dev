@@ -54,4 +54,22 @@ class InMemoryGroupTypeRepositorySpec extends ObjectBehavior
     {
         $this->getIdentifierProperties()->shouldReturn(['code']);
     }
+
+    function it_finds_attribute_group_by_criteria()
+    {
+        $groupType = new GroupType();
+        $groupType->setCode('group_type');
+        $this->save($groupType);
+
+        $this->findBy(['code' => 'group_type'])->shouldReturn([$groupType]);
+    }
+
+    function it_returns_an_empty_array_if_criteria_find_nothing()
+    {
+        $groupType = new GroupType();
+        $groupType->setCode('group_type');
+        $this->save($groupType);
+
+        $this->findBy(['code' => 'group_type1'])->shouldReturn([]);
+    }
 }

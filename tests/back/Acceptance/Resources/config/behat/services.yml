@@ -42,6 +42,13 @@ services:
             - '@__symfony__.pim_catalog.updater.attribute_group'
             - '@__symfony__.validator'
 
+    test.family.builder:
+        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        arguments:
+            - '@__symfony__.pim_catalog.factory.family'
+            - '@__symfony__.pim_catalog.updater.family'
+            - '@__symfony__.validator'
+
     ### Behat context, don't forget to tag them (fob.context_service)
     test.locale.context:
         class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
@@ -73,4 +80,3 @@ services:
             - '@test.attribute_group.builder'
         tags:
             - { name: fob.context_service }
-

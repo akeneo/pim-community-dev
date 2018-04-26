@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Acceptance\Catalog;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
@@ -78,7 +79,22 @@ class InMemoryGroupTypeRepository implements SaverInterface, GroupTypeRepository
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        throw new NotImplementedException(__METHOD__);
+        $groupTypes = [];
+        foreach ($this->groupTypes as $groupType) {
+            $keepThisGroupType = true;
+            foreach ($criteria as $key => $value) {
+                $getter = sprintf('get%s', ucfirst($key));
+                if ($groupType->$getter() !== $value) {
+                    $keepThisGroupType = false;
+                }
+            }
+
+            if ($keepThisGroupType) {
+                $groupTypes[] = $groupType;
+            }
+        }
+
+        return $groupTypes;
     }
 
     /**
