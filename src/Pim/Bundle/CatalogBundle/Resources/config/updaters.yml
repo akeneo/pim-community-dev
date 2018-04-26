@@ -68,7 +68,7 @@ services:
             - '@pim_catalog.updater.entity_with_values'
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
-            - ['categories']
+            - ['categories', 'associations']
             - ['identifier', 'created', 'updated']
 
     pim_catalog.updater.entity_with_values:

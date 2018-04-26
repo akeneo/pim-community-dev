@@ -62,6 +62,9 @@ class ProductModel implements ProductModelInterface
     /** @var FamilyVariantInterface */
     protected $familyVariant;
 
+    /** @var Collection $associations */
+    protected $associations;
+
     /**
      * Create an instance of ProductModel.
      */
@@ -71,6 +74,7 @@ class ProductModel implements ProductModelInterface
         $this->categories = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->productModels = new ArrayCollection();
+        $this->associations = new ArrayCollection();
     }
 
     /**
@@ -622,5 +626,78 @@ class ProductModel implements ProductModelInterface
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAssociation(AssociationInterface $association): AssociationAwareInterface
+    {
+        if (!$this->associations->contains($association)) {
+            $associationType = $association->getAssociationType();
+            if (null !== $associationType && null !== $this->getAssociationForType($associationType)) {
+                throw new \LogicException(
+                    sprintf(
+                        'Cannot add an association of type %s because the product model already has one',
+                        $associationType->getCode()
+                    )
+                );
+            }
+
+            $this->associations->add($association);
+            $association->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAssociation(AssociationInterface $association): AssociationAwareInterface
+    {
+        $this->associations->removeElement($association);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssociations()
+    {
+        return $this->associations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface
+    {
+        return $this->getAssociationForTypeCode($type->getCode());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssociationForTypeCode($typeCode): ?AssociationInterface
+    {
+        foreach ($this->associations as $association) {
+            if ($association->getAssociationType()->getCode() === $typeCode) {
+                return $association;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAssociations(Collection $associations): AssociationAwareInterface
+    {
+        $this->associations = $associations;
+
+        return $this;
     }
 }

@@ -171,6 +171,17 @@ services:
             - '@pim_connector.writer.database.product_association'
             - 1
 
+    pim_connector.step.csv_product_model.import_associations:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_model_associations'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_product_model_association'
+            - '@pim_connector.processor.denormalization.product_model_association'
+            - '@pim_connector.writer.database.product_model_association'
+            - 1
+
     pim_connector.step.csv_category.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:

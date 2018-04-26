@@ -21,6 +21,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
         return [
             'Symfony\Component\Security\Core\User\UserInterface'             => 'oro_user.entity.class',
             'Pim\Component\Catalog\Model\ProductAssociationInterface'        => 'pim_catalog.entity.association.class',
+            'Pim\Component\Catalog\Model\ProductModelAssociationInterface'   => 'pim_catalog.entity.product_model_association.class',
             'Pim\Component\Catalog\Model\AssociationTypeInterface'           => 'pim_catalog.entity.association_type.class',
             'Pim\Component\Catalog\Model\AttributeInterface'                 => 'pim_catalog.entity.attribute.class',
             'Pim\Component\Catalog\Model\AttributeOptionInterface'           => 'pim_catalog.entity.attribute_option.class',
