@@ -198,8 +198,6 @@ class ProductModelNormalizer implements NormalizerInterface
                 'level'                     => $productModel->getVariationLevel(),
             ] + $this->getLabels($productModel, $scopeCode);
 
-        $normalizedProductModel['associations'] = json_decode('{"PACK":{"groups":[],"products":[],"product_models":[]},"SUBSTITUTION":{"groups":[],"products":[],"product_models":[]},"UPSELL":{"groups":[],"products":[],"product_models":[]},"X_SELL":{"groups":[],"products":[],"product_models":[]}}');
-
         return $normalizedProductModel;
     }
 
