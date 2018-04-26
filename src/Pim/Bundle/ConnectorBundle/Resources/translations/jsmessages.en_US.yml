@@ -2,6 +2,9 @@
 batch_jobs:
     default_steps:
         validation: File validation
+        import_associations: Association import
+        import_root_product_model: Root product model import
+        import_sub_product_model: Sub product model import
     csv_product_export:
         label: Product export in CSV
         export.label: Product export
@@ -32,11 +35,8 @@ batch_jobs:
     csv_product_import:
         label: Product import in CSV
         import.label: Product import
-        import_associations.label: Association import
     csv_product_model_import:
         label: Product model import in CSV
-        import_root_product_model.label: Root product model import
-        import_sub_product_model.label: Sub product model import
         import_product_model_descendants.label: Compute product model descendants
     csv_category_import:
         label: Category import in CSV
@@ -53,6 +53,8 @@ batch_jobs:
     csv_family_import:
         label: Family import in CSV
         import.label: Family import
+        compute_data_related_to_family_variants.label: Compute product models data
+        compute_data_related_to_family_products.label: Compute products data
     csv_family_variant_import:
         label: Family variant import in CSV
         import.label: Family variant import
@@ -104,6 +106,8 @@ batch_jobs:
     xlsx_family_import:
         label: Family import in XLSX
         import.label: Family import
+        compute_data_related_to_family_variants.label: Compute product models data
+        compute_data_related_to_family_products.label: Compute products data
     xlsx_family_variant_import:
         label: Family variant import in XLSX
         import.label: Family variant import
@@ -116,11 +120,8 @@ batch_jobs:
     xlsx_product_import:
         label: Product import in XLSX
         import.label: Product import
-        import_associations.label: Association import
     xlsx_product_model_import:
         label: Product model import in XSLX
-        import_root_product_model.label: Root product model import
-        import_sub_product_model.label: Sub product model import
         import_product_model_descendants.label: Compute product model descendants
     xlsx_group_export:
         label: Group export in XLSX
