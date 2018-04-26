@@ -92,7 +92,7 @@ class ProductModelDraftSpec extends ObjectBehavior
         $this->hasChanges()->shouldReturn(false);
     }
 
-    function it_has_no_changes_if_changes_values_are_not_empty()
+    function it_has_changes_if_changes_values_are_not_empty()
     {
         $this->setChanges([
             'values' => [
