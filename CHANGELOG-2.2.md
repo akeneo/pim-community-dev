@@ -1,3 +1,9 @@
+# 2.2.x
+
+## Bug fixes
+
+- PIM-7305: Fix memory leak on purge job command
+
 # 2.2.4 (2018-04-26)
 
 ## Bug fixes
