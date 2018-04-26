@@ -1,6 +1,7 @@
 # 2.0.x
 
 - PIM-7328: Fix a bug that prevents to index published products with very large texts in Elasticsearch
+- PIM-7331: Fix teamwork assistant project creation when the user doesn't have the permission to mass edit products
 
 # 2.0.22 (2018-04-25)
 
