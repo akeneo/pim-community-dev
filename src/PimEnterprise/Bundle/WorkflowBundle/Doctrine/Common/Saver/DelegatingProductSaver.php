@@ -24,7 +24,7 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -247,7 +247,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $productDraft = $this->productDraftBuilder->build($fullProduct, $this->getUsername());
 
         if (null !== $productDraft) {
-            $this->validateObject($productDraft, ProductDraftInterface::class);
+            $this->validateObject($productDraft, EntityWithValuesDraftInterface::class);
             $options['unitary'] = true;
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($productDraft, $options));
             $this->objectManager->persist($productDraft);

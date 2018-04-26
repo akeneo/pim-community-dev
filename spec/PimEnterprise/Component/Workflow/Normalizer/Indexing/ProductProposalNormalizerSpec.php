@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\Workflow\Normalizer\Indexing;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -24,7 +24,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    function it_supports_indexing_normalization_only(ProductDraftInterface $productProposal)
+    function it_supports_indexing_normalization_only(EntityWithValuesDraftInterface $productProposal)
     {
         $this->supportsNormalization($productProposal, ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)
             ->shouldReturn(true);
@@ -38,7 +38,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_the_product_proposal_in_indexing_format(
         $propertiesNormalizer,
-        ProductDraftInterface $productProposal
+        EntityWithValuesDraftInterface $productProposal
     ) {
         $propertiesNormalizer->normalize($productProposal, ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX, [])->willReturn(
             ['properties' => 'properties are normalized here']

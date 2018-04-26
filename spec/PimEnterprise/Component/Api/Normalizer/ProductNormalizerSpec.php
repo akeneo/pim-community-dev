@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Api\Normalizer\ProductNormalizer;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -112,7 +112,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_product_with_a_draft_in_progress(
         ProductInterface $product,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         TokenInterface $token,
         $productNormalizer,
         $authorizationChecker,
@@ -126,7 +126,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $token->getUsername()->willReturn('Kevin');
 
         $productDraftRepository->findUserProductDraft($product, 'Kevin')->willReturn($productDraft);
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
+        $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
 
         $productNormalizer->normalize($product, 'external_api', [])->willReturn([
             'identifier' => 'foo',
@@ -144,7 +144,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_product_with_a_draft_waiting_for_approval(
         ProductInterface $product,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         TokenInterface $token,
         $productNormalizer,
         $authorizationChecker,
@@ -158,7 +158,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $token->getUsername()->willReturn('Kevin');
 
         $productDraftRepository->findUserProductDraft($product, 'Kevin')->willReturn($productDraft);
-        $productDraft->getStatus()->willReturn(ProductDraftInterface::READY);
+        $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
 
         $productNormalizer->normalize($product, 'external_api', [])->willReturn([
             'identifier' => 'foo',

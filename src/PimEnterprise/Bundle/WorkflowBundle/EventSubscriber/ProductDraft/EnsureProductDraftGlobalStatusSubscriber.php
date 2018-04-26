@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -42,15 +42,15 @@ class EnsureProductDraftGlobalStatusSubscriber implements EventSubscriberInterfa
     {
         $productDraft = $event->getSubject();
 
-        if (!$productDraft instanceof ProductDraftInterface || !$productDraft->hasChanges()) {
+        if (!$productDraft instanceof EntityWithValuesDraftInterface || !$productDraft->hasChanges()) {
             return;
         }
 
-        if ($productDraft->areAllReviewStatusesTo(ProductDraftInterface::CHANGE_DRAFT)) {
+        if ($productDraft->areAllReviewStatusesTo(EntityWithValuesDraftInterface::CHANGE_DRAFT)) {
             $productDraft->markAsInProgress();
         }
 
-        if ($productDraft->areAllReviewStatusesTo(ProductDraftInterface::CHANGE_TO_REVIEW)) {
+        if ($productDraft->areAllReviewStatusesTo(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)) {
             $productDraft->markAsReady();
         }
     }

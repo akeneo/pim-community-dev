@@ -10,7 +10,7 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\EditMassActi
 use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -29,11 +29,11 @@ class MassApproveActionHandlerSpec extends ObjectBehavior
         DatasourceSpecInterface $datasource,
         EditMassAction $massAction,
         ProductQueryBuilderInterface $pqb,
-        ProductDraftInterface $productDraft1,
-        ProductDraftInterface $productDraft2,
-        ProductDraftInterface $productDraft3
+        EntityWithValuesDraftInterface $productDraft1,
+        EntityWithValuesDraftInterface $productDraft2,
+        EntityWithValuesDraftInterface $productDraft3
     ) {
-        $objectIds = ['foo', 'bar', 'baz'];
+        $objectIds = [1, 2, 3];
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_APPROVE_PRE_HANDLER,
@@ -50,9 +50,9 @@ class MassApproveActionHandlerSpec extends ObjectBehavior
         $pqb->getQueryBuilder()->willReturn($searchQueryBuilder);
         $searchQueryBuilder->getQuery()->willReturn([]);
 
-        $productDraft1->getId()->willReturn('foo');
-        $productDraft2->getId()->willReturn('bar');
-        $productDraft3->getId()->willReturn('baz');
+        $productDraft1->getId()->willReturn(1);
+        $productDraft2->getId()->willReturn(2);
+        $productDraft3->getId()->willReturn(3);
 
         $cursorFactory->createCursor([])->willReturn([$productDraft1, $productDraft2, $productDraft3]);
 

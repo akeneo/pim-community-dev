@@ -16,7 +16,7 @@ namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\ProductPro
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
 class AbstractProposalIntegration extends ApiTestCase
 {
@@ -75,9 +75,9 @@ class AbstractProposalIntegration extends ApiTestCase
      * @param ProductInterface $product
      * @param array            $changes
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
-    protected function createProductDraft(string $userName, ProductInterface $product, array $changes): ProductDraftInterface
+    protected function createProductDraft(string $userName, ProductInterface $product, array $changes): EntityWithValuesDraftInterface
     {
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 

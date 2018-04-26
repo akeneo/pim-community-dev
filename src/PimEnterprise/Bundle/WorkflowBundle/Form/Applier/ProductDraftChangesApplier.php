@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvent;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -54,12 +54,12 @@ class ProductDraftChangesApplier
     /**
      * Apply product draft to a product
      *
-     * @param ProductInterface      $product
-     * @param ProductDraftInterface $productDraft
+     * @param ProductInterface                     $product
+     * @param EntityWithValuesDraftInterface $productDraft
      *
      * @throws ValidatorException
      */
-    public function apply(ProductInterface $product, ProductDraftInterface $productDraft)
+    public function apply(ProductInterface $product, EntityWithValuesDraftInterface $productDraft)
     {
         if ($this->dispatcher->hasListeners(ProductDraftEvents::PRE_APPLY)) {
             $event = $this->dispatcher->dispatch(

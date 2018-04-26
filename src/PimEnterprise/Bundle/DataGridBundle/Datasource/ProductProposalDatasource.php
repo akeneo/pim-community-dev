@@ -14,9 +14,9 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datasource;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\Datasource;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -96,17 +96,15 @@ class ProductProposalDatasource extends Datasource
     /**
      * Normalizes an entity with values with the complete set of fields required to show it.
      *
-     * @param EntityWithValuesInterface $item
-     * @param array                     $context
+     * @param EntityWithValuesDraftInterface $item
      *
      * @return array
      * @throws \Exception
      */
-    private function normalizeEntityWithValues(EntityWithValuesInterface $item): array
+    private function normalizeEntityWithValues(EntityWithValuesDraftInterface $item): array
     {
         $defaultNormalizedItem = [
             'id'               => $item->getId(),
-//            'dataLocale'       => $this->getConfiguration('locale_code'),
             'categories'       => null,
             'values'           => [],
             'created'          => null,

@@ -52,7 +52,6 @@ class ProductDraftHydrator implements HydratorInterface
         foreach ($qb->getQuery()->execute() as $result) {
             $result = current($result);
             if ($result->hasChanges()) {
-                $result->setDataLocale($locale);
                 $normalizedItem = $this->normalizeEntityWithValues($result);
                 $record = new ResultRecord($normalizedItem);
                 $records[] = $record;

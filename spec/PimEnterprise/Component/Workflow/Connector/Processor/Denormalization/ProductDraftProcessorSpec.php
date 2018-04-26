@@ -2,7 +2,6 @@
 
 namespace spec\PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
-use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -12,9 +11,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
-use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -54,11 +52,12 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
-        ProductDraft $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         JobExecution $jobExecution,
         JobInstance $jobInstance
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
 
         $values = $this->getValues();
 

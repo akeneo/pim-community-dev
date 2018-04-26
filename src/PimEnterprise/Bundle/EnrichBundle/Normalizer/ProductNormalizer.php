@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessReposito
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -153,7 +153,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @param ProductInterface $product
      *
-     * @return ProductDraftInterface|null
+     * @return EntityWithValuesDraftInterface|null
      */
     protected function findDraftForProduct(ProductInterface $product)
     {

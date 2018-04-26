@@ -18,8 +18,8 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -116,7 +116,7 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
                     $qb->expr()->in('a.userGroup', ':userGroups')
                 )
                 ->andWhere(
-                    $qb->expr()->eq('p.status', ProductDraftInterface::READY)
+                    $qb->expr()->eq('p.status', EntityWithValuesDraftInterface::READY)
                 )
                 ->setParameter('userGroups', $user->getGroups()->toArray());
         }
@@ -272,7 +272,7 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
             ->innerJoin('PimEnterpriseSecurityBundle:ProductCategoryAccess', 'a', 'WITH', 'a.category = category')
             ->where($qb->expr()->eq('a.ownItems', true))
             ->andWhere($qb->expr()->in('a.userGroup', ':userGroups'))
-            ->andWhere($qb->expr()->eq('product_draft.status', ProductDraftInterface::READY))
+            ->andWhere($qb->expr()->eq('product_draft.status', EntityWithValuesDraftInterface::READY))
             ->orderBy('product_draft.createdAt', 'desc')
             ->setParameter('userGroups', $user->getGroups()->toArray())
             ->distinct(true);

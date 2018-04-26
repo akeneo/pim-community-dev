@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -162,7 +162,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $productRepository,
         ProductInterface $filteredProduct,
         ProductInterface $fullProduct,
-        ProductDraftInterface $filteredProductDraft,
+        EntityWithValuesDraftInterface $filteredProductDraft,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
@@ -204,7 +204,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $productRepository,
         ProductInterface $filteredProduct,
         ProductInterface $fullProduct,
-        ProductDraftInterface $filteredProductDraft,
+        EntityWithValuesDraftInterface $filteredProductDraft,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
@@ -285,7 +285,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $productRepository,
         ProductInterface $filteredProduct,
         ProductInterface $fullProduct,
-        ProductDraftInterface $filteredProductDraft,
+        EntityWithValuesDraftInterface $filteredProductDraft,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
@@ -330,7 +330,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         ProductInterface $fullOwnedProduct,
         ProductInterface $filteredNotOwnedProduct,
         ProductInterface $fullNotOwnedProduct,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {

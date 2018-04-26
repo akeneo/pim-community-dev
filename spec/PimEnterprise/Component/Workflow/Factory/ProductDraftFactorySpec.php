@@ -21,7 +21,7 @@ class ProductDraftFactorySpec extends ObjectBehavior
         $productDraft = $this->createProductDraft($product, 'admin');
 
         $productDraft->shouldBeAnInstanceOf('PimEnterprise\Component\Workflow\Model\ProductDraft');
-        $productDraft->getProduct()->shouldReturn($fullProduct);
+        $productDraft->getEntityWithValue()->shouldReturn($fullProduct);
         $productDraft->getAuthor()->shouldReturn('admin');
         $productDraft->getChanges()->shouldReturn([]);
     }

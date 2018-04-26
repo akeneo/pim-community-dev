@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Extension_InitRuntimeInterface;
 
@@ -98,18 +98,18 @@ class ProductDraftChangesExtension extends \Twig_Extension implements Twig_Exten
     /**
      * Present an attribute change
      *
-     * @param ProductDraftInterface $productDraft
-     * @param array                 $change
-     * @param string                $code
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param array                                $change
+     * @param string                               $code
      *
      * @throws \InvalidArgumentException
      * @throws \LogicException
      *
      * @return string
      */
-    public function presentChange(ProductDraftInterface $productDraft, array $change, $code)
+    public function presentChange(EntityWithValuesDraftInterface $productDraft, array $change, $code)
     {
-        if (null === $value = $productDraft->getProduct()->getValue($code, $change['locale'], $change['scope'])) {
+        if (null === $value = $productDraft->getEntityWithValue()->getValue($code, $change['locale'], $change['scope'])) {
             $value = $this->createFakeValue($code);
         }
 

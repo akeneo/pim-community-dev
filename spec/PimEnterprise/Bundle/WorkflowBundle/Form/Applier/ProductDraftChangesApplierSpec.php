@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,7 +26,7 @@ class ProductDraftChangesApplierSpec extends ObjectBehavior
         FormBuilderInterface $formBuilder,
         FormInterface $form,
         ProductInterface $product,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
         $formFactory->createBuilder('form', $product, ['csrf_protection' => false])->willReturn($formBuilder);
         $valuesFieldOptions = [

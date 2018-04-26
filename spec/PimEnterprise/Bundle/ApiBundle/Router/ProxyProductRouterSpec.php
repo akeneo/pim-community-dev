@@ -7,7 +7,7 @@ use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\ApiBundle\Router\ProxyProductRouter;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
@@ -76,7 +76,7 @@ class ProxyProductRouterSpec extends ObjectBehavior
         ProductInterface $product,
         TokenInterface $token,
         UserInterface $user,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
         $name = 'pim_product_get';
         $parameters = ['code' => 'my_product'];

@@ -13,11 +13,11 @@ namespace PimEnterprise\Component\Workflow\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * ProductDraftInterface repository interface
+ * EntityWithValuesDraftInterface repository interface
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
@@ -45,7 +45,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @param UserInterface $user
      * @param int           $limit
      *
-     * @return ProductDraftInterface[]|null
+     * @return EntityWithValuesDraftInterface[]|null
      */
     public function findApprovableByUser(UserInterface $user, $limit = null);
 
@@ -56,7 +56,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @param string        $productId
      * @param int           $limit
      *
-     * @return ProductDraftInterface[]|null
+     * @return EntityWithValuesDraftInterface[]|null
      */
     public function findApprovableByUserAndProductId(UserInterface $user, $productId = null, $limit = null);
 
@@ -95,7 +95,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return ProductDraftInterface|null
+     * @return EntityWithValuesDraftInterface|null
      */
     public function findUserProductDraft(ProductInterface $product, $username);
 
@@ -104,7 +104,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      *
      * @param ProductInterface $product
      *
-     * @return ProductDraftInterface[]|null
+     * @return EntityWithValuesDraftInterface[]|null
      */
     public function findByProduct(ProductInterface $product);
 
@@ -113,7 +113,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      *
      * @param array $ids
      *
-     * @return ProductDraftInterface[]|null
+     * @return EntityWithValuesDraftInterface[]|null
      */
     public function findByIds(array $ids);
 

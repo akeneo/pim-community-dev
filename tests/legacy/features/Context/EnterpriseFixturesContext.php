@@ -30,8 +30,8 @@ use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Console\Application;
@@ -129,10 +129,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             if ('ready' === $data['status']) {
                 $productDraft->markAsReady();
-                $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
+                $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
             } else {
                 $productDraft->markAsInProgress();
-                $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
+                $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
             }
             $productDraft->setValues(new ValueCollection($values));
 

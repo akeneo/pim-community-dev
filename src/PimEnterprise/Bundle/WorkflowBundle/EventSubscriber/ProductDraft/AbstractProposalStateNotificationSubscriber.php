@@ -16,7 +16,7 @@ use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -73,13 +73,13 @@ abstract class AbstractProposalStateNotificationSubscriber
     abstract protected function send(GenericEvent $event, array $messageInfos);
 
     /**
-     * @param ProductDraftInterface $productDraft
+     * @param EntityWithValuesDraftInterface $productDraft
      *
      * @throws \LogicException
      *
      * @return bool
      */
-    protected function authorWantToBeNotified(ProductDraftInterface $productDraft)
+    protected function authorWantToBeNotified(EntityWithValuesDraftInterface $productDraft)
     {
         $author = $this->userRepository->findOneByIdentifier($productDraft->getAuthor());
         if (null === $author) {
@@ -99,7 +99,7 @@ abstract class AbstractProposalStateNotificationSubscriber
     {
         $productDraft = $event->getSubject();
 
-        if (!is_object($productDraft) || !$productDraft instanceof ProductDraftInterface) {
+        if (!is_object($productDraft) || !$productDraft instanceof EntityWithValuesDraftInterface) {
             return false;
         }
 

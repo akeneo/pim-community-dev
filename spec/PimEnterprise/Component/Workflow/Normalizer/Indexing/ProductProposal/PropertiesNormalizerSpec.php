@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal\PropertiesNormalizer;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -27,7 +27,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(PropertiesNormalizer::class);
     }
 
-    function it_supports_product_proposal(ProductDraftInterface $productProposal)
+    function it_supports_product_proposal(EntityWithValuesDraftInterface $productProposal)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)->shouldReturn(false);
@@ -37,7 +37,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_proposal(
         $serializer,
-        ProductDraftInterface $productProposal,
+        EntityWithValuesDraftInterface $productProposal,
         ValueCollectionInterface $valueCollection,
         ProductInterface $product,
         FamilyInterface $family,
@@ -46,7 +46,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $productProposal->getId()->willReturn(1);
-        $productProposal->getProduct()->willReturn($product);
+        $productProposal->getEntityWithValue()->willReturn($product);
         $product->getIdentifier()->willReturn('1');
 
         $productProposal->getAuthor()->willReturn('mary');

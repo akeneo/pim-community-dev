@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -51,7 +51,7 @@ class GridHelper
     {
         return function (ResultRecordInterface $record) {
             $canReview = $this->permissionHelper->canEditOneChangeToReview($record->getValue('proposal_product'));
-            $toReview = $record->getValue('proposal_product')->getStatus() === ProductDraftInterface::READY;
+            $toReview = $record->getValue('proposal_product')->getStatus() === EntityWithValuesDraftInterface::READY;
             $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $record->getValue('product'));
 
             return [

@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -32,7 +32,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
 
     function it_abstains_if_attribute_is_not_supported(
         TokenInterface $token,
-        ProductDraftInterface $draft,
+        EntityWithValuesDraftInterface $draft,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
@@ -43,7 +43,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
 
     function it_grants_own_access_to_user_that_has_created_the_draft(
         TokenInterface $token,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
@@ -55,7 +55,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
 
     function it_denies_own_access_to_user_that_has_not_created_the_draft(
         TokenInterface $token,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
@@ -67,7 +67,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
 
     function it_does_not_vote_if_the_attribute_own_is_not_being_checked(
         TokenInterface $token,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
