@@ -209,6 +209,24 @@ stage("Test") {
                     echo "Skipping frontend EE integration tests"
                 }
             },
+            "frontend-unit-ce": {
+                if (launchUnitTests.equals("yes") && editions.contains("ce")) {
+                    withNode({
+                        sh "cd /home/jenkins/pim && yarn run unit"
+                    })
+                } else {
+                    echo "Skipping frontend CE unit tests"
+                }
+            },
+            "frontend-unit-ee": {
+                if (launchUnitTests.equals("yes") && editions.contains("ee")) {
+                    withNode({
+                        sh "cd /home/jenkins/pim && yarn run unit"
+                    }, "ee")
+                } else {
+                    echo "Skipping frontend EE unit tests"
+                }
+            },
             "php-coupling-detector": {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
