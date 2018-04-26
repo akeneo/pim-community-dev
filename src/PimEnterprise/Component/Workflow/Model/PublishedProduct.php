@@ -16,6 +16,7 @@ use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Model\AssociationAwareInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
@@ -630,7 +631,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addAssociation(AssociationInterface $association)
+    public function addAssociation(AssociationInterface $association): AssociationAwareInterface
     {
         if (!$this->associations->contains($association)) {
             $associationType = $association->getAssociationType();
@@ -653,7 +654,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAssociation(AssociationInterface $association)
+    public function removeAssociation(AssociationInterface $association): AssociationAwareInterface
     {
         $this->associations->removeElement($association);
 
@@ -671,7 +672,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationForType(AssociationTypeInterface $type)
+    public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface
     {
         return $this->getAssociationForTypeCode($type->getCode());
     }
@@ -679,7 +680,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getAssociationForTypeCode($typeCode)
+    public function getAssociationForTypeCode($typeCode): ?AssociationInterface
     {
         foreach ($this->associations as $association) {
             if ($association->getAssociationType()->getCode() === $typeCode) {
@@ -693,7 +694,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(Collection $associations)
+    public function setAssociations(Collection $associations): AssociationAwareInterface
     {
         $this->associations = $associations;
 

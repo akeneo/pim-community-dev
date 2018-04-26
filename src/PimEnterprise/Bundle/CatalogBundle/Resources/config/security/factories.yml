@@ -16,5 +16,6 @@ services:
         arguments:
             -
               - '@pimee_catalog.security.filter.not_granted_parent'
+              - '@pimee_catalog.security.filter.not_granted_associated_product'
               - '@pimee_catalog.security.filter.not_granted_category'
               - '@pimee_catalog.security.filter.not_granted_values'
