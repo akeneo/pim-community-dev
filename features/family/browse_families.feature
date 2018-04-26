@@ -57,3 +57,19 @@ Feature: Browse families
     When I select rows caterpillar and dr-martens
     And I press the "Bulk actions" button
     Then I should see the text "Select your action"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7325
+  Scenario: Successfully search families when coming back from a family edit form
+    Given I am on the families grid
+    When I search "Sand"
+    Then the grid should contain 1 element
+    And I should see family Sandals
+    And I click on the "Sandals" row
+    And I wait to be on the "Sandals" family page
+    And I follow the link "Families"
+    Then I should be on the families page
+    And the grid should contain 1 element
+    And I should see family Sandals
+    And I search "e"
+    Then the grid should contain 3 elements
+    And I should see families Heels, LED TVs and Sneakers

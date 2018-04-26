@@ -4,6 +4,7 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
         return BaseForm.extend({
             options: {},
             filters: [],
+            isLoaded: false,
             className: 'AknFilterBox-list filter-box',
 
             config: {
@@ -22,8 +23,17 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
              */
             initialize(options) {
                 this.options = options.config;
-                mediator.once('datagrid_collection_set_after', this.loadFilterModules.bind(this));
+
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(mediator, 'datagrid_collection_set_after', this.loadFilterModules.bind(this));
+
+                BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
@@ -32,6 +42,10 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
              * @param  {HTMLElement} gridElement Grid element
              */
             loadFilterModules(collection, gridElement) {
+                if (this.isLoaded) {
+                    return;
+                }
+                this.isLoaded = true;
                 this.collection = collection;
                 this.gridElement = gridElement;
                 this.metadata = this.gridElement.data('metadata') || {};
