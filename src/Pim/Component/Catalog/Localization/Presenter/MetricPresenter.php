@@ -44,10 +44,12 @@ class MetricPresenter extends NumberPresenter
 
         $amount = isset($value['amount']) ? parent::present($value['amount'], $options) : null;
         $unit = isset($value['unit'])
-            ? $this->translatorProxy->trans($value['unit'], ['domain' => 'measures'])
-            : null;
+            ? $this->translatorProxy->trans(
+                sprintf('pim_measure.units.%s', $value['unit']),
+                ['domain' => 'measures']
+            ) : null;
 
-        return trim(sprintf('%s %s', $amount, $unit));
+        return trim(sprintf('%s %s', $amount, $unit));
     }
 
     /**

@@ -80,6 +80,8 @@ pim_datagrid:
       operator: Operator
     price_filter:
       label: Currency
+    metric_filter:
+      label: Unit
 
   cells:
     credientials:

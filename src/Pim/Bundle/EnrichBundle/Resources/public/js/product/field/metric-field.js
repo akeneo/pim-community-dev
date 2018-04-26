@@ -21,7 +21,7 @@ define([
             'change .field-input:first .data, .field-input:first .unit': 'updateModel'
         },
         renderInput: function (context) {
-            var $element = $(this.fieldTemplate(context));
+            const $element = $(this.fieldTemplate(_.extend({}, context, {__: __})));
             initSelect2.init($element.find('.unit'));
 
             return $element;
