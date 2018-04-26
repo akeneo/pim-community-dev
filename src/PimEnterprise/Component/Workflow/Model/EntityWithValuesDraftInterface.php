@@ -83,7 +83,7 @@ interface EntityWithValuesDraftInterface extends EntityWithValuesInterface
     /**
      * Get the change associated to the the given attribute code if it exists.
      */
-    public function getChange(string $fieldCode, ?string $localeCode, ?string $channelCode): ?array;
+    public function getChange(string $fieldCode, ?string $localeCode, ?string $channelCode);
 
     /**
      * Remove the change associated to the attribute code if it exists

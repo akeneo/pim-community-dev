@@ -200,7 +200,7 @@ class ProductDraft implements EntityWithValuesDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChange(string $fieldCode, ?string $localeCode, ?string $channelCode): ?array
+    public function getChange(string $fieldCode, ?string $localeCode, ?string $channelCode)
     {
         if (!isset($this->changes['values'])) {
             return null;
