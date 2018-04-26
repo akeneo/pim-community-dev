@@ -79,5 +79,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('workflow/presenters.yml');
         $loader->load('jobs.yml');
         $loader->load('steps.yml');
+        $loader->load('queries.yml');
     }
 }

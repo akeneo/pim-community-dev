@@ -69,6 +69,7 @@ stage("Build") {
                             sh "sed -i \'0,/paths\\:/s//paths\\:\\n\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ \"${featureEscaped}\"/\' .ci/behat.ci.yml"
                         }
 
+                        sh "cp .ci/behat.ci.yml behat.yml"
                         sh "cp .ci/parameters.ci.yml app/config/parameters_test.yml"
                         sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER} ."
                     }
@@ -178,8 +179,8 @@ stage("Test") {
             "behat": {
                 if (launchBehatTests.equals("yes")) {
                     queue({
-                        def legacyScenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat -p legacy -c .ci/behat.ci.yml --list-scenarios").tokenize('\n')
-                        def acceptanceScenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat -p acceptance -c .ci/behat.ci.yml --list-scenarios").tokenize('\n')
+                        def legacyScenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat -p legacy --list-scenarios").tokenize('\n')
+                        def acceptanceScenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat -p acceptance --list-scenarios").tokenize('\n')
 
                         def messages = new net.sf.json.JSONArray()
 
@@ -337,7 +338,7 @@ def runBehatScenarios(scenarios, profile) {
                 container: "php",
                 junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                 artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                script: "php vendor/bin/behat -c .ci/behat.ci.yml --strict -vv -p " + profile + " " + scenario
+                script: "php vendor/bin/behat --strict -vv -p " + profile + " " + scenario
             ]
         ]
         def message = new net.sf.json.JSONObject()
