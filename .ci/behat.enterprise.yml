@@ -82,7 +82,7 @@ default:
                 - PimEnterprise\Behat\Context\JobContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\ImportFileContext:
-                    - 'Context\FeatureContext'
+                    - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
                     - 'http://127.0.0.1/'
