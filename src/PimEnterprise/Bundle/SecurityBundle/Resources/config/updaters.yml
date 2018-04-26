@@ -4,11 +4,6 @@ parameters:
     pimee_security.updater.product_category_access.class: PimEnterprise\Component\Security\Updater\ProductCategoryAccessUpdater
     pimee_security.updater.attribute_group_access.class:  PimEnterprise\Component\Security\Updater\AttributeGroupAccessUpdater
     pimee_security.updater.job_profile_access.class:      PimEnterprise\Component\Security\Updater\JobProfileAccessUpdater
-    pimee_catalog.security.updater.granted_product_model.class: PimEnterprise\Component\Security\Updater\GrantedProductModelUpdater
-    pimee_catalog.security.updater.granted_product.class: PimEnterprise\Component\Security\Updater\GrantedProductUpdater
-    pimee_catalog.security.updater.setter.granted_category_field.class: PimEnterprise\Component\Security\Updater\Setter\GrantedCategoryFieldSetter
-    pimee_catalog.security.updater.setter.granted_association_field.class: PimEnterprise\Component\Security\Updater\Setter\GrantedAssociationFieldSetter
-    pimee_catalog.security.updater.entity_with_granted_values_property_setter.class: PimEnterprise\Component\Security\Updater\Setter\EntityWithGrantedValuesPropertySetter
 
 services:
     pimee_security.updater.locale_access:
@@ -42,7 +37,7 @@ services:
             - '@akeneo_batch.job.job_instance_repository'
 
     pimee_catalog.security.updater.granted_product_model:
-        class: '%pimee_catalog.security.updater.granted_product_model.class%'
+        class: 'PimEnterprise\Component\Security\Updater\GrantedProductModelUpdater'
         decorates: pim_catalog.updater.product_model
         decoration_inner_name: pim_catalog.updater.product_model_with_values_permission
         arguments:
@@ -52,7 +47,7 @@ services:
             - ['categories']
 
     pimee_catalog.security.updater.granted_product:
-        class: '%pimee_catalog.security.updater.granted_product.class%'
+        class: 'PimEnterprise\Component\Security\Updater\GrantedProductUpdater'
         decorates: pim_catalog.updater.product
         decoration_inner_name: pim_catalog.updater.product_with_values_permission
         arguments:
@@ -65,7 +60,7 @@ services:
             - ['associations']
 
     pimee_catalog.security.updater.entity_with_granted_values_property_setter:
-        class: '%pimee_catalog.security.updater.entity_with_granted_values_property_setter.class%'
+        class: 'PimEnterprise\Component\Security\Updater\Setter\EntityWithGrantedValuesPropertySetter'
         decorates: pim_catalog.updater.property_setter
         decoration_inner_name: pim_catalog.updater.entity_with_values_property_setter_without_permission
         arguments:
@@ -75,7 +70,7 @@ services:
             - '@pim_catalog.repository.cached_locale'
 
     pimee_catalog.security.updater.setter.granted_category_field:
-        class: '%pimee_catalog.security.updater.setter.granted_category_field.class%'
+        class: 'PimEnterprise\Component\Security\Updater\Setter\GrantedCategoryFieldSetter'
         decorates: pim_catalog.updater.setter.category_field
         decoration_inner_name: pim_catalog.updater.category_field_without_permission
         arguments:
@@ -89,7 +84,7 @@ services:
             - { name: 'pim_catalog.updater.setter' }
 
     pimee_catalog.security.updater.setter.granted_association_field:
-        class: '%pimee_catalog.security.updater.setter.granted_association_field.class%'
+        class: 'PimEnterprise\Component\Security\Updater\Setter\GrantedAssociationFieldSetter'
         decorates: pim_catalog.updater.setter.association_field
         decoration_inner_name: pim_catalog.updater.association_field_without_permission
         arguments:

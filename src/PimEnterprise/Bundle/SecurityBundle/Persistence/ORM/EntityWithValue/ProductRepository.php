@@ -20,8 +20,8 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
 use PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity;
+use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
 
 /**
  * Decorates CE product repository to apply permissions.

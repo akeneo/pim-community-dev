@@ -1,19 +1,12 @@
-parameters:
-    pimee_catalog.security.merger.not_granted_category.class: PimEnterprise\Component\Security\Merger\NotGrantedCategoryMerger
-    pimee_catalog.security.merger.not_granted_associated_product.class: PimEnterprise\Component\Security\Merger\NotGrantedAssociatedProductMerger
-    pimee_catalog.security.merger.not_granted_values.class: PimEnterprise\Component\Security\Merger\NotGrantedValuesMerger
-    pimee_catalog.security.merger.merge_data_on_product.class: PimEnterprise\Component\Security\Merger\MergeDataOnProduct
-    pimee_catalog.security.merger.merge_data_on_product_model.class: PimEnterprise\Component\Security\Merger\MergeDataOnProductModel
-
 services:
     pimee_catalog.security.merger.not_granted_category:
-        class: '%pimee_catalog.security.merger.not_granted_category.class%'
+        class: 'PimEnterprise\Component\Security\Merger\NotGrantedCategoryMerger'
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.updater.category_field_without_permission'
 
     pimee_catalog.security.merger.not_granted_associated_product:
-        class: '%pimee_catalog.security.merger.not_granted_associated_product.class%'
+        class: 'PimEnterprise\Component\Security\Merger\NotGrantedAssociatedProductMerger'
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.updater.association_field_without_permission'
@@ -22,7 +15,7 @@ services:
             - '@security.token_storage'
 
     pimee_catalog.security.merger.not_granted_values:
-        class: '%pimee_catalog.security.merger.not_granted_values.class%'
+        class: 'PimEnterprise\Component\Security\Merger\NotGrantedValuesMerger'
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.cached_attribute'
@@ -30,7 +23,7 @@ services:
             - '@pim_catalog.factory.value_collection'
 
     pimee_catalog.security.merger.merge_data_on_product:
-        class: '%pimee_catalog.security.merger.merge_data_on_product.class%'
+        class: 'PimEnterprise\Component\Security\Merger\MergeDataOnProduct'
         arguments:
             -
                 - '@pimee_catalog.security.merger.not_granted_values'
@@ -41,7 +34,7 @@ services:
             - '@pim_catalog.repository.product_model_without_permission'
 
     pimee_catalog.security.merger.merge_data_on_product_model:
-        class: '%pimee_catalog.security.merger.merge_data_on_product_model.class%'
+        class: 'PimEnterprise\Component\Security\Merger\MergeDataOnProductModel'
         arguments:
             -
                 - '@pimee_catalog.security.merger.not_granted_values'
