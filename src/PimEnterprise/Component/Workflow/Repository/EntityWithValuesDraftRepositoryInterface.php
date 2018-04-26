@@ -39,7 +39,7 @@ interface EntityWithValuesDraftRepositoryInterface extends ObjectRepository
     /**
      * Apply the context of the datagrid to the query
      */
-    public function applyDatagridContext(QueryBuilder $qb, ?string $productId): EntityWithValuesDraftRepositoryInterface;
+    public function applyDatagridContext(QueryBuilder $qb, ?string $entityWithValuesId): EntityWithValuesDraftRepositoryInterface;
 
     /**
      * Apply filter for datagrid

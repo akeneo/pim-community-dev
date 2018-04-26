@@ -40,12 +40,12 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
         );
     }
 
-/**
+    /**
      * {@inheritdoc}
      */
     public function findByEntityWithValues(EntityWithValuesInterface $entityWithValues): ?array
     {
-        return $this->findBy(['entityWithValue' => $entityWithValues]);
+        return $this->findBy(['entityWithValues' => $entityWithValues]);
     }
 
     /**
@@ -81,10 +81,10 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
     /**
      * {@inheritdoc}
      */
-    public function applyDatagridContext(QueryBuilder $qb, ?string $productId): EntityWithValuesDraftRepositoryInterface
+    public function applyDatagridContext(QueryBuilder $qb, ?string $entityWithValuesId): EntityWithValuesDraftRepositoryInterface
     {
-        $qb->innerJoin('p.product', 'product', 'WITH', 'product.id = :product');
-        $qb->setParameter('product', $productId);
+        $qb->innerJoin('p.entityWithValues', 'entityWithValues', 'WITH', 'entityWithValues.id = :entityWithValues');
+        $qb->setParameter('entityWithValues', $entityWithValuesId);
 
         return $this;
     }
