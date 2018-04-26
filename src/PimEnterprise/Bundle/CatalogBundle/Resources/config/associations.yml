@@ -1,8 +1,11 @@
+parameters:
+    pimee_catalog.entity.published_product_association.class: PimEnterprise\Component\Workflow\Model\PublishedProductAssociation
+
 services:
     pim_catalog.association.class_resolver:
         class: 'Pim\Component\Catalog\Association\AssociationClassResolver'
         arguments:
             -
-                PimEnterprise\Component\Workflow\Model\PublishedProductInterface: PimEnterprise\Component\Workflow\Model\PublishedProductAssociation
-                Pim\Component\Catalog\Model\ProductInterface: Pim\Component\Catalog\Model\ProductAssociation
-                Pim\Component\Catalog\Model\ProductModelInterface: Pim\Component\Catalog\Model\ProductModelAssociation
+                PimEnterprise\Component\Workflow\Model\PublishedProductInterface: '%pimee_catalog.entity.published_product_association.class%'
+                Pim\Component\Catalog\Model\ProductInterface: '%pim_catalog.entity.association.class%'
+                Pim\Component\Catalog\Model\ProductModelInterface: '%pim_catalog.entity.product_model_association.class%'
