@@ -1,3 +1,50 @@
+# To allow the test pass, will be dropped by Nelson
+pim_measure:
+  families:
+    Length: Longueur
+    Weight: Poids
+    Volume: Volume
+  units:
+    CENTIMETER: Centimètre
+    CHAIN: Chaîne
+    DECIMETER: Décimètre
+    DEKAMETER: Décamètre
+    FEET: Pieds
+    FURLONG: Furlong
+    INCH: Pouce
+    HECTOMETER: Hectomètre
+    KILOMETER: Kilomètre
+    METER: Mètre
+    MIL: Mil
+    MILE: Mile
+    MILLIMETER: Millimètre
+    YARD: Yard
+    DENIER: Denier
+    GRAIN: Grain
+    GRAM: Gramme
+    KILOGRAM: Kilogramme
+    LIVRE: Livre française
+    MARC: Marc
+    MILLIGRAM: Milligramme
+    ONCE: Once française
+    POUND: Livre
+    TON: Tonne
+    BARREL: Baril
+    CENTILITER: Centilitre
+    CUBIC_CENTIMETER: Centimètre cube
+    CUBIC_DECIMETER: Décimètre cube
+    CUBIC_FOOT: Pied cube
+    CUBIC_INCH: Pouce cube
+    CUBIC_METER: Mètre cube
+    CUBIC_MILLIMETER: Millimètre cube
+    CUBIC_YARD: Yard cube
+    DECILITER: Décilitre
+    GALLON: Gallon
+    LITER: Litre
+    MILLILITER: Millilitre
+    OUNCE: Once
+    PINT: Pinte
+
 Area: Surface
 ACRE: Acre
 ARE: Are
