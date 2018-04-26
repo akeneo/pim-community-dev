@@ -5,76 +5,67 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery;
-use Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 use Webmozart\Assert\Assert;
 
-final class AttributePerFamilyContext implements Context, SnippetAcceptingContext
+final class AttributePerFamilyContext implements Context
 {
-    /** @var array */
-    private $limits = [];
-
-    /** @var array */
-    private $familiesNumbers = [];
-
-    /** @var array */
-    private $volumes = [];
-
-    /** @var Normalizer\Volumes */
-    private $volumesNormalizer;
+    /** @var ReportContext */
+    private $reportContext;
 
     /** @var InMemoryAverageMaxQuery */
     private $inMemoryQuery;
 
     /**
-     * @param Normalizer\Volumes $volumesNormalizer
+     * @param ReportContext           $reportContext
+     * @param InMemoryAverageMaxQuery $inMemoryQuery
      */
-    public function __construct(Normalizer\Volumes $volumesNormalizer, InMemoryAverageMaxQuery $inMemoryQuery)
+    public function __construct(ReportContext $reportContext, InMemoryAverageMaxQuery $inMemoryQuery)
     {
-        $this->volumesNormalizer = $volumesNormalizer;
+        $this->reportContext = $reportContext;
         $this->inMemoryQuery = $inMemoryQuery;
     }
 
     /**
      * @Given a family with :numberOfAttributes attributes
+     *
+     * @param int $numberOfAttributes
      */
-    public function aFamilyWithAttributes(int $numberOfAttributes)
+    public function aFamilyWithAttributes(int $numberOfAttributes): void
     {
-        $this->familiesNumbers[] = $numberOfAttributes;
-    }
-
-    /**
-     * @When the administrator user asks for the catalog volume monitoring report
-     */
-    public function theAdministratorUserAsksForTheCatalogVolumeMonitoringReport()
-    {
-        $this->inMemoryQuery->setAverageVolume(array_sum($this->familiesNumbers) / count($this->familiesNumbers));
-        $this->inMemoryQuery->setMaxVolume(max($this->familiesNumbers));
-
-        $this->volumes = $this->volumesNormalizer->volumes();
+        $this->inMemoryQuery->addValue($numberOfAttributes);
     }
 
     /**
      * @Then the report returns that the average number of attributes per family is :number
+     *
+     * @param int $number
      */
-    public function theReportReturnsThatTheMeanNumberOfAttributesPerFamilyIs(int $number)
+    public function theReportReturnsThatTheMeanNumberOfAttributesPerFamilyIs(int $number): void
     {
-        Assert::eq($this->volumes['attributes_per_family']['value']['average'], $number);
+        $volumes = $this->reportContext->getVolumes();
+
+        Assert::eq($volumes['average_max_attributes_per_family']['value']['average'], $number);
     }
 
     /**
      * @Then the report returns that the maximum number of attributes per family is :number
+     *
+     * @param int $number
      */
-    public function theReportReturnsThatTheMaximumNumberOfAttributesPerFamilyIs(int $number)
+    public function theReportReturnsThatTheMaximumNumberOfAttributesPerFamilyIs(int $number): void
     {
-        Assert::eq($this->volumes['attributes_per_family']['value']['max'], $number);
+        $volumes = $this->reportContext->getVolumes();
+
+        Assert::eq($volumes['average_max_attributes_per_family']['value']['max'], $number);
     }
 
     /**
      * @Given the limit of the number of attributes per family is set to :limit
+     *
+     * @param int $limit
      */
-    public function theLimitOfTheNumberOfIsSetTo(int $limit)
+    public function theLimitOfTheNumberOfIsSetTo(int $limit): void
     {
         $this->inMemoryQuery->setLimit($limit);
     }
@@ -82,8 +73,10 @@ final class AttributePerFamilyContext implements Context, SnippetAcceptingContex
     /**
      * @Then the report warns the users that the number of attributes per family is high
      */
-    public function theReportWarnsTheUsersThatTheNumberIsHigh()
+    public function theReportWarnsTheUsersThatTheNumberOfAttributesPerFamilyIsHigh(): void
     {
-        Assert::true($this->volumes['attributes_per_family']['has_warning']);
+        $volumes = $this->reportContext->getVolumes();
+
+        Assert::true($volumes['average_max_attributes_per_family']['has_warning']);
     }
 }

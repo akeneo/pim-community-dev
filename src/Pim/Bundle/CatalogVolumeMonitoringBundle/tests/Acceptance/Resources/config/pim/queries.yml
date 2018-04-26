@@ -1,10 +1,112 @@
-parameters:
-    pim_volume_monitoring.persistence.query.attributes_per_family.class: Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery
-
 services:
-    pim_volume_monitoring.persistence.query.attributes_per_family:
-        class: '%pim_volume_monitoring.persistence.query.attributes_per_family.class%'
+    pim_volume_monitoring.persistence.query.average_max_attributes_per_family:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
         arguments:
-            - 'attributes_per_family'
+            - 'average_max_attributes_per_family'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.count_products:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_products'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_channels:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_channels'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_locales:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_locales'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_scopable_attributes:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_scopable_attributes'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_localizable_attributes:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_localizable_attributes'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_localizable_and_scopable_attributes:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_localizable_and_scopable_attributes'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_families:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_families'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_attributes:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_attributes'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.average_max_options_per_attribute:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_options_per_attribute'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.count_categories:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_categories'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_category_trees:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_category_trees'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_variant_products:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_variant_products'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_product_models:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_product_models'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_product_values:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_product_values'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.average_max_product_values:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_product_values'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }

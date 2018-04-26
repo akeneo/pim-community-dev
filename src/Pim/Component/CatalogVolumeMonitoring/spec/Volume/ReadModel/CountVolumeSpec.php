@@ -33,4 +33,11 @@ class CountVolumeSpec extends ObjectBehavior
     {
         $this->hasWarning()->shouldReturn(true);
     }
+
+    function it_does_not_have_warning_if_the_limit_is_lower_than_zero()
+    {
+        $this->beConstructedWith(10, -1, 'volume_name');
+
+        $this->hasWarning()->shouldReturn(false);
+    }
 }
