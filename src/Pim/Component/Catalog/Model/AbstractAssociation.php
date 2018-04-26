@@ -20,7 +20,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /** @var AssociationTypeInterface */
     protected $associationType;
 
-    /** @var ProductInterface */
+    /** @var AssociationAwareInterface */
     protected $owner;
 
     /** @var ProductInterface[] */
@@ -74,7 +74,7 @@ abstract class AbstractAssociation implements AssociationInterface
     /**
      * {@inheritdoc}
      */
-    public function setOwner(ProductInterface $owner)
+    public function setOwner(AssociationAwareInterface $owner)
     {
         if (!$this->owner) {
             $this->owner = $owner;

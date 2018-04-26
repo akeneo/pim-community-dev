@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Validator\UniqueValuesSet;
 /**
  * The UniqueValueSet class is stateful, and used when you import several product, to check if in the product batch
  * there is no unique identifier issues or unique axis combination issues.
- * This listener listen the StorageEvents::POST_SAVE_ALL to reset the UniqueValueSet information, to be able to
+ * This listener listen the EventInterface::ITEM_STEP_AFTER_BATCH to reset the UniqueValueSet information, to be able to
  * work in another product batch without uniqueness issues.
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -35,9 +35,9 @@ class ResetUniqueValidationSubscriber
 
     /**
      * Reset the Unique Value Set.
-     * Called on StorageEvents::POST_SAVE_ALL
+     * Called on EventInterface::ITEM_STEP_AFTER_BATCH
      */
-    public function onAkeneoStoragePostsaveall()
+    public function onAkeneoBatchItemStepAfterBatch()
     {
         $this->uniqueValueSet->reset();
         $this->uniqueAxesCombinationSet->reset();

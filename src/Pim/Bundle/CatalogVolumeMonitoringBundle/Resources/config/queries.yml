@@ -1,11 +1,130 @@
-parameters:
-    pim_volume_monitoring.persistence.query.attributes_per_family.class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\SqlAttributesPerFamily
-
 services:
-    pim_volume_monitoring.persistence.query.attributes_per_family:
-        class: '%pim_volume_monitoring.persistence.query.attributes_per_family.class%'
+    pim_volume_monitoring.persistence.query.average_max_attributes_per_family:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxAttributesPerFamily'
         arguments:
             - '@database_connection'
-            - '%attributes_per_family_limit%'
+            - '%average_max_attributes_per_family_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.average_max_options_per_attribute:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxOptionsPerAttribute'
+        arguments:
+            - '@database_connection'
+            - '%average_max_options_per_attribute_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.average_max_product_values:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductValues'
+        arguments:
+            - '@database_connection'
+            - '%average_max_product_values_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.count_attributes:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountAttributes'
+        arguments:
+            - '@database_connection'
+            - '%count_attributes_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_categories:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountCategories'
+        arguments:
+            - '@database_connection'
+            - '%count_categories_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_category_trees:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountCategoryTrees'
+        arguments:
+            - '@database_connection'
+            - '%count_category_trees_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_channels:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountChannels'
+        arguments:
+            - '@database_connection'
+            - '%count_channels_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_families:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountFamilies'
+        arguments:
+            - '@database_connection'
+            - '%count_families_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_locales:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocales'
+        arguments:
+            - '@database_connection'
+            - '%count_locales_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_localizable_and_scopable_attributes:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocalizableAndScopableAttributes'
+        arguments:
+            - '@database_connection'
+            - '%count_localizable_and_scopable_attributes_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_localizable_attributes:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocalizableAttributes'
+        arguments:
+            - '@database_connection'
+            - '%count_localizable_attributes_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_scopable_attributes:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountScopableAttributes'
+        arguments:
+            - '@database_connection'
+            - '%count_scopable_attributes_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_products:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProducts'
+        arguments:
+            - '@database_connection'
+            - '%count_products_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_product_models:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductModels'
+        arguments:
+            - '@database_connection'
+            - '%count_product_models_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_variant_products:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountVariantProducts'
+        arguments:
+            - '@database_connection'
+            - '%count_variant_products_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_product_values:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductValues'
+        arguments:
+            - '@database_connection'
+            - '%count_product_values_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+

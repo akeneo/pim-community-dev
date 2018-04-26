@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\ProductQueryBuilder;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Prophecy\Argument;
@@ -143,6 +144,28 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         );
 
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
+        $pqb->execute()->willReturn($cursor);
+
+        $this->execute()->shouldReturn($cursor);
+    }
+
+    function it_does_not_add_a_default_filter_on_parents_nor_group_when_there_is_a_filter_on_enabled($pqb, CursorInterface $cursor)
+    {
+        $pqb->getRawFilters()->willReturn(
+            [
+                [
+                    'field'    => 'enabled',
+                    'operator' => '=',
+                    'value'    => true,
+                    'context'  => [],
+                    'type'     => 'field'
+                ],
+            ]
+        );
+
+        $pqb->addFilter('entity_type', '=', ProductInterface::class, Argument::cetera())->shouldBeCalled();
+        $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
+        $pqb->addFilter('attributes_for_this_level', Argument::cetera())->shouldNotBeCalled();
         $pqb->execute()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);

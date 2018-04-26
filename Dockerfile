@@ -50,7 +50,7 @@ RUN apt-get update && apt-get install -y apt-transport-https \
   imagemagick \
   libicu52 \
   libmcrypt4 \
-  mysql-server="5.7.21-1debian8" \
+  mysql-server \
   nodejs \
   perceptualdiff \
   xauth \
@@ -134,7 +134,7 @@ RUN cp app/config/parameters_test.yml.dist app/config/parameters_test.yml \
   && bin/console --env=test pim:installer:dump-extensions \
   && a2ensite pim \
   && chown -R www-data:www-data var web \
-  && chmod 777 -R /tmp/pim app/file_storage app/uploads app/archive features/Context/fixtures/
+  && chmod 777 -R /tmp/pim app/file_storage app/uploads app/archive tests/legacy/features/Context/fixtures/
 
 ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
 RUN chmod +x /usr/local/bin/dumb-init \

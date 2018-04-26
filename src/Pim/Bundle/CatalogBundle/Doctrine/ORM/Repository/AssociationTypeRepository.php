@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\AssociationAwareInterface;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 
 /**
@@ -18,11 +18,11 @@ class AssociationTypeRepository extends EntityRepository implements AssociationT
     /**
      * {@inheritdoc}
      */
-    public function findMissingAssociationTypes(ProductInterface $product)
+    public function findMissingAssociationTypes(AssociationAwareInterface $entity)
     {
         $qb = $this->createQueryBuilder('a');
 
-        if ($associations = $product->getAssociations()) {
+        if ($associations = $entity->getAssociations()) {
             $associationTypeIds = $associations->map(
                 function ($association) {
                     return $association->getAssociationType()->getId();

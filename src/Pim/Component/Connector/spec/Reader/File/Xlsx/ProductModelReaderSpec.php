@@ -42,7 +42,7 @@ class ProductModelReaderSpec extends ObjectBehavior
         FileIteratorInterface $fileIterator,
         JobParameters $jobParameters
     ) {
-        $filePath = __DIR__ . '/../../../../../../../../features/Context/fixtures/with_media.csv';
+        $filePath = __DIR__ . '/../../../../../../../../tests/legacy/features/Context/fixtures/with_media.csv';
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('filePath')->willReturn($filePath);

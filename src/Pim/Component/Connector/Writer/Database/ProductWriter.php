@@ -38,6 +38,8 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
      * @param VersionManager                $versionManager
      * @param BulkSaverInterface            $productSaver
      * @param EntityManagerClearerInterface $cacheClearer
+     *
+     * @todo @merge On master : remove $cacheClearer. It is not used anymore.
      */
     public function __construct(
         VersionManager $versionManager,
@@ -46,7 +48,6 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
     ) {
         $this->versionManager = $versionManager;
         $this->productSaver = $productSaver;
-        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -59,7 +60,6 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
         }
 
         $this->productSaver->saveAll($items);
-        $this->cacheClearer->clear();
     }
 
     /**

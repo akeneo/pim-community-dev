@@ -25,6 +25,8 @@ class RemoveProductModelIntegration extends TestCase
         $subId = $subProductModel->getId();
         $variantId = $variant->getId();
 
+        sleep(1);
+
         $this->getFromTestContainer('pim_catalog.remover.product_model')->remove($rootProductModel);
 
         $this->getFromTestContainer('doctrine.orm.default_entity_manager')->clear();

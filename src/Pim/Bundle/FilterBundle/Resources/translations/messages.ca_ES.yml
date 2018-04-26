@@ -11,6 +11,7 @@ oro.filter.form.label_type_equals: és igual a
 oro.filter.form.label_type_start_with: s'inicia amb
 oro.filter.form.label_type_end_with: acaba amb
 oro.filter.form.label_type_empty: està buit
+oro.filter.form.label_type_not_empty: no és buit
 oro.filter.form.label_type_in_list: a la llista
 oro.filter.form.label_date_type_between: entre
 oro.filter.form.label_date_type_not_between: no entre

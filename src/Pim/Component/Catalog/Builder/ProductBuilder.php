@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Builder;
 
+use Pim\Component\Catalog\Model\AssociationAwareInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -49,6 +49,8 @@ class ProductBuilder implements ProductBuilderInterface
      * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
      * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
      * @param array                              $classes             Model classes
+     *
+     * @todo @merge Remove unused parameter $valuesResolver in master
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -93,14 +95,14 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addMissingAssociations(ProductInterface $product)
+    public function addMissingAssociations(AssociationAwareInterface $entity)
     {
-        $missingAssocTypes = $this->assocTypeRepository->findMissingAssociationTypes($product);
+        $missingAssocTypes = $this->assocTypeRepository->findMissingAssociationTypes($entity);
         if (!empty($missingAssocTypes)) {
             foreach ($missingAssocTypes as $associationType) {
                 $association = new $this->associationClass();
                 $association->setAssociationType($associationType);
-                $product->addAssociation($association);
+                $entity->addAssociation($association);
             }
         }
 

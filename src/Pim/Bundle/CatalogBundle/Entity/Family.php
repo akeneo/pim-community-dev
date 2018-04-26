@@ -219,7 +219,7 @@ class Family implements FamilyInterface
      */
     public function hasAttribute(AttributeInterface $attribute)
     {
-        return $this->attributes->contains($attribute);
+        return $this->hasAttributeCode($attribute->getCode());
     }
 
     /**

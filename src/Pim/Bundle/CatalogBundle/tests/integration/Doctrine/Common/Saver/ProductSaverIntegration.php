@@ -535,6 +535,13 @@ class ProductSaverIntegration extends TestCase
                         'data'   => 'this is a beautiful text',
                     ],
                 ],
+                'a_yes_no' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => true,
+                    ],
+                ],
             ]
         ];
     }
@@ -596,6 +603,11 @@ class ProductSaverIntegration extends TestCase
             'a_text' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'this is a beautiful text',
+                ],
+            ],
+            'a_yes_no' => [
+                '<all_channels>' => [
+                    '<all_locales>' => true,
                 ],
             ],
             'sku' => [

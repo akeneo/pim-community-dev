@@ -8,10 +8,12 @@
     "webpack-dev": "webpack --config webpack.config.js",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
-    "before-commit": "yarn prettier && yarn lint",
+    "before-commit": "yarn prettier && yarn lint && yarn test",
+    "test": "yarn webpack-test && yarn integration && yarn acceptance tests/features",
     "webpack-test": "webpack --config webpack-test.config.js",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
+    "integration": "jest --no-cache --config ./tests/front/integration/jest/integration.jest.js",
     "acceptance": "cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
     "acceptance-report": "yarn run acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node webpack/test/acceptance/generate-report.js"
   },
@@ -31,6 +33,7 @@
     "glob": "7.1.2",
     "html-webpack-inline-source-plugin": "0.0.9",
     "html-webpack-plugin": "2.30.1",
+    "jest": "^22.4.3",
     "prettier": "^1.11.1",
     "puppeteer": "1.1.1",
     "read-pkg": "2.0.0"
