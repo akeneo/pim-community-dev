@@ -232,7 +232,8 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
             Operators::LOWER_THAN,
             75,
             [
-                'scope' => 'tablet'
+                'scope' => 'tablet',
+                'locales' => ['fr_FR', 'en_US', 'de_DE']
             ]
         ]]);
         $this->assert($result, []);
