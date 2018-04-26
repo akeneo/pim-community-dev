@@ -9,7 +9,7 @@ services:
             - '@pimee_workflow.reader.file.csv_product_draft'
             - '@pimee_workflow.processor.denormalization.product_draft'
             - '@pim_base_connector.writer.database.product_draft'
-            - 10
+            - '%pim_job_product_batch_size%'
 
     # CSV Export steps ------------------------------------------------------------------------------------------------
     pimee_workflow.step.csv_published_product.export:
@@ -21,7 +21,7 @@ services:
             - '@pimee_workflow.reader.published_product'
             - '@pimee_workflow.processor.normalization.published_product'
             - '@pim_connector.writer.file.csv_product'
-            - 10
+            - '%pim_job_product_batch_size%'
 
     # XLSX IMport steps -----------------------------------------------------------------------------------------------
     pimee_workflow.step.xlsx_product_proposal.import:
@@ -33,7 +33,7 @@ services:
             - '@pimee_workflow.reader.file.xlsx_product_draft'
             - '@pimee_workflow.processor.denormalization.product_draft'
             - '@pim_base_connector.writer.database.product_draft'
-            - 10
+            - '%pim_job_product_batch_size%'
 
     # XLSX Export steps -----------------------------------------------------------------------------------------------
     pimee_workflow.step.xlsx_published_product.export:
@@ -45,7 +45,7 @@ services:
             - '@pimee_workflow.reader.published_product'
             - '@pimee_workflow.processor.normalization.published_product'
             - '@pim_connector.writer.file.xlsx_product'
-            - 10
+            - '%pim_job_product_batch_size%'
 
     # Draft steps -----------------------------------------------------------------------------------------------------
     pimee_workflow.step.approve_product_draft.perform:
@@ -74,7 +74,7 @@ services:
             - '@pimee_workflow.connector.reader.mass_edit.published_product'
             - '@pim_enrich.connector.processor.quick_export.product'
             - '@pimee_workflow.writer.file.csv_published_product_quick_export'
-            - 1000
+            - '%pim_job_product_batch_size%'
 
     # XLSX Quick Export steps -----------------------------------------------------------------------------------------
     pimee_workflow.step.xlsx_published_product.quick_export:
@@ -86,4 +86,4 @@ services:
             - '@pimee_workflow.connector.reader.mass_edit.published_product'
             - '@pim_enrich.connector.processor.quick_export.product'
             - '@pimee_workflow.writer.file.xlsx_published_product_quick_export'
-            - 1000
+            - '%pim_job_product_batch_size%'

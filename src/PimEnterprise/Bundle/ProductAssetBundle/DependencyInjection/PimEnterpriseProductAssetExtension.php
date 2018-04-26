@@ -61,6 +61,7 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('models.yml');
         $loader->load('normalizers.yml');
         $loader->load('providers.yml');
+        $loader->load('queries.yml');
         $loader->load('readers.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
