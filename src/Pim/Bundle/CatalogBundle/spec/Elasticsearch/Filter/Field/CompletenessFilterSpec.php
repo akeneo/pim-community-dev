@@ -138,6 +138,82 @@ class CompletenessFilterSpec extends ObjectBehavior
             ->shouldReturn($this);
     }
 
+    function it_adds_an_equal_filter($sqb)
+    {
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['term' => ['completeness.ecommerce.en_US' => 100]],
+                    ],
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->addFieldFilter('completeness', Operators::EQUALS, 100, 'en_US', 'ecommerce', [])
+            ->shouldReturn($this);
+    }
+
+    function it_adds_a_not_equal_filter($sqb)
+    {
+        $sqb
+            ->addFilter(
+                [
+                    'exists' => [
+                        'field' => 'completeness.ecommerce.en_US'
+                    ]
+                ]
+            )
+            ->shouldBeCalled();
+
+        $sqb
+            ->addMustNot(
+                [
+                    'bool' => [
+                        'filter' => [
+                            ['term' => ["completeness.ecommerce.en_US" => 100]],
+                        ],
+                    ]
+                ]
+            )
+            ->shouldBeCalled();
+
+        $this->addFieldFilter('completeness', Operators::NOT_EQUAL, 100, 'en_US', 'ecommerce', [])
+            ->shouldReturn($this);
+    }
+
+    function it_adds_a_lower_than_filter($sqb)
+    {
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['range' => ['completeness.ecommerce.en_US' => ['lt' => 100]]]
+                    ]
+                ]
+            ]
+        )->shouldBeCalled();
+
+        $this->addFieldFilter('completeness', Operators::LOWER_THAN, 100, 'en_US', 'ecommerce', [])
+            ->shouldReturn($this);
+    }
+
+    function it_adds_a_greater_than_filter($sqb)
+    {
+        $sqb->addFilter(
+            [
+                'bool' => [
+                    'should' => [
+                        ['range' => ['completeness.ecommerce.en_US' => ['gt' => 100]]]
+                    ]
+                ]
+            ]
+        )->shouldBeCalled();
+
+        $this->addFieldFilter('completeness', Operators::GREATER_THAN, 100, 'en_US', 'ecommerce', [])
+            ->shouldReturn($this);
+    }
+
     function it_filters_with_a_non_empty_locale()
     {
         $this->shouldThrow(InvalidPropertyException::class)->during(

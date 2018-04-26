@@ -4,6 +4,10 @@
 
 - PIM-7281: Fix inappropriate calls to the cache clearer
 
+## Improvements
+
+- PIM-7310: Fix completeness filter to have the operators '=', '!=', '<', '>' for the product and product model query builder
+
 # 2.2.3 (2018-04-12)
 
 ## BC Breaks
