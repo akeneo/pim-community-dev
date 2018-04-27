@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7325: Fix family grid search filter
+
 # 2.0.22 (2018-04-25)
 
 ## Bug fixes
@@ -13,7 +19,6 @@
 - PIM-7322: Fix cast of a product model as string to format correctly violations
 - PIM-7320: Fix memory leak on boolean values purge command
 - PIM-7317: Fix iterator misuse in the database product model reader
-- PIM-7325: Fix family grid search filter
 
 ## BC Breaks
 
