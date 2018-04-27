@@ -3,18 +3,19 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
 /**
- * Search use cases of products and models in a "smart datagrid way".
- * It returns either products or models depending on where the information is stored.
+ * Search use cases of products and product models in a "smart way".
+ * It returns either products or product models depending on which entity is holding the information we are trying to
+ * filter on.
  *
  * The search is performed independently from the family variants.
  *
  * The search takes advantage of the following properties to elaborate concise but powerful requests:
  *
- * - Each document (e.g: products, product variants or models) has all the properties of its associated parent model
- *   and grand parent models.
+ * - Each document (e.g: products, product variants or product models) has all the properties of its associated
+ * ancestors product models.
  *
- * - Each documents has an 'attributes_for_this_level' property which is a list of the attribute codes that belong to the
- *   document (following the family variant settings and levels definition).
+ * - Each documents has an 'attribute_of_ancestors' property which is a list of the attribute codes that belong to the
+ * product model ancestors (ie, all attribute codes of the parents and grand parent product models).
  *
  * - Each document has a property 'document_type' which gives an hint about the level in the family variant the document
  *   belongs to.
@@ -80,7 +81,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['description']],
+                                                        'terms' => ['attributes_of_ancestors' => ['description']],
                                                     ],
                                                 ],
                                             ],
@@ -132,7 +133,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                 ],
                                             ],
@@ -178,7 +179,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                 ],
                                             ],
@@ -214,7 +215,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                 ],
                                             ],
@@ -260,7 +261,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                        'terms' => ['attributes_of_ancestors' => ['size']],
                                                     ],
                                                 ],
                                             ],
@@ -307,7 +308,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                        'terms' => ['attributes_of_ancestors' => ['size']],
                                                     ],
                                                 ],
                                             ],
@@ -373,10 +374,10 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                        'terms' => ['attributes_of_ancestors' => ['size']],
                                                     ],
                                                 ],
                                             ],
@@ -415,10 +416,10 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                        'terms' => ['attributes_of_ancestors' => ['size']],
                                                     ],
                                                 ],
                                             ],
@@ -461,10 +462,10 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['description']],
+                                                        'terms' => ['attributes_of_ancestors' => ['description']],
                                                     ],
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                 ],
                                             ],
@@ -500,7 +501,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['material']],
+                                                        'terms' => ['attributes_of_ancestors' => ['material']],
                                                     ],
                                                 ],
                                             ],
@@ -544,7 +545,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['material']],
+                                                        'terms' => ['attributes_of_ancestors' => ['material']],
                                                     ],
                                                 ],
                                             ],
@@ -589,10 +590,10 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                        'terms' => ['attributes_of_ancestors' => ['size']],
                                                     ],
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                 ],
                                             ],
@@ -631,7 +632,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                 ],
                                             ],
@@ -695,10 +696,10 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['material']],
+                                                        'terms' => ['attributes_of_ancestors' => ['material']],
                                                     ],
                                                 ],
                                             ],
@@ -743,10 +744,10 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                        'terms' => ['attributes_of_ancestors' => ['size']],
                                                     ],
                                                 ],
                                             ],
@@ -805,10 +806,10 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                        'terms' => ['attributes_of_ancestors' => ['size']],
                                                     ],
                                                 ],
                                             ],
@@ -922,7 +923,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['size']],
+                                                        'terms' => ['attributes_of_ancestors' => ['size']],
                                                     ],
                                                     [
                                                         'terms' => ['categories_of_ancestors' => ['shoes']]
@@ -969,7 +970,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['color']],
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
                                                     ],
                                                     [
                                                         'terms' => ['categories_of_ancestors' => ['shoes']]
@@ -1067,7 +1068,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                                         'terms' => ['categories_of_ancestors' => ['men']]
                                                     ],
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['material']]
+                                                        'terms' => ['attributes_of_ancestors' => ['material']]
                                                     ]
                                                 ]
                                             ]
@@ -1116,7 +1117,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                             'bool' => [
                                                 'filter' => [
                                                     [
-                                                        'terms' => ['attribute_of_ancestors' => ['size']]
+                                                        'terms' => ['attributes_of_ancestors' => ['size']]
                                                     ],
                                                     [
                                                         'terms' => ['categories_of_ancestors' => ['shoes']]
