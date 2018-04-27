@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use Pim\Component\Catalog\Model\AssociationAwareInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -56,11 +56,11 @@ class ParentsAssociationsNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param ProductInterface $product
+     * @param EntityWithFamilyVariantInterface $product
      *
      * @return AssociationInterface[]
      */
-    public function getParentAssociations(ProductInterface $product): array
+    public function getParentAssociations(EntityWithFamilyVariantInterface $product): array
     {
         $parent = $product->getParent();
         $parentAssociations = [];

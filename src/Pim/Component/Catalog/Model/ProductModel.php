@@ -666,37 +666,7 @@ class ProductModel implements ProductModelInterface
      */
     public function getAssociations()
     {
-//        return $this->associations;
-
-        $associations = new ArrayCollection($this->associations->toArray());
-
-        return $this->getAllAssociations($this, $associations);
-    }
-
-    /**
-     * @param ProductInterface|AssociationAwareInterface $product
-     * @param Collection                                 $associationCollection
-     *
-     * @return Collection
-     */
-    private function getAllAssociations(
-        AssociationAwareInterface $product,
-        Collection $associationCollection
-    )
-    {
-        $parent = $product->getParent();
-
-        if (null === $parent) {
-            return $associationCollection;
-        }
-
-        foreach ($parent->getAssociations() as $association) {
-            if (!$associationCollection->contains($association)) {
-                $associationCollection->add($association);
-            }
-        }
-
-        return $this->getAllAssociations($parent, $associationCollection);
+        return $this->associations;
     }
 
     /**

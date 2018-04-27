@@ -99,9 +99,8 @@ class ProductNormalizer implements NormalizerInterface
 
     /** @var NormalizerInterface */
     protected $incompleteValuesNormalizer;
-    /**
-     * @var NormalizerInterface
-     */
+
+    /** @var NormalizerInterface */
     private $parentAssociationsNormalizer;
 
     /**
