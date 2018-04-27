@@ -30,6 +30,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.product.properties'
             - '@pim_catalog.normalizer.standard.product.associations'
+            - '@pim_catalog.normalizer.standard.product.parent_associations'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -50,6 +51,11 @@ services:
 
     pim_catalog.normalizer.standard.product.associations:
         class: '%pim_catalog.normalizer.standard.product.associations.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 40 }
+
+    pim_catalog.normalizer.standard.product.parent_associations:
+        class: Pim\Component\Catalog\Normalizer\Standard\Product\ParentsAssociationsNormalizer
         tags:
             - { name: pim_serializer.normalizer, priority: 40 }
 

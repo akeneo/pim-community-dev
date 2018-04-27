@@ -282,11 +282,15 @@ define(
              */
             setAssociationCount: function (associationTypes) {
                 const associations = this.getFormData().associations;
+                const parentAssociations = this.getFormData().parent_associations;
 
                 _.each(associationTypes, function (assocType) {
                     const association = associations[assocType.code];
+                    const parentAssociation = parentAssociations[assocType.code];
 
                     assocType.productCount = association && association.products ? association.products.length : 0;
+                    assocType.productCount += parentAssociation && parentAssociation.products ? parentAssociation.products.length : 0;
+
                     assocType.productModelCount = association && association.product_models ?
                         association.product_models.length : 0;
                     assocType.groupCount = association && association.groups ? association.groups.length : 0;
