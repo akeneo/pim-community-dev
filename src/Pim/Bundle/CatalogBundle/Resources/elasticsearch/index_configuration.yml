@@ -4,6 +4,8 @@ mappings:
             # "completeness" property is handled by the "completeness" dynamic template
             categories:
                 type: 'keyword'
+            categories_of_ancestors:
+                type: 'keyword'
             family.code:
                 type: 'keyword'
             # family labels are handled by the "family" dynamic template
@@ -24,7 +26,7 @@ mappings:
                 normalizer: 'identifier_normalizer'
             document_type:
                 type: 'keyword'
-            attributes_for_this_level:
+            attributes_of_ancestors:
                 type: 'keyword'
             parent:
                 type: 'keyword'
