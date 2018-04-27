@@ -216,8 +216,7 @@ class ProductNormalizer implements NormalizerInterface
 
         $incompleteValues = $this->incompleteValuesNormalizer->normalize($product);
 
-        $data['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
-
+        $normalizedProduct['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
 
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),

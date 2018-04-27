@@ -97,6 +97,7 @@ services:
             - '@pim_enrich.doctrine.query.ascendant_categories'
             - '@pim_enrich.normalizer.incomplete_values'
             - '@pim_user.context.user'
+            - '@pim_catalog.builder.product'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

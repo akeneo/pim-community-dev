@@ -286,7 +286,7 @@ define(
 
                 _.each(associationTypes, function (assocType) {
                     const association = associations[assocType.code];
-                    const parentAssociation = parentAssociations[assocType.code];
+                    const parentAssociation = parentAssociations ? parentAssociations[assocType.code] : null;
 
                     assocType.productCount = association && association.products ? association.products.length : 0;
                     assocType.productCount += parentAssociation && parentAssociation.products ? parentAssociation.products.length : 0;

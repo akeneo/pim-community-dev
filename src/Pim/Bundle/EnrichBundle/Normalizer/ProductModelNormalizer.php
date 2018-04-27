@@ -7,6 +7,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -77,6 +78,9 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var UserContext */
     private $userContext;
 
+    /** @var ProductBuilderInterface */
+    private $productBuilder;
+
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
@@ -94,6 +98,7 @@ class ProductModelNormalizer implements NormalizerInterface
      * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
      * @param NormalizerInterface                       $incompleteValuesNormalizer
      * @param UserContext                               $userContext
+     * @param ProductBuilderInterface                   $productBuilder
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -111,7 +116,8 @@ class ProductModelNormalizer implements NormalizerInterface
         ImageAsLabel $imageAsLabel,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         NormalizerInterface $incompleteValuesNormalizer,
-        UserContext $userContext
+        UserContext $userContext,
+        ProductBuilderInterface $productBuilder
     ) {
         $this->normalizer = $normalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -129,13 +135,17 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->ascendantCategoriesQuery = $ascendantCategoriesQuery;
         $this->incompleteValuesNormalizer = $incompleteValuesNormalizer;
         $this->userContext = $userContext;
+        $this->productBuilder = $productBuilder;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param ProductModelInterface $productModel
      */
     public function normalize($productModel, $format = null, array $context = []): array
     {
+        $this->productBuilder->addMissingAssociations($productModel);
         $this->entityValuesFiller->fillMissingValues($productModel);
 
         $normalizedProductModel = $this->normalizer->normalize($productModel, 'standard', $context);
