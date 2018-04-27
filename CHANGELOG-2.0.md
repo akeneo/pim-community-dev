@@ -1,5 +1,8 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-7325: Fix family grid search filter
 - PIM-7328: Fix a bug that prevents to index very large texts in Elasticsearch
 
 # 2.0.22 (2018-04-25)
