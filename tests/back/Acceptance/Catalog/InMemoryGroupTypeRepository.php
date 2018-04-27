@@ -20,9 +20,15 @@ class InMemoryGroupTypeRepository implements SaverInterface, GroupTypeRepository
     /** @var GroupType[] */
     private $groupTypes;
 
-    public function __construct()
+    private $className;
+
+    /**
+     * @param string $className
+     */
+    public function __construct(string $className)
     {
         $this->groupTypes = new ArrayCollection();
+        $this->className = $className;
     }
 
     public function save($group, array $options = [])
@@ -94,6 +100,6 @@ class InMemoryGroupTypeRepository implements SaverInterface, GroupTypeRepository
      */
     public function getClassName()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->className;
     }
 }

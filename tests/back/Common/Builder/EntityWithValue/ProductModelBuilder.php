@@ -2,21 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Common\Builder\EntityWithValue\Builder;
+namespace Akeneo\Test\Common\Builder\EntityWithValue;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Test\Common\Builder\EntityBuilder;
-use Akeneo\Test\Common\Builder\EntityWithValue\Code;
-use Akeneo\Test\Common\Builder\EntityWithValue\ListOfCodes;
-use Akeneo\Test\Common\Builder\EntityWithValue\Value;
-use Akeneo\Test\Common\Builder\EntityWithValue\ListOfValues;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * Create a product model object with product factory, update its data with product model update and validate
  * this object
  */
-final class ProductModel
+final class ProductModelBuilder
 {
     /** @var Code */
     private $code;
@@ -64,9 +60,16 @@ final class ProductModel
      */
     public function build(): ProductModelInterface
     {
+        if (!$this->parent->empty()) {
+            if (null === $this->productModelRepository->findOneByIdentifier((string) $this->parent)) {
+                throw new \InvalidArgumentException(sprintf('The parent "%s" does not exist.'));
+            }
+        }
+
         $productModelStandardFormat = [
             'code' => (string) $this->code,
             'family_variant' => (string) $this->familyVariant,
+            'parent' => (string) $this->parent,
             'values' => $this->values->toStandardFormat(),
             'categories' => $this->categories->toStandardFormat(),
         ];
@@ -74,23 +77,15 @@ final class ProductModel
         /** @var ProductModelInterface $productModel */
         $productModel = $this->entityBuilder->build($productModelStandardFormat);
 
-        if (!$this->parent->empty()) {
-            if (null === $parent = $this->productModelRepository->findOneByIdentifier((string) $this->parent)) {
-                throw new \InvalidArgumentException(sprintf('The parent "%s" does not exist.'));
-            }
-
-            $productModel->setParent($parent);
-        }
-
         return $productModel;
     }
 
     /**
      * @param string $code
      *
-     * @return ProductModel
+     * @return ProductModelBuilder
      */
-    public function withCode(string $code): ProductModel
+    public function withCode(string $code): ProductModelBuilder
     {
         $this->code = Code::fromString($code);
 
@@ -100,9 +95,9 @@ final class ProductModel
     /**
      * @param string $familyVariant
      *
-     * @return ProductModel
+     * @return ProductModelBuilder
      */
-    public function withFamilyVariant(string $familyVariant): ProductModel
+    public function withFamilyVariant(string $familyVariant): ProductModelBuilder
     {
         $this->familyVariant = Code::fromString($familyVariant);
 
@@ -112,9 +107,9 @@ final class ProductModel
     /**
      * @param string $parent
      *
-     * @return ProductModel
+     * @return ProductModelBuilder
      */
-    public function withParent(string $parent): ProductModel
+    public function withParent(string $parent): ProductModelBuilder
     {
         $this->parent = Code::fromString($parent);
 
@@ -127,14 +122,14 @@ final class ProductModel
      * @param string $locale
      * @param string $channel
      *
-     * @return ProductModel
+     * @return ProductModelBuilder
      */
     public function withValue(
         string $attribute,
         $data,
         string $locale = 'all-locales',
         string $channel = 'all-channels'
-    ): ProductModel {
+    ): ProductModelBuilder {
         $value = Value::withLocaleAndChannel($attribute, $data, $locale, $channel);
         $attribute = Code::fromString($attribute);
 
@@ -146,9 +141,9 @@ final class ProductModel
     /**
      * @param array $categories
      *
-     * @return ProductModel
+     * @return ProductModelBuilder
      */
-    public function withCategories(...$categories): ProductModel
+    public function withCategories(...$categories): ProductModelBuilder
     {
         $this->categories = ListOfCodes::fromArrayOfString($categories);
 

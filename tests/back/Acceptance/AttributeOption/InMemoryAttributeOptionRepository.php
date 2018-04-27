@@ -22,12 +22,17 @@ class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInte
     /** @var Collection */
     private $attributeOptions;
 
+    /** @var string */
+    private $className;
+
     /**
-     * @param AttributeOptionInterface[] $attributeOptions
+     * @param array  $attributeOptions
+     * @param string $className
      */
-    public function __construct(array $attributeOptions = [])
+    public function __construct(array $attributeOptions, string $className)
     {
         $this->attributeOptions = new ArrayCollection($attributeOptions);
+        $this->className = $className;
     }
 
     /**
@@ -118,6 +123,6 @@ class InMemoryAttributeOptionRepository implements AttributeOptionRepositoryInte
      */
     public function getClassName()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->className;
     }
 }

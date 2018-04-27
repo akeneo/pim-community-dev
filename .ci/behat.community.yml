@@ -50,13 +50,6 @@ legacy:
                     - 'Context\FeatureContext'
                     - '@pim_catalog.repository.product_model'
                     - '@doctrine.orm.entity_manager'
-                - Pim\Behat\Context\Domain\Enrich\VariantProductContext:
-                    - 'Context\FeatureContext'
-                    - '@pim_catalog.repository.product'
-                    - '@pim_catalog.updater.product'
-                    - '@pim_catalog.saver.product'
-                    - '@pim_catalog.validator.product'
-                    - '@doctrine.orm.entity_manager'
                 - Pim\Behat\Context\Domain\Enrich\VariantNavigationContext:
                     - 'Context\FeatureContext'
                 - Pim\Behat\Context\Domain\Spread\ExportBuilderContext:
@@ -142,6 +135,10 @@ acceptance:
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+                - test.context.attribute
+                - test.context.family_variant
+                - test.context.product_model
+                - test.context.variant_product
             filters:
                 tags: '@acceptance-back'
         volume-monitoring:

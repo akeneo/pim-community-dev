@@ -16,9 +16,17 @@ class InMemoryFamilyVariantRepository implements SaverInterface, IdentifiableObj
     /** @var ArrayCollection|FamilyVariant[] */
     private $familyVariants;
 
-    public function __construct(array $familyVariants = [])
+    /** @var string */
+    private $className;
+
+    /**
+     * @param array  $familyVariants
+     * @param string $className
+     */
+    public function __construct(array $familyVariants, string $className)
     {
         $this->familyVariants = new ArrayCollection($familyVariants);
+        $this->className = $className;
     }
 
     public function getIdentifierProperties()
@@ -62,6 +70,6 @@ class InMemoryFamilyVariantRepository implements SaverInterface, IdentifiableObj
 
     public function getClassName()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->className;
     }
 }

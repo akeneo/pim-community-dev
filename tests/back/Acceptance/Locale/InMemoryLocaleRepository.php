@@ -16,9 +16,16 @@ final class InMemoryLocaleRepository implements LocaleRepositoryInterface, Saver
     /** @var Collection */
     private $locales;
 
-    public function __construct()
+    /** @var string */
+    private $className;
+
+    /**
+     * @param string $className
+     */
+    public function __construct(string $className)
     {
         $this->locales = new ArrayCollection();
+        $this->className = $className;
     }
 
     /**
@@ -137,6 +144,6 @@ final class InMemoryLocaleRepository implements LocaleRepositoryInterface, Saver
      */
     public function getClassName()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->className;
     }
 }

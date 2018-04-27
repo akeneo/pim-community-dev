@@ -2,43 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\User;
+namespace Akeneo\Test\Acceptance\FileInfo;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Test\IntegrationTestsBundle\Assertion\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 
 /**
- * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @author    Damien Carcel <damien.carcel@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InMemoryUserRepository implements UserRepositoryInterface, SaverInterface
+class InMemoryFileInfoRepository implements FileInfoRepositoryInterface, SaverInterface
 {
-    /** @var User[] */
-    private $users;
+    /** @var Collection */
+    private $fileInfoCollection;
 
     /** @var string */
     private $className;
 
     /**
+     * @param array  $fileInfoCollection
      * @param string $className
      */
-    public function __construct(string $className)
+    public function __construct(array $fileInfoCollection, string $className)
     {
-        $this->users = new ArrayCollection();
+        $this->fileInfoCollection = new ArrayCollection($fileInfoCollection);
         $this->className = $className;
-    }
-
-    public function save($user, array $options = [])
-    {
-        if(!$user instanceof UserInterface) {
-            throw new \InvalidArgumentException('Only user objects are supported.');
-        }
-        $this->users->set($user->getUsername(), $user);
     }
 
     /**
@@ -46,7 +39,7 @@ class InMemoryUserRepository implements UserRepositoryInterface, SaverInterface
      */
     public function getIdentifierProperties()
     {
-        return ['username'];
+        return ['code'];
     }
 
     /**
@@ -54,15 +47,7 @@ class InMemoryUserRepository implements UserRepositoryInterface, SaverInterface
      */
     public function findOneByIdentifier($identifier)
     {
-        return $this->users->get($identifier);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function countAll(): int
-    {
-        throw new NotImplementedException(__METHOD__);
+        return $this->attributes->get($identifier);
     }
 
     /**
@@ -108,8 +93,12 @@ class InMemoryUserRepository implements UserRepositoryInterface, SaverInterface
     /**
      * {@inheritdoc}
      */
-    public function findByGroupIds(array $groupIds)
+    public function save($fileInfo, array $options = [])
     {
-        throw new NotImplementedException(__METHOD__);
+        if (!$fileInfo instanceof FileInfoInterface) {
+            throw new \InvalidArgumentException('The object argument should be a file info');
+        }
+
+        $this->fileInfoCollection->set($fileInfo->getCode(), $fileInfo);
     }
 }

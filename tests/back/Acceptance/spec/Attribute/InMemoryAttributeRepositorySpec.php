@@ -7,6 +7,7 @@ namespace spec\Akeneo\Test\Acceptance\Attribute;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
@@ -65,6 +66,20 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->beConstructedWith([$attribute->getCode() => $attribute]);
 
         $this->findBy(['code' => 'attribute_2'])->shouldReturn([]);
+    }
+
+    function it_finds_the_identifier_attribute()
+    {
+        $identifierAttribute = $this->createAttribute('sku');
+        $identifierAttribute->setType(AttributeTypes::IDENTIFIER);
+        $this->beConstructedWith([$identifierAttribute->getCode() => $identifierAttribute]);
+
+        $this->getIdentifier()->shouldReturn($identifierAttribute);
+    }
+
+    function it_finds_no_identifier_attribute()
+    {
+        $this->getIdentifier()->shouldReturn(null);
     }
 
     function it_throws_an_exception_if_saved_object_is_not_an_attribute(\StdClass $object)

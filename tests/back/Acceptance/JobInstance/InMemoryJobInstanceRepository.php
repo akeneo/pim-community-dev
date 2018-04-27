@@ -2,70 +2,59 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\User;
+namespace Akeneo\Test\Acceptance\JobInstance;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Oro\Bundle\UserBundle\Entity\Role;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 
 /**
- * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @author    Damien Carcel <damien.carcel@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InMemoryRoleRepository implements
-    IdentifiableObjectRepositoryInterface,
-    ObjectRepository,
-    Selectable,
-    SaverInterface
+class InMemoryJobInstanceRepository implements ObjectRepository, Selectable, DatagridRepositoryInterface, SaverInterface
 {
-    /** @var Role[] */
-    private $roles;
+    /** @var Collection */
+    private $jobInstances;
 
     /** @var string */
     private $className;
 
     /**
+     * @param array  $jobInstances
      * @param string $className
      */
-    public function __construct(string $className)
+    public function __construct(array $jobInstances, string $className)
     {
-        $this->roles = new ArrayCollection();
+        $this->jobInstances = new ArrayCollection($jobInstances);
         $this->className = $className;
     }
 
-    public function save($role, array $options = [])
+    /**
+     * {@inheritdoc}
+     */
+    public function save($jobInstance, array $options = [])
     {
-        if(!$role instanceof RoleInterface) {
-            throw new \InvalidArgumentException('Only user role objects are supported.');
+        if (!$jobInstance instanceof JobInstance) {
+            throw new \InvalidArgumentException('The object argument should be a job instance');
         }
-        $index = $role->getRole();
-        $index = strtolower(str_replace('ROLE_', '', $index));
-        $this->roles->set($index, $role);
+
+        $this->jobInstances->set($jobInstance->getCode(), $jobInstance);
     }
 
     /**
-     * {{@inheritdoc}}
+     * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function createDatagridQueryBuilder()
     {
-        return ['role'];
-    }
-
-    /**
-     * {{@inheritdoc}}
-     */
-    public function findOneByIdentifier($identifier)
-    {
-        return $this->roles->get($identifier);
+        throw new NotImplementedException(__METHOD__);
     }
 
     /**

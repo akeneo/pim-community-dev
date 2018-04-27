@@ -17,9 +17,17 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
     /** @var ArrayCollection */
     private $productModels;
 
-    public function __construct(array $productModels = [])
+    /** @var string */
+    private $className;
+
+    /**
+     * @param array  $productModels
+     * @param string $className
+     */
+    public function __construct(array $productModels, string $className)
     {
         $this->productModels = new ArrayCollection($productModels);
+        $this->className = $className;
     }
 
     public function getIdentifierProperties()
@@ -68,7 +76,7 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
 
     public function getClassName()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->className;
     }
 
     public function findSiblingsProductModels(ProductModelInterface $productModel): array

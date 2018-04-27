@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Test\Acceptance\Product;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
@@ -12,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
-use Prophecy\Argument;
 
 class InMemoryProductRepositorySpec extends ObjectBehavior
 {
@@ -23,17 +23,22 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
 
     function it_is_an_identifiable_repository()
     {
-        $this->shouldBeAnInstanceOf(IdentifiableObjectRepositoryInterface::class);
+        $this->shouldImplement(IdentifiableObjectRepositoryInterface::class);
     }
 
     function it_is_a_saver()
     {
-        $this->shouldBeAnInstanceOf(SaverInterface::class);
+        $this->shouldImplement(SaverInterface::class);
+    }
+
+    function it_is_a_bulk_saver()
+    {
+        $this->shouldImplement(BulkSaverInterface::class);
     }
 
     function it_is_a_product_repository()
     {
-        $this->shouldBeAnInstanceOf(ProductRepositoryInterface::class);
+        $this->shouldImplement(ProductRepositoryInterface::class);
     }
 
     function it_asserts_the_identifier_property_is_the_identifier()
@@ -63,6 +68,22 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $this->save($product)->shouldReturn(null);
 
         $this->findOneByIdentifier($product->getIdentifier())->shouldReturn($product);
+    }
+
+    function it_saves_many_products()
+    {
+        $productA = new Product();
+        $productB = new Product();
+        $productC = new Product();
+        $productA->setIdentifier(new ScalarValue(new Attribute(), '', '', 'product-a'));
+        $productB->setIdentifier(new ScalarValue(new Attribute(), '', '', 'product-b'));
+        $productC->setIdentifier(new ScalarValue(new Attribute(), '', '', 'product-c'));
+
+        $this->saveAll([$productA, $productB, $productC])->shouldReturn(null);
+
+        $this->findOneByIdentifier($productA->getIdentifier())->shouldReturn($productA);
+        $this->findOneByIdentifier($productB->getIdentifier())->shouldReturn($productB);
+        $this->findOneByIdentifier($productC->getIdentifier())->shouldReturn($productC);
     }
 
     function it_saves_only_products()

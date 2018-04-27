@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Constraint;
@@ -17,17 +17,15 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ImmutableValidator extends ConstraintValidator
 {
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManagerInterface */
     protected $em;
 
     /**
      * Constructor
      *
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

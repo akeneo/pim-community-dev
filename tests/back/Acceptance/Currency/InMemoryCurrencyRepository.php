@@ -19,9 +19,16 @@ final class InMemoryCurrencyRepository implements
     /** @var Collection */
     private $currencies;
 
-    public function __construct()
+    /** @var string */
+    private $className;
+
+    /**
+     * @param string $className
+     */
+    public function __construct(string $className)
     {
         $this->currencies = new ArrayCollection();
+        $this->className = $className;
     }
 
     /**
@@ -100,6 +107,6 @@ final class InMemoryCurrencyRepository implements
      */
     public function getClassName()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->className;
     }
 }

@@ -16,9 +16,16 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
     /** @var Collection */
     private $channels;
 
-    public function __construct()
+    /** @var string */
+    private $className;
+
+    /**
+     * @param string $className
+     */
+    public function __construct(string $className)
     {
         $this->channels = new ArrayCollection();
+        $this->className = $className;
     }
 
     /**
@@ -137,6 +144,6 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
      */
     public function getClassName()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->className;
     }
 }

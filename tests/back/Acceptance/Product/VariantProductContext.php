@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Pim\Behat\Context\Domain\Enrich;
+namespace Akeneo\Test\Acceptance\Product;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Test\Acceptance\ProductModel\InMemoryProductModelRepository;
+use Akeneo\Test\Common\Builder\EntityWithValue\ProductBuilder;
+use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Context\Spin\SpinCapableTrait;
-use Doctrine\ORM\EntityManagerInterface;
-use Pim\Behat\Context\PimContext;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>
@@ -21,48 +19,79 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantProductContext extends PimContext
+class VariantProductContext implements Context
 {
-    use SpinCapableTrait;
+    /** @var InMemoryProductModelRepository */
+    private $productModelRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var InMemoryProductRepository */
     private $productRepository;
 
     /** @var ObjectUpdaterInterface */
     private $productUpdater;
 
-    /** @var SaverInterface|BulkSaverInterface */
-    private $productSaver;
-
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    /** @var ProductBuilder */
+    private $productBuilder;
+
+    /** @var \Exception */
+    private $exception;
 
     /**
-     * @param string                                $mainContextClass
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param ObjectUpdaterInterface                $productUpdater
-     * @param SaverInterface                        $productSaver
-     * @param ValidatorInterface                    $validator
-     * @param EntityManagerInterface                $entityManager
+     * @param InMemoryProductModelRepository $productModelRepository
+     * @param InMemoryProductRepository      $productRepository
+     * @param ObjectUpdaterInterface         $productUpdater
+     * @param ValidatorInterface             $validator
+     * @param ProductBuilder                 $productBuilder
      */
     public function __construct(
-        string $mainContextClass,
-        IdentifiableObjectRepositoryInterface $productRepository,
+        InMemoryProductModelRepository $productModelRepository,
+        InMemoryProductRepository $productRepository,
         ObjectUpdaterInterface $productUpdater,
-        SaverInterface $productSaver,
         ValidatorInterface $validator,
-        EntityManagerInterface $entityManager
+        ProductBuilder $productBuilder
     ) {
-        parent::__construct($mainContextClass);
-
+        $this->productModelRepository = $productModelRepository;
         $this->productRepository = $productRepository;
         $this->productUpdater = $productUpdater;
-        $this->productSaver = $productSaver;
         $this->validator = $validator;
-        $this->entityManager = $entityManager;
+        $this->productBuilder = $productBuilder;
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $parentCode
+     *
+     * @Given a variant product :identifier with :parentCode as parent with the following axis values:
+     */
+    public function createVariantProduct(string $identifier, string $parentCode, TableNode $axisValues)
+    {
+        $parent = $this->productModelRepository->findOneByIdentifier($parentCode);
+
+        if (null === $parent) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The root product model "%s" does not exist',
+                    $parentCode
+                )
+            );
+        }
+
+        $this->productBuilder
+            ->withIdentifier($identifier)
+            ->withParent($parentCode);
+
+        foreach ($axisValues->getHash() as $axisValue) {
+            foreach ($axisValue as $attributeCode => $value) {
+                $this->productBuilder->withValue($attributeCode, $value);
+            }
+        }
+
+        $variantProduct = $this->productBuilder->build();
+
+        $this->productRepository->save($variantProduct);
     }
 
     /**
@@ -77,7 +106,7 @@ class VariantProductContext extends PimContext
 
         $this->productUpdater->update($product, ['parent' => $productModelCode]);
         $this->validateProduct($product);
-        $this->productSaver->save($product);
+        $this->productRepository->save($product);
     }
 
     /**
@@ -95,7 +124,7 @@ class VariantProductContext extends PimContext
             $products[] = $product;
         }
 
-        $this->productSaver->saveAll($products);
+        $this->productRepository->saveAll($products);
     }
 
     /**
@@ -109,6 +138,37 @@ class VariantProductContext extends PimContext
         $product = $this->findProduct($productIdentifier);
 
         $this->productUpdater->update($product, ['parent' => $productModelCode]);
+
+        try {
+            $this->validateProduct($product);
+        } catch (\InvalidArgumentException $e) {
+            $this->exception = $e;
+        }
+    }
+
+    /**
+     * @param string $productIdentifier
+     * @param string $productModelCode
+     *
+     * @Then the parent of the product :productIdentifier should be :productModelCode
+     */
+    public function productHasParent(string $productIdentifier, string $productModelCode): void
+    {
+        $product = $this->findProduct($productIdentifier);
+
+        Assert::same($product->getParent()->getCode(), $productModelCode);
+    }
+
+    /**
+     * @param string $productIdentifier
+     * @param string $productModelCode
+     *
+     * @Then the parent of the product :productIdentifier should still be :productModelCode
+     */
+    public function productStillHasParent(string $productIdentifier, string $productModelCode): void
+    {
+        $this->productHasParent($productIdentifier, $productModelCode);
+        Assert::isInstanceOf($this->exception, \InvalidArgumentException::class);
     }
 
     /**
@@ -135,7 +195,7 @@ class VariantProductContext extends PimContext
     {
         $violations = $this->validator->validate($product);
 
-        if (0 !== $violations->count()) {
+        if (0 < $violations->count()) {
             $messages = [];
             foreach ($violations as $violation) {
                 $messages[] = $violation->getMessage();

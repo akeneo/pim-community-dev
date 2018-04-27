@@ -1227,7 +1227,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 
 
 ### Attribute Group
-        
+
         array:4 [
           "code" => "other"
           "sort_order" => 100

@@ -4,28 +4,34 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Category;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\ObjectRepository;
 
 final class InMemoryCategoryRepository implements
-    IdentifiableObjectRepositoryInterface,
-    SaverInterface,
-    ObjectRepository
+    CategoryRepositoryInterface,
+    SaverInterface
 {
     /** @var Collection */
     private $categories;
 
-    public function __construct()
+    /** @var string */
+    private $className;
+
+    /**
+     * @param string $className
+     */
+    public function __construct(string $className)
     {
         $this->categories = new ArrayCollection();
+        $this->className = $className;
     }
 
     /**
-     * {@inheritdoc}
+     * {@{@inheritdoc}}
      */
     public function getIdentifierProperties()
     {
@@ -33,7 +39,7 @@ final class InMemoryCategoryRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * {@{@inheritdoc}}
      */
     public function findOneByIdentifier($code)
     {
@@ -41,7 +47,7 @@ final class InMemoryCategoryRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * {@{@inheritdoc}}
      */
     public function save($category, array $options = [])
     {
@@ -49,7 +55,7 @@ final class InMemoryCategoryRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * {@{@inheritdoc}}
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
@@ -72,7 +78,7 @@ final class InMemoryCategoryRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * {@{@inheritdoc}}
      */
     public function find($id)
     {
@@ -80,7 +86,7 @@ final class InMemoryCategoryRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * {@{@inheritdoc}}
      */
     public function findAll()
     {
@@ -88,7 +94,7 @@ final class InMemoryCategoryRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * {@{@inheritdoc}}
      */
     public function findOneBy(array $criteria)
     {
@@ -96,9 +102,214 @@ final class InMemoryCategoryRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * {@{@inheritdoc}}
      */
     public function getClassName()
+    {
+        return $this->className;
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getCategoriesByIds(array $categoryIds = [])
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getCategoriesByCodes(array $categoryCodes = [])
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getTreeFromParents(array $parentsIds)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getAllChildrenIds(CategoryInterface $parent, $includeNode = false)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getAllChildrenCodes(CategoryInterface $parent, $includeNode = false)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getCategoryIdsByCodes(array $codes)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getChildrenByParentId($parentId)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getChildrenGrantedByParentId(CategoryInterface $parent, array $grantedCategoryIds = [])
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getChildrenTreeByParentId($parentId, $selectNodeId = false, array $grantedCategoryIds = [])
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function buildTreeNode(array $nodes)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getPath($node)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getTrees()
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getGrantedTrees(array $grantedCategoryIds = [])
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getOrderedAndSortedByTreeCategories()
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getFilledTree(CategoryInterface $root, Collection $categories)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getRootNodes($sortByField = null, $direction = 'asc')
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getNodesHierarchy($node = null, $direct = false, array $options = [], $includeNode = false)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getChildren(
+        $node = null,
+        $direct = false,
+        $sortByField = null,
+        $direction = 'ASC',
+        $includeNode = false
+    ) {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function childCount($node = null, $direct = false)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function childrenHierarchy($node = null, $direct = false, array $options = [], $includeNode = false)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function buildTree(array $nodes, array $options = [])
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function buildTreeArray(array $nodes)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function setChildrenIndex($childrenIndex)
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * @{@inheritdoc}
+     */
+    public function getChildrenIndex()
     {
         throw new NotImplementedException(__METHOD__);
     }

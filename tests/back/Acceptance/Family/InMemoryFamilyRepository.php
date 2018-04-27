@@ -18,9 +18,17 @@ class InMemoryFamilyRepository implements IdentifiableObjectRepositoryInterface,
     /** @var Collection */
     private $families;
 
-    public function __construct(array $families = [])
+    /** @var string */
+    private $className;
+
+    /**
+     * @param array  $families
+     * @param string $className
+     */
+    public function __construct(array $families, string $className)
     {
         $this->families = new ArrayCollection($families);
+        $this->className = $className;
     }
 
     public function getIdentifierProperties()
@@ -84,6 +92,6 @@ class InMemoryFamilyRepository implements IdentifiableObjectRepositoryInterface,
 
     public function getClassName()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->className;
     }
 }

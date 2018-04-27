@@ -12,6 +12,9 @@ class ListOfCodes
     /** @var string */
     private $listOfCode;
 
+    /**
+     * @param string $listOfCode
+     */
     public function __construct(string $listOfCode)
     {
         $this->listOfCode = $listOfCode;
@@ -24,7 +27,7 @@ class ListOfCodes
      */
     public function explode(string $separator = ','): array
     {
-        $codes = explode($separator, $this->listOfCode);
+        $codes = explode($separator, str_replace(' and ', ', ', $this->listOfCode));
 
         return array_map('trim', $codes);
     }

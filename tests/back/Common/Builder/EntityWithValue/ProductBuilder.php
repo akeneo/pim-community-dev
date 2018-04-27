@@ -2,15 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Common\Builder\EntityWithValue\Builder;
+namespace Akeneo\Test\Common\Builder\EntityWithValue;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Test\Common\Builder\EntityWithValue\Association;
-use Akeneo\Test\Common\Builder\EntityWithValue\Code;
-use Akeneo\Test\Common\Builder\EntityWithValue\ListOfCodes;
-use Akeneo\Test\Common\Builder\EntityWithValue\Status;
-use Akeneo\Test\Common\Builder\EntityWithValue\Value;
-use Akeneo\Test\Common\Builder\EntityWithValue\ListOfValues;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -19,13 +13,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * Create a product object with product builder, update its data with product update and validate this object
  */
-final class Product
+final class ProductBuilder
 {
     /** @var Code */
     private $identifier;
 
     /** @var Code */
     private $family;
+
+    /** @var Code */
+    private $parent;
 
     /** @var Collection */
     private $values;
@@ -64,6 +61,7 @@ final class Product
 
         $this->identifier = Code::fromString('my-product');
         $this->family = Code::emptyCode();
+        $this->parent = Code::emptyCode();
         $this->values = ListOfValues::initialize();
         $this->categories = ListOfCodes::initialize();
         $this->associations = ListOfCodes::initialize();
@@ -104,9 +102,9 @@ final class Product
     /**
      * @param string $identifier
      *
-     * @return Product
+     * @return ProductBuilder
      */
-    public function withIdentifier(string $identifier): Product
+    public function withIdentifier(string $identifier): ProductBuilder
     {
         $this->identifier = Code::fromString($identifier);
 
@@ -116,11 +114,23 @@ final class Product
     /**
      * @param string $family
      *
-     * @return Product
+     * @return ProductBuilder
      */
-    public function withFamily(string $family): Product
+    public function withFamily(string $family): ProductBuilder
     {
         $this->family = Code::fromString($family);
+
+        return $this;
+    }
+
+    /**
+     * @param string $parent
+     *
+     * @return ProductBuilder
+     */
+    public function withParent(string $parent): ProductBuilder
+    {
+        $this->parent = Code::fromString($parent);
 
         return $this;
     }
@@ -131,14 +141,14 @@ final class Product
      * @param string $locale
      * @param string $channel
      *
-     * @return Product
+     * @return ProductBuilder
      */
     public function withValue(
         string $attribute,
         $data,
         string $locale = '',
         string $channel = ''
-    ): Product {
+    ): ProductBuilder {
         $value = Value::withLocaleAndChannel($attribute, $data, $locale, $channel);
         $attribute = Code::fromString($attribute);
 
@@ -150,9 +160,9 @@ final class Product
     /**
      * @param array $categories
      *
-     * @return Product
+     * @return ProductBuilder
      */
-    public function withCategories(...$categories): Product
+    public function withCategories(...$categories): ProductBuilder
     {
         $this->categories = ListOfCodes::fromArrayOfString($categories);
 
@@ -162,9 +172,9 @@ final class Product
     /**
      * @param array $groups
      *
-     * @return Product
+     * @return ProductBuilder
      */
-    public function withGroups(...$groups): Product
+    public function withGroups(...$groups): ProductBuilder
     {
         $this->groups = ListOfCodes::fromArrayOfString($groups);
 
@@ -175,9 +185,9 @@ final class Product
      * @param string $type
      * @param array  ...$product
      *
-     * @return Product
+     * @return ProductBuilder
      */
-    public function withAssociations(string $type, ...$product): Product
+    public function withAssociations(string $type, ...$product): ProductBuilder
     {
         $this->associations = Association::create($type, $product);
 
@@ -187,9 +197,9 @@ final class Product
     /**
      * @param bool $status
      *
-     * @return Product
+     * @return ProductBuilder
      */
-    public function withStatus(bool $status): Product
+    public function withStatus(bool $status): ProductBuilder
     {
         $this->status = Status::fromBoolean($status);
 

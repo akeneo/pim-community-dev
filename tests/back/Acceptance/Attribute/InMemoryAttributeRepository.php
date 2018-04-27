@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -24,12 +25,17 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     /** @var Collection */
     private $attributes;
 
+    /** @var string */
+    private $className;
+
     /**
-     * @param AttributeInterface[] $attributes
+     * @param array  $attributes
+     * @param string $className
      */
-    public function __construct(array $attributes = [])
+    public function __construct(array $attributes, string $className)
     {
         $this->attributes = new ArrayCollection($attributes);
+        $this->className = $className;
     }
 
     /**
@@ -112,7 +118,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
      */
     public function getClassName()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->className;
     }
 
     /**
@@ -168,7 +174,13 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
      */
     public function getIdentifier()
     {
-        throw new NotImplementedException(__METHOD__);
+        foreach ($this->attributes as $attribute) {
+            if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
+                return $attribute;
+            }
+        }
+
+        return null;
     }
 
     /**

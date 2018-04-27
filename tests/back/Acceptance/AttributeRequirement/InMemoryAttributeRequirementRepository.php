@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\AttributeGroup;
+namespace Akeneo\Test\Acceptance\AttributeRequirement;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>
@@ -17,21 +18,21 @@ use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InMemoryAttributeGroupRepository implements AttributeGroupRepositoryInterface, SaverInterface
+class InMemoryAttributeRequirementRepository implements AttributeRequirementRepositoryInterface, SaverInterface
 {
     /** @var Collection */
-    private $attributeGroups;
+    private $attributeRequirements;
 
     /** @var string */
     private $className;
 
     /**
-     * @param array  $attributeGroups
+     * @param array  $attributeRequirements
      * @param string $className
      */
-    public function __construct(array $attributeGroups, string $className)
+    public function __construct(array $attributeRequirements, string $className)
     {
-        $this->attributeGroups = new ArrayCollection($attributeGroups);
+        $this->attributeRequirements = new ArrayCollection($attributeRequirements);
         $this->className = $className;
     }
 
@@ -48,19 +49,19 @@ class InMemoryAttributeGroupRepository implements AttributeGroupRepositoryInterf
      */
     public function findOneByIdentifier($identifier)
     {
-        return $this->attributeGroups->get($identifier);
+        return $this->attributeRequirements->get($identifier);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function save($attributeGroup, array $options = [])
+    public function save($attributeRequirement, array $options = [])
     {
-        if (!$attributeGroup instanceof AttributeGroupInterface) {
-            throw new \InvalidArgumentException('The object argument should be a attribute group');
+        if (!$attributeRequirement instanceof AttributeRequirementInterface) {
+            throw new \InvalidArgumentException('The object argument should be an attribute requirement');
         }
 
-        $this->attributeGroups->set($attributeGroup->getCode(), $attributeGroup);
+        $this->attributeRequirements->set($attributeRequirement->getCode(), $attributeRequirement);
     }
 
     /**
@@ -109,7 +110,7 @@ class InMemoryAttributeGroupRepository implements AttributeGroupRepositoryInterf
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $attributeGroups = [];
-        foreach ($this->attributeGroups as $attributeGroup) {
+        foreach ($this->attributeRequirements as $attributeGroup) {
             $keepThisAttributeGroup = true;
             foreach ($criteria as $key => $value) {
                 $getter = sprintf('get%s', ucfirst($key));
@@ -140,5 +141,13 @@ class InMemoryAttributeGroupRepository implements AttributeGroupRepositoryInterf
     public function getClassName()
     {
         return $this->className;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findRequiredAttributesCodesByFamily(FamilyInterface $family)
+    {
+        throw new NotImplementedException(__METHOD__);
     }
 }
