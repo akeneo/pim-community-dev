@@ -16,7 +16,7 @@
                     </option>
                     <% _.each(_.keys(measures[attribute.metric_family].units), function (unit) { %>
                     <option value="<%- unit %>" <%- (isMetricConfigured && unit == conversionUnits[attribute.code]) ? 'selected' : '' %>>
-                        <%- _.__(unit) %>
+                        <%- __(`pim_measure.units.${unit}`) %>
                     </option>
                     <% }) %>
                 </select>

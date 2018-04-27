@@ -12,7 +12,7 @@
             <option value="<%- unit %>"
                     <% if ((null === value.unit && defaultUnit === unit) || value.unit === unit) { %> selected<% } %>
             >
-                    <%- __(unit) %>
+                <%- __(`pim_measure.units.${unit}`) %>
             </option>
         <% }); %>
     </select>

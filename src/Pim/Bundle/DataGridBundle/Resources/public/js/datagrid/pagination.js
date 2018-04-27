@@ -55,11 +55,11 @@ function($, _, Backbone, BaseForm) {
         /** @property */
         fastForwardHandleConfig: {
             prev: {
-                label: 'Prev',
+                label: '',
                 wrapClass: 'icon-chevron-left hide-text'
             },
             next: {
-                label: 'Next',
+                label: '',
                 wrapClass: 'icon-chevron-right hide-text'
             }
         },

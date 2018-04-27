@@ -21,7 +21,7 @@ Feature: Localize numbers in the product grid
       | column       | value                |
       | Big price    | $1,000.12, €1,000.01 |
       | Rate of sale | 1,000.1234           |
-      | Weight       | 1,000.3456 Kilogram  |
+      | Weight       | 1,000.3456 kilogram  |
 
   # https://akeneo.atlassian.net/browse/PIM-6020
   @skip
@@ -33,7 +33,7 @@ Feature: Localize numbers in the product grid
       | column       | value                    |
       | Big price    | 1 000,12 $US, 1 000,01 € |
       | Rate of sale | 1 000,1234               |
-      | Weight       | 1 000,3456 Kilogramme    |
+      | Weight       | 1 000,3456 Kilogramme    |
 
   @skip
   Scenario: Successfully show English format numbers for French catalog
@@ -46,4 +46,4 @@ Feature: Localize numbers in the product grid
       | column        | value                |
       | Gros prix     | $1,000.12, €1,000.01 |
       | Taux de vente | 1,000.1234           |
-      | Poids         | 1,000.3456 Kilogram  |
+      | Poids         | 1,000.3456 Kilogram  |
