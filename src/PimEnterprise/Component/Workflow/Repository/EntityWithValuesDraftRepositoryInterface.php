@@ -34,7 +34,7 @@ interface EntityWithValuesDraftRepositoryInterface extends ObjectRepository
     public function createDatagridQueryBuilder(): QueryBuilder;
 
     /**
-     * Return product drafts that can be approved by the given user
+     * Return entity with values drafts that can be approved by the given user
      */
     public function findApprovableByUser(UserInterface $user, ?int $limit = null): ?array;
 
