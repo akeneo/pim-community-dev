@@ -594,221 +594,112 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
+    public function testSearchCategoriesMenWithoutIncludingChildren()
     {
-        parent::setUp();
+        $result = $this->executeFilter(
+            [
+                ['categories', Operators::IN_LIST, ['master_men']],
+            ]
+        );
 
-        $this->setParentsInTheDataset();
+        $this->assert($result, []);
     }
 
-    /**
-     * TODO: remove this method once PIM-6335 has been merged
-     * TODO: currently, the variant products can be imported (ie: we can not set parent to products yet)
-     */
-    private function setParentsInTheDataset()
+    public function testSearchCategoriesMenIncludingChildren()
     {
-        $variantProductIdentifiers = [
-            'tshirt-divided-navy-blue-xxs',
-            'tshirt-divided-navy-blue-m',
-            'tshirt-divided-navy-blue-l',
-            'tshirt-divided-navy-blue-xxxl',
-            'tshirt-divided-crimson-red-xxs',
-            'tshirt-divided-crimson-red-m',
-            'tshirt-divided-crimson-red-l',
-            'tshirt-divided-crimson-red-xxxl',
-            'tshirt-divided-battleship-grey-xxs',
-            'tshirt-divided-battleship-grey-m',
-            'tshirt-divided-battleship-grey-l',
-            'tshirt-divided-battleship-grey-xxxl',
-            'tshirt-unique-color-kurt-xxs',
-            'tshirt-unique-color-kurt-m',
-            'tshirt-unique-color-kurt-l',
-            'tshirt-unique-color-kurt-xxxl',
-            'braided-hat-m',
-            'braided-hat-xxxl',
-            'tshirt-unique-size-navy-blue',
-            'tshirt-unique-size-crimson-red',
-            'tshirt-unique-size-electric-yellow',
-            'running-shoes-xxs-antique-white',
-            'running-shoes-xxs-navy-blue',
+        $result = $this->executeFilter(
+            [
+                ['categories', Operators::IN_LIST, [
+                    'master_men',
+                    'master_men_blazers',
+                    'master_men_blazers_deals',
+                    'master_men_pants',
+                    'master_men_pants_shorts',
+                    'master_men_pants_jeans',
+                    'master_men_shoes',
+                    'tshirts',
+                ]
+                ],
+            ]
+        );
+
+        $this->assert($result, [
+            '1111111305',
+            '1111111306',
+            '1111111307',
+            '1111111308',
+            '1111111312',
+            '1111111313',
+            '1111111314',
+            '1111111315',
+            '1111111316',
+            'amor',
+            'apollon',
+            'ares',
+            'bacchus',
+            'brogueshoe',
+            'brooksblue',
+            'caelus',
+            'climbingshoe',
+            'converseblack',
+            'conversered',
+            'derby',
+            'dionysos',
+            'dressshoe',
+            'elegance',
+            'galesh',
+            'hades',
+            'hefaistos',
+            'hermes',
+            'jack',
+            'moccasin',
+            'model-biker-jacket',
+            'model-running-shoes',
+            'model-tshirt-divided',
+            'model-tshirt-unique-color-kurt',
+            'model-tshirt-unique-size',
+            'plain',
+            'portunus',
+            'poseidon',
+            'quirinus',
+            'venus',
+            'zeus',
+        ]);
+    }
+
+    public function testSearchColorRedAndCategoryMenIncludingChildrenCategories()
+    {
+        $result = $this->executeFilter(
+            [
+                ['color', Operators::IN_LIST, ['crimson_red']],
+                [
+                    'categories',
+                    Operators::IN_LIST,
+                    [
+                        'master_men_blazers',
+                        'master_men_blazers_deals',
+                        'master_men_pants',
+                        'master_men_pants_shorts',
+                        'master_men_pants_jeans',
+                        'master_men_shoes',
+                        'tshirts',
+                        'master_men',
+                    ],
+                ],
+            ]
+        );
+
+        $expectedResult = [
+            // Are in category 'Shoes' (which is a child of the 'Men' category) and have Color = 'Crimson red'
             'running-shoes-xxs-crimson-red',
-            'running-shoes-m-antique-white',
-            'running-shoes-m-navy-blue',
             'running-shoes-m-crimson-red',
-            'running-shoes-xxxl-antique-white',
-            'running-shoes-xxxl-navy-blue',
             'running-shoes-xxxl-crimson-red',
-            'biker-jacket-leather-xxs',
-            'biker-jacket-leather-m',
-            'biker-jacket-leather-xxxl',
-            'biker-jacket-polyester-xxs',
-            'biker-jacket-polyester-m',
-            'biker-jacket-polyester-xxxl',
-        ];
 
-        $productRepository = $this->get('pim_catalog.repository.product');
-        $productSaver = $this->get('pim_catalog.saver.product');
-        $productModelRepository = $this->get('pim_catalog.repository.product_model');
-
-        // detach previously loaded products
-        // they are known as Product instead of VariantProduct by the UoW
-        $em = $this->get('doctrine.orm.default_entity_manager');
-        foreach ($variantProductIdentifiers as $variantProductIdentifier) {
-            $variantProduct = $productRepository->findOneByIdentifier($variantProductIdentifier);
-            $em->detach($variantProduct);
-        }
-
-        $identifiers = [
-            'tshirt-divided-navy-blue-xxs',
-            'tshirt-divided-navy-blue-m',
-            'tshirt-divided-navy-blue-l',
-            'tshirt-divided-navy-blue-xxxl',
-        ];
-        $productModel = $productModelRepository->findOneByIdentifier('model-tshirt-divided-navy-blue');
-        foreach ($identifiers as $identifier) {
-            $product = $productRepository->findOneByIdentifier($identifier);
-            $product->setParent($productModel);
-            $productSaver->save($product);
-        }
-
-        $identifiers = [
-            'tshirt-divided-crimson-red-xxs',
-            'tshirt-divided-crimson-red-m',
-            'tshirt-divided-crimson-red-l',
-            'tshirt-divided-crimson-red-xxxl',
-        ];
-        $productModel = $productModelRepository->findOneByIdentifier('model-tshirt-divided-crimson-red');
-        foreach ($identifiers as $identifier) {
-            $product = $productRepository->findOneByIdentifier($identifier);
-            $product->setParent($productModel);
-            $productSaver->save($product);
-        }
-
-        $identifiers = [
-            'tshirt-divided-battleship-grey-xxs',
-            'tshirt-divided-battleship-grey-m',
-            'tshirt-divided-battleship-grey-l',
-            'tshirt-divided-battleship-grey-xxxl',
-        ];
-        $productModel = $productModelRepository->findOneByIdentifier('model-tshirt-divided-battleship-grey');
-        foreach ($identifiers as $identifier) {
-            $product = $productRepository->findOneByIdentifier($identifier);
-            $product->setParent($productModel);
-            $productSaver->save($product);
-        }
-
-        $identifiers = [
-            'tshirt-unique-color-kurt-xxs',
-            'tshirt-unique-color-kurt-m',
-            'tshirt-unique-color-kurt-l',
-            'tshirt-unique-color-kurt-xxxl',
-        ];
-        $productModel = $productModelRepository->findOneByIdentifier('model-tshirt-unique-color-kurt');
-        foreach ($identifiers as $identifier) {
-            $product = $productRepository->findOneByIdentifier($identifier);
-            $product->setParent($productModel);
-            $productSaver->save($product);
-        }
-
-        $identifiers = [
-            'braided-hat-m',
-            'braided-hat-xxxl',
-        ];
-        $productModel = $productModelRepository->findOneByIdentifier('model-braided-hat');
-        foreach ($identifiers as $identifier) {
-            $product = $productRepository->findOneByIdentifier($identifier);
-            $product->setParent($productModel);
-            $productSaver->save($product);
-        }
-
-        $identifiers = [
-            'tshirt-unique-size-navy-blue',
+            // Are in category 'T-shirts' (which is a child of the 'Men' category) and have Color = 'Crimson red'
             'tshirt-unique-size-crimson-red',
-            'tshirt-unique-size-electric-yellow',
+            'model-tshirt-divided-crimson-red',
+            'model-tshirt-unique-color-kurt'
         ];
-        $productModel = $productModelRepository->findOneByIdentifier('model-tshirt-unique-size');
-        foreach ($identifiers as $identifier) {
-            $product = $productRepository->findOneByIdentifier($identifier);
-            $product->setParent($productModel);
-            $productSaver->save($product);
-        }
-
-        $identifiers = [
-            'running-shoes-xxs-antique-white',
-            'running-shoes-xxs-navy-blue',
-            'running-shoes-xxs-crimson-red',
-        ];
-        $productModel = $productModelRepository->findOneByIdentifier('model-running-shoes-xxs');
-        foreach ($identifiers as $identifier) {
-            $product = $productRepository->findOneByIdentifier($identifier);
-            $product->setParent($productModel);
-            $productSaver->save($product);
-        }
-
-        $identifiers = [
-            'running-shoes-m-antique-white',
-            'running-shoes-m-navy-blue',
-            'running-shoes-m-crimson-red',
-        ];
-        $productModel = $productModelRepository->findOneByIdentifier('model-running-shoes-m');
-        foreach ($identifiers as $identifier) {
-            $product = $productRepository->findOneByIdentifier($identifier);
-            $product->setParent($productModel);
-            $productSaver->save($product);
-        }
-
-        $identifiers = [
-            'running-shoes-xxxl-antique-white',
-            'running-shoes-xxxl-navy-blue',
-            'running-shoes-xxxl-crimson-red',
-        ];
-        $productModel = $productModelRepository->findOneByIdentifier('model-running-shoes-xxxl');
-        foreach ($identifiers as $identifier) {
-            $product = $productRepository->findOneByIdentifier($identifier);
-            $product->setParent($productModel);
-            $productSaver->save($product);
-        }
-
-        $identifiers = [
-            'biker-jacket-leather-xxs',
-            'biker-jacket-leather-m',
-            'biker-jacket-leather-xxxl',
-        ];
-        $productModel = $productModelRepository->findOneByIdentifier('model-biker-jacket-leather');
-        foreach ($identifiers as $identifier) {
-            $product = $productRepository->findOneByIdentifier($identifier);
-            $product->setParent($productModel);
-            $productSaver->save($product);
-        }
-
-        $identifiers = [
-            'biker-jacket-polyester-xxs',
-            'biker-jacket-polyester-m',
-            'biker-jacket-polyester-xxxl',
-        ];
-        $productModel = $productModelRepository->findOneByIdentifier('model-biker-jacket-polyester');
-        foreach ($identifiers as $identifier) {
-            $product = $productRepository->findOneByIdentifier($identifier);
-            $product->setParent($productModel);
-            $productSaver->save($product);
-        }
-
-        $this->indexProductModels();
-        $this->indexProducts();
-    }
-
-    private function indexProducts()
-    {
-        $products = $this->get('pim_catalog.repository.product')->findAll();
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
-    }
-
-    private function indexProductModels()
-    {
-        $productModels = $this->get('pim_catalog.repository.product_model')->findAll();
-        $this->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);
+        $this->assert($result, $expectedResult);
     }
 }
