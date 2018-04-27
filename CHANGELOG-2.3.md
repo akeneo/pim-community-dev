@@ -1,4 +1,4 @@
-# 2.3.x
+# 2.3.0-ALPHA1 (2018-04-27)
 
 - PIM-7219: Prevent users from creating asset collection attributes that are locale specific.
 - PIM-7285: Change the behavior for the mass publish on product models so children variant products are published.

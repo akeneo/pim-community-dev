@@ -35,7 +35,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "2.3.x-dev@dev",
+        "akeneo/pim-community-dev": "~2.3.0-ALPHA1",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
