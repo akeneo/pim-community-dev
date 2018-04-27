@@ -65,7 +65,7 @@ class TextAreaFilterSpec extends ObjectBehavior
 
         $sqb->addFilter(
             [
-                'term' => [
+                'match_phrase' => [
                     'values.description-textarea.ecommerce.en_US.preprocessed' => 'Sony',
                 ],
             ]
@@ -88,7 +88,7 @@ class TextAreaFilterSpec extends ObjectBehavior
 
         $sqb->addMustNot(
             [
-                'term' => [
+                'match_phrase' => [
                     'values.description-textarea.ecommerce.en_US.preprocessed' => 'Sony',
                 ],
             ]

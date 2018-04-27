@@ -3,17 +3,18 @@
 ## Bug fixes
 
 - PIM-7325: Fix family grid search filter
+- PIM-7328: Fix a bug that prevents to index very large texts in Elasticsearch
 
 # 2.0.22 (2018-04-25)
 
 ## Bug fixes
 
-- PIM-7300: fix the status filter on product grid for products with parent.
+- PIM-7300: Fix the status filter on product grid for products with parent.
 - PIM-7282: Add validation on the code value during the attribute creation to prohibit the "entity_type" value.
 - PIM-7304: Fix the SKU filter to be scrollable
 - PIM-7043: Remove the last pagination button if it has more than 10 000 products on the product grid.
 - PIM-7299: Add pagination for family variants on several screens
-- PIM-7313: prevent the same job to be executed by two different daemons due to race condition
+- PIM-7313: Prevent the same job to be executed by two different daemons due to race condition
 - PIM-7297: Fix memory leak on completeness purge command
 - PIM-7312: Fix attribute requirements update for a newly created channel
 - PIM-7322: Fix cast of a product model as string to format correctly violations
