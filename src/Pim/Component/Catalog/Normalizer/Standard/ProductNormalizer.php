@@ -15,7 +15,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductNormalizer implements NormalizerInterface
 {
     const FIELD_ASSOCIATIONS = 'associations';
-    const FIELD_PARENT_ASSOCIATIONS = 'parent_associations';
 
     /** @var NormalizerInterface */
     private $propertiesNormalizer;
@@ -23,24 +22,18 @@ class ProductNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $associationsNormalizer;
 
-    /** @var NormalizerInterface */
-    private $parentAssociationsNormalizer;
-
     /**
      * ProductNormalizer constructor.
      *
      * @param NormalizerInterface $propertiesNormalizer
      * @param NormalizerInterface $associationsNormalizer
-     * @param NormalizerInterface $parentAssociationsNormalizer
      */
     public function __construct(
         NormalizerInterface $propertiesNormalizer,
-        NormalizerInterface $associationsNormalizer,
-        NormalizerInterface $parentAssociationsNormalizer
+        NormalizerInterface $associationsNormalizer
     ) {
         $this->propertiesNormalizer = $propertiesNormalizer;
         $this->associationsNormalizer = $associationsNormalizer;
-        $this->parentAssociationsNormalizer = $parentAssociationsNormalizer;
     }
 
     /**
@@ -50,7 +43,6 @@ class ProductNormalizer implements NormalizerInterface
     {
         $data = $this->propertiesNormalizer->normalize($product, $format, $context);
         $data[self::FIELD_ASSOCIATIONS] = $this->associationsNormalizer->normalize($product, $format, $context);
-        $data[self::FIELD_PARENT_ASSOCIATIONS] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
 
         return $data;
     }

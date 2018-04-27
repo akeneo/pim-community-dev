@@ -99,6 +99,10 @@ class ProductNormalizer implements NormalizerInterface
 
     /** @var NormalizerInterface */
     protected $incompleteValuesNormalizer;
+    /**
+     * @var NormalizerInterface
+     */
+    private $parentAssociationsNormalizer;
 
     /**
      * @param NormalizerInterface                       $normalizer
@@ -123,6 +127,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param VariantNavigationNormalizer               $navigationNormalizer
      * @param AscendantCategoriesInterface|null         $ascendantCategoriesQuery
      * @param NormalizerInterface                       $incompleteValuesNormalizer
+     * @param NormalizerInterface                       $parentAssociationsNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -146,7 +151,8 @@ class ProductNormalizer implements NormalizerInterface
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
-        NormalizerInterface $incompleteValuesNormalizer
+        NormalizerInterface $incompleteValuesNormalizer,
+        NormalizerInterface $parentAssociationsNormalizer
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -170,10 +176,13 @@ class ProductNormalizer implements NormalizerInterface
         $this->navigationNormalizer             = $navigationNormalizer;
         $this->ascendantCategoriesQuery         = $ascendantCategoriesQuery;
         $this->incompleteValuesNormalizer       = $incompleteValuesNormalizer;
+        $this->parentAssociationsNormalizer     = $parentAssociationsNormalizer;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param ProductInterface $product
      */
     public function normalize($product, $format = null, array $context = [])
     {
@@ -206,6 +215,9 @@ class ProductNormalizer implements NormalizerInterface
         $scopeCode = $context['channel'] ?? null;
 
         $incompleteValues = $this->incompleteValuesNormalizer->normalize($product);
+
+        $data['parent_associations'] = $this->parentAssociationsNormalizer->normalize($product, $format, $context);
+
 
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),
