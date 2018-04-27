@@ -136,6 +136,15 @@ stage("Test") {
                     echo "Skipping frontend integration tests"
                 }
             },
+            "frontend-unit": {
+                if (launchUnitTests.equals("yes")) {
+                    withNode({
+                        sh "cd /home/jenkins/pim && yarn run unit"
+                    })
+                } else {
+                    echo "Skipping frontend unit tests"
+                }
+            },
             "php-coupling-detector": {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
