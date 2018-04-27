@@ -59,7 +59,7 @@ services:
             - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.updater.entity_with_values'
             - ['enabled', 'family', 'categories', 'groups', 'associations', 'parent']
-            - ['identifier', 'created', 'updated']
+            - ['identifier', 'created', 'updated', 'parent_associations']
 
     pim_catalog.updater.product_model:
         class: '%pim_catalog.updater.product_model.class%'
@@ -69,7 +69,7 @@ services:
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
             - ['categories', 'associations']
-            - ['identifier', 'created', 'updated']
+            - ['identifier', 'created', 'updated', 'parent_associations']
 
     pim_catalog.updater.entity_with_values:
         class: '%pim_catalog.updater.entity_with_values.class%'

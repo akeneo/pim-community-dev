@@ -53,6 +53,11 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 40 }
 
+    pim_catalog.normalizer.standard.product.parent_associations:
+        class: Pim\Component\Catalog\Normalizer\Standard\Product\ParentsAssociationsNormalizer
+        tags:
+            - { name: pim_serializer.normalizer, priority: 40 }
+
     pim_catalog.normalizer.standard.product.product_values:
         class: '%pim_catalog.normalizer.standard.product.product_values.class%'
         tags:

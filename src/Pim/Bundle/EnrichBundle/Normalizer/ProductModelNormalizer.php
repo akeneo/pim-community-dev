@@ -7,6 +7,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -77,6 +78,12 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var UserContext */
     private $userContext;
 
+    /** @var NormalizerInterface */
+    private $parentAssociationsNormalizer;
+
+    /** @var MissingAssociationAdder */
+    private $missingAssociationAdder;
+
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
@@ -94,6 +101,8 @@ class ProductModelNormalizer implements NormalizerInterface
      * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
      * @param NormalizerInterface                       $incompleteValuesNormalizer
      * @param UserContext                               $userContext
+     * @param MissingAssociationAdder                   $missingAssociationAdder
+     * @param NormalizerInterface                       $parentAssociationsNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -111,7 +120,9 @@ class ProductModelNormalizer implements NormalizerInterface
         ImageAsLabel $imageAsLabel,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         NormalizerInterface $incompleteValuesNormalizer,
-        UserContext $userContext
+        UserContext $userContext,
+        MissingAssociationAdder $missingAssociationAdder,
+        NormalizerInterface $parentAssociationsNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -129,13 +140,18 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->ascendantCategoriesQuery = $ascendantCategoriesQuery;
         $this->incompleteValuesNormalizer = $incompleteValuesNormalizer;
         $this->userContext = $userContext;
+        $this->parentAssociationsNormalizer = $parentAssociationsNormalizer;
+        $this->missingAssociationAdder = $missingAssociationAdder;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param ProductModelInterface $productModel
      */
     public function normalize($productModel, $format = null, array $context = []): array
     {
+        $this->missingAssociationAdder->addMissingAssociations($productModel);
         $this->entityValuesFiller->fillMissingValues($productModel);
 
         $normalizedProductModel = $this->normalizer->normalize($productModel, 'standard', $context);
@@ -173,6 +189,9 @@ class ProductModelNormalizer implements NormalizerInterface
         foreach ($this->attributesProvider->getAxes($productModel) as $attribute) {
             $axesAttributes[] = $attribute->getCode();
         }
+
+        $normalizedProductModel['parent_associations'] = $this->parentAssociationsNormalizer
+            ->normalize($productModel, $format, $context);
 
         $normalizedFamilyVariant = $this->normalizer->normalize($productModel->getFamilyVariant(), 'standard');
 

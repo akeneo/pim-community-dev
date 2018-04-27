@@ -24,7 +24,7 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
     private const FIELD_CREATED = 'created';
     private const FIELD_UPDATED = 'updated';
     private const FIELD_PARENT = 'parent';
-    const FIELD_ASSOCIATIONS = 'associations';
+    private const FIELD_ASSOCIATIONS = 'associations';
 
     /** @var NormalizerInterface */
     private $associationsNormalizer;

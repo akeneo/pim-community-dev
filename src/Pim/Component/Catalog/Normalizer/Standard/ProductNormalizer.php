@@ -28,9 +28,11 @@ class ProductNormalizer implements NormalizerInterface
      * @param NormalizerInterface $propertiesNormalizer
      * @param NormalizerInterface $associationsNormalizer
      */
-    public function __construct(NormalizerInterface $propertiesNormalizer, NormalizerInterface $associationsNormalizer)
-    {
-        $this->propertiesNormalizer   = $propertiesNormalizer;
+    public function __construct(
+        NormalizerInterface $propertiesNormalizer,
+        NormalizerInterface $associationsNormalizer
+    ) {
+        $this->propertiesNormalizer = $propertiesNormalizer;
         $this->associationsNormalizer = $associationsNormalizer;
     }
 

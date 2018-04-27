@@ -3,27 +3,28 @@
 namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Normalize associations into an array
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationsNormalizer implements NormalizerInterface
+class ParentsAssociationsNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
-     *
-     * @param AssociationAwareInterface $associationAwareEntity
      */
     public function normalize($associationAwareEntity, $format = null, array $context = [])
     {
+        $parentAssociations = $this->getParentAssociations($associationAwareEntity);
         $data = [];
 
-        foreach ($associationAwareEntity->getAssociations() as $association) {
+        foreach ($parentAssociations as $association) {
             $code = $association->getAssociationType()->getCode();
             $data[$code]['groups'] = [];
             foreach ($association->getGroups() as $group) {
@@ -52,5 +53,26 @@ class AssociationsNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof AssociationAwareInterface && 'standard' === $format;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $product
+     *
+     * @return AssociationInterface[]
+     */
+    private function getParentAssociations(EntityWithFamilyVariantInterface $product): array
+    {
+        $parent = $product->getParent();
+        $parentAssociations = [];
+
+        if (null === $parent) {
+            return $parentAssociations;
+        }
+
+        foreach ($parent->getAssociations() as $association) {
+            $parentAssociations[] = $association;
+        }
+
+        return $parentAssociations;
     }
 }

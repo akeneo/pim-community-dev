@@ -282,14 +282,24 @@ define(
              */
             setAssociationCount: function (associationTypes) {
                 const associations = this.getFormData().associations;
+                const parentAssociations = this.getFormData().parent_associations;
 
                 _.each(associationTypes, function (assocType) {
                     const association = associations[assocType.code];
+                    const parentAssociation = parentAssociations ? parentAssociations[assocType.code] : null;
 
                     assocType.productCount = association && association.products ? association.products.length : 0;
+                    assocType.productCount += parentAssociation && parentAssociation.products ?
+                        parentAssociation.products.length : 0;
+
                     assocType.productModelCount = association && association.product_models ?
                         association.product_models.length : 0;
+                    assocType.productModelCount += parentAssociation && parentAssociation.product_models ?
+                        parentAssociation.product_models.length : 0;
+
                     assocType.groupCount = association && association.groups ? association.groups.length : 0;
+                    assocType.groupCount += parentAssociation && parentAssociation.groups ?
+                        parentAssociation.groups.length : 0;
                 });
             },
 

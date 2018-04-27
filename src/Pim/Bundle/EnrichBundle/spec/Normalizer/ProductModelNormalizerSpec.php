@@ -8,6 +8,7 @@ use Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -43,7 +44,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ImageAsLabel $imageAsLabel,
         AscendantCategoriesInterface $ascendantCategories,
         NormalizerInterface $incompleteValuesNormalizer,
-        UserContext $userContext
+        UserContext $userContext,
+        MissingAssociationAdder $missingAssociationAdder,
+        NormalizerInterface $parentAssociationsNormalizer
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -61,7 +64,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $imageAsLabel,
             $ascendantCategories,
             $incompleteValuesNormalizer,
-            $userContext
+            $userContext,
+            $missingAssociationAdder,
+            $parentAssociationsNormalizer
         );
     }
 
@@ -202,6 +207,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'family'         => 'tshirts',
                 'categories'     => ['summer'],
                 'values'         => $valuesConverted,
+                'parent_associations' => null,
                 'meta'           => [
                     'variant_product_completenesses' => [
                         'completenesses' => [],
@@ -347,6 +353,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'family'         => 'tshirts',
                 'categories'     => ['summer'],
                 'values'         => $valuesConverted,
+                'parent_associations' => null,
                 'meta'           => [
                     'variant_product_completenesses' => [
                         'completenesses' => [],
@@ -505,6 +512,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'family'         => 'tshirts',
                 'categories'     => ['summer'],
                 'values'         => $valuesConverted,
+                'parent_associations' => null,
                 'meta'           => [
                     'variant_product_completenesses' => [
                         'completenesses' => [],
