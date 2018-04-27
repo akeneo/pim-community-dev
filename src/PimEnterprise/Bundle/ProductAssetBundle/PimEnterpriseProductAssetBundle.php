@@ -17,8 +17,8 @@ use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFileCommand
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFilesFromReferenceCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\ProcessMassUploadCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\SendAlertNotificationsCommand;
-use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\RegisterMetadataBuildersPass;
 use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\ConfigureUserServicesPass;
+use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\RegisterMetadataBuildersPass;
 use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -7,6 +7,7 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\User\Model\RoleInterface;
 use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\EventListener\UpdateUserMapping;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
@@ -62,7 +63,8 @@ class UpdateUserMappingSpec extends ObjectBehavior
         ])->shouldBeCalled();
 
         $classMetadata->mapManyToOne([
-            "targetEntity" => CategoryInterface::class,
+            'targetEntity' => CategoryInterface::class,
+            'fieldName' => 'defaultAssetTree',
         ])->shouldBeCalled();
 
         $this->loadClassMetadata($eventArgs)->shouldReturn(null);
@@ -73,7 +75,7 @@ class UpdateUserMappingSpec extends ObjectBehavior
         ClassMetadata $classMetadata
     ) {
         $eventArgs->getClassMetadata()->willReturn($classMetadata);
-        $classMetadata->getName()->willReturn('Pim\Component\User\Model\RolesInterface');
+        $classMetadata->getName()->willReturn(RoleInterface::class);
 
         $classMetadata->mapField()->shouldNotBeCalled();
         $classMetadata->mapManyToOne()->shouldNotBeCalled();
