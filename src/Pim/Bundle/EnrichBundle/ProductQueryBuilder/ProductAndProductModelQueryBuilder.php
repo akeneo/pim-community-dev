@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
  * (cf method shouldSearchDocumentsWithoutParent).
  *
  * Otherwise, we have to smartly look for products and product models depending on the values
- * they contain (we add the filter "attributes_for_this_level" in this case).
+ * they contain (we use the 'attributes_of_ancestors' and 'categories_of_ancestors' properties to achieve it).
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

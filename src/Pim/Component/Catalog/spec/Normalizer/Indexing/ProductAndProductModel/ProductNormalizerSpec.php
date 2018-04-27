@@ -4,10 +4,12 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer;
@@ -15,9 +17,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $propertiesNormalizer)
-    {
-        $this->beConstructedWith($propertiesNormalizer);
+    function let(
+        NormalizerInterface $propertiesNormalizer,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider
+    ) {
+        $this->beConstructedWith($propertiesNormalizer, $attributesProvider);
     }
 
     function it_is_initializable()
@@ -73,39 +77,37 @@ class ProductNormalizerSpec extends ObjectBehavior
             ->shouldReturn([
                 'properties'                => 'properties are normalized here',
                 'document_type'              => ProductInterface::class,
-                'attributes_for_this_level' => ['attr1', 'attr2', 'property_1', 'property_2'],
+                'attributes_of_ancestors' => [],
             ]);
     }
 
     function it_normalizes_a_variant_product_in_product_and_product_model_format(
         $propertiesNormalizer,
+        $attributesProvider,
         ProductInterface $variantProduct,
-        FamilyInterface $family,
-        FamilyVariantInterface $familyVariant,
-        VariantAttributeSetInterface $variantAttributeSet,
-        Collection $attributes,
-        Collection $axes,
+        ProductModelInterface $subProductModel,
+        ProductModelInterface $rootProductModel,
         AttributeInterface $propertyOne,
-        AttributeInterface $axeOne
+        AttributeInterface $axeOne,
+        AttributeInterface $propertyTwo,
+        AttributeInterface $axeTwo,
+        AttributeInterface $commonAttribute
     ) {
-        $variantProduct->getFamily()->willReturn($family);
         $variantProduct->isVariant()->willReturn(true);
-        $variantProduct->getVariationLevel()->willReturn(0);
-        $variantProduct->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSet(0)->willReturn($variantAttributeSet);
-        $variantAttributeSet->getAttributes()->willReturn($attributes);
-        $variantAttributeSet->getAxes()->willReturn($axes);
+        $variantProduct->getVariationLevel()->willReturn(2);
+        $variantProduct->getParent()->willReturn($subProductModel);
 
-        $attributes->toArray()->willReturn([$propertyOne]);
-        $axes->toArray()->willReturn([$axeOne]);
-        $propertyOne->getCode()->willReturn('attr_1');
-        $axeOne->getCode()->willReturn('attr_2');
+        $subProductModel->getParent()->willReturn($rootProductModel);
 
-        $variantProduct->getRawValues()
-            ->willReturn([
-                'property_1' => ['value_1'],
-                'property_2' => ['value_2'],
-            ]);
+        $attributesProvider->getAttributes($rootProductModel)->willReturn([$commonAttribute, $propertyOne ,$axeOne]);
+        $attributesProvider->getAttributes($subProductModel)->willReturn([$propertyTwo ,$axeTwo]);
+
+        $propertyOne->getCode()->willReturn('property_one');
+        $propertyTwo->getCode()->willReturn('property_two');
+        $axeOne->getCode()->willReturn('axis_one');
+        $axeTwo->getCode()->willReturn('axis_two');
+        $commonAttribute->getCode()->willReturn('common');
+
         $propertiesNormalizer->normalize(
             $variantProduct,
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
@@ -116,7 +118,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             ->shouldReturn([
                 'properties'                => 'properties are normalized here',
                 'document_type'              => ProductInterface::class,
-                'attributes_for_this_level' => ['attr_1', 'attr_2', 'property_1', 'property_2'],
+                'attributes_of_ancestors' => ['axis_one',  'axis_two', 'common', 'property_one', 'property_two'],
             ]);
     }
 }

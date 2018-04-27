@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -17,18 +19,25 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductNormalizer implements NormalizerInterface
 {
-    private const FIELD_ATTRIBUTES_IN_LEVEL = 'attributes_for_this_level';
+    private const FIELD_ATTRIBUTES_OF_ANCESTORS = 'attributes_of_ancestors';
     private const FIELD_DOCUMENT_TYPE = 'document_type';
 
     /** @var NormalizerInterface */
     private $propertiesNormalizer;
 
+    /** @var EntityWithFamilyVariantAttributesProvider */
+    private $attributesProvider;
+
     /**
-     * @param NormalizerInterface $propertiesNormalizer
+     * @param NormalizerInterface                       $propertiesNormalizer
+     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      */
-    public function __construct(NormalizerInterface $propertiesNormalizer)
-    {
+    public function __construct(
+        NormalizerInterface $propertiesNormalizer,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider
+    ) {
         $this->propertiesNormalizer = $propertiesNormalizer;
+        $this->attributesProvider = $attributesProvider;
     }
 
     /**
@@ -39,7 +48,7 @@ class ProductNormalizer implements NormalizerInterface
         $data = $this->propertiesNormalizer->normalize($product, $format, $context);
 
         $data[self::FIELD_DOCUMENT_TYPE] = ProductInterface::class;
-        $data[self::FIELD_ATTRIBUTES_IN_LEVEL] = $this->getAttributeCodesForOwnLevel($product);
+        $data[self::FIELD_ATTRIBUTES_OF_ANCESTORS] = $this->getAttributeCodesOfAncestors($product);
 
         return $data;
     }
@@ -53,7 +62,6 @@ class ProductNormalizer implements NormalizerInterface
             $data instanceof ProductInterface;
     }
 
-
     /**
      * Get the attribute codes of the family if product is not a variant.
      * If variant, get attribute codes of the family variant.
@@ -65,35 +73,37 @@ class ProductNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    private function getAttributeCodesForOwnLevel(ProductInterface $product): array
+    private function getAttributeCodesOfAncestors(ProductInterface $product): array
     {
-        $attributeCodes = array_keys($product->getRawValues());
-
-        $familyAttributesCodes = [];
-        if ($product->isVariant()) {
-            $variationLevel = $product->getVariationLevel();
-            $attributeSet = $product->getFamilyVariant()->getVariantAttributeSet($variationLevel);
-
-            if (null === $attributeSet) {
-                return $attributeCodes;
-            }
-
-            $attributes = array_merge(
-                $attributeSet->getAttributes()->toArray(),
-                $attributeSet->getAxes()->toArray()
-            );
-
-            $familyAttributesCodes = array_map(function (AttributeInterface $attribute) {
-                return $attribute->getCode();
-            }, $attributes);
-        } elseif (null !== $product->getFamily()) {
-            $familyAttributesCodes = $product->getFamily()->getAttributeCodes();
+        if (!$product->isVariant()) {
+            return [];
         }
 
-        $attributeCodes = array_unique(array_merge($familyAttributesCodes, $attributeCodes));
+        $ancestorsAttributesCodes = [];
+        $entityWithFamilyVariant = $product;
 
-        sort($attributeCodes);
+        while ($this->hasParent($entityWithFamilyVariant)) {
+            $parent = $entityWithFamilyVariant->getParent();
 
-        return $attributeCodes;
+            $attributes = $this->attributesProvider->getAttributes($parent);
+            $attributeCodes = array_map(
+                function (AttributeInterface $attribute) {
+                    return $attribute->getCode();
+                },
+                $attributes
+            );
+            $ancestorsAttributesCodes = array_merge($ancestorsAttributesCodes, $attributeCodes);
+
+            $entityWithFamilyVariant = $parent;
+        }
+
+        sort($ancestorsAttributesCodes);
+
+        return $ancestorsAttributesCodes;
+    }
+
+    private function hasParent(EntityWithFamilyVariantInterface $entityWithFamilyVariant): bool
+    {
+        return null !== $entityWithFamilyVariant->getParent();
     }
 }

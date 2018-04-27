@@ -102,7 +102,6 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         );
 
         $pqb->addFilter('parent', Operators::IS_EMPTY, null, [])->shouldBeCalled();
-        $pqb->addFilter('attributes_for_this_level', Argument::cetera())->shouldNotBeCalled();
         $pqb->execute()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
