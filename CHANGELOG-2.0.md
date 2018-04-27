@@ -1,5 +1,7 @@
 # 2.0.x
 
+- PIM-7328: Fix a bug that prevents to index published products with very large texts in Elasticsearch
+
 # 2.0.22 (2018-04-25)
 
 ## Bug fixes
