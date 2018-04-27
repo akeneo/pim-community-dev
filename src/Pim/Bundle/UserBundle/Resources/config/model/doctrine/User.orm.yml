@@ -103,18 +103,6 @@ Pim\Component\User\Model\User:
             type: string
             nullable: false
             length: 30
-        assetDelayReminder:
-            type: integer
-            options:
-                default: 5
-        proposalsToReviewNotification:
-            type: boolean
-            options:
-                default: true
-        proposalsStateNotification:
-            type: boolean
-            options:
-                default: true
     manyToMany:
         roles:
             targetEntity: Pim\Component\User\Model\Role
@@ -153,8 +141,6 @@ Pim\Component\User\Model\User:
                         referencedColumnName: id
                         onDelete: CASCADE
     manyToOne:
-        defaultAssetTree:
-            targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryInterface
         catalogLocale:
             targetEntity: Pim\Component\Catalog\Model\LocaleInterface
         uiLocale:
