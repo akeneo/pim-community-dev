@@ -6,6 +6,7 @@ use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -98,6 +99,17 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
         $constraints = $this->get('validator')->validate($family);
         $this->assertCount(0, $constraints);
         $this->get('pim_catalog.saver.family')->save($family);
+    }
+
+    protected function createFamilyVariant(array $data = []) : FamilyVariantInterface
+    {
+        $family_variant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update($family_variant, $data);
+        $constraintList = $this->get('validator')->validate($family_variant);
+        $this->assertEquals(0, $constraintList->count());
+        $this->get('pim_catalog.saver.family_variant')->save($family_variant);
+
+        return $family_variant;
     }
 
     /**
