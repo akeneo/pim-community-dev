@@ -35,8 +35,6 @@ services:
         class: '%pim_catalog.synchronizer.product_unique_data.class%'
         arguments:
             - '@pim_catalog.factory.product_unique_data'
-            - '@pim_catalog.repository.product_unique_data'
-            - '%pim_catalog.entity.product_unique_data.class%'
 
     pim_catalog.saver.group:
         class: '%pim_catalog.saver.group.class%'
