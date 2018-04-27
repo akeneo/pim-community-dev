@@ -118,7 +118,6 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
         $productModel1->getCode()->willReturn('product_model_1');
         $productModel2->getCode()->willReturn('product_model_2');
         $productModel3->getCode()->willReturn('product_model_3');
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(3);
         $stepExecution->addWarning('This bulk action doesn\'t support Product models entities yet.', Argument::cetera())
             ->shouldBeCalledTimes(3);
 

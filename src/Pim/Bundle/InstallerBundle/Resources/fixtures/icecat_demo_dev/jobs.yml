@@ -250,6 +250,11 @@ jobs:
         alias:     add_attribute_value
         label:     Mass add attribute value
         type:      mass_edit
+    add_to_group:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_group
+        label:     Mass add product to group
+        type:      mass_edit
     add_to_existing_product_model:
         connector: Akeneo Mass Edit Connector
         alias:     add_to_existing_product_model

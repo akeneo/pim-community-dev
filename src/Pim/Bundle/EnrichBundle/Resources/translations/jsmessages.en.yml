@@ -1168,6 +1168,10 @@ batch_jobs:
         label: Update product value
         perform:
             label: Update product value
+    add_to_group:
+        label: Add to group
+        perform:
+            label: Add to group
     edit_common_attributes:
         label: Edit attributes
         perform:
