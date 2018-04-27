@@ -295,7 +295,6 @@ class UserType extends AbstractType
                     },
                 ]
             );
-
     }
 
     /**
