@@ -8,7 +8,7 @@ use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
@@ -82,9 +82,6 @@ class ProductNormalizer implements NormalizerInterface
     /** @var CompletenessCalculatorInterface */
     private $completenessCalculator;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $productValuesFiller;
 
@@ -102,6 +99,10 @@ class ProductNormalizer implements NormalizerInterface
 
     /** @var NormalizerInterface */
     private $parentAssociationsNormalizer;
+    /**
+     * @var MissingAssociationAdder
+     */
+    private $missingAssociationAdder;
 
     /**
      * @param NormalizerInterface                       $normalizer
@@ -120,12 +121,12 @@ class ProductNormalizer implements NormalizerInterface
      * @param NormalizerInterface                       $completenessCollectionNormalizer
      * @param UserContext                               $userContext
      * @param CompletenessCalculatorInterface           $completenessCalculator
-     * @param ProductBuilderInterface                   $productBuilder
      * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param VariantNavigationNormalizer               $navigationNormalizer
      * @param AscendantCategoriesInterface|null         $ascendantCategoriesQuery
      * @param NormalizerInterface                       $incompleteValuesNormalizer
+     * @param MissingAssociationAdder                   $missingAssociationAdder
      * @param NormalizerInterface                       $parentAssociationsNormalizer
      */
     public function __construct(
@@ -145,12 +146,12 @@ class ProductNormalizer implements NormalizerInterface
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
-        ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         NormalizerInterface $incompleteValuesNormalizer,
+        MissingAssociationAdder $missingAssociationAdder,
         NormalizerInterface $parentAssociationsNormalizer
     ) {
         $this->normalizer                       = $normalizer;
@@ -169,13 +170,13 @@ class ProductNormalizer implements NormalizerInterface
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
         $this->userContext                      = $userContext;
         $this->completenessCalculator           = $completenessCalculator;
-        $this->productBuilder                   = $productBuilder;
         $this->productValuesFiller              = $productValuesFiller;
         $this->attributesProvider               = $attributesProvider;
         $this->navigationNormalizer             = $navigationNormalizer;
         $this->ascendantCategoriesQuery         = $ascendantCategoriesQuery;
         $this->incompleteValuesNormalizer       = $incompleteValuesNormalizer;
         $this->parentAssociationsNormalizer     = $parentAssociationsNormalizer;
+        $this->missingAssociationAdder          = $missingAssociationAdder;
     }
 
     /**
@@ -185,7 +186,7 @@ class ProductNormalizer implements NormalizerInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $this->productBuilder->addMissingAssociations($product);
+        $this->missingAssociationAdder->addMissingAssociations($product);
         $this->productValuesFiller->fillMissingValues($product);
         $normalizedProduct = $this->normalizer->normalize($product, 'standard', $context);
         $normalizedProduct['values'] = $this->localizedConverter->convertToLocalizedFormats(
