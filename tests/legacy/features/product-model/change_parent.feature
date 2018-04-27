@@ -38,8 +38,7 @@ Feature: Change the parent of a product model
     And the following sub product model:
       | code             | parent     | family_variant    | color |
       | white_round_neck | round_neck | tshirts_variant_2 | white |
-    When the parent of product model white_round_neck is changed for invalid root product model v_neck
-    Then the parent of the product model white_round_neck should be round_neck
+    Then the parent of product model white_round_neck cannot be changed for invalid root product model v_neck
 
   Scenario: Fail to change the parent of a product model with a non root product model
     Given the following root product models:
@@ -49,8 +48,7 @@ Feature: Change the parent of a product model
       | code             | parent     | family_variant    | color |
       | white_round_neck | round_neck | tshirts_variant_2 | white |
       | green_round_neck | round_neck | tshirts_variant_2 | green |
-    When the parent of product model white_round_neck is changed for invalid root product model green_round_neck
-    Then the parent of the product model white_round_neck should be round_neck
+    Then the parent of product model white_round_neck cannot be changed for invalid root product model green_round_neck
 
   Scenario: Fail to change the parent of a product model with a parent model product that already has a child product model with the same axis value
     Given the following root product models:
@@ -61,5 +59,4 @@ Feature: Change the parent of a product model
       | code             | parent     | family_variant    | color |
       | white_round_neck | round_neck | tshirts_variant_2 | white |
       | white_v_neck     | v_neck     | tshirts_variant_2 | white |
-    When the parent of product model white_v_neck is changed for invalid root product model round_neck
-    Then the parent of the product model white_v_neck should be v_neck
+    Then the parent of product model white_v_neck cannot be changed for invalid root product model round_neck

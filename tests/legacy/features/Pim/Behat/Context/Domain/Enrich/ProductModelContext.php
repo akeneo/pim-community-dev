@@ -81,20 +81,23 @@ class ProductModelContext extends PimContext
     }
 
     /**
-     * @When the parent of product model :productModelCode is changed for invalid root product model :rootProductModelCode
+     * @Then the parent of product model :productModelCode cannot be changed for invalid root product model :rootProductModelCode
      */
-    public function changeInvalidProductModelParent(string $productModelCode, string $rootProductModelCode)
+    public function cannotSetInvalidProductModelParent(string $productModelCode, string $rootProductModelCode)
     {
         $productModel = $this->getProductModel($productModelCode);
         try {
             $this->productModelUpdater->update($productModel, ['parent' => $rootProductModelCode]);
             $this->validateProduct($productModel);
-            $this->productSaver->save($productModel);
         } catch (InvalidPropertyException $e) {
             //The updater sends an exception because of the invalid root product model
+            return true;
         } catch (\InvalidArgumentException $e) {
             //The validator sends an exception because of the invalid root product model
+            return true;
         }
+
+        throw new \Exception('An error should have happened during product model parent update');
     }
 
     /**
