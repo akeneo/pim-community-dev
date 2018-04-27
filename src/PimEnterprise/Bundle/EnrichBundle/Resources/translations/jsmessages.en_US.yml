@@ -167,8 +167,6 @@ pimee_enrich:
                 width: '%value%px width'
                 height: '%value%px height'
     mass_edit:
-        next: Next
-        previous: Back
         cancel: Cancel
         confirm: Confirm
         product:
