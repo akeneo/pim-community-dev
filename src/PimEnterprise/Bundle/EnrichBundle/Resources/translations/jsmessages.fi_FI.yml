@@ -154,8 +154,6 @@ pimee_enrich:
         width: '%value%px leveys'
         height: '%value%px korkeus'
   mass_edit:
-    next: Seuraava
-    previous: Takaisin
     cancel: Peruuta
     confirm: Vahvista
     product:
@@ -215,3 +213,8 @@ batch_jobs:
     perform.label: Muokkaa attribuutteja
   publish_product:
     perform.label: Julkaise tuotteet
+catalog_volume:
+  axis:
+    count_assets: Resurssit
+    count_asset_categories: Assettikategoriat
+    count_asset_category_trees: Assettikategoriat

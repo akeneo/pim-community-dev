@@ -162,8 +162,6 @@ pimee_enrich:
         width: '%value%px de largeur'
         height: '%value%px de hauteur'
   mass_edit:
-    next: Suivant
-    previous: Retour
     cancel: Annuler
     confirm: Confirmer
     product:
@@ -253,3 +251,12 @@ batch_jobs:
     execute_rules.label: Exécution des règles
   publish_product:
     perform.label: Publier les produits
+catalog_volume:
+  section:
+    assets:
+      title: Axes sur les ressources
+      hint: Vous pouvez suivre votre volumétrie en rapport avec les ressources ici
+  axis:
+    count_assets: Ressources
+    count_asset_categories: Catégories de ressources
+    count_asset_category_trees: Arbres de catégories de ressources

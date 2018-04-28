@@ -4,12 +4,11 @@ Approve: Godkänn
 Refuse: Avslå
 Approve selected: Godkänn valda
 Refuse selected: Avslå valda
-oro:
-  datagrid:
-    noentities:
-      proposal: Det finns inga förslag att granska.
-    noresults:
-      proposal: Det finns inga förslag att granska. Prova att ändra dina sökkriterier.
+pim_datagrid:
+  no_entities:
+    proposal: Det finns inga förslag att granska.
+  no_results:
+    proposal: Det finns inga förslag att granska. Prova att ändra dina sökkriterier.
 pimee_workflow:
   entity:
     published_product:
@@ -38,3 +37,32 @@ pimee_workflow:
         label: Lägg till kommentar (frivilligt)
         error: Ett fel uppstod, förslaget har delvis inte godkänts
         success: Ändringarna har avvisats
+batch_jobs:
+  csv_published_product_export:
+    label: Utgiven produkt exportera i CSV-filen
+    export.label: Utgiven produkt export
+  csv_product_proposal_import:
+    label: Produkt förslag import i CSV
+    import.label: Produkt förslag import
+  approve_product_draft:
+    label: Godkänna förslag
+    perform.label: Godkänna förslag
+  refuse_product_draft:
+    label: Vägra förslag
+    perform.label: Vägra förslag
+  xlsx_published_product_export:
+    label: Utgiven produkt export i XLSX
+    export.label: Utgiven produkt export
+  xlsx_product_proposal_import:
+    label: Produkt förslag import i XLSX
+    import.label: Produkt förslag import i XLSX
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: Nytt förslag
+    pimee_workflow_import_notification_new_proposals: Nya förslag från import
+    pimee_workflow_product_draft_notification_partial_approve: Förslaget delvis godkänd
+    pimee_workflow_product_draft_notification_partial_reject: Förslaget delvis förkastat
+    pimee_workflow_product_draft_notification_partial_remove: Förslaget tas delvis bort
+    pimee_workflow_product_draft_notification_approve: Förslaget godkändes
+    pimee_workflow_product_draft_notification_refuse: Förslag avvisat
+    pimee_workflow_product_draft_notification_remove: Förslag tas bort

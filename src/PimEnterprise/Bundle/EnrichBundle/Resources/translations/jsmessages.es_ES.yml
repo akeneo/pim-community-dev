@@ -162,8 +162,6 @@ pimee_enrich:
         width: 'Px ancho %value%'
         height: 'Alto px %value%'
   mass_edit:
-    next: Siguiente
-    previous: Atrás
     cancel: Cancelar
     confirm: Confirmar
     product:
@@ -181,6 +179,8 @@ pimee_enrich:
       step:
         select:
           label: Elegir recurso
+        choose:
+          label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
         confirm:
@@ -238,3 +238,7 @@ batch_jobs:
     execute_rules.label: Ejecución de las reglas
   publish_product:
     perform.label: Productos publicados
+catalog_volume:
+  axis:
+    count_assets: Recursos
+    count_asset_categories: Categorías de recursos

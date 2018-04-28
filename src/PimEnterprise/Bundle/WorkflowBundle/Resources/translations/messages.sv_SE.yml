@@ -1,6 +1,6 @@
 pimee_workflow:
   product_draft:
-    author: Författare
+    author: Upphovsman
     created: På förslag
     changes: Förändringar
     locale: Lokalt sammanhang
@@ -80,16 +80,8 @@ pimee_workflow:
         second: Välj åtgärd
         third: Konfigurera
         fourth: Bekräfta
-pimee_workflow_product_draft_notification_new_proposal: Nytt förslag
-pimee_workflow_import_notification_new_proposals: Nya förslag från import
 btn.publish: Publicera
 btn.unpublish: Avpublicera
-pimee_workflow_product_draft_notification_partial_approve: Förslaget delvis godkänd
-pimee_workflow_product_draft_notification_partial_reject: Förslaget delvis förkastat
-pimee_workflow_product_draft_notification_partial_remove: Förslaget tas delvis bort
-pimee_workflow_product_draft_notification_approve: Förslaget godkändes
-pimee_workflow_product_draft_notification_refuse: Förslag avvisat
-pimee_workflow_product_draft_notification_remove: Förslag tas bort
 flash:
   product:
     published: Produkten har publicerats.
@@ -101,7 +93,7 @@ flash:
     refuse:
       success: Förslaget har förkastats.
     remove:
-      success: Förslaget har nekats.
+      success: Förslaget har tagits bort.
 pim_menu:
   item:
     published_product: Publicerade produkter
@@ -109,10 +101,6 @@ pim_menu:
 pim_title:
   published_product:
     index: Publicerade produkter
-    view: Publicerade produkter %product.sku% | Visa
-  product:
-    dispatch: "Produkter %product.sku%"
-    show: "Produkter %product.sku% | Visa"
   proposal:
     index: Förslag
 btn.editworkingcopy: Redigera arbetskopian
@@ -120,43 +108,23 @@ confirmation:
   product:
     publish: Är du säker du vill publicera denna produkt?
     unpublish: Är du säker du vill Avpublicera den här produkten?
-proposal.overview: Förslag
-Attributes.title: Attributer
+Attributes.title: Attribut
 Completeness.title: Fullständighet
 publish_product.steps.publish_product_tasklet.title: Publicera produkt
 unpublish_product.steps.unpublish_product_tasklet.title: Avpublicera produkt
-approve_product_draft.steps.approve.title: Godkänn förslag
+approve_product_draft.steps.approve.title: Godkänna förslag
 approve_product_draft.steps.refuse.title: Förkasta förslag
 job_execution.summary:
   approved: godkänt
   refused: avvisade
-  mass_published: Produkten publicerad
-  mass_unpublished: Produkten opublicerad
+  mass_published: Produkten publiceras
+  mass_unpublished: Produkt opublicerad
   proposal: Förslaget skapat
   proposal_deleted: borttagna förslag
   proposal_updated: uppdaterade förslag
   proposal_created: skapade förslag
   proposal_skipped: överhoppade förslag (inga skillnader)
 published products: Publicerade produkter
-batch_jobs:
-  csv_published_product_export:
-    label: Utgiven produkt exportera i CSV-filen
-    export.label: Utgiven produkt export
-  csv_product_proposal_import:
-    label: Produkt förslag import i CSV
-    import.label: Produkt förslag import
-  approve_product_draft:
-    label: Godkänna förslag
-    perform.label: Godkänna förslag
-  refuse_product_draft:
-    label: Vägra förslag
-    perform.label: Vägra förslag
-  xlsx_published_product_export:
-    label: Utgiven produkt export i XLSX
-    export.label: Utgiven produkt export
-  xlsx_product_proposal_import:
-    label: Produkt förslag import i XLSX
-    import.label: Produkt förslag import i XLSX
 pim_analytics:
   info_type:
     nb_published_products: Antal publicerade produkter

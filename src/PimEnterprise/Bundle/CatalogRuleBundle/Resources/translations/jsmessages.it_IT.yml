@@ -72,17 +72,9 @@ batch_jobs:
   csv_product_import_with_rules:
     label: Importazione prodotti in formato CSV con regole
     import.label: Importazione prodotti
-    import_associations.label: Importazione associazioni
-  csv_product_model_import_with_rules:
-    import_root_product_model.label: Importazione modello di prodotto radice
-    import_sub_product_model.label: Importazione sotto-modelli di prodotto
   xlsx_product_import_with_rules:
     label: Importazione prodotti in formato XLSX con regole
     import.label: Importazione prodotti
-    import_associations.label: Importazione associazioni
-  xlsx_product_model_import_with_rules:
-    import_root_product_model.label: Importazione modello di prodotto radice
-    import_sub_product_model.label: Importazione sotto-modelli di prodotto
 pim_notification:
   types:
     rule: Impostazioni delle Regole

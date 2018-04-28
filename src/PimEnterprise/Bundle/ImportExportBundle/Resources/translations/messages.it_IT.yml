@@ -1,0 +1,7 @@
+job_profile.permissions:
+  execute.label: Permetti l'esecuzione del profilo del job
+  edit.label: Consentito modificare il profilo del job
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: Autorizzazioni

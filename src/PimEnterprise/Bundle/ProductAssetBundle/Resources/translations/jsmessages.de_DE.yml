@@ -117,3 +117,13 @@ batch_jobs:
     perform.label: Assets in Kategorien verschieben
   add_tags_to_assets:
     perform.label: Stichworte zu Assets hinzufügen
+jstree:
+  asset:
+    all: Alle Daten
+    unclassified: Unklassifizierte Daten
+asset_grid:
+  title: "] -Inf, 1] {{ count }} Produktasset|] 1, Inf [{{ count }} Produktassets"
+  selected: Ausgewählte Assets
+  label: Produktassets
+create_asset:
+  title: Asset erstellen

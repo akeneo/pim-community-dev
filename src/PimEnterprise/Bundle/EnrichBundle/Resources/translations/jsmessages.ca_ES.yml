@@ -152,7 +152,6 @@ pimee_enrich:
         width: '% value%px d''amplada'
         height: '% value%px d''alçada'
   mass_edit:
-    next: Següent
     cancel: Cancelar
     confirm: Confirmar
     product:
@@ -216,3 +215,7 @@ batch_jobs:
     execute_rules.label: Execució de les regles
   publish_product:
     perform.label: Publicar productes
+catalog_volume:
+  axis:
+    count_assets: Recursos
+    count_asset_categories: Categories de recursos

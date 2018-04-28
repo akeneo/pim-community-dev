@@ -116,3 +116,13 @@ batch_jobs:
     perform.label: Mover recursos a categorías
   add_tags_to_assets:
     perform.label: Añadir etiquetas a los recursos
+jstree:
+  asset:
+    all: Todos los recursos
+    unclassified: Recursos no clasificados
+asset_grid:
+  title: "] -Inf, 1] {{ count }} activo de producto|] 1, Inf [{{ count }} activos de producto"
+  selected: activos seleccionados
+  label: Recursos de productos
+create_asset:
+  title: Crear un recurso
