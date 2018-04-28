@@ -57,6 +57,8 @@ pim_datagrid:
       operator: Operatør
     price_filter:
       label: Valuta
+    metric_filter:
+      label: Enhed
   cells:
     credientials:
       client_id: Klient ID

@@ -26,11 +26,13 @@ pim_common:
   loading: Cargando...
   locales: Locales
   more_than: Mayor que
+  next: Siguiente
   "no": "No"
   none: Ninguno
   not_available: N / A
   now: Ahora
   ok: OK
+  previous: Previo
   properties: Propiedades
   products: Productos
   save: Guardar
@@ -428,6 +430,7 @@ pim_enrich:
             show_groups: Mostrar grupos
           association_type_selector: Tipo de asociación
           target: Objetivo
+          add_associations: Agregar asociaciones
         attributes:
           info:
             search_attributes: Buscar...
@@ -637,6 +640,7 @@ pim_enrich:
             useable_as_grid_filter: Se puede usar en la grilla
             validation_regexp: Expresión regular
             validation_rule: Regla de validación
+            wysiwyg_enabled: Editor de texto enriquecido habilitado
           default_label:
             default_metric_unit: Elegir una unidad
             group: Elija el grupo de atributos
@@ -728,44 +732,87 @@ pim_enrich:
             NOT BETWEEN: No entre
       global_settings:
         title: Configuración global
+  mass_edit_action:
+    edit_common_attributes:
+      description: Sólo se editarán aquellos atributos pertenecientes a la familia de los productos seleccionados con los siguientes datos para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
+      title: "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} tipos de asociación"
       create_btn: Crear un tipo de asociación
     import_profiles:
+      title: "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} perfiles de importación"
+      create_btn: Crear perfil de importación
       list: Seleccionar un trabajo
+      message:
+        created: Perfil de importación creado con éxito
+    import_history:
+      title: Reportes de importación
     group:
+      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} grupos"
       create_btn: Crear grupo
+    export_profiles:
+      title: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} perfiles de exportación"
+      create_btn: Crear perfil de exportación
+      message:
+        created: Perfil de exportación creado con éxito
+    export_history:
+      title: Reportes de exportación
+    family:
+      title: "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} familias"
+      create_btn: Crear familia
     grouptype:
+      title: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} tipos de grupos"
       create_btn: Crear tipo de grupo
+    currency:
+      title: "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} monedas"
+    locale:
+      title: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
     user:
+      title: "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} usuarios"
       create_btn: Crear usuario
     user_role:
+      title: "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
       create_btn: Crear rol
     user_group:
+      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} grupos"
       create_btn: Crear grupo
+    process_tracker:
+      title: "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operaciones"
     channel:
+      title: "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} canales"
       create_btn: Crear canal
     attribute:
+      title: "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} atributos"
       create_btn: Crear atributo
       modal_title: Elija el tipo de atributo
+    api_connection:
+      title: "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API conexiones"
   mass_edit:
-    next: Siguiente
-    previous: Atrás
     product:
       title: Productos de acción masiva
       step:
         select:
           label: Elegir productos
+        choose:
+          label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
         confirm:
           label: Confirmar
+        launch_error:
+          label: Ocurrió un error durante el lanzamiento de la operación de edición masiva
+        launched:
+          label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
       operation:
         change_status:
           label: Cambiar el estado
+          label_count: "{1}Cambiar el estado de <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Cambia el estado de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: Los productos seleccionados serán habilitados o inhabilitados.
           field: Para habilitar
+        edit_common:
+          description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
         change_family:
+          label: Cambiar familia
           description: La familia de los productos seleccionados se cambiará a la familia elegida
           field: Familia
         add_to_group:
@@ -780,10 +827,14 @@ pim_enrich:
       step:
         select:
           label: Elija familias
+        choose:
+          label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
         confirm:
           label: Confirmar
+        launched:
+          label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
   http:
@@ -875,151 +926,11 @@ batch_jobs:
   edit_common_attributes:
     label: Editar atributos
     perform.label: Editar atributos
-  csv_product_export:
-    label: Exportar productos a CSV
-    export.label: Exportar productos
-  csv_product_model_export:
-    export.label: Exportar productos
-  csv_category_export:
-    label: Exportar categorías a CSV
-    export.label: Exportar categorías
-  csv_attribute_export:
-    label: Exportar atributos a CSV
-    export.label: Exportar atributos
-  csv_attribute_option_export:
-    label: Exportar opciones de atributos a CSV
-    export.label: Exportar opciones de atributos
-  csv_association_type_export:
-    label: Exportar tipos de asociaciones a CSV
-    export.label: Exportar tipos de asociaciones
-  csv_group_export:
-    label: Exportar grupos a CSV
-    export.label: Exportar grupos
-  csv_family_export:
-    label: Exportar familias en CSV
-    export.label: Exportar familias
-  csv_product_import:
-    label: Importar productos desde CSV
-    import.label: Importar productos
-    import_associations.label: Importar asociaciones
-  csv_category_import:
-    label: Importar categorías desde CSV
-    import.label: Importar categorías
-  csv_attribute_import:
-    label: Importar atributos desde CSV
-    import.label: Importar atributos
-  csv_attribute_option_import:
-    label: Importar opciones de atributos desde CSV
-    import.label: Importar opciones de atributos
-  csv_association_type_import:
-    label: Importar tipos de asociaciones desde CSV
-    import.label: Importar tipos de asociaciones
-  csv_family_import:
-    label: Importar familias en CSV
-    import.label: Importe de familias
-  csv_group_import:
-    label: Importar grupos desde CSV
-    import.label: Importar grupos
-  csv_channel_export:
-    label: Exportar canal en CSV
-    export.label: Exportar canal
-  csv_locale_export:
-    label: Exportar locales en CSV
-    export.label: Exportar locales
-  csv_attribute_group_export:
-    label: Exportar grupo de atributos en CSV
-    export.label: Exportar grupo de atributos
-  csv_currency_export:
-    label: Exportar monedas en CSV
-    export.label: Exportar monedas
-  csv_group_type_export:
-    label: Exportar tipo de grupos en CSV
-    export.label: Exportar tipo de grupos
-  csv_channel_import:
-    label: Importar canal en CSV
-    import.label: Importar canales
-  csv_locale_import:
-    label: Importar locales en CSV
-    import.label: Importar locales
-  csv_attribute_group_import:
-    label: Importar grupo de atributos en CSV
-    import.label: Importar grupo de atributos
-  csv_currency_import:
-    label: Importar monedas en CSV
-    import.label: Importar monedas
-  csv_group_type_import:
-    label: Importar tipo de grupos en CSV
-    import.label: Importar tipo de grupos
-  xlsx_category_import:
-    label: Importar categorías en XLSX
-    import.label: Importar categorías
-  xlsx_association_type_import:
-    label: Importar tipo de asociaciones en XLSX
-    import.label: Importar tipos de asociaciones
-  xlsx_attribute_import:
-    label: Importar atributos en XLSX
-    import.label: Importar atributos
-  xlsx_attribute_option_import:
-    label: Importar opciones de atributos en XLSX
-    import.label: Importar opciones de atributos
-  xlsx_family_import:
-    label: Importar familias en XLSX
-    import.label: Importe de familias
-  xlsx_product_export:
-    label: Exportar producto en XLSX
-    export.label: Exportar productos
-  xlsx_product_import:
-    label: Importar productos en XLSX
-    import.label: Importar productos
-    import_associations.label: Importar asociaciones
-  xlsx_group_export:
-    label: Exportar grupos en XLSX
-    export.label: Exportar grupos
-  xlsx_group_import:
-    label: Importar grupos en XLSX
-    import.label: Importar grupos
-  xlsx_family_export:
-    label: Exportar familias en XLSX
-    export.label: Exportar familias
-  xlsx_category_export:
-    label: Exportar categorías en XLSX
-    export.label: Exportar categorías
-  xlsx_attribute_export:
-    label: Exportar atributos en XLSX
-    export.label: Exportar atributos en XLSX
-  xlsx_attribute_option_export:
-    label: Exportar opciones de atributos en XLSX
-    export.label: Exportar opciones de atributos en XLSX
-  xlsx_association_type_export:
-    label: Exportar tipo de asociaciones en XLSX
-    export.label: Exportar tipo de asociaciones en XLSX
-  xlsx_channel_export:
-    label: Exportar canales en XLSX
-    export.label: Exportar canal
-  xlsx_locale_export:
-    label: Exportar locales en XLSX
-    export.label: Exportar locales
-  xlsx_attribute_group_export:
-    label: Exportar grupo de atributos en XLSX
-    export.label: Exportar grupo de atributos
-  xlsx_currency_export:
-    label: Exportar monedas en XLSX
-    export.label: Exportar monedas
-  xlsx_group_type_export:
-    label: Exportar tipo de grupos en XLSX
-    export.label: Exportar tipo de grupos
-  xlsx_channel_import:
-    label: Importar canales en XLSX
-    import.label: Importar canales
-  xlsx_locale_import:
-    label: Importar locales en XLSX
-    import.label: Importar locales
-  xlsx_attribute_group_import:
-    label: Importar grupo de atributos en XLSX
-    import.label: Importar grupo de atributos
-  xlsx_currency_import:
-    label: Importar monedas en XLSX
-    import.label: Importar monedas
-  xlsx_group_type_import:
-    label: Importar tipo de grupos en XLSX
-    import.label: Importar tipo de grupos
+catalog_volume:
+  axis:
+    count_products: Productos
+    count_channels: Canales
+    count_families: Familias
+    count_attributes: Atributos
+    count_categories: Categorías
+    count_category_trees: Árbol de categoría

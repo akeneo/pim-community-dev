@@ -1,6 +1,9 @@
 batch_jobs:
   default_steps:
     validation: Dateivalidierung
+    import_associations: Produktverbindungen-Import
+    import_root_product_model: Produktmodell-Import Hauptebene
+    import_sub_product_model: Produktmodell-Import Subebene
   csv_product_export:
     label: Produkt-Export als CSV-Datei
     export.label: Produkt export
@@ -28,11 +31,8 @@ batch_jobs:
   csv_product_import:
     label: Produkt-Export als CSV-Datei
     import.label: Produkt import
-    import_associations.label: Produktverbindungen-Import
   csv_product_model_import:
     label: Produktmodell-Import aus CSV-Datei
-    import_root_product_model.label: Produktmodell-Import Hauptebene
-    import_sub_product_model.label: Produktmodell-Import Subebene
     import_product_model_descendants.label: Vererbungen der Produktmodelle berechnen
   csv_category_import:
     label: Kategorie-Import aus CSV-Datei
@@ -106,11 +106,8 @@ batch_jobs:
   xlsx_product_import:
     label: Produkt-Import aus XLSX-Datei
     import.label: Produkt import
-    import_associations.label: Produktverbindungen-Import
   xlsx_product_model_import:
     label: Produktmodell-Import aus XLSX-Datei
-    import_root_product_model.label: Produktmodell-Import Hauptebene
-    import_sub_product_model.label: Produktmodell-Import Subebene
     import_product_model_descendants.label: Vererbungen der Produktmodelle berechnen
   xlsx_group_export:
     label: Gruppen-Export als XSLX-Datei

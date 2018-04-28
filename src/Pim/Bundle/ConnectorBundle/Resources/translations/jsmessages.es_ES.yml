@@ -1,6 +1,7 @@
 batch_jobs:
   default_steps:
     validation: Validación de archivo
+    import_associations: Importar asociaciones
   csv_product_export:
     label: Exportar productos a CSV
     export.label: Exportar productos
@@ -25,7 +26,6 @@ batch_jobs:
   csv_product_import:
     label: Importar productos desde CSV
     import.label: Importar productos
-    import_associations.label: Importar asociaciones
   csv_category_import:
     label: Importar categorías desde CSV
     import.label: Importar categorías
@@ -95,7 +95,6 @@ batch_jobs:
   xlsx_product_import:
     label: Importar productos en XLSX
     import.label: Importar productos
-    import_associations.label: Importar asociaciones
   xlsx_group_export:
     label: Exportar grupos en XLSX
     export.label: Exportar grupos

@@ -1,6 +1,9 @@
 batch_jobs:
   default_steps:
     validation: Filvalidering
+    import_associations: Association import
+    import_root_product_model: Rodprodukt import
+    import_sub_product_model: Under produkt import
   csv_product_export:
     label: Produkt eksport til CSV
     export.label: Produkt eksport
@@ -31,11 +34,8 @@ batch_jobs:
   csv_product_import:
     label: Produkt eksport fra CSV-fil
     import.label: Produkt import
-    import_associations.label: Association import
   csv_product_model_import:
     label: Produkt model import i CSV-
-    import_root_product_model.label: Rodprodukt import
-    import_sub_product_model.label: Under produkt import
     import_product_model_descendants.label: Beregne underliggende produkt modeller
   csv_category_import:
     label: Kategori eksport fra CSV
@@ -52,6 +52,8 @@ batch_jobs:
   csv_family_import:
     label: Familie import i CSV
     import.label: Familie import
+    compute_data_related_to_family_variants.label: Beregn produkt model data
+    compute_data_related_to_family_products.label: Beregn produkt model data
   csv_family_variant_import:
     label: Familie variant import i CSV
     import.label: Familie variant import
@@ -103,6 +105,8 @@ batch_jobs:
   xlsx_family_import:
     label: Familie import i XLSX
     import.label: Familie import
+    compute_data_related_to_family_variants.label: Beregn produkt model data
+    compute_data_related_to_family_products.label: Beregn produkt model data
   xlsx_family_variant_import:
     label: Familie variant import i XLSX
     import.label: Familie variant import
@@ -115,11 +119,8 @@ batch_jobs:
   xlsx_product_import:
     label: Produkt import fra XLSX
     import.label: Produkt import
-    import_associations.label: Association import
   xlsx_product_model_import:
     label: Produkt model import i XSLX
-    import_root_product_model.label: Rodprodukt import
-    import_sub_product_model.label: Under produkt import
     import_product_model_descendants.label: Beregne underliggende produkt modeller
   xlsx_group_export:
     label: Gruppe eksport til XLSX

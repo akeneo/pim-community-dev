@@ -1,6 +1,9 @@
 batch_jobs:
   default_steps:
     validation: Tiedostojen tarkistaminen
+    import_associations: Liitännäisten tuonti
+    import_root_product_model: Juuritason tuotemallin tuonti
+    import_sub_product_model: Alatason tuotemallin tuonti
   csv_product_export:
     label: Tuotteiden vienti CSV-muodossa
     export.label: Tuotteiden vienti
@@ -31,11 +34,8 @@ batch_jobs:
   csv_product_import:
     label: Tuotteiden tuonti CSV-muodossa
     import.label: Tuotteiden tuonti
-    import_associations.label: Liitännäisten tuonti
   csv_product_model_import:
     label: Tuotemallien tuonti CSV-muodossa
-    import_root_product_model.label: Juuritason tuotemallin tuonti
-    import_sub_product_model.label: Alatason tuotemallin tuonti
     import_product_model_descendants.label: Lasketaan tuotemallin rakenne
   csv_category_import:
     label: Kategorioiden tuonti CSV-muodossa
@@ -115,11 +115,8 @@ batch_jobs:
   xlsx_product_import:
     label: Tuotteiden tuonti XLSX-muodossa
     import.label: Tuotteiden tuonti
-    import_associations.label: Liitännäisten tuonti
   xlsx_product_model_import:
     label: Tuotemallien tuonti XLSX-muodossa
-    import_root_product_model.label: Juuritason tuotemallin tuonti
-    import_sub_product_model.label: Alatason tuotemallin tuonti
     import_product_model_descendants.label: Lasketaan tuotemallin rakenne
   xlsx_group_export:
     label: Ryhmävienti XLSX-muodossa

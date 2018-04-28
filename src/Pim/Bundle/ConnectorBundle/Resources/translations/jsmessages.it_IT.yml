@@ -1,6 +1,9 @@
 batch_jobs:
   default_steps:
     validation: Validazione del file
+    import_associations: Importazione associazioni
+    import_root_product_model: Importazione modello di prodotto radice
+    import_sub_product_model: Importazione sotto-modelli di prodotto
   csv_product_export:
     label: Esportazione prodotti in CSV
     export.label: Esportazione Prodotti
@@ -31,11 +34,8 @@ batch_jobs:
   csv_product_import:
     label: Importazione prodotti in CSV
     import.label: Importazione prodotti
-    import_associations.label: Importazione associazioni
   csv_product_model_import:
     label: Importazione modelli di prodotto in CSV
-    import_root_product_model.label: Importazione modello di prodotto radice
-    import_sub_product_model.label: Importazione sotto-modelli di prodotto
     import_product_model_descendants.label: Calcola i modelli di prodotto discendenti
   csv_category_import:
     label: Importazione categorie in CSV
@@ -115,11 +115,8 @@ batch_jobs:
   xlsx_product_import:
     label: Importazione prodotti in XLSX
     import.label: Importazione prodotti
-    import_associations.label: Importazione associazioni
   xlsx_product_model_import:
     label: Importazione modello di prodotto in XLSX
-    import_root_product_model.label: Importazione modello di prodotto radice
-    import_sub_product_model.label: Importazione sotto-modelli di prodotto
     import_product_model_descendants.label: Calcola i modelli di prodotto discendenti
   xlsx_group_export:
     label: Esportazione gruppi in XLSX
