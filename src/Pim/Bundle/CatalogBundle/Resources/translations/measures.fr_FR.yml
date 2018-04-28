@@ -24,8 +24,6 @@ KILOBYTE: Kilo-octet
 MEGABYTE: Mégaoctet
 GIGABYTE: Gigaoctet
 TERABYTE: Téraoctet
-Decibel: Décibel
-DECIBEL: Décibel
 Frequency: Fréquence
 GIGAHERTZ: Gigahertz
 KILOHERTZ: Kilohertz
@@ -53,51 +51,6 @@ KILOWATT: Kilowatt
 MEGAWATT: Mégawatt
 TERAWATT: Térawatt
 WATT: Watt
-Resistance: Résistance
-MILLIOHM: Milliohm
-CENTIOHM: Centiohm
-DECIOHM: Déciohm
-OHM: Ohm
-DEKAOHM: Decaohm
-HECTOHM: Hectohm
-KILOHM: Kilohm
-MEGOHM: Mégohm
-Voltage: Tension
-MILLIVOLT: Millivolt
-CENTIVOLT: Centivolt
-DECIVOLT: Décivolt
-VOLT: Volt
-DEKAVOLT: Décavolt
-HECTOVOLT: Hectovolt
-KILOVOLT: Kilovolt
-Intensity: Intensité
-MILLIAMPERE: Milliampères
-CENTIAMPERE: Centiampere
-DECIAMPERE: Deciampere
-AMPERE: Ampère
-DEKAAMPERE: Décaampere
-HECTOAMPERE: Hectoampere
-KILOAMPERE: Kiloampère
-MEGAAMPERE: Mégaampere
-ElectricCharge: Charge électrique
-MILLIAMPEREHOUR: Milliampères heure
-AMPEREHOUR: Ampère heure
-MILLICOULOMB: Millicoulomb
-CENTICOULOMB: Centicoulomb
-DECICOULOMB: Décicoulomb
-COULOMB: Coulomb
-DEKACOULOMB: Décacoulomb
-HECTOCOULOMB: Hectocoulomb
-KILOCOULOMB: Kilocoulomb
-Duration: Durée
-MILLISECOND: Milliseconde
-SECOND: Seconde
-MINUTE: Minute
-HOUR: Heure
-DAY: Jour
-WEEK: Semaine
-MONTH: Mois
-YEAR: Année
 Speed: Vitesse
 FOOT_PER_SECOND: Pied par seconde
 FOOT_PER_HOUR: Pied par heure
@@ -140,18 +93,3 @@ MILLIGRAM: Milligramme
 ONCE: Once française
 POUND: Livre
 TON: Tonne
-Pressure: Pression
-BAR: Bar
-PASCAL: Pascal
-HECTOPASCAL: HectoPascal
-MILLIBAR: Millibar
-ATM: Atmosphère
-PSI: Livre par pouce carré
-TORR: Torr
-MMHG: Millimètre de mercure
-Energy: Energie
-KILOCALORIE: kilocalorie
-KILOJOULE: kilojoule
-CaseBox: Emballage
-PIECE: Unité
-DOZEN: Douzaine

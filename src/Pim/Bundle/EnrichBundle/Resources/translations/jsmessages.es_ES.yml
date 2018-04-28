@@ -428,6 +428,7 @@ pim_enrich:
             show_groups: Mostrar grupos
           association_type_selector: Tipo de asociación
           target: Objetivo
+          add_associations: Agregar asociaciones
         attributes:
           info:
             search_attributes: Buscar...
@@ -637,6 +638,7 @@ pim_enrich:
             useable_as_grid_filter: Se puede usar en la grilla
             validation_regexp: Expresión regular
             validation_rule: Regla de validación
+            wysiwyg_enabled: Editor de texto enriquecido habilitado
           default_label:
             default_metric_unit: Elegir una unidad
             group: Elija el grupo de atributos
@@ -728,26 +730,61 @@ pim_enrich:
             NOT BETWEEN: No entre
       global_settings:
         title: Configuración global
+  mass_edit_action:
+    edit_common_attributes:
+      description: Sólo se editarán aquellos atributos pertenecientes a la familia de los productos seleccionados con los siguientes datos para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
+      title: "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} tipos de asociación"
       create_btn: Crear un tipo de asociación
     import_profiles:
+      title: "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} perfiles de importación"
+      create_btn: Crear perfil de importación
       list: Seleccionar un trabajo
+      message:
+        created: Perfil de importación creado con éxito
+    import_history:
+      title: Reportes de importación
     group:
+      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} grupos"
       create_btn: Crear grupo
+    export_profiles:
+      title: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} perfiles de exportación"
+      create_btn: Crear perfil de exportación
+      message:
+        created: Perfil de exportación creado con éxito
+    export_history:
+      title: Reportes de exportación
+    family:
+      title: "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} familias"
+      create_btn: Crear familia
     grouptype:
+      title: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} tipos de grupos"
       create_btn: Crear tipo de grupo
+    currency:
+      title: "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} monedas"
+    locale:
+      title: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
     user:
+      title: "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} usuarios"
       create_btn: Crear usuario
     user_role:
+      title: "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
       create_btn: Crear rol
     user_group:
+      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} grupos"
       create_btn: Crear grupo
+    process_tracker:
+      title: "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operaciones"
     channel:
+      title: "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} canales"
       create_btn: Crear canal
     attribute:
+      title: "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} atributos"
       create_btn: Crear atributo
       modal_title: Elija el tipo de atributo
+    api_connection:
+      title: "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API conexiones"
   mass_edit:
     next: Siguiente
     previous: Atrás
@@ -756,16 +793,26 @@ pim_enrich:
       step:
         select:
           label: Elegir productos
+        choose:
+          label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
         confirm:
           label: Confirmar
+        launch_error:
+          label: Ocurrió un error durante el lanzamiento de la operación de edición masiva
+        launched:
+          label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
       operation:
         change_status:
           label: Cambiar el estado
+          label_count: "{1}Cambiar el estado de <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Cambia el estado de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: Los productos seleccionados serán habilitados o inhabilitados.
           field: Para habilitar
+        edit_common:
+          description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
         change_family:
+          label: Cambiar familia
           description: La familia de los productos seleccionados se cambiará a la familia elegida
           field: Familia
         add_to_group:
@@ -780,10 +827,14 @@ pim_enrich:
       step:
         select:
           label: Elija familias
+        choose:
+          label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
         confirm:
           label: Confirmar
+        launched:
+          label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
   http:
@@ -1023,3 +1074,11 @@ batch_jobs:
   xlsx_group_type_import:
     label: Importar tipo de grupos en XLSX
     import.label: Importar tipo de grupos
+catalog_volume:
+  axis:
+    count_products: Productos
+    count_channels: Canales
+    count_families: Familias
+    count_attributes: Atributos
+    count_categories: Categorías
+    count_category_trees: Árbol de categoría
