@@ -5,6 +5,15 @@ pim_import_export:
   connector: Connector
   status:
     0: Gereed
+  batch_status:
+    1: Completed
+    2: Starting
+    3: Started
+    4: Stopping
+    5: Stopped
+    6: Failed
+    7: Abandoned
+    8: Unknown
   download_archive:
     archive: download gegenereerd archief | download gegenereerde archieven
     output: download gegenereerd bestand | download gegenereerde bestanden
