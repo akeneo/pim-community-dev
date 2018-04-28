@@ -9,3 +9,10 @@ pim_analytics:
     nb_custom_locale_accesses: カスタム ロケールのアクセス数
     nb_custom_category_accesses: カスタムカテゴリーアクセスの数
     nb_custom_attribute_group_accesses: カスタム属性グループアクセスの数
+job_profile.permissions:
+  execute.label: ジョブプロファイルの実行を許可
+  edit.label: ジョブプロファイルの編集を許可
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: パーミッション

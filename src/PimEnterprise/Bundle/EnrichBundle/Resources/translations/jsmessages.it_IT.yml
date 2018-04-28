@@ -161,8 +161,6 @@ pimee_enrich:
         width: '%value%px di larghezza'
         height: '% value%px di altezza'
   mass_edit:
-    next: Successivo
-    previous: Indietro
     cancel: Annulla
     confirm: Conferma
     product:
@@ -243,3 +241,7 @@ batch_jobs:
     execute_rules.label: Esecuzione regole
   publish_product:
     perform.label: Pubblica i prodotti
+catalog_volume:
+  axis:
+    count_assets: Asset
+    count_asset_categories: Categorie degli asset

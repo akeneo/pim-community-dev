@@ -4,3 +4,10 @@ pimee_enrich.acl.attribute_group.edit_permissions: Hallinnoi attribuuttiryhmien 
 pimee_importexport.acl.export_profile.edit_permissions: Hallinnoi profiilin järjestelmästäviennin käyttöoikeuksia
 pimee_importexport.acl.import_profile.edit_permissions: Hallinnoi profiilin järjestelmääntuonnin käyttöoikeuksia
 pimee_enrich.groups.label: Omistajaryhmät
+job_profile.permissions:
+  execute.label: Työprofiilin suorittaminen sallittu
+  edit.label: Työprofiilin muokkaaminen sallittu
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: Käyttöoikeudet

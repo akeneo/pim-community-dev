@@ -1,4 +1,3 @@
-View the product: Visa produkten
 pimee_enrich.product_history.action.revert: Återställ till denna version
 permission-changes:
   category:
@@ -13,6 +12,19 @@ permission-changes:
   job profile:
     grant: Gruppen <strong>{{ group }}</strong> kommer <strong>få{{ permission }}</strong>
     revoke: Gruppen <strong>{{ group }}</strong> kommer <strong>inte få{{ permission }}</strong>
+pim_enrich:
+  entity:
+    attribute_label:
+      pim_assets_collection: Tillgångar kollektion
+    attribute:
+      type:
+        pim_assets_collection: Tillgångar kollektion
+  form:
+    attribute:
+      tab:
+        properties:
+          label:
+            is_read_only: Endast läsning
 pimee_enrich:
   form:
     job_instance:
@@ -27,8 +39,15 @@ pimee_enrich:
       tab:
         asset-transformation:
           title: Tillgångs transformationer
+    attribute_group:
+      tab:
+        permission:
+          title: Behörigheter
+          view.label: Tillåtet för att visa attribut
+          edit.label: Får redigera attribut
   entity:
     product:
+      navigation: Publicerade produkter
       history:
         published: Publicerad
         revert: Återställ
@@ -59,9 +78,6 @@ pimee_enrich:
           messages:
             approve:
               success: Förslaget har tillämpats framgångsrikt.
-              error:
-                The proposal can't be applied due to the following error:
-                  - fel
             reject:
               success: Förslaget har förkastats.
             remove:
@@ -101,7 +117,6 @@ pimee_enrich:
         reject_selected_proposal: Avvisa valda förslag
         remove_proposal: Ta bort förslag
         send_for_approval: Skicka för godkännande
-        cancel: Avbryt
         confirm: Skicka
         title: Kommentera ditt förslag (tillval - 255 tecken max.)
         characters: tecken.
@@ -109,10 +124,10 @@ pimee_enrich:
         discard_changes: Osparade ändringar förloras. Är du säker du vill sända ditt utkast för godkännande utan osparade ändringar?
         discard_changes_title: Är du säker du vill sända detta utkast?
   asset_transformation:
-    not_found: Ingen transformation som hittade
+    not_found: Ingen transformation hittades
     title:
       transformation: Omvandling
-      options: Alternativ
+      options: Inställningar
     colorspace:
       title: Färgrymd
       options:
@@ -132,9 +147,79 @@ pimee_enrich:
       options:
         width: '%value%px bredd'
         height: '%value%px höjd'
-        ratio: baserat på %value%%
+        ratio: 'baserat på %value%%'
     thumbnail:
       title: Miniatyrbild
       options:
         width: '%value%px bredd'
         height: '%value%px höjd'
+  mass_edit:
+    cancel: Avbryt
+    confirm: Bekräfta
+    product:
+      operation:
+        publish:
+          label: Publicera
+        unpublish:
+          label: Avpublicera
+    asset:
+      step:
+        select:
+          label: Välja tillgångar
+        configure:
+          label: Konfigurera
+        confirm:
+          label: Bekräfta
+      operation:
+        add_tag:
+          label: Lägg till taggar till tillgångar
+          field: Taggar
+pim_menu:
+  tab:
+    asset: Tillgångar
+  item:
+    asset_category: Tillgångskategorier
+    proposal: Förslag
+    published_product: Publicerade produkter
+    rule: Regler
+page_title:
+  pimee_workflow_proposal_index: Förslag
+  pimee_workflow_published_product_index: Publicerade produkter
+  pimee_product_asset_index: Tillgångar
+  pimee_asset_categorytree_index: Kategorier
+  pimee_catalog_rule_rule_index: Regler
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import.label: Kanal tillgångar importera konfiguration
+  add_product_value_with_permission_and_rules:
+    label: Lägg till produkt värde med behörighet kontrollera & regler ansökan
+    perform.label: Lägga till produktens värde
+  update_product_value_with_permission_and_rules:
+    label: Uppdatera produkt värde med behörighet kontrollera & regler ansökan
+    perform.label: Uppdatera produktens värde
+  remove_product_value_with_permission_and_rules:
+    label: Ta bort produktvärde med tillstånd kontrollera & regler ansökan
+    perform.label: Ta bort produktvärde
+  edit_common_attributes_with_permission_and_rules:
+    perform.label: Redigera Attribut
+    cleaner.label: Rensa temporära filer
+  csv_published_product_quick_export:
+    export.label: CSV publicerade produkter snabb export
+    perform.label: CSV publicerade produkter snabb export
+  csv_published_product_grid_context_quick_export:
+    export.label: CSV publicerade produkter rutnät sammanhang snabb export
+    perform.label: CSV publicerade produkter rutnät sammanhang snabb export
+  xlsx_published_product_quick_export:
+    export.label: XLSX publicerade produkter snabb export
+    perform.label: XLSX publicerade produkter snabb export
+  xlsx_published_product_grid_context_quick_export:
+    export.label: XLSX publicerade produkter rutnät sammanhang snabb export
+    perform.label: XLSX publicerade produkter rutnät sammanhang snabb export
+  add_attribute_value:
+    execute_rules.label: Regler utförande
+  publish_product:
+    perform.label: Publicera produkt
+catalog_volume:
+  axis:
+    count_assets: Tillgångar
+    count_asset_categories: Tillgångskategorier

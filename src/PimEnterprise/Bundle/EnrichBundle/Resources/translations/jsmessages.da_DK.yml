@@ -162,8 +162,6 @@ pimee_enrich:
         width: '%value%px bredde'
         height: '%value%px højde'
   mass_edit:
-    next: Næste
-    previous: Tilbage
     cancel: Annuller
     confirm: Bekræft
     product:
@@ -252,3 +250,7 @@ batch_jobs:
     execute_rules.label: Regler udførelse
   publish_product:
     perform.label: Udgiv produkter
+catalog_volume:
+  axis:
+    count_assets: Aktiver
+    count_asset_categories: Aktiver kategorier

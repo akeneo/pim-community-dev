@@ -80,3 +80,13 @@ batch_jobs:
     export.label: Assettien variaatioiden vienti CSV-muodossa
   add_tags_to_assets:
     perform.label: Lisää tunnisteita asseteille
+jstree:
+  asset:
+    all: Kaikki assetit
+    unclassified: Luokittelemattomat assetit
+asset_grid:
+  title: "] -Inf, 1] {{ count }} tuoteassetti|] 1, Inf [{{ count }} tuoteassettia"
+  selected: valittua assettia
+  label: Tuotteen assetit
+create_asset:
+  title: Luo assetti

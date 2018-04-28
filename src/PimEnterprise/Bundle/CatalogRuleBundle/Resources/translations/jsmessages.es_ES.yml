@@ -69,11 +69,9 @@ batch_jobs:
   csv_product_import_with_rules:
     label: Importar productos en CSV con reglas
     import.label: Importar productos
-    import_associations.label: Importar asociaciones
   xlsx_product_import_with_rules:
     label: Importar productos en XLSX con reglas
     import.label: Importar productos
-    import_associations.label: Importar asociaciones
 pim_notification:
   types:
     rule: Configuración de reglas

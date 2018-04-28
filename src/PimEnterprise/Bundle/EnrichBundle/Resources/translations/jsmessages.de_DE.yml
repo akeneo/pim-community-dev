@@ -161,8 +161,6 @@ pimee_enrich:
         width: '%value%px Breite'
         height: '%value%px Höhe'
   mass_edit:
-    next: Vor
-    previous: Zurück
     cancel: Abbrechen
     confirm: Bestätigen
     product:
@@ -239,3 +237,7 @@ batch_jobs:
     execute_rules.label: Regel-Ausführung
   publish_product:
     perform.label: Produkte veröffentlichen
+catalog_volume:
+  axis:
+    count_assets: Assets
+    count_asset_categories: Assetkategorien

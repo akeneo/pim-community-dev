@@ -118,3 +118,13 @@ batch_jobs:
     perform.label: アセットをカテゴリに移動する
   add_tags_to_assets:
     perform.label: タグをアセットに追加
+jstree:
+  asset:
+    all: すべてのアセット
+    unclassified: 未分類のアセット
+asset_grid:
+  title: "] - Inf ファイル、1] {{ count }} 製品アセット |] 1、Inf [{{ count }} 製品アセット"
+  selected: 選択済みアセット
+  label: 製品のアセット
+create_asset:
+  title: アセットを作成
