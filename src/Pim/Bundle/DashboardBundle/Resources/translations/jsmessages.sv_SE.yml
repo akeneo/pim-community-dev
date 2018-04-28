@@ -2,9 +2,7 @@ pim_dashboard:
   widget:
     last_operations:
       empty: Inga händelser hittade
-      status: Status
       date: Datum
-      type: Typ
       profile_name: Profilnamn
       details: Detaljer
       warning_count: Varningar
@@ -17,3 +15,5 @@ pim_dashboard:
       load_more: 'Ladda fler...'
     header:
       view_all: Visa alla
+page_title:
+  pim_dashboard_index: Instrumentpanel

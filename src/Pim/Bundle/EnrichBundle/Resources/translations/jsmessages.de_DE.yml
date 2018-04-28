@@ -1015,3 +1015,13 @@ batch_jobs:
   xlsx_group_type_import:
     label: Gruppen-Import aus XLSX-Datei
     import.label: Gruppentyp-Import
+catalog_volume:
+  axis:
+    count_products: Produkte
+    count_channels: Ausgabekanäle
+    count_families: Produktfamilien
+    count_attributes: Attribute
+    count_categories: Kategorien
+    count_category_trees: Kategorie-Strukturbäume
+    count_variant_products: Produktvarianten
+    count_product_models: Produktmodelle
