@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Affärsenheter
       email_synchronization.title: Inställningar för synkronisering av e-post
       interfaces.title: Gränssnitt
+  group:
+    tab:
+      general.title: Allmänna
+      users.title: Användare
 oro.user.controller:
   group.message.saved: "Grupp sparad"
   role.message.saved: "Roll sparad"
@@ -31,7 +35,7 @@ oro.user.grid.groups:
 pim_title:
   user.index: Användare
   user_role.index: Roller
-  user_group.index: Grupper
+  user_group.index: Användargrupper
   system_configuration.index: Inställningar
 user.title: Användare
 user.overview: Användare
@@ -84,7 +88,8 @@ user:
   default_product_grid_view:
     label: Standard produktlistningsvy
   default_grid_view:
-    none: Inga
+    none: Ingen
+  timezone: Tidszon
 Role: Roll
 Owner: Ägare
 General: Allmänna
@@ -125,28 +130,54 @@ oro_security:
 VIEW: Visa
 CREATE: Skapa
 EDIT: Redigera
-DELETE: Radera
+DELETE: Ta bort
 ASSIGN: Tilldela
 SHARE: Dela
 oro:
-  security:
-    access-level:
-      BASIC: Användare
-      LOCAL: Affärsenhet
-      DEEP: Avdelning
-      GLOBAL: Organisation
-      SYSTEM: System
-      NONE: Inga
-Create group: Skapa grupp
+  user:
+    controller:
+      group:
+        message:
+          saved: "Grupp sparad"
+      role:
+        message:
+          saved: "Roll sparad"
+      user:
+        message:
+          saved: "Användare sparad"
+      status:
+        message:
+          saved: "Status sparad"
+    grid:
+      users:
+        columns:
+          username: "Användarnanm"
+          email: "E-postadress"
+          firstName: "Förnamn"
+          lastName: "Efternamn"
+          createdAt: "Skapad den"
+          updatedAt: "Uppdaterad den"
+          enabled: "Status"
+      roles:
+        columns:
+          label: "Etikett"
+      groups:
+        columns:
+          name: "Namn"
+"Create group": "Skapa grupp"
 btn.create.user-group: Skapa grupp
 Has group: Har gruppen
 Save and Close: Spara och stäng
-user-group.overview: Grupper
+user-group.overview: Användargrupper
 Log in: Logga in
 Remember me on this computer: Kom ihåg mig på den här datorn
 Forgot your password?: Glömt ditt lösenord?
 Username or Email: Användarnamn eller e-post
-Forgot Password: Glömt Lösenord
+"Forgot Password": "Glömt Lösenord"
 Request: Förfrågan
 Check Email: Kontrollera e-post
 Go to homepage: Gå till hemsidan
+Login: Logga in
+"Create role": "Skapa roll"
+"Edit role": "Redigera roll"
+"Logout": "Logga ut"

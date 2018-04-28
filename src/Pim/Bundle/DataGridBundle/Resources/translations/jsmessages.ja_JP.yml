@@ -57,6 +57,8 @@ pim_datagrid:
       operator: オペレータ
     price_filter:
       label: 通貨
+    metric_filter:
+      label: 単位
   cells:
     credientials:
       client_id: クライアントID

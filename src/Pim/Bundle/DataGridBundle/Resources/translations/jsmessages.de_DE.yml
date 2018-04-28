@@ -56,6 +56,8 @@ pim_datagrid:
       operator: Operator
     price_filter:
       label: Währung
+    metric_filter:
+      label: Einheit
   cells:
     credientials:
       client_id: Client-ID

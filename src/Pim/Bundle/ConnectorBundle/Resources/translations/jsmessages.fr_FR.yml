@@ -1,6 +1,9 @@
 batch_jobs:
   default_steps:
     validation: Validation du fichier
+    import_associations: Import des associations de produits
+    import_root_product_model: Import modèle de produit racine
+    import_sub_product_model: Import sous-modèle de produit
   csv_product_export:
     label: Export des produits en CSV
     export.label: Export des produits
@@ -31,11 +34,8 @@ batch_jobs:
   csv_product_import:
     label: Import des produits en CSV
     import.label: Import des produits
-    import_associations.label: Import des associations de produits
   csv_product_model_import:
     label: Import de modèles de produit en CSV
-    import_root_product_model.label: Import modèle de produit racine
-    import_sub_product_model.label: Import sous-modèle de produit
     import_product_model_descendants.label: Mise à jour des descendants des modèles de produit
   csv_category_import:
     label: Import des catégories en CSV
@@ -52,6 +52,8 @@ batch_jobs:
   csv_family_import:
     label: Import des familles en CSV
     import.label: Import des familles
+    compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
+    compute_data_related_to_family_products.label: Calcul des données produits
   csv_family_variant_import:
     label: Import des variantes de famille en CSV
     import.label: Import des variantes de famille
@@ -103,6 +105,8 @@ batch_jobs:
   xlsx_family_import:
     label: Import des familles en XLSX
     import.label: Import des familles
+    compute_data_related_to_family_variants.label: Mise à jour des données des modèles de produit
+    compute_data_related_to_family_products.label: Calcul des données produits
   xlsx_family_variant_import:
     label: Import des variantes de famille en XLSX
     import.label: Import des variantes de famille
@@ -115,11 +119,8 @@ batch_jobs:
   xlsx_product_import:
     label: Import des produits en XLSX
     import.label: Import des produits
-    import_associations.label: Import des associations de produits
   xlsx_product_model_import:
     label: Import de modèles de produit en XLSX
-    import_root_product_model.label: Import modèle de produit racine
-    import_sub_product_model.label: Import sous-modèle de produit
     import_product_model_descendants.label: Mise à jour des descendants des modèles de produit
   xlsx_group_export:
     label: Export des groupes en XLSX

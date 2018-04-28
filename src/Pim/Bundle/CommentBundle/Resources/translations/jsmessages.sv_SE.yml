@@ -1,7 +1,6 @@
 btn:
   post: Lägg till ny kommentar
   reply: Svara
-  cancel: Avbryt
 confirmation:
   remove:
     comment: Är du säker på att du vill ta bort den här kommentaren?
@@ -19,6 +18,8 @@ flash:
 comment:
   index:
     empty: Inga kommentarer hittades
+    header_comment: '{{ user }} kommentarer produkt'
+    header_reply: '{{ user }} svar till kommentar'
   placeholder:
     new: Skriv en ny kommentar...
     reply: Svara på denna kommentar...

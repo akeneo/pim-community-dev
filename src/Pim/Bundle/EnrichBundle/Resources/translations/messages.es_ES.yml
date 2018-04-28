@@ -111,6 +111,7 @@ pim_enrich:
       success_flash: El/los producto(s) se ha(n) quitado de las categorías seleccionadas
       launched_flash: La acción en bloque "añadir a categorías" ha sido lanzada. Será notificado una vez finalizada.
     change-family:
+      label: Cambiar familia
       description: La familia de los productos seleccionados se cambiará a la familia elegida
       success_flash: La familia de producto(s) seleccionados se ha cambiado correctamente
       launched_flash: La acción en masa "cambiar familia" ha sido lanzada. Será notificado una vez finalizada.
@@ -637,6 +638,7 @@ pim_enrich.mass_edit_action:
     description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
     success_flash: Los producto(s) han sido clasificados en las categorías seleccionadas
   change-family:
+    label: Cambiar familia
     description: La familia de los productos seleccionados se cambiará a la familia elegida
     success_flash: La familia de producto(s) seleccionados se ha cambiado correctamente
     no_family: Ninguna familia

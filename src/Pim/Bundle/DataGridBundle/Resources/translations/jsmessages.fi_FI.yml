@@ -58,6 +58,8 @@ pim_datagrid:
       operator: Operaattori
     price_filter:
       label: Valuutta
+    metric_filter:
+      label: Yksikkö
   cells:
     credientials:
       client_id: Asiakastunnus

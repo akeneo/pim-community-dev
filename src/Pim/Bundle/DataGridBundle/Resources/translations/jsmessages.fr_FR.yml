@@ -70,6 +70,8 @@ pim_datagrid:
       operator: Opérateur
     price_filter:
       label: Devise
+    metric_filter:
+      label: Unité
   cells:
     credientials:
       client_id: ID du client
