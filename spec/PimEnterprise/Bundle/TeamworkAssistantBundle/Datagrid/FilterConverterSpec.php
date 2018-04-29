@@ -16,21 +16,23 @@ class FilterConverterSpec extends ObjectBehavior
     }
 
     function it_converts_datagrid_filters_into_pqb_filters(
+        $adapter,
+        $parameterParser,
         Request $request,
-        ParameterBagInterface $parameterBag,
-        $parameterParser
+        ParameterBagInterface $parameterBag
     ) {
         $request->query = $parameterBag;
-        $parameters = $parameterParser->parse($request)->willReturn([]);
 
         $parameterBag->add(
             [
                 'gridName' => OroToPimGridFilterAdapter::PRODUCT_GRID_NAME,
-                'actionName' => 'product_edit', //Fake mass action, needed for the grid filter adapter.
-                'inset' => false,
-                'filters' => 'filters',
+                'inset'    => false,
+                'filters'  => 'filters',
             ]
         )->shouldBeCalled();
+
+        $parameterParser->parse($request)->willReturn(['parsed_params']);
+        $adapter->adapt(['parsed_params'])->shouldBeCalled();
 
         $this->convert($request, 'filters');
     }
