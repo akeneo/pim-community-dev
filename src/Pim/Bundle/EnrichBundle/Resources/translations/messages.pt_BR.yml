@@ -52,7 +52,7 @@ pim_enrich:
   completeness:
     progress_bar.title: '%ratio%% completo (1 valor obrigatório)|%ratio%% completo (%count% valores obrigatórios)'
     subtitle: '{0} Completo|{1} 1 valor em falta|] 1, Inf] %count% valores em falta'
-    missing_attributes: Valor em falta| Valores em falta
+    missing_attributes: Valor faltando|Valores faltando
     legend:
       locale_not_associated: Linguagem não associada a este canal
   mass_edit_action:
@@ -60,12 +60,12 @@ pim_enrich:
     product:
       page_title: Produtos
       page_subtitle: Editar em Massa (1 produto) | Editar em Massa (%count% produtos)
-      title: Escolher operação
+      title: Escolher Operação
       subtitle: Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados
       confirm: Está prestes a atualizar um produto com a seguinte informação, por favor confirme. | Está prestes a atualizar %count% produtos com a seguinte informação, por favor confirme.
       steps:
-        first: Escolher produtos
-        second: Escolher operação
+        first: Escolha os produtos
+        second: Escolher Operação
         third: Configurar
         fourth: Confirmar
     family:
@@ -89,7 +89,6 @@ pim_enrich:
       description: Os atributos do produto selecionado serão editados com os seguintes dados para a linguagem escolhida.
       empty: Por favor, selecione o(s) atributo(s) que deseja editar
       success_flash: A tarefa de atualização de estado de produto(s) está em execução
-      launched_flash: A ação em massa "editar atributos comuns" foi despoletada. Irá receber notificação quando estiver concluída.
       message:
         warning: Não há nenhum atributo em comum nos produtos selecionados. Por favor, altere a sua seleção.
         invalid_attribute: O atributo com código "attribute_code" não é comum para os produtos que foram selecionados, atributo ignorado.
@@ -310,7 +309,7 @@ btn:
   download: transferir
 confirmation:
   confirm: Confirmação
-  delete: Confirmação de exclusão
+  delete: Confirmar exclusão
   leave: Tem certeza de que deseja sair desta página?
   discard changes: Você perderá as alterações feitas em %entity% se sair dessa página.
   remove:
@@ -336,7 +335,7 @@ flash:
     created: Atributo criado com sucesso
     updated: Atributo atualizado com sucesso
     removed: Atributo removido com sucesso
-    identifier not removable: O identificador do atributo não pode ser removido
+    identifier_not_removable: O identificador do atributo não pode ser removido
   attribute group:
     created: Grupo de atributos criado com sucesso
     updated: Grupo de atributos atualizado com sucesso
@@ -468,6 +467,7 @@ Smart: Inteligente
 Useable as grid column: Utilizável como coluna de grelha
 Useable as grid filter: Utilizável em grelha
 Family: Família
+Image: Imagem
 Available locales: Localidades disponíveis
 Locale specific: Localidade específica
 default: Padrão
@@ -542,7 +542,6 @@ pim_title.attribute:
   edit: "Atributos %attribute.label% | Editar"
 pim_title.product:
   index: "Produtos"
-  edit: "Produtos %product.sku% | Editar"
 pim_title.family:
   index: "Famílias"
   edit: "Famílias %family.label% | Editar"
@@ -622,7 +621,7 @@ pim_enrich.mass_edit_action:
     description: Os produtos selecionados serão habilitados ou desabilitados.
     success_flash: O status do(s) produto(s) foi alterado
   edit-common-attributes:
-    label: Editar atributos comuns
+    label: Editar atributos
     description: Os atributos do produto selecionado serão editados com os seguintes dados para a linguagem escolhida.
     empty: Por favor, selecione o(s) atributo(s) que deseja editar
     success_flash: O(s) atributo(s) do(s) produto(s) foi(ram) atualizado(s)
@@ -701,6 +700,7 @@ Format address by address country: Formatar o endereço em função do país
 Language: Idioma
 Timezone: Fuso horário
 Currency: Moeda
+settings: Configurações
 oro.locale:
   address_format:
     region_name_type:
@@ -738,11 +738,10 @@ job_execution.summary:
   skipped_products: Produtos ignorados
   skipped_attributes: Atributos ignorados
 pim_mass_edit_execution_show: Processos de edição em massa | Detalhes
-edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos comuns
+edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos
 update_product_value.steps.update_product_value_processor.title: Atualizar o valor do produto
 remove_product_value.steps.update_product_value_processor.title: Remover valor do produto
-edit_common_attributes: Editar atributos comuns
-edit_common_attributes_clean: Limpar ficheiros de atributos comuns
+edit_common_attributes: Editar atributos
 perform.steps.duplicated.title: Eixo duplicado
 perform.steps.excluded.title: Produto excluído
 batch_jobs:
@@ -751,11 +750,9 @@ batch_jobs:
     perform:
       label: Atualizar o valor do produto
   edit_common_attributes:
-    label: Editar atributos comuns
+    label: Editar atributos
     perform:
-      label: Editar atributos comuns
-    clean:
-      label: Limpar ficheiros de atributos comuns
+      label: Editar atributos
   csv_product_quick_export:
     quick_export.label: Csv exportação rápida de produtos
     perform:

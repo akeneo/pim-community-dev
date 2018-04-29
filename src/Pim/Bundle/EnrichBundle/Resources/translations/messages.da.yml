@@ -3,7 +3,7 @@ pim_enrich:
     tab:
       attribute.title: Egenskaber
       category.title: Kategorier
-      association.title: Associationer
+      association.title: Tilknytninger
       completeness.title: Fuldstændighed
       history.title: Historik
     no_comparison_locale_available: Ingen andre landestandarder er tilgængelige for sammenligning
