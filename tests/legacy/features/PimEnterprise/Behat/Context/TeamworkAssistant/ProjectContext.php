@@ -142,7 +142,7 @@ class ProjectContext extends PimContext
             sprintf(
                 '%s %s/console akeneo:batch:job project_calculation --env=behat -c {\"project_code\":\"%s\"}',
                 $pathFinder->find(),
-                $this->getMainContext()->getContainer()->getParameter('kernel.root_dir'),
+                $this->getMainContext()->getContainer()->getParameter('kernel.project_dir') . '/bin',
                 $projectCode
             )
         );
