@@ -3,7 +3,7 @@
 import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
 
 String[] editions = ["ce"]
-String[] features = ["features"]
+String[] features = ["tests/legacy/features"]
 String launchUnitTests = "yes"
 String launchIntegrationTests = "yes"
 String launchBehatTests = "yes"
