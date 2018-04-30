@@ -25,32 +25,4 @@ class FiltersConfiguratorSpec extends ObjectBehavior
     {
         $this->shouldImplement('Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface');
     }
-
-    function it_adds_is_owner_filter(
-        $filtersConfigurator,
-        DatagridConfiguration $configuration
-    ) {
-        $filtersConfigurator->configure($configuration)->shouldBeCalled();
-
-        $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'permissions');
-        $expectedConf = [
-            'type'      => 'product_permission',
-            'ftype'     => 'choice',
-            'data_name' => 'permissions',
-            'label'     => 'pimee_workflow.product.permission.label',
-            'options'   => [
-                'field_options' => [
-                    'multiple' => false,
-                    'choices'  => [
-                        'pimee_workflow.product.permission.own' => 3,
-                        'pimee_workflow.product.permission.edit' => 2,
-                        'pimee_workflow.product.permission.view' => 1,
-                    ]
-                ]
-            ]
-        ];
-        $configuration->offsetSetByPath($columnConfPath, $expectedConf)->shouldBeCalled();
-
-        $this->configure($configuration);
-    }
 }
