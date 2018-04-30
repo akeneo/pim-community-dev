@@ -43,6 +43,9 @@ class UserUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $categoryAssetRepository;
+
     /**
      * @param UserManager                           $userManager
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
@@ -50,6 +53,7 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param IdentifiableObjectRepositoryInterface $roleRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
+     * @param IdentifiableObjectRepositoryInterface $categoryAssetRepository
      */
     public function __construct(
         UserManager $userManager,
@@ -57,7 +61,8 @@ class UserUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $roleRepository,
-        IdentifiableObjectRepositoryInterface $groupRepository
+        IdentifiableObjectRepositoryInterface $groupRepository,
+        IdentifiableObjectRepositoryInterface $categoryAssetRepository = null
     ) {
         $this->userManager = $userManager;
         $this->categoryRepository = $categoryRepository;
@@ -65,6 +70,7 @@ class UserUpdater implements ObjectUpdaterInterface
         $this->channelRepository = $channelRepository;
         $this->roleRepository = $roleRepository;
         $this->groupRepository = $groupRepository;
+        $this->categoryAssetRepository = $categoryAssetRepository;
     }
 
     /**
@@ -174,6 +180,15 @@ class UserUpdater implements ObjectUpdaterInterface
                 break;
             case 'timezone':
                 $user->setTimezone($data);
+                break;
+            case 'default_asset_tree':
+                $user->setDefaultAssetTree($this->findAssetCategory($data));
+                break;
+            case 'proposals_to_review_notification':
+                $user->setProposalsToReviewNotification($data);
+                break;
+            case 'proposals_state_notifications':
+                $user->setProposalsStateNotification($data);
                 break;
             default:
                 throw UnknownPropertyException::unknownProperty($field);
@@ -299,5 +314,37 @@ class UserUpdater implements ObjectUpdaterInterface
         }
 
         return $group;
+    }
+
+    /**
+     * Get tree entity from category code
+     *
+     * @param string $code
+     *
+     * @throws InvalidPropertyException
+     *
+     * @return CategoryInterface
+     */
+    private function findAssetCategory($code)
+    {
+        if (null === $this->categoryAssetRepository) {
+            throw new \LogicException(
+                'The catagory asset repository is not configured yet. Please update the user updater service.'
+            );
+        }
+
+        $category = $this->categoryAssetRepository->findOneByIdentifier($code);
+
+        if (null === $category) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'default_asset_tree',
+                'category code',
+                'The category does not exist',
+                static::class,
+                $code
+            );
+        }
+
+        return $category;
     }
 }
