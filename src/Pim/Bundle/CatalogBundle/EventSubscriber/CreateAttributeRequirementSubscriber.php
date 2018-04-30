@@ -4,9 +4,11 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Create attribute requirements for each family attributes after creating a channel
@@ -53,14 +55,18 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
         }
 
         $entityManager = $event->getEntityManager();
-        $families = $entityManager->getRepository('PimCatalogBundle:Family')->findAll();
+        $families = $entityManager->getRepository(FamilyInterface::class)->findAll();
 
-        foreach ($families as $family) {
-            foreach ($family->getAttributes() as $attribute) {
+        if (count($families)) {
+            /** @var AttributeRepositoryInterface $attributeRepository */
+            $attributeRepository = $entityManager->getRepository(AttributeInterface::class);
+            $identifier = $attributeRepository->getIdentifier();
+
+            foreach ($families as $family) {
                 $requirement = $this->requirementFactory->createAttributeRequirement(
-                    $attribute,
+                    $identifier,
                     $entity,
-                    AttributeTypes::IDENTIFIER === $attribute->getType()
+                    true
                 );
                 $requirement->setFamily($family);
                 $entityManager->persist($requirement);
