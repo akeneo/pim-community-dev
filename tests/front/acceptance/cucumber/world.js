@@ -8,7 +8,7 @@ const translations = fs.readFileSync(path.join(process.cwd(), './web/js/translat
 const userBuilder = new UserBuilder();
 
 module.exports = function(cucumber) {
-    const {Before, After, Status} = cucumber;
+    const {Before, After, Status } = cucumber;
 
     Before({timeout: 10 * 1000}, async function() {
         this.baseUrl = 'http://pim.com/';

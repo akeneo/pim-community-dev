@@ -16,8 +16,7 @@
     "unit": "jest --no-cache --config tests/front/unit/jest/unit.jest.js",
     "integration": "jest --no-cache --config ./tests/front/integration/jest/integration.jest.js",
     "acceptance": "cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber",
-    "acceptance-report": "yarn run acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node webpack/test/acceptance/generate-report.js",
-    "acceptance-debug": "node --inspect-brk ./node_modules/.bin/cucumber-js --tags @acceptance-front -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber tests/features --world-parameters='{\"debug\": true}'"
+    "acceptance-html-report": "yarn run acceptance ./tests/features/ -f json:web/test_dist/acceptance-js.json && node webpack/test/acceptance/generate-html-report.js"
   },
   "repository": {
     "type": "git",
@@ -32,6 +31,7 @@
     "colors": "1.1.2",
     "cucumber": "4.0.0",
     "cucumber-html-reporter": "4.0.1",
+    "cucumber-junit": "^1.7.1",
     "dep-diff": "1.0.1",
     "glob": "7.1.2",
     "html-webpack-inline-source-plugin": "0.0.9",
