@@ -65,6 +65,9 @@
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to `PimEnterprise\Bundle\WorkflowBundle\Versioning\VersionNormalizer`
 - Remove `PimEnterprise\Bundle\ApiBundle\DependencyInjection\Configuration`
 - Remove `PimEnterprise\Bundle\ApiBundle\DependencyInjection\PimEnterpriseApiExtension`
+
+## Security
+
 - Move `PimEnterprise\Bundle\ApiBundle\Security\AccessDeniedHandler` to `PimEnterprise\Bundle\SecurityBundle\Api\AccessDeniedHandler`
 - Move `PimEnterprise\Bundle\ApiBundle\Checker\QueryParametersChecker` to `PimEnterprise\Bundle\SecurityBundle\Api\QueryParametersChecker`
 - Move `PimEnterprise\Bundle\CatalogBundle\Filter\AbstractAuthorizationFilter\DatagridViewFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\AbstractAuthorizationFilter\DatagridViewFilter`
@@ -92,13 +95,10 @@
 - Move `PimEnterprise\Bundle\CatalogBundle\Security\Doctrine\Common\Saver\FilteredEntitySaver` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\FilteredEntitySaver`
 - Move `PimEnterprise\Bundle\DataGridBundle\Filter\DatagridViewFilter` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\DatagridViewFilter`
 - Move `PimEnterprise\Bundle\DataGridBundle\Manager\DatagridViewManager` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\DatagridViewManager`
-- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\AddPermissionsToGridListener` to `PPimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\AddPermissionsToGridListener`
-- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener` to `PPimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProductGridListener`
+- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\AddPermissionsToGridListener` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\AddPermissionsToGridListener`
+- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProductGridListener`
 - Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\MassAction\ProductFieldsBuilder`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator`
-- Remove `PimEnterprise\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductAndProductModelReader`
-- Remove `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductWriter`
-- Remove `PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType`
 - Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryItemsCounter` to `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter`
 - Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryProductsCounter` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter`
 - Move `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\ProductCategoryAccessSubscriber` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ProductCategoryAccessSubscriber`
@@ -110,22 +110,27 @@
 - Move namespace `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product` to `PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor`
 - Move `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter` to `PimEnterprise\Bundle\SecurityBundle\MassEdit\Writer\ProductAndProductModelWriter`
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer` to `PimEnterprise\Bundle\SecurityBundle\Normalizer\InternalApi\IncompleteValuesNormalizer`
-- Remove `PimEnterprise\Bundle\FilterBundle\PimEnterpriseFilterBundle()`
-- Remove `PimEnterprise\Bundle\ImportExportBundle\PimEnterpriseImportExportBundle()`
-- Remove `PimEnterprise\Bundle\FilterBundle\DependencyInjection\PimEnterpriseFilterExtension()`
-- Remove `PimEnterprise\Bundle\ImportExportBundle\DependencyInjection\PimEnterpriseImportExportExtension()`
-- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer` to `PimEnterprise\Bundle\SecurityBundle\Normalizer\InternalApi\IncompleteValuesNormalizer`
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\Filter\PermissionFilter`
 - Move `PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber\JobProfilePermissionsSubscriber` to `PimEnterprise\Bundle\SecurityBundle\Form\EventListener\JobProfilePermissionsSubscriber`
 - Move `PimEnterprise\Bundle\ImportExportBundle\Form\Type\JobProfilePermissionsType` to `PimEnterprise\Bundle\SecurityBundle\Form\Type\JobProfilePermissionsType`
 - Move `PimEnterprise\Bundle\ImportExportBundle\Manager\JobExecutionManager` to `PimEnterprise\Bundle\SecurityBundle\Manager\JobExecutionManager`
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter` to `PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter`
-- Remove `PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle()`
-- Remove `PimEnterprise\Bundle\PdfGeneratorBundle\DependencyInjection\PimEnterprisePdfGeneratorExtension()`
-- Remove `PimEnterprise\Bundle\UIBundle\DependencyInjection\PimEnterpriseUIExtension()`
 - Move `PimEnterprise\Bundle\UIBundle\Controller\AjaxOptionController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AjaxOptionController`
 - Move `PimEnterprise\Bundle\PdfGeneratorBundle\Twig\ImageExtension` to `PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\ImageExtension`
 - Move `PimEnterprise\Bundle\SecurityBundle\Controller\PermissionRestController` to `PimEnterprise\Bundle\SecurityBundle\Controller\InternalApi\PermissionRestController`
 - Move `PimEnterprise\Bundle\PdfGeneratorBundle\Controller\ProductController` to `PimEnterprise\Bundle\SecurityBundle\Controller\ProductController`
 - Move `PimEnterprise\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer` to `PimEnterprise\Bundle\SecurityBundle\Pdf\ProductPdfRenderer`
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\PublishedProductNormalizer` to `PimEnterprise\Component\Workflow\Normalizer\InternalApi\PublishedProductNormalizer`
+
+## Removed classes
+
+- Remove `PimEnterprise\Bundle\FilterBundle\PimEnterpriseFilterBundle`
+- Remove `PimEnterprise\Bundle\ImportExportBundle\PimEnterpriseImportExportBundle`
+- Remove `PimEnterprise\Bundle\FilterBundle\DependencyInjection\PimEnterpriseFilterExtension`
+- Remove `PimEnterprise\Bundle\ImportExportBundle\DependencyInjection\PimEnterpriseImportExportExtension`
+- Remove `PimEnterprise\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductAndProductModelReader`
+- Remove `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductWriter`
+- Remove `PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType`
+- Remove `PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle`
+- Remove `PimEnterprise\Bundle\PdfGeneratorBundle\DependencyInjection\PimEnterprisePdfGeneratorExtension`
+- Remove `PimEnterprise\Bundle\UIBundle\DependencyInjection\PimEnterpriseUIExtension`

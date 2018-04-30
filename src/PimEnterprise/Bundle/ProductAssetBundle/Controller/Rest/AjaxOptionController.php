@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest;
 
 use Pim\Bundle\UIBundle\Controller\AjaxOptionController as BaseAjaxOptionController;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,13 +26,13 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AjaxOptionController extends BaseAjaxOptionController
 {
-    /** @var UserContext */
+    /** @var \PimEnterprise\Bundle\SecurityBundle\User\UserContext */
     protected $userContext;
 
     /**
-     * @param RegistryInterface              $doctrine
-     * @param ConfigurationRegistryInterface $referenceDataRegistry
-     * @param UserContext                    $userContext
+     * @param RegistryInterface                                     $doctrine
+     * @param ConfigurationRegistryInterface                        $referenceDataRegistry
+     * @param \PimEnterprise\Bundle\SecurityBundle\User\UserContext $userContext
      */
     public function __construct(
         RegistryInterface $doctrine,

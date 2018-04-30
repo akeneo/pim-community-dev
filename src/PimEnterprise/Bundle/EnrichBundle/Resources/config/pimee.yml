@@ -25,12 +25,6 @@ doctrine_migrations:
 pim_enrich:
     max_products_category_removal: '%max_products_category_removal%'
 
-akeneo_storage_utils:
-    mapping_overrides:
-        -
-            original: Pim\Component\User\Model\User
-            override: PimEnterprise\Bundle\UserBundle\Entity\User
-
 akeneo_elasticsearch:
     hosts: "%index_hosts%"
     indexes:

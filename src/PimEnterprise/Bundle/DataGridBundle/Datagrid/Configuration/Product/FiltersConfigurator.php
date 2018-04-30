@@ -72,7 +72,6 @@ class FiltersConfigurator implements ConfiguratorInterface
 
         $this->retrieveTeamworkAssistantInformations();
 
-        $this->addIsOwnerFilter($configuration);
         $this->addProjectCompletenessFilter($configuration);
     }
 
@@ -103,36 +102,6 @@ class FiltersConfigurator implements ConfiguratorInterface
         if ($this->tokenStorage->getToken()->getUsername() === $project->getOwner()->getUsername()) {
             $this->isProjectOwner = true;
         }
-    }
-
-    /**
-     * Add the is owner filter in the datagrid configuration
-     *
-     * @param DatagridConfiguration $configuration
-     */
-    protected function addIsOwnerFilter(DatagridConfiguration $configuration)
-    {
-        $filter = [
-            'type'      => 'product_permission',
-            'ftype'     => 'choice',
-            'data_name' => 'permissions',
-            'label'     => 'pimee_workflow.product.permission.label',
-            'options'   => [
-                'field_options' => [
-                    'multiple' => false,
-                    'choices'  => [
-                        'pimee_workflow.product.permission.own' => PermissionFilter::OWN,
-                        'pimee_workflow.product.permission.edit' => PermissionFilter::EDIT,
-                        'pimee_workflow.product.permission.view' => PermissionFilter::VIEW,
-                    ]
-                ]
-            ]
-        ];
-
-        $configuration->offsetSetByPath(
-            sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'permissions'),
-            $filter
-        );
     }
 
     /**

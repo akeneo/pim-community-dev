@@ -1,6 +1,6 @@
 services:
     pimee_product_asset.context.user:
-        class: '%pimee_user.context.user.class%'
+        class: '%pimee_security.context.user.class%'
         arguments:
             - '@security.token_storage'
             - '@pim_catalog.repository.locale'

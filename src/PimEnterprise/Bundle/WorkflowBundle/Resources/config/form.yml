@@ -1,0 +1,5 @@
+services:
+    pimee_workflow.form.subscriber.user_preferences:
+        class: 'PimEnterprise\Bundle\WorkflowBundle\Form\EventListener\UserPreferencesSubscriber'
+        arguments:
+            - '@pimee_security.repository.category_access'
