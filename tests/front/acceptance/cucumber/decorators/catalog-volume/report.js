@@ -20,11 +20,11 @@ const Report = async (nodeElement, createElementDecorator) => {
     const getVolumeByType = async (typeName) => {
         let volumes = await Promise.all(await getChildren('Volume'));
 
-        volumes = volumes.map(async (volume) => {
+        volumes = await Promise.all(volumes.map(async (volume) => {
             return { type: await volume.getType(), volume };
-        });
+        }));
 
-        return volumes.filter(volume => volume.type === typeName)[0];
+        return volumes.filter(volume => volume.type === typeName)[0].volume;
     };
 
     return { getHeader, getVolumeByType };
