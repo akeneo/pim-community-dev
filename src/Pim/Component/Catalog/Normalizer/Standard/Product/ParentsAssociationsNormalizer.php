@@ -60,7 +60,7 @@ class ParentsAssociationsNormalizer implements NormalizerInterface
      *
      * @return AssociationInterface[]
      */
-    public function getParentAssociations(EntityWithFamilyVariantInterface $product): array
+    private function getParentAssociations(EntityWithFamilyVariantInterface $product): array
     {
         $parent = $product->getParent();
         $parentAssociations = [];

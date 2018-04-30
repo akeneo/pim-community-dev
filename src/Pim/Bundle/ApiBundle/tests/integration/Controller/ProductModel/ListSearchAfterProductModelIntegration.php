@@ -93,6 +93,8 @@ JSON;
 
     /**
      * @param string $productModelIdentifier
+
+     * @return string
      */
     private function getEncryptedId($productModelIdentifier)
     {
