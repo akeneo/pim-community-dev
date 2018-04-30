@@ -1,9 +1,12 @@
 const Volume = async (nodeElement) => {
-    const getMeanValue = () => {
+    const getType = async () => {
+        const element = await nodeElement.$('[data-field]');
+        const dataset = await (await element.getProperty('dataset'));
 
+        return await (await dataset.getProperty('field')).jsonValue();
     };
 
-    return { getMeanValue };
+    return { getType };
 };
 
 module.exports = Volume;

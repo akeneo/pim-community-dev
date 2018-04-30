@@ -8,22 +8,26 @@ const Report = async (nodeElement, createElementDecorator) => {
             decorator: Header
         },
         'Volume': {
-            selector: '[data-field]',
-            decorator: Volume
+            selector: '.AknCatalogVolume-axis',
+            decorator: Volume,
+            multiple: true
         }
     };
+
     const getChildren = createElementDecorator(children, nodeElement);
     const getHeader = async () => await getChildren('Header');
 
-    const getVolume = async (name) => {
-        const volumes = await getChildren('Volume');
-        console.log(volumes, name);
-        // get volume by name
+    const getVolumeByType = async (typeName) => {
+        let volumes = await Promise.all(await getChildren('Volume'));
 
-        return volumes;
-    }
+        volumes = volumes.map(async (volume) => {
+            return { type: await volume.getType(), volume };
+        });
 
-    return { getHeader, getVolume };
+        return volumes.filter(volume => volume.type === typeName)[0];
+    };
+
+    return { getHeader, getVolumeByType };
 };
 
 module.exports = Report;
