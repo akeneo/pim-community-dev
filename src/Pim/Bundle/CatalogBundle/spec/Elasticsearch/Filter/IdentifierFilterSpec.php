@@ -28,7 +28,8 @@ class IdentifierFilterSpec extends ObjectBehavior
                 '=',
                 '!=',
                 'IN LIST',
-                'NOT IN LIST'
+                'NOT IN LIST',
+                'EMPTY'
             ]
         );
     }
@@ -54,12 +55,13 @@ class IdentifierFilterSpec extends ObjectBehavior
                 '=',
                 '!=',
                 'IN LIST',
-                'NOT IN LIST'
+                'NOT IN LIST',
+                'EMPTY'
             ]
 
         );
         $this->supportsOperator('DOES NOT CONTAIN')->shouldReturn(true);
-        $this->supportsOperator('EMPTY')->shouldReturn(false);
+        $this->supportsOperator('IN CHILDREN')->shouldReturn(false);
     }
 
     function it_supports_identifier_field()
@@ -316,6 +318,19 @@ class IdentifierFilterSpec extends ObjectBehavior
 
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($sku, Operators::NOT_IN_LIST, ['sku-001'], null, null, []);
+    }
+
+    function it_adds_an_attribute_filter_with_operator_empty(SearchQueryBuilder $sqb, AttributeInterface $sku)
+    {
+        $sku->getCode()->willReturn('sku');
+        $sqb->addMustNot(
+            [
+                'exists' => ['field' => 'identifier'],
+            ]
+        )->shouldBeCalled();
+
+        $this->setQueryBuilder($sqb);
+        $this->addAttributeFilter($sku, Operators::IS_EMPTY, 'sku-001', null, null, []);
     }
 
     function it_throws_an_exception_when_the_search_query_builder_is_not_initialized(AttributeInterface $sku)
