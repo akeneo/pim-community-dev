@@ -2,7 +2,7 @@
 
 import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
 
-String[] features = ["features", "vendor/akeneo/pim-community-dev/features"]
+String[] features = ["tests/legacy/features", "vendor/akeneo/pim-community-dev/tests/legacy/features"]
 String ceBranch = "2.3.x-dev"
 String ceOwner = "akeneo"
 String launchUnitTests = "yes"
