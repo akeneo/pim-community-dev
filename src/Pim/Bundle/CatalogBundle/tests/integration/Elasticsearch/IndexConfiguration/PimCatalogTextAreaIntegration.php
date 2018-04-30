@@ -3,6 +3,7 @@
 namespace tests\integration\Pim\Bundle\CatalogBundle\Elasticsearch\IndexConfiguration;
 
 use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\AbstractPimCatalogTestCase;
+use Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration\TestData\VeryLongText;
 
 /**
  * This integration tests checks that given an index configuration and some products indexed
@@ -21,7 +22,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
                 'bool' => [
                     'filter' => [
                         'query_string' => [
-                            'default_field' => 'values.description-textarea.<all_channels>.<all_locales>',
+                            'default_field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed',
                             'query'         => 'an*',
                         ],
                     ],
@@ -42,7 +43,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
                     'filter' => [
                         'query_string' => [
                             'default_field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed',
-                            'query'         => '*My*',
+                            'query'         => '*od*',
                         ],
                     ],
                 ],
@@ -51,7 +52,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_1']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_7']);
     }
 
     public function testDoesNotContainOperator()
@@ -74,22 +75,22 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_1', 'product_3', 'product_4', 'product_5']);
+        $this->assertDocument($productsFound, ['product_1', 'product_3', 'product_4', 'product_5', 'product_7']);
     }
 
     public function testEqualsOperator()
     {
         $query = [
-                'query' => [
-                    'bool' => [
-                        'filter' => [
-                            'term' => [
-                                'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => 'yeah, love description',
-                            ],
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'match_phrase' => [
+                            'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => 'yeah, love description',
                         ],
                     ],
                 ],
-            ];
+            ],
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -99,36 +100,36 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
     public function testNotEqualsOperator()
     {
         $query = [
-                'query' => [
-                    'bool' => [
-                        'must_not' => [
-                            'term' => [
-                                'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => 'yeah, love description',
-                            ],
-                        ],
-                        'filter'   => [
-                            'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed'],
+            'query' => [
+                'bool' => [
+                    'must_not' => [
+                        'match_phrase' => [
+                            'values.description-textarea.<all_channels>.<all_locales>.preprocessed' => 'yeah, love description',
                         ],
                     ],
+                    'filter'   => [
+                        'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>.preprocessed'],
+                    ],
                 ],
-            ];
+            ],
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_4', 'product_5']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_4', 'product_5', 'product_7']);
     }
 
     public function testEmptyOperator()
     {
         $query = [
-                'query' => [
-                    'bool' => [
-                        'must_not' => [
-                            'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>'],
-                        ],
+            'query' => [
+                'bool' => [
+                    'must_not' => [
+                        'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>'],
                     ],
                 ],
-            ];
+            ],
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
@@ -138,18 +139,21 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
     public function testNotEmptyOperator()
     {
         $query = [
-                'query' => [
-                    'bool' => [
-                        'filter' => [
-                            'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>'],
-                        ],
+            'query' => [
+                'bool' => [
+                    'filter' => [
+                        'exists' => ['field' => 'values.description-textarea.<all_channels>.<all_locales>'],
                     ],
                 ],
-            ];
+            ],
+        ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_3', 'product_4', 'product_5']);
+        $this->assertDocument(
+            $productsFound,
+            ['product_1', 'product_2', 'product_3', 'product_4', 'product_5', 'product_7']
+        );
     }
 
     public function testSortAscending()
@@ -172,7 +176,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_4', 'product_5', 'product_2', 'product_1', 'product_3', 'product_6']
+            ['product_4', 'product_5', 'product_2', 'product_7', 'product_1', 'product_3', 'product_6']
         );
     }
 
@@ -196,7 +200,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $this->assertDocument(
             $productsFound,
-            ['product_3', 'product_1', 'product_2', 'product_5', 'product_4', 'product_6']
+            ['product_3', 'product_1', 'product_7', 'product_2', 'product_5', 'product_4', 'product_6']
         );
     }
 
@@ -258,6 +262,16 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
             ],
             [
                 'identifier' => 'product_6',
+            ],
+            [
+                'identifier' => 'product_7',
+                'values'     => [
+                    'description-textarea' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => VeryLongText::$withMoreThan66kCharacters,
+                        ],
+                    ],
+                ],
             ],
         ];
 

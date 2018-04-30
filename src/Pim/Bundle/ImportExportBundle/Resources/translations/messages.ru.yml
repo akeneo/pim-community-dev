@@ -4,7 +4,16 @@ pim_import_export:
   job: Работа
   connector: Соединитель
   status:
-    - Готов
+    0: Готов
+  batch_status:
+    1: Completed
+    2: Starting
+    3: Started
+    4: Stopping
+    5: Stopped
+    6: Failed
+    7: Abandoned
+    8: Unknown
   download_archive:
     archive: Скачать созданный архив|Скачать созданные архивы
     output: Скачать созданный файл|скачать созданные файлы
