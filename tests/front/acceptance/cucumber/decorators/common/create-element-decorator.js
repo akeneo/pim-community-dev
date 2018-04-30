@@ -1,17 +1,18 @@
-const createElementDecorator = (config, parent) => async (key) => {
-    // Throw an error if you don't find the key
-    // 'keyname':  {
-    //     selector: '.report',
-    //     decorator: Report
-    // }
+const createElementDecorator = (config, parent, single = true) => async (key) => {
     const elementConfig = config[key];
-    const element = await parent.$(elementConfig.selector);
+
+    if (Array.isArray(parent)) parent = parent[0];
+
+    let element = await parent.$$(elementConfig.selector);
+
+    if (single) element = element[0];
 
     if (elementConfig.decorator) {
+
         return elementConfig.decorator(element, createElementDecorator);
     }
 
-    return element;
+
 };
 
-module.exports = createElementDecorator;
+module.exports = { createElementDecorator };

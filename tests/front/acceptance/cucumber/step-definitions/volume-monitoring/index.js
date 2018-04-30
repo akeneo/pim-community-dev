@@ -2,7 +2,7 @@ module.exports = async function(cucumber) {
     const { Given, Then, When, Before } = cucumber;
     const assert = require('assert');
     const { renderView } = require('../../tools');
-    const createElementDecorator = require('../../decorators/common/create-element-decorator');
+    const { createElementDecorator } = require('../../decorators/common/create-element-decorator');
 
     const config = {
         'Catalog volume report':  {
@@ -43,6 +43,9 @@ module.exports = async function(cucumber) {
     });
 
     Then('the report returns that the average number of attributes per family is {int}', async function (int) {
+        const volume = await (await this.getElement('Catalog volume report')).getVolume('average_max_attributes_per_family');
+        const meanValue = volume.getMeanValue();
+
         const meanSelector = '[data-field="average_max_attributes_per_family"] span:nth-child(1) div';
         const valueElement = await this.page.waitForSelector(meanSelector);
         const value = await (await valueElement.getProperty('textContent')).jsonValue();
