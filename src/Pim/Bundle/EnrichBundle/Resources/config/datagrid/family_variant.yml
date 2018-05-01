@@ -34,7 +34,6 @@ datagrid:
                 label:        Edit family variant
                 propertyCode: familyVariantCode
                 fetcher:      family-variant
-                form:         pim-family-variant-edit-form
                 rowAction:    true
             delete:
                 launcherOptions:

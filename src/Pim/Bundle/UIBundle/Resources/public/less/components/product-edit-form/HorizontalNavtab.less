@@ -6,6 +6,19 @@
   justify-content: space-between;
   align-items:center;
 
+  &--centered {
+    justify-content: center;
+    border-bottom: none;
+  }
+
+  &--centered &-list {
+    border-bottom: 1px solid @AknBorderColor;
+  }
+
+  &--centered &-link {
+    padding: 0 20px;
+  }
+
   &-item {
     list-style-type: none;
   }
