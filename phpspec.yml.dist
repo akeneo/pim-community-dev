@@ -45,10 +45,10 @@ suites:
         spec_path: src/Akeneo/Component/Localization
         src_path: src/Akeneo/Component/Localization
     StorageUtils:
-        namespace: Akeneo\Component\StorageUtils
-        psr4_prefix: Akeneo\Component\StorageUtils
-        spec_path: src/Akeneo/Component/StorageUtils
-        src_path: src/Akeneo/Component/StorageUtils
+        namespace: Akeneo\Tool\Component\StorageUtils
+        psr4_prefix: Akeneo\Tool\Component\StorageUtils
+        spec_path: src/Akeneo/Tool/Component/StorageUtils
+        src_path: src/Akeneo/Tool/Component/StorageUtils
     Versioning:
         namespace: Akeneo\Component\Versioning
         psr4_prefix: Akeneo\Component\Versioning

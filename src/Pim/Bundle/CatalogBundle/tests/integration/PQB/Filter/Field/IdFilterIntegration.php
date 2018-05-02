@@ -77,7 +77,7 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "id" expects a string as data, "array" given.
      */
     public function testErrorDataIsMalformed()
@@ -95,7 +95,7 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "id" expects an array as data, "string" given.
      */
     public function testDataIsMalformedForOperatorInList()
@@ -104,7 +104,7 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "id" expects an array with valid data, one of the value is not string.
      */
     public function testDataIsNotAListOfStringForOperatorInList()
@@ -113,7 +113,7 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "id" expects an array as data, "string" given.
      */
     public function testDataIsMalformedForOperatorNotInList()
@@ -122,7 +122,7 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "id" expects an array with valid data, one of the value is not string.
      */
     public function testDataIsNotAListOfStringForOperatorNotInList()

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 

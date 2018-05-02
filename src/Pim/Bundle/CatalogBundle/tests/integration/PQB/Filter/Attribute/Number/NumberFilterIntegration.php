@@ -132,7 +132,7 @@ class NumberFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "a_number_float_negative" expects a numeric as data, "string" given.
      */
     public function testErrorDataIsMalformed()

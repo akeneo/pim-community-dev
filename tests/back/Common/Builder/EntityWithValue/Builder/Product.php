@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Common\Builder\EntityWithValue\Builder;
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Common\Builder\EntityWithValue\Association;
 use Akeneo\Test\Common\Builder\EntityWithValue\Code;
 use Akeneo\Test\Common\Builder\EntityWithValue\ListOfCodes;

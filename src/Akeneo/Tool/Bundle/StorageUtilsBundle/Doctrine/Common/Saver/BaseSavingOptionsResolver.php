@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

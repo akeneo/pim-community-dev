@@ -300,7 +300,7 @@ class CreateFamilyVariantIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "family" expects a valid family code. The family does not exist, "unknown_family" given
      */
     public function testCreateFamilyVariantUnknownFamily()
@@ -399,7 +399,7 @@ class CreateFamilyVariantIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "variant_attribute_sets" expects an array of objects as data.
      */
     public function testCreateFamilyVariantWithVariantAttributeSetAsString()
@@ -419,7 +419,7 @@ class CreateFamilyVariantIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "variant_attribute_sets" expects an array of objects as data.
      */
     public function testCreateFamilyVariantWithVariantAttributeSetAsArrayOfString()
@@ -960,7 +960,7 @@ class CreateFamilyVariantIntegration extends TestCase
     /**
      * Validation: The attribute set attributes must exists
      *
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "attribute_set_1" expects a valid attribute code. The attribute does not exist, "weather" given.
      */
     public function testAttributesExist()
@@ -991,7 +991,7 @@ class CreateFamilyVariantIntegration extends TestCase
     /**
      * Validation: The attribute set attributes must exists
      *
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "attribute_set_1" expects a valid attribute code. The attribute does not exist, "weather" given.
      */
     public function testAxisAttributesExist()

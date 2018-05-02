@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\UIBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;

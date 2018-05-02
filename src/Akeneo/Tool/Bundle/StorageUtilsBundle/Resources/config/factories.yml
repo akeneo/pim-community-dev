@@ -1,2 +1,2 @@
 parameters:
-    akeneo_storage_utils.factory.simple.class: Akeneo\Component\StorageUtils\Factory\SimpleFactory
+    akeneo_storage_utils.factory.simple.class: Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactory

@@ -125,7 +125,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Attribute "a_scopable_metric" expects a scope, none given.
      */
     public function testErrorMetricScopable()
@@ -134,7 +134,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Attribute "a_scopable_metric" expects an existing scope, "NOT_FOUND" given.
      */
     public function testScopeNotFound()

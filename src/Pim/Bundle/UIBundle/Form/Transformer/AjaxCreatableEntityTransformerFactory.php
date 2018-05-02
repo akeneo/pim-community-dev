@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UIBundle\Form\Transformer;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 

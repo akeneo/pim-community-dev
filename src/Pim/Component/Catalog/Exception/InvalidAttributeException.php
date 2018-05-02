@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Exception;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
  * Exception thrown when performing an action on a property with invalid attribute.
