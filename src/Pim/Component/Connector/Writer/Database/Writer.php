@@ -2,11 +2,11 @@
 
 namespace Pim\Component\Connector\Writer\Database;
 
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 
 /**
  * Generic writer for basic objects, writes them in DB and detach them from the UOW to free the memory

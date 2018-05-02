@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
-use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\EntityWithFamilyVariant\CheckAttributeEditable;

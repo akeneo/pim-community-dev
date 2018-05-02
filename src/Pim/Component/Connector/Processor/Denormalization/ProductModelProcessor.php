@@ -2,13 +2,13 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;

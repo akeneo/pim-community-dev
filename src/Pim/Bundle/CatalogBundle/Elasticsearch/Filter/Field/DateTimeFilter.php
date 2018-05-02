@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
-use Akeneo\Tool\Component\Batch\Job\BatchStatus;
-use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
