@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Copier;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;

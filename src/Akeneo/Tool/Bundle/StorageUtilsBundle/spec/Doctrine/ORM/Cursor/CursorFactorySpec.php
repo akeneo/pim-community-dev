@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory;
-use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\From;

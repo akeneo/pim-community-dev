@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;

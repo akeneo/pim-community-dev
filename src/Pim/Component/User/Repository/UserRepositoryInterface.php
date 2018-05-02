@@ -2,8 +2,8 @@
 
 namespace Pim\Component\User\Repository;
 
-use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\User\Model\UserInterface;
 

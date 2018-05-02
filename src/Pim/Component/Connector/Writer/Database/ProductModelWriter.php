@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Pim\Component\Connector\Writer\Database;
 
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;

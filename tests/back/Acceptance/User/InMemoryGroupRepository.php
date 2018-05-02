@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\User;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\User\Model\GroupInterface;
 

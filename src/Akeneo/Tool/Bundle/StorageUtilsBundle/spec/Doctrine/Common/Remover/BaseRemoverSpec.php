@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
-use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;

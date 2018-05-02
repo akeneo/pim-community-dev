@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Factory;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;

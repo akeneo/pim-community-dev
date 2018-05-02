@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\ConnectorBundle\Doctrine;
 
-use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 

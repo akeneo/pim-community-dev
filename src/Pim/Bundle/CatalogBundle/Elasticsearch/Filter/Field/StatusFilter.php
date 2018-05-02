@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;

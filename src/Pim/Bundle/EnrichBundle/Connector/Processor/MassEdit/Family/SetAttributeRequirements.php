@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;

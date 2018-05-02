@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;

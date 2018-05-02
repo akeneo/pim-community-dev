@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DataGridManager;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;

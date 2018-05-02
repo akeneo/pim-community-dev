@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
-use Akeneo\Component\StorageUtils\Cursor\AbstractCursor;
+use Akeneo\Tool\Component\StorageUtils\Cursor\AbstractCursor;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use LogicException;

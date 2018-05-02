@@ -2,7 +2,7 @@
 
 namespace Pim\Component\User\Repository;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

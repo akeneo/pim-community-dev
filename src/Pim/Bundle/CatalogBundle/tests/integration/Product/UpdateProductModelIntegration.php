@@ -17,7 +17,7 @@ class UpdateProductModelIntegration extends TestCase
     /**
      * TODO: This will become possible in PIM-6350.
      *
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException
      * @expectedExceptionMessage Property "parent" cannot be modified, "amor" given.
      */
     public function testTheParentCannotBeChanged(): void
@@ -29,7 +29,7 @@ class UpdateProductModelIntegration extends TestCase
     /**
      * TODO: This will become possible in PIM-6344.
      *
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException
      * @expectedExceptionMessage Property "family_variant" cannot be modified, "shoes_size" given.
      */
     public function testTheFamilyVariantCannotBeChanged(): void
@@ -39,7 +39,7 @@ class UpdateProductModelIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException
      * @expectedExceptionMessage Property "family_variant" cannot be modified, "shoes_size" given.
      */
     public function testTheFamilyVariantIsTheSameThanTheParent(): void

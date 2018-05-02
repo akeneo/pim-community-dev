@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Job;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;

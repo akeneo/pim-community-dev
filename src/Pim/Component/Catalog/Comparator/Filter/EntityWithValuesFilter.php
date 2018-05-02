@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Comparator\Filter;
 
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;

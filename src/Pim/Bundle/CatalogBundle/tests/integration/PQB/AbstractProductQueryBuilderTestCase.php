@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;

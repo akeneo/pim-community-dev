@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Akeneo\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
+use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

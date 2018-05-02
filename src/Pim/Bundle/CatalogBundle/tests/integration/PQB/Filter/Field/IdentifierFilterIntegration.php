@@ -141,7 +141,7 @@ class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "identifier" expects a string as data, "array" given.
      */
     public function testErrorDataIsMalformed()
@@ -159,7 +159,7 @@ class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "identifier" expects an array as data, "string" given.
      */
     public function testDataIsMalformedForOperatorInList()
@@ -168,7 +168,7 @@ class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "identifier" expects an array as data, "string" given.
      */
     public function testDataIsMalformedForOperatorNotInList()
@@ -177,7 +177,7 @@ class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "identifier" expects a string as data, "array" given.
      */
     public function testErrorDataIsMalformedWithAttributeIdentifierCode()

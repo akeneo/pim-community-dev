@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;

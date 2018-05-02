@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\EventListener;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\DBALException;
 use Pim\Component\User\Model\UserInterface;

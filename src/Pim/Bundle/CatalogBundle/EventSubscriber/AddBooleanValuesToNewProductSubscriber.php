@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;

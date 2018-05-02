@@ -118,7 +118,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Attribute "a_localizable_date" expects a locale, none given.
      */
     public function testErrorMetricLocalizable()
@@ -127,7 +127,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Attribute "a_localizable_date" expects an existing and activated locale, "NOT_FOUND" given.
      */
     public function testLocaleNotFound()

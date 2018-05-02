@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;

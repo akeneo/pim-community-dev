@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\Api\Updater;
 
-use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
-use Akeneo\Component\StorageUtils\Exception\MandatoryPropertyException;
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\MandatoryPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 
 /**
  * Update the family variant properties

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
-use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

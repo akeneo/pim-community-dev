@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Job;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**

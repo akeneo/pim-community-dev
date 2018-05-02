@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\DataTransformer;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 

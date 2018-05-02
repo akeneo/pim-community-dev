@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\tests\integration\Updater;
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 class ChannelUpdaterIntegration extends TestCase
 {
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidObjectException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException
      * @expectedExceptionMessage Expects a "Pim\Component\Catalog\Model\ChannelInterface", "stdClass" given.
      */
     public function testUpdateObjectInChannelUpdater()
@@ -19,7 +19,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "labels" expects an array as data, "NULL" given.
      */
     public function testChannelUpdateWithNullLabels()
@@ -30,7 +30,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "locales" expects an array as data, "NULL" given.
      */
     public function testChannelUpdateWithNullLocales()
@@ -41,7 +41,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "currencies" expects an array as data, "NULL" given.
      */
     public function testChannelUpdateWithNullCurrencies()
@@ -52,7 +52,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "conversion_units" expects an array as data, "NULL" given.
      */
     public function testChannelUpdateWithNullConversionUnits()
@@ -63,7 +63,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage one of the "labels" values is not a scalar
      */
     public function testChannelUpdateWithNonScalarLabels()
@@ -74,7 +74,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage one of the "locales" values is not a scalar
      */
     public function testChannelUpdateWithNonScalarLocales()
@@ -85,7 +85,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage one of the "currencies" values is not a scalar
      */
     public function testChannelUpdateWithNonScalarCurrencies()
@@ -96,7 +96,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage one of the "conversion_units" values is not a scalar
      */
     public function testChannelUpdateWithNonScalarConversionUnits()
@@ -107,7 +107,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "code" expects a scalar as data, "array" given.
      */
     public function testChannelUpdateWithNonScalarCode()
@@ -118,7 +118,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "category_tree" expects a scalar as data, "array" given.
      */
     public function testChannelUpdateWithNonScalarCategoryTree()
@@ -129,7 +129,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "category_tree" expects a valid code. The category does not exist, "category_tree" given.
      */
     public function testChannelUpdateWithUnknownCategoryTree()
@@ -140,7 +140,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "currencies" expects a valid code. The currency does not exist, "YOLO" given.
      */
     public function testChannelUpdateWithUnknownCurrency()
@@ -151,7 +151,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "locales" expects a valid code. The locale does not exist, "YOLO" given.
      */
     public function testChannelUpdateWithUnknownLocale()
@@ -162,7 +162,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Property "unknown_property" does not exist.
      */
     public function testChannelUpdateWithUnknownProperty()

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Doctrine\ORM\EntityManager;
 
 /**

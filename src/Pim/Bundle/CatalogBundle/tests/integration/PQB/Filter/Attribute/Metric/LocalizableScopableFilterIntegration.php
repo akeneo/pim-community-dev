@@ -190,7 +190,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Attribute "a_scopable_localizable_metric" expects a locale, none given.
      */
     public function testErrorMetricLocalizable()
@@ -199,7 +199,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Attribute "a_scopable_localizable_metric" expects a scope, none given.
      */
     public function testErrorMetricScopable()
@@ -208,7 +208,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Attribute "a_scopable_localizable_metric" expects an existing and activated locale, "NOT_FOUND" given.
      */
     public function testLocaleNotFound()
@@ -217,7 +217,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Attribute "a_scopable_localizable_metric" expects an existing scope, "NOT_FOUND" given.
      */
     public function testScopeNotFound()

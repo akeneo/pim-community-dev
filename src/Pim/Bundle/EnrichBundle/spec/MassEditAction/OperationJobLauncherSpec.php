@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
