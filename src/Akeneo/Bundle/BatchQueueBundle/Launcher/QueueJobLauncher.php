@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Bundle\BatchQueueBundle\Launcher;
 
-use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\JobParametersFactory;

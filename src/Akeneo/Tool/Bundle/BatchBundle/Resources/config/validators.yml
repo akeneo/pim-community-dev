@@ -1,0 +1,10 @@
+parameters:
+    akeneo_batch.validator.job_instance.class: Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\JobInstanceValidator
+
+services:
+    akeneo_batch.validator.job_instance:
+        class: '%akeneo_batch.validator.job_instance.class%'
+        arguments:
+            - '@akeneo_batch.job.job_registry'
+        tags:
+            - { name: validator.constraint_validator, alias: akeneo_job_instance_validator }
