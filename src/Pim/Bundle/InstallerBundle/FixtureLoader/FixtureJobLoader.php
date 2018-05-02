@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
