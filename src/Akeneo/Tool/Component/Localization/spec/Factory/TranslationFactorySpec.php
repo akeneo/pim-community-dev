@@ -36,7 +36,7 @@ class TranslationFactorySpec extends ObjectBehavior
     function it_throws_an_exception_when_an_invalid_translation_class_is_provided()
     {
         $this->beConstructedWith(
-            'Pim\Component\Catalog\Model\LocaleInterface',
+            'Akeneo\Channel\Component\Model\LocaleInterface',
             'Pim\Bundle\TranslationBundle\Tests\Entity\Item',
             'bar'
         );

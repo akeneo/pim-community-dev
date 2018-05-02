@@ -1,3 +1,6 @@
+parameters:
+    akeneo_channel.model.locale.interface: 'Akeneo\Channel\Component\Model\LocaleInterface'
+
 services:
 #    akeneo_channel.example:
 #        class: Akeneo\Channel\Bundle\Example

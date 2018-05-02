@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\User\Model\GroupInterface;
 use Pim\Component\User\Model\Role;
 use Pim\Component\User\Model\UserInterface;

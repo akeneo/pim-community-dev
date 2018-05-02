@@ -38,7 +38,7 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                         referencedColumnName: id
                         onDelete: CASCADE
         locales:
-            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
             inversedBy: channels
             cascade:
                 - persist

@@ -1152,7 +1152,7 @@ Its standard format would be the following:
 | ---------------------- | -------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | code                   | string         | `"a_date"`                         | it's the identifier of the attribute                                                                                                                                                   |
 | type                   | string         | `"pim_catalog_date"`               |                                                                                                                                                                                        |
-| labels                 | string[]       | `[0 => "A date", 1 => "Une date"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*                                                                                       |
+| labels                 | string[]       | `[0 => "A date", 1 => "Une date"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*                                                                                       |
 | group                  | string         | `"other"`                          | it represents the *code* of the object *Pim\Component\Catalog\Model\GroupInterface*                                                                                                    |
 | unique                 | boolean        | `false`                            |                                                                                                                                                                                        |
 | useable_as_grid_filter | boolean        | `true`                             |                                                                                                                                                                                        |
@@ -1160,7 +1160,7 @@ Its standard format would be the following:
 | metric_family          | string         | `"Power"`                          | it represents the constant *FAMILY* in classes of *Akeneo/Bundle/MeasureBundle/Family/*                                                                                                |
 | default_metric_unit    | string         | `"watt"`                           | it represents one of the constant in classes of *Akeneo/Bundle/MeasureBundle/Family/*, except *FAMILY*                                                                                 |
 | reference_data_name    | string         | `"color"`                          | it represents the *code* of the object *Pim\Component\ReferenceData\Model\ReferenceDataInterface*                                                                                      |
-| available_locales      | string[]       | `[0 => "en_US", 1 => "fr_FR"]`     | only for locale specific. If the array is empty, locale specific is false. Each element of the array represents the *code* of the object *Pim\Component\Catalog\Model\LocaleInterface* |
+| available_locales      | string[]       | `[0 => "en_US", 1 => "fr_FR"]`     | only for locale specific. If the array is empty, locale specific is false. Each element of the array represents the *code* of the object *Akeneo\Channel\Component\Model\LocaleInterface* |
 | max_characters         | integer        | `255`                              |                                                                                                                                                                                        |
 | validation_rule        | string         | `"email"`                          |                                                                                                                                                                                        |
 | validation_regexp      | string         | `"[0-9]"`                          |                                                                                                                                                                                        |
@@ -1207,7 +1207,7 @@ type       | data structure | data example              | notes                 
 code       | string         | `"option_a"`              | it's the identifier of the attribute option                                                      |
 attribute  | string         | `"a_simple_select"`       | the element represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface*        |
 sort_order | integer        | `0`                       |                                                                                                  |
-labels     | string[]       | `["en_US" => "A option"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
+labels     | string[]       | `["en_US" => "A option"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface* |
 
 
 ### Association Type
@@ -1223,7 +1223,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | type    | data structure | data example                | notes                                                                                            |
 | ------- | -------------- | --------------------------- | ------------------------------------------------------------------------------------------------ |
 | code    | string         | `"X_SELL"`                  | it's the identifier of the association type                                                      |
-| labels  | string[]       | `["en_US" => "Croll sell"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
+| labels  | string[]       | `["en_US" => "Croll sell"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface* |
 
 
 ### Attribute Group
@@ -1263,7 +1263,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | code       | string         | `"other"`                                  | it's the identifier of the attribute group                                                                                                                              |
 | sort_order | integer        | `0`                                        |                                                                                                                                                                         |
 | attributes | string[]       | `[0 => "sku", 1 => "a_date"]`              | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface*. Order is defined by property *sortOrder* in AttributeInterface |
-| labels     | string[]       | `["en_US" => "Other", "fr_FR" => "Autre"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*                                                                        |
+| labels     | string[]       | `["en_US" => "Other", "fr_FR" => "Autre"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*                                                                        |
 
 
 ### Category
@@ -1281,7 +1281,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | ------- | -------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | code    | string         | `"other"`                                   | it's the identifier of the category                                                              |
 | parent  | string         | `null`                                      | it represents the *code* of the object *Akeneo\Tool\Component\Classification\Model\CategoryInterface* |
-| labels  | array          | `["en_US" => "Winter", "fr_FR" => "Hiver"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
+| labels  | array          | `["en_US" => "Winter", "fr_FR" => "Hiver"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface* |
 
 
 ### Channel
@@ -1309,9 +1309,9 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | type             | data structure | data example                                   | notes                                                                                                                                                                                                                                                  |
 | ---------------- | -------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | code             | string         | `"ecommerce"`                                  | it's the identifier of the channel                                                                                                                                                                                                                     |
-| labels           | string[]       | `["en_US" => "Tablet", "fr_FR" => "Tablette"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*                                                                                                                                                       |
+| labels           | string[]       | `["en_US" => "Tablet", "fr_FR" => "Tablette"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*                                                                                                                                                       |
 | currencies       | string[]       | `[0 => "USD", "1 => "EUR"]`                    | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\CurrencyInterface*                                                                                                                                                 |
-| locales          | string[]       | `[0 => "en_US", 1 => "fr_FR"]`                 | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*                                                                                                                                                   |
+| locales          | string[]       | `[0 => "en_US", 1 => "fr_FR"]`                 | each element of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*                                                                                                                                                   |
 | category_tree    | string         | `"master"`                                     | only root category. It represents the *code* of the object *Akeneo\Tool\Component\Classification\Model\CategoryInterface*                                                                                                                                   |
 | conversion_units | string[]       |                                                | keys of each element of the array represent the *code* of the *Pim\Component\Catalog\Model\AttributeInterface*. Values of each element of the array represent one of the constant in classes of *Akeneo/Bundle/MeasureBundle/Family/*, except *FAMILY* |
 
@@ -1359,7 +1359,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | type                   | data structure | data example                                                             | notes                                                                                                              |
 | ---------------------- | -------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
 | code                   | string         | `"my_family"`                                                            | it's the identifier of the family                                                                                  |
-| labels                 | string[]       | `["en_US" => "My family"]`                                               | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*                   |
+| labels                 | string[]       | `["en_US" => "My family"]`                                               | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*                   |
 | attributes             | string[]       | `[0 => "sku"]`                                                           | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface*            |
 | attribute_as_label     | string         | `"sku"`                                                                  | it represents the *code* of the object *Pim\Component\Catalog\Model\AttributeInterface* used as label              |
 | attribute_as_image     | string         | `"image"`                                                                | it represents the *code* of the object *Pim\Component\Catalog\Model\AttributeInterface* used as image. Can be null |
@@ -1394,7 +1394,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | ---------------------- | -------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | code                   | string         | `"my_family_variant"`                                                                                      | it's the identifier of the family variant                                                                |
 | family                 | string         | `"family"`                                                                                                 | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface* the family variant belongs to |
-| labels                 | array          | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
+| labels                 | array          | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*        |
 | variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select_attribute"], "attributes" => ["a_simple_select_attribute", "an_attribute", "an_other_attribute"]]]`, | an array containing the 3 following keys: `level` which is an integer always stricly higher than 0, `axes` and `attributes` which are arrays where each element represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
 
 Regarding the array `variant_attribute_sets`, an attribute present in the `axes` field will also be present in the `attributes` field.
@@ -1414,7 +1414,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 | ------ | -------------- | ------------------------- | ------------------------------------------------------------------------------------------------ |
 | code   | string         | `"my_group"`              | it's the identifier of the group                                                                 |
 | type   | string         | `"RELATED"`               |                                                                                                  |
-| labels | array          | `["en_US" => "My group"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
+| labels | array          | `["en_US" => "My group"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface* |
 
 
 ### Group Type
@@ -1429,7 +1429,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 | type       | data structure | data example                  | notes                                                                                            |
 | ---------- | -------------- | ----------------------------- | ------------------------------------------------------------------------------------------------ |
 | code       | string         | `"my_group_type"`             | it's the identifier of the group type                                                            |
-| labels     | array          | `["en_US" => "My beautiful group type"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
+| labels     | array          | `["en_US" => "My beautiful group type"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface* |
 
     
 ### Locale
@@ -1503,7 +1503,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 | -------------- | -------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | code           | string         | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA_variationA.jpg"` | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*       |
 | asset          | string         | `"my_asset"`                                                               | it represents the *code* of the object *PimEnterprise\Component\ProductAsset\Model\AssetInterface* |
-| locale         | string         | `"fr_FR"`                                                                  | it represents the *code* of the object *Pim\Component\Catalog\Model\LocaleInterface*               |
+| locale         | string         | `"fr_FR"`                                                                  | it represents the *code* of the object *Akeneo\Channel\Component\Model\LocaleInterface*               |
 | channel        | string         | `"tablet"`                                                                 | it represents the *code* of the object *Pim\Component\Catalog\Model\ChannelInterface*              |
 | reference_file | string      	  | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"`            | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*       |
 

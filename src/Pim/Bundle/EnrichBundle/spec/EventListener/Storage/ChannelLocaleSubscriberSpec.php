@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;

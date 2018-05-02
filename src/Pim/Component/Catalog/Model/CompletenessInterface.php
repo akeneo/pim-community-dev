@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**

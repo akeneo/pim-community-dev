@@ -17,7 +17,6 @@ parameters:
     pim_catalog.model.family_variant.interface:         Pim\Component\Catalog\Model\FamilyVariantInterface
     pim_catalog.model.channel.interface:                Pim\Component\Catalog\Model\ChannelInterface
     pim_catalog.model.currency.interface:               Pim\Component\Catalog\Model\CurrencyInterface
-    pim_catalog.model.locale.interface:                 Pim\Component\Catalog\Model\LocaleInterface
     pim_catalog.model.metric.interface:                 Pim\Component\Catalog\Model\MetricInterface
     pim_catalog.model.product_price.interface:          Pim\Component\Catalog\Model\ProductPriceInterface
 

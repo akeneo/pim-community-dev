@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 
 class AttributeColumnInfoExtractorSpec extends ObjectBehavior

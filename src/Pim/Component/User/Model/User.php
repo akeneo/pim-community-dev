@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

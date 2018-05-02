@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 
 class LocaleUpdaterSpec extends ObjectBehavior
 {
@@ -23,7 +23,7 @@ class LocaleUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Pim\Component\Catalog\Model\LocaleInterface'
+                'Akeneo\Channel\Component\Model\LocaleInterface'
             )
         )->during(
             'update',

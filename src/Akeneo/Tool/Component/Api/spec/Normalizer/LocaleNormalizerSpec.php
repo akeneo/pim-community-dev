@@ -3,8 +3,8 @@
 namespace spec\Akeneo\Tool\Component\Api\Normalizer;
 
 use PhpSpec\ObjectBehavior;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Api\Normalizer\LocaleNormalizer;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
