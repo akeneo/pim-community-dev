@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Integration\integration\BatchBundle\Job;
 
-use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
-use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\JobParameters;

@@ -57,10 +57,10 @@ suites:
 
     ## Akeneo Bundles
     BatchBundle:
-        namespace: Akeneo\Bundle\BatchBundle
-        psr4_prefix: Akeneo\Bundle\BatchBundle
-        spec_path: src/Akeneo/Bundle/BatchBundle
-        src_path: src/Akeneo/Bundle/BatchBundle
+        namespace: Akeneo\Tool\Bundle\BatchBundle
+        psr4_prefix: Akeneo\Tool\Bundle\BatchBundle
+        spec_path: src/Akeneo/Tool/Bundle/BatchBundle
+        src_path: src/Akeneo/Tool/Bundle/BatchBundle
     BatchQueueBundle:
         namespace: Akeneo\Bundle\BatchQueueBundle
         psr4_prefix: Akeneo\Bundle\BatchQueueBundle

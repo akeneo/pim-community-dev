@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
-use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;

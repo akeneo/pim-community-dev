@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;

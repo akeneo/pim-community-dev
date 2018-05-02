@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Launcher;
 
-use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
+use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
