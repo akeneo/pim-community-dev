@@ -11,23 +11,20 @@
 
 namespace PimEnterprise\Component\Workflow\Builder;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
 /**
- * Product draft builder interface
+ * EntityWithValues draft builder interface
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-interface ProductDraftBuilderInterface
+interface EntityWithValuesDraftBuilderInterface
 {
     /**
-     * @param ProductInterface $product
-     * @param string           $username
-     *
      * @throws \LogicException
      *
      * @return EntityWithValuesDraftInterface|null returns null if no draft is created
      */
-    public function build(ProductInterface $product, $username);
+    public function build(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesDraftInterface;
 }

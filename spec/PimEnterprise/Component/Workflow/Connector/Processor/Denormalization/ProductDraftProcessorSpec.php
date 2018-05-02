@@ -10,7 +10,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
+use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -22,7 +22,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        ProductDraftBuilderInterface $productDraftBuilder,
+        EntityWithValuesDraftBuilderInterface $productDraftBuilder,
         ProductDraftApplierInterface $productDraftApplier,
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         StepExecution $stepExecution

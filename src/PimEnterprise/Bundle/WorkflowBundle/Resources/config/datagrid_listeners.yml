@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.datagrid.event_listener.inject_product_for_product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectProductForProductDraftSubscriber
+    pimee_workflow.datagrid.event_listener.inject_entity_with_values_for_product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectEntityWithValuesForProductDraftSubscriber
 
 services:
     pimee_workflow.event_listener.product_drafts_grid_listener:
@@ -10,8 +10,8 @@ services:
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-draft-grid, method: onBuildAfter }
 
-    pimee_workflow.datagrid.event_listener.inject_product_for_product_draft:
-        class: '%pimee_workflow.datagrid.event_listener.inject_product_for_product_draft.class%'
+    pimee_workflow.datagrid.event_listener.inject_entity_with_values_for_product_draft:
+        class: '%pimee_workflow.datagrid.event_listener.inject_entity_with_values_for_product_draft.class%'
         arguments:
             - '@oro_datagrid.datagrid.request_params'
         tags:
