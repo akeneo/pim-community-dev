@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Collects the structure of the PIM catalog:

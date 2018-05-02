@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\AnalyticsBundle\DataCollector\DBDataCollector;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 class DBDataCollectorSpec extends ObjectBehavior
 {

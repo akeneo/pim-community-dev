@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field;
 
 use Pim\Component\Catalog\Exception\InvalidDirectionException;
 use Pim\Component\Catalog\Query\Sorter\Directions;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 
 /**
  * Family sorter for an Elasticsearch query.
