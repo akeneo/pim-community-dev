@@ -4,11 +4,11 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Component\Batch\Job\JobParametersFactory;
-use Akeneo\Component\Batch\Job\JobParametersValidator;
-use Akeneo\Component\Batch\Job\JobRegistry;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;

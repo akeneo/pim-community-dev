@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Tool\Bundle\BatchBundle\EventListener;
 
-use Akeneo\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use PhpSpec\ObjectBehavior;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Translation\TranslatorInterface;

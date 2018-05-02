@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Connector\Reader\Database;
 
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;

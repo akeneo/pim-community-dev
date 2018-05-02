@@ -3,16 +3,16 @@
 namespace spec\Akeneo\Tool\Bundle\BatchBundle\Launcher;
 
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Component\Batch\Job\Job;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Job\JobParametersFactory;
-use Akeneo\Component\Batch\Job\JobParametersValidator;
-use Akeneo\Component\Batch\Job\JobRegistry;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Event\EventInterface;
+use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Job\Job;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\User\Model\UserInterface;
 use Prophecy\Argument;

@@ -3,10 +3,10 @@
 namespace Akeneo\Tool\Bundle\BatchBundle\Command;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
-use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Job\JobParametersFactory;
-use Akeneo\Component\Batch\Job\JobParametersValidator;
-use Akeneo\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;

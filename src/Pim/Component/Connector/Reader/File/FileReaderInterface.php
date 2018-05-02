@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Component\Connector\Reader\File;
 
-use Akeneo\Component\Batch\Item\FlushableInterface;
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
 /**
  * Contract for a file reader used in a Batch item step. It must be flushable and must accept a step execution object.

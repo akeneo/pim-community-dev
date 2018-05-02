@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Item\Support;
 
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 
 /**
  * Simple reader that provides data from an array

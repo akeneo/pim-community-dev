@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Reader\File;
 
-use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 
 /**

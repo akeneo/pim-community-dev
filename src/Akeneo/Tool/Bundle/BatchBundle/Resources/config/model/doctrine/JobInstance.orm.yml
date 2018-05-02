@@ -44,7 +44,7 @@ Akeneo\Component\Batch\Model\JobInstance:
             column: type
     oneToMany:
         jobExecutions:
-            targetEntity: Akeneo\Component\Batch\Model\JobExecution
+            targetEntity: Akeneo\Tool\Component\Batch\Model\JobExecution
             mappedBy: jobInstance
             cascade:
                 - remove

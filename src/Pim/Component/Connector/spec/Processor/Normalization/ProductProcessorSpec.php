@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Component\Connector\Processor\Normalization;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Component\Batch\Item\ExecutionContext;
-use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;

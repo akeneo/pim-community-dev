@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
-use Akeneo\Component\Batch\Item\InitializableInterface;
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;

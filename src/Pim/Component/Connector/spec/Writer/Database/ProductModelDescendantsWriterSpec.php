@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Writer\Database;
 
-use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;

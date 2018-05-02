@@ -3,8 +3,8 @@
 namespace Akeneo\Tool\Bundle\BatchBundle\EventListener;
 
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
-use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Event\EventInterface;
+use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

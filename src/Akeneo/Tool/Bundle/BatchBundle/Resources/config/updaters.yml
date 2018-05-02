@@ -1,5 +1,5 @@
 parameters:
-    akeneo_batch.updater.job_instance.class: Akeneo\Component\Batch\Updater\JobInstanceUpdater
+    akeneo_batch.updater.job_instance.class: Akeneo\Tool\Component\Batch\Updater\JobInstanceUpdater
 
 services:
     akeneo_batch.updater.job_instance:

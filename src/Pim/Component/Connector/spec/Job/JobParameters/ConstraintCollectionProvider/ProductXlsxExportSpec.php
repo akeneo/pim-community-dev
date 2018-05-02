@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
-use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\Constraints\Collection;
 

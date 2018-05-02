@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Job;
 
-use Akeneo\Component\Batch\Job\UndefinedJobParameterException;
-use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Job\UndefinedJobParameterException;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

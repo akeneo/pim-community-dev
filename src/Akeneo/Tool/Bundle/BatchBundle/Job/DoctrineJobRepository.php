@@ -3,13 +3,13 @@
 namespace Akeneo\Tool\Bundle\BatchBundle\Job;
 
 use Akeneo\Tool\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager;
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Model\Warning;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;

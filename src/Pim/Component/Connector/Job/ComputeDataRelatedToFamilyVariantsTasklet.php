@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Pim\Component\Connector\Job;
 
-use Akeneo\Component\Batch\Item\InitializableInterface;
-use Akeneo\Component\Batch\Item\InvalidItemException;
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;

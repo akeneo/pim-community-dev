@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Analyzer;
 
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 
 /**
  * An analyzer is a tool to get statistics from a datasource

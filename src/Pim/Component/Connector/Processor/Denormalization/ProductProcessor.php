@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
-use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Component\Catalog\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\GreaterThan;

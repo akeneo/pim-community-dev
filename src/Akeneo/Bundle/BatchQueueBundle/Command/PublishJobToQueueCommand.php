@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Bundle\BatchQueueBundle\Command;
 
-use Akeneo\Tool\Bundle\BatchBundle\Notification\MailNotifier;
-use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Job\JobParametersFactory;
-use Akeneo\Component\Batch\Job\JobParametersValidator;
-use Akeneo\Component\Batch\Job\JobRegistry;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
+use Akeneo\Tool\Component\Batch\Event\EventInterface;
+use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

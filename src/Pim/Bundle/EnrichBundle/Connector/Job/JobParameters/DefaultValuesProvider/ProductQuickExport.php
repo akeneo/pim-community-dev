@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\DefaultValuesProvider;
 
-use Akeneo\Component\Batch\Job\JobInterface;
-use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 
 /**
  * DefaultParameters for product quick export

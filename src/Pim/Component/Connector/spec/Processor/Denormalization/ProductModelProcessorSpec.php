@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Component\Batch\Item\InvalidItemException;
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

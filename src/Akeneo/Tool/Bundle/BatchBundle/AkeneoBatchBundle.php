@@ -22,7 +22,7 @@ class AkeneoBatchBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $mappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Component\Batch\Model'
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Tool\Component\Batch\Model'
         ];
         $container
             ->addCompilerPass(new Compiler\RegisterNotifiersPass())

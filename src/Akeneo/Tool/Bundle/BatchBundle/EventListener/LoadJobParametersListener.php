@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchBundle\EventListener;
 
-use Akeneo\Component\Batch\Job\JobParametersFactory;
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**

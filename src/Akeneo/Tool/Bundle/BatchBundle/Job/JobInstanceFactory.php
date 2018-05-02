@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Job;
 
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 
 /**
  * Job instance factory

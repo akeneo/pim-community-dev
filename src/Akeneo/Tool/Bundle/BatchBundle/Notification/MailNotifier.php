@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Bundle\BatchBundle\Notification;
 
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

@@ -23,7 +23,7 @@ Akeneo\Component\Batch\Model\Warning:
             nullable: false
     manyToOne:
         stepExecution:
-            targetEntity: Akeneo\Component\Batch\Model\StepExecution
+            targetEntity: Akeneo\Tool\Component\Batch\Model\StepExecution
             inversedBy: warnings
             joinColumn:
                 name: step_execution_id

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Pim\Bundle\ConnectorBundle\Launcher;
 
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

@@ -2,10 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\EventListener;
 
-use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Component\Batch\Event\InvalidItemEvent;
-use Akeneo\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Component\Batch\Event\StepExecutionEvent;
+use Akeneo\Tool\Component\Batch\Event\EventInterface;
+use Akeneo\Tool\Component\Batch\Event\InvalidItemEvent;
+use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Translation\TranslatorInterface;

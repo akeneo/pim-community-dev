@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\ConnectorBundle\EventListener;
 
-use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Component\Batch\Event\StepExecutionEvent;
-use Akeneo\Component\Batch\Item\ExecutionContext;
-use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Event\EventInterface;
+use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
+use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

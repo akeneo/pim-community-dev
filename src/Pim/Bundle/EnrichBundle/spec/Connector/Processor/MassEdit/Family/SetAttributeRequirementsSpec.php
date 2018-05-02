@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
