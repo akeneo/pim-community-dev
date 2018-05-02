@@ -77,20 +77,15 @@ suites:
         spec_path: src/Akeneo/Bundle/ElasticsearchBundle
         src_path: src/Akeneo/Bundle/ElasticsearchBundle
     StorageUtilsBundle:
-        namespace: Akeneo\Bundle\StorageUtilsBundle
-        psr4_prefix: Akeneo\Bundle\StorageUtilsBundle
-        spec_path: src/Akeneo/Bundle/StorageUtilsBundle
-        src_path: src/Akeneo/Bundle/StorageUtilsBundle
+        namespace: Akeneo\Tool\Bundle\StorageUtilsBundle
+        psr4_prefix: Akeneo\Tool\Bundle\StorageUtilsBundle
+        spec_path: src/Akeneo/Tool/Bundle/StorageUtilsBundle
+        src_path: src/Akeneo/Tool/Bundle/StorageUtilsBundle
     MeasureBundle:
         namespace: Akeneo\Bundle\MeasureBundle
         psr4_prefix: Akeneo\Bundle\MeasureBundle
         spec_path: src/Akeneo/Bundle/MeasureBundle
         src_path: src/Akeneo/Bundle/MeasureBundle
-    StorageUtilsBundle:
-        namespace: Akeneo\Bundle\StorageUtilsBundle
-        psr4_prefix: Akeneo\Bundle\StorageUtilsBundle
-        spec_path: src/Akeneo/Bundle/StorageUtilsBundle
-        src_path: src/Akeneo/Bundle/StorageUtilsBundle
 
     ## Pim Components
     Api:

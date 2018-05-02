@@ -1,5 +1,5 @@
 parameters:
-    akeneo_file_storage.saver.file.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
+    akeneo_file_storage.saver.file.class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
 
 services:
     akeneo_file_storage.saver.file:
