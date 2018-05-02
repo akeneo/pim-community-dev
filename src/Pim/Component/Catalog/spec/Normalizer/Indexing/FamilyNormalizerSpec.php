@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\ProductPrice;
 use Pim\Component\Catalog\Normalizer\Indexing\FamilyNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class FamilyNormalizerSpec extends ObjectBehavior
