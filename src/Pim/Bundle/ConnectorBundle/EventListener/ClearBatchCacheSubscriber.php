@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\ConnectorBundle\EventListener;
 
-use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
