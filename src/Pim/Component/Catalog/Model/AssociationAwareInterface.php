@@ -17,7 +17,7 @@ interface AssociationAwareInterface
     /**
      * Get types of associations
      *
-     * @return Collection
+     * @return Collection | AssociationInterface[]
      */
     public function getAssociations();
 

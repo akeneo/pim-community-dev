@@ -104,9 +104,9 @@ define(
                         },
                         paramName: 'associatedIds',
                         getParamValue: function (associationType) {
-                            const associations = this.getFormData().associations;
+                            const associationsMeta = this.getFormData().meta.associations;
 
-                            return associations[associationType] ? associations[associationType].groupIds : [];
+                            return associationsMeta[associationType] ? associationsMeta[associationType].groupIds : [];
                         }.bind(this),
                         getModelIdentifier: function (model) {
                             return model.get('code');
