@@ -160,7 +160,7 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->salt = base_convert(bin2hex(random_bytes(20)), 16, 36);
         $this->roles = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->defaultGridViews = new ArrayCollection();
