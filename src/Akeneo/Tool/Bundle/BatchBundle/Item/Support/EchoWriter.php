@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Item\Support;
 
-use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 
 /**
  * Simple ItemReaderInterface implementations that echoes

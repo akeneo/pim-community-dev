@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Item\MassEdit;
 
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 
 class TemporaryFileCleanerSpec extends ObjectBehavior

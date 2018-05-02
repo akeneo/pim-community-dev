@@ -59,7 +59,7 @@ Akeneo\Component\Batch\Model\StepExecution:
             column: summary
     oneToMany:
         warnings:
-            targetEntity: Akeneo\Component\Batch\Model\Warning
+            targetEntity: Akeneo\Tool\Component\Batch\Model\Warning
             mappedBy: stepExecution
             cascade:
                 - persist
@@ -70,7 +70,7 @@ Akeneo\Component\Batch\Model\StepExecution:
                 id: ASC
     manyToOne:
         jobExecution:
-            targetEntity: Akeneo\Component\Batch\Model\JobExecution
+            targetEntity: Akeneo\Tool\Component\Batch\Model\JobExecution
             inversedBy: stepExecutions
             joinColumn:
                 name: job_execution_id

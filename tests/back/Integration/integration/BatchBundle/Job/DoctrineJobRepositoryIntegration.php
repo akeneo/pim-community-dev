@@ -6,9 +6,9 @@ namespace Akeneo\Test\Integration\integration\BatchBundle\Job;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Job\ExitStatus;
-use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\ExitStatus;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 

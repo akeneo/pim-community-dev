@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Connector\Processor\Denormalization\ProductModelLoaderProcessor;

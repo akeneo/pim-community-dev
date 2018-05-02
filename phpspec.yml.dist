@@ -10,10 +10,10 @@ suites:
         spec_path: src/Akeneo/Component/Analytics
         src_path: src/Akeneo/Component/Analytics
     Batch:
-        namespace: Akeneo\Component\Batch
-        psr4_prefix: Akeneo\Component\Batch
-        spec_path: src/Akeneo/Component/Batch
-        src_path: src/Akeneo/Component/Batch
+        namespace: Akeneo\Tool\Component\Batch
+        psr4_prefix: Akeneo\Tool\Component\Batch
+        spec_path: src/Akeneo/Tool/Component/Batch
+        src_path: src/Akeneo/Tool/Component/Batch
     BatchQueue:
         namespace: Akeneo\Component\BatchQueue
         psr4_prefix: Akeneo\Component\BatchQueue

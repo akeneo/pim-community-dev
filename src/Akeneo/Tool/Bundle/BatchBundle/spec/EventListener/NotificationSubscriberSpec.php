@@ -3,8 +3,8 @@
 namespace spec\Akeneo\Tool\Bundle\BatchBundle\EventListener;
 
 use Akeneo\Tool\Bundle\BatchBundle\Notification\Notifier;
-use Akeneo\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use PhpSpec\ObjectBehavior;
 
 class NotificationSubscriberSpec extends ObjectBehavior

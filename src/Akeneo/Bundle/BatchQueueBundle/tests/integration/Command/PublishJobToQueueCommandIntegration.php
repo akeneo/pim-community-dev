@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Bundle\BatchQueueBundle\tests\integration\Command;;
 
 use Akeneo\Bundle\BatchQueueBundle\Command\PublishJobToQueueCommand;
-use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\Integration\TestCase;

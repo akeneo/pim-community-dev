@@ -65,7 +65,7 @@ Akeneo\Component\Batch\Model\JobExecution:
             column: raw_parameters
     oneToMany:
         stepExecutions:
-            targetEntity: Akeneo\Component\Batch\Model\StepExecution
+            targetEntity: Akeneo\Tool\Component\Batch\Model\StepExecution
             mappedBy: jobExecution
             cascade:
                 - persist
@@ -73,7 +73,7 @@ Akeneo\Component\Batch\Model\JobExecution:
             orphanRemoval: true
     manyToOne:
         jobInstance:
-            targetEntity: Akeneo\Component\Batch\Model\JobInstance
+            targetEntity: Akeneo\Tool\Component\Batch\Model\JobInstance
             inversedBy: jobExecutions
             joinColumn:
                 name: job_instance_id

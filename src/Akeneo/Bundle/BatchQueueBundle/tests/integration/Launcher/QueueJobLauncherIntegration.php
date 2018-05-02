@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Bundle\BatchQueueBundle\tests\integration\Launcher;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Job\ExitStatus;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;

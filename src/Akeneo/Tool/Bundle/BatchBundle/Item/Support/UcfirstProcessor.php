@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Item\Support;
 
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 
 /**
  * Very basic sample transformer that will put the first letter of each item in uppercase

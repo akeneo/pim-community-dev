@@ -2,9 +2,9 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints;
 
-use Akeneo\Component\Batch\Job\JobRegistry;
-use Akeneo\Component\Batch\Job\UndefinedJobException;
-use Akeneo\Component\Batch\Model\JobInstance as JobInstanceModel;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\UndefinedJobException;
+use Akeneo\Tool\Component\Batch\Model\JobInstance as JobInstanceModel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

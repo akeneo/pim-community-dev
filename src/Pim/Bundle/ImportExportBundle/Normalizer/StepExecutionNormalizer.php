@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

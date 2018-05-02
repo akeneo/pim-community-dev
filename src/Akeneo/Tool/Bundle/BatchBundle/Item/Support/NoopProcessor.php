@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\BatchBundle\Item\Support;
 
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 
 /**
  * No operation processor that does not change anthing in the item

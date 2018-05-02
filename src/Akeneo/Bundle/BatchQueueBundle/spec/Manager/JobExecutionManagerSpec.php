@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\Bundle\BatchQueueBundle\Manager;
 
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Job\ExitStatus;
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\ExitStatus;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use DateInterval;
 use Doctrine\DBAL\Connection;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Bundle\BatchQueueBundle\tests\integration\Command;
 
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepInterface;
 
 /**
  * Step that run infinitely for test purpose.

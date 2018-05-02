@@ -57,8 +57,8 @@ parameters:
     pim_connector.job_name.xlsx_currency_import: 'xlsx_currency_import'
     pim_connector.job_name.xlsx_group_type_export: 'xlsx_group_type_export'
     pim_connector.job_name.xlsx_group_type_import: 'xlsx_group_type_import'
-    pim_connector.job.simple_job.class: Akeneo\Component\Batch\Job\Job
-    pim_connector.step.item_step.class: Akeneo\Component\Batch\Step\ItemStep
+    pim_connector.job.simple_job.class: Akeneo\Tool\Component\Batch\Job\Job
+    pim_connector.step.item_step.class: Akeneo\Tool\Component\Batch\Step\ItemStep
     pim_connector.job.import_type: import
     pim_connector.job.export_type: export
 

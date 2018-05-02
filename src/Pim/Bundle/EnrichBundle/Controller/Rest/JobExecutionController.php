@@ -64,7 +64,7 @@ class JobExecutionController
     {
         $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {
-            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+            throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
         $archives = [];

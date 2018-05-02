@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Datagrid;
 
-use Akeneo\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 
 /**
  * Provider for job datagrid choice lists

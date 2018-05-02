@@ -6,10 +6,10 @@ namespace Akeneo\Bundle\BatchQueueBundle\tests\integration\Command;
 
 use Akeneo\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Akeneo\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Job\ExitStatus;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\ExitStatus;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Akeneo\Test\Integration\Configuration;

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
