@@ -18,7 +18,7 @@ parameters:
     pim_catalog.doctrine.query.filter.object_code_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver
 
     pim_catalog.query.elasticsearch.filter.label_or_identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
-    pim_catalog.query.elasticsearch.filter.identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
+    pim_catalog.query.elasticsearch.filter.identifier_field.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\IdentifierFilter
     pim_catalog.query.elasticsearch.filter.id.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\IdFilter
     pim_catalog.query.elasticsearch.filter.family.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\FamilyFilter
     pim_catalog.query.elasticsearch.filter.category.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CategoryFilter
@@ -30,6 +30,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.with_attributes.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\WithAttributesFilter
     pim_catalog.query.elasticsearch.filter.parent.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\ParentFilter
     pim_catalog.query.elasticsearch.filter.entity_type.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\EntityTypeFilter
+    pim_catalog.query.elasticsearch.filter.identifier_attribute.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\IdentifierFilter
     pim_catalog.query.elasticsearch.filter.date.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\DateFilter
     pim_catalog.query.elasticsearch.filter.number.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\NumberFilter
     pim_catalog.query.elasticsearch.filter.text.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\TextFilter
@@ -209,11 +210,10 @@ services:
             - [ addFieldMapping, ['group', '%pim_catalog.entity.group.class%']]
 
     # Fields filters
-    pim_catalog.query.elasticsearch.filter.identifier:
-        class: '%pim_catalog.query.elasticsearch.filter.identifier.class%'
+    pim_catalog.query.elasticsearch.filter.identifier_field:
+        class: '%pim_catalog.query.elasticsearch.filter.identifier_field.class%'
         arguments:
             - ['identifier']
-            - ['pim_catalog_identifier']
             - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
@@ -419,6 +419,16 @@ services:
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
     # Attributes filters
+    pim_catalog.query.elasticsearch.filter.identifier_attribute:
+        class: '%pim_catalog.query.elasticsearch.filter.identifier_attribute.class%'
+        arguments:
+            - ['pim_catalog_identifier']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
     pim_catalog.query.elasticsearch.filter.number:
         class: '%pim_catalog.query.elasticsearch.filter.number.class%'
         arguments:
