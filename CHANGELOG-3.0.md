@@ -53,8 +53,10 @@
 - Change constructor of `Pim\Bundle\UserBundle\Form\Type\UserType`, remove `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and `Pim\Bundle\UserBundle\Form\Subscriber\UserSubscriber` argument  
 
 - Move namespace `Pim\Component\Api` to `Akeneo\Tool\Component\Api`
-- Move namespace  `Pim\Bundle\ApiBundle` to `Akeneo\Tool\Bundle\ApiBundle`
+- Move namespace `Pim\Bundle\ApiBundle` to `Akeneo\Tool\Bundle\ApiBundle`
 - Move namespace `Pim\Component\Batch` to `Akeneo\Tool\Component\Batch`
-- Move namespace  `Pim\Bundle\BatchBundle` to `Akeneo\Tool\Bundle\BatchBundle`
+- Move namespace `Pim\Bundle\BatchBundle` to `Akeneo\Tool\Bundle\BatchBundle`
 - Move namespace `Pim\Component\BatchQueue` to `Akeneo\Tool\Component\BatchQueue`
-- Move namespace  `Pim\Bundle\BatchQueueBundle` to `Akeneo\Tool\Bundle\BatchQueueBundle`
+- Move namespace `Pim\Bundle\BatchQueueBundle` to `Akeneo\Tool\Bundle\BatchQueueBundle`
+- Move namespace `Pim\Component\StorageUtilsQueue` to `Akeneo\Tool\Component\StorageUtilsQueue`
+- Move namespace `Pim\Bundle\StorageUtilsQueueBundle` to `Akeneo\Tool\Bundle\StorageUtilsQueueBundle`
