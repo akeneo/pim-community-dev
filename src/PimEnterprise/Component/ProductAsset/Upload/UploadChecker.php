@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Exception\DuplicateFileException;
 use PimEnterprise\Component\ProductAsset\Upload\Exception\InvalidCodeException;
