@@ -62,10 +62,10 @@ suites:
         spec_path: src/Akeneo/Tool/Bundle/BatchBundle
         src_path: src/Akeneo/Tool/Bundle/BatchBundle
     BatchQueueBundle:
-        namespace: Akeneo\Bundle\BatchQueueBundle
-        psr4_prefix: Akeneo\Bundle\BatchQueueBundle
-        spec_path: src/Akeneo/Bundle/BatchQueueBundle
-        src_path: src/Akeneo/Bundle/BatchQueueBundle
+        namespace: Akeneo\Tool\Bundle\BatchQueueBundle
+        psr4_prefix: Akeneo\Tool\Bundle\BatchQueueBundle
+        spec_path: src/Akeneo/Tool/Bundle/BatchQueueBundle
+        src_path: src/Akeneo/Tool/Bundle/BatchQueueBundle
     ClassificationBundle:
         namespace: Akeneo\Bundle\ClassificationBundle
         psr4_prefix: Akeneo\Bundle\ClassificationBundle
