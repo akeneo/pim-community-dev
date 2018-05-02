@@ -51,3 +51,6 @@
 - Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument  
 
 - Change constructor of `Pim\Bundle\UserBundle\Form\Type\UserType`, remove `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and `Pim\Bundle\UserBundle\Form\Subscriber\UserSubscriber` argument  
+
+- Move namespace `Pim\Component\Api` to `Akeneo\Tool\Component\Api`
+- Move namespace  `Pim\Bundle\ApiBundle` to `Akeneo\Tool\Bundle\ApiBundle`

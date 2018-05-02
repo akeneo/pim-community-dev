@@ -33,3 +33,5 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\UserBundle\\Entity
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\UserBundle\\Entity\\Group/Pim\\Component\\User\\Model\\Group/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\UserBundle\\Entity\\User/Pim\\Component\\User\\Model\\User/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\UserBundle\\Entity\\UserInterface/Pim\\Component\\User\\Model\\UserInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Api/Akeneo\\Tool\\Component\\Api/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ApiBundle/Akeneo\\Tool\\Bundle\\ApiBundle/g'
