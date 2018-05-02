@@ -73,8 +73,8 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
             ->select('p, p.createdAt as createdAt, p.changes as changes, p.author as author, p.status as status')
             ->from($this->_entityName, 'p', 'p.id');
 
-        if (isset($parameters['product'])) {
-            $this->applyDatagridContext($qb, $parameters['product']);
+        if (isset($parameters['entityWithValues'])) {
+            $this->applyDatagridContext($qb, $parameters['entityWithValues']);
         }
 
         return $qb;
@@ -211,16 +211,16 @@ class EntityWithValuesDraftRepository extends EntityRepository implements Entity
      */
     protected function createApprovableByUserQueryBuilder(UserInterface $user): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('entity_with_values');
+        $qb = $this->createQueryBuilder('entity_with_values_draft');
 
         return $qb
-            ->join('entity_with_values.product', 'product')
-            ->leftJoin('product.categories', 'category')
+            ->join('entity_with_values_draft.entityWithValues', 'entity_with_values')
+            ->leftJoin('entity_with_values.categories', 'category')
             ->innerJoin('PimEnterpriseSecurityBundle:ProductCategoryAccess', 'a', 'WITH', 'a.category = category')
             ->where($qb->expr()->eq('a.ownItems', true))
             ->andWhere($qb->expr()->in('a.userGroup', ':userGroups'))
-            ->andWhere($qb->expr()->eq('entity_with_values.status', EntityWithValuesDraftInterface::READY))
-            ->orderBy('entity_with_values.createdAt', 'desc')
+            ->andWhere($qb->expr()->eq('entity_with_values_draft.status', EntityWithValuesDraftInterface::READY))
+            ->orderBy('entity_with_values_draft.createdAt', 'desc')
             ->setParameter('userGroups', $user->getGroups()->toArray())
             ->distinct(true);
     }

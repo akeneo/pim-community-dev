@@ -60,7 +60,7 @@ define(
 
                 this.datagrid = {
                     name: 'product-draft-grid',
-                    paramName: 'product'
+                    paramName: 'entityWithValues'
                 };
 
                 return BaseForm.prototype.configure.apply(this, arguments);
