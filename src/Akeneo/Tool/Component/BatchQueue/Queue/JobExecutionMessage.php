@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Component\BatchQueue\Queue;
+namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
 /**
  * Object representing the message pushed into a queue to process a job execution asynchronously.

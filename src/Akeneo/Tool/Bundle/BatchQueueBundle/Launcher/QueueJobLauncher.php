@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Launcher;
 
-use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
-use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
@@ -50,13 +50,13 @@ class QueueJobLauncher implements JobLauncherInterface
     private $eventDispatcher;
 
     /**
-     * @param JobRepositoryInterface     $jobRepository
-     * @param JobParametersFactory       $jobParametersFactory
-     * @param JobRegistry                $jobRegistry
-     * @param JobParametersValidator     $jobParametersValidator
-     * @param JobExecutionQueueInterface $queue
-     * @param string                     $environment
-     * @param EventDispatcherInterface  $eventDispatcher
+     * @param JobRepositoryInterface                                             $jobRepository
+     * @param JobParametersFactory                                               $jobParametersFactory
+     * @param JobRegistry                                                        $jobRegistry
+     * @param JobParametersValidator                                             $jobParametersValidator
+     * @param \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface $queue
+     * @param string                                                             $environment
+     * @param EventDispatcherInterface                                           $eventDispatcher
      */
     public function __construct(
         JobRepositoryInterface $jobRepository,

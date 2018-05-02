@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Queue;
 
 use Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator;
-use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
-use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Provider\NodeProviderInterface;

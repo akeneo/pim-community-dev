@@ -2,7 +2,7 @@ parameters:
     ramsey.uuid.provider.node.system_node_provider.class: Ramsey\Uuid\Provider\Node\SystemNodeProvider
     akeneo_batch_queue.hydrator_job_execution_message_hydrator.class: Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator
     akeneo_batch_queue.queue.database_job_execution_queue.class: Akeneo\Tool\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue
-    akeneo_batch_queue.queue.job_execution_message.class: Akeneo\Component\BatchQueue\Queue\JobExecutionMessage
+    akeneo_batch_queue.queue.job_execution_message.class: Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage
     akeneo_batch_queue.queue.job_execution_message_repository.class: Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository
     akeneo_batch_queue.manager.job_execution_manager.class: Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager
     akeneo_batch_queue.launcher.queue_job_launcher.class: Akeneo\Tool\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher
