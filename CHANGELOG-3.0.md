@@ -54,3 +54,5 @@
 
 - Move namespace `Pim\Component\Api` to `Akeneo\Tool\Component\Api`
 - Move namespace  `Pim\Bundle\ApiBundle` to `Akeneo\Tool\Bundle\ApiBundle`
+- Move namespace `Pim\Component\Batch` to `Akeneo\Tool\Component\Batch`
+- Move namespace  `Pim\Bundle\BatchBundle` to `Akeneo\Tool\Bundle\BatchBundle`
