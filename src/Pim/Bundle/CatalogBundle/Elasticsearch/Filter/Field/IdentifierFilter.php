@@ -1,13 +1,10 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
+namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Query\Escaper\QueryString;
-use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -19,13 +16,8 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterface, AttributeFilterInterface
+class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    const IDENTIFIER_KEY = 'identifier';
-
-    /** @var string[] */
-    protected $supportedAttributeTypes;
-
     /**
      * @param array $supportedFields
      * @param array $supportedAttributeTypes
@@ -33,12 +25,10 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
      */
     public function __construct(
         array $supportedFields = [],
-        array $supportedAttributeTypes = [],
         array $supportedOperators = []
     ) {
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
-        $this->supportedAttributeTypes = $supportedAttributeTypes;
     }
 
     /**
@@ -51,28 +41,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
         }
 
         $this->checkValue($field, $operator, $value);
-        $this->applyFilter($operator, $value);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addAttributeFilter(
-        AttributeInterface $attribute,
-        $operator,
-        $value,
-        $locale = null,
-        $channel = null,
-        $options = []
-    ) {
-        if (null === $this->searchQueryBuilder) {
-            throw new \LogicException('The search query builder is not initialized in the filter.');
-        }
-
-        $this->checkValue($attribute->getCode(), $operator, $value);
-        $this->applyFilter($operator, $value);
+        $this->applyFilter($field, $operator, $value);
 
         return $this;
     }
@@ -117,14 +86,14 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
      * @param $operator
      * @param $value
      */
-    protected function applyFilter($operator, $value)
+    protected function applyFilter($field, $operator, $value)
     {
         switch ($operator) {
             case Operators::STARTS_WITH:
                 $clause = [
                     'query_string' => [
-                        'default_field' => static::IDENTIFIER_KEY,
-                        'query'         => QueryString::escapeValue($value) . '*',
+                        'default_field' => $field,
+                        'query'         => $value . '*',
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
@@ -133,8 +102,8 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::CONTAINS:
                 $clause = [
                     'query_string' => [
-                        'default_field' => static::IDENTIFIER_KEY,
-                        'query'         => '*' . QueryString::escapeValue($value) . '*',
+                        'default_field' => $field,
+                        'query'         => '*' . $value . '*',
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
@@ -143,13 +112,13 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::DOES_NOT_CONTAIN:
                 $mustNotClause = [
                     'query_string' => [
-                        'default_field' => static::IDENTIFIER_KEY,
-                        'query'         => '*' . QueryString::escapeValue($value) . '*',
+                        'default_field' => $field,
+                        'query'         => '*' . $value . '*',
                     ],
                 ];
 
                 $filterClause = [
-                    'exists' => ['field' => static::IDENTIFIER_KEY],
+                    'exists' => ['field' => $field],
                 ];
 
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
@@ -159,7 +128,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::EQUALS:
                 $clause = [
                     'term' => [
-                        static::IDENTIFIER_KEY => $value,
+                        $field => $value,
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
@@ -168,13 +137,13 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::NOT_EQUAL:
                 $mustNotClause = [
                     'term' => [
-                        static::IDENTIFIER_KEY => $value,
+                        $field => $value,
                     ],
                 ];
 
                 $filterClause = [
                     'exists' => [
-                        'field' => static::IDENTIFIER_KEY,
+                        'field' => $field,
                     ],
                 ];
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
@@ -184,7 +153,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::IN_LIST:
                 $clause = [
                     'terms' => [
-                        static::IDENTIFIER_KEY => $value,
+                        $field => $value,
                     ],
                 ];
 
@@ -194,7 +163,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
             case Operators::NOT_IN_LIST:
                 $clause = [
                     'terms' => [
-                        static::IDENTIFIER_KEY => $value,
+                        $field => $value,
                     ],
                 ];
 
