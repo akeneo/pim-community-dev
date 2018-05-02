@@ -5,7 +5,7 @@ namespace spec\Akeneo\Tool\Bundle\BatchQueueBundle\Queue;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
-use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
@@ -33,7 +33,7 @@ class DatabaseJobExecutionQueueSpec extends ObjectBehavior
 
     function it_publishes_a_job_execution_message(
         $jobExecutionMessageRepository,
-        JobExecutionMessage $jobExecutionMessage
+        \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage
     ) {
         $jobExecutionMessageRepository->createJobExecutionMessage($jobExecutionMessage)->shouldBeCalled();
         $this->publish($jobExecutionMessage);
@@ -42,7 +42,7 @@ class DatabaseJobExecutionQueueSpec extends ObjectBehavior
     function it_consumes_a_job_execution_message(
         $jobExecutionMessageRepository,
         $connection,
-        JobExecutionMessage $jobExecutionMessage,
+        \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage,
         Statement $stmt
     ) {
         $jobExecutionMessageRepository->getAvailableJobExecutionMessage()->willReturn($jobExecutionMessage);

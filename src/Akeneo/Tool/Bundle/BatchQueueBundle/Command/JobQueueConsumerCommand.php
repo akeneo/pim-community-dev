@@ -6,8 +6,8 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\Command;
 
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
-use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
-use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -121,7 +121,7 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
      * Return all the arguments of the command to execute.
      * Options are considered as arguments.
      *
-     * @param JobExecutionMessage $jobExecutionMessage
+     * @param \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage
      *
      * @return array
      */

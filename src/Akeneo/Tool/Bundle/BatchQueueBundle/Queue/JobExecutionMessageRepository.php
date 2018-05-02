@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Queue;
 
 use Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator;
-use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,9 +40,9 @@ class JobExecutionMessageRepository
     }
 
     /**
-     * @param JobExecutionMessage $jobExecutionMessage
+     * @param \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage
      */
-    public function createJobExecutionMessage(JobExecutionMessage $jobExecutionMessage)
+    public function createJobExecutionMessage(\Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage)
     {
         $sql = <<<SQL
 INSERT INTO akeneo_batch_job_execution_queue (job_execution_id, options, consumer, create_time, updated_time)
@@ -62,7 +62,7 @@ SQL;
     /**
      * @param JobExecutionMessage $jobExecutionMessage
      */
-    public function updateJobExecutionMessage(JobExecutionMessage $jobExecutionMessage)
+    public function updateJobExecutionMessage(\Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage)
     {
         $sql = <<<SQL
 UPDATE 
@@ -91,9 +91,9 @@ SQL;
      * Gets a job execution message that has not been consumed yet.
      * If there is no job execution available, it returns null.
      *
-     * @return JobExecutionMessage|null
+     * @return \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage|null
      */
-    public function getAvailableJobExecutionMessage(): ?JobExecutionMessage
+    public function getAvailableJobExecutionMessage(): ?\Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage
     {
         $sql = <<<SQL
 SELECT 
@@ -121,7 +121,7 @@ SQL;
      *
      * @return string|null
      */
-    public function getJobInstanceCode(JobExecutionMessage $jobExecutionMessage): ?string
+    public function getJobInstanceCode(\Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage): ?string
     {
         $sql = <<<SQL
 SELECT 
