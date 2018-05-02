@@ -3,6 +3,9 @@ parameters:
     akeneo_channel.entity.locale.class: 'Akeneo\Channel\Component\Model\Locale'
 
 services:
-#    akeneo_channel.example:
-#        class: Akeneo\Channel\Bundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    pim_catalog.repository.locale:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%akeneo_channel.entity.locale.class%']
+        tags:
+            - { name: 'channel_repository' }

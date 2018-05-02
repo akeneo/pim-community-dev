@@ -2,7 +2,7 @@ Akeneo\Channel\Component\Model\Locale:
     type: entity
     table: pim_catalog_locale
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository
+    repositoryClass: Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository
     fields:
         id:
             type: integer
