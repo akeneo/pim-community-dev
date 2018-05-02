@@ -19,7 +19,7 @@ const csvToArray = (csv, separator = ',') => {
 };
 
 const renderView = async (page, extension, data) => {
-    await page.evaluate((volumes) => {
+    return await page.evaluate((volumes) => {
         const FormBuilder = require('pim/form-builder');
 
         return FormBuilder.build('pim-catalog-volume-index').then((form) => {

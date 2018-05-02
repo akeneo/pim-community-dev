@@ -2,7 +2,7 @@ module.exports = async function(cucumber) {
     const { Given, Then, When, Before } = cucumber;
     const assert = require('assert');
     const { renderView } = require('../../tools');
-    const { createElementDecorator } = require('../../decorators/common/create-element-decorator');
+    const createElementDecorator = require('../../decorators/common/create-element-decorator');
 
     const config = {
         'Catalog volume report':  {
@@ -14,7 +14,7 @@ module.exports = async function(cucumber) {
     let data = {
         average_max_attributes_per_family: {
             value: { average: 7, max: 10 },
-            has_warning: false,
+            has_warning: true,
             type: 'average_max'
         }
     };
@@ -23,18 +23,14 @@ module.exports = async function(cucumber) {
         this.getElement = createElementDecorator(config, this.page);
     });
 
-    Given('a family with {int} attributes', int => assert(int));
-
-    Given('the limit of the number of attributes per family is set to {int}', int => {
-        if (data.average_max_attributes_per_family.value.max > int) {
-            data.average_max_attributes_per_family.has_warning = true;
-        }
-
-        assert(true);
+    Given('a family with {int} attributes', async function(int) {
+        await renderView(this.page, 'pim-catalog-volume-index', data);
+        assert(int)
     });
 
+    Given('the limit of the number of attributes per family is set to {int}', int => assert(int));
+
     When('the administrator user asks for the catalog volume monitoring report', async function () {
-        await renderView(this.page, 'pim-catalog-volume-index', data);
         const report = await this.getElement('Catalog volume report');
         const header = await report.getHeader();
         const title = await header.getTitle();

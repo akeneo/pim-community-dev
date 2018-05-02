@@ -18,7 +18,9 @@ const Volume = async (nodeElement) => {
             };
         }
 
-        return await (await value.getProperty('textContent')).jsonValue().trim();
+        const rawValue = await (await value.getProperty('textContent')).jsonValue()
+
+        return rawValue.trim();
     };
 
     const getWarning = async () => {

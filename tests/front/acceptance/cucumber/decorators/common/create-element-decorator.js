@@ -14,4 +14,4 @@ const createElementDecorator = (config, parent) => async (key) => {
     return (elementConfig.multiple ? decoratedElements : decoratedElements[0]);
 };
 
-module.exports = { createElementDecorator };
+module.exports = createElementDecorator;
