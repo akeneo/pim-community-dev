@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 
 /**

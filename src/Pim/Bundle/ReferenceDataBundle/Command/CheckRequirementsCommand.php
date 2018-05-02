@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Command;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker\ReferenceDataUniqueCodeChecker;
