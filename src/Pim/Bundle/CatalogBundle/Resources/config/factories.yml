@@ -51,7 +51,7 @@ services:
     pim_catalog.factory.locale:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
-            - '%pim_catalog.entity.locale.class%'
+            - '%akeneo_channel.entity.locale.class%'
 
     pim_catalog.factory.attribute_group:
         class: '%akeneo_storage_utils.factory.simple.class%'

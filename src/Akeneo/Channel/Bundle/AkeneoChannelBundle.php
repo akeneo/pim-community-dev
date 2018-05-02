@@ -2,6 +2,9 @@
 
 namespace Akeneo\Channel\Bundle;
 
+use Akeneo\Channel\Bundle\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -11,4 +14,25 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AkeneoChannelBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container
+            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
+        ;
+
+        $channelMappings = [
+            realpath(__DIR__ . '/Resources/config/doctrine/model/') => 'Akeneo\Channel\Component\Model'
+        ];
+
+        $container->addCompilerPass(
+            DoctrineOrmMappingsPass::createYamlMappingDriver(
+                $channelMappings,
+                ['doctrine.orm.entity_manager'],
+                false
+            )
+        );
+    }
 }
