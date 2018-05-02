@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\Locale:
+Akeneo\Channel\Component\Model\Locale:
     type: entity
     table: pim_catalog_locale
     changeTrackingPolicy: DEFERRED_EXPLICIT

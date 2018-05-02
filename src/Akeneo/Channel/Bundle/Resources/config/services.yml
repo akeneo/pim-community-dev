@@ -1,5 +1,6 @@
 parameters:
     akeneo_channel.model.locale.interface: 'Akeneo\Channel\Component\Model\LocaleInterface'
+    akeneo_channel.entity.locale.class: 'Akeneo\Channel\Component\Model\Locale'
 
 services:
 #    akeneo_channel.example:

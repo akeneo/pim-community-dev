@@ -71,7 +71,7 @@ services:
         class: '%pim_api.repository.api_resource.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.locale.class%'
+            - '%akeneo_channel.entity.locale.class%'
             - '@pim_catalog.repository.locale'
 
     pim_api.repository.media_file:

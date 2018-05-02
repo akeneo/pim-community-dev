@@ -141,7 +141,7 @@ services:
             - [addResource, ['%pim_catalog.entity.channel.class%']]
             - [addResource, ['%pim_catalog.entity.family.class%']]
             - [addResource, ['%pim_catalog.entity.group.class%']]
-            - [addResource, ['%pim_catalog.entity.locale.class%']]
+            - [addResource, ['%akeneo_channel.entity.locale.class%']]
 
     pim_enrich.provider.structure_version.group:
         class: '%pim_enrich.provider.structure_version.class%'
@@ -151,14 +151,14 @@ services:
             - [addResource, ['%pim_catalog.entity.attribute.class%']]
             - [addResource, ['%pim_catalog.entity.attribute_group.class%']]
             - [addResource, ['%pim_catalog.entity.channel.class%']]
-            - [addResource, ['%pim_catalog.entity.locale.class%']]
+            - [addResource, ['%akeneo_channel.entity.locale.class%']]
 
     pim_enrich.provider.structure_version.group_type:
         class: '%pim_enrich.provider.structure_version.class%'
         arguments:
             - '@pim_versioning.repository.version'
         calls:
-            - [addResource, ['%pim_catalog.entity.locale.class%']]
+            - [addResource, ['%akeneo_channel.entity.locale.class%']]
 
     pim_enrich.provider.structure_version.attribute:
         class: '%pim_enrich.provider.structure_version.class%'
@@ -166,7 +166,7 @@ services:
             - '@pim_versioning.repository.version'
         calls:
             - [addResource, ['%pim_catalog.entity.attribute_group.class%']]
-            - [addResource, ['%pim_catalog.entity.locale.class%']]
+            - [addResource, ['%akeneo_channel.entity.locale.class%']]
 
     pim_enrich.provider.structure_version.family_variant:
         class: '%pim_enrich.provider.structure_version.class%'
@@ -175,4 +175,4 @@ services:
         calls:
             - [addResource, ['%pim_catalog.entity.attribute.class%']]
             - [addResource, ['%pim_catalog.entity.family.class%']]
-            - [addResource, ['%pim_catalog.entity.locale.class%']]
+            - [addResource, ['%akeneo_channel.entity.locale.class%']]
