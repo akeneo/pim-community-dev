@@ -2,10 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Tool\Component\Api\Repository\AttributeRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnexpectedResultException;
-use Akeneo\Tool\Component\Api\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface as CatalogAttributeRepositoryInterface;
 
 /**
