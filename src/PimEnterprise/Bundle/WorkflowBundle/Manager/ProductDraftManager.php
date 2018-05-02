@@ -22,6 +22,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
+use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
@@ -41,7 +42,7 @@ class ProductDraftManager
     /** @var UserContext */
     protected $userContext;
 
-    /** @var ProductDraftFactory */
+    /** @var EntityWithValuesDraftFactory */
     protected $factory;
 
     /** @var EntityWithValuesDraftRepositoryInterface */
@@ -337,7 +338,7 @@ class ProductDraftManager
         $productDraft = $this->repository->findUserEntityWithValuesDraft($product, $username);
 
         if (null === $productDraft) {
-            $productDraft = $this->factory->createProductDraft($product, $username);
+            $productDraft = $this->factory->createEntityWithValueDraft($product, $username);
         }
 
         return $productDraft;
@@ -372,7 +373,7 @@ class ProductDraftManager
      */
     protected function createDraft(EntityWithValuesDraftInterface $productDraft, array $draftChanges)
     {
-        $partialDraft = $this->factory->createProductDraft($productDraft->getEntityWithValue(), $productDraft->getAuthor());
+        $partialDraft = $this->factory->createEntityWithValueDraft($productDraft->getEntityWithValue(), $productDraft->getAuthor());
         $partialDraft->setChanges([
             'values' => $draftChanges
         ]);

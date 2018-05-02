@@ -3,13 +3,24 @@ parameters:
     pimee_workflow.builder.published_product.class: Pim\Component\Catalog\Builder\ProductBuilder
 
 services:
-    pimee_workflow.builder.draft:
+    pimee_workflow.product_draft.builder.draft:
         class: '%pimee_workflow.builder.draft.class%'
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.comparator.registry'
             - '@pim_catalog.repository.cached_attribute'
             - '@pimee_workflow.factory.product_draft'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pim_catalog.factory.value_collection'
+            - '@pim_catalog.factory.value'
+
+    pimee_workflow.product_model.builder.draft:
+        class: '%pimee_workflow.builder.draft.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.comparator.registry'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pimee_workflow.factory.product_model_draft'
             - '@pimee_workflow.repository.product_draft'
             - '@pim_catalog.factory.value_collection'
             - '@pim_catalog.factory.value'

@@ -18,7 +18,7 @@ use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
-use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
+use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -39,7 +39,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductDraftFactory */
+    /** @var EntityWithValuesDraftFactory */
     protected $factory;
 
     /** @var EntityWithValuesDraftRepositoryInterface */
@@ -55,7 +55,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        ProductDraftFactory $factory,
+        EntityWithValuesDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $entityWithValuesDraftRepository,
         ValueCollectionFactoryInterface $valueCollectionFactory,
         ValueFactory $valueFactory
