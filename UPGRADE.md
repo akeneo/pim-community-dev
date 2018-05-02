@@ -35,3 +35,5 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\UserBundle\\Entity
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\UserBundle\\Entity\\UserInterface/Pim\\Component\\User\\Model\\UserInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Api/Akeneo\\Tool\\Component\\Api/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ApiBundle/Akeneo\\Tool\\Bundle\\ApiBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Batch/Akeneo\\Tool\\Component\\Batch/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BatchBundle/Akeneo\\Tool\\Bundle\\BatchBundle/g'
