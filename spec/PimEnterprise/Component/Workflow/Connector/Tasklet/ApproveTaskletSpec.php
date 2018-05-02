@@ -8,7 +8,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
@@ -23,7 +23,7 @@ class ApproveTaskletSpec extends ObjectBehavior
 {
     function let(
         EntityWithValuesDraftRepositoryInterface $productDraftRepository,
-        ProductDraftManager $productDraftManager,
+        EntityWithValuesDraftManager $productDraftManager,
         UserProviderInterface $userProvider,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,

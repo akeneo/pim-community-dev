@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -106,10 +106,10 @@ class ApproveProposalCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return ProductDraftManager
+     * @return EntityWithValuesDraftManager
      */
     protected function getProductDraftManager()
     {
-        return $this->getContainer()->get('pimee_workflow.manager.product_draft');
+        return $this->getContainer()->get('pimee_workflow.manager.entity_with_values_draft');
     }
 }

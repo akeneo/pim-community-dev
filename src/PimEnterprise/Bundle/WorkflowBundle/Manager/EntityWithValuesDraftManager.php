@@ -23,7 +23,6 @@ use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
 use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
-use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -34,7 +33,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftManager
+class EntityWithValuesDraftManager
 {
     /** @var SaverInterface */
     protected $workingCopySaver;
@@ -63,21 +62,10 @@ class ProductDraftManager
     /** @var CollectionFilterInterface */
     protected $valuesFilter;
 
-    /**
-     * @param SaverInterface                  $workingCopySaver
-     * @param UserContext                     $userContext
-     * @param ProductDraftFactory             $factory
-     * @param EntityWithValuesDraftRepositoryInterface $repository
-     * @param ProductDraftApplierInterface    $applier
-     * @param EventDispatcherInterface        $dispatcher
-     * @param SaverInterface                  $productDraftSaver
-     * @param RemoverInterface                $productDraftRemover
-     * @param CollectionFilterInterface       $valuesFilter
-     */
     public function __construct(
         SaverInterface $workingCopySaver,
         UserContext $userContext,
-        ProductDraftFactory $factory,
+        EntityWithValuesDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $repository,
         ProductDraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,

@@ -1,6 +1,6 @@
 parameters:
     pimee_workflow.manager.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager
-    pimee_workflow.manager.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager
+    pimee_workflow.manager.entity_with_values_draft.class: PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager
 
 services:
     pimee_workflow.manager.published_product:
@@ -18,8 +18,8 @@ services:
             - '@pimee_workflow.remover.published_product'
             - '@pimee_workflow.repository.published_product_without_permission'
 
-    pimee_workflow.manager.product_draft:
-        class: '%pimee_workflow.manager.product_draft.class%'
+    pimee_workflow.manager.entity_with_values_draft:
+        class: '%pimee_workflow.manager.entity_with_values_draft.class%'
         arguments:
             - '@pimee_workflow.saver.working_copy_product'
             - '@pim_user.context.user'

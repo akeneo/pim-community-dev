@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
@@ -20,12 +21,12 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ProductDraftManagerSpec extends ObjectBehavior
+class EntityWithValuesDraftManagerSpec extends ObjectBehavior
 {
     function let(
         SaverInterface $workingCopySaver,
         UserContext $userContext,
-        ProductDraftFactory $factory,
+        EntityWithValuesDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $repository,
         ProductDraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,

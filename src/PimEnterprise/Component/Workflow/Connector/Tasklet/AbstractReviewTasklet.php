@@ -15,7 +15,7 @@ use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -47,7 +47,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     /** @var EntityWithValuesDraftRepositoryInterface */
     protected $draftRepository;
 
-    /** @var ProductDraftManager */
+    /** @var EntityWithValuesDraftManager */
     protected $productDraftManager;
 
     /** @var  UserProviderInterface */
@@ -63,16 +63,16 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     protected $permissionHelper;
 
     /**
-     * @param EntityWithValuesDraftRepositoryInterface     $draftRepository
-     * @param ProductDraftManager                 $productDraftManager
-     * @param UserProviderInterface               $userProvider
-     * @param AuthorizationCheckerInterface       $authorizationChecker
-     * @param TokenStorageInterface               $tokenStorage
-     * @param ProductDraftChangesPermissionHelper $permissionHelper
+     * @param EntityWithValuesDraftRepositoryInterface $draftRepository
+     * @param EntityWithValuesDraftManager             $productDraftManager
+     * @param UserProviderInterface                    $userProvider
+     * @param AuthorizationCheckerInterface            $authorizationChecker
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param ProductDraftChangesPermissionHelper      $permissionHelper
      */
     public function __construct(
         EntityWithValuesDraftRepositoryInterface $draftRepository,
-        ProductDraftManager $productDraftManager,
+        EntityWithValuesDraftManager $productDraftManager,
         UserProviderInterface $userProvider,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
