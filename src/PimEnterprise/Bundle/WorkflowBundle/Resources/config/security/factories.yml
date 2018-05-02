@@ -1,6 +1,6 @@
 services:
     pimee_workflow.security.factory.filtered_published_product:
-        class: '%pimee_catalog.security.factory.filtered_entity.class%'
+        class: 'PimEnterprise\Component\Security\Factory\FilteredEntityFactory'
         arguments:
             -
               - '@pimee_catalog.security.filter.not_granted_parent'

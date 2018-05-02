@@ -23,3 +23,20 @@ services:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
             - '%pimee_security.entity.job_profile_access.class%'
+
+    pimee_catalog.security.factory.filtered_product:
+        class: 'PimEnterprise\Component\Security\Factory\FilteredEntityFactory'
+        arguments:
+            -
+              - '@pimee_catalog.security.filter.not_granted_parent'
+              - '@pimee_catalog.security.filter.not_granted_associated_product'
+              - '@pimee_catalog.security.filter.not_granted_category'
+              - '@pimee_catalog.security.filter.not_granted_values'
+
+    pimee_catalog.security.factory.filtered_product_model:
+        class: 'PimEnterprise\Component\Security\Factory\FilteredEntityFactory'
+        arguments:
+            -
+              - '@pimee_catalog.security.filter.not_granted_parent'
+              - '@pimee_catalog.security.filter.not_granted_category'
+              - '@pimee_catalog.security.filter.not_granted_values'

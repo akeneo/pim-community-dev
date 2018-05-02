@@ -19,8 +19,8 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
-use PimEnterprise\Component\Catalog\Security\Factory\FilteredEntityFactory;
 use PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity;
+use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
 
 /**
  * Decorates CE product model repository to apply permissions.
