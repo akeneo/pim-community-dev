@@ -263,7 +263,7 @@ class CreateProductModelIntegration extends TestCase
         $productModelDuplicate->setParent($productModelParent);
         $errors = $this->get('pim_catalog.validator.product_model')->validate($productModelDuplicate);
         $this->assertEquals(
-            'Cannot set value "[blue]" for the attribute axis "color", as another sibling entity already has this value',
+            'Cannot set value "[blue]" for the attribute axis "color" on product model "product_model_duplicate_code", as the product model "product_model_code" already has this value',
             $errors->get(0)->getMessage()
         );
     }
@@ -321,7 +321,7 @@ class CreateProductModelIntegration extends TestCase
         $productModelDuplicate->setParent($productModelParent);
         $errors = $this->get('pim_catalog.validator.product_model')->validate($productModelDuplicate);
         $this->assertEquals(
-            'Cannot set value "[blue]" for the attribute axis "color", as another sibling entity already has this value',
+            'Cannot set value "[blue]" for the attribute axis "color" on product model "product_model_duplicate_code", as the product model "product_model_code" already has this value',
             $errors->get(0)->getMessage()
         );
     }

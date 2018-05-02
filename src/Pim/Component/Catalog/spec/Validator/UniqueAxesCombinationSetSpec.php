@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Validator;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -35,8 +36,8 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $variantProduct->getParent()->willReturn($productModel);
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
 
-        $this->addCombination($productModel, '[a_color]')->shouldReturn(true);
-        $this->addCombination($variantProduct, '[a_size]')->shouldReturn(true);
+        $this->addCombination($productModel, '[a_color]');
+        $this->addCombination($variantProduct, '[a_size]');
     }
 
     function it_does_not_add_axes_combinations_twice(
@@ -58,7 +59,10 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $invalidProductModel->getParent()->willReturn($rootProductModel);
         $invalidProductModel->getFamilyVariant()->willReturn($familyVariant);
 
-        $this->addCombination($productModel, '[a_color]')->shouldReturn(true);
-        $this->addCombination($invalidProductModel, '[a_color]')->shouldReturn(false);
+        $this->addCombination($productModel, '[a_color]');
+
+        $this
+            ->shouldThrow(AlreadyExistingAxisValueCombinationException::class)
+            ->during('addCombination', [$invalidProductModel, '[a_color]']);
     }
 }

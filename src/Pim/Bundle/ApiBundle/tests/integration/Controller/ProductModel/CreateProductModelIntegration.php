@@ -433,7 +433,7 @@ JSON;
   "errors": [
     {
       "property": "attribute",
-      "message": "Cannot set value \"Option B\" for the attribute axis \"a_simple_select\", as another sibling entity already has this value"
+      "message": "Cannot set value \"Option B\" for the attribute axis \"a_simple_select\" on product model \"sub_product_model\", as the product model \"tshirt_sub_product_model\" already has this value"
     }
   ]
 }

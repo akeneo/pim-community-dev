@@ -3,6 +3,7 @@
 ## Improve Julia's experience
 
 - PIM-6897: As Julia, I would like to update the family variant labels from the UI
+- PIM-7330: Improve validation message in case of product model or variant product axis values duplication
 
 # 2.3.0-ALPHA1 (2018-04-27)
 
