@@ -152,7 +152,7 @@ class AppKernel extends Kernel
             new Akeneo\Bundle\BufferBundle\AkeneoBufferBundle(),
             new Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
             new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
-            new Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
+            new Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
