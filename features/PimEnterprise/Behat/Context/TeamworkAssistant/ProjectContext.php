@@ -17,6 +17,7 @@ use Pim\Behat\Context\PimContext;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
@@ -137,14 +138,15 @@ class ProjectContext extends PimContext
     {
         $pathFinder = new PhpExecutableFinder();
 
-        exec(
+        $process = new Process(
             sprintf(
-                '%s %s/console akeneo:batch:job project_calculation --env=behat -c {\"project_code\":\"%s\"}',
+                '%s bin/console akeneo:batch:job project_calculation --env=behat -c {\"project_code\":\"%s\"}',
                 $pathFinder->find(),
-                $this->getMainContext()->getContainer()->getParameter('kernel.root_dir'),
                 $projectCode
             )
         );
+
+        $process->mustRun();
     }
 
     /**

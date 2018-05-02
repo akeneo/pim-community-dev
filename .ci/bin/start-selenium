@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -eu -o pipefail
+
+xvfb-run -n 99 --server-args="-screen 0 1360x1020x24 -ac +extension RANDR" java -Xms1g -Xmx1g -jar /opt/selenium/selenium-server-standalone.jar&
