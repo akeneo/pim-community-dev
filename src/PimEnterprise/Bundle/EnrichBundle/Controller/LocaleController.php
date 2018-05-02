@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Channel\Component\Model\Locale;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\EnrichBundle\Form\Type\LocaleType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
