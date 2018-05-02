@@ -3,6 +3,7 @@
 namespace Akeneo\Channel\Bundle;
 
 use Akeneo\Channel\Bundle\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -21,6 +22,7 @@ class AkeneoChannelBundle extends Bundle
     {
         $container
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
+            ->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('channel_repository'))
         ;
 
         $channelMappings = [

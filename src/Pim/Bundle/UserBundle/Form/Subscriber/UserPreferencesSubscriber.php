@@ -5,7 +5,7 @@ namespace Pim\Bundle\UserBundle\Form\Subscriber;
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
+use Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository;
 use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
