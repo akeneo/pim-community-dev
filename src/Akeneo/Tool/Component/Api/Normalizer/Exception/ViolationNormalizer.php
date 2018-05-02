@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Component\Api\Normalizer\Exception;
 
-use Doctrine\Common\Inflector\Inflector;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Doctrine\Common\Inflector\Inflector;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;

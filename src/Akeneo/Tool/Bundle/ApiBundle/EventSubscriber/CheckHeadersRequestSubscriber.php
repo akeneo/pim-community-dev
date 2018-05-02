@@ -2,10 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\EventSubscriber;
 
+use Akeneo\Tool\Bundle\ApiBundle\Negotiator\ContentTypeNegotiator;
 use FOS\RestBundle\FOSRestBundle;
 use FOS\RestBundle\Negotiation\FormatNegotiator;
 use FOS\RestBundle\Util\StopFormatListenerException;
-use Akeneo\Tool\Bundle\ApiBundle\Negotiator\ContentTypeNegotiator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
