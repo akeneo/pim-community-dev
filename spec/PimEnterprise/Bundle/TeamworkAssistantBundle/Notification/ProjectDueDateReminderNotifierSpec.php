@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Component\User\Model\UserInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectDueDateReminderNotifier;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectNotificationFactory;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;

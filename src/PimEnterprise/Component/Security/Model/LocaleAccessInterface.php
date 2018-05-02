@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Security\Model;
 
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 
 /**
  * LocaleInterface access interface

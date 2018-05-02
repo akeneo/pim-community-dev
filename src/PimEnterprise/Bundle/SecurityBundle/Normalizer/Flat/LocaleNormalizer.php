@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
 
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

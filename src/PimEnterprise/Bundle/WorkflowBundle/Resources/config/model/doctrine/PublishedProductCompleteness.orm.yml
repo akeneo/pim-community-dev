@@ -28,7 +28,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProductCompleteness:
             column: required_count
     manyToOne:
         locale:
-            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
             joinColumns:
                 locale_id:
                     referencedColumnName: id

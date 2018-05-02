@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectCalculationNotificationFactory;
 use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;

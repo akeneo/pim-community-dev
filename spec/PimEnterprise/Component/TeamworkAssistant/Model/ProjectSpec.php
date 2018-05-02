@@ -6,7 +6,7 @@ use Pim\Component\User\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\User\Model\GroupInterface;
 use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\Project;

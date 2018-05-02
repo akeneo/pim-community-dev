@@ -17,7 +17,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterfa
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty;
 use Pim\Bundle\EnrichBundle\Controller\FileController;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;

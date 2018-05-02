@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\TeamworkAssistant\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\User\Model\GroupInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
