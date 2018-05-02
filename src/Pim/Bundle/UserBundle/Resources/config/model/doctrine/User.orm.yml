@@ -142,9 +142,9 @@ Pim\Component\User\Model\User:
                         onDelete: CASCADE
     manyToOne:
         catalogLocale:
-            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
         uiLocale:
-            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
             joinColumn:
               name: ui_locale_id
               nullable: false

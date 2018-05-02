@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Api\Normalizer;
 
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

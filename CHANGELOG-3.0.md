@@ -10,6 +10,7 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Model\LocaleInterface` to `Akeneo\Channel\Component\Model\LocaleInterface`
 - Move `Pim\Bundle\UserBundle\Entity\UserInterface` to `Pim\Component\User\Model\UserInterface`
 - Move `Pim\Bundle\UserBundle\Entity\User` to `Pim\Component\User\Model\User`
 - Move `Oro\Bundle\UserBundle\Entity\Group` to `Pim\Component\User\Model\Group`

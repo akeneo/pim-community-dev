@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\EntityWithFamily;
 
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**

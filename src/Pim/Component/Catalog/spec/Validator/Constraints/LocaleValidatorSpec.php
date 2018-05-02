@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\Locale;
 use Prophecy\Argument;

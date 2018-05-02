@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Pim\Component\Enrich\Model\ChosableInterface;

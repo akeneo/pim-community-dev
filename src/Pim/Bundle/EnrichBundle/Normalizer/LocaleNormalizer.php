@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

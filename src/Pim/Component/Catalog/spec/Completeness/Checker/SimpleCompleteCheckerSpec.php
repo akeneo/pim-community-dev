@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Completeness\Checker;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 class SimpleCompleteCheckerSpec extends ObjectBehavior

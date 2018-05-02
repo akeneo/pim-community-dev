@@ -8,7 +8,7 @@ use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersChecker;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;

@@ -5,6 +5,7 @@
 Several classes and services have been moved or renamed. The following commands help to migrate references to them:
 
 ```bash
+find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.model.locale.interface/akeneo_channel.model.locale.interface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\UserBundle\\Entity\\UserManager/Pim\\Bundle\\UserBundle\\Manager\\UserManager/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\UserBundle\\Form\\Type\\RoleApiType/Pim\\Bundle\\UserBundle\\Form\\Type\\RoleApiType/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\UserBundle\\Form\\Type\\AclRoleType/Pim\\Bundle\\UserBundle\\Form\\Type\\AclRoleType/g'
