@@ -43,23 +43,37 @@ class UniqueAxesCombinationSet
      * this combination.
      *
      * @param EntityWithFamilyVariantInterface $entity
-     * @param string                           $axesCombination
+     * @param string                           $axisValueCombination
      *
      * @throws AlreadyExistingAxisValueCombinationException
      */
-    public function addCombination(EntityWithFamilyVariantInterface $entity, string $axesCombination): void
+    public function addCombination(EntityWithFamilyVariantInterface $entity, string $axisValueCombination): void
     {
         $familyVariantCode = $entity->getFamilyVariant()->getCode();
         $parentCode = $entity->getParent()->getCode();
         $identifier = $this->getEntityIdentifier($entity);
 
-        if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axesCombination])) {
-            $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axesCombination];
+        if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
+            $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination];
             if ($cachedIdentifier !== $identifier) {
+                if ($entity instanceof ProductInterface) {
+                    throw new AlreadyExistingAxisValueCombinationException(
+                        $cachedIdentifier,
+                        sprintf(
+                            'Variant product "%s" already have the "%s" combination of axis values.',
+                            $cachedIdentifier,
+                            $axisValueCombination
+                        )
+                    );
+                }
+
                 throw new AlreadyExistingAxisValueCombinationException(
                     $cachedIdentifier,
-                    get_class($entity),
-                    $axesCombination
+                    sprintf(
+                        'Product model "%s" already have the "%s" combination of axis values.',
+                        $cachedIdentifier,
+                        $axisValueCombination
+                    )
                 );
             }
         }
@@ -72,8 +86,8 @@ class UniqueAxesCombinationSet
             $this->uniqueAxesCombination[$familyVariantCode][$parentCode] = [];
         }
 
-        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axesCombination])) {
-            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axesCombination] = $identifier;
+        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination])) {
+            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axisValueCombination] = $identifier;
         }
     }
 

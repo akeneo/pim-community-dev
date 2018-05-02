@@ -549,91 +549,11 @@ class ProductModel implements ProductModelInterface
     }
 
     /**
-     * @param EntityWithFamilyVariantInterface $entity
-     * @param ValueCollectionInterface         $valueCollection
-     *
-     * @return ValueCollectionInterface
-     */
-    private function getAllValues(
-        EntityWithFamilyVariantInterface $entity,
-        ValueCollectionInterface $valueCollection
-    ) {
-        $parent = $entity->getParent();
-
-        if (null === $parent) {
-            return $valueCollection;
-        }
-
-        foreach ($parent->getValuesForVariation() as $value) {
-            $valueCollection->add($value);
-        }
-
-        return $this->getAllValues($parent, $valueCollection);
-    }
-
-    /**
-     * @param EntityWithFamilyVariantInterface $entity
-     * @param Collection                       $categoryCollection
-     *
-     * @return Collection
-     */
-    private function getAllCategories(
-        EntityWithFamilyVariantInterface $entity,
-        Collection $categoryCollection
-    ) {
-        $parent = $entity->getParent();
-
-        if (null === $parent) {
-            return $categoryCollection;
-        }
-
-        foreach ($parent->getCategories() as $category) {
-            if (!$categoryCollection->contains($category)) {
-                $categoryCollection->add($category);
-            }
-        }
-
-        return $this->getAllCategories($parent, $categoryCollection);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getFamily(): ?FamilyInterface
     {
         return null !== $this->getFamilyVariant() ? $this->getFamilyVariant()->getFamily() : null;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->getLabel();
-    }
-
-    /**
-     * Does the ancestry of the entity already has the $category?
-     *
-     * @param CategoryInterface $category
-     *
-     * @return bool
-     */
-    private function hasAncestryCategory(CategoryInterface $category): bool
-    {
-        $parent = $this->getParent();
-        if (null === $parent) {
-            return false;
-        }
-
-        // no need recursion here as getCategories already look in the whole ancestry
-        foreach ($parent->getCategories() as $ancestryCategory) {
-            if ($ancestryCategory->getCode() === $category->getCode()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -707,5 +627,85 @@ class ProductModel implements ProductModelInterface
         $this->associations = $associations;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getLabel();
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param ValueCollectionInterface         $valueCollection
+     *
+     * @return ValueCollectionInterface
+     */
+    private function getAllValues(
+        EntityWithFamilyVariantInterface $entity,
+        ValueCollectionInterface $valueCollection
+    ) {
+        $parent = $entity->getParent();
+
+        if (null === $parent) {
+            return $valueCollection;
+        }
+
+        foreach ($parent->getValuesForVariation() as $value) {
+            $valueCollection->add($value);
+        }
+
+        return $this->getAllValues($parent, $valueCollection);
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param Collection                       $categoryCollection
+     *
+     * @return Collection
+     */
+    private function getAllCategories(
+        EntityWithFamilyVariantInterface $entity,
+        Collection $categoryCollection
+    ) {
+        $parent = $entity->getParent();
+
+        if (null === $parent) {
+            return $categoryCollection;
+        }
+
+        foreach ($parent->getCategories() as $category) {
+            if (!$categoryCollection->contains($category)) {
+                $categoryCollection->add($category);
+            }
+        }
+
+        return $this->getAllCategories($parent, $categoryCollection);
+    }
+
+    /**
+     * Does the ancestry of the entity already has the $category?
+     *
+     * @param CategoryInterface $category
+     *
+     * @return bool
+     */
+    private function hasAncestryCategory(CategoryInterface $category): bool
+    {
+        $parent = $this->getParent();
+        if (null === $parent) {
+            return false;
+        }
+
+        // no need recursion here as getCategories already look in the whole ancestry
+        foreach ($parent->getCategories() as $ancestryCategory) {
+            if ($ancestryCategory->getCode() === $category->getCode()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

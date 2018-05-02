@@ -2,15 +2,14 @@
 
 namespace spec\Pim\Component\Catalog\Exception;
 
-use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
 
 class AlreadyExistingAxisValueCombinationExceptionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('foobar', 'VariantProduct', '[color,size]');
+        $this->beConstructedWith('foobar', 'an exception message');
     }
 
     function it_is_initializable()
@@ -18,11 +17,9 @@ class AlreadyExistingAxisValueCombinationExceptionSpec extends ObjectBehavior
         $this->shouldHaveType(AlreadyExistingAxisValueCombinationException::class);
     }
 
-    function it_creates_an_exception_message_during_instanciation()
+    function it_adds_an_exception_message_during_instanciation()
     {
-        $this->getMessage()->shouldReturn(
-            'The VariantProduct "foobar" already have a value for the "[color,size]" axis combination.'
-        );
+        $this->getMessage()->shouldReturn('an exception message');
     }
 
     function it_returns_the_identifier_of_the_entity_that_already_have_the_axis_combination()

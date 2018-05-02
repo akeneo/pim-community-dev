@@ -14,6 +14,10 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
+ * Validate that an entity with family variant does not use a combination of
+ * variant axis values that already exists, either in database or in an other
+ * entity already processed in a batch.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -61,6 +65,10 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             return;
         }
 
+        if (null === $entity->getParent()) {
+            return;
+        }
+
         $axes = $this->axesProvider->getAxes($entity);
 
         if (empty($axes)) {
@@ -72,43 +80,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     }
 
     /**
-     * This method builds "combinations" of the given $entityWithFamilyVariant for its $axes.
-     * A combination is the concatenation of all values for an axis.
-     *
-     * For example, the axis is made of 2 attributes: color and size.
-     * Let say we have [blue] for color and [xl] for size.
-     * The combination of this entity will be "[blue],[xl]".
-     *
-     * This allows use to compare multiple combinations, to look for a potential duplicate.
-     *
-     * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
-     * @param AttributeInterface[]             $axes
-     *
-     * @return string
-     */
-    private function buildAxesCombination(
-        EntityWithFamilyVariantInterface $entityWithFamilyVariant,
-        array $axes
-    ): string {
-        $combination = [];
-
-        foreach ($axes as $axis) {
-            $value = $entityWithFamilyVariant->getValue($axis->getCode());
-            $stringValue = '';
-
-            if (null !== $value) {
-                $stringValue = (string)$value;
-            }
-
-            $combination[] = $stringValue;
-        }
-
-        return implode(',', $combination);
-    }
-
-    /**
      * Adds a constraint violation if there is a sibling of "$entity" with the
-     * same axis combination in database.
+     * same combination of variant axis values in database.
      *
      * @param EntityWithFamilyVariantInterface $entity
      * @param AttributeInterface[]             $axes
@@ -121,16 +94,16 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             return;
         }
 
-        $siblingsCombinations = [];
-        foreach ($siblings as $sibling) {
-            $siblingIdentifier = $this->getEntityIdentifier($sibling);
-            $siblingsCombinations[$siblingIdentifier] = $this->buildAxesCombination($sibling, $axes);
-        }
-
-        $ownCombination = $this->buildAxesCombination($entity, $axes);
+        $ownCombination = $this->getCombinationOfAxisValues($entity, $axes);
 
         if ('' === str_replace(',', '', $ownCombination)) {
             return;
+        }
+
+        $siblingsCombinations = [];
+        foreach ($siblings as $sibling) {
+            $siblingIdentifier = $this->getEntityIdentifier($sibling);
+            $siblingsCombinations[$siblingIdentifier] = $this->getCombinationOfAxisValues($sibling, $axes);
         }
 
         if (in_array($ownCombination, $siblingsCombinations)) {
@@ -146,8 +119,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     }
 
     /**
-     * Adds a constraint violation if a sibling of "$entity" with the same axis
-     * combination was already parsed.
+     * Adds a constraint violation if a sibling of "$entity" with the same
+     * combination of variant axis values was already parsed.
      *
      * This means "$uniqueAxesCombinationSet" has to be stateful.
      *
@@ -156,11 +129,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     private function validateValueWasNotAlreadyValidated(EntityWithFamilyVariantInterface $entity, array $axes): void
     {
-        if (null === $entity->getParent()) {
-            return;
-        }
-
-        $combination = $this->buildAxesCombination($entity, $axes);
+        $combination = $this->getCombinationOfAxisValues($entity, $axes);
 
         if ('' === str_replace(',', '', $combination)) {
             return;
@@ -178,6 +147,39 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 $alreadyValidatedSiblingIdentifier
             );
         }
+    }
+
+    /**
+     * This method builds "combinations" of the given $entityWithFamilyVariant for its $axes.
+     * A combination is the concatenation of all values for an axis.
+     *
+     * For example, the axis is made of 2 attributes: color and size.
+     * Let say we have [blue] for color and [xl] for size, then the combination of this entity will be "[blue],[xl]".
+     *
+     * This allows use to compare multiple combinations, to look for a potential duplicate.
+     *
+     * @todo TIP-857: This method should be moved in "Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface"
+     *       and implemented in the product, published product and product model.
+     *       The "$axes" should not be provided as an argument anymore, as the entity can provide them too
+     *       This implies to remove "Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider"
+     *       and merge its code in the product, published product and product model.
+     *
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param AttributeInterface[]             $axes
+     *
+     * @return string
+     */
+    private function getCombinationOfAxisValues(EntityWithFamilyVariantInterface $entity, array $axes): string
+    {
+        $combination = [];
+
+        foreach ($axes as $axis) {
+            $value = $entity->getValue($axis->getCode());
+
+            $combination[] = (string)$value;
+        }
+
+        return implode(',', $combination);
     }
 
     /**
