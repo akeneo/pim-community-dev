@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnexpectedResultException;

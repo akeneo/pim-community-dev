@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\Command;
 
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Monolog\Handler\StreamHandler;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;

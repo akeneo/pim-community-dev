@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
