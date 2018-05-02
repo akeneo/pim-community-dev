@@ -839,7 +839,7 @@ class User implements UserInterface
      */
     public function generateToken()
     {
-        return base_convert(bin2hex(hash('sha256', uniqid(mt_rand(), true), true)), 16, 36);
+        return base_convert(bin2hex(random_bytes(32)), 16, 36);
     }
 
     /**
