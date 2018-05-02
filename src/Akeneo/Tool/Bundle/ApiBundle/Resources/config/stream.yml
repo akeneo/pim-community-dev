@@ -1,0 +1,93 @@
+parameters:
+    pim_api.stream.stream_resource_response.class: Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse
+
+services:
+    pim_api.stream.product_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pim_api.controller.product:partialUpdateAction'
+            - 'identifier'
+
+    pim_api.stream.product_model_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pim_api.controller.product_model:partialUpdateAction'
+            - 'code'
+
+    pim_api.stream.family_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pim_api.controller.family:partialUpdateAction'
+            - 'code'
+
+    pim_api.stream.family_variant_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pim_api.controller.family_variant:partialUpdateAction'
+            - 'code'
+
+    pim_api.stream.category_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pim_api.controller.category:partialUpdateAction'
+            - 'code'
+
+    pim_api.stream.attribute_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pim_api.controller.attribute:partialUpdateAction'
+            - 'code'
+
+    pim_api.stream.attribute_group_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pim_api.controller.attribute_group:partialUpdateAction'
+            - 'code'
+
+    pim_api.stream.association_type_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pim_api.controller.association_type:partialUpdateAction'
+            - 'code'
+
+    pim_api.stream.channel_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pim_api.controller.channel:partialUpdateAction'
+            - 'code'
+
+    pim_api.stream.attribute_option_partial_update_stream:
+        class: '%pim_api.stream.stream_resource_response.class%'
+        arguments:
+            - '@http_kernel'
+            - '@pim_catalog.validator.unique_value_set'
+            - '%pim_api.configuration%'
+            - 'pim_api.controller.attribute_option:partialUpdateAction'
+            - 'code'

@@ -80,7 +80,7 @@ class AppKernel extends Kernel
             // PIM bundles
             new Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
             new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
-            new Pim\Bundle\ApiBundle\PimApiBundle(),
+            new Akeneo\Tool\Bundle\ApiBundle\PimApiBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\CommentBundle\PimCommentBundle(),
             new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),

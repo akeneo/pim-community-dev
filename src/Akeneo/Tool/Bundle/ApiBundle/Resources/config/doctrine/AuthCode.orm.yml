@@ -1,0 +1,9 @@
+Akeneo\Tool\Bundle\ApiBundle\Entity\AuthCode:
+    type: entity
+    table: pim_api_auth_code
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
