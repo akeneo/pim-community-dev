@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
@@ -42,7 +42,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var EntityWithValuesDraftRepositoryInterface */
     protected $draftRepository;
 
-    /** @var ProductDraftApplierInterface */
+    /** @var DraftApplierInterface */
     protected $draftApplier;
 
     /** @var CategoryAccessRepository */
@@ -61,20 +61,20 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     protected $productRepository;
 
     /**
-     * @param NormalizerInterface             $normalizer
-     * @param PublishedProductManager         $publishedManager
+     * @param NormalizerInterface                      $normalizer
+     * @param PublishedProductManager                  $publishedManager
      * @param EntityWithValuesDraftRepositoryInterface $draftRepository
-     * @param ProductDraftApplierInterface    $draftApplier
-     * @param CategoryAccessRepository        $categoryAccessRepo
-     * @param TokenStorageInterface           $tokenStorage
-     * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param ProductRepositoryInterface      $productRepository
+     * @param DraftApplierInterface                    $draftApplier
+     * @param CategoryAccessRepository                 $categoryAccessRepo
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param AuthorizationCheckerInterface            $authorizationChecker
+     * @param ProductRepositoryInterface               $productRepository
      */
     public function __construct(
         NormalizerInterface $normalizer,
         PublishedProductManager $publishedManager,
         EntityWithValuesDraftRepositoryInterface $draftRepository,
-        ProductDraftApplierInterface $draftApplier,
+        DraftApplierInterface $draftApplier,
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,

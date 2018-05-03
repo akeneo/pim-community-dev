@@ -19,7 +19,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
@@ -49,7 +49,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
     /** @var EntityWithValuesDraftBuilderInterface */
     protected $productDraftBuilder;
 
-    /** @var ProductDraftApplierInterface */
+    /** @var DraftApplierInterface */
     protected $productDraftApplier;
 
     /** @var EntityWithValuesDraftRepositoryInterface */
@@ -60,7 +60,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
      * @param ObjectUpdaterInterface                   $updater             product updater
      * @param ValidatorInterface                       $validator           product validator
      * @param EntityWithValuesDraftBuilderInterface    $productDraftBuilder product draft builder
-     * @param ProductDraftApplierInterface             $productDraftApplier product draft applier
+     * @param DraftApplierInterface                    $productDraftApplier product draft applier
      * @param EntityWithValuesDraftRepositoryInterface $productDraftRepo    product draft repository
      */
     public function __construct(
@@ -68,7 +68,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         EntityWithValuesDraftBuilderInterface $productDraftBuilder,
-        ProductDraftApplierInterface $productDraftApplier,
+        DraftApplierInterface $productDraftApplier,
         EntityWithValuesDraftRepositoryInterface $productDraftRepo
     ) {
         parent::__construct($repository);

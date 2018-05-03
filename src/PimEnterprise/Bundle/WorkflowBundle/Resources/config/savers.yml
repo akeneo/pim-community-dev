@@ -37,7 +37,7 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
             - '@security.authorization_checker'
-            - '@pimee_workflow.builder.draft'
+            - '@pimee_workflow.product.builder.draft'
             - '@security.token_storage'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.remover.product_draft'

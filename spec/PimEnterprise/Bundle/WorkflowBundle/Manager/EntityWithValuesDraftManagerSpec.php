@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
@@ -28,7 +28,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         UserContext $userContext,
         EntityWithValuesDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $repository,
-        ProductDraftApplierInterface $applier,
+        DraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
         SaverInterface $draftSaver,
         RemoverInterface $remover,
