@@ -192,16 +192,6 @@ services:
             - '@pim_connector.processor.denormalization.channel'
             - '@pim_connector.writer.database.channel'
 
-    pim_connector.step.csv_locale_import.import:
-        class: '%pim_connector.step.item_step.class%'
-        arguments:
-            - 'import'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.file.csv_locale'
-            - '@pim_connector.processor.denormalization.locale'
-            - '@pim_connector.writer.database.locale'
-
     pim_connector.step.csv_attribute_group_import.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
@@ -334,16 +324,6 @@ services:
             - '@pim_connector.reader.database.channel'
             - '@pim_connector.processor.normalization.channel'
             - '@pim_connector.writer.file.csv_channel'
-
-    pim_connector.step.csv_locale_export.export:
-        class: '%pim_connector.step.item_step.class%'
-        arguments:
-            - 'export'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.database.locale'
-            - '@pim_connector.processor.normalization.locale'
-            - '@pim_connector.writer.file.csv_locale'
 
     pim_connector.step.csv_attribute_group_export.export:
         class: '%pim_connector.step.item_step.class%'
@@ -553,16 +533,6 @@ services:
             - '@pim_connector.processor.denormalization.channel'
             - '@pim_connector.writer.database.channel'
 
-    pim_connector.step.xlsx_locale_import.import:
-        class: '%pim_connector.step.item_step.class%'
-        arguments:
-            - 'import'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.file.xlsx_locale'
-            - '@pim_connector.processor.denormalization.locale'
-            - '@pim_connector.writer.database.locale'
-
     pim_connector.step.xlsx_attribute_group_import.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
@@ -701,17 +671,6 @@ services:
             - '@pim_connector.reader.database.channel'
             - '@pim_connector.processor.normalization.channel'
             - '@pim_connector.writer.file.xlsx_channel'
-            - 10
-
-    pim_connector.step.xlsx_locale_export.export:
-        class: '%pim_connector.step.item_step.class%'
-        arguments:
-            - 'export'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.database.locale'
-            - '@pim_connector.processor.normalization.locale'
-            - '@pim_connector.writer.file.xlsx_locale'
             - 10
 
     pim_connector.step.xlsx_attribute_group_export.export:

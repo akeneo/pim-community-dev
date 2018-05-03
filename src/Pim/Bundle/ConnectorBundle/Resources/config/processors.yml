@@ -149,15 +149,6 @@ services:
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pim_connector.processor.denormalization.locale:
-        class: '%pim_connector.processor.denormalization.class%'
-        arguments:
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.factory.locale'
-            - '@pim_catalog.updater.locale'
-            - '@validator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-
     pim_connector.processor.denormalization.attribute_group:
         class: '%pim_connector.processor.denormalization.class%'
         arguments:
@@ -290,12 +281,6 @@ services:
         class: '%pim_connector.processor.normalization.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.channel'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-
-    pim_connector.processor.normalization.locale:
-        class: '%pim_connector.processor.normalization.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.locale'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_connector.processor.normalization.attribute_group:
