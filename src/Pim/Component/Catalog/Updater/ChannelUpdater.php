@@ -215,6 +215,7 @@ class ChannelUpdater implements ObjectUpdaterInterface
      */
     protected function setConversionUnits(ChannelInterface $channel, $conversionUnits)
     {
+        $conversionUnitsToSave = [];
         foreach ($conversionUnits as $attributeCode => $conversionUnit) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
@@ -237,8 +238,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
                     $conversionUnit
                 );
             }
-
-            $channel->setConversionUnits($conversionUnits);
+            $conversionUnitsToSave[] = $conversionUnit;
         }
+        $channel->setConversionUnits($conversionUnits);
     }
 }
