@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\PageableRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\SearchAfterPageableRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnexpectedResultException;
-use Akeneo\Tool\Component\Api\Repository\PageableRepositoryInterface;
-use Akeneo\Tool\Component\Api\Repository\SearchAfterPageableRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
