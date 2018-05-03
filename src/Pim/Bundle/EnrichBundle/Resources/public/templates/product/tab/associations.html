@@ -7,7 +7,7 @@
 <% } else { %>
     <div class="tabbable">
         <div class="tab-content">
-            <div class="association-product-grid<% if ('products' !== currentAssociationTarget) { %> hide<% } %>">
+            <div class="<%- datagridName %><% if ('products' !== currentAssociationTarget) { %> hide<% } %>">
                 <div class="AknGrid AknGrid--gallery AknGrid--inner">
                     <div id="grid-<%- datagridName %>" data-type="datagrid">
                         <% if (addAssociationVisible) { %>
