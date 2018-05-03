@@ -4,10 +4,10 @@ namespace spec\Pim\Component\Catalog\Job;
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Job\ComputeCompletenessOfProductsFamilyTasklet;
 use Pim\Component\Catalog\Model\FamilyInterface;

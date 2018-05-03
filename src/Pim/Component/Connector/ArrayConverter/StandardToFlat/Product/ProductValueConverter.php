@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product;
 
-use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry;
 
 /**

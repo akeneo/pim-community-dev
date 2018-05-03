@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Test\Acceptance\User;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\User\Model\User;

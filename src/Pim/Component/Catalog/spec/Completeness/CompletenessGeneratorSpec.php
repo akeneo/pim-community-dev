@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Completeness;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;

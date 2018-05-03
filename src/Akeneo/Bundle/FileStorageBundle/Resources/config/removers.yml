@@ -1,5 +1,5 @@
 parameters:
-    akeneo_file_storage.remover.file.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
+    akeneo_file_storage.remover.file.class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
 
 services:
     akeneo_file_storage.remover.file:

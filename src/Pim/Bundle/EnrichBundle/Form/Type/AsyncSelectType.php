@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Factory\IdentifiableModelTransformerFactory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\EnabledFieldSetter;

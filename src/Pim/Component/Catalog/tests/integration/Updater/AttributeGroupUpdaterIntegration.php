@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Updater\AttributeGroupUpdater;
 class AttributeGroupUpdaterIntegration extends TestCase
 {
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidObjectException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException
      * @expectedExceptionMessage Expects a "Pim\Component\Catalog\Model\AttributeGroupInterface", "stdClass" given.
      */
     public function testUpdateObjectInAttributeGroupUpdater()
@@ -19,7 +19,7 @@ class AttributeGroupUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "labels" expects an array as data, "NULL" given.
      */
     public function testAttributeGroupUpdateWithNullLabels()
@@ -30,7 +30,7 @@ class AttributeGroupUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "attributes" expects an array as data, "NULL" given.
      */
     public function testAttributeGroupUpdateWithNullAttributes()
@@ -41,7 +41,7 @@ class AttributeGroupUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage one of the "labels" values is not a scalar
      */
     public function testAttributeGroupUpdateWithNonScalarLabels()
@@ -52,7 +52,7 @@ class AttributeGroupUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage one of the "attributes" values is not a scalar
      */
     public function testAttributeGroupUpdateWithNonScalarAttributess()
@@ -63,7 +63,7 @@ class AttributeGroupUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "code" expects a scalar as data, "array" given.
      */
     public function testAttributeGroupUpdateWithNonScalarCode()
@@ -74,7 +74,7 @@ class AttributeGroupUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "sort_order" expects a scalar as data, "array" given.
      */
     public function testAttributeGroupUpdateWithNonScalarSortOrder()
@@ -85,7 +85,7 @@ class AttributeGroupUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Property "unknown_property" does not exist.
      */
     public function testAttributeGroupUpdateWithUnknownProperty()
@@ -96,7 +96,7 @@ class AttributeGroupUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "attributes" expects a valid attribute code. The attribute does not exist, "unknown_attribute" given.
      */
     public function testAttributeGroupUpdateWithNonExistingAttributes()

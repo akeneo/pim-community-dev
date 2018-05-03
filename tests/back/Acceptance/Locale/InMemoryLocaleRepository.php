@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Locale;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

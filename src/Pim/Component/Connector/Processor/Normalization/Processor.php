@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Processor\Normalization;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

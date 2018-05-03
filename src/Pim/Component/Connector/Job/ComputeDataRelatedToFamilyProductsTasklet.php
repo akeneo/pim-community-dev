@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Pim\Component\Connector\Job;
 
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

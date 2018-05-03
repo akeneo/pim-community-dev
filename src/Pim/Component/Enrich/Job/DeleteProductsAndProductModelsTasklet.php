@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Pim\Component\Enrich\Job;
 
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;

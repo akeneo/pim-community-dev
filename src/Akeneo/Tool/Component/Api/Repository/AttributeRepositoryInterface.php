@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Api\Repository;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Repository interface for attributes resources

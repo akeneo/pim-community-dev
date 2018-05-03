@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Factory;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**

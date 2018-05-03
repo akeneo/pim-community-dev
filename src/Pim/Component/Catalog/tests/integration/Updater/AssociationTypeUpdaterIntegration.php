@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\AssociationTypeInterface;
 class AssociationTypeUpdaterIntegration extends TestCase
 {
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidObjectException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException
      * @expectedExceptionMessage Expects a "Pim\Component\Catalog\Model\AssociationTypeInterface", "stdClass" given.
      */
     public function testUpdateObjectInAssociationTypeUpdater()
@@ -18,7 +18,7 @@ class AssociationTypeUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "code" expects a scalar as data, "array" given.
      */
     public function testAssociationTypeUpdateWithNonScalarCode()
@@ -29,7 +29,7 @@ class AssociationTypeUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "labels" expects an array as data, "NULL" given.
      */
     public function testAssociationTypeUpdateWithNullLabels()
@@ -40,7 +40,7 @@ class AssociationTypeUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage one of the "labels" values is not a scalar
      */
     public function testAssociationTypeUpdateWithNonScalarLabels()
@@ -51,7 +51,7 @@ class AssociationTypeUpdaterIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Property "unknown_property" does not exist.
      */
     public function testAssociationTypeUpdateWithUnknownProperty()

@@ -3,8 +3,8 @@
 namespace spec\Pim\Component\ReferenceData\Factory\Value;
 
 use Acme\Bundle\AppBundle\Entity\Color;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Factory\Value\ReferenceDataValueFactory;

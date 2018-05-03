@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Doctrine\Repository;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * This repository don't raise "akeneo technical event". For instance, we can load fixture without indexing data
  * in ES. It is useful when we want to test a query function.
  *
- * TODO: this class should implement `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
+ * TODO: this class should implement `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
  */
 final class EntityWithValue implements SaverInterface
 {

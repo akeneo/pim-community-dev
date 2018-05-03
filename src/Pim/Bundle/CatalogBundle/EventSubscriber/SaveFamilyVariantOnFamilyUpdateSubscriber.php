@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

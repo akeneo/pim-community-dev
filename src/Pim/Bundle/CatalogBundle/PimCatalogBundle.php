@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle;
 
-use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass;

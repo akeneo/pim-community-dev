@@ -400,7 +400,7 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "completeness" expects an array with the key "locales".
      */
     public function testErrorLocalesIsMissing()
@@ -409,7 +409,7 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "completeness" expects an array of arrays as data.
      */
     public function testErrorLocalesIsMalformed()
@@ -418,7 +418,7 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "completeness" expects a valid scope.
      */
     public function testErrorScopeIsMissing()
@@ -427,7 +427,7 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "completeness" expects a numeric as data, "string" given.
      */
     public function testErrorDataIsNotAnNumeric()

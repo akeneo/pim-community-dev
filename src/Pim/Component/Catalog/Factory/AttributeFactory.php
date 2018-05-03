@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Pim\Component\Catalog\AttributeTypeRegistry;
 use Pim\Component\Catalog\Model\AttributeInterface;
 

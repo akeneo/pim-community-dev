@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;

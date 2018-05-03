@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator;
 
 use Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\ORM\EntityManagerInterface;

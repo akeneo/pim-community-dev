@@ -5,7 +5,7 @@ namespace spec\Akeneo\Component\FileStorage\File;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;

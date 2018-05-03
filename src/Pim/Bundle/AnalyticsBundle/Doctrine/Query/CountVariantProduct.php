@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\AnalyticsBundle\Doctrine\Query;
 
-use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 

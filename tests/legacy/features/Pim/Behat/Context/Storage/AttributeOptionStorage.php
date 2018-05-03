@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Behat\Context\Storage;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\ORM\EntityManagerInterface;

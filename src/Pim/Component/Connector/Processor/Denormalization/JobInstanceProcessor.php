@@ -2,17 +2,17 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

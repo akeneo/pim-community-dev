@@ -3,8 +3,8 @@
 namespace spec\Pim\Component\Connector\Writer\Database;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 

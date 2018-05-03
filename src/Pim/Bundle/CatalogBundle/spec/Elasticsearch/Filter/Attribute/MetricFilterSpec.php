@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\MetricFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
  * Sorts products by completeness, for a provided locale and channel (it is not

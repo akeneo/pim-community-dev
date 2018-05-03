@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
