@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Akeneo\Bundle\ElasticsearchBundle\Refresh;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;

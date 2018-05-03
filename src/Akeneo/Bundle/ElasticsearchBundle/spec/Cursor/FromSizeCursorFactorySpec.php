@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Cursor\FromSizeCursor;
-use Akeneo\Bundle\ElasticsearchBundle\Cursor\FromSizeCursorFactory;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\FromSizeCursor;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\FromSizeCursorFactory;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;

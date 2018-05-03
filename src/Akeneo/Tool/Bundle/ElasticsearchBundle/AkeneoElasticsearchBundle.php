@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\ElasticsearchBundle;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

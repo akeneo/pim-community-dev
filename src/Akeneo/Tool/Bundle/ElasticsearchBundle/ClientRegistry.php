@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Bundle\ElasticsearchBundle;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
 /**
  * Registry containing all dynamically instanciated Elasticsearch clients.

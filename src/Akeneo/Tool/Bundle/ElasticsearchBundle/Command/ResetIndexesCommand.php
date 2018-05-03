@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Bundle\ElasticsearchBundle\Command;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Command\IndexProductCommand;
 use Pim\Bundle\CatalogBundle\Command\IndexProductModelCommand;

@@ -2,12 +2,12 @@
 
 namespace spec\Akeneo\Bundle\ElasticsearchBundle;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Exception\IndexationException;
-use Akeneo\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\IndexConfiguration;
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
-use Akeneo\Bundle\ElasticsearchBundle\Refresh;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\IndexConfiguration;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use Elasticsearch\Namespaces\IndicesNamespace;

@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursor;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursor;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;

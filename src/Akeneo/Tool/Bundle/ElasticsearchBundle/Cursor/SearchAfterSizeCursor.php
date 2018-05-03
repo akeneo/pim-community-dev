@@ -1,65 +1,68 @@
 <?php
 
-namespace Akeneo\Bundle\ElasticsearchBundle\Cursor;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
  * Bounded cursor to iterate over items where a start and a limit are defined.
- * Internally, this is implemented with the from/size pagination.
- * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-from-size.html}
+ * Internally, this is implemented with the search after pagination.
+ * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html}
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FromSizeCursor extends AbstractCursor implements CursorInterface
+class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
 {
-    /** @var int */
-    protected $initialFrom;
-
-    /** @var int */
-    protected $from;
+    /** @var string|null */
+    protected $searchAfterUniqueKey;
 
     /** @var int */
     protected $limit;
 
     /** @var int */
-    protected $to;
-
-    /** @var int */
     protected $fetchedItemsCount;
+
+    /** @var array */
+    protected $searchAfter;
+
+    /** @var array */
+    protected $initialSearchAfter;
 
     /**
      * @param Client                        $esClient
      * @param CursorableRepositoryInterface $repository
      * @param array                         $esQuery
+     * @param array                         $searchAfter
      * @param string                        $indexType
      * @param int                           $pageSize
      * @param int                           $limit
-     * @param int                           $from
+     * @param string|null                   $searchAfterUniqueKey
      */
     public function __construct(
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
+        array $searchAfter = [],
         $indexType,
         $pageSize,
         $limit,
-        $from = 0
+        $searchAfterUniqueKey = null
     ) {
-        $this->esClient = $esClient;
         $this->repository = $repository;
+        $this->esClient = $esClient;
         $this->esQuery = $esQuery;
         $this->indexType = $indexType;
         $this->pageSize = $pageSize;
         $this->limit = $limit;
-        $this->from = $from;
-        $this->initialFrom = $from;
-        $this->to = $this->from + $this->limit;
+        $this->searchAfter = $searchAfter;
+        $this->initialSearchAfter = $this->searchAfter;
+        $this->searchAfterUniqueKey = $searchAfterUniqueKey;
+        $this->fetchedItemsCount = 0;
     }
 
     /**
@@ -68,7 +71,7 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
     public function next()
     {
         if (false === next($this->items)) {
-            $this->from += count($this->items);
+            $this->fetchedItemsCount += count($this->items);
             $this->items = $this->getNextItems($this->esQuery);
             reset($this->items);
         }
@@ -77,11 +80,14 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
     /**
      * {@inheritdoc}
      *
-     * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-from-size.html}
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html
      */
     protected function getNextIdentifiers(array $esQuery)
     {
-        $size = ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
+        $size = $this->limit > $this->pageSize ? $this->pageSize : $this->limit;
+        if ($this->fetchedItemsCount + $size > $this->limit) {
+            $size = $this->limit - $this->fetchedItemsCount;
+        }
         $esQuery['size'] = $size;
 
         if (0 === $esQuery['size']) {
@@ -95,7 +101,10 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         }
 
         $esQuery['sort'] = $sort;
-        $esQuery['from'] = $this->from;
+
+        if (!empty($this->searchAfter)) {
+            $esQuery['search_after'] = $this->searchAfter;
+        }
 
         $response = $this->esClient->search($this->indexType, $esQuery);
         $this->count = $response['hits']['total'];
@@ -105,17 +114,26 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
             $identifiers[] = $hit['_source']['identifier'];
         }
 
+        $lastResult = end($response['hits']['hits']);
+
+        if (false !== $lastResult) {
+            $this->searchAfter = $lastResult['sort'];
+        }
+
         return $identifiers;
     }
-
 
     /**
      * {@inheritdoc}
      */
     public function rewind()
     {
-        $this->from = $this->initialFrom;
-        $this->to = $this->from + $this->limit;
+        $this->searchAfter = $this->initialSearchAfter;
+        if (null !== $this->searchAfterUniqueKey) {
+            array_push($this->searchAfter, $this->indexType . '#' . $this->searchAfterUniqueKey);
+        }
+
+        $this->fetchedItemsCount = 0;
         $this->items = $this->getNextItems($this->esQuery);
         reset($this->items);
     }

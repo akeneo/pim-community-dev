@@ -1,13 +1,13 @@
 <?php
 
-namespace Akeneo\Bundle\ElasticsearchBundle\Cursor;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
- * Bounded cursor to iterate over items where a start and a limit are defined.
+ * Cursor to iterate over all items.
  * Internally, this is implemented with the search after pagination.
  * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-search-after.html}
  *
@@ -16,53 +16,31 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
+class Cursor extends AbstractCursor implements CursorInterface
 {
-    /** @var string|null */
-    protected $searchAfterUniqueKey;
-
-    /** @var int */
-    protected $limit;
-
-    /** @var int */
-    protected $fetchedItemsCount;
-
     /** @var array */
     protected $searchAfter;
-
-    /** @var array */
-    protected $initialSearchAfter;
 
     /**
      * @param Client                        $esClient
      * @param CursorableRepositoryInterface $repository
      * @param array                         $esQuery
-     * @param array                         $searchAfter
      * @param string                        $indexType
      * @param int                           $pageSize
-     * @param int                           $limit
-     * @param string|null                   $searchAfterUniqueKey
      */
     public function __construct(
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
-        array $searchAfter = [],
         $indexType,
-        $pageSize,
-        $limit,
-        $searchAfterUniqueKey = null
+        $pageSize
     ) {
-        $this->repository = $repository;
         $this->esClient = $esClient;
+        $this->repository = $repository;
         $this->esQuery = $esQuery;
         $this->indexType = $indexType;
         $this->pageSize = $pageSize;
-        $this->limit = $limit;
-        $this->searchAfter = $searchAfter;
-        $this->initialSearchAfter = $this->searchAfter;
-        $this->searchAfterUniqueKey = $searchAfterUniqueKey;
-        $this->fetchedItemsCount = 0;
+        $this->searchAfter = [];
     }
 
     /**
@@ -71,10 +49,31 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
     public function next()
     {
         if (false === next($this->items)) {
-            $this->fetchedItemsCount += count($this->items);
             $this->items = $this->getNextItems($this->esQuery);
             reset($this->items);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rewind()
+    {
+        $this->searchAfter = [];
+        $this->items = $this->getNextItems($this->esQuery);
+        reset($this->items);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        if (null === $this->items) {
+            $this->getNextIdentifiers($this->esQuery);
+        }
+
+        return $this->count;
     }
 
     /**
@@ -84,11 +83,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
      */
     protected function getNextIdentifiers(array $esQuery)
     {
-        $size = $this->limit > $this->pageSize ? $this->pageSize : $this->limit;
-        if ($this->fetchedItemsCount + $size > $this->limit) {
-            $size = $this->limit - $this->fetchedItemsCount;
-        }
-        $esQuery['size'] = $size;
+        $esQuery['size'] = $this->pageSize;
 
         if (0 === $esQuery['size']) {
             return [];
@@ -121,20 +116,5 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
         }
 
         return $identifiers;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rewind()
-    {
-        $this->searchAfter = $this->initialSearchAfter;
-        if (null !== $this->searchAfterUniqueKey) {
-            array_push($this->searchAfter, $this->indexType . '#' . $this->searchAfterUniqueKey);
-        }
-
-        $this->fetchedItemsCount = 0;
-        $this->items = $this->getNextItems($this->esQuery);
-        reset($this->items);
     }
 }

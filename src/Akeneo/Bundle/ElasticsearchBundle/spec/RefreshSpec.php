@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Bundle\ElasticsearchBundle;
 
-use Akeneo\Bundle\ElasticsearchBundle\Refresh;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use PhpSpec\ObjectBehavior;
 
 class RefreshSpec extends ObjectBehavior

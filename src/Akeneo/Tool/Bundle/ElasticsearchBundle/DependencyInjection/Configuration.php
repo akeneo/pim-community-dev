@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\ElasticsearchBundle\DependencyInjection;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

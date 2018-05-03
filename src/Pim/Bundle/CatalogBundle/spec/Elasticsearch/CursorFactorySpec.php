@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
