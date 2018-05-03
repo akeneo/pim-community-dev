@@ -33,7 +33,7 @@ class DatabaseJobExecutionQueueSpec extends ObjectBehavior
 
     function it_publishes_a_job_execution_message(
         $jobExecutionMessageRepository,
-        \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage
+        JobExecutionMessage $jobExecutionMessage
     ) {
         $jobExecutionMessageRepository->createJobExecutionMessage($jobExecutionMessage)->shouldBeCalled();
         $this->publish($jobExecutionMessage);
@@ -42,7 +42,7 @@ class DatabaseJobExecutionQueueSpec extends ObjectBehavior
     function it_consumes_a_job_execution_message(
         $jobExecutionMessageRepository,
         $connection,
-        \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage,
+        JobExecutionMessage $jobExecutionMessage,
         Statement $stmt
     ) {
         $jobExecutionMessageRepository->getAvailableJobExecutionMessage()->willReturn($jobExecutionMessage);

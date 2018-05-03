@@ -121,7 +121,7 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
      * Return all the arguments of the command to execute.
      * Options are considered as arguments.
      *
-     * @param \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage
+     * @param JobExecutionMessage $jobExecutionMessage
      *
      * @return array
      */

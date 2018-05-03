@@ -14,7 +14,7 @@ class DatabaseJobExecutionQueueIntegration extends TestCase
 {
     public function testPublishAJobExecutionMessage()
     {
-        $jobExecutionMessage = \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage::createJobExecutionMessage(1, ['email' => 'ziggy@akeneo.com']);
+        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage(1, ['email' => 'ziggy@akeneo.com']);
 
         $this->getQueue()->publish($jobExecutionMessage);
 

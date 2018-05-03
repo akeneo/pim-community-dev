@@ -40,9 +40,9 @@ class JobExecutionMessageRepository
     }
 
     /**
-     * @param \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage
+     * @param JobExecutionMessage $jobExecutionMessage
      */
-    public function createJobExecutionMessage(\Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage)
+    public function createJobExecutionMessage(JobExecutionMessage $jobExecutionMessage)
     {
         $sql = <<<SQL
 INSERT INTO akeneo_batch_job_execution_queue (job_execution_id, options, consumer, create_time, updated_time)
@@ -62,7 +62,7 @@ SQL;
     /**
      * @param JobExecutionMessage $jobExecutionMessage
      */
-    public function updateJobExecutionMessage(\Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage)
+    public function updateJobExecutionMessage(JobExecutionMessage $jobExecutionMessage)
     {
         $sql = <<<SQL
 UPDATE 
@@ -91,9 +91,9 @@ SQL;
      * Gets a job execution message that has not been consumed yet.
      * If there is no job execution available, it returns null.
      *
-     * @return \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage|null
+     * @return JobExecutionMessage|null
      */
-    public function getAvailableJobExecutionMessage(): ?\Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage
+    public function getAvailableJobExecutionMessage(): ?JobExecutionMessage
     {
         $sql = <<<SQL
 SELECT 
@@ -121,7 +121,7 @@ SQL;
      *
      * @return string|null
      */
-    public function getJobInstanceCode(\Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage): ?string
+    public function getJobInstanceCode(JobExecutionMessage $jobExecutionMessage): ?string
     {
         $sql = <<<SQL
 SELECT 
