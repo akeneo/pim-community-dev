@@ -10,6 +10,7 @@ use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -34,10 +35,10 @@ class ProductUpdater implements ObjectUpdaterInterface
     protected $ignoredFields = [];
 
     /**
-     * @param PropertySetterInterface         $propertySetter
-     * @param ObjectUpdaterInterface          $valuesUpdater
-     * @param array                           $supportedFields
-     * @param array                           $ignoredFields
+     * @param PropertySetterInterface $propertySetter
+     * @param ObjectUpdaterInterface  $valuesUpdater
+     * @param array                   $supportedFields
+     * @param array                   $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
@@ -117,6 +118,12 @@ class ProductUpdater implements ObjectUpdaterInterface
      *              "groups": ["akeneo_tshirt", "oro_tshirt"],
      *              "product": ["AKN_TS", "ORO_TSH"]
      *          }
+     *      },
+     *      "parent_associations": {
+     *          "XSELL": {
+     *              "groups": ["foo_group", "bar_group"],
+     *              "product": ["foo_product", "bar_product"]
+     *          }
      *      }
      * }
      */
@@ -130,7 +137,7 @@ class ProductUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $code => $value) {
-            $this->setData($product, $code, $value, $options);
+            $this->setData($product, $code, $value, $options, $data);
         }
 
         return $this;
@@ -141,8 +148,9 @@ class ProductUpdater implements ObjectUpdaterInterface
      * @param                  $field
      * @param                  $data
      * @param array            $options
+     * @param array            $context
      */
-    protected function setData(ProductInterface $product, $field, $data, array $options = []): void
+    protected function setData(ProductInterface $product, $field, $data, array $options = [], array $context = []): void
     {
         switch ($field) {
             case 'enabled':
@@ -158,6 +166,7 @@ class ProductUpdater implements ObjectUpdaterInterface
                 break;
             case 'associations':
                 $this->validateAssociationsDataType($data);
+                $this->validateParentAssociations($data, $context['parent_associations']);
                 $this->updateProductFields($product, $field, $data);
                 break;
             case 'values':
@@ -201,6 +210,34 @@ class ProductUpdater implements ObjectUpdaterInterface
             foreach ($associationTypeValues as $property => $value) {
                 $this->validateScalar('associations', $property);
                 $this->validateScalarArray('associations', $value);
+            }
+        }
+    }
+
+    /**
+     * Validate association data
+     *
+     * @param array $data
+     * @param array $parentAssociations
+     */
+    protected function validateParentAssociations(array $data, array $parentAssociations): void
+    {
+        if (!is_array($parentAssociations)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                'parent_associations',
+                static::class,
+                $parentAssociations
+            );
+        }
+
+        foreach ($data as $associationTypeCode => $associationTypeValues) {
+            foreach ($associationTypeValues as $property => $value) {
+                if (isset ($parentAssociations[$associationTypeCode][$property]) &&
+                    array_intersect($parentAssociations[$associationTypeCode][$property], $value)
+                ) {
+                    // TODO: better exception and/or message
+                    throw new InvalidArgumentException(self::class);
+                }
             }
         }
     }
