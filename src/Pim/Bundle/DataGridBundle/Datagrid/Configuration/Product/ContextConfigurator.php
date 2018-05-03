@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
@@ -11,11 +10,8 @@ use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -238,14 +234,6 @@ class ContextConfigurator implements ConfiguratorInterface
         $path = $this->getSourcePath(self::CURRENT_PRODUCT_KEY);
         $id = $this->requestParams->get('product', null);
         $object = null !== $id ? $this->objectRepository->find($id) : null;
-
-        if (!($object instanceof ProductInterface)) {
-            throw InvalidObjectException::objectExpected($object, ProductInterface::class);
-        }
-
-        if (!($object instanceof ProductModelInterface)) {
-            throw InvalidObjectException::objectExpected($object, ProductModelInterface::class);
-        }
 
         $this->configuration->offsetSetByPath($path, $object);
     }
