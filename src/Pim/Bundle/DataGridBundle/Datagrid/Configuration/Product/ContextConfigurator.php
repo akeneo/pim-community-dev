@@ -2,13 +2,17 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -46,8 +50,8 @@ class ContextConfigurator implements ConfiguratorInterface
     /** @var DatagridConfiguration */
     protected $configuration;
 
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
+    /** @var ObjectRepository */
+    protected $objectRepository;
 
     /** @var RequestParameters */
     protected $requestParams;
@@ -68,7 +72,7 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $productGroupRepository;
 
     /**
-     * @param ProductRepositoryInterface   $productRepository
+     * @param ObjectRepository             $objectRepository
      * @param AttributeRepositoryInterface $attributeRepository
      * @param RequestParameters            $requestParams
      * @param UserContext                  $userContext
@@ -77,7 +81,7 @@ class ContextConfigurator implements ConfiguratorInterface
      * @param RequestStack                 $requestStack
      */
     public function __construct(
-        ProductRepositoryInterface $productRepository,
+        ObjectRepository $objectRepository,
         AttributeRepositoryInterface $attributeRepository,
         RequestParameters $requestParams,
         UserContext $userContext,
@@ -85,7 +89,7 @@ class ContextConfigurator implements ConfiguratorInterface
         GroupRepositoryInterface $productGroupRepository,
         RequestStack $requestStack
     ) {
-        $this->productRepository = $productRepository;
+        $this->objectRepository = $objectRepository;
         $this->attributeRepository = $attributeRepository;
         $this->requestParams = $requestParams;
         $this->userContext = $userContext;
@@ -233,8 +237,17 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $path = $this->getSourcePath(self::CURRENT_PRODUCT_KEY);
         $id = $this->requestParams->get('product', null);
-        $product = null !== $id ? $this->productRepository->find($id) : null;
-        $this->configuration->offsetSetByPath($path, $product);
+        $object = null !== $id ? $this->objectRepository->find($id) : null;
+
+        if (!($object instanceof ProductInterface)) {
+            throw InvalidObjectException::objectExpected($object, ProductInterface::class);
+        }
+
+        if (!($object instanceof ProductModelInterface)) {
+            throw InvalidObjectException::objectExpected($object, ProductModelInterface::class);
+        }
+
+        $this->configuration->offsetSetByPath($path, $object);
     }
 
     /**
