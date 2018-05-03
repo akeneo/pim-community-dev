@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\AssetCategory;
 
-use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PimEnterprise\Component\ProductAsset\Model\Category;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
-use Pim\Component\Api\Hal\Link;
+use Akeneo\Tool\Component\Api\Hal\Link;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;

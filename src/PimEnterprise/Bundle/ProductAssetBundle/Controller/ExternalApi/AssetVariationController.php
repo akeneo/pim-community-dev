@@ -21,7 +21,7 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Api\Exception\ViolationHttpException;
+use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\ApiBundle\Controller\FileRemovalException;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\Asset;
 
 use Akeneo\Test\Integration\Configuration;
-use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\HttpFoundation\Response;

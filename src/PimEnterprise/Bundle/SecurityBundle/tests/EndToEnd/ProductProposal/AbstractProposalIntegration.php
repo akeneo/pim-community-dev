@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\ProductProposal;
 
 use Akeneo\Test\Integration\Configuration;
-use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 

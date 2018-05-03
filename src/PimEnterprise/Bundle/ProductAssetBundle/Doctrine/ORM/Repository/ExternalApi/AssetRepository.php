@@ -17,8 +17,8 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnexpectedResultException;
-use Pim\Component\Api\Repository\PageableRepositoryInterface;
-use Pim\Component\Api\Repository\SearchAfterPageableRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\PageableRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\SearchAfterPageableRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 

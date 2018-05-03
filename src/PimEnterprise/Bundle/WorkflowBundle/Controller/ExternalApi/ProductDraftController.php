@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi;
 
-use Pim\Component\Api\Repository\ProductRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;

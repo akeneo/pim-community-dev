@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\ProductModel;
 
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
-use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\PermissionFixturesLoader;
 use Symfony\Component\HttpFoundation\Response;

@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\Asset;
 
 use Akeneo\Test\Integration\Configuration;
-use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateListAssetIntegration extends AbstractAssetTestCase

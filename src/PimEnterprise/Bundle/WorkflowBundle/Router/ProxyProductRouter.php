@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Router;
 
-use Pim\Component\Api\Repository\ProductRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;

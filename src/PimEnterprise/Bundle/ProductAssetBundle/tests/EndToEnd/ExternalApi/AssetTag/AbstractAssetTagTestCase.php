@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\Ass
 
 use Akeneo\Component\Classification\Model\TagInterface;
 use Akeneo\Test\Integration\Configuration;
-use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 
 /**
  * @author Philippe Mossière <philippe.mossiere@akeneo.com>

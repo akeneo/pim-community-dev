@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Router;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Api\Repository\ProductRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Router\ProxyProductRouter;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;

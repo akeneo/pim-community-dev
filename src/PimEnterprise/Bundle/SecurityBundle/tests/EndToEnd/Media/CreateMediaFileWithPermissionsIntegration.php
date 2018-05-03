@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\Media;
 
 use League\Flysystem\FilesystemInterface;
-use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
-use Pim\Component\Api\Repository\ProductRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
+use Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\FileStorage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
