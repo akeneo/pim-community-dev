@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;
@@ -24,9 +26,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Controller\FileController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType;

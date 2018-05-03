@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Calculator;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;

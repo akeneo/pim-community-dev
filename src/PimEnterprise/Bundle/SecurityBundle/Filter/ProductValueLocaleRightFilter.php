@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

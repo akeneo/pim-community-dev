@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Twig;
 
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Security\Acl\Voter\FieldVote;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

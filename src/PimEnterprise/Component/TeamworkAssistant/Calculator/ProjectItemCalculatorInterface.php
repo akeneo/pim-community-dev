@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Calculator;
 
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

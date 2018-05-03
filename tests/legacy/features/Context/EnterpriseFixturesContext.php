@@ -4,6 +4,7 @@ namespace Context;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -16,7 +17,6 @@ use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;

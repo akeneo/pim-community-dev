@@ -2,12 +2,12 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Normalizer\InternalApi;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer as BaseIncompleteValuesNormalizer;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
