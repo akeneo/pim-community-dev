@@ -13,21 +13,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimCatalogVolumeMonitoringBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        $doctrineMappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\CatalogVolumeMonitoring\Volume\Model',
-        ];
-
-        $container->addCompilerPass(
-            DoctrineOrmMappingsPass::createYamlMappingDriver(
-                $doctrineMappings,
-                ['doctrine.orm.entity_manager'],
-                false
-            )
-        );
-    }
 }

@@ -5,3 +5,10 @@ services:
             - '@pim_volume_monitoring.volume.repository.aggregated_volume'
             - !tagged pim_volume_monitoring.persistence.count_query_to_aggregate
             - !tagged pim_volume_monitoring.persistence.average_max_query_to_aggregate
+
+    pim_volume_monitoring.event_listener.install_database:
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\EventListener\InstallDatabase
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }
