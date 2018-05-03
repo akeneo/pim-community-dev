@@ -36,8 +36,8 @@ Feature: Catalog updates - Remove a locale used as project
       | tshirt-lcd           | tshirt | clothing   | T-shirt LCD screen        | M          |
     And the following projects:
       | label                  | owner | due_date   | description                                  | channel   | locale | product_filters                                                              |
-      | Collection Summer 2030 | julia | 2030-10-28 | Please do your best to finish before Summer. | ecommerce | fr_FR  | [{"field":"price", "operator":"=", "value": {"amount": 5, "locale": "USD"}}] |
-      | Collection Winter 2030 | julia | 2030-08-28 | Please do your best to finish before Winter. | mobile    | en_US  | [{"field":"family.code", "operator":"IN", "value": ["tshirt"]}]              |
+      | Collection Summer 2030 | julia | 2030-10-28 | Please do your best to finish before Summer. | ecommerce | fr_FR  | [{"field":"family", "operator":"IN", "value": ["tshirt"]}] |
+      | Collection Winter 2030 | julia | 2030-08-28 | Please do your best to finish before Winter. | mobile    | en_US  | [{"field":"family", "operator":"IN", "value": ["tshirt"]}]              |
     And I am logged in as "Julia"
 
   Scenario: Remove a locale used as project filter
