@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
  * Background process launcher for mass edit Operations.
- * It internally uses the Akeneo\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher.
+ * It internally uses the Akeneo\Tool\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)

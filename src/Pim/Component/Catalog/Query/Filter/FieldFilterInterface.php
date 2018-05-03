@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Query\Filter;
 
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 
 /**
  * Filter interface

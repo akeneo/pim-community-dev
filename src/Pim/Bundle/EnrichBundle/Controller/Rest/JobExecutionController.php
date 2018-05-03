@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Akeneo\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
+use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -64,7 +64,7 @@ class JobExecutionController
     {
         $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {
-            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+            throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
         $archives = [];

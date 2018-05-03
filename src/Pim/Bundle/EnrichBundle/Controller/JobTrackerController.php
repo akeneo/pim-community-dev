@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
-use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
+use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
@@ -108,7 +108,7 @@ class JobTrackerController extends Controller
         $jobExecution = $this->jobExecutionRepo->find($id);
 
         if (null === $jobExecution) {
-            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+            throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
         if (!$this->isJobGranted($jobExecution)) {
@@ -165,7 +165,7 @@ class JobTrackerController extends Controller
         $jobExecution = $this->jobExecutionRepo->find($id);
 
         if (null === $jobExecution) {
-            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+            throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
         if (!$this->isJobGranted($jobExecution)) {
@@ -194,7 +194,7 @@ class JobTrackerController extends Controller
         $jobExecution = $this->jobExecutionRepo->find($id);
 
         if (null === $jobExecution) {
-            throw new NotFoundHttpException('Akeneo\Component\Batch\Model\JobExecution entity not found');
+            throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
         if (!$this->isJobGranted($jobExecution)) {

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Validator\Constraints;
 
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;

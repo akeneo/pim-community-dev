@@ -2,14 +2,14 @@
 
 namespace Pim\Component\Connector\Exception;
 
-use Akeneo\Component\Batch\Item\InvalidItemException as BaseInvalidItemException;
-use Akeneo\Component\Batch\Item\InvalidItemInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException as BaseInvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
- * Extends the {@link  Akeneo\Component\Batch\Item\InvalidItemException}
+ * Extends the {@link  Akeneo\Tool\Component\Batch\Item\InvalidItemException}
  * to be able to build one from a Symfony constraints violations list.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>

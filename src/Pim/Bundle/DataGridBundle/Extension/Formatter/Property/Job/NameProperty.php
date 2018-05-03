@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Job;
 
-use Akeneo\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
 use Symfony\Component\Translation\TranslatorInterface;
 

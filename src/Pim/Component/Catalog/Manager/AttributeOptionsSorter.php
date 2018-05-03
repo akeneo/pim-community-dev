@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Manager;
 
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**

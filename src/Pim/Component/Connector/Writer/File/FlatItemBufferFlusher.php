@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Writer\WriterInterface;

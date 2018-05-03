@@ -108,12 +108,12 @@ class AppKernel extends Kernel
     {
         return [
             new Akeneo\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
-            new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle(),
-            new Akeneo\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
+            new Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle(),
+            new Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
             new Akeneo\Bundle\BufferBundle\AkeneoBufferBundle(),
             new Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
             new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
-            new Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
+            new Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),

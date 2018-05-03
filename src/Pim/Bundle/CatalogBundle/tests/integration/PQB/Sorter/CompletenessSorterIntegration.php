@@ -97,7 +97,7 @@ class CompletenessSorterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "locale" does not expect an empty value.
      */
     public function testErrorLocaleNotEmpty()
@@ -109,7 +109,7 @@ class CompletenessSorterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "scope" does not expect an empty value.
      */
     public function testErrorScopeNotEmpty()

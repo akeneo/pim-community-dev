@@ -129,7 +129,7 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "updated" expects an array with valid data, should contain 2 strings with the format "yyyy-mm-dd H:i:s".
      */
     public function testErrorDataIsMalformedWithEmptyArray()
@@ -138,7 +138,7 @@ class DateTimeFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "updated" expects a string with the format "yyyy-mm-dd H:i:s" as data, "2016-12-12T00:00:00" given.
      */
     public function testErrorDataIsMalformedWithISODate()

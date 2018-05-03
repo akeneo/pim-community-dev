@@ -26,14 +26,14 @@ $cUtilsDeps    = [
     'Doctrine\Common\Util\Inflector',
     'Doctrine\Common\Util\ClassUtils',
     'Doctrine\Common\Persistence\ObjectRepository',
-    'Akeneo\Component\StorageUtils',
+    'Akeneo\Tool\Component\StorageUtils',
 ];
 
 $cDeps = array_merge($cBusinessDeps, $cUtilsDeps);
 
 $cAkeneoRules = [
     new Rule('Akeneo\Component\Analytics', $cDeps, RuleInterface::TYPE_ONLY),
-    new Rule('Akeneo\Component\Batch', array_merge($cDeps, [
+    new Rule('Akeneo\Tool\Component\Batch', array_merge($cDeps, [
         'Symfony\Component\Console'
     ]),
     RuleInterface::TYPE_ONLY),
@@ -68,7 +68,7 @@ $cAkeneoRules = [
             ]),
             RuleInterface::TYPE_ONLY
     ),
-    new Rule('Akeneo\Component\StorageUtils', $cDeps, RuleInterface::TYPE_ONLY),
+    new Rule('Akeneo\Tool\Component\StorageUtils', $cDeps, RuleInterface::TYPE_ONLY),
     new Rule('Akeneo\Component\Versioning', $cDeps, RuleInterface::TYPE_ONLY),
 ];
 
@@ -88,7 +88,7 @@ $cPimRules = [
         'Pim\Component\Connector',
         array_merge($cDeps, [
             'Box\Spout',                     // to import/export CSV and XLSX files
-            'Akeneo\Component\Batch',        // used as base import/export system
+            'Akeneo\Tool\Component\Batch',        // used as base import/export system
             'Akeneo\Component\Buffer',       // to handle large files
             'Akeneo\Component\FileStorage',  // to import/export product's media
             'Akeneo\Component\Localization', // to use date and number formats in configuration

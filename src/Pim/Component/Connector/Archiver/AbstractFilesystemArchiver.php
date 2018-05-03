@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Archiver;
 
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use League\Flysystem\Filesystem;
 
 /**

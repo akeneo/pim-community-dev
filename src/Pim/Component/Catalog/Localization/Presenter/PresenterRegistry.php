@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Localization\Presenter;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * The PresenterRegistry registers the presenters to display attribute values readable information. The matching

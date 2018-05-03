@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Integration\integration\BatchBundle\Command;
 
-use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Connection;

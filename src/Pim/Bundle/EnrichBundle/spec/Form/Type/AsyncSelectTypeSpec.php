@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Gedmo\Tree\RepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Form\Factory\IdentifiableModelTransformerFactory;

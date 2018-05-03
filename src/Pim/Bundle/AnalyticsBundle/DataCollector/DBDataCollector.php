@@ -3,7 +3,7 @@
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
-use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**

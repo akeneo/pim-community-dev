@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Launcher;
 
-use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
-use Akeneo\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Bundle\BatchBundle\Command\BatchCommand;
+use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;

@@ -1,0 +1,2 @@
+parameters:
+    akeneo_storage_utils.repository.base_cached_object.class: Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository

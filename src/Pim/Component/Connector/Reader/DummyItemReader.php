@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Reader;
 
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 
 /**
  * Dummy step, can't be used unless you have a concrete implementation
