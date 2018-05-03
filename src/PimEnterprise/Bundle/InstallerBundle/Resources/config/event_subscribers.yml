@@ -1,0 +1,7 @@
+services:
+    pimee_installer.event_subscriber.mass_upload_assets:
+        class: PimEnterprise\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber
+        arguments:
+            - '@pim_installer.fixture_loader.path_provider'
+        tags:
+            - { name: kernel.event_subscriber }
