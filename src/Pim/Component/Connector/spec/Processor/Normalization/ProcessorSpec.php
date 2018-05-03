@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Processor\Normalization;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

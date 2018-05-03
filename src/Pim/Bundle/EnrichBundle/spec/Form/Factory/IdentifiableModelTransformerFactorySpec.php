@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Factory;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\DataTransformerInterface;

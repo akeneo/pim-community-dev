@@ -87,7 +87,7 @@ class OptionsFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "a_multi_select" expects an array as data, "string" given.
      */
     public function testErrorDataIsMalformed()

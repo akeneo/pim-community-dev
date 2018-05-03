@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Elasticsearch\Filter\Attribute;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\AbstractAttributeFilter;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;

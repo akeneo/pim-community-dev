@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
  *
  * In this implementation, methods that generate missing completenesses do NOT save the products.
  * Complenesses are only added to the products in memory. The save of the products (and of the compltenesses)
- * should be handled by the a Akeneo\Component\StorageUtils\Saver\SaverInterface service.
+ * should be handled by the a Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface service.
  *
  * @author    Julien Janvier (j.janvier@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

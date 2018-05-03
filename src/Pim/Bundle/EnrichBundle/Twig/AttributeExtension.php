@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Twig extension to get attribute icons

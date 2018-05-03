@@ -37,3 +37,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Api/Akeneo\\Too
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ApiBundle/Akeneo\\Tool\\Bundle\\ApiBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Batch/Akeneo\\Tool\\Component\\Batch/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BatchBundle/Akeneo\\Tool\\Bundle\\BatchBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\BatchQueue/Akeneo\\Tool\\Component\\BatchQueue/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\BatchQueueBundle/Akeneo\\Tool\\Bundle\\BatchQueueBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\StorageUtils/Akeneo\\Tool\\Component\\StorageUtils/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\StorageUtilsBundle/Akeneo\\Tool\\Bundle\\StorageUtilsBundle/g'

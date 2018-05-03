@@ -3,10 +3,10 @@
 namespace spec\Akeneo\Tool\Component\Api\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Component\StorageUtils\Exception\MandatoryPropertyException;
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\MandatoryPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Exception;
 use PhpSpec\ObjectBehavior;

@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\LocaleInterface;
 

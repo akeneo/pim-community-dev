@@ -1,6 +1,6 @@
 parameters:
-    pim_catalog.remover.base.class:                  Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
-    pim_catalog.remover.base_options_resolver.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver
+    pim_catalog.remover.base.class:                  Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover
+    pim_catalog.remover.base_options_resolver.class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver
     pim_catalog.remover.channel.class:               Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover
     pim_catalog.remover.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRemover
     pim_catalog.remover.family_variant.class: Pim\Component\Catalog\Updater\Remover\FamilyVariantRemover

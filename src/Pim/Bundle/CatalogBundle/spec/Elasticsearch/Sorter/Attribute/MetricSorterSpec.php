@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Attribute\MetricSorter;

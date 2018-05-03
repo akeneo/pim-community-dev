@@ -1,6 +1,6 @@
 parameters:
-    pim_enrich.paginator.paginator_factory.class: Akeneo\Component\StorageUtils\Cursor\PaginatorFactory
-    pim_enrich.paginator.class:                   Akeneo\Component\StorageUtils\Cursor\Paginator
+    pim_enrich.paginator.paginator_factory.class: Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactory
+    pim_enrich.paginator.class:                   Akeneo\Tool\Component\StorageUtils\Cursor\Paginator
 
 services:
     pim_enrich.product.paginator:

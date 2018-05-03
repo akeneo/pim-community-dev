@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat\Product;
 
-use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter;

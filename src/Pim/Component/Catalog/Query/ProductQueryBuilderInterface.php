@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Query;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 
 /**

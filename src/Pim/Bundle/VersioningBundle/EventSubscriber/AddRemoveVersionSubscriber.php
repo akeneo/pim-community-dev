@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Akeneo\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\AbstractFieldFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter;

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 

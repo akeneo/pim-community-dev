@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UIBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;

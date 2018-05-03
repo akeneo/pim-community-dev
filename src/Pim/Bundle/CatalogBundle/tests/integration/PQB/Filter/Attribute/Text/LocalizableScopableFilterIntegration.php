@@ -139,7 +139,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Attribute "a_localizable_scopable_text" expects a locale, none given.
      */
     public function testErrorLocalizable()

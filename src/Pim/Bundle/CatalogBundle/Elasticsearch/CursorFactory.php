@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>

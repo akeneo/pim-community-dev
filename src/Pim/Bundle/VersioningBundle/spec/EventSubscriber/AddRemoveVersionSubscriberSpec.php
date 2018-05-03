@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Akeneo\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Akeneo\Component\Versioning\Model\VersionInterface;
 use PhpSpec\ObjectBehavior;

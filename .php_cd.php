@@ -26,7 +26,7 @@ $cUtilsDeps    = [
     'Doctrine\Common\Util\Inflector',
     'Doctrine\Common\Util\ClassUtils',
     'Doctrine\Common\Persistence\ObjectRepository',
-    'Akeneo\Component\StorageUtils',
+    'Akeneo\Tool\Component\StorageUtils',
 ];
 
 $cDeps = array_merge($cBusinessDeps, $cUtilsDeps);
@@ -68,7 +68,7 @@ $cAkeneoRules = [
             ]),
             RuleInterface::TYPE_ONLY
     ),
-    new Rule('Akeneo\Component\StorageUtils', $cDeps, RuleInterface::TYPE_ONLY),
+    new Rule('Akeneo\Tool\Component\StorageUtils', $cDeps, RuleInterface::TYPE_ONLY),
     new Rule('Akeneo\Component\Versioning', $cDeps, RuleInterface::TYPE_ONLY),
 ];
 
