@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 
 /**
  * Updates a locale

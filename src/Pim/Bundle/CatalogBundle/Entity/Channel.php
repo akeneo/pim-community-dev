@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 
 /**
  * Channel entity
