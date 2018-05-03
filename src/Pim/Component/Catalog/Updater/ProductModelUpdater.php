@@ -13,6 +13,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Association\ParentAssociationsFilter;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
@@ -40,11 +41,15 @@ class ProductModelUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $productModelRepository;
 
+    /** @var ParentAssociationsFilter */
+    private $parentAssociationsFilter;
+
     /**
      * @param PropertySetterInterface               $propertySetter
      * @param ObjectUpdaterInterface                $valuesUpdater
      * @param IdentifiableObjectRepositoryInterface $familyVariantRepository
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
+     * @param ParentAssociationsFilter              $parentAssociationsFilter
      * @param array                                 $supportedFields
      * @param array                                 $ignoredFields
      */
@@ -53,6 +58,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         ObjectUpdaterInterface $valuesUpdater,
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
+        ParentAssociationsFilter $parentAssociationsFilter,
         array $supportedFields,
         array $ignoredFields
     ) {
@@ -62,6 +68,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         $this->productModelRepository = $productModelRepository;
         $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
+        $this->parentAssociationsFilter = $parentAssociationsFilter;
     }
 
     /**
@@ -82,10 +89,29 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $code => $value) {
-            $this->setData($productModel, $code, $value, $options);
+            $filteredValue = $this->filterData($code, $value, $data);
+            $this->setData($productModel, $code, $filteredValue, $options);
         }
 
         return $this;
+    }
+
+    /**
+     * @param                  $field
+     * @param                  $data
+     * @param array            $context
+     * @return array
+     */
+    protected function filterData($field, $data, array $context = [])
+    {
+        switch ($field) {
+            case 'associations':
+                $this->validateAssociationsDataType($data);
+                $data = $this->filterParentAssociations($data, $context['parent_associations']);
+                break;
+        }
+
+        return $data;
     }
 
     /**
@@ -121,6 +147,24 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                     throw UnknownPropertyException::unknownProperty($field);
                 }
         }
+    }
+
+    /**
+     * Validate association data
+     *
+     * @param array $associations
+     * @param array $parentAssociations
+     *
+     * @return array
+     */
+    protected function filterParentAssociations(array $associations, array $parentAssociations): array
+    {
+        $associations = $this->parentAssociationsFilter->filterParentAssociationsTypes(
+            $associations,
+            $parentAssociations
+        );
+
+        return $associations;
     }
 
     /**

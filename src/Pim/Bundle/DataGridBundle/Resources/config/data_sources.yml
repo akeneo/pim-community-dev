@@ -181,4 +181,5 @@ services:
         calls:
             - [addProductDatasource, ['pim_datasource_product']]
             - [addProductDatasource, ['pim_datasource_associated_product']]
+            - [addProductDatasource, ['pim_datasource_associated_product_model']]
             - [addProductDatasource, ['pim_datasource_group_product']]

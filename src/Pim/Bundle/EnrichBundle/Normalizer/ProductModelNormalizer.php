@@ -246,14 +246,14 @@ class ProductModelNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param ProductModelInterface $product
+     * @param ProductModelInterface $productModel
      *
      * @return array
      */
-    protected function getAssociationMeta(ProductModelInterface $product)
+    protected function getAssociationMeta(ProductModelInterface $productModel)
     {
         $meta = [];
-        $associations = $product->getAssociations();
+        $associations = $productModel->getAssociations();
 
         foreach ($associations as $association) {
             $associationType = $association->getAssociationType();
