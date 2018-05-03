@@ -18,7 +18,6 @@ parameters:
     pim_catalog.validator.constraint.attribute_type_for_option.class:      Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOptionValidator
     pim_catalog.validator.constraint.is_reference_data_configured.class:   Pim\Component\Catalog\Validator\Constraints\IsReferenceDataConfiguredValidator
     pim_catalog.validator.constraint.not_null_properties.class:            Pim\Component\Catalog\Validator\Constraints\NotNullPropertiesValidator
-    pim_catalog.validator.constraints.locale_validator.class:              Pim\Component\Catalog\Validator\Constraints\LocaleValidator
     pim_catalog.validator.constraints.channel_validator.class:             Pim\Component\Catalog\Validator\Constraints\ChannelValidator
     pim_catalog.validator.constraints.is_root_category.class:              Pim\Component\Catalog\Validator\Constraints\IsRootCategoryValidator
     pim_catalog.validator.constraints.conversion_units.class:              Pim\Component\Catalog\Validator\Constraints\ConversionUnitsValidator
@@ -57,7 +56,6 @@ parameters:
     pim_catalog.validator.constraint.immutable_variant_axis_values.class:  Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator
     pim_catalog.validator.constraint.family_attribute_used_as_axis.class:  Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxisValidator
     pim_catalog.validator.constraint.unique_product.class:                 Pim\Component\Catalog\Validator\Constraints\UniqueEntityValidator
-    pim_catalog.validator.constraint.activated_locale.class:               Pim\Component\Catalog\Validator\Constraints\ActivatedLocaleValidator
 
 services:
     # Helpers
@@ -160,13 +158,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 
-    pim_catalog.validator.constraints.locale_validator:
-        class: '%pim_catalog.validator.constraints.locale_validator.class%'
-        arguments:
-            - '@pim_catalog.repository.locale'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_locale_validator }
-
     pim_catalog.validator.constraints.channel_validator:
         class: '%pim_catalog.validator.constraints.channel_validator.class%'
         arguments:
@@ -262,7 +253,7 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_conversion_units_validator }
 
-    pim_catalog.validator.constraints.is_locale_activated:
+    pim_catalog.validator.constraints.is_currency_activated:
         class: '%pim_catalog.validator.constraints.is_currency_activated.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_is_currency_activated_validator }
@@ -430,9 +421,3 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_product_validator }
 
-    pim_catalog.validator.constraint.activated_locale:
-        class: '%pim_catalog.validator.constraint.activated_locale.class%'
-        arguments:
-            - '@pim_catalog.repository.cached_locale'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_activated_locale_validator }
