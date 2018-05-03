@@ -74,7 +74,7 @@ class JobExecutionManager
     /**
      * Get the exit status of job execution associated to a job execution message.
      *
-     * @param \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage
+     * @param JobExecutionMessage $jobExecutionMessage
      *
      * @return ExitStatus|null
      */
@@ -93,7 +93,7 @@ class JobExecutionManager
     /**
      * Update the status of a job execution associated to a job execution message.
      *
-     * @param \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage
+     * @param JobExecutionMessage $jobExecutionMessage
      */
     public function markAsFailed(JobExecutionMessage $jobExecutionMessage): void
     {
@@ -119,7 +119,7 @@ SQL;
     /**
      * Update the health check of the job execution associated to a job execution message.
      *
-     * @param \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage $jobExecutionMessage
+     * @param JobExecutionMessage $jobExecutionMessage
      */
     public function updateHealthCheck(JobExecutionMessage $jobExecutionMessage): void
     {

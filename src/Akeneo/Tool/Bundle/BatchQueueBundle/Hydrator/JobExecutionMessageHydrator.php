@@ -41,7 +41,7 @@ class JobExecutionMessageHydrator
      *
      * @throws MissingOptionsException
      *
-     * @return \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage
+     * @return JobExecutionMessage
      */
     public function hydrate(array $row): JobExecutionMessage
     {

@@ -50,13 +50,13 @@ class QueueJobLauncher implements JobLauncherInterface
     private $eventDispatcher;
 
     /**
-     * @param JobRepositoryInterface                                             $jobRepository
-     * @param JobParametersFactory                                               $jobParametersFactory
-     * @param JobRegistry                                                        $jobRegistry
-     * @param JobParametersValidator                                             $jobParametersValidator
-     * @param \Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface $queue
-     * @param string                                                             $environment
-     * @param EventDispatcherInterface                                           $eventDispatcher
+     * @param JobRepositoryInterface     $jobRepository
+     * @param JobParametersFactory       $jobParametersFactory
+     * @param JobRegistry                $jobRegistry
+     * @param JobParametersValidator     $jobParametersValidator
+     * @param JobExecutionQueueInterface $queue
+     * @param string                     $environment
+     * @param EventDispatcherInterface   $eventDispatcher
      */
     public function __construct(
         JobRepositoryInterface $jobRepository,
