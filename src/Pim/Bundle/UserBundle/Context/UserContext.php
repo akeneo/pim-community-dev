@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\UserBundle\Context;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

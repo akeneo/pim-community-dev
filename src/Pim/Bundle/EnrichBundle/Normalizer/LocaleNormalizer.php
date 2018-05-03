@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
