@@ -72,8 +72,8 @@ suites:
         spec_path: src/Akeneo/Bundle/ClassificationBundle
         src_path: src/Akeneo/Bundle/ClassificationBundle
     ElasticsearchBundle:
-        namespace: Akeneo\Bundle\ElasticsearchBundle
-        psr4_prefix: Akeneo\Bundle\ElasticsearchBundle
+        namespace: Akeneo\Tool\Bundle\ElasticsearchBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ElasticsearchBundle
         spec_path: src/Akeneo/Bundle/ElasticsearchBundle
         src_path: src/Akeneo/Bundle/ElasticsearchBundle
     StorageUtilsBundle:

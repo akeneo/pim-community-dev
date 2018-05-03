@@ -1,18 +1,20 @@
 <?php
 
-namespace Akeneo\Bundle\ElasticsearchBundle\Cursor;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
+ * Cursor factory to instantiate an elasticsearch bounded cursor
+ *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FromSizeCursorFactory implements CursorFactoryInterface
+class SearchAfterSizeCursorFactory implements CursorFactoryInterface
 {
     /** @var Client */
     protected $searchEngine;
@@ -61,10 +63,11 @@ class FromSizeCursorFactory implements CursorFactoryInterface
             $this->searchEngine,
             $this->cursorableRepository,
             $queryBuilder,
+            $options['search_after'],
             $this->indexType,
             $options['page_size'],
             $options['limit'],
-            $options['from']
+            $options['search_after_unique_key']
         );
     }
 
@@ -79,19 +82,22 @@ class FromSizeCursorFactory implements CursorFactoryInterface
         $resolver->setDefined(
             [
                 'page_size',
-                'limit',
-                'from',
+                'search_after',
+                'search_after_unique_key',
+                'limit'
             ]
         );
         $resolver->setDefaults(
             [
                 'page_size' => $this->pageSize,
-                'from' => 0
+                'search_after' => [],
+                'search_after_unique_key' => null
             ]
         );
         $resolver->setAllowedTypes('page_size', 'int');
+        $resolver->setAllowedTypes('search_after', 'array');
+        $resolver->setAllowedTypes('search_after_unique_key', ['string', 'null']);
         $resolver->setAllowedTypes('limit', 'int');
-        $resolver->setAllowedTypes('from', 'int');
 
         $options = $resolver->resolve($options);
 

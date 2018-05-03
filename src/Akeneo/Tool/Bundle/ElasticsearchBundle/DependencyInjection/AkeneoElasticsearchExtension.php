@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Bundle\ElasticsearchBundle\DependencyInjection;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\DependencyInjection;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;

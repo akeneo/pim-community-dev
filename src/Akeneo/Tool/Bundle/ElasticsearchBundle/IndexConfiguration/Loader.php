@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration;
 
 use Symfony\Component\Yaml\Parser;
 

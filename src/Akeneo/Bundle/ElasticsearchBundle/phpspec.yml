@@ -1,5 +1,5 @@
 suites:
     default:
-        namespace: Akeneo\Bundle\ElasticsearchBundle
-        psr4_prefix: Akeneo\Bundle\ElasticsearchBundle
+        namespace: Akeneo\Tool\Bundle\ElasticsearchBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ElasticsearchBundle
         src_path: .

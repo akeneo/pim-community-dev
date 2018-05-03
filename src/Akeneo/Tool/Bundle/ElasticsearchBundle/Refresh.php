@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\ElasticsearchBundle;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
 /**
  * Object that represents refresh parameter to control when changes made by this request are made visible to search.

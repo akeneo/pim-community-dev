@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\ElasticsearchBundle\Exception;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Exception;
 
 /**
  * Exception thrown when the identifier key is missing

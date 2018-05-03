@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Bundle\ElasticsearchBundle\tests\integration;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\tests\integration;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 

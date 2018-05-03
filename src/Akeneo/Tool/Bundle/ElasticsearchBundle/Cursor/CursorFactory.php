@@ -1,13 +1,15 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Elasticsearch;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 
 /**
- * @author    Julien Janvier <j.janvier@gmail.com>
+ * Cursor factory to instantiate an elasticsearch cursor
+ *
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -15,12 +17,6 @@ class CursorFactory implements CursorFactoryInterface
 {
     /** @var Client */
     protected $searchEngine;
-
-    /** @var CursorableRepositoryInterface */
-    private $productRepository;
-
-    /** @var CursorableRepositoryInterface */
-    private $productModelRepository;
 
     /** @var string */
     protected $cursorClassName;
@@ -31,23 +27,26 @@ class CursorFactory implements CursorFactoryInterface
     /** @var string */
     protected $indexType;
 
+    /** @var CursorableRepositoryInterface */
+    protected $cursorableRepository;
+
     /**
      * @param Client                        $searchEngine
-     * @param CursorableRepositoryInterface $productRepository
-     * @param CursorableRepositoryInterface $productModelRepository
+     * @param CursorableRepositoryInterface $repository
+     * @param string                        $cursorClassName
      * @param int                           $pageSize
      * @param string                        $indexType
      */
     public function __construct(
         Client $searchEngine,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
-        int $pageSize,
-        string $indexType
+        CursorableRepositoryInterface $repository,
+        $cursorClassName,
+        $pageSize,
+        $indexType
     ) {
         $this->searchEngine = $searchEngine;
-        $this->productRepository = $productRepository;
-        $this->productModelRepository = $productModelRepository;
+        $this->cursorableRepository = $repository;
+        $this->cursorClassName = $cursorClassName;
         $this->pageSize = $pageSize;
         $this->indexType = $indexType;
     }
@@ -59,12 +58,9 @@ class CursorFactory implements CursorFactoryInterface
     {
         $pageSize = !isset($options['page_size']) ? $this->pageSize : $options['page_size'];
 
-        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['document_type']);
-
-        return new Cursor(
+        return new $this->cursorClassName(
             $this->searchEngine,
-            $this->productRepository,
-            $this->productModelRepository,
+            $this->cursorableRepository,
             $queryBuilder,
             $this->indexType,
             $pageSize

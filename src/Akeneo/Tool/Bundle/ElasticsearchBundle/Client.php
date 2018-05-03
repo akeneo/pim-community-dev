@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Bundle\ElasticsearchBundle;
+namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
-use Akeneo\Bundle\ElasticsearchBundle\Exception\IndexationException;
-use Akeneo\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 
