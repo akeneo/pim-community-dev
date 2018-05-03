@@ -437,7 +437,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
                 payload:
                     standardPropertyName: labels
         locale:
-            - Pim\Component\Catalog\Validator\Constraints\Locale:
+            - Akeneo\Channel\Component\Validator\Constraint\Locale:
                 payload:
                     standardPropertyName: labels
 
@@ -475,6 +475,6 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
                 payload:
                   standardPropertyName: labels
         locale:
-            - Pim\Component\Catalog\Validator\Constraints\Locale:
+            - Akeneo\Channel\Component\Validator\Constraint\Locale:
                 payload:
                   standardPropertyName: labels

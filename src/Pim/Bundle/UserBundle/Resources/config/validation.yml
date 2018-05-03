@@ -44,7 +44,7 @@ Pim\Component\User\Model\User:
             - NotBlank: ~
         catalogLocale:
             - NotBlank: ~
-            - Pim\Component\Catalog\Validator\Constraints\ActivatedLocale: ~
+            - Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale: ~
         phone:
             - Regex:
                 pattern: '/^\+[0-9]+$/'

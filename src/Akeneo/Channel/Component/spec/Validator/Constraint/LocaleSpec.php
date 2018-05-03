@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Validator\Constraints;
+namespace spec\Akeneo\Channel\Component\Validator\Constraint;
 
 use PhpSpec\ObjectBehavior;
 
@@ -8,7 +8,7 @@ class LocaleSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Validator\Constraints\Locale');
+        $this->shouldHaveType('Akeneo\Channel\Component\Validator\Constraint\Locale');
     }
 
     function it_has_message()
