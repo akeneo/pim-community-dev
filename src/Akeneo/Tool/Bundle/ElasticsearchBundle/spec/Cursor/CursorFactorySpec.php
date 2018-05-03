@@ -1,13 +1,14 @@
 <?php
 
-namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
+namespace spec\Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\Cursor;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\CursorFactory;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 class CursorFactorySpec extends ObjectBehavior
 {
@@ -26,8 +27,8 @@ class CursorFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\ElasticsearchBundle\Cursor\CursorFactory');
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface');
+        $this->shouldHaveType(CursorFactory::class);
+        $this->shouldImplement(CursorFactoryInterface::class);
     }
 
     function it_creates_a_cursor($searchEngine)
@@ -39,6 +40,6 @@ class CursorFactorySpec extends ObjectBehavior
             ]
         ]);
 
-        $this->createCursor([])->shouldBeAnInstanceOf('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
+        $this->createCursor([])->shouldBeAnInstanceOf(CursorInterface::class);
     }
 }

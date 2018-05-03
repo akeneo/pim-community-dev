@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\ElasticsearchBundle\Command;
+namespace spec\Akeneo\Tool\Bundle\ElasticsearchBundle\Command;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;

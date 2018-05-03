@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
+namespace spec\Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\FromSizeCursor;

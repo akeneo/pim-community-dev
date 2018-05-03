@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\ElasticsearchBundle;
+namespace spec\Akeneo\Tool\Bundle\ElasticsearchBundle;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
