@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
+namespace spec\Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\FromSizeCursor;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursor;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 
-class FromSizeCursorSpec extends ObjectBehavior
+class SearchAfterSizeCursorSpec extends ObjectBehavior
 {
     function let(
         Client $esClient,
@@ -23,7 +23,7 @@ class FromSizeCursorSpec extends ObjectBehavior
         $repository->getItemsFromIdentifiers(['baz', 'foo'])->willReturn($data);
 
         $esClient->search('pim_catalog_product', [
-            'from' => 0,
+            'search_after' => ['pim_catalog_product#bar'],
             'size' => 2,
             'sort' => ['_uid' => 'asc']
         ])
@@ -47,16 +47,17 @@ class FromSizeCursorSpec extends ObjectBehavior
             $esClient,
             $repository,
             [],
+            [],
             'pim_catalog_product',
             3,
             2,
-            0
+            'bar'
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(FromSizeCursor::class);
+        $this->shouldHaveType(SearchAfterSizeCursor::class);
         $this->shouldImplement(CursorInterface::class);
     }
 
@@ -78,7 +79,7 @@ class FromSizeCursorSpec extends ObjectBehavior
             [
                 'size' => 2,
                 'sort' => ['_uid' => 'asc'],
-                'from' => 2
+                'search_after' => ['pim_catalog_product#foo']
             ])
             ->willReturn([
                 'hits' => [
@@ -96,13 +97,13 @@ class FromSizeCursorSpec extends ObjectBehavior
             [
                 'size' => 2,
                 'sort' => ['_uid' => 'asc'],
-                'from' => 3
+                'search_after' => ['pim_catalog_product#fum']
             ])->willReturn([
-            'hits' => [
-                'total' => 4,
-                'hits' => []
-            ]
-        ]);
+                'hits' => [
+                    'total' => 4,
+                    'hits' => []
+                ]
+            ]);
 
         $page1 = [$productBaz, $productFoo];
         $page2 = [$productFum];

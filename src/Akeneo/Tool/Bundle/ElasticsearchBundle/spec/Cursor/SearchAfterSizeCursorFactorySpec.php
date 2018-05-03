@@ -1,9 +1,12 @@
 <?php
 
-namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
+namespace spec\Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursor;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursorFactory;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -28,8 +31,8 @@ class SearchAfterSizeCursorFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Bundle\ElasticsearchBundle\Cursor\SearchAfterSizeCursorFactory');
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface');
+        $this->shouldHaveType(SearchAfterSizeCursorFactory::class);
+        $this->shouldImplement(CursorFactoryInterface::class);
     }
 
     function it_creates_a_cursor($searchEngine)
@@ -42,7 +45,7 @@ class SearchAfterSizeCursorFactorySpec extends ObjectBehavior
         ]);
 
         $this->createCursor([], ['page_size' => 100, 'limit' => 150, 'search_after' => ['foo']])
-            ->shouldBeAnInstanceOf('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
+            ->shouldBeAnInstanceOf(CursorInterface::class);
     }
 
     function it_creates_a_cursor_with_search_after_identifier($searchEngine)
@@ -57,6 +60,6 @@ class SearchAfterSizeCursorFactorySpec extends ObjectBehavior
         ]);
 
         $this->createCursor([], ['page_size' => 100, 'limit' => 150, 'search_after' => ['2017-12-12'], 'search_after_unique_key' => 'foo'])
-            ->shouldBeAnInstanceOf('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
+            ->shouldBeAnInstanceOf(CursorInterface::class);
     }
 }
