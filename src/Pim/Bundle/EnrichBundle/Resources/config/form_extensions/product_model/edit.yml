@@ -185,6 +185,7 @@ extensions:
         position: 110
         config:
             aclAddAssociations: pim_enrich_associations_edit
+            datagridName: 'association-product-model-grid'
 
     pim-product-model-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector

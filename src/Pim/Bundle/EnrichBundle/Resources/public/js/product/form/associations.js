@@ -74,7 +74,7 @@ define(
 
                 this.datagrids = {
                     products: {
-                        name: 'association-product-grid',
+                        name: this.config.datagridName,
                         getInitialParams: function (associationType) {
                             let params = {
                                 product: this.getFormData().meta.id
@@ -182,7 +182,8 @@ define(
                                 {code: this.getCurrentAssociationType()}
                             ),
                             addAssociationsLabel: __('pim_enrich.form.product.tab.associations.add_associations'),
-                            addAssociationVisible: this.isAddAssociationsVisible()
+                            addAssociationVisible: this.isAddAssociationsVisible(),
+                            datagridName: this.config.datagridName
                         })
                     );
                     this.renderPanes();
