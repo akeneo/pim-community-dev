@@ -248,7 +248,6 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
         $pqb->addFilter('entity_type', '=', ProductInterface::class, Argument::cetera())->shouldBeCalled();
         $pqb->addFilter('parent', Argument::cetera())->shouldNotBeCalled();
-        $pqb->addFilter('attributes_for_this_level', Argument::cetera())->shouldNotBeCalled();
         $pqb->execute()->willReturn($cursor);
 
         $this->execute()->shouldReturn($cursor);
