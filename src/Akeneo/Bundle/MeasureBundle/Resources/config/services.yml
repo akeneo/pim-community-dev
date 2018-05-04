@@ -1,6 +1,6 @@
 parameters:
-    akeneo_measure.convert.measure_converter.class: Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter
-    akeneo_measure.manager.measure_manager.class:   Akeneo\Bundle\MeasureBundle\Manager\MeasureManager
+    akeneo_measure.convert.measure_converter.class: Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter
+    akeneo_measure.manager.measure_manager.class:   Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager
     akeneo_measure.measures_config: ~
 
 services:

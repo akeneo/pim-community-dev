@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
-use Akeneo\Bundle\MeasureBundle\Family\LengthFamilyInterface;
-use Akeneo\Bundle\MeasureBundle\Family\WeightFamilyInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;

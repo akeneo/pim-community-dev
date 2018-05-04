@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Bundle\MeasureBundle\Manager;
 
-use Akeneo\Bundle\MeasureBundle\Family\WeightFamilyInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Yaml\Yaml;
 

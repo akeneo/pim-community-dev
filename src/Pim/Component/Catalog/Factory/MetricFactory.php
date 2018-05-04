@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Factory;
 
-use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Bundle\MeasureBundle\Exception\MeasureException;
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException;
+use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Component\Catalog\Model\MetricInterface;
 
 /**

@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\Bundle\MeasureBundle\Convert;
 
-use Akeneo\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
-use Akeneo\Bundle\MeasureBundle\Exception\UnknownMeasureException;
-use Akeneo\Bundle\MeasureBundle\Family\WeightFamilyInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException;
+use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Yaml\Yaml;

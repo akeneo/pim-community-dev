@@ -65,7 +65,7 @@ parameters:
 
 services:
     akeneo_measure.measure_converter:
-        class: Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter
+        class: Akeneo\Tool\Bundle\MeasureBundleundle
         arguments: [%akeneo_measure.measures_config%]
 ```
 
@@ -123,7 +123,7 @@ Optionally but recommended, a new class extending family class can be created. I
 Here we created "MyLengthMeasure" new class extending LengthMeasure to add "Dong" unit constant.
 
 ```php
-use Akeneo\Bundle\MeasureBundle\Family\LengthFamilyInterface;
+use Akeneo\Bundle\MeasurAkeneo\Tool\Bundle\MeasureBundleInterface;
 
 /**
  * Override LengthFamily interface to add Dong measure constant
