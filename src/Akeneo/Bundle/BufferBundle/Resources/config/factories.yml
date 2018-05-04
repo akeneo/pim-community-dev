@@ -1,13 +1,13 @@
 parameters:
-    akeneo_buffer.factory.buffer.class: Akeneo\Component\Buffer\BufferFactory
+    akeneo_buffer.factory.buffer.class: Akeneo\Tool\Component\Buffer\BufferFactory
 
 services:
     akeneo_buffer.factory.array_buffer:
         class: '%akeneo_buffer.factory.buffer.class%'
         arguments:
-            - Akeneo\Component\Buffer\ArrayBuffer
+            - Akeneo\Tool\Component\Buffer\ArrayBuffer
 
     akeneo_buffer.factory.json_file_buffer:
         class: '%akeneo_buffer.factory.buffer.class%'
         arguments:
-            - Akeneo\Component\Buffer\JSONFileBuffer
+            - Akeneo\Tool\Component\Buffer\JSONFileBuffer

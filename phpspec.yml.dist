@@ -20,10 +20,10 @@ suites:
         spec_path: src/Akeneo/Component/BatchQueue
         src_path: src/Akeneo/Component/BatchQueue
     Buffer:
-        namespace: Akeneo\Component\Buffer
-        psr4_prefix: Akeneo\Component\Buffer
-        spec_path: src/Akeneo/Component/Buffer
-        src_path: src/Akeneo/Component/Buffer
+        namespace: Akeneo\Tool\Component\Buffer
+        psr4_prefix: Akeneo\Tool\Component\Buffer
+        spec_path: src/Akeneo/Tool/Component/Buffer
+        src_path: src/Akeneo/Tool/Component/Buffer
     Classification:
         namespace: Akeneo\Component\Classification
         psr4_prefix: Akeneo\Component\Classification

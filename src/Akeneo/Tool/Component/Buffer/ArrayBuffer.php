@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Buffer;
+namespace Akeneo\Tool\Component\Buffer;
 
 /**
  * Basic implementation of BufferInterface using a simple FIFO array.
