@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Intl\Intl;
 
 /**
  * Locale entity
@@ -180,8 +179,6 @@ class Locale implements LocaleInterface, VersionableInterface
      */
     public function getName()
     {
-        $localeNames = Intl::getLocaleBundle()->getLocaleNames();
-
-        return array_key_exists($this->code, $localeNames) ? $localeNames[$this->code] : null;
+        return \Locale::getDisplayName($this->code);
     }
 }
