@@ -2,18 +2,20 @@
 
 namespace spec\Akeneo\Tool\Component\Localization\Factory;
 
+use Akeneo\Tool\Component\Localization\Factory\TranslationFactory;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation;
 
 class TranslationFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
         $this->beConstructedWith(
-            'Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation',
+             AttributeGroupTranslation::class,
             'Pim\Bundle\TranslationBundle\Tests\Entity\Item',
             'bar'
         );
-        $this->shouldHaveType('Akeneo\Component\Localization\Factory\TranslationFactory');
+        $this->shouldHaveType(TranslationFactory::class);
     }
 
     function it_creates_a_translation()

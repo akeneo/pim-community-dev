@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Localization\Presenter;
 
+use Akeneo\Tool\Component\Localization\Presenter\BooleanPresenter;
 use PhpSpec\ObjectBehavior;
 
 class BooleanPresenterSpec extends ObjectBehavior
@@ -13,7 +14,7 @@ class BooleanPresenterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Component\Localization\Presenter\BooleanPresenter');
+        $this->shouldHaveType(BooleanPresenter::class);
     }
 
     function it_supports_enabled()

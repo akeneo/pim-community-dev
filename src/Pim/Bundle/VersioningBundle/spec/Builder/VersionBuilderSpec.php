@@ -37,7 +37,7 @@ class VersionBuilderSpec extends ObjectBehavior
         $pending->isPending()->willReturn(true);
 
         $version = $this->createPendingVersion($product, 'baz', []);
-        $version->shouldBeAnInstanceOf('Akeneo\Component\Versioning\Model\Version');
+        $version->shouldBeAnInstanceOf(Version::class);
         $version->getAuthor()->shouldReturn('baz');
         $version->isPending()->shouldReturn(true);
     }

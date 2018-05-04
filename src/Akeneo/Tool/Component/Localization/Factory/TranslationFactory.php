@@ -46,12 +46,12 @@ class TranslationFactory
     public function __construct($translationClass, $entityClass, $field)
     {
         $refl = new \ReflectionClass($translationClass);
-        if (!$refl->isSubClassOf('Akeneo\Component\Localization\Model\AbstractTranslation')) {
+        if (!$refl->isSubClassOf(AbstractTranslation::class)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'The translation class "%s" must extends "%s"',
                     $translationClass,
-                    'Akeneo\Component\Localization\Model\AbstractTranslation'
+                    AbstractTranslation::class
                 )
             );
         }

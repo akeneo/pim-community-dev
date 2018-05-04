@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Localization;
 
+use Akeneo\Tool\Component\Localization\TranslatorProxy;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -14,7 +15,7 @@ class TranslatorProxySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Component\Localization\TranslatorProxy');
+        $this->shouldHaveType(TranslatorProxy::class);
     }
 
     function it_presents_translated_metric_unit($translator)
