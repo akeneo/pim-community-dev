@@ -1,4 +1,4 @@
-Akeneo\Component\FileStorage\Model\FileInfo:
+Akeneo\Tool\Component\FileStorage\Model\FileInfo:
     type: entity
     table: akeneo_file_storage_file_info
     fields:
