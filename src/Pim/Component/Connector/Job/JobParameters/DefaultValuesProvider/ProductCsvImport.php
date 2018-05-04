@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
 
-use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
+use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 
 /**
  * DefaultParameters for product CSV import
