@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\Localization\Factory;
+namespace spec\Akeneo\Tool\Component\Localization\Factory;
 
 use PhpSpec\ObjectBehavior;
 

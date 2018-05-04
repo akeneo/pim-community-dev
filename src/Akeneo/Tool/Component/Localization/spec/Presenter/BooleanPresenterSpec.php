@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\Localization\Presenter;
+namespace spec\Akeneo\Tool\Component\Localization\Presenter;
 
 use PhpSpec\ObjectBehavior;
 
