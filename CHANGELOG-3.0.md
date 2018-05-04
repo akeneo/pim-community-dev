@@ -61,3 +61,8 @@
 - Move namespace `Pim\Component\StorageUtilsQueue` to `Akeneo\Tool\Component\StorageUtilsQueue`
 - Move namespace `Pim\Bundle\StorageUtilsQueueBundle` to `Akeneo\Tool\Bundle\StorageUtilsQueueBundle`
 - Move namespace `Pim\Bundle\ElasticsearchBundle` to `Akeneo\Tool\Bundle\ElasticsearchBundle`
+- Move namespace `Pim\Component\Analytics` to `Akeneo\Tool\Component\Analytics`
+- Move namespace `Pim\Component\Buffer` to `Akeneo\Tool\Component\Buffer`
+- Move namespace `Pim\Component\Console` to `Akeneo\Tool\Component\Console`
+- Move namespace `Pim\Component\Localization` to `Akeneo\Tool\Component\Localization`
+- Move namespace `Pim\Component\Versionning` to `Akeneo\Tool\Component\Versionning`
