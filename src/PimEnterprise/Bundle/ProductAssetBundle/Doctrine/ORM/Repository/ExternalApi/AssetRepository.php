@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\Api\Repository\PageableRepositoryInterface;
 use Akeneo\Tool\Component\Api\Repository\SearchAfterPageableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnexpectedResultException;
