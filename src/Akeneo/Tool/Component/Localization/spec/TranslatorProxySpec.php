@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\Localization;
+namespace spec\Akeneo\Tool\Component\Localization;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Translation\TranslatorInterface;

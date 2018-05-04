@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\Localization;
+namespace spec\Akeneo\Tool\Component\Localization;
 
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;

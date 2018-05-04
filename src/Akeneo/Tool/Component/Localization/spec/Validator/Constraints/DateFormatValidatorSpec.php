@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\Localization\Validator\Constraints;
+namespace spec\Akeneo\Tool\Component\Localization\Validator\Constraints;
 
 use Akeneo\Tool\Component\Localization\Factory\DateFactory;
 use Akeneo\Tool\Component\Localization\Validator\Constraints\DateFormat;

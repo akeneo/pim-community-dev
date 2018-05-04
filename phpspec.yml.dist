@@ -42,8 +42,8 @@ suites:
     Localization:
         namespace: Akeneo\Tool\Component\Localization
         psr4_prefix: Akeneo\Tool\Component\Localization
-        spec_path: src/Akeneo/Component/Localization
-        src_path: src/Akeneo/Component/Localization
+        spec_path: src/Akeneo/Tool/Component/Localization
+        src_path: src/Akeneo/Tool/Component/Localization
     StorageUtils:
         namespace: Akeneo\Tool\Component\StorageUtils
         psr4_prefix: Akeneo\Tool\Component\StorageUtils
