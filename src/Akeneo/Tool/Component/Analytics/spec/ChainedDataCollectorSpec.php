@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\Analytics;
+namespace spec\Akeneo\Tool\Component\Analytics;
 
 use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
@@ -10,7 +10,7 @@ class ChainedDataCollectorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Component\Analytics\ChainedDataCollector');
+        $this->shouldHaveType(ChainedDataCollector::class);
     }
 
     function it_aggregates_data_from_registered_collectors(
