@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\FileStorage\File;
+namespace spec\Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
