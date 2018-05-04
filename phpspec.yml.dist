@@ -50,8 +50,8 @@ suites:
         spec_path: src/Akeneo/Tool/Component/StorageUtils
         src_path: src/Akeneo/Tool/Component/StorageUtils
     Versioning:
-        namespace: Akeneo\Component\Versioning
-        psr4_prefix: Akeneo\Component\Versioning
+        namespace: Akeneo\Tool\Component\Versioning
+        psr4_prefix: Akeneo\Tool\Component\Versioning
         spec_path: src/Akeneo/Component/Versioning
         src_path: src/Akeneo/Component/Versioning
 

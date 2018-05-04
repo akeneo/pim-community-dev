@@ -69,7 +69,7 @@ $cAkeneoRules = [
             RuleInterface::TYPE_ONLY
     ),
     new Rule('Akeneo\Tool\Component\StorageUtils', $cDeps, RuleInterface::TYPE_ONLY),
-    new Rule('Akeneo\Component\Versioning', $cDeps, RuleInterface::TYPE_ONLY),
+    new Rule('Akeneo\Tool\Component\Versioning', $cDeps, RuleInterface::TYPE_ONLY),
 ];
 
 $cPimRules = [
@@ -80,7 +80,7 @@ $cPimRules = [
             'Akeneo\Component\Localization',   // to localize product's data
             'Akeneo\Component\FileStorage',    // for product categories
             'Akeneo\Component\Classification', // to handle product's media
-            'Akeneo\Component\Versioning',     // for the history of all models
+            'Akeneo\Tool\Component\Versioning',     // for the history of all models
         ]),
         RuleInterface::TYPE_ONLY
     ),

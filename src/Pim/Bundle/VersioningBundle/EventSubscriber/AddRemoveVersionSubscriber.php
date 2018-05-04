@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;

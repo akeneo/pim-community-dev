@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Akeneo\Component\Localization\Model\TranslationInterface;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;

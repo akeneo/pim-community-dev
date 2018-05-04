@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Repository;
 
-use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**

@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Akeneo\Component\Versioning\Model\VersionInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;

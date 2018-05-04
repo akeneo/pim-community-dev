@@ -30,7 +30,7 @@ class PimVersioningBundle extends Bundle
             ->addCompilerPass(new RegisterVersionPurgerAdvisorPass());
 
         $versionMappings = [
-            realpath(__DIR__.'/Resources/config/model/doctrine') => 'Akeneo\Component\Versioning\Model',
+            realpath(__DIR__.'/Resources/config/model/doctrine') => 'Akeneo\Tool\Component\Versioning\Model',
         ];
 
         $container->addCompilerPass(

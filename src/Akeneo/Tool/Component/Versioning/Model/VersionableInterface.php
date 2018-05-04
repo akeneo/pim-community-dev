@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Versioning\Model;
+namespace Akeneo\Tool\Component\Versioning\Model;
 
 /**
  * Versionable interface, models  implementing this interface will be versioned

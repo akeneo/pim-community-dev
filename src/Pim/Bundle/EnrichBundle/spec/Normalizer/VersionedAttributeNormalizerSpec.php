@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
-use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
