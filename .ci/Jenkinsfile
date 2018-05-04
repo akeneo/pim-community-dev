@@ -50,7 +50,7 @@ stage("Build") {
                         containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
                     ]) {container('docker') {
                         checkout([$class: 'GitSCM',
-                            branches: [[name: '2.0']],
+                            branches: [[name: '2.2']],
                             userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
                         ])
 
@@ -115,13 +115,13 @@ stage("Test") {
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
-                fetcher: {return pimBehatFetcher(features: features)}
+                fetcher: {return pimBehatFetcher(profiles: ["legacy", "acceptance"], features: features)}
             )},
             "behat-ee": {queue(
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
-                fetcher: {return pimBehatFetcher(features: features)}
+                fetcher: {return pimBehatFetcher(profiles: ["legacy", "acceptance"], features: features)}
             )}
         )
     } finally {
