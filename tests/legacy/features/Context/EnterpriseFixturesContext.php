@@ -6,7 +6,7 @@ use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
@@ -51,7 +51,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected $enterpriseEntities = [
         'Published'     => 'PimEnterprise\Component\Workflow\Model\PublishedProduct',
         'AssetCategory' => 'PimEnterprise\Component\ProductAsset\Model\Category',
-        'JobProfile'    => 'Akeneo\Component\Batch\Model\JobInstance',
+        'JobProfile'    => 'Akeneo\Tool\Component\Batch\Model\JobInstance',
     ];
 
     /**

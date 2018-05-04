@@ -29,7 +29,7 @@ class RulesExecutorSpec extends ObjectBehavior
 
     function it_should_implement_item_writer_interface()
     {
-        $this->shouldHaveType('Akeneo\Component\Batch\Item\ItemWriterInterface');
+        $this->shouldHaveType('Akeneo\Tool\Component\Batch\Item\ItemWriterInterface');
     }
 
     function it_should_run_all_the_rules_for_products_and_product_models(

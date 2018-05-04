@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\User\Model\Group;
 use Pim\Component\User\Model\GroupInterface;

@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Remover;
 
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\CategoryAssetEvents;
@@ -23,7 +23,7 @@ class CategoryAssetRemoverSpec extends ObjectBehavior
 
     function it_is_a_remover()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface');
     }
 
     function it_dispatches_an_event_when_removing_a_category(
@@ -42,7 +42,7 @@ class CategoryAssetRemoverSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             CategoryAssetEvents::PRE_REMOVE_CATEGORY,
-            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
+            Argument::type('Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $objectManager->remove($category)->shouldBeCalled();
@@ -50,7 +50,7 @@ class CategoryAssetRemoverSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             CategoryAssetEvents::POST_REMOVE_CATEGORY,
-            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
+            Argument::type('Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $assetSaver->saveAll([$asset1, $asset2])->shouldBeCalled();
@@ -70,7 +70,7 @@ class CategoryAssetRemoverSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             CategoryAssetEvents::PRE_REMOVE_TREE,
-            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
+            Argument::type('Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $objectManager->remove($tree)->shouldBeCalled();
@@ -78,7 +78,7 @@ class CategoryAssetRemoverSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             CategoryAssetEvents::POST_REMOVE_TREE,
-            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
+            Argument::type('Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $this->remove($tree);

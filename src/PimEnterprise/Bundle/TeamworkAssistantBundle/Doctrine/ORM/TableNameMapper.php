@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 
 /**
  * Ease overriding entities managing with DBAL support avoiding hard-coded table names.
  *
- * @see Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder.
+ * @see Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder.
  *
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */

@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
-use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Event\EventInterface;
+use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvent;
 use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\FilterConverter;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\ProjectCalculationJobLauncher;

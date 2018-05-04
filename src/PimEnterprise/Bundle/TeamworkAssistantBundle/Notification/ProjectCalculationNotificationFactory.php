@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Notification;
 
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Localization\Presenter\DatePresenter;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
@@ -63,7 +63,7 @@ class ProjectCalculationNotificationFactory extends AbstractNotificationFactory 
         if (!$jobExecution instanceof JobExecution) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a Akeneo\Component\Batch\Model\JobExecution, "%s" provided',
+                    'Expects a Akeneo\Tool\Component\Batch\Model\JobExecution, "%s" provided',
                     ClassUtils::getClass($jobExecution)
                 )
             );

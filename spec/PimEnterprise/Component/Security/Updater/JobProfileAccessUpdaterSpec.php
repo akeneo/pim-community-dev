@@ -2,10 +2,10 @@
 
 namespace spec\PimEnterprise\Component\Security\Updater;
 
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Model\JobProfileAccessInterface;
@@ -21,7 +21,7 @@ class JobProfileAccessUpdaterSpec extends ObjectBehavior
 
     function it_is_an_updater()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface');
     }
 
     function it_throw_an_exception_when_trying_to_update_anything_else_than_an_job_profile_access()

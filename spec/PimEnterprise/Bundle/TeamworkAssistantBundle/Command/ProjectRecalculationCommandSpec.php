@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Command;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Command\ProjectRecalculationCommand;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;

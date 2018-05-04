@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Factory;
 
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 
 /**

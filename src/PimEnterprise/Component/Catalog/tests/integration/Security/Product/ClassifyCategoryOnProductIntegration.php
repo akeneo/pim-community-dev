@@ -78,7 +78,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "categories" expects a valid category code. The category does not exist, "categoryB" given.
      */
     public function testFailedToCreateAProductWithCategoryNotViewable()
@@ -118,7 +118,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "categories" expects a valid category code. The category does not exist, "categoryB" given.
      */
     public function testFailedToUpdateAProductWithCategoryNotViewable()

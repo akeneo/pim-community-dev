@@ -11,7 +11,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Validation;
  * file that was distributed with this source code.
  */
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PimEnterprise\Component\ProductAsset\Model\Asset;

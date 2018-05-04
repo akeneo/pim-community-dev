@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset;
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

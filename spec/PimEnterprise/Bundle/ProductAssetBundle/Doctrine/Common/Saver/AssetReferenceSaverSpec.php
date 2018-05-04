@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
@@ -23,8 +23,8 @@ class AssetReferenceSaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
+        $this->shouldHaveType('Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface');
+        $this->shouldHaveType('Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
     function it_persists_the_reference_and_flushes_the_unit_of_work_and_schedule_completeness_for_the_asset(

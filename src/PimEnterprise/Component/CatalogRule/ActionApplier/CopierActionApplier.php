@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\CatalogRule\ActionApplier;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;

@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Job;
 
-use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
-use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
 /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Import\Product;
 
-use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 
 /**
  * +---------+-----------------------+

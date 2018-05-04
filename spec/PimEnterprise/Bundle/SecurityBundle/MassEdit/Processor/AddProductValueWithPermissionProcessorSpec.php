@@ -2,11 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor;
 
-use Akeneo\Component\Batch\Item\InvalidItemInterface;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -40,8 +40,8 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
     function it_is_a_configurable_step_element()
     {
-        $this->beAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
-        $this->beAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\StepExecutionAwareInterface');
+        $this->beAnInstanceOf('Akeneo\Tool\Component\Batch\Item\AbstractConfigurableStepElement');
+        $this->beAnInstanceOf('Akeneo\Tool\Bundle\BatchBundle\Item\StepExecutionAwareInterface');
     }
 
     function it_sets_the_step_execution(StepExecution $stepExecution)
@@ -104,7 +104,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $stepExecution->addWarning(
             'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
             [],
-            Argument::type('Akeneo\Component\Batch\Item\InvalidItemInterface')
+            Argument::type('Akeneo\Tool\Component\Batch\Item\InvalidItemInterface')
         )->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
 

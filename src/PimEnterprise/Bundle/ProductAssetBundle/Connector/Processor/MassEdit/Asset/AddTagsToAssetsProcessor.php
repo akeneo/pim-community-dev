@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;

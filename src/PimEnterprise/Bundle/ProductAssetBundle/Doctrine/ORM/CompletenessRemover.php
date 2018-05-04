@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM;
 
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRemover as BaseCompletenessRemover;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer;
