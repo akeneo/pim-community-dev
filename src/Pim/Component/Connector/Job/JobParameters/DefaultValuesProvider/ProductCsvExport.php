@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
 
-use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;

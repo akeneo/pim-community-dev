@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Component\Localization\Localizer;
+namespace Akeneo\Tool\Component\Localization\Localizer;
 
-use Akeneo\Component\Localization\Factory\NumberFactory;
-use Akeneo\Component\Localization\Validator\Constraints\NumberFormat;
+use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
+use Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormat;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

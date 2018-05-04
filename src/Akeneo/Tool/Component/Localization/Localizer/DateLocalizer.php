@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Component\Localization\Localizer;
+namespace Akeneo\Tool\Component\Localization\Localizer;
 
-use Akeneo\Component\Localization\Factory\DateFactory;
-use Akeneo\Component\Localization\Validator\Constraints\DateFormat;
+use Akeneo\Tool\Component\Localization\Factory\DateFactory;
+use Akeneo\Tool\Component\Localization\Validator\Constraints\DateFormat;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

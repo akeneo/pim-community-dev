@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Component\Localization\Presenter;
 
-use Akeneo\Component\Localization\Factory\DateFactory;
+use Akeneo\Tool\Component\Localization\Factory\DateFactory;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Translation\TranslatorInterface;
 

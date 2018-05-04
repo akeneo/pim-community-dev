@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Localization\Factory;
+namespace Akeneo\Tool\Component\Localization\Factory;
 
 /**
  * Create a new instance of IntlDateFormatter

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\LocalizationBundle\Twig;
 
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 
 /**

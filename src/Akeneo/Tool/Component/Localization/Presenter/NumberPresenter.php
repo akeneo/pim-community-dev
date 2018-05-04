@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Component\Localization\Presenter;
+namespace Akeneo\Tool\Component\Localization\Presenter;
 
-use Akeneo\Component\Localization\Factory\NumberFactory;
+use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 
 /**
  * Number presenter, able to render numbers readable for a human

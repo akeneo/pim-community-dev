@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
-use Akeneo\Component\Localization\Factory\NumberFactory;
-use Akeneo\Component\Localization\Localizer\LocalizerInterface;
-use Akeneo\Component\Localization\Validator\Constraints\NumberFormat;
-use Akeneo\Component\Localization\Validator\Constraints\NumberFormatValidator;
+use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
+use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormat;
+use Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormatValidator;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Bundle\LocalizationBundle\Form\DataTransformer\NumberLocalizerTransformer;
 use Symfony\Component\Form\AbstractType;

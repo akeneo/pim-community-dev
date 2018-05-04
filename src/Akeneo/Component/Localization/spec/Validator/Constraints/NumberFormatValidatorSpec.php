@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Component\Localization\Validator\Constraints;
 
-use Akeneo\Component\Localization\Validator\Constraints\NumberFormat;
+use Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormat;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

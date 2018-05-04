@@ -1,7 +1,7 @@
 parameters:
     pim_catalog.localization.localizer.registry.class:  Pim\Component\Catalog\Localization\Localizer\LocalizerRegistry
-    pim_catalog.localization.localizer.number.class:    Akeneo\Component\Localization\Localizer\NumberLocalizer
-    pim_catalog.localization.localizer.date.class:      Akeneo\Component\Localization\Localizer\DateLocalizer
+    pim_catalog.localization.localizer.number.class:    Akeneo\Tool\Component\Localization\Localizer\NumberLocalizer
+    pim_catalog.localization.localizer.date.class:      Akeneo\Tool\Component\Localization\Localizer\DateLocalizer
     pim_catalog.localization.localizer.price.class:     Pim\Component\Catalog\Localization\Localizer\PriceLocalizer
     pim_catalog.localization.localizer.metric.class:    Pim\Component\Catalog\Localization\Localizer\MetricLocalizer
     pim_catalog.localization.localizer.converter.class: Pim\Component\Catalog\Localization\Localizer\AttributeConverter

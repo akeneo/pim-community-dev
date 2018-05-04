@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Localization\Localizer;
+namespace Akeneo\Tool\Component\Localization\Localizer;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 

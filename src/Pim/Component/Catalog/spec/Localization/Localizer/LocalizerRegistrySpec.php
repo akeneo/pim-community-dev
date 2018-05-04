@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Localization\Localizer;
 
-use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use PhpSpec\ObjectBehavior;
 
 class LocalizerRegistrySpec extends ObjectBehavior

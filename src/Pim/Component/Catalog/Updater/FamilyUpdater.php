@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
-use Akeneo\Component\Localization\TranslatableUpdater;
+use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;

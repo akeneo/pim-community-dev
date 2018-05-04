@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Component\Localization;
+namespace Akeneo\Tool\Component\Localization;
 
-use Akeneo\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 
 /**
  * Translate updater

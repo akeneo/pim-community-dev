@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\LocalizationBundle\Form\Type;
 
-use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
+use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\LocaleType as SymfonyLocaleType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

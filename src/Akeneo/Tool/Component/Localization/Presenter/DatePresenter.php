@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Component\Localization\Presenter;
+namespace Akeneo\Tool\Component\Localization\Presenter;
 
-use Akeneo\Component\Localization\Factory\DateFactory;
+use Akeneo\Tool\Component\Localization\Factory\DateFactory;
 
 /**
  * Date presenter, able to render date readable for a human

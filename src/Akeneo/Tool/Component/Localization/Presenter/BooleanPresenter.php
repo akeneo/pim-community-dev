@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Localization\Presenter;
+namespace Akeneo\Tool\Component\Localization\Presenter;
 
 /**
  * Boolean presenter, able to render booleans readable for a human.
