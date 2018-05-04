@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Pim\Bundle\ApiBundle\Controller\Attribute;
+namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Attribute;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;

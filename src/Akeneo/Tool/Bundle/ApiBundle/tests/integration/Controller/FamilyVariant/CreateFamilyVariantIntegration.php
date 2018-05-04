@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\FamilyVariant;
+namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\FamilyVariant;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;

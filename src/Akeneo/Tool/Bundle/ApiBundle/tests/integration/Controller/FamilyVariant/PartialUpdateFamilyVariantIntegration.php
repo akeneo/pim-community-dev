@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Pim\Bundle\ApiBundle\Controller\FamilyVariant;
+namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\FamilyVariant;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
