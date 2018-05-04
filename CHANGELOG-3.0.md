@@ -66,3 +66,4 @@
 - Move namespace `Pim\Component\Console` to `Akeneo\Tool\Component\Console`
 - Move namespace `Pim\Component\Localization` to `Akeneo\Tool\Component\Localization`
 - Move namespace `Pim\Component\Versionning` to `Akeneo\Tool\Component\Versionning`
+- Move namespace `Pim\Bundle\MeasureBundle` to `Akeneo\Tool\Bundle\MeasureBundle`
