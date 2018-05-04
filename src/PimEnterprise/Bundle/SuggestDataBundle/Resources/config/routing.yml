@@ -1,0 +1,4 @@
+pimee_suggest_data_push_product:
+    path: /suggest-data/{productId}/push-product
+    defaults: { _controller: pimee_suggest_data.controller.suggest_data:pushAction }
+    methods: [GET]

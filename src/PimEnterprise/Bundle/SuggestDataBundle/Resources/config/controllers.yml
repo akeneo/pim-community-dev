@@ -1,0 +1,5 @@
+services:
+    pimee_suggest_data.controller.suggest_data:
+        class: PimEnterprise\Bundle\SuggestDataBundle\Controller\SuggestDataController
+        arguments:
+            - '@pim_catalog.repository.product'

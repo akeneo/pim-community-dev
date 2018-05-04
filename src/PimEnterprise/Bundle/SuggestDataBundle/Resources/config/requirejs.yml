@@ -1,0 +1,4 @@
+config:
+    paths:
+        pimee/product-edit-form/suggest-data-push: pimenterprisesuggestdata/js/product/form/suggest-data-push
+        pimee/template/product/suggest-data-push:  pimenterprisesuggestdata/templates/product/suggest-data-push.html

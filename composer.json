@@ -40,7 +40,8 @@
     },
     "require": {
         "akeneo/pim-community-dev": "3.0.x-dev@dev",
-        "phpspec/php-diff": "1.0.2"
+        "phpspec/php-diff": "1.0.2",
+        "akeneo/pim-ai-api-php-client": "dev-master"
     },
     "require-dev": {
         "akeneo/phpspec-skip-example-extension": "2.0.*",
@@ -74,6 +75,11 @@
             "type": "vcs",
             "url": "https://github.com/akeneo/pim-community-dev.git",
             "branch": "master"
+        },
+        "pim-ai-client": {
+            "type": "vcs",
+            "url": "https://github.com/fitn/pimai-client-poc.git",
+            "branch": "master"
         }
     },
     "scripts": {
@@ -94,7 +100,7 @@
             "@symfony-scripts"
         ]
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "extra": {
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",

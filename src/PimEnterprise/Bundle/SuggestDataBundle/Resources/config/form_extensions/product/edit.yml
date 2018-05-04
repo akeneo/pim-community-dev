@@ -1,0 +1,7 @@
+extensions:
+    pimee-product-edit-suggest-data-push:
+        module: pimee/product-edit-form/suggest-data-push
+        parent: pim-product-edit-form
+        targetZone: buttons
+        #aclResourceId: pim_suggest_data_push
+        position: 50
