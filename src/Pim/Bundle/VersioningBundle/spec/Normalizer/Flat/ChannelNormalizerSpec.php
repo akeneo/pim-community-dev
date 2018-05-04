@@ -5,9 +5,9 @@ namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 use Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Normalizer\Standard\ChannelNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
