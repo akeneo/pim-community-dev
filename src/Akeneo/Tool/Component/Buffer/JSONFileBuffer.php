@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Component\Buffer;
+namespace Akeneo\Tool\Component\Buffer;
 
-use Akeneo\Component\Buffer\Exception\UnsupportedItemTypeException;
+use Akeneo\Tool\Component\Buffer\Exception\UnsupportedItemTypeException;
 
 /**
  * Implementation of BufferInterface embedding a SplFileObject where each item is JSON-encoded on a separate line.

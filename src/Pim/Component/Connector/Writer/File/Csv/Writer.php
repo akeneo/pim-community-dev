@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\File\Csv;
 
-use Akeneo\Component\Buffer\BufferFactory;
+use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;

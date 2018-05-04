@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Component\Buffer;
+namespace Akeneo\Tool\Component\Buffer;
 
-use Akeneo\Component\Buffer\Exception\InvalidClassNameException;
+use Akeneo\Tool\Component\Buffer\Exception\InvalidClassNameException;
 
 /**
  * Creates instances of BufferInterface implementations.

@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\Buffer\BufferInterface;
-use Akeneo\Component\Buffer\JSONFileBuffer;
+use Akeneo\Tool\Component\Buffer\BufferInterface;
+use Akeneo\Tool\Component\Buffer\JSONFileBuffer;
 
 /**
  * Puts items into a buffer and calculate headers during a flat file export

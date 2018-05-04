@@ -37,7 +37,7 @@ $cAkeneoRules = [
         'Symfony\Component\Console'
     ]),
     RuleInterface::TYPE_ONLY),
-    new Rule('Akeneo\Component\Buffer', $cDeps, RuleInterface::TYPE_ONLY),
+    new Rule('Akeneo\Tool\Component\Buffer', $cDeps, RuleInterface::TYPE_ONLY),
     new Rule(
         'Akeneo\Component\Classification',
         array_merge($cDeps, [
@@ -89,7 +89,7 @@ $cPimRules = [
         array_merge($cDeps, [
             'Box\Spout',                     // to import/export CSV and XLSX files
             'Akeneo\Tool\Component\Batch',        // used as base import/export system
-            'Akeneo\Component\Buffer',       // to handle large files
+            'Akeneo\Tool\Component\Buffer',       // to handle large files
             'Akeneo\Component\FileStorage',  // to import/export product's media
             'Akeneo\Component\Localization', // to use date and number formats in configuration
             'Akeneo\Component\Classification', // to handle categories database reading

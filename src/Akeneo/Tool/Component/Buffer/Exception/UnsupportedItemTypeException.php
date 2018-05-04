@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Buffer\Exception;
+namespace Akeneo\Tool\Component\Buffer\Exception;
 
 /**
  * Exception thrown when trying to write an item into a buffer that does not support it.

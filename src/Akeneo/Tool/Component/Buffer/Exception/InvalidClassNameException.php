@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Buffer\Exception;
+namespace Akeneo\Tool\Component\Buffer\Exception;
 
 /**
  * Exception thrown when trying to configure a BufferFactory with a class name that does not implement BufferInterface.

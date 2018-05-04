@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Component\Buffer;
+namespace Akeneo\Tool\Component\Buffer;
 
-use Akeneo\Component\Buffer\Exception\UnsupportedItemTypeException;
+use Akeneo\Tool\Component\Buffer\Exception\UnsupportedItemTypeException;
 
 /**
  * A buffer is an object able to read and write items. It is a simple iterator with an additional write() method.
