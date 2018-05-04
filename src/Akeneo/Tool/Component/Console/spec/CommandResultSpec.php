@@ -1,7 +1,9 @@
 <?php
 
-namespace spec\Akeneo\Component\Console;
+namespace spec\Akeneo\Tool\Component\Console;
 
+use Akeneo\Tool\Component\Console\CommandResult;
+use Akeneo\Tool\Component\Console\CommandResultInterface;
 use PhpSpec\ObjectBehavior;
 
 class CommandResultSpec extends ObjectBehavior
@@ -19,8 +21,8 @@ class CommandResultSpec extends ObjectBehavior
 
     public function it_can_be_initialized()
     {
-        $this->shouldHaveType('Akeneo\Component\Console\CommandResult');
-        $this->shouldImplement('Akeneo\Component\Console\CommandResultInterface');
+        $this->shouldHaveType(CommandResult::class);
+        $this->shouldImplement(CommandResultInterface::class);
     }
 
     public function it_can_return_command_output()

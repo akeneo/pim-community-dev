@@ -32,8 +32,8 @@ suites:
     Console:
         namespace: Akeneo\Tool\Component\Console
         psr4_prefix: Akeneo\Tool\Component\Console
-        spec_path: src/Akeneo/Component/Console
-        src_path: src/Akeneo/Component/Console
+        spec_path: src/Akeneo/Tool/Component/Console
+        src_path: src/Akeneo/Tool/Component/Console
     FileStorage:
         namespace: Akeneo\Component\FileStorage
         psr4_prefix: Akeneo\Component\FileStorage
