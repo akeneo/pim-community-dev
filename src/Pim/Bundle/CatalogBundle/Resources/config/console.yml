@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.command_launcher.class: Akeneo\Component\Console\CommandLauncher
+    pim_catalog.command_launcher.class: Akeneo\Tool\Component\Console\CommandLauncher
 
 services:
     pim_catalog.command_launcher:
