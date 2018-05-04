@@ -135,7 +135,7 @@ RUN cp app/config/parameters_test.yml.dist app/config/parameters_test.yml \
   && bin/console --env=test pim:install --force \
   && a2ensite pim \
   && chown -R www-data:www-data var web \
-  && chmod 777 -R /tmp/pim app/file_storage app/uploads app/archive features/Context/fixtures/
+  && chmod 777 -R /tmp/pim app/file_storage app/uploads app/archive features/Context/fixtures/ vendor/akeneo/pim-community-dev/features/Context/fixtures/
 
 EXPOSE 80 9200 4444 3306
 
