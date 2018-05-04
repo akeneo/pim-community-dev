@@ -28,7 +28,7 @@ class BufferFactory
      */
     public function __construct($className)
     {
-        $interface = '\Akeneo\Component\Buffer\BufferInterface';
+        $interface = BufferInterface::class;
         if (!is_subclass_of($className, $interface)) {
             throw new InvalidClassNameException(sprintf('%s must implement %s', $className, $interface));
         }

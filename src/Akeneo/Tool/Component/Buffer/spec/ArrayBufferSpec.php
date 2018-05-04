@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Buffer;
 
+use Akeneo\Tool\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Exception\Prediction\FailedPredictionException;
 
@@ -9,7 +10,7 @@ class ArrayBufferSpec extends ObjectBehavior
 {
     function it_is_a_buffer()
     {
-        $this->shouldImplement('Akeneo\Component\Buffer\BufferInterface');
+        $this->shouldImplement(BufferInterface::class);
     }
 
     function it_writes_and_reads_several_items_fifo_style()

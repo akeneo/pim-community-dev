@@ -2,11 +2,13 @@
 
 namespace spec\Akeneo\Tool\Component\Buffer;
 
+use Akeneo\Tool\Component\Buffer\ArrayBuffer;
+use Akeneo\Tool\Component\Buffer\Exception\InvalidClassNameException;
 use PhpSpec\ObjectBehavior;
 
 class BufferFactorySpec extends ObjectBehavior
 {
-    const ARRAY_BUFFER_CLASS = 'Akeneo\Component\Buffer\ArrayBuffer';
+    const ARRAY_BUFFER_CLASS = ArrayBuffer::class;
 
     function let()
     {
@@ -16,7 +18,7 @@ class BufferFactorySpec extends ObjectBehavior
     function it_throws_an_exception_if_configured_with_a_wrong_classname()
     {
         $this
-            ->shouldThrow('Akeneo\Component\Buffer\Exception\InvalidClassNameException')
+            ->shouldThrow(InvalidClassNameException::class)
             ->during('__construct', ['\\stdClass']);
     }
 
