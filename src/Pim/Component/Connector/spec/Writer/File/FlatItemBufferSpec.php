@@ -2,18 +2,20 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
+use Akeneo\Tool\Component\Buffer\BufferInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\Writer\File\FlatItemBuffer;
 
 class FlatItemBufferSpec extends ObjectBehavior
 {
     function it_is_a_buffer()
     {
-        $this->shouldImplement('Akeneo\Component\Buffer\BufferInterface');
+        $this->shouldImplement(BufferInterface::class);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Connector\Writer\File\FlatItemBuffer');
+        $this->shouldHaveType(FlatItemBuffer::class);
     }
 
     function it_writes_item_with_headers()
