@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

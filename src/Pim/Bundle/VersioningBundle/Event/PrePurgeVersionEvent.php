@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Event;
 
-use Akeneo\Component\Versioning\Model\VersionInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

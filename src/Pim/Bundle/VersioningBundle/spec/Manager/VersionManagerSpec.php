@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\VersioningBundle\Manager;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
-use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;

@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**

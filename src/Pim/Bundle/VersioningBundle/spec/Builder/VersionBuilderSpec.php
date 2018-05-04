@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Builder;
 
-use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Pim\Component\Catalog\Model\ProductInterface;

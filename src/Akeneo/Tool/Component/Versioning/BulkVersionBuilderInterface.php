@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Component\Versioning;
+namespace Akeneo\Tool\Component\Versioning;
 
-use Akeneo\Component\Versioning\Model\VersionableInterface;
-use Akeneo\Component\Versioning\Model\VersionInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 
 /**
  * Builds versions for a bulk of versionable objects.

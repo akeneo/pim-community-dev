@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Purger;
 
-use Akeneo\Component\Versioning\Model\VersionInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 

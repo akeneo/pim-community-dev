@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslatableInterface;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Pim\Component\Enrich\Model\ChosableInterface;
 
 /**
