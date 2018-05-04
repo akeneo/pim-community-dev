@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Api\Updater;
 
-use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\MandatoryPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;

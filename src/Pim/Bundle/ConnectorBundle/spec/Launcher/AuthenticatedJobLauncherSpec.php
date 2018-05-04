@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\ConnectorBundle\Launcher;
 
-use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\User\UserInterface;

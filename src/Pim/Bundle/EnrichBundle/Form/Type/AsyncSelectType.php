@@ -91,7 +91,7 @@ class AsyncSelectType extends AbstractType
         if (!$repository instanceof IdentifiableObjectRepositoryInterface) {
             throw new UnexpectedTypeException(
                 $repository,
-                '\Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface'
+                '\Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface'
             );
         }
 

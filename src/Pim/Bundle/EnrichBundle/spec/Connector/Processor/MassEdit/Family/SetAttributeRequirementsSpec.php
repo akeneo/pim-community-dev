@@ -40,7 +40,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
 
     function it_is_a_processor()
     {
-        $this->beAnInstanceOf('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
+        $this->beAnInstanceOf('\Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_processes_a_family(

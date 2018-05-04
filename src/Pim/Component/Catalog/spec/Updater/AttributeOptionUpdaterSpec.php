@@ -26,7 +26,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
 
     function it_is_a_updater()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface');
     }
 
     function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute_option()

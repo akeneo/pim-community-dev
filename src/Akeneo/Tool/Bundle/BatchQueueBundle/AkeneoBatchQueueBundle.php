@@ -21,7 +21,7 @@ class AkeneoBatchQueueBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $mappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Component\BatchQueue\Queue'
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Tool\Component\BatchQueue\Queue'
         ];
         $container
             ->addCompilerPass(

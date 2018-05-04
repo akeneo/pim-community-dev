@@ -30,7 +30,7 @@ class WriterSpec extends ObjectBehavior
 
     function it_is_a_writer()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemWriterInterface');
     }
 
     function it_prepares_the_export(

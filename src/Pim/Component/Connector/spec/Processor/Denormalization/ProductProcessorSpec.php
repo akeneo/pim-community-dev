@@ -48,8 +48,8 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_is_a_processor()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
-        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_updates_an_existing_product(
@@ -391,7 +391,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$convertedData]
@@ -497,7 +497,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$convertedData]
@@ -609,7 +609,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher->detach($product)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$convertedData]

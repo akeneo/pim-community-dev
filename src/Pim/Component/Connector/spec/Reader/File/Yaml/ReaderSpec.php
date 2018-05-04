@@ -24,8 +24,8 @@ class ReaderSpec extends ObjectBehavior
 
     function it_is_an_item_reader_step_execution_and_uploaded_file_aware()
     {
-        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemReaderInterface');
-        $this->shouldImplement('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('\Akeneo\Tool\Component\Batch\Item\ItemReaderInterface');
+        $this->shouldImplement('\Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_reads_entities_from_a_yml_file_one_by_one_incrementing_summary_info_for_each_one(
