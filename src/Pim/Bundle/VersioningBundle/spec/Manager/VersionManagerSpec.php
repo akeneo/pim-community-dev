@@ -50,7 +50,7 @@ class VersionManagerSpec extends ObjectBehavior
 
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
-        $versions[0]->shouldBeAnInstanceOf('Akeneo\Component\Versioning\Model\Version');
+        $versions[0]->shouldBeAnInstanceOf(Version::class);
     }
 
     function it_creates_pending_versions_when_real_time_versioning_is_disabled(ProductInterface $product, $builder)
@@ -61,7 +61,7 @@ class VersionManagerSpec extends ObjectBehavior
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
         $version = $versions[0];
-        $version->shouldBeAnInstanceOf('Akeneo\Component\Versioning\Model\Version');
+        $version->shouldBeAnInstanceOf(Version::class);
         $version->isPending()->shouldReturn(true);
     }
 
