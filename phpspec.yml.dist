@@ -52,8 +52,8 @@ suites:
     Versioning:
         namespace: Akeneo\Tool\Component\Versioning
         psr4_prefix: Akeneo\Tool\Component\Versioning
-        spec_path: src/Akeneo/Component/Versioning
-        src_path: src/Akeneo/Component/Versioning
+        spec_path: src/Akeneo/Tool/Component/Versioning
+        src_path: src/Akeneo/Tool/Component/Versioning
 
     ## Akeneo Bundles
     BatchBundle:

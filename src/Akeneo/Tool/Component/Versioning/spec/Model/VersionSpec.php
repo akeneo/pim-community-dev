@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Akeneo\Component\Versioning\Model;
+namespace spec\Akeneo\Tool\Component\Versioning\Model;
 
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
 
 class VersionSpec extends ObjectBehavior
@@ -13,7 +14,7 @@ class VersionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Component\Versioning\Model\Version');
+        $this->shouldHaveType(Version::class);
     }
 
     function it_has_an_id()
