@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Component\Api\Normalizer;
 
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\Api\Hal\Link;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

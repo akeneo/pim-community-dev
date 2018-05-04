@@ -2,6 +2,11 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Controller;
 
+use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
+use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
+use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
+use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
@@ -9,11 +14,6 @@ use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
-use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
-use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
-use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
-use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
