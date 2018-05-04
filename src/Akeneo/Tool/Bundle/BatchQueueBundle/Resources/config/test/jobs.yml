@@ -1,7 +1,7 @@
 parameters:
-    akeneo_batch_queue.job_parameters.constraints.empty_constraint_collection_provider.class: \Akeneo\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider
-    akeneo_batch_queue.job_parameters.provider.empty_default_values_provider.class: \Akeneo\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
-    akeneo_batch_queue.step.infinite_loop_step.class: \Akeneo\Bundle\BatchQueueBundle\tests\integration\Command\InfiniteLoopStep
+    akeneo_batch_queue.job_parameters.constraints.empty_constraint_collection_provider.class: \Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyConstraintCollectionProvider
+    akeneo_batch_queue.job_parameters.provider.empty_default_values_provider.class: \Akeneo\Tool\Component\Batch\Job\JobParameters\EmptyDefaultValuesProvider
+    akeneo_batch_queue.step.infinite_loop_step.class: \Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Command\InfiniteLoopStep
     akeneo_batch_queue.job_name.infinite_loop_job: 'infinite_loop_job'
     akeneo_batch_queue.job.test_type: 'integration_test_type'
     akeneo_batch_queue.job.connector_name: 'Integration Test Connector'

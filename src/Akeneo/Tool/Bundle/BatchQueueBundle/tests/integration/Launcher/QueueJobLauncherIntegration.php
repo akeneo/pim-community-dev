@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Launcher;
 
-use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Connection;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 
 class QueueJobLauncherIntegration extends TestCase
 {

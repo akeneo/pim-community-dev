@@ -49,7 +49,7 @@ class ListJobsCommand extends ContainerAwareCommand
         if (static::LIST_ALL !== $type) {
             $criteria['type'] = $type;
         }
-        $jobs = $this->getJobManager()->getRepository('Akeneo\Component\Batch\Model\JobInstance')
+        $jobs = $this->getJobManager()->getRepository('Akeneo\Tool\Component\Batch\Model\JobInstance')
             ->findBy($criteria, ['type' => 'asc', 'code' => 'asc']);
         $table = $this->buildTable($jobs, $output);
         $table->render($output);

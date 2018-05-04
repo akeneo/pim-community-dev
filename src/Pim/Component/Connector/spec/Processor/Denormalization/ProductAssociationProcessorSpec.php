@@ -41,8 +41,8 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
     function it_is_a_processor()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
-        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_updates_an_existing_product(
@@ -169,7 +169,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productDetacher->detach($product)->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$convertedData]
@@ -243,7 +243,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productDetacher->detach($product)->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$convertedData]

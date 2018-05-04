@@ -24,7 +24,7 @@ class ValidatorStepSpec extends ObjectBehavior
 
     function it_is_a_step()
     {
-        $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepInterface');
-        $this->shouldHaveType('\Akeneo\Component\Batch\Step\AbstractStep');
+        $this->shouldHaveType('\Akeneo\Tool\Component\Batch\Step\StepInterface');
+        $this->shouldHaveType('\Akeneo\Tool\Component\Batch\Step\AbstractStep');
     }
 }

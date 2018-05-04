@@ -53,7 +53,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_is_an_item_processor()
     {
-        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('\Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_processes_product_without_media(

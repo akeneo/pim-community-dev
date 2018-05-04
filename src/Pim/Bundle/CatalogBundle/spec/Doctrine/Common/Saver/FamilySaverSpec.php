@@ -22,7 +22,7 @@ class FamilySaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
+        $this->shouldHaveType('Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_saves_a_family($objectManager, $eventDispatcher, FamilyInterface $family)

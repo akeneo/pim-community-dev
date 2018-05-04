@@ -1,4 +1,4 @@
-Akeneo\Component\Batch\Step\ItemStep:
+Akeneo\Tool\Component\Batch\Step\ItemStep:
     properties:
         reader:
             - Valid: ~
