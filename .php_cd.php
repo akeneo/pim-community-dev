@@ -32,7 +32,7 @@ $cUtilsDeps    = [
 $cDeps = array_merge($cBusinessDeps, $cUtilsDeps);
 
 $cAkeneoRules = [
-    new Rule('Akeneo\Component\Analytics', $cDeps, RuleInterface::TYPE_ONLY),
+    new Rule('Akeneo\Tool\Component\Analytics', $cDeps, RuleInterface::TYPE_ONLY),
     new Rule('Akeneo\Tool\Component\Batch', array_merge($cDeps, [
         'Symfony\Component\Console'
     ]),

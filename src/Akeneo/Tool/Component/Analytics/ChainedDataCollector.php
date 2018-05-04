@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Analytics;
+namespace Akeneo\Tool\Component\Analytics;
 
 /**
  * Aggregate data collected by registered collectors

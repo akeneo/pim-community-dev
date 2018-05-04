@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Component\Analytics\DataCollectorInterface;
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
 use Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 use Symfony\Component\HttpFoundation\RequestStack;
