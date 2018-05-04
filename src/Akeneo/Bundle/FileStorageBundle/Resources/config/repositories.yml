@@ -1,5 +1,5 @@
 parameters:
-    akeneo_file_storage.repository.file_info.class: Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository
+    akeneo_file_storage.repository.file_info.class: Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository
 
 services:
     akeneo_file_storage.repository.file_info:

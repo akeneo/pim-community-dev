@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\FileStorageBundle\Form\Type;
+namespace Akeneo\Tool\Bundle\FileStorageBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;

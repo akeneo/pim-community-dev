@@ -1,5 +1,5 @@
 parameters:
-    akeneo_file_storage.form.type.file_info.class: Akeneo\Bundle\FileStorageBundle\Form\Type\FileInfoType
+    akeneo_file_storage.form.type.file_info.class: Akeneo\Tool\Bundle\FileStorageBundle\Form\Type\FileInfoType
 
 services:
     akeneo_file_storage.form.type.file_info:

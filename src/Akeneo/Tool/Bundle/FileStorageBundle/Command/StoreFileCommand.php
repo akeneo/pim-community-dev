@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\FileStorageBundle\Command;
+namespace Akeneo\Tool\Bundle\FileStorageBundle\Command;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Bundle\FileStorageBundle;
+namespace Akeneo\Tool\Bundle\FileStorageBundle;
 
-use Akeneo\Bundle\FileStorageBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Akeneo\Tool\Bundle\FileStorageBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

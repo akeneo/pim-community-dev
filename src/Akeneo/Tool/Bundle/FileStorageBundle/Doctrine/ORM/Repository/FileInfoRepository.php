@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
