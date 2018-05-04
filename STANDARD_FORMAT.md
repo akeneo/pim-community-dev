@@ -133,8 +133,8 @@ Depending on the type of the value, the *data* key can have different structures
 | attribute type               	| data structure | data example                                                                                       | notes                                                                                                               |
 | -----------------------------	| -------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | identifier                   	| string         | `"foo"`                                                                                            |                                                                                                                     |
-| file                         	| string         | `"f/2/e/6/f2e6674e076ad6fafa12012e8fd026acdc70f814_fileA.txt"`                                     | it represents the *key* of the object *Akeneo\Component\FileStorage\Model\FileInfoInterface*                        |
-| image                        	| string         | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"`                                    | it represents the *key* of the object *Akeneo\Component\FileStorage\Model\FileInfoInterface*                        |
+| file                         	| string         | `"f/2/e/6/f2e6674e076ad6fafa12012e8fd026acdc70f814_fileA.txt"`                                     | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*                        |
+| image                        	| string         | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"`                                    | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*                        |
 | date                         	| string         | `"2016-06-13T00:00:00+02:00"`                                                                      | formatted to ISO-8601 (see above)                                                                                   |
 | multi select                 	| string[]       | `[0 => "optionA", 1 => "optionB"]`                                                                 | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeOptionInterface*       |
 | number                       	| string         | `"-99.8732"`                                                                                       | formatted as a string to avoid the floating point precision problem of PHP (see above)                              |
@@ -1501,11 +1501,11 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 
 | type           | data structure | data example                                                               | notes                                                                                              |
 | -------------- | -------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| code           | string         | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA_variationA.jpg"` | it represents the *key* of the object *Akeneo\Component\FileStorage\Model\FileInfoInterface*       |
+| code           | string         | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA_variationA.jpg"` | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*       |
 | asset          | string         | `"my_asset"`                                                               | it represents the *code* of the object *PimEnterprise\Component\ProductAsset\Model\AssetInterface* |
 | locale         | string         | `"fr_FR"`                                                                  | it represents the *code* of the object *Pim\Component\Catalog\Model\LocaleInterface*               |
 | channel        | string         | `"tablet"`                                                                 | it represents the *code* of the object *Pim\Component\Catalog\Model\ChannelInterface*              |
-| reference_file | string      	  | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"`            | it represents the *key* of the object *Akeneo\Component\FileStorage\Model\FileInfoInterface*       |
+| reference_file | string      	  | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"`            | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*       |
 
 
 ### Channel configuration (Enterprise Edition)

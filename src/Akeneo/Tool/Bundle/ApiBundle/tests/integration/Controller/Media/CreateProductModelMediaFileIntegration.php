@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Media;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\FilesystemInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;

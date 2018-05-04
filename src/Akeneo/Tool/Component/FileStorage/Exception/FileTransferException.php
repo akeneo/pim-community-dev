@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\FileStorage\Exception;
+namespace Akeneo\Tool\Component\FileStorage\Exception;
 
 /**
  * Exception thrown when a file transfer has failed.

@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Comparator\Attribute;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 
 class FileComparatorSpec extends ObjectBehavior

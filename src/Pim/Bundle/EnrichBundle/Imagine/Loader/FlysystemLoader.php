@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Imagine\Loader;
 
-use Akeneo\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Model\Binary;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\FileStorage;
+namespace Akeneo\Tool\Component\FileStorage;
 
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;

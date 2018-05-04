@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Comparator\Attribute;
 
-use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Pim\Component\Catalog\Comparator\ComparatorInterface;
 
 /**

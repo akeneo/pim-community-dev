@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\FileStorage\StreamedFileResponse;
+use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Akeneo\Tool\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;

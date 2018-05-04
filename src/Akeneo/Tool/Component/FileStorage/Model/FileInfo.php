@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\FileStorage\Model;
+namespace Akeneo\Tool\Component\FileStorage\Model;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

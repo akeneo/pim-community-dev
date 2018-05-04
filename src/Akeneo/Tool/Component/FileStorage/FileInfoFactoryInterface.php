@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\Component\FileStorage;
+namespace Akeneo\Tool\Component\FileStorage;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
- * File info factory, create a \Akeneo\Component\FileStorage\Model\FileInfoInterface.
+ * File info factory, create a \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

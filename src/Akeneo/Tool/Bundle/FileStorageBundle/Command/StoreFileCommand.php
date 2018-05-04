@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\FileStorageBundle\Command;
 
-use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

@@ -54,7 +54,7 @@ $cAkeneoRules = [
         'this component have no real existence, it should be merged into Batch'
     ),
     new Rule(
-        'Akeneo\Component\FileStorage',
+        'Akeneo\Tool\Component\FileStorage',
         array_merge($cDeps, [
             'League\Flysystem',  // used as base file storage system
             'Symfony\Component\HttpFoundation', // used to handle uploaded files & stream response
@@ -78,7 +78,7 @@ $cPimRules = [
         'Pim\Component\Catalog',
         array_merge($cDeps, [
             'Akeneo\Tool\Component\Localization',   // to localize product's data
-            'Akeneo\Component\FileStorage',    // for product categories
+            'Akeneo\Tool\Component\FileStorage',    // for product categories
             'Akeneo\Component\Classification', // to handle product's media
             'Akeneo\Tool\Component\Versioning',     // for the history of all models
         ]),
@@ -90,7 +90,7 @@ $cPimRules = [
             'Box\Spout',                     // to import/export CSV and XLSX files
             'Akeneo\Tool\Component\Batch',        // used as base import/export system
             'Akeneo\Tool\Component\Buffer',       // to handle large files
-            'Akeneo\Component\FileStorage',  // to import/export product's media
+            'Akeneo\Tool\Component\FileStorage',  // to import/export product's media
             'Akeneo\Tool\Component\Localization', // to use date and number formats in configuration
             'Akeneo\Component\Classification', // to handle categories database reading
             'Pim\Component\Catalog',         // because ;)

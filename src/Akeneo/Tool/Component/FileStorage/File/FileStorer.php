@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\Component\FileStorage\File;
+namespace Akeneo\Tool\Component\FileStorage\File;
 
-use Akeneo\Component\FileStorage\Exception\FileRemovalException;
-use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Component\FileStorage\FileInfoFactoryInterface;
+use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\MountManager;
@@ -13,7 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Move a raw file to the storage destination filesystem
- * transforms it as a \Akeneo\Component\FileStorage\Model\FileInfoInterface
+ * transforms it as a \Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface
  * and save it to the database.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>

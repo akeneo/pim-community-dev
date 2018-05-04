@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Component\FileStorage\File;
 
-use Akeneo\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;

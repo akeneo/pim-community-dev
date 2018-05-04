@@ -2,7 +2,7 @@
 
 namespace Pim\Behat\Context\Storage;
 
-use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
