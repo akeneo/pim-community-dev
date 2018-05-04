@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Akeneo\Component\Buffer;
+namespace spec\Akeneo\Tool\Component\Buffer;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Exception\Prediction\FailedPredictionException;
 
-class JSONFileBufferSpec extends ObjectBehavior
+class ArrayBufferSpec extends ObjectBehavior
 {
     function it_is_a_buffer()
     {
@@ -30,15 +30,6 @@ class JSONFileBufferSpec extends ObjectBehavior
                 implode(', ', $items),
                 implode(', ', $readItems)));
         }
-    }
-
-    function it_supports_only_scalar_and_array_items()
-    {
-        $this->write('scalar');
-        $this->write(['scalar']);
-        $this
-        ->shouldThrow('Akeneo\Component\Buffer\Exception\UnsupportedItemTypeException')
-        ->during('write', [new \stdClass()]);
     }
 
     function it_switches_correctly_between_write_and_read_mode()
