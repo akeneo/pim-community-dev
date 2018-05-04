@@ -20,7 +20,6 @@ parameters:
     pim_enrich.controller.rest.form_extension.class:          Pim\Bundle\EnrichBundle\Controller\Rest\FormExtensionController
     pim_enrich.controller.rest.group.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\GroupController
     pim_enrich.controller.rest.group_type.class:              Pim\Bundle\EnrichBundle\Controller\Rest\GroupTypeController
-    pim_enrich.controller.rest.locale.class:                  Pim\Bundle\EnrichBundle\Controller\Rest\LocaleController
     pim_enrich.controller.rest.measures.class:                Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
     pim_enrich.controller.rest.media.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\MediaController
     pim_enrich.controller.rest.product.class:                 Pim\Bundle\EnrichBundle\Controller\Rest\ProductController
@@ -318,13 +317,6 @@ services:
             - '@pim_catalog.remover.group'
             - '@pim_catalog.factory.group'
             - '@pim_enrich.normalizer.violation'
-
-    pim_enrich.controller.rest.locale:
-        class: '%pim_enrich.controller.rest.locale.class%'
-        arguments:
-            - '@pim_catalog.repository.locale'
-            - '@pim_internal_api_serializer'
-            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.rest.measures:
         class: '%pim_enrich.controller.rest.measures.class%'
