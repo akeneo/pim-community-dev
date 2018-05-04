@@ -2,14 +2,16 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\AnalyticsBundle\DataCollector\OSDataCollector;
 
 class OSDataCollectorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\DataCollector\OSDataCollector');
-        $this->shouldHaveType('Akeneo\Component\Analytics\DataCollectorInterface');
+        $this->shouldHaveType(OSDataCollector::class);
+        $this->shouldHaveType(DataCollectorInterface::class);
     }
 
     function it_collects_php_version_and_os_version()

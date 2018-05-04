@@ -2,8 +2,10 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\AnalyticsBundle\DataCollector\DBDataCollector;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 class DBDataCollectorSpec extends ObjectBehavior
@@ -32,8 +34,8 @@ class DBDataCollectorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\DataCollector\DBDataCollector');
-        $this->shouldHaveType('Akeneo\Component\Analytics\DataCollectorInterface');
+        $this->shouldHaveType(DBDataCollector::class);
+        $this->shouldHaveType(DataCollectorInterface::class);
     }
 
     function it_collects_database_statistics(
