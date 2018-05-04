@@ -51,7 +51,7 @@ class ChangePasswordType extends AbstractType
             [
                 'required'        => true,
                 'type'            => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => 'pim_user.password_match',
                 'options'         => [
                     'attr' => [
                         'class' => 'password-field'
