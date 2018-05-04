@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Notification;
 
-use Akeneo\Component\Localization\Presenter\DatePresenter;
+use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;

@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Localization\Presenter\DatePresenter;
+use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectCalculationNotificationFactory;

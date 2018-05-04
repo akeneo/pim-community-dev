@@ -11,7 +11,7 @@
 namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Akeneo\Component\Classification\Model\Category as BaseCategory;
-use Akeneo\Component\Localization\Model\TranslationInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**

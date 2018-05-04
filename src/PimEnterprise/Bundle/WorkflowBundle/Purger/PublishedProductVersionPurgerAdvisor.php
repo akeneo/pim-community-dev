@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Purger;
 
-use Akeneo\Component\Versioning\Model\VersionInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Pim\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 

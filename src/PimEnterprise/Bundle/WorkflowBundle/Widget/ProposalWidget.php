@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Widget;
 
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use PimEnterprise\Component\Security\Attributes;
