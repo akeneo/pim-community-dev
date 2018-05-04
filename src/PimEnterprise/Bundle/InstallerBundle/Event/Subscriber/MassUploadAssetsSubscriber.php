@@ -8,33 +8,37 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PimEnterprise\Bundle\InstallerBundle\Event\Subscriber;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
 use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\CopyAssetFilesCommand;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\ProcessMassUploadCommand;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 class MassUploadAssetsSubscriber implements EventSubscriberInterface
 {
-    const COPY_FILES_COMMAND  = 'pim:product-asset:copy-asset-files';
-    const MASS_UPLOAD_COMMAND = 'pim:product-asset:mass-upload';
-
     /** @var FixturePathProvider */
     protected $pathProvider;
 
+    /** @var Filesystem */
+    protected $filesystem;
+
     /**
      * @param FixturePathProvider $pathProvider
+     * @param Filesystem $filesystem
      */
-    public function __construct(FixturePathProvider $pathProvider)
+    public function __construct(FixturePathProvider $pathProvider, Filesystem $filesystem)
     {
         $this->pathProvider = $pathProvider;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -58,16 +62,22 @@ class MassUploadAssetsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$event->hasArgument('command_executor')) {
+        $assetsPath = $this->pathProvider->getFixturesPath() . 'assets';
+        if (!$this->filesystem->exists($assetsPath)) {
             return;
         }
 
-        /** @var CommandExecutor $commandExecutor */
-        $commandExecutor = $event->getArgument('command_executor');
+        if (!$event->hasArgument('command_executor')) {
+            throw new \Exception(sprintf(
+                '%s expects $event parameter to have a \'command_executor\' argument of type %s',
+                __METHOD__,
+                CommandExecutor::class
+            ));
+        }
 
-        $assetsPath = $assetsPath = $this->pathProvider->getFixturesPath() . 'assets';
+        $commandExecutor = $event->getArgument('command_executor');
         $commandExecutor->runCommand(
-            static::COPY_FILES_COMMAND,
+            CopyAssetFilesCommand::NAME,
             [
                 '--from' => $assetsPath,
                 '--user' => UserInterface::SYSTEM_USER_NAME,
@@ -75,7 +85,7 @@ class MassUploadAssetsSubscriber implements EventSubscriberInterface
             ]
         );
         $commandExecutor->runCommand(
-            static::MASS_UPLOAD_COMMAND,
+            ProcessMassUploadCommand::NAME,
             [
                 '--user' => UserInterface::SYSTEM_USER_NAME,
                 '--quiet' => true,

@@ -7,17 +7,29 @@ use Pim\Bundle\InstallerBundle\CommandExecutor;
 use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
 use PimEnterprise\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\CopyAssetFilesCommand;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\ProcessMassUploadCommand;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Filesystem\Filesystem;
 
 class MassUploadAssetsSubscriberSpec extends ObjectBehavior
 {
-    function let(FixturePathProvider $pathProvider)
-    {
-        $pathProvider->getFixturesPath()->willReturn('/tmp/');
-        $this->beConstructedWith($pathProvider);
+    function let(
+        FixturePathProvider $pathProvider,
+        Filesystem $filesystem,
+        GenericEvent $event,
+        CommandExecutor $commandExecutor
+    ) {
+        $pathProvider->getFixturesPath()->willReturn('/path/to/fixtures/');
+        $filesystem->exists('/path/to/fixtures/assets')->willReturn(true);
+        $event->getSubject()->willReturn('fixtures_asset_csv');
+        $event->hasArgument('command_executor')->willReturn(true);
+        $event->getArgument('command_executor')->willReturn($commandExecutor);
+
+        $this->beConstructedWith($pathProvider, $filesystem);
     }
 
     function it_is_initializable()
@@ -47,13 +59,22 @@ class MassUploadAssetsSubscriberSpec extends ObjectBehavior
         $this->massUploadAssets($event);
     }
 
-    function it_does_not_do_anything_if_no_command_executor_is_provided(GenericEvent $event)
+    function it_does_not_do_anything_if_assets_path_does_not_exist(GenericEvent $event, $filesystem)
+    {
+        $filesystem->exists('/path/to/fixtures/assets')->willReturn(false);
+
+        $event->getSubject()->willReturn('fixtures_asset_csv');
+        $event->hasArgument(Argument::any())->shouldNotBeCalled();
+
+        $this->massUploadAssets($event);
+    }
+
+    function it_throws_an_exception_if_no_command_executor_is_provided(GenericEvent $event)
     {
         $event->getSubject()->willReturn('fixtures_asset_csv');
         $event->hasArgument('command_executor')->willReturn(false);
-        $event->getArgument(Argument::any())->shouldNotBeCalled();
 
-        $this->massUploadAssets($event);
+        $this->shouldThrow(\Exception::class)->during('massUploadAssets', [$event]);
     }
 
     function it_launches_copy_asset_files_and_mass_upload_assets_commands
@@ -61,21 +82,17 @@ class MassUploadAssetsSubscriberSpec extends ObjectBehavior
         GenericEvent $event,
         CommandExecutor $commandExecutor
     ) {
-        $event->getSubject()->willReturn('fixtures_asset_csv');
-        $event->hasArgument('command_executor')->willReturn(true);
-        $event->getArgument('command_executor')->willReturn($commandExecutor);
-
         $commandExecutor->runCommand(
-            MassUploadAssetsSubscriber::COPY_FILES_COMMAND,
+            CopyAssetFilesCommand::NAME,
             [
-                '--from' => '/tmp/assets',
+                '--from' => '/path/to/fixtures/assets',
                 '--user' => UserInterface::SYSTEM_USER_NAME,
                 '--quiet' => true,
             ]
         )->willReturn($commandExecutor);
 
         $commandExecutor->runCommand(
-            MassUploadAssetsSubscriber::MASS_UPLOAD_COMMAND,
+            ProcessMassUploadCommand::NAME,
             [
                 '--user'  => UserInterface::SYSTEM_USER_NAME,
                 '--quiet' => true,

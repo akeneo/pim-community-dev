@@ -8,7 +8,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
@@ -20,18 +19,24 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
+ * Command to copy the content of a source directory to the default assets mass upload import directory
+ *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 class CopyAssetFilesCommand extends ContainerAwareCommand
 {
+    const NAME = 'pim:product-asset:copy-asset-files';
+
     /**
      * @inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:product-asset:copy-asset-files')
-            ->setDescription('Copy files from a source directory to the default asset import directory')
+            ->setName(static::NAME)
+            ->setDescription(
+                'Copy the content of a source directory to the default assets mass upload import directory'
+            )
             ->addOption(
                 'from',
                 null,
@@ -54,7 +59,13 @@ class CopyAssetFilesCommand extends ContainerAwareCommand
     {
         $filesystem = new Filesystem();
         $sourceDirectory = realpath($input->getOption('from'));
-        if (!$filesystem->exists($sourceDirectory)) {
+        if (!$filesystem->exists($sourceDirectory) || !is_dir($sourceDirectory)) {
+            $output->writeln(
+                sprintf(
+                    '<comment>The source directory %s does not exist, aborting.</comment>',
+                    $sourceDirectory
+                )
+            );
             return;
         }
 

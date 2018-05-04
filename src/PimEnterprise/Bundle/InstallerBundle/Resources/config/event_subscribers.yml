@@ -3,5 +3,6 @@ services:
         class: PimEnterprise\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber
         arguments:
             - '@pim_installer.fixture_loader.path_provider'
+            - '@filesystem'
         tags:
             - { name: kernel.event_subscriber }
