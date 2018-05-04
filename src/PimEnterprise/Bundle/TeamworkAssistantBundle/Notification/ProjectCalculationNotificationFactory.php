@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Notification;
 
-use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;

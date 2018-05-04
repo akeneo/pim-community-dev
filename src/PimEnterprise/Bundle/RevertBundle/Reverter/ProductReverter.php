@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\RevertBundle\Reverter;
 
-use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
