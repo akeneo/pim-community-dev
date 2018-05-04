@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\FileStorage;
 
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -10,7 +11,7 @@ class FileInfoFactorySpec extends ObjectBehavior
 {
     function let(PathGeneratorInterface $pathGenerator)
     {
-        $this->beConstructedWith($pathGenerator, '\Akeneo\Component\FileStorage\Model\FileInfo');
+        $this->beConstructedWith($pathGenerator, FileInfo::class);
     }
 
     function it_creates_a_file_from_a_raw_file($pathGenerator)
