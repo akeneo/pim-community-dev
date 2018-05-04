@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;

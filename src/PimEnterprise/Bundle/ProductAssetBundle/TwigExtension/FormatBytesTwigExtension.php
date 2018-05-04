@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\TwigExtension;
 
-use Akeneo\Component\FileStorage\Formater\BytesFormater;
+use Akeneo\Tool\Component\FileStorage\Formater\BytesFormater;
 
 /**
  * Convert bytes into human readable value

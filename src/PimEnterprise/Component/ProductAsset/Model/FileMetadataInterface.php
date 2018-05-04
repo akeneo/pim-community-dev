@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\FileStorage\Model\File;
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\File;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * The FileMetadataInterface stores basic metadata for a file.

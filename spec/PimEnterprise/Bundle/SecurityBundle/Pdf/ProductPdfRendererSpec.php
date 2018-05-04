@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Pdf;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Liip\ImagineBundle\Binary\BinaryInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;

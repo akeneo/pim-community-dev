@@ -10,7 +10,7 @@
  */
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * Implementation of the FileMetadataInterface

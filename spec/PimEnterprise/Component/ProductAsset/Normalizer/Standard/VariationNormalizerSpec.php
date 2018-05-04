@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Standard;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;

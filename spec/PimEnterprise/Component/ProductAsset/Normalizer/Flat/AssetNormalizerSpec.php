@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Flat;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
