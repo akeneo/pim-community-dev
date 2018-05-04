@@ -2,7 +2,9 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\AnalyticsBundle\DataCollector\TokenStorageDataCollector;
 use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -16,8 +18,8 @@ class TokenStorageDataCollectorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\DataCollector\TokenStorageDataCollector');
-        $this->shouldHaveType('Akeneo\Component\Analytics\DataCollectorInterface');
+        $this->shouldHaveType(TokenStorageDataCollector::class);
+        $this->shouldHaveType(DataCollectorInterface::class);
     }
 
     function it_collects_data_from_token_storage($tokenStorage, TokenInterface $token, UserInterface $user)
