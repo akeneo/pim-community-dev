@@ -40,5 +40,7 @@ pim_api:
         currency: Currencies
         association_type: Association types
 
-rights:
-    api: Web API permissions
+pim_user:
+  roles:
+    tab:
+      api: Web API permissions
