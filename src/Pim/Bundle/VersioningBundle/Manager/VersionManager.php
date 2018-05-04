@@ -175,7 +175,7 @@ class VersionManager
      */
     public function getVersionRepository()
     {
-        return $this->objectManager->getRepository('Akeneo\Component\Versioning\Model\Version');
+        return $this->objectManager->getRepository(Version::class);
     }
 
     /**
