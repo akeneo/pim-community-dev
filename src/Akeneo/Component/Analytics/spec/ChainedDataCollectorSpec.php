@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Component\Analytics;
 
-use Akeneo\Component\Analytics\ChainedDataCollector;
-use Akeneo\Component\Analytics\DataCollectorInterface;
+use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use PhpSpec\ObjectBehavior;
 
 class ChainedDataCollectorSpec extends ObjectBehavior

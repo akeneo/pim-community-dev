@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\AnalyticsBundle\Controller;
 
-use Akeneo\Component\Analytics\ChainedDataCollector;
+use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;

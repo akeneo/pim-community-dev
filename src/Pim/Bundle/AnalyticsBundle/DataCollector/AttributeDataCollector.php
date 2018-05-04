@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Component\Analytics\DataCollectorInterface;
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Pim\Bundle\AnalyticsBundle\Doctrine\Query;
 
