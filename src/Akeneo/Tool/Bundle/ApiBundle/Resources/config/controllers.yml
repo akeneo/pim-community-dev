@@ -6,7 +6,6 @@ parameters:
     pim_api.controller.attribute_option.class: Akeneo\Tool\Bundle\ApiBundle\Controller\AttributeOptionController
     pim_api.controller.attribute_group.class: Akeneo\Tool\Bundle\ApiBundle\Controller\AttributeGroupController
     pim_api.controller.channel.class: Akeneo\Tool\Bundle\ApiBundle\Controller\ChannelController
-    pim_api.controller.locale.class: Akeneo\Tool\Bundle\ApiBundle\Controller\LocaleController
     pim_api.controller.token.class: Akeneo\Tool\Bundle\ApiBundle\Controller\TokenController
     pim_api.controller.product.class: Akeneo\Tool\Bundle\ApiBundle\Controller\ProductController
     pim_api.controller.product_model.class: Akeneo\Tool\Bundle\ApiBundle\Controller\ProductModelController
@@ -123,16 +122,6 @@ services:
             - '@router'
             - '@pim_catalog.saver.channel'
             - '@pim_api.stream.channel_partial_update_stream'
-            - '%pim_api.configuration%'
-
-    pim_api.controller.locale:
-        class: '%pim_api.controller.locale.class%'
-        arguments:
-            - '@pim_api.repository.locale'
-            - '@pim_serializer'
-            - '@pim_api.pagination.offset_hal_paginator'
-            - '@pim_api.pagination.parameter_validator'
-            - '@pim_api.checker.query_parameters'
             - '%pim_api.configuration%'
 
     pim_api.controller.token:

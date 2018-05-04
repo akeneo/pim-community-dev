@@ -10,6 +10,13 @@ services:
         tags:
             - { name: 'channel_repository' }
 
+    pim_api.repository.locale:
+        class: 'Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%akeneo_channel.entity.locale.class%'
+            - '@pim_catalog.repository.locale'
+
     pim_catalog.validator.constraints.locale_validator:
         class: 'Akeneo\Channel\Component\Validator\Constraint\LocaleValidator'
         arguments:
