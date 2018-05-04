@@ -67,3 +67,5 @@
 - Move namespace `Pim\Component\Localization` to `Akeneo\Tool\Component\Localization`
 - Move namespace `Pim\Component\Versionning` to `Akeneo\Tool\Component\Versionning`
 - Move namespace `Pim\Bundle\MeasureBundle` to `Akeneo\Tool\Bundle\MeasureBundle`
+- Move namespace `Pim\Component\FileStorage` to `Akeneo\Tool\Component\FileStorage`
+- Move namespace `Pim\Bundle\FileStorageBundle` to `Akeneo\Tool\Bundle\FileStorageBundle`
