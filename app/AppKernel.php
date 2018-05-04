@@ -107,7 +107,7 @@ class AppKernel extends Kernel
     protected function getPimDependenciesBundles()
     {
         return [
-            new Akeneo\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
+            new Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
             new Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle(),
             new Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
             new Akeneo\Bundle\BufferBundle\AkeneoBufferBundle(),
