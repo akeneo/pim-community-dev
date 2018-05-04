@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Model;
 
-use Akeneo\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;

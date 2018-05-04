@@ -62,7 +62,7 @@ $cAkeneoRules = [
         RuleInterface::TYPE_ONLY
     ),
     new Rule(
-        'Akeneo\Component\Localization',
+        'Akeneo\Tool\Component\Localization',
             array_merge($cDeps, [
                 'Symfony\Component\Translation', // to translate units of the metric attribute types
             ]),
@@ -77,7 +77,7 @@ $cPimRules = [
     new Rule(
         'Pim\Component\Catalog',
         array_merge($cDeps, [
-            'Akeneo\Component\Localization',   // to localize product's data
+            'Akeneo\Tool\Component\Localization',   // to localize product's data
             'Akeneo\Component\FileStorage',    // for product categories
             'Akeneo\Component\Classification', // to handle product's media
             'Akeneo\Tool\Component\Versioning',     // for the history of all models
@@ -91,7 +91,7 @@ $cPimRules = [
             'Akeneo\Tool\Component\Batch',        // used as base import/export system
             'Akeneo\Tool\Component\Buffer',       // to handle large files
             'Akeneo\Component\FileStorage',  // to import/export product's media
-            'Akeneo\Component\Localization', // to use date and number formats in configuration
+            'Akeneo\Tool\Component\Localization', // to use date and number formats in configuration
             'Akeneo\Component\Classification', // to handle categories database reading
             'Pim\Component\Catalog',         // because ;)
             'Pim\Component\Localization',    // to check the localized data during an import

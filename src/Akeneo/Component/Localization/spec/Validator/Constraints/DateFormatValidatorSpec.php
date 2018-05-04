@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Component\Localization\Validator\Constraints;
 
-use Akeneo\Component\Localization\Factory\DateFactory;
-use Akeneo\Component\Localization\Validator\Constraints\DateFormat;
+use Akeneo\Tool\Component\Localization\Factory\DateFactory;
+use Akeneo\Tool\Component\Localization\Validator\Constraints\DateFormat;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

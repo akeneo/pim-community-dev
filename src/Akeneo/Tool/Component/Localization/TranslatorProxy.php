@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Localization;
+namespace Akeneo\Tool\Component\Localization;
 
 use Symfony\Component\Translation\TranslatorInterface;
 

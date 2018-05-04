@@ -1,8 +1,8 @@
 parameters:
-    pim_catalog.localization.constraint.number_format.class:           Akeneo\Component\Localization\Validator\Constraints\NumberFormat
-    pim_catalog.localization.validator.constraint.number_format.class: Akeneo\Component\Localization\Validator\Constraints\NumberFormatValidator
-    pim_catalog.localization.constraint.date_format.class:             Akeneo\Component\Localization\Validator\Constraints\DateFormat
-    pim_catalog.localization.validator.constraint.date_format.class:   Akeneo\Component\Localization\Validator\Constraints\DateFormatValidator
+    pim_catalog.localization.constraint.number_format.class:           Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormat
+    pim_catalog.localization.validator.constraint.number_format.class: Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormatValidator
+    pim_catalog.localization.constraint.date_format.class:             Akeneo\Tool\Component\Localization\Validator\Constraints\DateFormat
+    pim_catalog.localization.validator.constraint.date_format.class:   Akeneo\Tool\Component\Localization\Validator\Constraints\DateFormatValidator
 
 services:
     pim_catalog.localization.validator.constraint.number_format:

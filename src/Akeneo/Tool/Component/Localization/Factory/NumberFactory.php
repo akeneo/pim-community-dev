@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Localization\Factory;
+namespace Akeneo\Tool\Component\Localization\Factory;
 
 /**
  * The NumberFactory create instances of NumberFormatter, taking account of predefined formats.

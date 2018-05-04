@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Localization\Provider;
+namespace Akeneo\Tool\Component\Localization\Provider;
 
 /**
  * Interface LocaleProviderInterface

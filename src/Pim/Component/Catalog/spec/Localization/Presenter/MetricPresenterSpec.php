@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Localization\Presenter;
 
-use Akeneo\Component\Localization\Factory\NumberFactory;
-use Akeneo\Component\Localization\TranslatorProxy;
+use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
+use Akeneo\Tool\Component\Localization\TranslatorProxy;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

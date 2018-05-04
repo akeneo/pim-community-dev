@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Component\Localization\Factory;
+namespace Akeneo\Tool\Component\Localization\Factory;
 
-use Akeneo\Component\Localization\Model\AbstractTranslation;
+use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 
 /**
  * Translation factory for entity instanciation

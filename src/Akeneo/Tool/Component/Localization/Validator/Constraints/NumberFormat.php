@@ -1,23 +1,23 @@
 <?php
 
-namespace Akeneo\Component\Localization\Validator\Constraints;
+namespace Akeneo\Tool\Component\Localization\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Localized date constraint
+ * Localized number constraint
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateFormat extends Constraint
+class NumberFormat extends Constraint
 {
     /** @var string */
-    public $message = 'This type of value expects the use of the format {{ date_format }} for dates.';
+    public $message = 'This type of value expects the use of {{ decimal_separator }} to separate decimals.';
 
     /** @var string */
-    public $dateFormat;
+    public $decimalSeparator;
 
     /** @var string */
     public $path;
@@ -27,6 +27,6 @@ class DateFormat extends Constraint
      */
     public function validatedBy()
     {
-        return 'pim_localization_date_format';
+        return 'pim_localization_number_format';
     }
 }

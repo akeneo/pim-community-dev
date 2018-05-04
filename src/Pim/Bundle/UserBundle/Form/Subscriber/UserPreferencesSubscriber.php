@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
-use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
+use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;

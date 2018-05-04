@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\LocalizationBundle\Provider;
 
-use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
+use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Translation\TranslatorInterface;
 

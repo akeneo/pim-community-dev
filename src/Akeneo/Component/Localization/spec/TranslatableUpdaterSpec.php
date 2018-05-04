@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\Component\Localization;
 
-use Akeneo\Component\Localization\Model\TranslatableInterface;
-use Akeneo\Component\Localization\Model\TranslationInterface;
-use Akeneo\Component\Localization\TranslatableUpdater;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
+use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

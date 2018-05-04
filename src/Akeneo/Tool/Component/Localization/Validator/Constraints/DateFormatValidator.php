@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Component\Localization\Validator\Constraints;
+namespace Akeneo\Tool\Component\Localization\Validator\Constraints;
 
-use Akeneo\Component\Localization\Factory\DateFactory;
+use Akeneo\Tool\Component\Localization\Factory\DateFactory;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

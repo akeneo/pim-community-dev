@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Component\Localization\Localizer;
 
-use Akeneo\Component\Localization\Factory\NumberFactory;
+use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Localization\Localizer;
 
-use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>

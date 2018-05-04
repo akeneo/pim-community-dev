@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Localization\Presenter;
+namespace Akeneo\Tool\Component\Localization\Presenter;
 
 /**
  * Presenter Interface, to present readable data.
