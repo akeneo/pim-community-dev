@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\FileStorage\Formater;
+namespace spec\Akeneo\Tool\Component\FileStorage\Formater;
 
 use PhpSpec\ObjectBehavior;
 

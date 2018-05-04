@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\FileStorage;
+namespace spec\Akeneo\Tool\Component\FileStorage;
 
 use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
 use PhpSpec\ObjectBehavior;
