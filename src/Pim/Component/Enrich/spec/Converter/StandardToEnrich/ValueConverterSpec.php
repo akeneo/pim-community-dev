@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Enrich\Converter\StandardToEnrich;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 

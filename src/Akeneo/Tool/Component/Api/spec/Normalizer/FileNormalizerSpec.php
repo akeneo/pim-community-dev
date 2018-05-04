@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Api\Normalizer;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Normalizer\FileNormalizer;
 use Prophecy\Argument;

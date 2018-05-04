@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Component\FileStorage;
 
-use Akeneo\Component\FileStorage\PathGeneratorInterface;
+use Akeneo\Tool\Component\FileStorage\PathGeneratorInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

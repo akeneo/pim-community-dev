@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Component\FileStorage\File;
+namespace Akeneo\Tool\Component\FileStorage\File;
 
-use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Component\FileStorage\StreamedFileResponse;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 

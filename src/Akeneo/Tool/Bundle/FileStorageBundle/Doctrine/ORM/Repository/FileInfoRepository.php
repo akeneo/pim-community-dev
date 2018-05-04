@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**

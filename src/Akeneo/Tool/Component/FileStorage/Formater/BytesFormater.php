@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\FileStorage\Formater;
+namespace Akeneo\Tool\Component\FileStorage\Formater;
 
 /**
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>

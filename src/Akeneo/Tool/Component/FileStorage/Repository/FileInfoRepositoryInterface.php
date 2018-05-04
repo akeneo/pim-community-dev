@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\FileStorage\Repository;
+namespace Akeneo\Tool\Component\FileStorage\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;

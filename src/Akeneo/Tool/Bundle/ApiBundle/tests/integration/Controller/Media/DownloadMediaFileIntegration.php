@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\MediaFile;
 
-use Akeneo\Component\FileStorage\Model\FileInfo;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Media\AbstractMediaFileTestCase;
 use Pim\Component\Catalog\FileStorage;
 use Symfony\Component\HttpFoundation\Response;

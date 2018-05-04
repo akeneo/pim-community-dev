@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Component\FileStorage\File;
 
-use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Component\FileStorage\StreamedFileResponse;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;

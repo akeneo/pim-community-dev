@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\FileStorage;
+namespace Akeneo\Tool\Component\FileStorage;
 
 /**
  * Generates all the path data (sanitized and unique filename, path, pathname and uuid) of a file.

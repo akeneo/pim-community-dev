@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

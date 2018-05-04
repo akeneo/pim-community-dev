@@ -35,8 +35,8 @@ suites:
         spec_path: src/Akeneo/Tool/Component/Console
         src_path: src/Akeneo/Tool/Component/Console
     FileStorage:
-        namespace: Akeneo\Component\FileStorage
-        psr4_prefix: Akeneo\Component\FileStorage
+        namespace: Akeneo\Tool\Component\FileStorage
+        psr4_prefix: Akeneo\Tool\Component\FileStorage
         spec_path: src/Akeneo/Component/FileStorage
         src_path: src/Akeneo/Component/FileStorage
     Localization:

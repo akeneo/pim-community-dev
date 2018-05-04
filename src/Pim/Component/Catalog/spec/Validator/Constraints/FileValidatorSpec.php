@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Validator\Constraints\File;
 use Prophecy\Argument;

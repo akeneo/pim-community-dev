@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Component\FileStorage\File;
+namespace Akeneo\Tool\Component\FileStorage\File;
 
-use Akeneo\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
