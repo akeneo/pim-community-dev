@@ -16,7 +16,7 @@ class ProcessorSpec extends ObjectBehavior
 
     function it_is_a_processor()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_processes_items($objectDetacher, NormalizerInterface $normalizer, GroupInterface $group)

@@ -1,4 +1,4 @@
-Akeneo\Component\BatchQueue\Queue\JobExecutionMessage:
+Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage:
     type: entity
     table: akeneo_batch_job_execution_queue
     changeTrackingPolicy: DEFERRED_EXPLICIT

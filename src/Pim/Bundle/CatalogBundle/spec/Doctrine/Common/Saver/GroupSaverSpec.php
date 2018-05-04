@@ -43,7 +43,7 @@ class GroupSaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
+        $this->shouldHaveType('Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_saves_a_group_and_flushes_by_default(

@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 
 class JobInstanceFactorySpec extends ObjectBehavior
 {
-    const TESTED_CLASS = 'Akeneo\Component\Batch\Model\JobInstance';
+    const TESTED_CLASS = 'Akeneo\Tool\Component\Batch\Model\JobInstance';
 
     function let()
     {

@@ -1,4 +1,4 @@
-Akeneo\Component\Batch\Model\StepExecution:
+Akeneo\Tool\Component\Batch\Model\StepExecution:
     properties:
         stepName:
             - NotBlank: ~

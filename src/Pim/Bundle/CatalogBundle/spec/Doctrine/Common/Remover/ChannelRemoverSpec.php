@@ -28,7 +28,7 @@ class ChannelRemoverSpec extends ObjectBehavior
 
     function it_is_a_remover()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface');
     }
 
     function it_removes_the_channel_and_flushes_the_unit_of_work(

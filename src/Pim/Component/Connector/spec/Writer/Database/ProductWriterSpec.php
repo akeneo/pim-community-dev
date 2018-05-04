@@ -29,12 +29,12 @@ class ProductWriterSpec extends ObjectBehavior
 
     function it_is_an_item_writer()
     {
-        $this->shouldHaveType('\Akeneo\Component\Batch\Item\ItemWriterInterface');
+        $this->shouldHaveType('\Akeneo\Tool\Component\Batch\Item\ItemWriterInterface');
     }
 
     function it_is_step_execution_aware()
     {
-        $this->shouldHaveType('\Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldHaveType('\Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_saves_items(

@@ -1,10 +1,10 @@
-Akeneo\Component\Batch\Model\JobExecution:
+Akeneo\Tool\Component\Batch\Model\JobExecution:
     type: entity
     table: akeneo_batch_job_execution
     # TODO: should be like other entities
     #changeTrackingPolicy: DEFERRED_EXPLICIT
     entityListeners:
-        \Akeneo\Bundle\BatchBundle\EventListener\LoadJobParametersListener: ~
+        \Akeneo\Tool\Bundle\BatchBundle\EventListener\LoadJobParametersListener: ~
     fields:
         id:
             type: integer

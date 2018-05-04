@@ -1,4 +1,4 @@
-Akeneo\Component\Batch\Model\Warning:
+Akeneo\Tool\Component\Batch\Model\Warning:
     type: entity
     table: akeneo_batch_warning
     # TODO: should be like other entities

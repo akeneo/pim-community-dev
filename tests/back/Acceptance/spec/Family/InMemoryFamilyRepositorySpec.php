@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Test\Acceptance\Family;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use PhpSpec\ObjectBehavior;

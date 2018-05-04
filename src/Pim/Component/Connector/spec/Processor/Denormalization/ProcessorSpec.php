@@ -36,8 +36,8 @@ class ProcessorSpec extends ObjectBehavior
 
     function it_is_a_processor()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
-        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_updates_an_existing_channel(
@@ -98,7 +98,7 @@ class ProcessorSpec extends ObjectBehavior
             ->willThrow(new InvalidPropertyException('code', 'value', 'className', 'The code could not be blank.'));
 
         $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values]
@@ -130,7 +130,7 @@ class ProcessorSpec extends ObjectBehavior
 
         $objectDetacher->detach($channel)->shouldBeCalled();
         $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values]

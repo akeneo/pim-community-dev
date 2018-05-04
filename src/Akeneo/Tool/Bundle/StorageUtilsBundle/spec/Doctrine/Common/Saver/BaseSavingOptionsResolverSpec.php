@@ -9,7 +9,7 @@ class BaseSavingOptionsResolverSpec extends ObjectBehavior
 {
     function it_a_saving_options_resolver()
     {
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface');
+        $this->shouldHaveType('Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface');
     }
 
     function it_resolves_default_values_for_single_save_options()
