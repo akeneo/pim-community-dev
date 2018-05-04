@@ -46,7 +46,7 @@ $cAkeneoRules = [
         RuleInterface::TYPE_ONLY
     ),
     new Rule(
-        'Akeneo\Component\Console',
+        'Akeneo\Tool\Component\Console',
         array_merge($cDeps, [
             'Symfony\Component\Process' // used in CommandLauncher
         ]),

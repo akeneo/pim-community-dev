@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
-use Akeneo\Component\Console\CommandLauncher;
+use Akeneo\Tool\Component\Console\CommandLauncher;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**

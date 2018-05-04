@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\EventListener\Storage;
 
-use Akeneo\Component\Console\CommandLauncher;
+use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
