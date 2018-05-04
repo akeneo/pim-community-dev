@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Akeneo\Bundle\MeasureBundle\Convert;
+namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Convert;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException;
 use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
@@ -24,7 +25,7 @@ class MeasureConverterSpec extends ObjectBehavior
 
     public function it_allows_to_define_the_family()
     {
-        $this->setFamily('Length')->shouldReturnAnInstanceOf('Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter');
+        $this->setFamily('Length')->shouldReturnAnInstanceOf(MeasureConverter::class);
     }
 
     public function it_throws_an_exception_if_an_unknown_family_is_set()

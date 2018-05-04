@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\MeasureBundle\Manager;
+namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Manager;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use PhpSpec\ObjectBehavior;
