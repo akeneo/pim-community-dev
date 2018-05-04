@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\Buffer;
+namespace spec\Akeneo\Tool\Component\Buffer;
 
 use PhpSpec\ObjectBehavior;
 
