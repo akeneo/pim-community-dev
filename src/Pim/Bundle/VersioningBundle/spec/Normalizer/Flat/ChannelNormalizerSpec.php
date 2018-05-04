@@ -2,13 +2,14 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Akeneo\Bundle\MeasureBundle\Family\LengthFamilyInterface;
-use Akeneo\Bundle\MeasureBundle\Family\WeightFamilyInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Normalizer\Standard\ChannelNormalizer;
 use Prophecy\Argument;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ChannelNormalizerSpec extends ObjectBehavior
 {
@@ -21,12 +22,12 @@ class ChannelNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer');
+        $this->shouldHaveType(ChannelNormalizer::class);
     }
 
     function it_is_a_normalizer()
     {
-        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldImplement(NormalizerInterface::class);
     }
 
     function it_supports_channel_normalization_into_flat(ChannelInterface $channel)
