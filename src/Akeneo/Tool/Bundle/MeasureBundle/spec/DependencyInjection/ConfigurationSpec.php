@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\MeasureBundle\DependencyInjection;
+namespace spec\Akeneo\Tool\Bundle\MeasureBundle\DependencyInjection;
 
 use PhpSpec\ObjectBehavior;
 

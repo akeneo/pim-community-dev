@@ -84,8 +84,8 @@ suites:
     MeasureBundle:
         namespace: Akeneo\Tool\Bundle\MeasureBundle
         psr4_prefix: Akeneo\Tool\Bundle\MeasureBundle
-        spec_path: src/Akeneo/Bundle/MeasureBundle
-        src_path: src/Akeneo/Bundle/MeasureBundle
+        spec_path: src/Akeneo/Tool/Bundle/MeasureBundle
+        src_path: src/Akeneo/Tool/Bundle/MeasureBundle
 
     ## Pim Components
     Api:
