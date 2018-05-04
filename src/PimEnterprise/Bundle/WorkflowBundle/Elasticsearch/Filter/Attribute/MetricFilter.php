@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute;
  * file that was distributed with this source code.
  */
 
-use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
