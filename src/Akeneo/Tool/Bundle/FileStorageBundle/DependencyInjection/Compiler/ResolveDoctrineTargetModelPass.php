@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\FileStorageBundle\DependencyInjection\Compiler;
+namespace Akeneo\Tool\Bundle\FileStorageBundle\DependencyInjection\Compiler;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
