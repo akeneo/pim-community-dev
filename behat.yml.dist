@@ -1,12 +1,16 @@
 legacy:
     suites:
-        TEST-pim:
+        all:
+            paths:
+                - tests/legacy/features/
+            filters:
+                tags: "~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated"
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
                 - Context\FeatureContext:
                     - 'Context\FeatureContext'
                     -
-                        base_url: 'http://akeneo-pim-behat.local/'
+                        base_url: 'http://127.0.0.1/'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024
@@ -22,7 +26,7 @@ legacy:
                     - 'Context\FeatureContext'
                 - Context\NavigationContext:
                     - 'Context\FeatureContext'
-                    - 'http://akeneo-pim-behat.local/'
+                    - 'http://127.0.0.1/'
                 - Context\TransformationContext:
                     - 'Context\FeatureContext'
                 - Context\AssertionContext:
@@ -102,9 +106,10 @@ legacy:
                 symfony2:
                     symfony2: ~
                 selenium2:
-                    selenium2: ~
-            base_url: http://akeneo-pim-behat.local/
-            files_path: 'features/Context/fixtures/'
+                    selenium2:
+                        wd_host: 'http://127.0.0.1:4444/wd/hub'
+            base_url: 'http://127.0.0.1/'
+            files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
                 env: behat
@@ -114,13 +119,20 @@ legacy:
                 page: [Context\Page]
             factory:
                 page_parameters:
-                    base_url: http://akeneo-pim-behat.local/
+                    base_url: 'http://127.0.0.1/'
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
+
+    formatters:
+        pretty: true
+        pim:
+            output_path: /tmp/pod/
 
 acceptance:
     suites:
         acceptance:
             paths:
-                - '%paths.base%/tests/features/'
+                - tests/features
             contexts_services:
                 - test.locale.context
                 - test.channel.context
@@ -134,3 +146,10 @@ acceptance:
         FriendsOfBehat\SymfonyExtension:
             kernel:
                 env: acceptance
+        Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
+
+    formatters:
+        pretty: true
+        pim:
+            output_path: /tmp/pod/
