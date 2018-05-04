@@ -48,3 +48,5 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Console/Aken
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Localization/Akeneo\\Tool\\Component\\Localization/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Versionning/Akeneo\\Tool\\Component\\Versionning/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\MeasureBundle/Akeneo\\Tool\\Bundle\\MeasureBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\FileStorage/Akeneo\\Tool\\Component\\FileStorage/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\FileStorageBundle/Akeneo\\Tool\\Bundle\\FileStorageBundle/g'
