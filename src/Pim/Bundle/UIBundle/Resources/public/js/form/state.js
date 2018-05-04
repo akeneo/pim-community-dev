@@ -13,7 +13,7 @@ define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
             UNLOAD_EVENT: 'beforeunload.configFormState',
             LOAD_EVENT: 'ready.configFormState',
             FORM_SELECTOR: '.system-configuration-container form:first',
-            CONFIRMATION_MESSAGE: __('You have unsaved changes, are you sure that you want to leave?'),
+            CONFIRMATION_MESSAGE: __('pim_ui.flash.unsaved_changes'),
 
             data: null,
 

@@ -116,3 +116,7 @@ oro_config:
                     label: Enable loading messages
                 loading_messages:
                     label: Available loading messages
+
+pim_ui:
+  flash:
+    unsaved_changes: 'You have unsaved changes, are you sure that you want to leave?'
