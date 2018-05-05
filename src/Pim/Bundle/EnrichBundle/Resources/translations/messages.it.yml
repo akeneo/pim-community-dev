@@ -171,7 +171,7 @@ pim_enrich:
       create: Creare un canale
       edit: Modificare un canale
       remove: Rimuovere un canale
-      history: Visualizza la storia del canale
+      history: Visualizza lo storico del canale
     family:
       index: Elenco famiglie
       create: Creare una famiglia
@@ -758,8 +758,8 @@ job_execution.summary:
   skipped_families: Famiglie saltate
 pim_mass_edit_execution_show: Esecuzione modifiche di massa | Dettagli
 edit_common_attributes.steps.edit_common_attributes_processor.title: Modificare gli attributi
-update_product_value.steps.update_product_value_processor.title: Aggiorna il valore di prodotto
-remove_product_value.steps.update_product_value_processor.title: Rimuovi il valore di prodotto
+update_product_value.steps.update_product_value_processor.title: Modifica un valore di prodotto
+remove_product_value.steps.update_product_value_processor.title: Rimuovi un valore di prodotto
 edit_common_attributes: Modificare gli attributi
 perform.steps.duplicated.title: Dimensione Duplicata
 perform.steps.excluded.title: Prodotto escluso
@@ -769,9 +769,9 @@ batch_jobs:
     perform:
       label: Aggiungi un valore di prodotto
   update_product_value:
-    label: Aggiorna il valore di prodotto
+    label: Modifica un valore di prodotto
     perform:
-      label: Aggiorna il valore di prodotto
+      label: Modifica un valore di prodotto
   edit_common_attributes:
     label: Modificare gli attributi
     perform:

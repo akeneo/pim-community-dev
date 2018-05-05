@@ -1027,32 +1027,39 @@ pim_enrich:
           label: Modifier des attributs
           label_count: "{1}Editer les attributs d'<span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Editer les attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
           description: Seuls les attributs appartenant aux familles des produits sélectionnés seront édités avec les données suivantes pour la locale {{ locale }} et le canal de {{ scope }}.
+          no_update: Il n’y a aucun attribut sélecionné pour effectuer une édition en masse. Veuillez sélectionner un attribut.
         change_family:
           label: Changer de famille
           label_count: "{1}Changer la famille d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Changer la famille de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
           description: La famille des produits sélectionnés sera remplacée par la famille choisie
           field: Famille
+          no_update: Il n'y a aucune famille sélectionnée à laquelle ajouter des produits.
         add_to_group:
           label: Ajouter aux groupes
           label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à des groupes|] 1, Inf [Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des groupes"
           description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
           field: Groupes
+          no_update: Il n'y a aucun groupe sélectionné auquel ajouter des produits.
         add_to_category:
           label: Ajouter à des catégories
           label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à des catégories|] 1, Inf [Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des categories"
           description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
+          no_update: Il n'y a aucune catégorie sélectionnée à laquelle ajouter des produits.
         move_to_category:
           label: Déplacer vers d'autres catégories
           label_count: "{1}Déplacer <span class=\"AknFullPage-title--highlight\">1 produit</span> vers des catégories|] 1, Inf [Déplacer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> vers des categories"
           description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera perdu.
+          no_update: Il n'y a aucune catégorie sélectionnée sur laquelle déplacer des produits.
         remove_from_category:
           label: Retirer des catégories
           label_count: "{1}Retirer <span class=\"AknFullPage-title--highlight\">1 produit</span> de catégories|] 1, Inf [Retirer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> de categories"
           description: Les produits seront retirés des catégories suivantes.
+          no_update: Il n'y a aucune catégorie sélectionnée pour laquelle supprimer des produits.
         add_to_existing_product_model:
           label: Ajouter à un modèle de produit existant
           label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à un modèle de produit existant|] 1, Inf [Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à un modèle de produit existant"
           description: Le modèle de produit sélectionné va rassembler des produits et améliorer l'enrichissement de leurs propriétés communes.
+          no_update: Il n’y a aucun modèle de produit sélectionné pour effectuer l'édition de masse.
     family:
       title: Action de masse sur les familles
       confirm: "{1}Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
