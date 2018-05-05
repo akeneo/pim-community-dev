@@ -24,7 +24,7 @@ pimee_catalog_rule:
       "set": Quindi %field% è impostato a %value%
       "set_value": Quindi %field% è impostato a %value%
       "add": '%value% viene aggiunto a %field%'
-      "remove": Quindi %value% viene rimosso da %field%
+      "remove": '%value% viene aggiunto a %field%'
   condition:
     label: Se %field% %operator% %value%
     operators:
@@ -52,7 +52,7 @@ pimee_catalog_rule:
     rule: Regole
   acl:
     rule:
-      view_permissions: Visualizza regole
+      view_permissions: Vedi Regole
       delete_permissions: Elimina regole
       impacted_product_count_permissions: Calcola i prodotti interessati per le regole
       execute_permissions: Esegui le regole

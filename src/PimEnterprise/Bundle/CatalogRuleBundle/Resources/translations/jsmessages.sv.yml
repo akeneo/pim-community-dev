@@ -8,6 +8,7 @@ pimee_catalog_rule:
   attribute:
     list:
       code.label: Kod
+      condition.label: Villkor
       action.label: Åtgärd
       no_rule_yet.label: Ingen regel för nu
   rule:
@@ -57,6 +58,7 @@ flash:
     removed: Rollen har tagits bort
     impacted_product_count: Massåtgärd för att beräkna de påverkade produkterna för regler har lanserats. Du meddelas när det är gjort.
     executed: Regelkörning har lanserats. Du meddelas när det är gjort.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regler inställningar
 batch_jobs:
   yml_rule_import:
     label: Regel import i YAML
@@ -74,9 +76,15 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Importera produkter
     import_associations.label: Importera associationer
+  csv_product_model_import_with_rules:
+    execute_rules.label: Regler utförande
+    validation.label: Filvalidering
   xlsx_product_import_with_rules:
     label: Produkt import i XLSX med regler
     execute_rules.label: Regler utförande
     validation.label: Filvalidering
     import.label: Importera produkter
     import_associations.label: Importera associationer
+  xlsx_product_model_import_with_rules:
+    execute_rules.label: Regler utförande
+    validation.label: Filvalidering

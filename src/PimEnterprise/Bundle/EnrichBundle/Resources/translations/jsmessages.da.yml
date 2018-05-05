@@ -16,7 +16,7 @@ permission-changes:
 pim_enrich:
   entity:
     attribute_label:
-      pim_assets_collection: Aktive samling
+      pim_assets_collection: Aktiver samling
     attribute:
       type:
         pim_assets_collection: Aktiver samling
@@ -43,13 +43,13 @@ pimee_enrich:
     channel:
       tab:
         asset-transformation:
-          title: Aktiver transformationer
+          title: Aktiv transformationer
     attribute_group:
       tab:
         permission:
           title: Rettigheder
           view.label: Rettighed til at se attributter
-          edit.label: Tillad at redigere attributter
+          edit.label: Rettighed til at redigere attributter
           removed: Gruppe {{ group }} vil ikke blive tilladt at {{ permission }} attributgruppe
           added: Gruppe {{ group }} vil være tilladt at {{ permission }} attributgruppe
   entity:
@@ -93,7 +93,7 @@ pimee_enrich:
               success: Forslaget er blevet fjernet.
       confirmation:
         revert:
-          title: Gendan bekræftelse
+          title: Gendanne bekræftelse
           content: Er du sikker på at du vil gendanne produktet til denne version?
         publish:
           title: Offentliggøre dette produkt
@@ -114,7 +114,7 @@ pimee_enrich:
         update_failed: Produkt kladde kunne ikke opdateres
         value_modified: Denne værdi er ændret af det nuværende udkast
       flash:
-        sent_for_approval: Produkt udkast sendt til godkendelse
+        sent_for_approval: Produkt udkast sendes til godkendelse
         draft_not_sendable: Du kan ikke sende dette udkast til godkendelse
       btn:
         send_for_approval: Send til godkendelse
@@ -123,7 +123,7 @@ pimee_enrich:
         accept_proposal: Acceptere forslag
         accept_selected_proposal: Acceptere valgte forslag(ene)
         reject_proposal: Afvis forslag
-        reject_selected_proposal: Afvis valgte forslag
+        reject_selected_proposal: Afvis valgte forslag(ene)
         remove_proposal: Fjern forslag
         send_for_approval: Send til godkendelse
         cancel: Annuller
@@ -137,7 +137,7 @@ pimee_enrich:
     not_found: Ingen transformation fundet
     title:
       transformation: Transformation
-      options: Valgmuligheder
+      options: Muligheder
     colorspace:
       title: Farverum
       options:
@@ -153,13 +153,13 @@ pimee_enrich:
         resolution: '%value%'
         resolution-unit: '%value%'
     scale:
-      title: Skala
+      title: Skaler
       options:
         width: '%value%px bredde'
         height: '%value%px højde'
         ratio: '%value%% forhold'
     thumbnail:
-      title: Thumbnail
+      title: Miniature
       options:
         width: '%value%px bredde'
         height: '%value%px højde'

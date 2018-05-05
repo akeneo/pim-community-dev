@@ -7,6 +7,7 @@ pimee_catalog_rule:
       title: Regler
       column:
         code: Kod
+        conditions: Villkor
         actions: Åtgärd
         impacted_product_count:
           label: Berörda produkter
@@ -32,6 +33,7 @@ pimee_catalog_rule:
       "CONTAINS": innehåller
       "DOES NOT CONTAIN": innehåller inte
       "EMPTY": är tom
+      "NOT EMPTY": är inte tom
       "IN": in
       "NOT IN": inte i
       "IN CHILDREN": i element
@@ -42,6 +44,7 @@ pimee_catalog_rule:
       "NOT BETWEEN": inte mellan
       "=": lika med
       "!=": inte jämnlikt
+      ">": större än
       ">=": är lika med eller större än
       "<": mindre än
       "<=": är lika med eller mindre än
@@ -50,6 +53,7 @@ pimee_catalog_rule:
   acl:
     rule:
       view_permissions: Visa regler
+      delete_permissions: Ta bort regel
       impacted_product_count_permissions: Beräkna de påverkade produkterna för regler
       execute_permissions: Kör regler
   attribute:
@@ -80,4 +84,6 @@ pimee_catalog_rule:
       error: Ett fel uppstod vid beräkningen av de berörda produkterna för regler
 btn:
   Execute rules: Kör regler
+rule: Regler inställningar
+mass_edit_rule: Regler inställningar
 job_execution.summary.rule_calculated: Antal regler

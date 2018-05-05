@@ -147,3 +147,6 @@ job_execution.summary:
   proposal_deleted: obrisano
 pim_enrich_attribute_form:
   isReadOnly: Samo za čitanje
+batch_jobs:
+  edit_common_attributes:
+    execute_rules.label: Izvrši pravila

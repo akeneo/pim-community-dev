@@ -1,6 +1,6 @@
 pimee_catalog_rule:
   overview: "[] -Inf, 1] {{ count }} regel |] 1, Inf [{{ count }} regler"
-  execution_button: Udfør regler
+  execution_button: Kør regler
   selected: 'udvalgte regler'
   popin:
     execute_rules:
@@ -65,7 +65,7 @@ flash:
     removed: Rollen blev slettet
     impacted_product_count: Massehandling til at beregne de berørte produkter for reglerne, der er blevet igangsat. Du får besked, når det er gennemført.
     executed: Regeludførelsen er blevet igangsat. Du får besked, når det er gennemført.
-pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regel indstillinger
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regler indstillinger
 batch_jobs:
   yml_rule_import:
     label: Regel import i YAML
