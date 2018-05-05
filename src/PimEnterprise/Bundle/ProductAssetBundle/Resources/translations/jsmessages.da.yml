@@ -2,9 +2,9 @@ pimee_product_asset:
   form:
     product:
       asset:
-        manage: Administrer formue
+        manage: Administrer aktiver
         manage_asset:
-          title: Administrer formue
+          title: Administrer aktiver
           cancel: Annuller
           confirm: Bekræft
         title: Administrer aktiver
@@ -34,7 +34,7 @@ pimee_product_asset:
     success:
       new: Der oprettes et nyt aktiv
       imported: Filerne importeres til aktiv behandling
-      canceled: Upload succesrig annulleret
+      canceled: Upload blev annulleret
       deleted: Den uploadede fil blev slettet
     error:
       list: Kan ikke læse filer, der allerede er uploadet

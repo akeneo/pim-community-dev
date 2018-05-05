@@ -62,7 +62,7 @@ pimee_enrich:
       smart_attribute:
         come_from: "この属性は、ルールによって更新することができます。"
       btn:
-        publish: 公開
+        publish: 公開する
         publish_this_version: このバージョンを公開する
         unpublish: 非公開
         save_draft: 下書きを保存

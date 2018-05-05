@@ -183,6 +183,8 @@ pimee_enrich:
       step:
         select:
           label: Elegir recurso
+        choose:
+          label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
         confirm:

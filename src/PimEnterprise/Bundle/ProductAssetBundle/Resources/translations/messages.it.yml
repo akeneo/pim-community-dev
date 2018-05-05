@@ -150,7 +150,7 @@ pim_enrich:
   mass_edit_action:
     asset-classify-move:
       label: Spostare gli asset nelle categorie
-      description: Gli asset saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso
+      description: Gli asset saranno posizionati nelle seguenti categorie, il posizionamento attuale viene perso
       success_flash: L'asset/gli asset è stato spostato/sono stati spostati nelle categorie selezionate
       launched_flash: L'azione di massa "sposta nelle categorie" è stata lanciata. Sarai avvisato quando finisce.
     add-tags-to-assets:

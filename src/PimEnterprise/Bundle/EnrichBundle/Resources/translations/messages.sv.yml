@@ -147,3 +147,6 @@ job_execution.summary:
   proposal_deleted: raderad
 pim_enrich_attribute_form:
   isReadOnly: Endast läsning
+batch_jobs:
+  edit_common_attributes:
+    execute_rules.label: Kör regler

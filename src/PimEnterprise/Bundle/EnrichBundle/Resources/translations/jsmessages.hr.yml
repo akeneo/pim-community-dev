@@ -224,3 +224,5 @@ batch_jobs:
     export.label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx
     perform:
       label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx
+  add_attribute_value:
+    execute_rules.label: Izvođenje pravila

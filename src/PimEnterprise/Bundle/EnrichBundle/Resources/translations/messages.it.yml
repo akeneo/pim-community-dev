@@ -137,7 +137,7 @@ edit_common_attributes_with_permission_and_rules:
   steps.perform: Modificare gli attributi
   steps.edit_common_attributes_processor.title: Modificare gli attributi
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Modificare gli attributi
-add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Aggiungi il valore del prodotto con il permesso
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Aggiungi il valore del prodotto con l'autorizzazione
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Aggiorna il valore del prodotto con l'autorizzazione
 remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Rimuovi il valore del prodotto con l'autorizzazione
 job_execution.summary:

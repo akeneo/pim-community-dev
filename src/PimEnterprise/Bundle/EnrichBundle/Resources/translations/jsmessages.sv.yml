@@ -72,6 +72,7 @@ pimee_enrich:
         draft:
           in_progress: Pågående
           sent_for_approval: Väntar på godkännande
+          working_copy: Arbetar kopia
       tab:
         proposals:
           title: Förslag
@@ -96,6 +97,7 @@ pimee_enrich:
         update_successful: Produkten arbetskopia har uppdaterats
       copy:
         source:
+          working_copy: Arbetar kopia
           draft: Mitt förslag
           draft_of: "{{ author }}'s förslag till"
     product_draft:
@@ -227,3 +229,5 @@ batch_jobs:
     export.label: XLSX publicerade produkter rutnät sammanhang snabb export
     perform:
       label: XLSX publicerade produkter rutnät sammanhang snabb export
+  add_attribute_value:
+    execute_rules.label: Regler utförande

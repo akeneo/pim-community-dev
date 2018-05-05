@@ -6,8 +6,11 @@ pimee_workflow:
     locale: Lokalt sammanhang
     product:
       label: Produkt etikett
+    attribute:
+      label: Attribut
     status:
       label: Status
+      working_copy: Arbetar kopia
       in_progress: Pågående
       ready: Väntar på godkännande
       can_be_partially_reviewed: Kan delvis granskas
@@ -77,6 +80,7 @@ pimee_workflow:
         second: Välj åtgärd
         third: Konfigurera
         fourth: Bekräfta
+pimee_workflow_product_draft_notification_new_proposal: Nytt förslag
 pimee_workflow_import_notification_new_proposals: Nya förslag från import
 btn.publish: Publicera
 btn.unpublish: Avpublicera

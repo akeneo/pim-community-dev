@@ -30,19 +30,19 @@ pimee_catalog_rule:
       actions:
         execute:
           confirm_content: Sei sicuro di voler eseguire la regola?
-          confirm_ok: OK
+          confirm_ok: Ok
       mass_edit_action:
         confirm_content: Sei sicuro di voler calcolare i prodotti interessati dalle regole?
-        confirm_ok: OK
+        confirm_ok: Ok
       mass_action:
         execute:
-          confirm_ok: OK
+          confirm_ok: Ok
           confirm_content: Sei sicuro di voler eseguire le regole selezionate?
           success: L'azione di massa per eseguire le regole selezionate è stata lanciata. Sarai avvisato quando finisce
           error: Si è verificato un errore durante la creazione delle regole.
           empty_selection: Nessuna regola selezionata.
         delete:
-          confirm_ok: OK
+          confirm_ok: Ok
           confirm_title: Conferma cancellazione
           confirm_content: Sei sicuro di voler eliminare le regole selezionate?
           success: Hai eliminato correttamente le regole.
@@ -81,7 +81,7 @@ batch_jobs:
     import_associations.label: Importazione associazioni
   csv_product_model_import_with_rules:
     execute_rules.label: Esecuzione regole
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import_root_product_model.label: Importazione modello di prodotto radice
     import_sub_product_model.label: Importazione sotto-modelli di prodotto
   xlsx_product_import_with_rules:
@@ -92,6 +92,6 @@ batch_jobs:
     import_associations.label: Importazione associazioni
   xlsx_product_model_import_with_rules:
     execute_rules.label: Esecuzione regole
-    validation.label: Validazione file
+    validation.label: Validazione del file
     import_root_product_model.label: Importazione modello di prodotto radice
     import_sub_product_model.label: Importazione sotto-modelli di prodotto
