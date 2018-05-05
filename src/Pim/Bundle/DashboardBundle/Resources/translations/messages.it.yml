@@ -14,7 +14,7 @@ pim_dashboard:
       title: Percentuale di completamento per canale e localizzazione
     last_operations:
       title: Ultime operazioni
-      empty: Non ci sono operazioni
+      empty: Nessuna operazione trovata
       status: Stato
       date: Data
       type: Tipo

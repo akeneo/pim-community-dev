@@ -820,6 +820,8 @@ pim_enrich:
           label: Confirmar
 pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
+  http:
+    403: Forbidden. You are not allowed to access this page
 page_title:
   oro_default: Panell de contol
   pim_enrich_attributegroup_index: Grups d'atribut

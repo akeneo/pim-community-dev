@@ -1,7 +1,7 @@
 confirmation:
   remove:
     item: Er du sikker på at du vil slette dette emne?
-    association_type: Er du sikker på du vil slette denne associationstype?
+    association_type: Er du sikker på du vil slette denne associations type?
     attribute: Er du sikker på du vil slette attributten?
     attribute_group: Er du sikker på du vil slette denne attributgruppe?
     family: Er du sikker på at du vil slette denne familie?
@@ -338,16 +338,12 @@ pim_enrich:
       message:
         created: Familien blev oprettet
       variant:
-        common:
-          title: Fælles attributter
-          empty: Der er ingen fælles attributter
         axis.label: Variant akse
         level_1.label: Variant attributter niveau 1
         level_2.label: Variant attributter niveau to
         add_variant: Tilføje variant
         create_label: Opret en ny familie variant
         create_description: I en familie variant, kan du definere en struktur for produkter med varianter. Vælge antallet af administrerede variant niveauer, de attributter, der bruges som variant akser for hvert niveau, og derefter definere hvordan attributterne er fordelt.
-        update_description: Træk & drop attributter til de valgte variant niveau at have disse attributter, forvaltes på den variant plan.
         create: Opret
         cancel: Annuller
         code: Kode
@@ -355,12 +351,6 @@ pim_enrich:
         levels: Variant niveauer
         axis_level: Variant akse niveau
         required: Påkrævet
-        confirm_attribute_removal:
-          title: Bekræfte Fjern attributter
-          message: Ved at fjerne disse attributter vil du lægge dem tilbage i de fælles attributter af den familie variant og fjerne værdier fra variant varerne
-    family_variant:
-      info:
-        update_successful: Familie variant opdateret. Produkter med varianter vil blive opdateret med ændringerne.
     attribute_option:
       code: Kode
       label: Etiket
@@ -401,20 +391,20 @@ pim_enrich:
         field_not_ready: "Attributten kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
       scopable: Omfangbar
       type:
-        pim_catalog_identifier: Identifikator
+        pim_catalog_identifier: Id
         pim_catalog_text: Tekst
         pim_catalog_textarea: Tekstområde
         pim_catalog_number: Tal
         pim_catalog_price_collection: Pris
         pim_catalog_multiselect: Multi Select
-        pim_catalog_simpleselect: Simple select
+        pim_catalog_simpleselect: Simpel valg
         pim_catalog_file: Fil
         pim_catalog_image: Billede
         pim_catalog_boolean: "Ja / Nej"
         pim_catalog_date: Dato
         pim_catalog_metric: Metrisk
-        pim_reference_data_simpleselect: Referencedata simpel valg
-        pim_reference_data_multiselect: Reference data multi valg
+        pim_reference_data_simpleselect: Referencedata simpel Vælg
+        pim_reference_data_multiselect: Reference data multi Vælg
       validation_rule:
         email: E-mail
         regexp: Regulære udtryk
@@ -708,7 +698,7 @@ pim_enrich:
             title: Kategori kolonne
             help: Navnet på kolonnen kategorier
           escape:
-            title: Forlad
+            title: Fortryd
             help: Ét tegn bruges til at angive felt adskillelse
           family_column:
             title: Familie kolonne
@@ -778,7 +768,7 @@ pim_enrich:
         labels:
           title: Etiket oversættelser
         choices:
-          title: Valgmuligheder
+          title: Muligheder
         history:
           title: Historik
     mass_edit:
@@ -824,7 +814,7 @@ pim_enrich:
           clear: Nustil
           all_group: Alle grupper
           empty_selection: Alle attributter vil blive eksporteret
-          title: Attributter
+          title: Egenskaber
           description: Vælg fabrikat oplysningerne eksportere
         family:
           title: Familie
@@ -1040,7 +1030,7 @@ pim_enrich:
         add_to_category:
           label: Tilføje til kategorier
           label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> grupper |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
-          description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering bibeholdes.
+          description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
         move_to_category:
           label: Flyt mellem kategorier
           label_count: "{1}Flyt <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> mellem kategorier |] 1, Inf [Flyt <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> mellem kategorier"
