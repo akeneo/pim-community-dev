@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Component\Classification;
+namespace Akeneo\Tool\Component\Classification;
 
-use Akeneo\Component\Classification\Model\TagInterface;
+use Akeneo\Tool\Component\Classification\Model\TagInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**

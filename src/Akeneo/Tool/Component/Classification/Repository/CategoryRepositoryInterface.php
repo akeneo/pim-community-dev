@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Component\Classification\Repository;
+namespace Akeneo\Tool\Component\Classification\Repository;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

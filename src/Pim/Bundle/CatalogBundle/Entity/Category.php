@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Akeneo\Component\Classification\Model\Category as BaseCategory;
+use Akeneo\Tool\Component\Classification\Model\Category as BaseCategory;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

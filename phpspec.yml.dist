@@ -25,8 +25,8 @@ suites:
         spec_path: src/Akeneo/Tool/Component/Buffer
         src_path: src/Akeneo/Tool/Component/Buffer
     Classification:
-        namespace: Akeneo\Component\Classification
-        psr4_prefix: Akeneo\Component\Classification
+        namespace: Akeneo\Tool\Component\Classification
+        psr4_prefix: Akeneo\Tool\Component\Classification
         spec_path: src/Akeneo/Component/Classification
         src_path: src/Akeneo/Component/Classification
     Console:

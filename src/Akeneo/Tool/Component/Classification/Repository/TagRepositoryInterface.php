@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Classification\Repository;
+namespace Akeneo\Tool\Component\Classification\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
