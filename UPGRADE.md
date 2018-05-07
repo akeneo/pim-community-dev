@@ -50,3 +50,5 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Versionning/
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\MeasureBundle/Akeneo\\Tool\\Bundle\\MeasureBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\FileStorage/Akeneo\\Tool\\Component\\FileStorage/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\FileStorageBundle/Akeneo\\Tool\\Bundle\\FileStorageBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Classification/Akeneo\\Tool\\Component\\Classification/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\ClassificationBundle/Akeneo\\Tool\\Bundle\\ClassificationBundle/g'
