@@ -286,8 +286,9 @@ mappings:
                     mapping:
                         fields:
                             preprocessed:
-                                type: 'keyword'
-                                normalizer: 'textarea_normalizer'
+                                type: 'text'
+                                analyzer: 'textarea_preprocessed_analyzer'
+                                fielddata: true
                         type: 'text'
                         analyzer: 'textarea_analyzer'
             -
