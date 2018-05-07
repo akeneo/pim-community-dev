@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Doctrine\Counter;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 
 /**
  * Count item in a category

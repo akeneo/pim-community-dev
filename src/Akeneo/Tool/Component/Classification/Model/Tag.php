@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Classification\Model;
+namespace Akeneo\Tool\Component\Classification\Model;
 
 /**
  * Tag

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Classification\Repository;
+namespace Akeneo\Tool\Component\Classification\Repository;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
