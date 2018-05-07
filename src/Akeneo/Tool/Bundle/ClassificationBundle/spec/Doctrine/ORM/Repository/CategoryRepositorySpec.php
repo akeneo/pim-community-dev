@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
+namespace spec\Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
