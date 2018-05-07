@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BufferBundle;
+namespace Akeneo\Tool\Bundle\BufferBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
