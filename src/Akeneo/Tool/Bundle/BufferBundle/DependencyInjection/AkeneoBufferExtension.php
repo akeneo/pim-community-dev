@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BufferBundle\DependencyInjection;
+namespace Akeneo\Tool\Bundle\BufferBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
