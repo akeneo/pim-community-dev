@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository;
+use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
 
 /**
  * Tag repository
