@@ -19,7 +19,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'Akeneo\Component\FileStorage\Model\FileInfoInterface' => 'akeneo_file_storage.model.file_info.class',
+            'Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface' => 'akeneo_file_storage.model.file_info.class',
         ];
     }
 }
