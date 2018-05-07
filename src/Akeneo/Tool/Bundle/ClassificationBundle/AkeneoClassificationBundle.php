@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\ClassificationBundle;
+namespace Akeneo\Tool\Bundle\ClassificationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

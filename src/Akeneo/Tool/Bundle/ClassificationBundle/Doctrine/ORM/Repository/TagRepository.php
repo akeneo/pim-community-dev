@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository;
