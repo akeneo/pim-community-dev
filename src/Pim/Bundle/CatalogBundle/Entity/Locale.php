@@ -179,6 +179,6 @@ class Locale implements LocaleInterface, VersionableInterface
      */
     public function getName()
     {
-        return \Locale::getDisplayName($this->code);
+        return null !== $this->code ? \Locale::getDisplayName($this->code) : null;
     }
 }
