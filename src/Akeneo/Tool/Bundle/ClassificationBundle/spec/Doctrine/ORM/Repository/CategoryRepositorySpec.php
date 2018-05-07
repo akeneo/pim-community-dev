@@ -2,11 +2,14 @@
 
 namespace spec\Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Gedmo\Tree\Strategy;
 use Gedmo\Tree\Strategy\ORM\Nested;
 use Gedmo\Tree\TreeListener;
@@ -53,16 +56,16 @@ class CategoryRepositorySpec extends ObjectBehavior
 
     function it_is_a_nested_repository()
     {
-        $this->shouldHaveType('Gedmo\Tree\Entity\Repository\NestedTreeRepository');
+        $this->shouldHaveType(NestedTreeRepository::class);
     }
 
     function it_is_a_category_repository()
     {
-        $this->shouldImplement('Akeneo\Component\Classification\Repository\CategoryRepositoryInterface');
+        $this->shouldImplement(CategoryRepositoryInterface::class);
     }
 
     function it_is_an_identifiable_object_repository()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface');
+        $this->shouldImplement(IdentifiableObjectRepositoryInterface::class);
     }
 }
