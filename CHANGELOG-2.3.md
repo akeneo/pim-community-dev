@@ -4,6 +4,10 @@
 
 - PIM-6897: As Julia, I would like to update the family variant labels from the UI
 
+## Technical improvements
+
+- PIM-7324: Rework structure version provider to better handle cache invalidation
+
 # 2.3.0-ALPHA1 (2018-04-27)
 
 ## Improve Julia's experience
