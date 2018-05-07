@@ -149,7 +149,7 @@ class AppKernel extends Kernel
             new Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
             new Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle(),
             new Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
-            new Akeneo\Bundle\BufferBundle\AkeneoBufferBundle(),
+            new Akeneo\Tool\Bundle\BufferBundle\AkeneoBufferBundle(),
             new Akeneo\Tool\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
             new Akeneo\Tool\Bundle\MeasureBundle\AkeneoMeasureBundle(),
             new Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),

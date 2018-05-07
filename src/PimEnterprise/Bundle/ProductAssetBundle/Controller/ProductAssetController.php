@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageHeightException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
