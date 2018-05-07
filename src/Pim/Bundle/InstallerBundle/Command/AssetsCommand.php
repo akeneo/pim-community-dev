@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Assets dump command
@@ -81,7 +82,13 @@ class AssetsCommand extends ContainerAwareCommand
             $this->commandExecutor->runCommand('assets:install', ['--relative' => true, '--symlink' => true]);
         }
 
-        $this->getEventDispatcher()->dispatch(InstallerEvents::POST_ASSETS_DUMP);
+        $event = new GenericEvent();
+        $event->setArguments([
+            'clean'   => $input->getOption('clean'),
+            'symlink' => $input->getOption('symlink')
+        ]);
+
+        $this->getEventDispatcher()->dispatch(InstallerEvents::POST_ASSETS_DUMP, $event);
 
         return $this;
     }
