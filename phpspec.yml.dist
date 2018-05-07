@@ -15,10 +15,10 @@ suites:
         spec_path: src/Akeneo/Tool/Component/Batch
         src_path: src/Akeneo/Tool/Component/Batch
     BatchQueue:
-        namespace: Akeneo\Component\BatchQueue
-        psr4_prefix: Akeneo\Component\BatchQueue
-        spec_path: src/Akeneo/Component/BatchQueue
-        src_path: src/Akeneo/Component/BatchQueue
+        namespace: Akeneo\Tool\Component\BatchQueue
+        psr4_prefix: Akeneo\Tool\Component\BatchQueue
+        spec_path: src/Akeneo/Tool/Component/BatchQueue
+        src_path: src/Akeneo/Tool/Component/BatchQueue
     Buffer:
         namespace: Akeneo\Tool\Component\Buffer
         psr4_prefix: Akeneo\Tool\Component\Buffer
