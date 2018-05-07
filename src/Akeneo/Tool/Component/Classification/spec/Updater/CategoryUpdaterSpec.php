@@ -1,13 +1,15 @@
 <?php
 
-namespace spec\Akeneo\Component\Classification\Updater;
+namespace spec\Akeneo\Tool\Component\Classification\Updater;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Updater\CategoryUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
@@ -21,12 +23,12 @@ class CategoryUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Component\Classification\Updater\CategoryUpdater');
+        $this->shouldHaveType(CategoryUpdater::class);
     }
 
     function it_is_a_updater()
     {
-        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_category()
@@ -34,7 +36,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Akeneo\Component\Classification\Model\CategoryInterface'
+                CategoryInterface::class
             )
         )->during(
             'update',
@@ -101,7 +103,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
                     'parent',
                     'category code',
                     'The category does not exist',
-                    'Akeneo\Component\Classification\Updater\CategoryUpdater',
+                    CategoryUpdater::class,
                     'unknown'
                 )
             )
@@ -116,7 +118,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::scalarExpected('code', 'Akeneo\Component\Classification\Updater\CategoryUpdater', [])
+                InvalidPropertyTypeException::scalarExpected('code', CategoryUpdater::class, [])
             )
             ->during('update', [$category, $values, []]);
     }
@@ -129,7 +131,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::scalarExpected('parent', 'Akeneo\Component\Classification\Updater\CategoryUpdater', [])
+                InvalidPropertyTypeException::scalarExpected('parent', CategoryUpdater::class, [])
             )
             ->during('update', [$category, $values, []]);
     }
@@ -142,7 +144,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::arrayExpected('labels', 'Akeneo\Component\Classification\Updater\CategoryUpdater', 'foo')
+                InvalidPropertyTypeException::arrayExpected('labels', CategoryUpdater::class, 'foo')
             )
             ->during('update', [$category, $values, []]);
     }
@@ -161,7 +163,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'labels',
                     'one of the labels is not a scalar',
-                    'Akeneo\Component\Classification\Updater\CategoryUpdater',
+                    CategoryUpdater::class,
                     $values['labels']
                 )
             )

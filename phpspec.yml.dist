@@ -27,8 +27,8 @@ suites:
     Classification:
         namespace: Akeneo\Tool\Component\Classification
         psr4_prefix: Akeneo\Tool\Component\Classification
-        spec_path: src/Akeneo/Component/Classification
-        src_path: src/Akeneo/Component/Classification
+        spec_path: src/Akeneo/Tool/Component/Classification
+        src_path: src/Akeneo/Tool/Component/Classification
     Console:
         namespace: Akeneo\Tool\Component\Console
         psr4_prefix: Akeneo\Tool\Component\Console

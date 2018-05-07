@@ -46,7 +46,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
         if (!$category instanceof CategoryInterface) {
             throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($category),
-                'Akeneo\Component\Classification\Model\CategoryInterface'
+                CategoryInterface::class
             );
         }
 
