@@ -67,8 +67,8 @@ suites:
         spec_path: src/Akeneo/Tool/Bundle/BatchQueueBundle
         src_path: src/Akeneo/Tool/Bundle/BatchQueueBundle
     ClassificationBundle:
-        namespace: Akeneo\Bundle\ClassificationBundle
-        psr4_prefix: Akeneo\Bundle\ClassificationBundle
+        namespace: Akeneo\Tool\Bundle\ClassificationBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ClassificationBundle
         spec_path: src/Akeneo/Bundle/ClassificationBundle
         src_path: src/Akeneo/Bundle/ClassificationBundle
     ElasticsearchBundle:
