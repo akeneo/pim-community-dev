@@ -2,7 +2,7 @@
 
 namespace Pim\Behat\Context;
 
-use Akeneo\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
+use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Tester\Result\StepResult;
