@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassE
 
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;

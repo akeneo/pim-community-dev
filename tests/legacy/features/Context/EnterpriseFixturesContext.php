@@ -4,8 +4,8 @@ namespace Context;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\PyStringNode;

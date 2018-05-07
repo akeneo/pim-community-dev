@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\Reader\Database;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 

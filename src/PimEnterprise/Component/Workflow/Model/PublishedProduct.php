@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
-use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

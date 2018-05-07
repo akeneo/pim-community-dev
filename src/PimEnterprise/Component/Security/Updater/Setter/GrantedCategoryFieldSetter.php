@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Security\Updater\Setter;
 
-use Akeneo\Component\Classification\CategoryAwareInterface;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;

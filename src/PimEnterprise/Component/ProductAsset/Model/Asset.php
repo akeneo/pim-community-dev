@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
-use Akeneo\Component\Classification\Model\TagInterface as BaseTagInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
+use Akeneo\Tool\Component\Classification\Model\TagInterface as BaseTagInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

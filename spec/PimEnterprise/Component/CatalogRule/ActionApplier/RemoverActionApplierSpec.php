@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;

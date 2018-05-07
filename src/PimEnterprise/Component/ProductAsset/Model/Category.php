@@ -10,7 +10,7 @@
  */
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\Classification\Model\Category as BaseCategory;
+use Akeneo\Tool\Component\Classification\Model\Category as BaseCategory;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 

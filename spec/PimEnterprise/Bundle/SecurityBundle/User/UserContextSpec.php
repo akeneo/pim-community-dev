@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\User;
 
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;

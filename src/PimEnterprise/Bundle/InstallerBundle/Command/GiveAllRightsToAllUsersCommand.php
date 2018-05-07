@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;

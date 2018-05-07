@@ -10,7 +10,7 @@
  */
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\Classification\Model\Tag as BaseTag;
+use Akeneo\Tool\Component\Classification\Model\Tag as BaseTag;
 
 /**
  * Tag for assets

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\Query;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Query\Filter\Operators;

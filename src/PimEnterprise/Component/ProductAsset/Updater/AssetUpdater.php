@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset\Updater;
 
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Connector\Reader\Database;
 
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Component\Connector\Reader\Database\AbstractReader;
 
 /**

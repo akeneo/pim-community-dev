@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\AssetTag;
 
-use Akeneo\Component\Classification\Model\TagInterface;
+use Akeneo\Tool\Component\Classification\Model\TagInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 

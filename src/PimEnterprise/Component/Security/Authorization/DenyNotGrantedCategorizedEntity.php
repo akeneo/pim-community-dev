@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Security\Authorization;
 
-use Akeneo\Component\Classification\CategoryAwareInterface;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;

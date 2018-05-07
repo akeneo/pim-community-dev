@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\Security\Filter;
 
-use Akeneo\Component\Classification\CategoryAwareInterface;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
