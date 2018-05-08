@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Association\ParentAssociationsFilter;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\ProductUpdater;
 
@@ -15,11 +16,13 @@ class ProductUpdaterSpec extends ObjectBehavior
 {
     function let(
         PropertySetterInterface $propertySetter,
-        ObjectUpdaterInterface $valuesUpdater
+        ObjectUpdaterInterface $valuesUpdater,
+        ParentAssociationsFilter $parentAssociationsFilter
     ) {
         $this->beConstructedWith(
             $propertySetter,
             $valuesUpdater,
+            $parentAssociationsFilter,
             ['enabled', 'family', 'categories', 'groups', 'associations'],
             ['identifier', 'created', 'updated']
         );

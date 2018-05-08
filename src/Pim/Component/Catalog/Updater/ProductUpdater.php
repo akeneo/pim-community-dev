@@ -10,7 +10,7 @@ use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Association\ParentAssociationsFilter;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -34,15 +34,20 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var array */
     protected $ignoredFields = [];
 
+    /** @var ParentAssociationsFilter */
+    private $parentAssociationsFilter;
+
     /**
-     * @param PropertySetterInterface $propertySetter
-     * @param ObjectUpdaterInterface  $valuesUpdater
-     * @param array                   $supportedFields
-     * @param array                   $ignoredFields
+     * @param PropertySetterInterface  $propertySetter
+     * @param ObjectUpdaterInterface   $valuesUpdater
+     * @param ParentAssociationsFilter $parentAssociationsFilter
+     * @param array                    $supportedFields
+     * @param array                    $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
+        ParentAssociationsFilter $parentAssociationsFilter,
         array $supportedFields,
         array $ignoredFields
     ) {
@@ -50,6 +55,7 @@ class ProductUpdater implements ObjectUpdaterInterface
         $this->valuesUpdater = $valuesUpdater;
         $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
+        $this->parentAssociationsFilter = $parentAssociationsFilter;
     }
 
     /**
@@ -137,10 +143,29 @@ class ProductUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $code => $value) {
-            $this->setData($product, $code, $value, $options, $data);
+            $filteredValue = $this->filterData($code, $value, $data);
+            $this->setData($product, $code, $filteredValue, $options);
         }
 
         return $this;
+    }
+
+    /**
+     * @param                  $field
+     * @param                  $data
+     * @param array            $context
+     * @return array
+     */
+    protected function filterData($field, $data, array $context = [])
+    {
+        switch ($field) {
+            case 'associations':
+                $this->validateAssociationsDataType($data);
+                $data = $this->filterParentAssociations($data, $context['parent_associations']);
+                break;
+        }
+
+        return $data;
     }
 
     /**
@@ -148,9 +173,8 @@ class ProductUpdater implements ObjectUpdaterInterface
      * @param                  $field
      * @param                  $data
      * @param array            $options
-     * @param array            $context
      */
-    protected function setData(ProductInterface $product, $field, $data, array $options = [], array $context = []): void
+    protected function setData(ProductInterface $product, $field, $data, array $options = []): void
     {
         switch ($field) {
             case 'enabled':
@@ -165,8 +189,6 @@ class ProductUpdater implements ObjectUpdaterInterface
                 $this->updateProductFields($product, $field, $data);
                 break;
             case 'associations':
-                $this->validateAssociationsDataType($data);
-                $this->validateParentAssociations($data, $context['parent_associations']);
                 $this->updateProductFields($product, $field, $data);
                 break;
             case 'values':
@@ -217,29 +239,19 @@ class ProductUpdater implements ObjectUpdaterInterface
     /**
      * Validate association data
      *
-     * @param array $data
+     * @param array $associations
      * @param array $parentAssociations
+     *
+     * @return array
      */
-    protected function validateParentAssociations(array $data, array $parentAssociations): void
+    protected function filterParentAssociations(array $associations, array $parentAssociations): array
     {
-        if (!is_array($parentAssociations)) {
-            throw InvalidPropertyTypeException::arrayExpected(
-                'parent_associations',
-                static::class,
-                $parentAssociations
-            );
-        }
+        $associations = $this->parentAssociationsFilter->filterParentAssociationsTypes(
+            $associations,
+            $parentAssociations
+        );
 
-        foreach ($data as $associationTypeCode => $associationTypeValues) {
-            foreach ($associationTypeValues as $property => $value) {
-                if (isset ($parentAssociations[$associationTypeCode][$property]) &&
-                    array_intersect($parentAssociations[$associationTypeCode][$property], $value)
-                ) {
-                    // TODO: better exception and/or message
-                    throw new InvalidArgumentException(self::class);
-                }
-            }
-        }
+        return $associations;
     }
 
     /**

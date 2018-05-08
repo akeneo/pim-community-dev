@@ -225,6 +225,11 @@ class ProductNormalizerSpec extends ObjectBehavior
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'
                     ],
+                    'associations' => [
+                        'group' => [
+                            'groupIds' => [12]
+                        ]
+                    ],
                     'ascendant_category_ids'    => [],
                     'variant_navigation'        => [],
                     'attributes_for_this_level' => [],
@@ -399,6 +404,11 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'label'             => [
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'
+                    ],
+                    'associations' => [
+                        'group' => [
+                            'groupIds' => [12]
+                        ]
                     ],
                     'ascendant_category_ids'    => [42],
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],

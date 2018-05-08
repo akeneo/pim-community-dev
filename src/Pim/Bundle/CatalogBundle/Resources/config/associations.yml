@@ -11,3 +11,6 @@ services:
         arguments:
             - '@pim_catalog.repository.association_type'
             - '@pim_catalog.association.class_resolver'
+
+    pim_catalog.association.filter.parent_associations:
+        class: Pim\Component\Catalog\Association\ParentAssociationsFilter

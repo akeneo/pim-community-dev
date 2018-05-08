@@ -26,17 +26,23 @@ class ParentsAssociationsNormalizer implements NormalizerInterface
 
         foreach ($parentAssociations as $association) {
             $code = $association->getAssociationType()->getCode();
-            $data[$code]['groups'] = [];
+            if (!isset($data[$code]['groups'])) {
+                $data[$code]['groups'] = [];
+            }
             foreach ($association->getGroups() as $group) {
                 $data[$code]['groups'][] = $group->getCode();
             }
 
-            $data[$code]['products'] = [];
+            if (!isset($data[$code]['products'])) {
+                $data[$code]['products'] = [];
+            }
             foreach ($association->getProducts() as $product) {
                 $data[$code]['products'][] = $product->getReference();
             }
 
-            $data[$code]['product_models'] = [];
+            if (!isset($data[$code]['product_models'])) {
+                $data[$code]['product_models'] = [];
+            }
             foreach ($association->getProductModels() as $productModel) {
                 $data[$code]['product_models'][] = $productModel->getCode();
             }
@@ -72,6 +78,9 @@ class ParentsAssociationsNormalizer implements NormalizerInterface
         foreach ($parent->getAssociations() as $association) {
             $parentAssociations[] = $association;
         }
+
+        $parentParentAssociations = $this->getParentAssociations($parent);
+        $parentAssociations = array_merge($parentAssociations, $parentParentAssociations);
 
         return $parentAssociations;
     }
