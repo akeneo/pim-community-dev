@@ -157,8 +157,12 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      *
      * @return array
      */
-    protected function filterParentAssociations(array $associations, array $parentAssociations): array
+    protected function filterParentAssociations(array $associations, ?array $parentAssociations): array
     {
+        if (null === $parentAssociations) {
+            return $associations;
+        }
+
         $associations = $this->parentAssociationsFilter->filterParentAssociationsTypes(
             $associations,
             $parentAssociations
