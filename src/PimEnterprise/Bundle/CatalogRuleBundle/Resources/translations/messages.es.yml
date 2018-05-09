@@ -24,7 +24,7 @@ pimee_catalog_rule:
       "set": Entonces %value% es establecido en %field%
       "set_value": Entonces %value% es establecido en %field%
       "add": Entonces %value% es agregado en %field%
-      "remove": Entonces %value% es elimiado de %field%
+      "remove": Entonces %value% es eliminado de %field%
   condition:
     label: Si %field% %operator% %value%
     operators:

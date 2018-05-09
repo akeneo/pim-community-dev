@@ -14,7 +14,7 @@ pimee_workflow:
   entity:
     published_product:
       btn:
-        original_product: 作業コピーを編集
+        original_product: 作業コピーを編集します。
     proposal:
       modal.title: コメントを残す (255 文字まで)
   proposal:

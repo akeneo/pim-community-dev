@@ -37,7 +37,7 @@ pimee_enrich:
     channel:
       tab:
         asset-transformation:
-          title: Transformacions de recurs
+          title: Transformacions de recursos
     attribute_group:
       tab:
         permission:
@@ -226,3 +226,9 @@ batch_jobs:
       label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
   add_attribute_value:
     execute_rules.label: Execució de les regles
+  publish_product:
+    perform.label: Publicar productes
+catalog_volume:
+  axis:
+    count_assets: Recursos
+    count_asset_categories: Categories de recursos

@@ -3,21 +3,20 @@ pimee_product_asset:
     product:
       asset:
         manage: Hantera tillgångar
-        panel:
-          basket:
-            title: Korg
-            empty_basket: Korgen är tom
         manage_asset:
           title: Hantera tillgångar
           cancel: Avbryt
           confirm: Bekräfta
+        title: Hantera tillgångar
+    asset:
+      not_empty: Koden krävs. Det kan inte vara tomt.
   enrich_asset:
     grid:
       edit: Redigera egenskaper för tillgången
   enrich_variation:
     popin:
       delete:
-        title: Bekräfta borttagning
+        title: Bekräfta radering
         message: Är du säker på att du vill radera det här objektet?
       reset:
         title: Återställa variationer
@@ -28,7 +27,7 @@ pimee_product_asset:
       remove_all_files: Ta bort alla filer
       delete: Ta bort
       import: Import
-      upload: Ladda upp
+      upload: Ladda upp tillgångar
     success:
       new: En ny tillgång kommer att skapas
       imported: Filer som importeras för asset bearbetning
@@ -65,7 +64,6 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
-        confirm_content: Är du säker du vill ta bort valda tillgångar?
         success: Valda tillgångar har tagits bort.
         error: Ett fel uppstod när de valda produkterna skulle tas bort, vänligen försök igen.
         empty_selection: Ingen tillgång som valts
@@ -74,3 +72,65 @@ pim_dashboard:
     last_operations:
       job_type:
         mass_upload: Massuppladdning
+page_title:
+  pimee_product_asset_mass_upload: Ladda upp tillgångar
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Tillgångar mas uppladdning
+    perform.label: Massuppladdning
+  yml_asset_channel_configuration_import:
+    label: Importera tillgångs kanal konfiguration i Yaml
+    validation.label: Filvalidering
+    import_asset.label: Importera tillgångs kanal konfiguration i Yaml
+  yml_asset_channel_configuration_export:
+    label: Exportera tillgångs kanal konfiguration i Yaml
+    export.label: Exportera tillgångs kanal konfiguration i Yaml
+  csv_asset_import:
+    label: Importera tillgångar i CSV
+    validation.label: Filvalidering
+    import_tags.label: Tag import i CSV
+    import_asset.label: Importera tillgångar i CSV
+  csv_asset_export:
+    label: Exportera tillgångar i CSV
+    export.label: Exportera tillgångar i CSV
+  csv_asset_variation_export:
+    label: Tillgångs variationer exportera i CSV
+    export.label: Tillgångs variationer exportera i CSV
+  csv_tag_import:
+    label: Tag import i CSV
+    validation.label: Filvalidering
+    import.label: Tag import i CSV
+  csv_asset_category_import:
+    label: Importera tillgångs kategori i CSV
+    validation.label: Filvalidering
+    import_asset_category.label: Importera tillgångs kategori i CSV
+  csv_asset_configuration_import:
+    label: Tillgången kanal konfiguration import i CSV-
+    validation.label: Filvalidering
+    import_asset.label: Tillgången kanal konfiguration import i CSV-
+  csv_asset_category_export:
+    label: Tillgångs kategori exportera till CSV
+    export.label: Tillgångs kategori exportera till CSV
+  xlsx_tag_import:
+    label: Tag import i XLSX
+    validation.label: Filvalidering
+    import.label: Tag import i XLSX
+  xlsx_asset_import:
+    label: Tillgångs import i XLSX
+    validation.label: Filvalidering
+    import_tags.label: Tag import i XLSX
+    import_asset.label: Tillgångs import i XLSX
+  xlsx_asset_category_import:
+    label: Exportera tillgångs kategori till XLSX
+    validation.label: Filvalidering
+    import_asset_category.label: Exportera tillgångs kategori till XLSX
+  xlsx_asset_export:
+    label: Exportera tillgångar till XLSX
+    export.label: Exportera tillgångar till XLSX
+  xlsx_asset_category_export:
+    label: Exportera tillgångs kategori till XLSX
+    export.label: Exportera tillgångs kategori till XLSX
+  classify_assets:
+    perform.label: Flytta tillgångar till kategorier
+  add_tags_to_assets:
+    perform.label: Lägg till taggar till tillgångar

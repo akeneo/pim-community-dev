@@ -4,9 +4,9 @@ Permissions: Rettigheder
 pane.accordion.permissions: Rettigheder
 attribute group.permissions:
   view.label: Rettighed til at se attributter
-  view.help: Tillad at se produkterne i denne attribut gruppe
-  edit.label: Tillad at redigere attributter
-  edit.help: Tillad at redigere produkter i denne attribut gruppe
+  view.help: Rettighed til at se produkterne i denne attribut gruppe
+  edit.label: Rettighed til at redigere attributter
+  edit.help: Rettighed til at se produkterne i denne attribut gruppe
   no_access_to_attributes: Du har ikke adgang til nogen attributter for dette produkt. Kontakt din administrator.
 category.permissions:
   view.label: Rettighed til at se produkter
@@ -50,7 +50,7 @@ pim_enrich:
     publish:
       label: Publicér
       description: Udgiv de udvalgte produkter, de nuværende offentliggjorte data vil blive slettet af de aktuelle data.
-      success_flash: Udvalgte produkter er publiceret.
+      success_flash: Udvalgte produkter har været publiceret.
       launched_flash: Jobbet "Publisering af produkt(er)" kører i øjeblikket.
       message:
         error: Du er ikke ejeren af produktet, du kan ikke udgive den.
@@ -73,7 +73,7 @@ pim_enrich:
         warning: Du er ikke ejer af alle de valgte produkter. Du kan derfor ikke klassificere produkterne "%notGranted%".
     edit_common_attributes:
       message:
-        error: Du er ikke ejeren af produktet, du kan ikke redigere det.
+        error: Du er ikke ejeren af produktet, du kan ikke redigere den.
 flash.product.updated: Produktets arbejdskopi er blevet opdateret
 flash.product_draft.updated: Udkastet er blevet gemt
 flash.locale.updated: Landestandard og rettighederne er blevet opdateret
@@ -92,7 +92,7 @@ pimee_enrich:
       permission.title: Rettigheder
   channel:
     tab:
-      asset_transformation.title: Aktiver transformationer
+      asset_transformation.title: Aktiv transformationer
   acl.product_ownership.title: Ejerskab
   attributes:
     empty: ingen
@@ -103,7 +103,7 @@ pimee_enrich:
     not_found: Ingen transformation fundet
     title:
       transformation: Transformation
-      options: Valgmuligheder
+      options: Muligheder
     colorspace:
       title: Farverum
       options:
@@ -119,13 +119,13 @@ pimee_enrich:
         resolution: '%value%'
         resolution-unit: '%value%'
     scale:
-      title: Skala
+      title: Skaler
       options:
         width: '%value%px bredde'
         height: '%value%px højde'
         ratio: '%value%% forhold'
     thumbnail:
-      title: Thumbnail
+      title: Miniature
       options:
         width: '%value%px bredde'
         height: '%value%px højde'
@@ -151,4 +151,4 @@ pim_enrich_attribute_form:
   isReadOnly: Skrivebeskyttet
 batch_jobs:
   edit_common_attributes:
-    execute_rules.label: Udfør regler
+    execute_rules.label: Kør regler

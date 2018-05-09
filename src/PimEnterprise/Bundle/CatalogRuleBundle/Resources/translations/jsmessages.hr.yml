@@ -61,7 +61,7 @@ flash:
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Postavke pravila
 batch_jobs:
   yml_rule_import:
-    label: Uvoz pravila u YAML
+    label: Uvoz pravila iz YAML
     import.label: Uvoz pravila
   yml_rule_export:
     label: Izvoz pravila u YAML

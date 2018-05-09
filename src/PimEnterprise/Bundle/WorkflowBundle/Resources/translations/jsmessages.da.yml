@@ -16,7 +16,7 @@ pimee_workflow:
       btn:
         original_product: Rediger arbejdskopi
     proposal:
-      modal.title: Efterlad en kommentar (valgfri - max. 255 tegn)
+      modal.title: Efterlad en kommentar (valgfri - maks. 255 tegn)
   proposal:
     overview: "[] -Inf, 1] {{ count }} forslag |] 1, Inf [{{ count }} forslag"
     selected: udvalgte forslag
@@ -36,7 +36,7 @@ pimee_workflow:
         success: Ændringerne er blevet godkendt
     partial_reject:
       modal:
-        title: Delvist afvise ændringer
+        title: Delvist afvist ændringer
         label: Tilføj en kommentar (valgfrit)
         error: Der opstod en fejl, forslag er ikke blevet delvist afvist
         success: Ændringerne er blevet afvist

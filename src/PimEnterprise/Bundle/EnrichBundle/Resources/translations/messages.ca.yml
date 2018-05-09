@@ -92,7 +92,7 @@ pimee_enrich:
       permission.title: Permisos
   channel:
     tab:
-      asset_transformation.title: Transformacions de recurs
+      asset_transformation.title: Transformacions de recursos
   acl.product_ownership.title: Propietat
   attributes:
     empty: cap

@@ -11,10 +11,10 @@ pimee_catalog_rule:
         actions: Toimi
         impacted_product_count:
           label: Päivitetyt tuotteet
-          count: '{0,1}%count% päivitetty tuote|]1,Inf[%count% päivitettyä tuotetta'
+          count: 'Koskee {0,1}%count% tuotetta|]1,Inf[Koskee %count% tuotetta'
           no_yet_calculated: Ei vielä laskettu
       mass_edit_action:
-        impacted_product_count: Päivitä tuotteet
+        impacted_product_count: Laske tuotteet, joita sääntö koskee
         execute: Suorita
         delete: Poista
   actions:
@@ -54,7 +54,7 @@ pimee_catalog_rule:
     rule:
       view_permissions: Näytä säännöt
       delete_permissions: Poista säännöt
-      impacted_product_count_permissions: Päivitä tuotteet, joihin sääntö vaikuttaa
+      impacted_product_count_permissions: Laske tuotteet, joita sääntö koskee
       execute_permissions: Suorita säännöt
   attribute:
     tab:
@@ -70,7 +70,7 @@ pimee_catalog_rule:
     history: Otettu käyttöön sääntö "%rule%"
   product_value:
     tooltip:
-      affected_by.title: 'Ottaa vaikutteista säännö(i)stä:'
+      affected_by.title: 'Koskee sääntöjä:'
   steps:
     product_rule_definition_reader.title: Tuotteen sääntöjen tuonnin lukija
     rule_definition_processor.title: Tuotteen sääntöjen tuonnin prosessori
@@ -80,8 +80,8 @@ pimee_catalog_rule:
     rule:
       executed: Sääntöjen suorittaminen päättynyt
     mass_edit_rule:
-      success: Tuotteiden päivitys valmis
-      error: Tapahtui virhe päivitettäessä tuotteita, joihin sääntö vaikuttaa
+      success: Sääntöä koskevien tuotteiden laskenta päättynyt
+      error: Tapahtui virhe laskettaessa sääntöä koskevia tuotteita
 btn:
   Execute rules: Suorita säännöt
 rule: Sääntöjen asetukset

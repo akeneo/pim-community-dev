@@ -127,7 +127,7 @@ pimee_product_asset:
       upload: イメージのアップロード中にエラーが発生
       code: アセットの無効なコードの形式
       localizable: アセットは存在しますが、ローカライズができません。
-      invalid_locale: ロケールが無効です
+      invalid_locale: ロケールが無効です。
   category:
     menu: アセットカテゴリー
     permissions:

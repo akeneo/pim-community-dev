@@ -35,7 +35,7 @@ pimee_catalog_rule:
           confirm_ok: OK
       mass_edit_action:
         confirm_title: Vahvista laskenta
-        confirm_content: Oletko varma, että haluat päivittää tuotteet, joihin tämä sääntö vaikuttaa?
+        confirm_content: Oletko varma, että haluat laske tuotteet, joita sääntö koskee?
         confirm_ok: OK
       mass_action:
         execute:
@@ -63,7 +63,7 @@ confirmation:
 flash:
   rule:
     removed: Sääntö poistettu onnistuneesti
-    impacted_product_count: Massatoiminto tuotteille, joihin tämä sääntö vaikuttaa on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+    impacted_product_count: Massatoiminto sääntöjä koskevien tuotteiden laskemiseksi käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     executed: Säännön suoritus käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Sääntöjen asetukset
 batch_jobs:
@@ -75,6 +75,7 @@ batch_jobs:
     label: Sääntöjen vienti YAML-muodossa
     export.label: Sääntöjen vienti
   rule_impacted_product_count:
+    label: Sääntöjä koskevat tuotteet
     perform.label: Laske päivitetyt tuotteet
     execute_rules.label: Sääntöjen suorittaminen
   csv_product_import_with_rules:
@@ -84,6 +85,8 @@ batch_jobs:
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
   csv_product_model_import_with_rules:
+    label: Tuotemallien ja sääntöjen tuonti CSV-muodossa
+    execute_rules.label: Sääntöjen suorittaminen
     validation.label: Tiedostojen tarkistaminen
     import_root_product_model.label: Juuritason tuotemallin tuonti
     import_sub_product_model.label: Alatason tuotemallin tuonti
@@ -94,6 +97,8 @@ batch_jobs:
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
   xlsx_product_model_import_with_rules:
+    label: Tuotemallien ja sääntöjen tuonti XLSX-muodossa
+    execute_rules.label: Sääntöjen suorittaminen
     validation.label: Tiedostojen tarkistaminen
     import_root_product_model.label: Juuritason tuotemallin tuonti
     import_sub_product_model.label: Alatason tuotemallin tuonti

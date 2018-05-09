@@ -36,13 +36,13 @@ pimee_product_asset:
       deleted: アップロードされたファイルは正常に削除されました
     error:
       list: すでにアップロードされたファイルを読み込めません
-      upload: アップロード中にエラーが発生
+      upload: イメージのアップロード中にエラーが発生
       delete: エラー発生。サーバーからファイルを削除できません
       import: インポート中にエラーが発生しました
       filename: アセットの無効なファイル名
       code: アセットの無効なコードの形式
       locale: アセットは存在しますが、ローカライズができません。
-      invalid_locale: ロケールが無効です
+      invalid_locale: ロケールが無効です。
       exists: すでに同じ名前のファイルがインポートされています
       conflicts: ファイル名の競合
     grid:
