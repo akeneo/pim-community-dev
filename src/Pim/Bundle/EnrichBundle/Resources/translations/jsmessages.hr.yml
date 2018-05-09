@@ -440,6 +440,10 @@ pim_enrich:
           required_label: Obavezno
         history:
           title: Povijest
+    family_variant:
+      tab:
+        labels:
+          title: Prijevodi oznaka
     attribute_option:
       flash:
         option_created: Opcija atributa je uspješno kreirana
@@ -818,6 +822,8 @@ pim_enrich:
           label: Potvrdi
 pim_enrich.error:
   exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
+  http:
+    403: Forbidden. You are not allowed to access this page
 page_title:
   oro_default: Nadzorna ploča
   pim_enrich_attributegroup_index: Grupe atributa
@@ -1049,6 +1055,7 @@ pim_menu:
     group_type: Tipovi grupa
     locale: Lokalizacija
     product: Proizvodi
+    published_product: Objavljeni proizvodi
     export_history: Povijest izvoza
     export_profile: Izvoz profila
     import_history: Povijest izvoza
@@ -1066,3 +1073,11 @@ pim_menu:
 pim_notification:
   mark_all_as_read: Označi sve kao pročitano
   loading: Učitavanje...
+catalog_volume:
+  axis:
+    count_products: Proizvodi
+    count_channels: Kanali
+    count_families: Obitelji
+    count_attributes: Atributi
+    count_categories: Kategorije
+    count_category_trees: Kategorija stabala
