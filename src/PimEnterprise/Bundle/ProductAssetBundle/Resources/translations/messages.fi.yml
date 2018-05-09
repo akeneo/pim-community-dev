@@ -109,7 +109,7 @@ pimee_product_asset:
   validation:
     code:
       not_empty: Koodi vaaditaan. Se ei voi olla tyhjä.
-      unique: Koodin tulee olla yksilöllinen.
+      unique: Koodin tulee olla uniikki.
       new_generation: Loimme sinulle uuden koodin.
   notAvailable:
     label: ei saatavissa
@@ -141,7 +141,7 @@ pimee_product_asset:
   mass_edit_action:
     asset:
       page_title: Resurssit
-      page_subtitle: Massamuokkaus (1 assetti)|Massamuokkaus (%count% assettia)
+      page_subtitle: Massamuokkaa (1 assetti)|Massamuokkaa (%count% assettia)
       confirm: Olet päivittämässä assetin seuraavilla tiedoilla. Ole hyvä ja vahvista.|Olet päivittämässä %count% assettia seuraavilla tiedoilla. Ole hyvä ja vahvista.
       steps:
         first: Valitse assetit

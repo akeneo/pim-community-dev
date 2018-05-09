@@ -73,7 +73,7 @@ pimee_workflow:
       page_title: Productos publicados
       page_subtitle: Edición en masa (1 producto publicado)|Edición en masa (%count% productos publicados)
       title: Elegir operación
-      subtitle: Seleccione la operación que desea ejecutar en el producto publicado que ha seleccionado|Seleccione la operación que desea ejecutar en los %count% productos publicados que ha seleccionado
+      subtitle: Seleccione la operación que desea ejecutar en los productos publicados que ha seleccionado|Seleccione la operación que desea ejecutar en los %count% productos publicados que ha seleccionado
       confirm: Está a punto de actualizar un producto publicado con la siguiente información, por favor confirme.|Está a punto de actualizar %count% productos publicados con la siguiente información, por favor confirme.
       steps:
         first: Seleccione los productos publicados

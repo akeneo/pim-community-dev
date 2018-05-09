@@ -1,3 +1,4 @@
+View the product: Pogledaj proizvod
 pimee_enrich.product_history.action.revert: Vrati na ovu verziju
 permission-changes:
   category:
@@ -45,13 +46,16 @@ pimee_enrich:
           edit.label: Dozvoljeno uređivanje atributa
   entity:
     product:
+      navigation: Objavljeni proizvodi
       history:
         published: Objavljeno
         revert: Vrati
       smart_attribute:
         come_from: "Ovaj atribut se može ažurirati prema pravilu:"
       btn:
+        publish: Objavi
         publish_this_version: Objavi ovu verziju
+        unpublish: Poništi objavu
         save_draft: Spremi skicu
       flash:
         product_unpublished: Proizvodu uspješno poništena objava
@@ -63,9 +67,18 @@ pimee_enrich:
         published: Objavljena verzija
         owner_groups: Vlasnik grupe
         draft_status: Status skice
+        draft:
+          in_progress: U tijeku
+          sent_for_approval: Čeka na odobrenje
+          working_copy: Radna kopija
       tab:
         proposals:
+          title: Prijedlozi
           messages:
+            approve:
+              success: Prijedlog je uspješno primijenjen.
+            reject:
+              success: Prijedlog je odbijen.
             remove:
               success: Prijedlog je uklonjen.
       confirmation:
@@ -82,6 +95,7 @@ pimee_enrich:
         update_successful: Radna kopija proizvoda je ažurirana
       copy:
         source:
+          working_copy: Radna kopija
           draft: Moj nacrt
           draft_of: "Nacrt od {{ author }}"
     product_draft:
@@ -98,6 +112,7 @@ pimee_enrich:
       modal:
         accept_proposal: Prihvatiti prijedlog
         accept_selected_proposal: Prihvatite odabrane prijedloge
+        reject_proposal: Odbiti prijedlog
         reject_selected_proposal: Odbacite odabrane prijedloge
         remove_proposal: Uklanjanje prijedloga
         send_for_approval: Slanje na odobrenje
@@ -142,17 +157,23 @@ pimee_enrich:
     next: Sljedeća
     cancel: Poništi
     confirm: Potvrdi
+    product:
+      operation:
+        publish:
+          label: Objavi
+        unpublish:
+          label: Poništi objavu
     asset:
       step:
         select:
-          label: Odaberi imovinu
+          label: Odaberite imovinu
         configure:
           label: Konfiguriraj
         confirm:
           label: Potvrdi
       operation:
         add_tag:
-          label: Dodaj oznake u imovine
+          label: Dodavanje oznaka u imovinu
           field: Tagovi
         add_to_category:
           field: Kategorije
@@ -161,8 +182,12 @@ pim_menu:
     asset: Imovine
   item:
     asset_category: Kategorije imovine
+    proposal: Prijedlozi
+    published_product: Objavljeni proizvodi
     rule: Pravila
 page_title:
+  pimee_workflow_proposal_index: Prijedlozi
+  pimee_workflow_published_product_index: Objavljeni proizvodi
   pimee_product_asset_index: Imovine
   pimee_asset_categorytree_index: Kategorije
   pimee_catalog_rule_rule_index: Pravila
@@ -199,3 +224,11 @@ batch_jobs:
     export.label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx
     perform:
       label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx
+  add_attribute_value:
+    execute_rules.label: Izvođenje pravila
+  publish_product:
+    perform.label: Objavljivanje proizvoda
+catalog_volume:
+  axis:
+    count_assets: Imovine
+    count_asset_categories: Kategorije imovine

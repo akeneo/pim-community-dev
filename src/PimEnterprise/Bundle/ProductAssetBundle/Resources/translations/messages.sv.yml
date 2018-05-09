@@ -25,7 +25,7 @@ pimee_product_asset:
       download: Ladda ner
       generate_from_reference: Generera från referens
       reset_variations: Återställa variationer
-    confirmation.remove: Är du säker du vill ta bort tillgången "%asset%"?
+    confirmation.subTitle: Tillgångar
     grid:
       edit: Redigera egenskaper för tillgången
     view:
@@ -115,7 +115,7 @@ pimee_product_asset:
   asset:
     title: Tillgång
   mass_upload:
-    menu: Överföra tillgångar
+    menu: Ladda upp tillgångar
     new: En ny tillgång kommer att skapas
     add_files: lägga till filer
     start: Börja ladda upp
@@ -126,7 +126,7 @@ pimee_product_asset:
       upload: Ett fel uppstod vid uppladdning
       code: Ogiltig kodformat för tillgång
       localizable: En tillgång finns men är inte lokaliserbar
-      invalid_locale: Lokalen är inaktiverad eller ogiltig
+      invalid_locale: Språket är inaktiverat eller ogiltigt
   category:
     menu: Tillgångskategorier
     permissions:
@@ -177,69 +177,7 @@ assets_mass_upload.steps:
   asset_mass_upload.title: Tillgångar mas uppladdning
 import_asset.steps.channel_configuration_processor.title: Bearbeta kanal konfigurationer
 mass_upload: Massöverför tillgångar
-batch_jobs:
-  apply_assets_mass_upload:
-    label: Tillgångar massuppladdning
-    perform.label: Massa uppladdning
-  yml_asset_channel_configuration_import:
-    label: Importera tillgångs kanal konfiguration i Yaml
-    validation.label: Filvalidering
-    import_asset.label: Importera tillgångs kanal konfiguration i Yaml
-  yml_asset_channel_configuration_export:
-    label: Exportera tillgångs kanal konfiguration i Yaml
-    export.label: Exportera tillgångs kanal konfiguration i Yaml
-  csv_asset_import:
-    label: Importera tillgångar i CSV
-    validation.label: Filvalidering
-    import_tags.label: Tag import i CSV
-    import_asset.label: Importera tillgångar i CSV
-  csv_asset_export:
-    label: Exportera tillgångar i CSV
-    export.label: Exportera tillgångar i CSV
-  csv_asset_variation_export:
-    label: Tillgångs variationer exportera i CSV
-    export.label: Tillgångs variationer exportera i CSV
-  csv_tag_import:
-    label: Tag import i CSV
-    validation.label: Filvalidering
-    import.label: Tag import i CSV
-  csv_asset_category_import:
-    label: Importera tillgångs kategori i CSV
-    validation.label: Filvalidering
-    import_asset_category.label: Importera tillgångs kategori i CSV
-  csv_asset_configuration_import:
-    label: Tillgången kanal konfiguration import i CSV-
-    validation.label: Filvalidering
-    import_asset.label: Kanal tillgångar konfiguration import till CSV
-  csv_asset_category_export:
-    label: Tillgångs kategori exportera till CSV
-    export.label: Tillgångs kategori exportera till CSV
-  xlsx_tag_import:
-    label: Tag import i XLSX
-    validation.label: Filvalidering
-    import.label: Tag import i XLSX
-  xlsx_asset_import:
-    label: Tillgångs import i XLSX
-    validation.label: Filvalidering
-    import_tags.label: Tag import i XLSX
-    import_asset.label: Tillgångs import i XLSX
-  xlsx_asset_category_import:
-    label: Exportera tillgångs kategori till XLSX
-    validation.label: Filvalidering
-    import_asset_category.label: Exportera tillgångs kategori till XLSX
-  xlsx_asset_export:
-    label: Exportera tillgångar till XLSX
-    export.label: Exportera tillgångar till XLSX
-  xlsx_asset_category_export:
-    label: Exportera tillgångs kategori till XLSX
-    export.label: Exportera tillgångar till XLSX
-  xlsx_asset_variation_export:
-    label: Exportera tillgångar till XLSX
-    export.label: Exportera tillgångar till XLSX
-  classify_assets:
-    perform.label: Flytta tillgångar till kategorier
-  add_tags_to_assets:
-    perform.label: Lägga till taggar till tillgångar
 pim_analytics:
   info_type:
     nb_assets: Antal tillgångar
+pim_assets_collection: Tillgångar kollektion

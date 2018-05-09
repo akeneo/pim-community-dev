@@ -1,13 +1,13 @@
 pimee_product_asset:
   acl:
     asset:
-      index: Berig asset
+      index: Berig aktiv
       create: Opret et aktiv
       remove: Fjern et aktiv
       categories_view: Konsultere kategorierne af et aktiv
       mass_upload: Mass-upload aktiver
     category_asset_picker:
-      list: List aktiver kategorier i vælgeren til aktiver
+      list: List emne kategorier i emne vælgeren
     category:
       create: Opret en aktiver-kategori
       edit: Redigere en aktiver-kategori
@@ -22,7 +22,7 @@ pimee_product_asset:
     button:
       upload: Upload
       delete: Slet
-      download: ' Download'
+      download: Hent
       generate_from_reference: Generere via reference
       reset_variations: Nulstil variationerne
     confirmation.remove: Er du sikker at du ønsker at fjerne aktivet "%asset%"?
@@ -43,8 +43,8 @@ pimee_product_asset:
       filesize: Filstørrelse
       filetype: Filtype
       actions: Aktioner
-      download: ' Download'
-      tag: Tags
+      download: Hent
+      tag: Etiketter
       no_reference: Ingen reference fil er blevet uploadet endnu.
       no_variation: Ingen variation fil er blevet genereret endnu.
     flash:
@@ -79,7 +79,7 @@ pimee_product_asset:
         error: Variation filen blev ikke slettet. Der opstod en fejl.
   popin.create:
     title: Opret et nyt aktiv
-    is_localized: Kan oversættes
+    is_localized: Oversættelige
   menu: Aktiver
   page_tab:
     title:
@@ -89,7 +89,7 @@ pimee_product_asset:
   code:
     label: Kode
   thumbnail:
-    label: Thumbnail
+    label: Miniature
   status:
     label: Status
   description:
@@ -99,9 +99,9 @@ pimee_product_asset:
   createdAt:
     label: Oprettet den
   updatedAt:
-    label: Sidste opdatering på
+    label: Sidst opdateret på
   tags:
-    label: Tags
+    label: Etiketter
   tabs:
     properties.title: Egenskaber
     variations.title: Variationer
@@ -110,17 +110,17 @@ pimee_product_asset:
     code:
       not_empty: Koden er påkrævet. Det kan ikke være tom.
       unique: Koden skal være unik.
-      new_generation: Vi har oprettet en ny for dig.
+      new_generation: Vi skabt en ny for dig.
   notAvailable:
     label: ikke tilgængelig
   asset:
-    title: Aktiver
+    title: Aktiv
   mass_upload:
     menu: Indlæs aktiver
     new: Der oprettes et nyt aktiv
     add_files: tilføj filer
-    start: Begynd upload
-    cancel: Annuller upload
+    start: Begynd indlæsning
+    cancel: Annuller indlæsning
     import: Import
     executed: Masse indlæsning udført
     error:
@@ -131,10 +131,10 @@ pimee_product_asset:
   category:
     menu: Aktiver kategorier
     permissions:
-      view.label: Rettighed til at se aktiver
-      view.help: Rettighed at se aktiverne i denne kategori
-      edit.label: Rettighed til at redigere aktiver
-      edit.help: Rettighed at redigere produkter i denne kategori (forventer visning tilladelse)
+      view.label: Lov til at se aktiver
+      view.help: Gør det muligt for at se aktiverne i denne kategori
+      edit.label: Tilladelse til at redigere aktiver
+      edit.help: Gør det muligt at redigere produkter i denne kategori (forventer tilladelsen visning)
       no_access_to_products: Du har ikke adgang til produkter i nogen af de tilgængelige samlinger. Kontakt venligst administratoren
       apply_on_children.label: Anvend ændringer på underliggende kategorier
       apply_on_children.help: Kopier tilladelses ændringer på alle underliggende elementer, eksisterende tilladelser bibeholdes
@@ -155,30 +155,30 @@ pim_enrich:
       success_flash: Aktiver(ne) er blevet flyttet til udvalgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
     add-tags-to-assets:
-      label: Tilføj etiketter til aktiver
-      description: Etiketter vil blive tilføjet til aktiverne. Hvis nogle tags ikke findes, vil de blive oprettet.
-      success_flash: Etiket(ter) er blevet tilføjet til aktiver(ne)
-      launched_flash: Massehandling "Tilføj etiketter til aktiver" er blevet igangsat. Du får besked, når det er afsluttet.
-      message.error: Den angivne etiket findes ikke
+      label: Tilføje tags til aktiver
+      description: Tags vil blive tilføjet til aktiverne. Hvis nogle tags ikke findes, vil de blive oprettet.
+      success_flash: Tag (s) er blevet tilføjet til aktiver(ne)
+      launched_flash: Massehandling "Tilføj tags aktiver" er blevet startet. Du får besked, når den er aflsuttet.
+      message.error: Det angivne tag findes ikke
 pim:
   grid:
     mass_action:
       mass_classify_assets: Klassificere
-      add_tags_to_assets: Tilføj etiketter
-      delete_assets: Slet aktiver
+      add_tags_to_assets: Tilføj Tags
+      delete_assets: Slet fil
 btn.create.asset: Opret et aktiv
 btn.drag_or_upload: Træk og slip en fil eller klik her
 job_execution.summary:
   variations_not_generated: Variationer ikke genereret
-  pimee_product_asset.mass_upload.new: Aktiver oprettes fra fil
+  pimee_product_asset.mass_upload.new: Aktivet oprettes fra fil
   pimee_product_asset.mass_upload.updated: Aktiver opdateret
   error: Fejl på aktiv fil proces
   skipped_assets: Aktiver sprunget over
 assets_mass_upload.steps:
-  asset_mass_upload.title: Masse indlæs aktiver
+  asset_mass_upload.title: Aktiver masse indlæs
 import_asset.steps.channel_configuration_processor.title: Håndter kanel konfigurationer
 mass_upload: Masse indlæs aktiver
 pim_analytics:
   info_type:
     nb_assets: Antallet af aktiver
-pim_assets_collection: Aktive samling
+pim_assets_collection: Aktiver samling

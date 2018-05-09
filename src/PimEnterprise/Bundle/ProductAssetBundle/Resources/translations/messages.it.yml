@@ -115,7 +115,7 @@ pimee_product_asset:
   asset:
     title: Asset
   mass_upload:
-    menu: Carica asset
+    menu: Caricamento di asset
     new: Verrà creato un nuovo asset
     add_files: aggiungi file
     start: Inizia il caricamento
@@ -125,8 +125,8 @@ pimee_product_asset:
     error:
       upload: Si è verificato un errore durante il caricamento
       code: Formato codice non valido per l'asset
-      localizable: Un asset esiste ma non è traducibile
-      invalid_locale: L'impostazione internazionale è disabilitata o non valida
+      localizable: Un asset esiste ma non è localizzabile
+      invalid_locale: Le impostazioni internazionali sono disabilitate o non valide
   category:
     menu: Categorie degli asset
     permissions:
@@ -149,8 +149,8 @@ pimee_product_asset:
 pim_enrich:
   mass_edit_action:
     asset-classify-move:
-      label: Sposta gli asset nelle categorie
-      description: Gli asset saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso
+      label: Spostare gli asset nelle categorie
+      description: Gli asset saranno posizionati nelle seguenti categorie, il posizionamento attuale viene perso
       success_flash: L'asset/gli asset è stato spostato/sono stati spostati nelle categorie selezionate
       launched_flash: L'azione di massa "sposta nelle categorie" è stata lanciata. Sarai avvisato quando finisce.
     add-tags-to-assets:

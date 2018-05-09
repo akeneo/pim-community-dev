@@ -54,6 +54,7 @@ pimee_enrich:
           added: El grupo {{ group }} será autorizado a {{ permission }} grupo de atributos
   entity:
     product:
+      index_title: "] -Inf, 1] {{ count }} resultado|] 1, Inf [{{ count }} resultado"
       navigation: Productos publicados
       history:
         published: Publicado
@@ -182,6 +183,8 @@ pimee_enrich:
       step:
         select:
           label: Elegir recurso
+        choose:
+          label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
         confirm:
@@ -234,9 +237,9 @@ batch_jobs:
     perform:
       label: Exportación rápida en CSV de los productos publicados
   csv_published_product_grid_context_quick_export:
-    export.label: Exportación rápida de la grilla de productos publicados en CSV
+    export.label: Exportación rápida de la tabla de productos publicados en CSV
     perform:
-      label: Exportación rápida de la grilla de productos publicados en CSV
+      label: Exportación rápida de la tabla de productos publicados en CSV
   xlsx_published_product_quick_export:
     export.label: Exportación rápida en XLSX de los productos publicados
     perform:
@@ -247,3 +250,9 @@ batch_jobs:
       label: Exportación rápida de la grilla de productos publicados en XLSX
   add_attribute_value:
     execute_rules.label: Ejecución de las reglas
+  publish_product:
+    perform.label: Productos publicados
+catalog_volume:
+  axis:
+    count_assets: Recursos
+    count_asset_categories: Categorías de recursos
