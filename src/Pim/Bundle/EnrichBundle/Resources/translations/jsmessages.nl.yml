@@ -194,8 +194,9 @@ pim_enrich:
         unavailable: Dit specifiek veld van de landinstelling is niet beschikbaar in deze landinstelling
       localizable:
         channel_locale_unavailable: Dit lokaliseerbaar veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
+      media:
+        upload: Klik en sleep om te uploaden of klik hier
       create_popin:
-        type: Product
         title: Aanmaken
         labels:
           family: Kies een familie
@@ -450,6 +451,10 @@ pim_enrich:
           required_label: Verplicht
         history:
           title: Geschiedenis
+    family_variant:
+      tab:
+        labels:
+          title: Labelvertalingen
     attribute_option:
       flash:
         option_created: Attribuut optie succesvol aangemaakt
@@ -812,6 +817,8 @@ pim_enrich:
           description: De producten zullen worden verwijderd uit de volgende categorieën.
 pim_enrich.error:
   exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
+  http:
+    403: Forbidden. You are not allowed to access this page
 page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Attribuutgroepen
@@ -1054,3 +1061,11 @@ pim_menu:
 pim_notification:
   mark_all_as_read: Markeer alles als gelezen
   loading: Laden...
+catalog_volume:
+  axis:
+    count_products: Producten
+    count_channels: Kanalen
+    count_families: Families
+    count_attributes: Attributen
+    count_categories: Categorieën
+    count_category_trees: Categorie boomstructuren

@@ -47,6 +47,7 @@ Additional: Lisää
 Groups and Roles: Ryhmät ja roolit
 Username: Käyttäjänimi
 Password: Salasana
+Password (again): Salasana (varmennus)
 Re-enter password: Syötä salasana uudelleen
 Name prefix: Nimen etuliite
 First name: Etunimi
@@ -76,7 +77,7 @@ Birthday: Syntymäpäivä
 API key: API-avain
 Ui locale: Käyttöliittymän kieli
 UI locale: Käyttöliittymän kieli
-User salt: Käyttäjän salt
+User salt: Käyttäjän suola
 Current password: Nykyinen salasana
 New password: Uusi salasana
 Repeat new password: Uusi salasana (toista)
@@ -154,4 +155,5 @@ Username or Email: Käyttäjänimi tai sähköpostiosoite
 Forgot Password: Unohdin salasanani
 Request: Pyyntö
 Check Email: Tarkista sähköpostisi
+password_reset_email_sent: Sähköposti lähetettiin käyttäjälle. Se sisältää linkin salasanan vaihtamiseksi.
 Go to homepage: Siirry etusivulle

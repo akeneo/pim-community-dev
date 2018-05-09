@@ -129,7 +129,7 @@ pim_enrich:
       confirm.title: '{{ itemName }} löschen'
   navigation:
     link:
-      back_to_grid: Zurück zur Übersicht
+      back_to_grid: Zurück zur Tabellenansicht
     other_actions: Weitere Aktionen
   entity:
     save:
@@ -354,7 +354,7 @@ pim_enrich:
         update_failed: Das Attribut konnte nicht aktualisiert werden.
         create_successful: Attribut erfolgreich erstellt.
         create_failed: Das Attribut konnte nicht erstellt werden.
-      scopable: Je Ausgabekanal individualisierbar
+      scopable: Wert je Ausgabekanal
       type:
         pim_catalog_identifier: Kennung
         pim_catalog_text: Text
@@ -522,6 +522,10 @@ pim_enrich:
           required_label: Erforderlich
         history:
           title: Historie
+    family_variant:
+      tab:
+        labels:
+          title: Feldbezeichner-Übersetzungen
     attribute_option:
       flash:
         option_created: Attributoption erfolgreich erstellt
@@ -558,7 +562,7 @@ pim_enrich:
           table:
             name: Name
             type: Typ
-            scopable: Je Ausgabekanal individualisierbar
+            scopable: Wert je Ausgabekanal
             localizable: Lokalisierbar
         history.title: Historie
     common:
@@ -691,9 +695,9 @@ pim_enrich:
             date_max: Max. Datum
             date_min: Min. Datum
             decimals_allowed: Dezimalwerte erlaubt
-            default_metric_unit: Standard-Maßeinheit
+            default_metric_unit: Standardmaßeinheit
             group: Attributgruppe
-            is_locale_specific: Gebietsschema-spezifisch
+            is_locale_specific: Gebietsschemaspezifisch
             localizable: Wert je Gebietsschema
             max_characters: Max. Zeichen
             max_file_size: Maximale Dateigröße (MB)
@@ -706,7 +710,7 @@ pim_enrich:
             scopable: Wert je Ausgabekanal
             type: Typ
             unique: Eindeutiger Wert
-            useable_as_grid_filter: Verwendbar im Raster
+            useable_as_grid_filter: Verwendbar in der Tabellenansicht
             validation_regexp: Regulärer Ausdruck
             validation_rule: Validierungsregel
             wysiwyg_enabled: Rich-Text-Editor aktiviert
@@ -939,7 +943,7 @@ pim_enrich:
         change_status:
           label: Status ändern
           description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
-          field: Aktivieren
+          field: Zu aktivieren
         change_family:
           description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
           field: Produktfamilie
@@ -1269,3 +1273,13 @@ pim_notification:
   mark_all_as_read: Alle als gelesen markieren
   no_notifications: Keine Benachrichtigungen
   loading: Lädt...
+catalog_volume:
+  axis:
+    count_products: Produkte
+    count_channels: Ausgabekanäle
+    count_families: Produktfamilien
+    count_attributes: Attribute
+    count_categories: Kategorien
+    count_category_trees: Kategorie-Strukturbäume
+    count_variant_products: Produktvarianten
+    count_product_models: Produktmodelle

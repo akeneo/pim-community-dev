@@ -106,7 +106,7 @@ oro_config:
       group:
         localization:
           title: Lokalisering
-          system_locale: Spåk
+          system_locale: Språk
         notification:
           title: Notiser
           system_notification: Ny versionsnotiser

@@ -440,6 +440,10 @@ pim_enrich:
           required_label: Obligatori
         history:
           title: Històric
+    family_variant:
+      tab:
+        labels:
+          title: Traduccions d'etiquetes
     attribute_option:
       flash:
         option_created: Opció d'atribut creat correctament
@@ -818,6 +822,8 @@ pim_enrich:
           label: Confirmar
 pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
+  http:
+    403: Forbidden. You are not allowed to access this page
 page_title:
   oro_default: Panell de contol
   pim_enrich_attributegroup_index: Grups d'atribut
@@ -1067,3 +1073,11 @@ pim_menu:
 pim_notification:
   mark_all_as_read: Marcar tots com a llegits
   loading: Carregant...
+catalog_volume:
+  axis:
+    count_products: Productes
+    count_channels: Canals
+    count_families: Famílies
+    count_attributes: Atributs
+    count_categories: Categories
+    count_category_trees: Arbres de categories
