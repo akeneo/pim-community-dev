@@ -89,6 +89,7 @@ user:
     label: Vista da grelha de produtos por defeito
   default_grid_view:
     none: Nenhum
+  timezone: Fuso horário
 Role: Função
 Owner: Proprietário
 General: Geral

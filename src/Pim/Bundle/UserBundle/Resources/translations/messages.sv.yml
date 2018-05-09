@@ -8,6 +8,10 @@ pim_user:
       business_unit.title: Affärsenheter
       email_synchronization.title: Inställningar för synkronisering av e-post
       interfaces.title: Gränssnitt
+  group:
+    tab:
+      general.title: Allmänna
+      users.title: Användare
 oro.user.controller:
   group.message.saved: "Grupp sparad"
   role.message.saved: "Roll sparad"
@@ -84,7 +88,8 @@ user:
   default_product_grid_view:
     label: Standard produktlistningsvy
   default_grid_view:
-    none: Inga
+    none: Ingen
+  timezone: Tidszon
 Role: Roll
 Owner: Ägare
 General: Allmänna
@@ -125,7 +130,7 @@ oro_security:
 VIEW: Visa
 CREATE: Skapa
 EDIT: Redigera
-DELETE: Radera
+DELETE: Ta bort
 ASSIGN: Tilldela
 SHARE: Dela
 oro:
@@ -136,7 +141,7 @@ oro:
       DEEP: Avdelning
       GLOBAL: Organisation
       SYSTEM: System
-      NONE: Inga
+      NONE: Ingen
 Create group: Skapa grupp
 btn.create.user-group: Skapa grupp
 Has group: Har gruppen
