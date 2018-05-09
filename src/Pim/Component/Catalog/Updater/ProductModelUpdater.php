@@ -107,10 +107,11 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         switch ($field) {
             case 'associations':
                 $this->validateAssociationsDataType($data);
-                $data = $this->filterParentAssociations($data, $context['parent_associations']);
+                if (isset($context['parent_associations'])) {
+                    $data = $this->filterParentAssociations($data, $context['parent_associations']);
+                }
                 break;
         }
-
         return $data;
     }
 

@@ -65,9 +65,9 @@ class ParentsAssociationsNormalizerSpec extends ObjectBehavior
         ];
 
         $productModelParent->getCode()->willReturn('product_model_parent_code');
-        $productModelParent->getAssociations()->willReturn($parentAssociations);
+        $productModelParent->getAllAssociations()->willReturn($parentAssociations);
         $productModelParent->getParent()->willReturn(null);
-        $product->getAssociations()->willReturn([$association1, $association2]);
+        $product->getAllAssociations()->willReturn([$association1, $association2]);
 
         $parentAssociationsNormalized = [
             'PACK' => [
@@ -97,19 +97,32 @@ class ParentsAssociationsNormalizerSpec extends ObjectBehavior
         ProductInterface $productAssociated,
         ProductInterface $productAssociatedToRootModel,
         ProductModelInterface $productModelAssociated,
-        ProductModelInterface $subProductModel,
-        ProductModelInterface $rootProductModel
+        ProductModelInterface $subProductModel
     ) {
         $subGroup->getCode()->willReturn('group_sub');
         $rootGroup->getCode()->willReturn('group_root');
+
+        $productAssociated->getReference()->willReturn('product_code');
+        $productAssociatedToRootModel->getReference()->willReturn('product_associated_to_root');
+        $productModelAssociated->getCode()->willReturn('product_model_code');
+
+        $product->getParent()->willReturn($subProductModel);
+
+        $subProductModel->getCode()->willReturn('sub_product_model_code');
+        $subProductModel->getAllAssociations()->willReturn([
+            $subAssociation1,
+            $subAssociation2,
+            $rootAssociation1,
+        ]);
+
         $associationType1->getCode()->willReturn('XSELL');
+        $associationType2->getCode()->willReturn('PACK');
 
         $subAssociation1->getAssociationType()->willReturn($associationType1);
         $subAssociation1->getGroups()->willReturn(new ArrayCollection([$subGroup->getWrappedObject()]));
         $subAssociation1->getProducts()->willReturn(new ArrayCollection());
         $subAssociation1->getProductModels()->willReturn(new ArrayCollection());
 
-        $productAssociatedToRootModel->getReference()->willReturn('product_associated_to_root');
         $rootAssociation1->getAssociationType()->willReturn($associationType1);
         $rootAssociation1->getGroups()->willReturn(new ArrayCollection([$rootGroup->getWrappedObject()]));
         $rootAssociation1->getProducts()->willReturn(new ArrayCollection([
@@ -118,35 +131,10 @@ class ParentsAssociationsNormalizerSpec extends ObjectBehavior
         ]));
         $rootAssociation1->getProductModels()->willReturn(new ArrayCollection());
 
-        $productAssociated->getReference()->willReturn('product_code');
-        $associationType2->getCode()->willReturn('PACK');
         $subAssociation2->getAssociationType()->willReturn($associationType2);
         $subAssociation2->getGroups()->willReturn(new ArrayCollection());
         $subAssociation2->getProducts()->willReturn(new ArrayCollection([$productAssociated->getWrappedObject()]));
-
-        $productModelAssociated->getCode()->willReturn('product_model_code');
         $subAssociation2->getProductModels()->willReturn(new ArrayCollection([$productModelAssociated->getWrappedObject()]));
-
-        $product->getParent()->willReturn($subProductModel);
-
-        $subAssociations = [
-            $subAssociation1,
-            $subAssociation2,
-        ];
-
-        $rootAssociations = [
-            $rootAssociation1,
-        ];
-
-        $rootProductModel->getCode()->willReturn('root_product_model_code');
-        $rootProductModel->getAssociations()->willReturn($rootAssociations);
-        $rootProductModel->getParent()->willReturn(null);
-        $product->getAssociations()->willReturn([$subAssociation1, $subAssociation2]);
-
-        $subProductModel->getCode()->willReturn('sub_product_model_code');
-        $subProductModel->getAssociations()->willReturn($subAssociations);
-        $subProductModel->getParent()->willReturn($rootProductModel);
-        $product->getAssociations()->willReturn([$subAssociation1, $subAssociation2]);
 
         $parentAssociationsNormalized = [
             'PACK' => [
@@ -169,7 +157,7 @@ class ParentsAssociationsNormalizerSpec extends ObjectBehavior
         ProductModelInterface $productModelParent
     ) {
         $product->getParent()->willReturn($productModelParent);
-        $productModelParent->getAssociations()->willReturn([]);
+        $productModelParent->getAllAssociations()->willReturn([]);
         $productModelParent->getParent()->willReturn(null);
         $this->normalize($product, 'standard')->shouldReturn([]);
     }

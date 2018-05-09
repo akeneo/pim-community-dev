@@ -635,6 +635,17 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getAllAssociations()
+    {
+        $associations = new ArrayCollection($this->associations->toArray());
+        $allAssociations = $this->getAncestryAssociations($this, $associations);
+
+        return $allAssociations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface
     {
         return $this->getAssociationForTypeCode($type->getCode());
@@ -852,5 +863,85 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         return false;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param Collection                       $associationsCollection
+     *
+     * @return Collection
+     */
+    private function getAncestryAssociations(
+        EntityWithFamilyVariantInterface $entity,
+        Collection $associationsCollection
+    ): Collection {
+        $parent = $entity->getParent();
+
+        if (null === $parent) {
+            return $associationsCollection;
+        }
+
+        foreach ($parent->getAssociations() as $association) {
+            $associationsCollection = $this->mergeAssociation($association, $associationsCollection);
+        }
+
+        return $this->getAncestryAssociations($parent, $associationsCollection);
+    }
+
+    /**
+     * Merges one association in an association collection.
+     * It first merge the product existing association
+     * And then merges the association into the collection
+     *
+     * Merging an association means merging all the products, product models and groups
+     * into the collection associations or adding it if it doesn't exist
+     *
+     * @param AssociationInterface $association
+     * @param Collection           $associationsCollection
+     *
+     * @return Collection
+     */
+    private function mergeAssociation(
+        AssociationInterface $association,
+        Collection $associationsCollection
+    ): Collection {
+
+        $existingAssociation = $this->getAssociationForType($association->getAssociationType());
+
+        if (null !== $existingAssociation) {
+            foreach ($existingAssociation->getProducts() as $product) {
+                $association->addProduct($product);
+            }
+            foreach ($existingAssociation->getProductModels() as $productModel) {
+                $association->addProductModel($productModel);
+            }
+            foreach ($existingAssociation->getGroups() as $group) {
+                $association->addGroup($group);
+            }
+        }
+
+        $foundInCollection = null;
+        foreach ($associationsCollection as $associationInCollection) {
+            if ($associationInCollection->getAssociationType()->getCode() ===
+                $association->getAssociationType()->getCode()) {
+                $foundInCollection = $associationInCollection;
+            }
+        }
+
+        if (null !== $foundInCollection) {
+            foreach ($association->getProducts() as $product) {
+                $foundInCollection->addProduct($product);
+            }
+            foreach ($association->getProductModels() as $productModel) {
+                $foundInCollection->addProductModel($productModel);
+            }
+            foreach ($association->getGroups() as $group) {
+                $foundInCollection->addGroup($group);
+            }
+        } else {
+            $associationsCollection->add($association);
+        }
+
+        return $associationsCollection;
     }
 }

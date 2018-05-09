@@ -49,7 +49,7 @@ class ParentAssociationsFilter
         foreach ($associationType as $property => $value) {
             if (isset ($parentAssociationType[$property])) {
                 // using of array_values will reset the keys
-                $filteredType[$property] = array_values(array_diff($associationType[$property], $parentAssociationType[$property]));
+                $filteredType[$property] = array_values(array_diff($value, $parentAssociationType[$property]));
             }
         }
 
