@@ -164,7 +164,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             return $associations;
         }
 
-        $associations = $this->parentAssociationsFilter->filterParentAssociationsTypes(
+        $associations = $this->parentAssociationsFilter->filterParentAssociations(
             $associations,
             $parentAssociations
         );
