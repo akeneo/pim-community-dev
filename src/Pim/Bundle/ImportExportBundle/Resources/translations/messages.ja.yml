@@ -4,7 +4,7 @@ pim_import_export:
   job: ジョブ
   connector: コネクター
   status:
-    - 準備完了
+    0: 準備完了
   batch_status:
     1: 完了
     2: 開始中...
