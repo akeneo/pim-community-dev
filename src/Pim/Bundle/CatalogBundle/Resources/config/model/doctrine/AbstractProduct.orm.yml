@@ -83,6 +83,7 @@ Pim\Component\Catalog\Model\AbstractProduct:
                 - detach
         uniqueData:
             targetEntity: Pim\Component\Catalog\Model\ProductUniqueDataInterface
+            orphanRemoval: true
             mappedBy: product
             cascade:
                 - remove

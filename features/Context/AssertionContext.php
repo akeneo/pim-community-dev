@@ -120,7 +120,7 @@ class AssertionContext extends PimContext
     public function iShouldNotSeeValidationError($error)
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-            $script = 'return $(\'.validation-tooltip[data-original-title="%s"]\').length > 0';
+            $script = 'return $(\'.error-message:contains("%s")\').length > 0';
             $found  = $this->getSession()->evaluateScript(sprintf($script, $error));
             assertFalse($found, sprintf('Expecting to not see validation error, "%s" found', $error));
         }
