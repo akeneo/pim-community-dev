@@ -52,3 +52,18 @@ Feature: Import product models with associations
       | type   | products |product_models                        |
       | UPSELL | watch    |model-bikers-jacket,model-braided-hat |
 
+  Scenario: Successfully import a csv file of sub product models with associations
+    And the following CSV file to import:
+      """
+      code;family_variant;image;UPSELL-products
+      plain;clothing_material_size;;watch
+      plain_red;clothing_material_size;;1111111304
+      """
+    And the product models are imported via the job csv_catalog_modeling_product_model_import with options:
+      | enabledComparison | yes |
+    Then the product model "plain" should have the following associations:
+      | type   | products |
+      | UPSELL | watch    |
+    And the product model "plain_red" should have the following associations:
+      | type   | products   |
+      | UPSELL | watch,1111111304 |

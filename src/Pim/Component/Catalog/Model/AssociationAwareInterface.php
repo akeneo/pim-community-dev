@@ -22,6 +22,13 @@ interface AssociationAwareInterface
     public function getAssociations();
 
     /**
+     * Get all the hierarchical associations for the entity
+     *
+     * @return Collection | AssociationInterface[]
+     */
+    public function getAllAssociations();
+
+    /**
      * Set types of associations
      *
      * @param Collection $associations

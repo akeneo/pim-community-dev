@@ -12,20 +12,20 @@ namespace Pim\Component\Catalog\Association;
 class ParentAssociationsFilter
 {
     /**
-     * Filter associations types to remove existing associations in parents
+     * Filter associations to remove associations existing in parents
      *
      * @param array $associations
      * @param array $parentAssociations
      *
      * @return array $associations not existing in the ancestors
      */
-    public function filterParentAssociationsTypes(array $associations, array $parentAssociations): array
+    public function filterParentAssociations(array $associations, array $parentAssociations): array
     {
         $filtered = [];
         foreach ($associations as $associationTypeCode => $associationTypeValues) {
             $filtered[$associationTypeCode] = $associationTypeValues;
             if (isset($parentAssociations[$associationTypeCode])) {
-                $filtered[$associationTypeCode] = $this->filterParentAssociations(
+                $filtered[$associationTypeCode] = $this->filterParentAssociationType(
                     $associationTypeValues, $parentAssociations[$associationTypeCode]
                 );
             }
@@ -42,14 +42,14 @@ class ParentAssociationsFilter
      *
      * @return array
      */
-    protected function filterParentAssociations(array $associationType, array $parentAssociationType): array
+    protected function filterParentAssociationType(array $associationType, array $parentAssociationType): array
     {
         $filteredType = $associationType;
 
         foreach ($associationType as $property => $value) {
-            if (isset ($parentAssociationType[$property])) {
+            if (isset($parentAssociationType[$property])) {
                 // using of array_values will reset the keys
-                $filteredType[$property] = array_values(array_diff($associationType[$property], $parentAssociationType[$property]));
+                $filteredType[$property] = array_values(array_diff($value, $parentAssociationType[$property]));
             }
         }
 

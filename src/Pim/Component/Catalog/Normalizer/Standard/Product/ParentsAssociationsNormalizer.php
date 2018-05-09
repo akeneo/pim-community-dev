@@ -75,12 +75,9 @@ class ParentsAssociationsNormalizer implements NormalizerInterface
             return $parentAssociations;
         }
 
-        foreach ($parent->getAssociations() as $association) {
+        foreach ($parent->getAllAssociations() as $association) {
             $parentAssociations[] = $association;
         }
-
-        $parentParentAssociations = $this->getParentAssociations($parent);
-        $parentAssociations = array_merge($parentAssociations, $parentParentAssociations);
 
         return $parentAssociations;
     }

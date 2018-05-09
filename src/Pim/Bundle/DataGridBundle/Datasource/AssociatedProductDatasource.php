@@ -257,7 +257,7 @@ class AssociatedProductDatasource extends ProductDatasource
      */
     private function getAssociation(ProductInterface $sourceProduct, $associationTypeId): ?AssociationInterface
     {
-        foreach ($sourceProduct->getAssociations() as $association) {
+        foreach ($sourceProduct->getAllAssociations() as $association) {
             if ($association->getAssociationType()->getId() === (int)$associationTypeId) {
                 return $association;
             }

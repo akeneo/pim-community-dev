@@ -23,7 +23,7 @@ class AssociationsNormalizer implements NormalizerInterface
     {
         $data = [];
 
-        foreach ($associationAwareEntity->getAssociations() as $association) {
+        foreach ($associationAwareEntity->getAllAssociations() as $association) {
             $code = $association->getAssociationType()->getCode();
             $data[$code]['groups'] = [];
             foreach ($association->getGroups() as $group) {

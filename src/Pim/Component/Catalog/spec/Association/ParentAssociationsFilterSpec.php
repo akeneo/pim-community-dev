@@ -58,7 +58,7 @@ class ParentAssociationsFilterSpec extends ObjectBehavior
             ],
         ];
 
-        $this->filterParentAssociationsTypes($inputAssociations, $parentAssociations)
+        $this->filterParentAssociations($inputAssociations, $parentAssociations)
             ->shouldReturn($filteredAssociations);
     }
 }
