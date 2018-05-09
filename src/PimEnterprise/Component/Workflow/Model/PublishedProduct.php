@@ -786,44 +786,6 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getVariantGroup()
-    {
-        $groups = $this->getGroups();
-
-        /** @var GroupInterface $group */
-        foreach ($groups as $group) {
-            if ($group->getType()->isVariant()) {
-                return $group;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasAttributeInVariantGroup(AttributeInterface $attribute)
-    {
-        foreach ($this->groups as $group) {
-            if ($group->getType()->isVariant()) {
-                if ($group->getAxisAttributes()->contains($attribute)) {
-                    return true;
-                }
-
-                $template = $group->getProductTemplate();
-                if (null !== $template && $template->hasValueForAttribute($attribute)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setUniqueData(Collection $data): void
     {
         $this->uniqueData = $data;
@@ -963,5 +925,81 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllAssociations()
+    {
+        $associations = new ArrayCollection($this->associations->toArray());
+        $allAssociations = $this->getAncestryAssociations($this, $associations);
+
+        return $allAssociations;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param Collection                       $associationsCollection
+     *
+     * @return Collection
+     */
+    private function getAncestryAssociations(
+        EntityWithFamilyVariantInterface $entity,
+        Collection $associationsCollection
+    ): Collection {
+        $parent = $entity->getParent();
+
+        if (null === $parent) {
+            return $associationsCollection;
+        }
+
+        foreach ($parent->getAllAssociations() as $association) {
+            $associationsCollection = $this->mergeAssociation($association, $associationsCollection);
+        }
+
+        return $associationsCollection;
+    }
+
+    /**
+     * Merges one association in an association collection.
+     * It first merge the product existing association
+     * And then merges the association into the collection
+     *
+     * Merging an association means merging all the products, product models and groups
+     * into the collection associations or adding it if it doesn't exist
+     *
+     * @param AssociationInterface $association
+     * @param Collection           $associationsCollection
+     *
+     * @return Collection
+     */
+    private function mergeAssociation(
+        AssociationInterface $association,
+        Collection $associationsCollection
+    ): Collection {
+        $foundInCollection = null;
+        foreach ($associationsCollection as $associationInCollection) {
+            if ($associationInCollection->getAssociationType()->getCode() ===
+                $association->getAssociationType()->getCode()) {
+                $foundInCollection = $associationInCollection;
+            }
+        }
+
+        if (null !== $foundInCollection) {
+            foreach ($association->getProducts() as $product) {
+                $foundInCollection->addProduct($product);
+            }
+            foreach ($association->getProductModels() as $productModel) {
+                $foundInCollection->addProductModel($productModel);
+            }
+            foreach ($association->getGroups() as $group) {
+                $foundInCollection->addGroup($group);
+            }
+        } else {
+            $associationsCollection->add($association);
+        }
+
+        return $associationsCollection;
     }
 }

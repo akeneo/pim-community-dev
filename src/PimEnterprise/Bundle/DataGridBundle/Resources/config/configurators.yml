@@ -17,6 +17,18 @@ services:
             - '@request_stack'
             - '@pimee_security.repository.attribute_group_access'
 
+    pim_datagrid.datagrid.configuration.product_model.context_configurator:
+        class: '%pim_datagrid.datagrid.configuration.product.context_configurator.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.attribute'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_user.context.user'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.repository.group'
+            - '@request_stack'
+            - '@pimee_security.repository.attribute_group_access'
+
     pimee_datagrid.datagrid.configuration.product.filters_configurator:
         class: '%pimee_datagrid.datagrid.configuration.product.filters_configurator.class%'
         decorates: pim_datagrid.datagrid.configuration.product.filters_configurator
