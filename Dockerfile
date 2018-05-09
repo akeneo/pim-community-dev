@@ -4,6 +4,7 @@ ENV COMPOSER_CACHE_DIR=/tmp/composer/cache
 ENV YARN_CACHE_FOLDER=/tmp/yarn
 
 ENV BUILD_PACKAGES \
+  apt-transport-https \
   autoconf \
   curl \
   g++ \
@@ -44,7 +45,6 @@ RUN apt-get update && apt-get install -y apt-transport-https \
 	} | debconf-set-selections \
   && apt-get update && apt-get install -y --no-install-recommends \
   $BUILD_PACKAGES \
-  apt-transport-https \
   apache2 \
   firefox-esr \
   imagemagick \
@@ -137,4 +137,4 @@ RUN cp app/config/parameters_test.yml.dist app/config/parameters_test.yml \
 
 EXPOSE 80 9200 4444 3306
 
-CMD /bin/sh -c /var/www/pim/.ci/bin/start-selenium && /var/www/pim/.ci/bin/start-mysql && /var/www/pim/.ci/bin/start-elasticsearch && /var/www/pim/.ci/bin/start-webserver && sleep infinity
+CMD /bin/sh -c /var/www/pim/.ci/bin/start-mysql && /var/www/pim/.ci/bin/start-elasticsearch && /var/www/pim/.ci/bin/start-webserver && /var/www/pim/.ci/bin/start-selenium && sleep infinity
