@@ -82,7 +82,7 @@ stage("Test") {
                 condition: launchIntegrationTests.equals("yes"),
                 container: tag,
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimIntegrationFetcher(testsuites: ["PIM_Integration_Test"])}
+                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/src /var/www/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
             )},
             "behat": {queue(
                 condition: launchEndToEndTests.equals("yes"),
