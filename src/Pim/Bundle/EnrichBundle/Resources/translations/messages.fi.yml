@@ -41,7 +41,7 @@ pim_enrich:
       property.title: Ominaisuudet
       permission.title: Käyttöoikeudet
   group:
-    axis.help: 'Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
+    axis.help: 'Akseli määrittää attribuutit, joiden yli ryhmän tuotteiden tulee vaihdella. Akselit ovat attribuutteja joissa on vaihtoehtoja, ne ei saa olla lokalisoitavissa taikka kanavakohtaisia. Akseleita ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
     type:
       VARIANT: Tuotevariaatio
       X_SELL: X-Sell
@@ -88,7 +88,7 @@ pim_enrich:
       launched_flash: Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     edit-common-attributes:
       label: Muokkaa attribuutteja
-      description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
+      description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
       success_flash: Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä
       launched_flash: Massatoiminto "muokkaa attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
@@ -153,7 +153,7 @@ pim_enrich:
       change_family: Vaihda tuoteryhmää
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
-      mass_edit: Tuotteen massaedit-toiminnot
+      mass_edit: Tuotteen massamuokkaustoiminnot
       comment: Kommentoi tuotteita
       download: Lataa tuote PDF:nä
       history: Näytä tuotehistoria
@@ -438,7 +438,7 @@ info:
     show products: Näytä tuotteet
     show groups: Näytä ryhmät
     remove from products: Sidostyypin poistaminen poistaa sen myös %count% tuotteelta.
-    none exist: Sidostyyppiä ei ole olemassa.
+    none exist: Assosiaatiotyyppiä ei ole olemassa.
     create one: Klikkaa tästä luodaksesi sellainen
   attribute:
     auto option sorting: Jos käytössä, vaihtoehdot lajitellaan automaattisesti riippuen niiden alueellisesta otsikosta
@@ -462,7 +462,7 @@ Required: Vaadittu
 Unique: Ainutlaatuinen
 Not required: Ei vaadittu
 Translatable: Käännettävissä
-Scopable: Scopable
+Scopable: Kanavakohtainen
 Localizable: Lokalisoitavissa
 Unique value: Yksilöllinen arvo
 Attribute group: Attribuuttiryhmä
@@ -515,7 +515,7 @@ Choose a unit: Valitse yksikkö
 No matches found: Vastaavuuksia ei löydy
 Category tree: Kategoriahierarkia
 Completeness: Valmistumisaste
-Attribute used as label: Attribuutti käytössä otsikkona
+Attribute used as label: Otsikkona käytettävä attribuutti
 Credentials: Tunnistetiedot
 Global: Globaali
 Channel: Kanava
@@ -546,7 +546,7 @@ None: Ei yhtään
 E-mail: Sähköposti
 URL: URL-osoite
 Regular expression: Tavallinen virke
-Minimum input length: Input vähimmäispituus
+Minimum input length: Syötteen vähimmäispituus
 Default: Oletusarvo
 Attributes: Attribuutit
 Title: Nimike
@@ -586,10 +586,10 @@ pim_title.group_type:
   index: "Ryhmätyypit"
   edit: "Ryhmätyypit %group type.label% | Muokkaa"
 pim_title.mass_edit_product_action:
-  choose: "Massaedit | Valitse"
+  choose: "Massamuokkaus | Valitse"
   configure: "Massamuokkus | Määritä"
 pim_title.mass_edit_family_action:
-  choose: "Massaedit | Valitse"
+  choose: "Massamuokkaus | Valitse"
   configure: "Massamuokkaus | Määritä"
 pim_title.job_tracker:
   index: Prosessiseurain
@@ -645,7 +645,7 @@ pim_enrich.mass_edit_action:
     success_flash: Tuotteiden tila on muutettu
   edit-common-attributes:
     label: Muokkaa attribuutteja
-    description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
+    description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
     empty: Ole hyvä ja valitse attribuutit joita haluat muokata
     success_flash: Tuotteen attribuutit on päivitetty
     message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
@@ -751,9 +751,9 @@ Selected products successfully deleted: Valitut tuotteet poistettiin
 pim_mass_edit:
   notification:
     mass_edit:
-      error: <strong>%label%</strong> massaeditointi päättyi
-      warning: <strong>%label%</strong>n massaeditointi päättyi, joitakin varoituksia
-      success: <strong>%label%</strong> massaeditointi päättyi
+      error: <strong>%label%</strong> massamuokkaus epäonnistui
+      warning: <strong>%label%</strong>n massamuokkaus päättyi varoituksilla
+      success: <strong>%label%</strong> massamuokkaus päättyi
     quick_export:
       error: <strong>%label%</strong>n pikavienti epäonnistui
       warning: <strong>%label%</strong>n pikavienti päättyi, joitakin varoituksia
@@ -784,22 +784,6 @@ batch_jobs:
     label: Muokkaa attribuutteja
     perform:
       label: Muokkaa attribuutteja
-  add_to_category:
-    label: Lisää kategorioihin
-    perform:
-      label: Lisää kategorioihin
-  move_to_category:
-    label: Siirrä kategorioihin
-    perform:
-      label: Siirrä kategorioihin
-  remove_from_category:
-    label: Poista kategorioista
-    perform:
-      label: Poista kategorioista
-  add_association:
-    label: Luo assosiaatio tuotteisiin
-    perform:
-      label: Luo assosiaatio tuotteisiin
   add_to_existing_product_model:
     label: Lisää olemassaolevaan tuotemalliin
     perform:

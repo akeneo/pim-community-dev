@@ -27,9 +27,13 @@ Action performed.: Åtgärd utförd.
 Action is not performed.: Åtgärd har inte utförts.
 Please, select item to perform action.: Välj ett objekt för åtgärd.
 View per page: Visa per sida
+Enabled: Aktiverad
+Disabled: Avaktiverad
+not_available: '-'
+Yes: true
+No: false
 oro.datagrid.entityHint: Enhet
 oro.datagrid.noentities: Inga resultat hittades
-oro.datagrid.noresults: "Inga resultat hittades. Prova att ändra dina sökkriterier."
 oro.datagrid.nocolumns: Inga kolumner konfigurerade för denna tabell
 oro.datagrid.pagination.label: "Sida"
 oro.datagrid.pagination.totalPages: "av {{ totalPages }}"
@@ -39,19 +43,25 @@ oro.datagrid.action.refresh: "Uppdatera"
 oro_datagrid.select.all: "Alla"
 oro_datagrid.select.visible: "Alla synliga"
 oro_datagrid.select.none: "Ingen"
+oro_datagrid.select.select: "Välj"
 pim.grid.ajax_choice_filter.label_empty: är tom
 pim.grid.ajax_choice_filter.label_not_empty: är inte tom
-pim.grid.choice_filter:
-  label_empty: är tom
-  label_not_empty: är inte tom
-  label_in_list: i listan
+pim:
+  grid:
+    choice_filter:
+      label_empty: är tom
+      label_not_empty: är inte tom
+      label_in_list: i listan
+    price_filter:
+      label: Valuta
+    category_filter:
+      done: Slutförd
 Available Columns: Tillgängliga Kolumner
 Displayed Columns: Valda Kolumner
 datagrid_view.columns.min_message: Du måste välja minst en tabellkolumn att visa
 pim_datagrid:
   column_configurator:
     label: Kolumner
-    title: Kolumnval
     all_groups: Alla grupper
     search: Sök
     clear: Rensa
@@ -59,9 +69,10 @@ pim_datagrid:
     apply: Tillämpa
     cancel: Avbryt
     remove_column: Ta bort
+    attribute_groups: Attributgrupper
   mass_action:
     delete:
-      confirm_title: Bekräfta borttagning
+      confirm_title: Bekräfta radering
       confirm_ok: OK
       empty_selection: Ingen produkt har valts
 pim.grid.mass_action.quick_export.title: Snabbexport
@@ -84,6 +95,6 @@ grid.view_selector:
   placeholder: Namnge ny vy
   choose_label: Välj en etikett för vyn
   confirmation:
-    remove: Är du säker på att du vill ta bort vyn?
-    delete: Bekräfta borttagning
+    delete: Bekräfta radering
 grid.view_selector.flash.updated: Vy har uppdaterats
+Client ID: Klient-ID

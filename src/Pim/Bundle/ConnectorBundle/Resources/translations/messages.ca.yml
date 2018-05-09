@@ -8,7 +8,7 @@ pim_connector:
     csv_product_reader.title: Lector CSV de productes
     csv_category_reader.title: Lector CSV de categories
     dummy_processor.title: Processador de proves
-    product_processor.title: Creació de productes
+    product_processor.title: Creació de producte
     category_processor.title: Creació de categories
     association_processor.title: Creació d'associacions
     product_association_processor.title: Creació d'associacions

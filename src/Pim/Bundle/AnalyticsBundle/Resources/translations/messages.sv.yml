@@ -19,7 +19,13 @@ pim_analytics:
     registered_bundles: Registrerade bundlar
     nb_channels: Antal kanaler
     nb_products: Antal produkter
+    nb_product_models: Antal produktmodeller
+    nb_variant_products: Antal variantprodukter
+    nb_family_variants: Antal variantfamiljer
     nb_attributes: Antal attribut
+    nb_scopable_attributes: Antal scopable attribut
+    nb_localizable_attributes: Antal lokaliserbara attribut
+    nb_scopable_localizable_attributes: Antal lokaliserbara och scopable attribut
     nb_locales: Antal språk
     nb_families: Antal familjer
     nb_users: Antal användare
