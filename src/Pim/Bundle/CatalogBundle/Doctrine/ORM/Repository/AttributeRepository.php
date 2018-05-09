@@ -180,6 +180,14 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
+    public function findManyByIdentifier(array $codes)
+    {
+        return $this->findBy(['code' => $codes]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getIdentifierProperties()
     {
         return ['code'];
