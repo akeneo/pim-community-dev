@@ -84,7 +84,7 @@ define(
                             __: __,
                             comments: this.comments,
                             username: UserContext.get('username'),
-                            emptyLabel: __('comment.index.empty')
+                            emptyLabel: __('pim_comment.index.empty')
                         })
                     );
                     this.delegateEvents();
