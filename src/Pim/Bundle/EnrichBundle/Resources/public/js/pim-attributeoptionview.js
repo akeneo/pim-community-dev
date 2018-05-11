@@ -289,7 +289,7 @@ define(
 
                 this.$el.html(this.template({
                     locales: this.locales,
-                    add_option_label: __('label.attribute_option.add_option'),
+                    add_option_label: __('pim_enrich.form.attribute_option.add_option'),
                     code_label: __('pim_common.code')
                 }));
 

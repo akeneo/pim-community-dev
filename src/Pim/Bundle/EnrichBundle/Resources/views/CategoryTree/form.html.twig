@@ -31,11 +31,11 @@
                   <div class="AknDropdown-menuTitle">{{'other_actions'|trans}}</div>
                       {% if exceeds_products_limit_for_removal(form.vars.value, true, related_entity) %}
                           {{ elements.link(
-                              'btn.delete',
+                              'pim_common.delete',
                               null,
                               {
                                   'icon':  'trash',
-                                  'title': 'btn.delete',
+                                  'title': 'pim_common.delete',
                                   'class': 'AknDropdown-menuLink delete',
                                   'attr': {
                                       'data-title':   'confirmation.delete'|trans,

@@ -118,7 +118,7 @@ datagrid:
             product_edit:
                 type: edit
                 acl_resource: pim_enrich_mass_edit
-                label: pim.grid.mass_action.mass_edit
+                label: pim_datagrid.mass_action.mass_edit
                 handler: product_mass_edit
                 route: pim_enrich_mass_edit_action
                 className: 'AknButton AknButton--action AknButtonList-item'
@@ -127,7 +127,7 @@ datagrid:
             sequential_edit:
                 type: sequential_edit
                 acl_resource: pim_enrich_product_edit_attributes
-                label: pim.grid.mass_action.sequential_edit
+                label: pim_datagrid.mass_action.sequential_edit
                 className: 'AknButton AknButton--action AknButtonList-item'
             delete_products_and_product_models:
                 type: mass_delete
@@ -145,7 +145,7 @@ datagrid:
                     empty_selection: pim_datagrid.mass_action.delete.empty_selection
             quick_export_grid_context_xlsx:
                 type: export
-                label: pim.grid.mass_action.quick_export.xlsx_grid_context
+                label: pim_datagrid.mass_action.quick_export.xlsx_grid_context
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
@@ -161,7 +161,7 @@ datagrid:
                     group: quick_export
             quick_export_xlsx:
                 type: export
-                label: pim.grid.mass_action.quick_export.xlsx_all
+                label: pim_datagrid.mass_action.quick_export.xlsx_all
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
@@ -177,7 +177,7 @@ datagrid:
                     group: quick_export
             quick_export_grid_context_csv:
                 type: export
-                label: pim.grid.mass_action.quick_export.csv_grid_context
+                label: pim_datagrid.mass_action.quick_export.csv_grid_context
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
@@ -193,7 +193,7 @@ datagrid:
                     group: quick_export
             quick_export_csv:
                 type: export
-                label: pim.grid.mass_action.quick_export.csv_all
+                label: pim_datagrid.mass_action.quick_export.csv_all
                 handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:

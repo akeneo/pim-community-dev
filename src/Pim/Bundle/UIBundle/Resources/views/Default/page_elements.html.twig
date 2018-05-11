@@ -6,7 +6,7 @@
             {% set attr = { 'id': buttonId, 'data-form-url': url } %}
             {% set url = null %}
         {% endif %}
-        {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
+        {% set title = ('pim_enrich.create.' ~ entity)|trans|capitalize %}
         <a class="AknButton AknButton--apply{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? '#' ~ url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
           {{ title }}
         </a>
@@ -63,8 +63,8 @@
 {% macro deleteLink(url, acl, redirectUrl, message, successMessage, title, class = '', subTitle = '') %}{% spaceless %}
     {% if acl is null or resource_granted(acl) %}
         {% import _self as elements %}
-        <a class="{{ class }}" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title, subTitle)}} >
-            {{ 'btn.delete'|trans|capitalize }}
+        <a class="{{ class }}" title="{{ 'pim_common.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title, subTitle)}} >
+            {{ 'pim_common.delete'|trans|capitalize }}
         </a>
     {% endif %}
 {% endspaceless %}{% endmacro %}
