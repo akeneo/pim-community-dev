@@ -25,7 +25,7 @@
 
 ## Bug fixes
 
-- PIM-7283: Fix slowness on count product in categories for the product grid
+- PIM-7283: Fix slowness on count product in categories for the product grid 
 
 # 2.0.21 (2018-04-09)
 
