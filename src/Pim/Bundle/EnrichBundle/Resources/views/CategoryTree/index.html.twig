@@ -13,14 +13,14 @@
         <div id="category-form" style="flex-grow:1" class="AknDefault-mainContent">
             <div class="AknInfoBlock">
                 {% if resource_granted(acl ~ '_category_edit') %}
-                    {{ 'category.suggest selection'|trans }}
+                    {{ 'pim_enrich.category.suggest_selection'|trans }}
                 {% endif %}
                 {% if resource_granted(acl ~ '_category_create') %}
                     <br/>
-                    {{ 'category.or'|trans }}
+                    {{ 'pim_enrich.category.or'|trans }}
                     <br/>
                     <a class="AknButton AknButton--apply" href="#{{ path(route ~ '_categorytree_create', { parent: 0 }) }}">
-                        {{ 'category.create new'|trans }}
+                        {{ 'pim_enrich.category.create_new'|trans }}
                     </a>
                 {% endif %}
             </div>

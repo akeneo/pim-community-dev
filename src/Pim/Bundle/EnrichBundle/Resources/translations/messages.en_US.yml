@@ -23,6 +23,9 @@ pim_enrich:
         tab:
             property.title: Properties
             history.title:  History
+        suggest_selection: Please select a category on the left
+        or: or
+        create_new: Create a new category
     # Locale
     locale:
         tab:
@@ -225,6 +228,12 @@ pim_enrich:
             remove_completeness_for_channel_and_locale:
                 start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
                 done: Removal of a locale on a channel finished.
+
+category:
+  edit: Edit category
+  overview: Categories
+tree:
+  edit: Edit tree
 
 # Buttons
 pim_enrich:

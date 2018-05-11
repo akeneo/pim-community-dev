@@ -29,7 +29,7 @@
 
 {% macro submitBtn(text, icon, class = '') %}
 {% spaceless %}
-    {% set text = text|default('btn.save')|trans|capitalize %}
+    {% set text = text|default('pim_common.save')|trans|capitalize %}
     <button type="submit" class="AknButton AknButton--apply {{ class }}" title="{{ text }}">
         {{ text }}
     </button>
