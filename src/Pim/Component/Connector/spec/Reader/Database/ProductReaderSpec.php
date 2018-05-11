@@ -67,6 +67,11 @@ class ProductReaderSpec extends ObjectBehavior
                     'value'    => [
                         'camcorder'
                     ]
+                ],
+                [
+                    'field'    => 'completeness',
+                    'operator' => '>=',
+                    'value'    => 100
                 ]
             ],
             'structure' => [
@@ -88,6 +93,70 @@ class ProductReaderSpec extends ObjectBehavior
             ->willReturn($cursor);
 
         $completenessManager->generateMissingForChannel($channel)->shouldBeCalled();
+
+        $products = [$product1, $product2, $product3];
+        $productsCount = count($products);
+        $cursor->valid()->will(
+            function () use (&$productsCount) {
+                return $productsCount-- > 0;
+            }
+        );
+        $cursor->current()->will(new ReturnPromise($products));
+        $cursor->next()->shouldBeCalled();
+
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
+        $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
+
+        $this->initialize();
+        $this->read()->shouldReturn($product1);
+        $this->read()->shouldReturn($product2);
+        $this->read()->shouldReturn($product3);
+        $this->read()->shouldReturn(null);
+    }
+
+    function it_calculates_completeness(
+        $pqbFactory,
+        $channelRepository,
+        $metricConverter,
+        $objectDetacher,
+        $stepExecution,
+        $completenessManager,
+        ChannelInterface $channel,
+        ProductQueryBuilderInterface $pqb,
+        CursorInterface $cursor,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        JobParameters $jobParameters
+    ) {
+        $filters = [
+            'data' => [
+                [
+                    'field'    => 'completeness',
+                    'operator' => 'ALL',
+                    'value'    => 100
+                ]
+            ],
+            'structure' => [
+                'scope'   => 'mobile',
+                'locales' => ['fr_FR', 'en_US'],
+            ]
+        ];
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('filters')->willReturn($filters);
+
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel);
+        $channel->getCode()->willReturn('mobile');
+
+        $pqbFactory->create(['filters' => $filters['data'], 'default_scope' => 'mobile'])
+            ->shouldBeCalled()
+            ->willReturn($pqb);
+        $pqb->execute()
+            ->shouldBeCalled()
+            ->willReturn($cursor);
+
+        $completenessManager->generateMissingForChannel($channel)->shouldNotBeCalled();
+
         $products = [$product1, $product2, $product3];
         $productsCount = count($products);
         $cursor->valid()->will(

@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7323: Fix unique data synchronizer to handle value removal
+- PIM-7348: Prevent completeness calculation for products without a family
 
 # 2.0.23 (2018-04-30)
 

@@ -80,7 +80,10 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
         $pqbFactory->create(
             [
-                'filters'       => [['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null]],
+                'filters'       => [
+                    ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null],
+                    ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+                ],
                 'default_scope' => 'ecommerce'
             ]
         )->willReturn($pqb);
@@ -122,7 +125,10 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
         $pqbFactory->create(
             [
-                'filters' => [['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null]],
+                'filters' => [
+                    ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null],
+                    ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+                ],
             ]
         )->willReturn($pqb);
 

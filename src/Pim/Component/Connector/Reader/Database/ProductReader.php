@@ -74,13 +74,17 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     public function initialize()
     {
         $channel = $this->getConfiguredChannel();
-        if (null !== $channel && $this->generateCompleteness) {
+        $filters = $this->getConfiguredFilters();
+
+        $shouldCalculateCompleteness = count(array_filter($filters, function ($filter) {
+            return $filter['field'] === 'completeness' && $filter['operator'] !== 'ALL';
+        })) > 0;
+
+        if (null !== $channel && $this->generateCompleteness && $shouldCalculateCompleteness) {
             $this->completenessManager->generateMissingForChannel($channel);
         }
 
-        $filters = $this->getConfiguredFilters();
         $this->products = $this->getProductsCursor($filters, $channel);
-
         $this->firstRead = true;
     }
 
