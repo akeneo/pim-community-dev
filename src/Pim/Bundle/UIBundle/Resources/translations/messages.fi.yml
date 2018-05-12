@@ -8,7 +8,7 @@ Roles: Roolit
 Groups: Ryhmät
 Configuration: Kokoonpano
 Currency list: Valuuttalista
-Locale list: Lokaatioiden lista
+Locale list: Lokaatiolista
 Logged in as: Kirjautunut nimellä
 Logout: Kirjaudu ulos
 Login: Kirjaudu sisään
@@ -41,7 +41,6 @@ required: (vaadittu)
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Aktivoi latausviestit
-    loading_message_enabled.tooltip: Näytä käyttäjäystävällisiä viestejä sivun latautuessa
     loading_messages.label: Käytettävät latausviestit
     loading_messages.tooltip: Kaikki käytettävät latausviestit rivinvaihdolla eroteltuna
   group:
