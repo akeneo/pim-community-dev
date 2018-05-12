@@ -11,7 +11,7 @@ pim_dashboard:
       job_type:
         import: Tuonti
         export: Vienti
-        mass_edit: Massaeditori
+        mass_edit: Massamuokkaus
         quick_export: Nopea vienti
         compute_product_models_descendants: Lasketaan tuotemallin rakenne
     completeness:

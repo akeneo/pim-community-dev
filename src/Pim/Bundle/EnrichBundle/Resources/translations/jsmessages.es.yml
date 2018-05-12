@@ -4,6 +4,7 @@ confirmation:
     item: '¿Está seguro de que desea borrar este elemento?'
     association_type: '¿Está seguro que desea eliminar este tipo de asociación?'
     attribute: '¿Está seguro que desea eliminar este atributo?'
+    attribute_group: '¿Está seguro que desea eliminar este grupo de atributo?'
     family: '¿Está seguro que desea eliminar esta familia?'
     product: '¿Está seguro que desea eliminar este producto?'
     channel: '¿Está seguro que desea eliminar este canal?'
@@ -13,6 +14,8 @@ confirmation:
     export_profile: '¿Está seguro que desea eliminar este perfil de exportación?'
     user: '¿Seguro que desea eliminar este usuario?'
     role: '¿Está seguro que desea eliminar este rol?'
+    job_instance: '¿Está seguro que desea borrar esta instancia de trabajo?'
+    api_connection: '¿Está seguro que desea revocar esta conexión API? Todas las llamadas API hechas a través de esta conexión ahora devolverán un error.'
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -22,6 +25,7 @@ pim_datagrid:
   mass_action:
     delete:
       label: Eliminar
+      confirm_content: '¿Está seguro que quiere borrar los productos seleccionados?'
       success: Productos seleccionados eliminados exitosamente.
       error: Se ha producido un error al intentar eliminar los productos seleccionados, por favor inténtelo de nuevo.
   view_selector:
@@ -57,6 +61,10 @@ flash:
     removed: Usuario eliminado correctamente
   role:
     removed: Rol eliminado correctamente
+  job_instance:
+    removed: Instancia de trabajo removida con éxito
+  api_connection:
+    removed: Conexión API revocada con éxito
 error:
   common: Ocurrió un error
   creating:
@@ -142,12 +150,15 @@ pim_enrich:
     product:
       navigation: Navegación de productos
       infos: Información de producto
+      index_title: "] -Inf, 1] {{ count }} resultado|] 1, Inf [{{ count }} resultado"
       title: producto
       locale: Local
       category: Categoría
       create: Crear
       subTitle: Crear un producto
+      modalTitle: Seleccione su acción
       filters: Filtros
+      selected: Resultados seleccionados
       common: Común
       btn:
         enabled: Habilitado
@@ -170,7 +181,7 @@ pim_enrich:
         deletion_failed: El producto no puede ser eliminado.
         update_successful: Producto actualizado con éxito.
         update_failed: El producto no puede ser actualizado.
-        field_not_ready: "El producto no se puede guardar ahora. Los siguientes campos no están listos: {{ fields }}"
+        field_not_ready: "El producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
         already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
       error:
         upload: Ocurrió un error durante la carga del fichero
@@ -215,13 +226,19 @@ pim_enrich:
         title: Crear
         labels:
           family: Elija una familia
+          family_variant: Elija una variante de familia
           save: Guardar
           cancel: Cancelar
       message:
         created: Producto creado éxitosamente
       completeness: Completo
+      sequential_edit:
+        item_limit: Sólo los primeros 1000 artículos mostrados en esta edición secuencial ({{ count }} seleccionados)
+        empty: Su selección está vacía, por favor cambie su criterio de búsqueda
     product_model:
       create_popin:
+        type: Modelo de producto
+        title: Cree un modelo de producto
         content: Un modelo de producto reúne todas sus variantes y facilita el enriquecimiento de sus propiedades comunes.
       info:
         create_successful: Modelo de producto creado éxitosamente
@@ -229,6 +246,7 @@ pim_enrich:
         update_failed: El modelo de producto no pudo ser actualizado.
         field_not_ready: "El modelo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
       variant_axis: Eje variante
+      title: modelo de productos
       add_child:
         create: Añadir nuevo
         cancel: Cancelar
@@ -262,6 +280,7 @@ pim_enrich:
         deletion_failed: No se pudo eliminar el tipo de grupo.
         update_successful: Tipo de grupo actualizado correctamente.
         update_failed: El tipo de grupo no pudo ser actualizado.
+        field_not_ready: "El tipo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
       meta:
         created: Creado
         created_by: Creado por
@@ -283,6 +302,7 @@ pim_enrich:
         update_failed: No se ha podido actualizar el canal.
         create_successful: Canal creado correctamente.
         create_failed: No se ha podido crear el canal.
+        field_not_ready: "El canal no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
       meta:
         created: Creado
         created_by: Creado por
@@ -313,7 +333,12 @@ pim_enrich:
       message:
         created: Familia creada correctamente
       variant:
+        common:
+          title: Atributos comunes
         axis.label: Eje variante
+        level_1.label: Atributos de variables de nivel uno
+        level_2.label: Atributos de variables de nivel dos
+        add_variant: Añadir variante
         create_label: Crear una nueva variante de familia
         create_description: En una variante de familia, puede definir una estructura para productos con variantes. Elija el número de los distintos niveles de variantes gestionados, los atributos utilizados como ejes variantes para cada nivel y luego defina cómo se distribuyen los atributos.
         create: Crear
@@ -321,6 +346,7 @@ pim_enrich:
         code: Código
         label: Etiqueta
         levels: Niveles de variantes
+        axis_level: Nivel del eje de la variable
     attribute_option:
       code: Código
       label: Etiqueta
@@ -398,7 +424,11 @@ pim_enrich:
   form:
     required: (obligatorio)
     product_model:
+      choose_variant: Elija una variante
+      complete_variant_product: producto variante
+      complete_variant_products: productos variantes
       family_variant: Variante
+      product_model: Modelo de producto
     product:
       tab:
         associations:
@@ -407,6 +437,8 @@ pim_enrich:
             none_exist: No existe ningún tipo de asociación.
             show_products: Mostrar productos
             show_groups: Mostrar grupos
+          target: Objetivo
+          add_associations: Agregar asociaciones
         attributes:
           title: Atributos
           btn:
@@ -419,6 +451,9 @@ pim_enrich:
             load_more: Cargando más resultados...
           attribute_group_selector: Grupo de atributos
           attribute_group_all: Todos
+          attribute_filter:
+            display: Mostrar
+            all: Todos los atributos
         categories:
           title: Categorías
       panel:
@@ -498,10 +533,13 @@ pim_enrich:
           title: Atributos
           label_label: Etiqueta
           toolbox:
+            select_attributes_by_groups: Agregar por grupos
             select_attributes: Agregar atributos
             add: Agregar
           not_required_label: No requerido
           required_label: Requerido
+        variant:
+          title: Variantes
         history:
           title: Histórico
     attribute_option:
@@ -560,6 +598,8 @@ pim_enrich:
       button:
         show_profile.title: Ver perfil
         download_log.title: Descargar registro de log
+        download_file.title: Descargar archivo generado
+        download_archive.title: Descargar archivo generado
       summary:
         fetching: Colectando datos sobre la ejecución del trabajo...
         warning: '¡Advertencia!'
@@ -644,6 +684,8 @@ pim_enrich:
           real_time_versioning:
             title: Actualización del historial en tiempo real
             help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
+          family_variant_column:
+            title: Columna de la variante de familia
         history:
           title: Histórico
       file_path: Camino del fichero
@@ -658,13 +700,16 @@ pim_enrich:
           title: Propiedades
           section:
             common: Parámetros generales
+            type_specific: Escriba los parámetros específicos
             validation: Parámetros de validación
           label:
             allowed_extensions: Extensiones permitidas
+            auto_option_sorting: Ordene opciones automáticas por orden alfabético
             available_locales: Locales disponibles
             code: Código
             date_max: Fecha máx
             date_min: Fecha min
+            decimals_allowed: Valores decimales permitidos
             default_metric_unit: Unidad métrica predeterminada
             group: Grupo de atributos
             is_locale_specific: Local específico
@@ -672,14 +717,18 @@ pim_enrich:
             max_characters: Caracteres Max
             max_file_size: Tamaño máximo de archivo (MB)
             metric_family: Familia métrica
+            minimum_input_length: Longitud mínima para la autocompleción
+            negative_allowed: Valores negativos permitidos
             number_max: Número máx
             number_min: Número min
+            reference_data_name: Tipo de dato de referencia
             scopable: Valor por canal
             type: Tipo
             unique: Valor único
             useable_as_grid_filter: Se puede usar en la grilla
             validation_regexp: Expresión regular
             validation_rule: Regla de validación
+            wysiwyg_enabled: Editor de texto enriquecido habilitado
           default_label:
             default_metric_unit: Elegir una unidad
             group: Elija el grupo de atributos
@@ -696,8 +745,10 @@ pim_enrich:
         attributes:
           label_label: Etiqueta
           toolbox:
+            select_attributes_by_groups: Agregar por grupos
             select_attributes: Agregar atributos
             add: Agregar
+            attributes_groups_selected: '{{ itemsCount }} grupo(s) seleccionado(s)'
     basket:
       title: Cesta
       empty_basket: La cesta está vacía
@@ -843,35 +894,68 @@ pim_enrich:
         title: Propiedades
       global_settings:
         title: Configuración global
+  mass_edit_action:
+    edit_common_attributes:
+      description: Sólo se editarán aquellos atributos pertenecientes a la familia de los productos seleccionados con los siguientes datos para el local <span class="highlight">{{ locale }}</span> y el canal <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
+      title: "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} tipos de asociación"
       create_btn: Crear un tipo de asociación
     import_profiles:
+      title: "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} perfiles de importación"
+      create_btn: Crear perfil de importación
       list: Seleccionar un trabajo
       create_popin:
         title: Crear
+      message:
+        created: Perfil de importación creado con éxito
+    import_history:
+      title: Reportes de importación
     group:
+      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} grupos"
       create_btn: Crear grupo
     export_profiles:
+      title: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} perfiles de exportación"
+      create_btn: Crear perfil de exportación
       create_popin:
         title: Crear
+      message:
+        created: Perfil de exportación creado con éxito
+    export_history:
+      title: Reportes de exportación
+    family:
+      title: "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} familias"
+      create_btn: Crear familia
     grouptype:
+      title: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} tipos de grupos"
       create_btn: Crear tipo de grupo
+    currency:
+      title: "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} monedas"
+    locale:
+      title: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
     user:
+      title: "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} usuarios"
       create_btn: Crear usuario
     user_role:
+      title: "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
       create_btn: Crear rol
     user_group:
+      title: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} grupos"
       create_btn: Crear grupo
+    process_tracker:
+      title: "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operaciones"
     channel:
+      title: "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} canales"
       create_btn: Crear canal
     attribute:
+      title: "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} atributos"
       create_btn: Crear atributo
       modal_title: Elija el tipo de atributo
     attribute_group:
       title: Grupos de atributos
       create_btn: Crear
     api_connection:
+      title: "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API conexiones"
       create_btn: Crear
   mass_edit:
     next: Siguiente
@@ -883,16 +967,26 @@ pim_enrich:
       step:
         select:
           label: Elegir productos
+        choose:
+          label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
         confirm:
           label: Confirmar
+        launch_error:
+          label: Ocurrió un error durante el lanzamiento de la operación de edición masiva
+        launched:
+          label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
       operation:
         change_status:
           label: Cambiar el estado
+          label_count: "{1}Cambiar el estado de <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Cambia el estado de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: Los productos seleccionados serán habilitados o inhabilitados.
           field: Para habilitar
+        edit_common:
+          description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
         change_family:
+          label: Cambiar familia
           description: La familia de los productos seleccionados se cambiará a la familia elegida
           field: Familia
         add_to_group:
@@ -907,12 +1001,18 @@ pim_enrich:
       step:
         select:
           label: Elija familias
+        choose:
+          label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
         confirm:
           label: Confirmar
+        launched:
+          label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
+  http:
+    403: Forbidden. You are not allowed to access this page
 page_title:
   oro_default: Cartelera
   pim_enrich_attributegroup_index: Grupos de atributos
@@ -1155,6 +1255,7 @@ pim_menu:
     group_type: Tipos de grupo
     locale: Locales
     product: Productos
+    product_model: Modelo de productos
     published_product: Productos publicados
     export_history: Histórico de exportaciones
     export_profile: Perfiles de exportación
