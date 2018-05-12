@@ -1027,7 +1027,7 @@ pim_enrich:
           label: Modifier des attributs
           label_count: "{1}Editer les attributs d'<span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Editer les attributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
           description: Seuls les attributs appartenant aux familles des produits sélectionnés seront édités avec les données suivantes pour la locale {{ locale }} et le canal de {{ scope }}.
-          no_update: Il n’y a aucun attribut sélecionné pour effectuer une édition en masse. Veuillez sélectionner un attribut.
+          no_update: Il n’y a aucun attribut sélectionné pour effectuer une édition en masse. Veuillez sélectionner un attribut.
         change_family:
           label: Changer de famille
           label_count: "{1}Changer la famille d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Changer la famille de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
