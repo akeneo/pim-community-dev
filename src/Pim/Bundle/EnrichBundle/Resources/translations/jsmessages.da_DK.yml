@@ -437,6 +437,7 @@ pim_enrich:
             display: Vis
             all: Alle attributter
             missing_required: Alle manglende krævede attributter
+            at_this_level: Alle niveau specifikke attributter
       panel:
         completeness:
           title: Fuldstændighed
