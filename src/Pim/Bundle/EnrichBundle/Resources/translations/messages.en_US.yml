@@ -1,43 +1,19 @@
 pim_common:
     cancel: Cancel
+    save: Save
+    delete: Delete
 
 pim_enrich:
-    # Product
-    product:
-        tab:
-            attribute.title:    Attributes
-            category.title:     Categories
-            association.title:  Associations
-            completeness.title: Completeness
-            history.title:      History
-        # Product comparison
-        no_comparison_locale_available: No other locale is available for comparison
-        no_compared_media: No media available for comparison
     # Attribute
     attribute:
         tab:
             parameter.title: Parameters
             value.title:     Values
             history.title:   History
-    # Attribute group
-    attribute_group:
-        tab:
-            property.title:  Properties
-            attribute.title: Attributes
-            history.title:   History
     # Family
     family:
         info:
             cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
-        tab:
-            property.title:  Properties
-            attribute.title: Attributes
-            history.title:   History
-    # Association type
-    association_type:
-        tab:
-            property.title: Properties
-            history.title:  History
     # Group type
     group_type:
         tab:
@@ -47,32 +23,14 @@ pim_enrich:
         tab:
             property.title: Properties
             history.title:  History
+        suggest_selection: Please select a category on the left
+        or: or
+        create_new: Create a new category
     # Locale
     locale:
         tab:
             property.title: Properties
             permission.title: Permissions
-    # Product group
-    group:
-        axis.help: 'Axis define the attributes over which the products of the group should vary. Axis are attributes with options, not localizable and not scoped. They cannot be changed after the creation of the variant group.'
-        type:
-            VARIANT:    Variant
-            X_SELL:     X-Sell
-            ADDITIONAL: Additional
-            RELATED:    Related
-        tab:
-            product.title:  Products
-            property.title: Properties
-            history.title:  History
-
-    # Product completeness
-    completeness:
-        progress_bar.title: '%ratio%% complete (1 required value)|%ratio%% complete (%count% required values)'
-        subtitle:           '{0} Complete|{1} 1 missing value|]1,Inf] %count% missing values'
-        missing_attributes: Missing value|Missing values
-        legend:
-            locale_not_associated: Locale not associated to this channel
-
     # Mass edit operations
     mass_edit_action:
         limit_exceeded: Please choose less than %limit% items to edit
@@ -157,13 +115,6 @@ pim_enrich:
         mass_action:
             quick_export:
                 launched_flash: The job exporting products is currently running
-
-    # Sequential edit operations
-    sequential_edit_action:
-        product:
-            previous: Skip back to "%product%" without saving.
-            next: Skip to "%product%" without saving.
-
     # ACLs
     acl:
         locale:
@@ -272,80 +223,20 @@ pim_enrich:
         product: Products
         product_model: Product models
 
-    reference_data:
-        empty_value:
-            reference_data_type:
-                label: Choose the reference data type
-
     notification:
         settings:
             remove_completeness_for_channel_and_locale:
                 start: The locale has been removed from the channel. We are currently cleaning completenesses linked to them.
                 done: Removal of a locale on a channel finished.
 
-# Entity and page header titles
-attribute:
-    title:    attribute
-    edit:     edit attribute
-    create:   create attribute
-attribute group:
-    title:    attribute group
-    overview: attribute group overview
-    create:   create attribute group
-    edit:     edit attribute group
-    suggest creation: Please select an attribute group on the left
-    or: or
-    create new: Create a new attribute group
 category:
-    title:    category
-    overview: Categories
-    create:   create category
-    edit:     edit category
-    suggest selection: Please select a category on the left
-    or: or
-    create new: Create a new category
-
+  edit: Edit category
+  overview: Categories
 tree:
-    title:    tree
-    create:   create tree
-    edit:     edit tree
-channel:
-    title:    channel
-    overview: channel overview
-    create:   create channel
-    edit:     edit channel
-currency:
-    title:    currency
-    create:   create currency
-    edit:     edit currency
-family:
-    title:    family
-    edit:     edit family
-locale:
-    title:    locale
-    create:   create locale
-    edit:     edit locale
-product:
-    title:    product
-    overview: product overview
-    create:   create product
-    edit:     edit product
-group:
-    title:    group
-    edit:     edit group
-group type:
-    title:    group type
-    edit:     edit group type
-association type:
-    title:    association type
-    create:   create association type
-    edit:     edit association type
-
-# Custom titles
-products: products
+  edit: Edit tree
 
 # Buttons
-btn:
+pim_enrich:
     create:
         attribute:        create attribute
         attribute group:  create attribute group
@@ -360,105 +251,35 @@ btn:
         association type: create association type
         group type:       create group type
         drag_or_upload:   Drag and drop to upload or click here
-    edit:            edit
-    save:            save
-    save and create: save and create new
-    save and next:   save and next
-    save and finish: save and finish
-    remove:          remove
-    delete:          delete
-    cancel:          cancel
-    next:            next
-    back:            back
-    confirm:         confirm
-    to grid:         back to grid
-    to parent:       back to parent
-    download_pdf:    PDF
-    download:        download
 
 # Confirmation messages
 confirmation:
-    confirm:         Confirmation
     delete:          Confirm deletion
     leave:           Are you sure you want to leave this page?
     discard changes: You will lose changes to the %entity% if you leave the page.
     remove:
-        attribute:        Are you sure you want to delete the attribute %name%?
-        attribute group:  Are you sure you want to delete the attribute group %name%?
         category:         Are you sure you want to delete the category %name%?
-        family:           Are you sure you want to delete the family %name%?
-        family_variant:   Are you sure you want to delete the family variant %name%?
-        product:          Are you sure you want to delete the product %name%?
-        group:            Are you sure you want to delete the group %name%?
-        group type:       Are you sure you want to delete the group type %name%?
         user:             Are you sure you want to delete the user %name%?
-    attribute group:
-        remove attribute: Are you sure you want to remove the attribute %name% from this attribute group?
-    family:
-        remove attribute: Are you sure you want to remove the attribute %name% from this family?
-    product:
-        remove attribute: Are you sure you want to remove the attribute %name% from this product?
 
 # Flash messages
 flash:
     entity:
         removed: Item was deleted
     attribute:
-        created:                  Attribute successfully created
-        updated:                  Attribute successfully updated
-        removed:                  Attribute successfully removed
         identifier_not_removable: Identifier attribute can not be removed
-    attribute group:
-        created:           Attribute group successfully created
-        updated:           Attribute group successfully updated
-        removed:           Attribute group successfully removed
-        attributes added:  Attributes successfully added to the attribute group
-        attribute removed: Attribute successfully removed from the attribute group
-        not removed attributes:            Attribute group can't be removed as it contains attributes
-        not removed default:               Default attribute group can't be removed
-        not removed default attributes:    Attribute can't be removed from the default attribute group
     category:
-        created: Category successfully created
-        updated: Category successfully updated
         removed: Category successfully removed
     tree:
-        created: Tree successfully created
-        updated: Tree successfully updated
         removed: Tree successfully removed
         not removable: Trees associated to channels cannot be removed.
     currency:
         updated: Currency successfully updated
         error.linked_to_channel: You cannot disable a currency linked to a channel.
-    family:
-        updated:                       Family successfully updated
-        removed:                       Family successfully removed
-        identifier not removable:      Identifier attribute can not be removed from a family
-        label attribute not removable: This attribute can not be removed because it is used as the label of the family
-        attribute not found:           The attribute does not belong to this family
-        attributes added:              Attributes successfully added to the family
-        attribute removed:             Attribute successfully removed from the family
     product:
-        created:                  Product successfully created
-        updated:                  Product successfully updated
-        removed:                  Product successfully removed
-        invalid:                  Please check your entry and try again
-        attributes added:         Attributes successfully added to the product
-        attribute removed:        Attribute successfully removed from the product
-        attribute not removable:  The attribute can not be removed from this product
         enabled:                  Product has been enabled
         disabled:                 Product has been disabled
-    group:
-        updated: Group successfully updated
-        removed: Group successfully removed
     group type:
         created: Group type successfully created
-        updated: Group type successfully updated
-        removed: Group type successfully removed
-        cant remove used: Group type is used by some groups and can't be removed
-    association type:
-        created: Association type successfully created
-        updated: Association type successfully updated
-        removed: Association type successfully removed
     user:
         removed: User successfully removed
     error ocurred: Action failed. Please retry.
@@ -500,9 +321,6 @@ info:
         not calculated:       Not yet calculated
 
 # Form elements
-Options:                             Options
-Created at:                          Created at
-Updated at:                          Updated at
 Created:                             Created
 Updated:                             Updated
 Last update:                         Last update
@@ -624,66 +442,6 @@ Attributes: Attributes
 Title:      Title
 
 # Page titles
-pim_title.attribute_group:
-    index: "Attribute groups"
-    create: "Attribute groups | Create"
-    edit: "Attribute groups %group.label% | Edit"
-
-pim_title.category:
-    index: "Category trees"
-    create: "Category trees | Create"
-    edit: "Category trees %category.label% | Edit"
-
-pim_title.attribute:
-    index: "Attributes"
-    create: "Attributes | Create"
-    edit: "Attributes %attribute.label% | Edit"
-
-pim_title.product:
-    index: "Products"
-    edit: "Products %product.label% | Edit"
-
-pim_title.family:
-    index: "Families"
-    edit: "Families %family.label% | Edit"
-
-pim_title.channel:
-    index: "Channels"
-    create: "Channels | Create"
-    edit: "Channels %channel.label% | Edit"
-
-pim_title.currency:
-    index: "Currencies"
-
-pim_title.locale:
-    index: "Locales"
-
-pim_title.group:
-    index: "Groups"
-    edit: "Groups %group.label% | Edit"
-
-pim_title.association_type:
-    index: "Association types"
-    edit: "Association types %association type.label% | Edit"
-
-pim_title.group_type:
-    index: "Group types"
-    edit: "Group types %group type.label% | Edit"
-
-pim_title.mass_edit_product_action:
-    choose: "Mass Edit | Choose"
-    configure: "Mass Edit | Configure"
-
-pim_title.mass_edit_family_action:
-    choose: "Mass Edit | Choose"
-    configure: "Mass Edit | Configure"
-
-pim_title.job_tracker:
-    index: Process tracker
-    show: "Process tracker | Show job"
-
-pim_title.dashboard: "Dashboard"
-
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text
 pim_catalog_textarea:         Text Area
@@ -704,12 +462,6 @@ pim_reference_data_multiselect:  Reference data multi select
 Activated: Activated
 Edit:      Edit
 Disable:   Disable
-
-# Sequential edit operations
-pim_enrich.sequential_edit_action:
-    product:
-        previous: Skip back to "%product%" without saving.
-        next: Skip to "%product%" without saving.
 
 # Mass edit operations
 pim_enrich.mass_edit_action:

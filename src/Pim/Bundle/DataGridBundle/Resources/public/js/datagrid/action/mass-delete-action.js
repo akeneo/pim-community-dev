@@ -107,7 +107,7 @@ define([
                 .then(() => {
                     router.redirectToRoute(this.config.backRoute);
 
-                    const translatedAction = __('mass_delete');
+                    const translatedAction = __('pim_datagrid.mass_action.mass_delete');
                     messenger.notify(
                         'success',
                         __(

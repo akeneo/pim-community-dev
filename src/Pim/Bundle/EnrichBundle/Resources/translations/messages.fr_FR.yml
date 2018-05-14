@@ -38,6 +38,13 @@ pim_enrich:
     tab:
       property.title: Propriétés
       history.title: Historique
+    title: catégorie
+    overview: Catégories
+    create: Créer une catégorie
+    edit: modifier une catégorie
+    suggest_selection: Veuillez sélectionner une catégorie à gauche
+    or: ou
+    create_new: Créer une nouvelle catégorie
   locale:
     tab:
       property.title: Propriétés

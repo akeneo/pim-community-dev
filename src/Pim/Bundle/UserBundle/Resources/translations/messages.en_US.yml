@@ -12,6 +12,11 @@ pim_user:
         tab:
             general.title: General
             users.title:   Users
+    roles:
+        tab:
+            general: General
+            action: Permissions
+            users: Users
 
 # user grids
 oro.user.controller:
@@ -115,9 +120,6 @@ role:
     edit: Edit role
     create: Create role
 btn.create.role: Create role
-
-rights:
-    action: Permissions
 
 oro_security:
     acl_group:

@@ -88,6 +88,14 @@ pim_datagrid:
       confirm_content: Êtes-vous sûr(e) de vouloir supprimer les produits sélectionnés ?
       success: Les produits sélectionnés ont été supprimés.
       error: Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau.
+    quick_export:
+      csv_all: CSV (tous les attributs)
+      csv_grid_context: CSV (contexte de la grille)
+      xlsx_all: Excel (tous les attributs)
+      xlsx_grid_context: Excel (contexte de la grille)
+    mass_edit: Actions de masse
+    category_edit: Déplacer des produits vers des catégories
+    sequential_edit: Modification séquentielle
   view_selector:
     view: Vues
   actions:
@@ -166,17 +174,6 @@ label:
   attribute_option:
     add_option: Ajouter une option
 mass_delete: Suppression massive
-pim:
-  grid:
-    mass_action:
-      quick_export:
-        csv_all: CSV (tous les attributs)
-        csv_grid_context: CSV (contexte de la grille)
-        xlsx_all: Excel (tous les attributs)
-        xlsx_grid_context: Excel (contexte de la grille)
-      mass_edit: Actions de masse
-      category_edit: Déplacer des produits vers des catégories
-      sequential_edit: Modification séquentielle
 pim_enrich:
   item:
     list:

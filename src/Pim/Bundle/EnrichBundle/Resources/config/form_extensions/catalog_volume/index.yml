@@ -41,8 +41,8 @@ extensions:
         targetZone: content
         position: 10
         config:
-            title: catalog_volume.product_values
-            description: catalog_volume.product_values_description
+            title: pim_catalog_volume.product_values
+            description: pim_catalog_volume.product_values_description
 
     pim-catalog-volume-product-values-section:
         module: pim/catalog-volume/section
@@ -52,10 +52,10 @@ extensions:
         position: 20
         config:
             align: right
-            title: catalog_volume.section.product_values.title
+            title: pim_catalog_volume.section.product_values.title
             hint:
                 code: hint-product-values
-                title: catalog_volume.section.product_values.hint
+                title: pim_catalog_volume.section.product_values.hint
             axes: [count_products, count_channels, count_scopable_attributes, average_max_attributes_per_family, count_locales, count_localizable_and_scopable_attributes, count_localizable_attributes]
 
     pim-catalog-volume-catalog-structure-section:
@@ -65,10 +65,10 @@ extensions:
         targetZone: content
         position: 30
         config:
-            title: catalog_volume.section.catalog_structure.title
+            title: pim_catalog_volume.section.catalog_structure.title
             hint:
                 code: hint-catalog-structure
-                title: catalog_volume.section.catalog_structure.hint
+                title: pim_catalog_volume.section.catalog_structure.hint
             axes: [count_families, count_attributes, average_max_options_per_attribute, count_categories, count_category_trees]
 
     pim-catalog-volume-variant-modelling-section:
@@ -78,8 +78,8 @@ extensions:
         targetZone: content
         position: 40
         config:
-            title: catalog_volume.section.variant_modelling.title
+            title: pim_catalog_volume.section.variant_modelling.title
             hint:
                 code: hint-variant-modelling
-                title: catalog_volume.section.variant_modelling.hint
+                title: pim_catalog_volume.section.variant_modelling.hint
             axes: [count_variant_products, count_product_models]
