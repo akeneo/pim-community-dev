@@ -121,7 +121,7 @@ stage("Test") {
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
-                fetcher: {return pimBehatFetcher(profiles: ["legacy", "acceptance"], features: features)}
+                fetcher: {return pimBehatFetcher(profiles: ["default"], features: features)}
             )}
         )
     } finally {

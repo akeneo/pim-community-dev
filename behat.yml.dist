@@ -2,7 +2,7 @@ legacy:
     suites:
         all:
             paths:
-                - tests/legacy/features/
+                - features
             filters:
                 tags: "~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated"
             contexts:
@@ -109,7 +109,7 @@ legacy:
                     selenium2:
                         wd_host: 'http://127.0.0.1:4444/wd/hub'
             base_url: 'http://127.0.0.1/'
-            files_path: 'tests/legacy/features/Context/fixtures/'
+            files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
                 env: behat
