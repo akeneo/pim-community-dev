@@ -28,7 +28,7 @@
                         {% block reference_buttons %}
                             <button class="AknButtonList-item AknButton AknButton--important AknButton--small delete"
                                     data-href="{{ path('pimee_product_asset_reference_delete', {'id': referenceModel.id}) }}" >
-                                {{ 'btn.delete'|trans|capitalize }}
+                                {{ 'pim_common.delete'|trans|capitalize }}
                             </button>
                             <button class="AknButtonList-item AknButton AknButton--action AknButton--small reset-variations"
                                     data-href="{{ path('pimee_product_asset_variations_reset', {'id': referenceModel.id}) }}" >

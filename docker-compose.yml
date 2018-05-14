@@ -43,7 +43,7 @@ services:
     environment:
       PHP_IDE_CONFIG: 'serverName=pim-ee'
     ports:
-      - '${DOCKER_PORT_HTTP}:80'
+      - '8080:80'
     volumes:
       - ./:/srv/pim:ro
       - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
@@ -58,7 +58,7 @@ services:
     environment:
       PHP_IDE_CONFIG: 'serverName=pim-ee-behat'
     ports:
-      - '${DOCKER_PORT_HTTP_BEHAT}:80'
+      - '8081:80'
     volumes:
       - ./:/srv/pim:ro
       - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro

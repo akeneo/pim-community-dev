@@ -6,8 +6,8 @@ extensions:
         targetZone: content
         position: 50
         config:
-            title: catalog_volume.section.assets.title
+            title: pim_catalog_volume.section.assets.title
             hint:
                 code: hint-asset-axes
-                title: catalog_volume.section.assets.hint
+                title: pim_catalog_volume.section.assets.hint
             axes: [count_assets, count_asset_categories, count_asset_category_trees]

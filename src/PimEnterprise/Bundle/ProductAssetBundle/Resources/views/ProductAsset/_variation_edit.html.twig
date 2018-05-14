@@ -9,7 +9,7 @@
                     {% block variation_buttons %}
                         <button class="AknButtonList-item AknButton AknButton--important AknButton--small delete"
                                 data-href="{{ path('pimee_product_asset_variation_delete', {'id': variationModel.id}) }}">
-                            {{ 'btn.delete'|trans|capitalize }}
+                            {{ 'pim_common.delete'|trans|capitalize }}
                         </button>
                     {% endblock %}
                 {% endembed %}
