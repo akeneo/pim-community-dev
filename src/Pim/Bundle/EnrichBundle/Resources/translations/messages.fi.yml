@@ -41,7 +41,7 @@ pim_enrich:
       property.title: Ominaisuudet
       permission.title: Käyttöoikeudet
   group:
-    axis.help: 'Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
+    axis.help: 'Akseli määrittää attribuutit, joiden yli ryhmän tuotteiden tulee vaihdella. Akselit ovat attribuutteja joissa on vaihtoehtoja, ne ei saa olla lokalisoitavissa taikka kanavakohtaisia. Akseleita ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
     type:
       VARIANT: Tuotevariaatio
       X_SELL: X-Sell
@@ -88,7 +88,7 @@ pim_enrich:
       launched_flash: Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     edit-common-attributes:
       label: Muokkaa attribuutteja
-      description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
+      description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
       success_flash: Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä
       launched_flash: Massatoiminto "muokkaa attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
@@ -645,7 +645,7 @@ pim_enrich.mass_edit_action:
     success_flash: Tuotteiden tila on muutettu
   edit-common-attributes:
     label: Muokkaa attribuutteja
-    description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
+    description: Valittujen tuotteiden attribuutit muokataan seuraavalla valitun lokaation datalla.
     empty: Ole hyvä ja valitse attribuutit joita haluat muokata
     success_flash: Tuotteen attribuutit on päivitetty
     message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.

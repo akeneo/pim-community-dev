@@ -25,7 +25,7 @@ pim_connector:
     product_writer.title: Stockage des produits
     category_writer.title: Stockage des catégories
     writer.title: Stockage des entités
-    csv_writer.title: Ecriture des fichiers en CSV
+    csv_writer.title: Ecriture CSV
 job_execution.summary:
   read: lu(s)
   write: écrit(s)
