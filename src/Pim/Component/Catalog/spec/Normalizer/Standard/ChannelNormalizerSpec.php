@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
-use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;

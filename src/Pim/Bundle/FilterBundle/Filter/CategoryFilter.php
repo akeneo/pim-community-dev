@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Filter;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter;

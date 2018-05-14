@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Pim\Bundle\EnrichBundle\Doctrine\Counter;
 
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;

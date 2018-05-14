@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Api\Normalizer;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Normalizer\CategoryNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

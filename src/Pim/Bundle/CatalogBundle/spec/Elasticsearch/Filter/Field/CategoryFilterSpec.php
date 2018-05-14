@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\AbstractFieldFilter;

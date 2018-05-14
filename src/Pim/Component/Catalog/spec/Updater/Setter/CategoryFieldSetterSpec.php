@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;

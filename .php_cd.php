@@ -39,7 +39,7 @@ $cAkeneoRules = [
     RuleInterface::TYPE_ONLY),
     new Rule('Akeneo\Tool\Component\Buffer', $cDeps, RuleInterface::TYPE_ONLY),
     new Rule(
-        'Akeneo\Component\Classification',
+        'Akeneo\Tool\Component\Classification',
         array_merge($cDeps, [
             'Gedmo\Tree\RepositoryInterface', // used as base tree library
         ]),
@@ -79,7 +79,7 @@ $cPimRules = [
         array_merge($cDeps, [
             'Akeneo\Tool\Component\Localization',   // to localize product's data
             'Akeneo\Tool\Component\FileStorage',    // for product categories
-            'Akeneo\Component\Classification', // to handle product's media
+            'Akeneo\Tool\Component\Classification', // to handle product's media
             'Akeneo\Tool\Component\Versioning',     // for the history of all models
         ]),
         RuleInterface::TYPE_ONLY
@@ -92,7 +92,7 @@ $cPimRules = [
             'Akeneo\Tool\Component\Buffer',       // to handle large files
             'Akeneo\Tool\Component\FileStorage',  // to import/export product's media
             'Akeneo\Tool\Component\Localization', // to use date and number formats in configuration
-            'Akeneo\Component\Classification', // to handle categories database reading
+            'Akeneo\Tool\Component\Classification', // to handle categories database reading
             'Pim\Component\Catalog',         // because ;)
             'Pim\Component\Localization',    // to check the localized data during an import
         ]),

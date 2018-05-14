@@ -15,20 +15,20 @@ suites:
         spec_path: src/Akeneo/Tool/Component/Batch
         src_path: src/Akeneo/Tool/Component/Batch
     BatchQueue:
-        namespace: Akeneo\Component\BatchQueue
-        psr4_prefix: Akeneo\Component\BatchQueue
-        spec_path: src/Akeneo/Component/BatchQueue
-        src_path: src/Akeneo/Component/BatchQueue
+        namespace: Akeneo\Tool\Component\BatchQueue
+        psr4_prefix: Akeneo\Tool\Component\BatchQueue
+        spec_path: src/Akeneo/Tool/Component/BatchQueue
+        src_path: src/Akeneo/Tool/Component/BatchQueue
     Buffer:
         namespace: Akeneo\Tool\Component\Buffer
         psr4_prefix: Akeneo\Tool\Component\Buffer
         spec_path: src/Akeneo/Tool/Component/Buffer
         src_path: src/Akeneo/Tool/Component/Buffer
     Classification:
-        namespace: Akeneo\Component\Classification
-        psr4_prefix: Akeneo\Component\Classification
-        spec_path: src/Akeneo/Component/Classification
-        src_path: src/Akeneo/Component/Classification
+        namespace: Akeneo\Tool\Component\Classification
+        psr4_prefix: Akeneo\Tool\Component\Classification
+        spec_path: src/Akeneo/Tool/Component/Classification
+        src_path: src/Akeneo/Tool/Component/Classification
     Console:
         namespace: Akeneo\Tool\Component\Console
         psr4_prefix: Akeneo\Tool\Component\Console
@@ -67,10 +67,10 @@ suites:
         spec_path: src/Akeneo/Tool/Bundle/BatchQueueBundle
         src_path: src/Akeneo/Tool/Bundle/BatchQueueBundle
     ClassificationBundle:
-        namespace: Akeneo\Bundle\ClassificationBundle
-        psr4_prefix: Akeneo\Bundle\ClassificationBundle
-        spec_path: src/Akeneo/Bundle/ClassificationBundle
-        src_path: src/Akeneo/Bundle/ClassificationBundle
+        namespace: Akeneo\Tool\Bundle\ClassificationBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ClassificationBundle
+        spec_path: src/Akeneo/Tool/Bundle/ClassificationBundle
+        src_path: src/Akeneo/Tool/Bundle/ClassificationBundle
     ElasticsearchBundle:
         namespace: Akeneo\Tool\Bundle\ElasticsearchBundle
         psr4_prefix: Akeneo\Tool\Bundle\ElasticsearchBundle

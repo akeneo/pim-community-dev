@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Akeneo\Component\Classification\CategoryAwareInterface;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;

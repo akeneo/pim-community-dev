@@ -4,7 +4,7 @@ parameters:
     pim_catalog.repository.attribute_option.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository
     pim_catalog.repository.attribute.class:             Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository
     pim_catalog.repository.attribute_requirement.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRequirementRepository
-    pim_catalog.repository.category.class:              Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
+    pim_catalog.repository.category.class:              Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
     pim_catalog.repository.channel.class:               Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository
     pim_catalog.repository.currency.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CurrencyRepository
     pim_catalog.repository.family.class:                Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository
