@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 

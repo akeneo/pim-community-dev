@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
+use Akeneo\Tool\Component\Api\Hal\Link;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Api\Hal\Link;
 use PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetReferenceController;
 use PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;

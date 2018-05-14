@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Notification;
 
-use Akeneo\Component\Localization\Presenter\DatePresenter;
+use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;

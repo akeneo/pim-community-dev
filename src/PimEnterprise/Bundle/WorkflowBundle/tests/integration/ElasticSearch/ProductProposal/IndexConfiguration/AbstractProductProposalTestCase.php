@@ -2,8 +2,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration\ElasticSearch\ProductProposal\IndexConfiguration;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
  * For each integration tests implemented in the subclass, this abstract:

@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\User\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;

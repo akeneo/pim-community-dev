@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 

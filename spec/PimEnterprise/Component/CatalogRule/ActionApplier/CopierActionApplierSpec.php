@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
-use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyCopierInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;

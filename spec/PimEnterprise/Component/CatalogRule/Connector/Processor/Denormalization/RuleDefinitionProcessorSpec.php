@@ -4,11 +4,11 @@ namespace spec\PimEnterprise\Component\CatalogRule\Connector\Processor\Denormali
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Akeneo\Component\Batch\Item\InvalidItemException;
-use Akeneo\Component\Batch\Item\InvalidItemInterface;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
+use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -319,7 +319,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $stepExecution->getSummaryInfo('item_position')->willReturn(1);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
-        $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')->during('process', [$item]);
+        $this->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')->during('process', [$item]);
     }
 
     function getMatchers()

@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\Workflow\Publisher\Product;
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;

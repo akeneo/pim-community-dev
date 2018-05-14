@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\User;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
 use Pim\Component\Catalog\Model\LocaleInterface;

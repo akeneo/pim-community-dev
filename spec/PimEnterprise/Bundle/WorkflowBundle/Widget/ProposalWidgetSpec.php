@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Widget;
 
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\LocaleInterface;

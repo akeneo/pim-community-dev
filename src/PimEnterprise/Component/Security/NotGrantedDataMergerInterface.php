@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Security;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 
 /**
  * Merge not granted data to an object

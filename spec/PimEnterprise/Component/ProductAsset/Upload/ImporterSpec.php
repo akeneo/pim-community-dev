@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
-use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Upload\ParsedFilenameInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;

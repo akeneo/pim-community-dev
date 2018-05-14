@@ -2,8 +2,8 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\tests\integration\Doctrine\Common\Saver;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\AttributeInterface;

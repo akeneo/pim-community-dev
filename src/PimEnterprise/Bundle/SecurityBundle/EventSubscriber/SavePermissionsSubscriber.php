@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber;
 
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\JobInstanceEvents;

@@ -17,7 +17,7 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 /**
 * Completeness remover interface.
 *
-* It's not a {@link Akeneo\Component\StorageUtils\Saver\SaverInterface}
+* It's not a {@link Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface}
 * as its purpose is not to remove the completenesses objects that are given as argument, but
 * instead to remove the completenesses that are linked to a given product, family or couple
 * locale/channel.

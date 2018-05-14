@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Security\Merger;
 
-use Akeneo\Component\Classification\CategoryAwareInterface;
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Attributes;

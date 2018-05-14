@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\RemoveProductValueProcessor as BaseProcessor;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use PimEnterprise\Component\Security\Attributes;

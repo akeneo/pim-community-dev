@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\Catalog\Updater;
 
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Prophecy\Argument;
@@ -21,7 +21,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
     
     function it_is_an_updater()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface');
     }
     
     function it_updates_field_related_to_the_ee($attributeUpdater, AttributeInterface $attribute)

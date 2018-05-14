@@ -2,8 +2,8 @@
 
 namespace spec\AkeneoEnterprise\Test\Acceptance\ProductAsset\ChannelConfiguration;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use AkeneoEnterprise\Test\Acceptance\ProductAsset\ChannelConfiguration\InMemoryChannelConfigurationRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;

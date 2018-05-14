@@ -15,7 +15,7 @@ namespace PimEnterprise\Component\CatalogRule\ActionApplier;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;

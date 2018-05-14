@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
-use Akeneo\Bundle\ElasticsearchBundle\Refresh;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

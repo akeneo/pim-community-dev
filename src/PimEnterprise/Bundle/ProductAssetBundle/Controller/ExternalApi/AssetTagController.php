@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi;
 
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\ApiBundle\Documentation;
-use Pim\Component\Api\Exception\DocumentedHttpException;
-use Pim\Component\Api\Exception\PaginationParametersException;
-use Pim\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Api\Pagination\PaginatorInterface;
-use Pim\Component\Api\Pagination\ParameterValidatorInterface;
+use Akeneo\Tool\Bundle\ApiBundle\Documentation;
+use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
+use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
+use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
+use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
+use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

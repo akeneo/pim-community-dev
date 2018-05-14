@@ -106,7 +106,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Property "not_found" does not exist.
      */
     public function testCreateAProductWithAttributeGroupNotFound()
@@ -116,7 +116,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Property "a_multi_select" does not exist.
      */
     public function testCreateAProductWithAttributeGroupNotViewable()
@@ -144,7 +144,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Property "a_multi_select" does not exist.
      */
     public function testUpdateAProductWithAttributeGroupNotViewable()
@@ -203,7 +203,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "not_found" given.
      */
     public function testCreateAProductWithLocaleNotFound()
@@ -213,7 +213,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given
      */
     public function testCreateAProductWithLocaleNotViewable()
@@ -241,7 +241,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given
      */
     public function testUpdateAProductWithLocaleNotViewable()

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet;
 
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -66,8 +66,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
 
     function it_is_a_configurable_step_element()
     {
-        $this->beAnInstanceOf('Akeneo\Component\Batch\Item\AbstractConfigurableStepElement');
-        $this->beAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\StepExecutionAwareInterface');
+        $this->beAnInstanceOf('Akeneo\Tool\Component\Batch\Item\AbstractConfigurableStepElement');
+        $this->beAnInstanceOf('Akeneo\Tool\Bundle\BatchBundle\Item\StepExecutionAwareInterface');
     }
 
     function it_executes_a_mass_publish_operation_with_a_configuration(
@@ -184,7 +184,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $stepExecution->addWarning(
             Argument::any(),
             [],
-            Argument::type('Akeneo\Component\Batch\Item\InvalidItemInterface')
+            Argument::type('Akeneo\Tool\Component\Batch\Item\InvalidItemInterface')
         )->shouldBeCalledTimes(4);
 
         $manager->publishAll([])->shouldBeCalled();
@@ -245,7 +245,7 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $stepExecution->addWarning(
             Argument::any(),
             [],
-            Argument::type('Akeneo\Component\Batch\Item\InvalidItemInterface')
+            Argument::type('Akeneo\Tool\Component\Batch\Item\InvalidItemInterface')
         )->shouldBeCalled();
 
         $violations->count()->willReturn(0);

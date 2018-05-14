@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Component\Security\Merger;
 
-use Akeneo\Component\Classification\CategoryAwareInterface;
-use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
+use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;

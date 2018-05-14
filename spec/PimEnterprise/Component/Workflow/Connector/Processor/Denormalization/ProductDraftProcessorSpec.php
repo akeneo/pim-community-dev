@@ -2,12 +2,12 @@
 
 namespace spec\PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
@@ -42,8 +42,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
 
     function it_is_a_processor()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
-        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_creates_a_proposal(
@@ -109,7 +109,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution->getSummaryInfo('item_position')->willReturn(1);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
-        $this->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+        $this->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values]

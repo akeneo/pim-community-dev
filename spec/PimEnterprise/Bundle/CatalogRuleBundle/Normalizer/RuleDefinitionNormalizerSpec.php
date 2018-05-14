@@ -12,7 +12,7 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Normalizer;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\CatalogRule\ActionApplier;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;

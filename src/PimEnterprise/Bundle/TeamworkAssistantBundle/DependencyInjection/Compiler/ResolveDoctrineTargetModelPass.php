@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

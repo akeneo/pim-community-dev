@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Akeneo\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface as BasePresenterInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\AttributeTypes;
 

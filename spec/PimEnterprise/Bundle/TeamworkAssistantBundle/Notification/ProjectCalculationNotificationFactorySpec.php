@@ -2,11 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Notification;
 
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\Localization\Presenter\DatePresenter;
+use Akeneo\Tool\Component\Batch\Job\BatchStatus;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectCalculationNotificationFactory;
@@ -73,7 +73,7 @@ class ProjectCalculationNotificationFactorySpec extends ObjectBehavior
     function it_throws_an_exception_if_param_is_not_a_job_exception()
     {
         $this->shouldThrow(
-            new \InvalidArgumentException('Expects a Akeneo\Component\Batch\Model\JobExecution, "stdClass" provided')
+            new \InvalidArgumentException('Expects a Akeneo\Tool\Component\Batch\Model\JobExecution, "stdClass" provided')
         )->during('create', [new \stdClass()]);
     }
 }

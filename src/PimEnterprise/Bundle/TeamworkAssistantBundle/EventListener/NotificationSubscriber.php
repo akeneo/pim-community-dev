@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvent;
 use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvents;
 use PimEnterprise\Component\TeamworkAssistant\Factory\ProjectStatusFactoryInterface;

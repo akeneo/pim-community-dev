@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Api;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
+use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;

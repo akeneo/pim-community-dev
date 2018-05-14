@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Security\Model;
 
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 
 /**
  * Job profile access interface

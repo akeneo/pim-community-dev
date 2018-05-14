@@ -94,7 +94,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
                 - detach
     oneToOne:
         version:
-            targetEntity: Akeneo\Component\Versioning\Model\Version
+            targetEntity: Akeneo\Tool\Component\Versioning\Model\Version
             joinColumns:
                 version_id:
                     referencedColumnName: id

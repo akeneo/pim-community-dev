@@ -75,7 +75,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Property "a_multi_select" does not exist.
      */
     public function testUpdateAProductDraftWithAttributeGroupNotViewable()
@@ -121,7 +121,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException
      * @expectedExceptionMessage Attribute "a_localized_and_scopable_text_area" expects an existing and activated locale, "de_DE" given
      */
     public function testUpdateAProductDraftWithLocaleNotViewable()

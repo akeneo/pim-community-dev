@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use PimEnterprise\Component\Security\Attributes;

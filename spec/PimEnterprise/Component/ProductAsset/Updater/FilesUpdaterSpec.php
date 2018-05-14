@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Updater;
 
-use Akeneo\Component\FileStorage\File\FileStorerInterface;
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;

@@ -22,7 +22,7 @@ final class CategoryAssetEvents
      * This event is thrown before a category gets removed.
      *
      * The event listener receives an
-     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
+     * Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */
@@ -32,7 +32,7 @@ final class CategoryAssetEvents
      * This event is thrown after a category gets removed.
      *
      * The event listener receives an
-     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
+     * Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */
@@ -42,7 +42,7 @@ final class CategoryAssetEvents
      * This event is thrown before a tree gets removed.
      *
      * The event listener receives an
-     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
+     * Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */
@@ -52,7 +52,7 @@ final class CategoryAssetEvents
      * This event is thrown after a tree gets removed.
      *
      * The event listener receives an
-     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
+     * Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */

@@ -15,7 +15,7 @@ namespace PimEnterprise\Component\CatalogRule\Connector\Executor;
 
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface;
-use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;

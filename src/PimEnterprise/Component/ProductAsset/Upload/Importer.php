@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
-use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**

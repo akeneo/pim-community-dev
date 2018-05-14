@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Datagrid\Extension\MassAction;
 
-use Akeneo\Component\Console\CommandLauncher;
+use Akeneo\Tool\Component\Console\CommandLauncher;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;

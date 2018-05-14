@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Security\ProjectVoter;
 use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

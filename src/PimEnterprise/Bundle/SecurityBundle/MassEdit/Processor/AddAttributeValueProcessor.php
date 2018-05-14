@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor;
 
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddAttributeValueProcessor as BaseProcessor;
 use Pim\Bundle\UserBundle\Manager\UserManager;
 use Pim\Component\Catalog\EntityWithFamilyVariant\CheckAttributeEditable;

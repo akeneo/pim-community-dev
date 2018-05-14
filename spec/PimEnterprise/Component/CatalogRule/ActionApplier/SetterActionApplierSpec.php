@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\PimEnterprise\Component\CatalogRule\ActionApplier;
 
-use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;

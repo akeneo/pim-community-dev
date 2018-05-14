@@ -10,8 +10,8 @@
  */
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\Localization\Model\AbstractTranslation;
-use Akeneo\Component\Localization\Model\TranslationInterface;
+use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
+use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 
 /**
  * Asset category translation

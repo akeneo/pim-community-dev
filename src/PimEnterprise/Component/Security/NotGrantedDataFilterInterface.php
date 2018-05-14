@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Security;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 
 /**
  * Filter not granted data from object

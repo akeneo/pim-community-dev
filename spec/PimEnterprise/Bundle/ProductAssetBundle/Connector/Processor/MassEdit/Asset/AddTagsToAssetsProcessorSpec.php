@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset;
 
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
@@ -30,7 +30,7 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
 
     function it_is_a_item_processor()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_adds_existing_tags_to_an_asset(
@@ -86,7 +86,7 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
         $stepExecution->addWarning(
             'pim_enrich.mass_edit_action.add-tags-to-assets.message.error',
             [],
-            Argument::type('Akeneo\Component\Batch\Item\InvalidItemInterface')
+            Argument::type('Akeneo\Tool\Component\Batch\Item\InvalidItemInterface')
         )->shouldBeCalled();
         $validator->validate($asset)->willReturn(new ConstraintViolationList([]));
 

@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Component\Security\Normalizer\Standard;
 
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

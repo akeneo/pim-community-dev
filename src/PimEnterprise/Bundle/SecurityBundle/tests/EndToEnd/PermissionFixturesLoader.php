@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\ProductAssetBundle\tests\EndToEnd\ExternalApi\Family;
 
 use Akeneo\Test\Integration\Configuration;
-use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use Symfony\Component\HttpFoundation\Response;
 

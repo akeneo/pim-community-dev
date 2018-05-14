@@ -6,8 +6,8 @@ parameters:
     pimee_product_asset.repository.variation.class:             PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\VariationRepository
     pimee_product_asset.repository.asset_category.class:        PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetCategoryRepository
     pimee_catalog_rule.repository.asset_mass_action.class:      PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetMassEditRepository
-    pimee_product_asset.repository.category.class:              Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
-    pimee_product_asset.repository.tag.class:                   Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\TagRepository
+    pimee_product_asset.repository.category.class:              Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
+    pimee_product_asset.repository.tag.class:                   Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\TagRepository
     pimee_product_asset.api.repository.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi\AssetRepository
 
 services:

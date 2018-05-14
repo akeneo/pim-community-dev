@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;

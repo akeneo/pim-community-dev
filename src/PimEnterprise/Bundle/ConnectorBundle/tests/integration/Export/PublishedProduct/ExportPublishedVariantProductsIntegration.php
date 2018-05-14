@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\ConnectorBundle\tests\integration\Export\PublishedProduct;
 
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 

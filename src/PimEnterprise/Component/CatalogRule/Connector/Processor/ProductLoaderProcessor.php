@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\CatalogRule\Connector\Processor;
 
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Load a product from its identifier.
