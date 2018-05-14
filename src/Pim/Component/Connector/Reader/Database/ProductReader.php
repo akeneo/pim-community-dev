@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
@@ -76,15 +77,22 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         $channel = $this->getConfiguredChannel();
         $filters = $this->getConfiguredFilters();
 
-        $shouldCalculateCompleteness = count(array_filter($filters, function ($filter) {
-            return $filter['field'] === 'completeness' && $filter['operator'] !== 'ALL';
-        })) > 0;
-
-        if (null !== $channel && $this->generateCompleteness && $shouldCalculateCompleteness) {
-            $this->completenessManager->generateMissingForChannel($channel);
-        }
+        $familyFilter = $this->getConfiguredFilter('family');
+        $completenessFilter = $this->getConfiguredFilter('completeness');
+        $calculateCompleteness = isset($completenessFilter) && $completenessFilter['operator'] !== 'ALL';
 
         $this->products = $this->getProductsCursor($filters, $channel);
+
+        if (null === $familyFilter) {
+           $filters = array_merge($filters, [
+               ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+           ]);
+        }
+
+        if (null !== $channel && $this->generateCompleteness && $calculateCompleteness) {
+            $this->completenessManager->generateMissingForProducts($channel, $filters);
+        }
+
         $this->firstRead = true;
     }
 
@@ -164,6 +172,22 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         return array_filter($filters, function ($filter) {
             return count($filter) > 0;
         });
+    }
+
+    /**
+     * Get a filter by field name
+     *
+     * @param $filters
+     * @param $fieldName
+     * @return array
+     */
+    protected function getConfiguredFilter($fieldName)
+    {
+        $filters = $this->getConfiguredFilters();
+
+        return array_values(array_filter($filters, function ($filter) use ($fieldName) {
+            return $filter['field'] === $fieldName;
+        }))[0] ?? null;
     }
 
     /**

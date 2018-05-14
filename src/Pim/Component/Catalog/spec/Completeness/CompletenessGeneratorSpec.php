@@ -143,4 +143,53 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
         $this->generateMissing();
     }
+
+    function it_generates_missing_completenesses_for_filtered_products(
+        $pqbFactory,
+        $calculator,
+        ProductQueryBuilderInterface $pqb,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ChannelInterface $channel,
+        CursorInterface $products,
+        Collection $completenesses1,
+        CompletenessInterface $newCompleteness1a,
+        CompletenessInterface $newCompleteness1b,
+        Collection $completenesses2,
+        CompletenessInterface $newCompleteness2a
+    ) {
+        $products->rewind()->shouldBeCalled();
+        $products->valid()->willReturn(true, true, false);
+        $products->current()->willReturn($product1, $product2);
+        $products->next()->shouldBeCalled();
+
+        $product1->getCompletenesses()->willReturn($completenesses1);
+        $completenesses1->isEmpty()->willReturn(true);
+        $product2->getCompletenesses()->willReturn($completenesses2);
+        $completenesses2->isEmpty()->willReturn(true);
+
+        $channel->getCode()->willReturn('ecommerce');
+
+        $filters = [
+            ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null]
+        ];
+
+        $pqbFactory->create(
+            [
+                'filters'       => $filters,
+                'default_scope' => 'ecommerce'
+            ]
+        )->willReturn($pqb);
+
+        $pqb->execute()->willReturn($products);
+
+        $calculator->calculate($product1)->willReturn([$newCompleteness1a, $newCompleteness1b]);
+        $calculator->calculate($product2)->willReturn([$newCompleteness2a]);
+
+        $completenesses1->add($newCompleteness1a)->shouldBeCalled();
+        $completenesses1->add($newCompleteness1b)->shouldBeCalled();
+        $completenesses2->add($newCompleteness2a)->shouldBeCalled();
+
+        $this->generateMissingForProducts($channel, $filters);
+    }
 }

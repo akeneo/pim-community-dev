@@ -29,6 +29,14 @@ interface CompletenessGeneratorInterface
     public function generateMissingForChannel(ChannelInterface $channel);
 
     /**
+     * Generate completeness for products given a channel and filters
+     *
+     * @param array $filters
+     * @param ChannelInterface $channel
+     */
+    public function generateMissingForProducts(ChannelInterface $channel, array $filters);
+
+    /**
      * Generate missing completenesses
      */
     public function generateMissing();

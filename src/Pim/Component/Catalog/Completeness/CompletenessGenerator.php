@@ -51,6 +51,17 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
+    public function generateMissingForProducts(ChannelInterface $channel, array $filters)
+    {
+        $products = $this->createProductQueryBuilderForMissings($channel, null, $filters)->execute();
+        foreach ($products as $product) {
+            $this->calculateProductCompletenesses($product);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
         $products = $this->createProductQueryBuilderForMissings($channel)->execute();
@@ -73,18 +84,22 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * @param ChannelInterface $channel
      * @param LocaleInterface  $locale
+     * @param array filters
      *
      * @return ProductQueryBuilderInterface
      */
     protected function createProductQueryBuilderForMissings(
         ChannelInterface $channel = null,
-        LocaleInterface $locale = null
+        LocaleInterface $locale = null,
+        array $filters = null
     ) {
+        $defaultFilters = [
+            ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null],
+            ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+        ];
+
         $options = [
-            'filters' => [
-                ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null],
-                ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-            ]
+            'filters' => $filters ?? $defaultFilters
         ];
 
         if (null !== $channel) {

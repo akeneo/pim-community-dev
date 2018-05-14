@@ -79,6 +79,16 @@ class CompletenessManager
     }
 
     /**
+     * Insert missing completenesses for filtered products
+     *
+     * @param $products
+     */
+    public function generateMissingForProducts(ChannelInterface $channel, array $filters)
+    {
+        $this->generator->generateMissingForProducts($channel, $filters);
+    }
+
+    /**
      * Insert missing completenesses for a given channel
      *
      * @param ChannelInterface $channel
