@@ -52,3 +52,4 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\FileStorage/
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\FileStorageBundle/Akeneo\\Tool\\Bundle\\FileStorageBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Classification/Akeneo\\Tool\\Component\\Classification/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\ClassificationBundle/Akeneo\\Tool\\Bundle\\ClassificationBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BufferBundle/Akeneo\\Tool\\Bundle\\BufferBundle/g'
