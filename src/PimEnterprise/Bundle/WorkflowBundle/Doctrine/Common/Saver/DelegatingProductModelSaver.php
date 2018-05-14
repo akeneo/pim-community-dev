@@ -14,19 +14,28 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Delegating product model saver, depending on context it delegates to other savers to deal with drafts or working copies
+ *
+ * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class DelegatingProductModelSaver implements SaverInterface
+class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
 {
     /** @var SaverInterface */
     private $productModelSaver;
@@ -55,15 +64,23 @@ class DelegatingProductModelSaver implements SaverInterface
     /** @var EntityWithValuesDraftRepositoryInterface */
     private $productModelDraftRepository;
 
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
+
+    /** @var ObjectManager */
+    private $objectManager;
+
     public function __construct(
+        ObjectManager $objectManager,
         SaverInterface $productModelSaver,
         SaverInterface $productModelDraftSaver,
+        EventDispatcherInterface $eventDispatcher,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
         RemoverInterface $productDraftRemover,
         NotGrantedDataMergerInterface $mergeDataOnProductModel,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
+        ProductModelRepositoryInterface $productModelRepository,
         EntityWithValuesDraftRepositoryInterface $productModelDraftRepository
     ) {
         $this->productModelSaver = $productModelSaver;
@@ -75,6 +92,8 @@ class DelegatingProductModelSaver implements SaverInterface
         $this->mergeDataOnProductModel = $mergeDataOnProductModel;
         $this->productModelRepository = $productModelRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->objectManager = $objectManager;
     }
 
     /**
@@ -93,6 +112,40 @@ class DelegatingProductModelSaver implements SaverInterface
         } elseif ($this->canEdit($fullProductModel)) {
             $this->saveProductModelDraft($fullProductModel, $options);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $filteredProductModels, array $options = [])
+    {
+        if (empty($filteredProductModels)) {
+            return;
+        }
+
+        $productModelsToCompute = [];
+        $fullProductModels = [];
+        foreach ($filteredProductModels as $filteredProductModel) {
+            $this->validateObject($filteredProductModel, ProductModelInterface::class);
+
+            $fullProductModel = $this->getFullProductModel($filteredProductModel);
+            $fullProductModels[] = $fullProductModel;
+
+            if ($this->isOwner($fullProductModel) || null === $fullProductModel->getId()) {
+                $productModelsToCompute[] = $fullProductModel;
+                $this->save($fullProductModel, $options);
+            } elseif ($this->canEdit($fullProductModel)) {
+                $this->saveProductModelDraft($fullProductModel, $options);
+            }
+        }
+
+        $this->objectManager->flush();
+
+        foreach ($productModelsToCompute as $product) {
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+        }
+
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($fullProductModels, $options));
     }
 
     /**
@@ -123,14 +176,14 @@ class DelegatingProductModelSaver implements SaverInterface
      * @param ProductModelInterface $fullProductModel
      * @param array                 $options
      */
-    protected function saveProductModelDraft(ProductModelInterface $fullProductModel, array $options)
+    private function saveProductModelDraft(ProductModelInterface $fullProductModel, array $options)
     {
         $username = $this->tokenStorage->getToken()->getUser()->getUsername();
         $productModelDraft = $this->draftBuilder->build($fullProductModel, $username);
 
         if (null !== $productModelDraft) {
             $this->productModelDraftSaver->save($productModelDraft, $options);
-        } elseif (null !== $draft = $this->productModelDraftRepository->findUserProductModelDraft($productModelDraft, $username)) {
+        } elseif (null !== $draft = $this->productModelDraftRepository->findUserEntityWithValuesDraft($productModelDraft, $username)) {
             $this->productDraftRemover->remove($draft);
         }
     }
@@ -153,5 +206,26 @@ class DelegatingProductModelSaver implements SaverInterface
         $fullProductMode = $this->productModelRepository->findOneByIdentifier($filteredProductModel->getCode());
 
         return $this->mergeDataOnProductModel->merge($filteredProductModel, $fullProductMode);
+    }
+
+    /**
+     * Raises an exception when we try to save another object than expected
+     *
+     * @param object $object
+     * @param string $expectedClass
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function validateObject($object, $expectedClass)
+    {
+        if (!$object instanceof $expectedClass) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a %s, "%s" provided',
+                    $expectedClass,
+                    ClassUtils::getClass($object)
+                )
+            );
+        }
     }
 }
