@@ -881,11 +881,11 @@ abstract class AbstractProduct implements ProductInterface
             return $associationsCollection;
         }
 
-        foreach ($parent->getAssociations() as $association) {
+        foreach ($parent->getAllAssociations() as $association) {
             $associationsCollection = $this->mergeAssociation($association, $associationsCollection);
         }
 
-        return $this->getAncestryAssociations($parent, $associationsCollection);
+        return $associationsCollection;
     }
 
     /**
@@ -905,20 +905,6 @@ abstract class AbstractProduct implements ProductInterface
         AssociationInterface $association,
         Collection $associationsCollection
     ): Collection {
-
-        $existingAssociation = $this->getAssociationForType($association->getAssociationType());
-
-        if (null !== $existingAssociation) {
-            foreach ($existingAssociation->getProducts() as $product) {
-                $association->addProduct($product);
-            }
-            foreach ($existingAssociation->getProductModels() as $productModel) {
-                $association->addProductModel($productModel);
-            }
-            foreach ($existingAssociation->getGroups() as $group) {
-                $association->addGroup($group);
-            }
-        }
 
         $foundInCollection = null;
         foreach ($associationsCollection as $associationInCollection) {

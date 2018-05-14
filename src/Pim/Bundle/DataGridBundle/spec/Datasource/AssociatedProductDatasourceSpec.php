@@ -117,7 +117,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associatedProduct2->getId()->willReturn('3');
         $associatedProductModel->getCode()->willReturn('associated_product_model_1');
         $associatedProductModel->getId()->willReturn('2');
-        $currentProduct->getAssociations()->willReturn($associationCollection);
+        $currentProduct->getAllAssociations()->willReturn($associationCollection);
         $currentProduct->getIdentifier()->willReturn('current_product');
 
         $associationCollection->getIterator()->willReturn($associationIterator);

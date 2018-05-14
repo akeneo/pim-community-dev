@@ -66,6 +66,7 @@ define(
 
                 $('.AknIconButton--remove', row).on('click', () => {
                     mediator.trigger('datagrid:unselectModel:association-product-grid', this.model);
+                    mediator.trigger('datagrid:unselectModel:association-product-model-grid', this.model);
                     row.remove();
                 });
             },
