@@ -254,6 +254,8 @@ pim_enrich:
         deletion_successful: Produktmodellen slettet.
         update_failed: Produktmodellen kunne ikke opdateres.
         field_not_ready: "Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
+      read_only_parent_attribute_from_common: Denne attribut kan opdateres på de fælles attributter.
+      read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
       variant_axis: Variant akse
       title: Produktmodeller
       add_child:
@@ -342,12 +344,17 @@ pim_enrich:
       message:
         created: Familien blev oprettet
       variant:
+        common:
+          title: Fælles attributter
+          empty: Der er ingen fælles attributter
         axis.label: Variant akse
         level_1.label: Variant attributter niveau 1
         level_2.label: Variant attributter niveau to
         add_variant: Tilføje variant
         create_label: Opret en ny familie variant
         create_description: I en familie variant, kan du definere en struktur for produkter med varianter. Vælge antallet af administrerede variant niveauer, de attributter, der bruges som variant akser for hvert niveau, og derefter definere hvordan attributterne er fordelt.
+        update_description: Træk & slip attributter til det valgte variant niveau for at få disse attributter håndteret på den variant niveau.
+        update_translation: Oversætte familie variant etiket
         create: Opret
         cancel: Annuller
         code: Kode
@@ -355,6 +362,12 @@ pim_enrich:
         levels: Variant niveauer
         axis_level: Variant akse niveau
         required: Påkrævet
+        confirm_attribute_removal:
+          title: Bekræfte Fjern attributter
+          message: Ved at fjerne disse attributter vil du lægge dem tilbage i de fælles attributter på denne familie variant og fjerne værdier fra variant varerne
+    family_variant:
+      info:
+        update_successful: Familie variant opdateret. Produkter med varianter vil blive opdateret med ændringerne.
     attribute_option:
       code: Kode
       label: Etiket
@@ -462,8 +475,12 @@ pim_enrich:
             none_exist: Der findes ingen sammenhængstype.
             show_products: Display-produkter
             show_groups: Visningsgrupper
+            number_of_associations: "{{ productCount }} produkt(er), {{ productModelCount }} produkt model(er) og {{ groupCount }} gruppe(r)"
           association_type_selector: Sammenhængstyper
           target: Mål
+          manage: Tilføj {{ associationType }} foreninger
+          manage_description: Vælg de produkter, du vil knytte til det aktuelle produkt
+          add_associations: Tilføj tilknytning
         attributes:
           title: Egenskaber
           btn:
@@ -477,10 +494,12 @@ pim_enrich:
             load_more: Indlæser flere resultater...
           attribute_group_selector: Attributgruppe
           attribute_group_all: Alle
+          attribute_group.to_fill_count: "{1}1 tom kræved attribut |] 1, Inf [{{ count }} tomme krævede attributter"
           attribute_filter:
             display: Vis
             all: Alle attributter
             missing_required: Alle manglende krævede attributter
+            at_this_level: Alle niveau specifikke attributter
         categories:
           title: Kategorier
       panel:
@@ -576,6 +595,8 @@ pim_enrich:
           title: Historik
     family_variant:
       tab:
+        attributes:
+          title: Variant attributter
         labels:
           title: Etiket oversættelser
     attribute_option:
@@ -1025,7 +1046,12 @@ pim_enrich:
           description: De valgte produkter vil blive aktiveret eller deaktiveret.
           field: At aktivere
         edit_common:
+          label: Redigere attributter værdier
+          label_count: "{1}Ret fælles attributter af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Rediger fælles attributter af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
           description: Kun de attributter, der tilhører familierne til de valgte produkter vil blive redigeret med følgende data for {{ locale }} locale og {{ scope }} kanal.
+        add_attribute_value:
+          label: Redigere attributter værdier
+          label_count: "{1}Ret fælles attributter af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Rediger fælles attributter af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
         change_family:
           label: Ændre familie
           label_count: "{1}Change familie af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Skift familie af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
