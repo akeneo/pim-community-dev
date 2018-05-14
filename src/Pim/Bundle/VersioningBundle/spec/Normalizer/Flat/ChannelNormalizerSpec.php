@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 use Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Normalizer\Standard;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -14,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ChannelNormalizerSpec extends ObjectBehavior
 {
     function let(
-        ChannelNormalizer $channelNormalizerStandard,
+        Standard\ChannelNormalizer $channelNormalizerStandard,
         TranslationNormalizer $translationNormalizer
     ) {
         $this->beConstructedWith($channelNormalizerStandard, $translationNormalizer);
