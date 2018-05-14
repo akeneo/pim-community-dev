@@ -1,0 +1,3 @@
+services:
+    pimee_suggest_data.data_provider.factory:
+        class: 'PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory'
