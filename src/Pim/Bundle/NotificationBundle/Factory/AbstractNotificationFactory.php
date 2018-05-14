@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\NotificationBundle\Factory;
 
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 
 /**
  * Convenient class to implement common job notification factories behavior

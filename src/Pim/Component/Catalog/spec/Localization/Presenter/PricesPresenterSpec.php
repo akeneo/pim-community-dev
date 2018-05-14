@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Localization\Presenter;
 
-use Akeneo\Component\Localization\Factory\NumberFactory;
+use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use PhpSpec\ObjectBehavior;
 
 class PricesPresenterSpec extends ObjectBehavior

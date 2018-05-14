@@ -59,7 +59,7 @@ class BooleanFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "a_yes_no" expects a boolean as data, "string" given.
      */
     public function testErrorDataIsMalformed()
@@ -68,7 +68,7 @@ class BooleanFilterIntegration extends AbstractProductQueryBuilderTestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "a_yes_no" expects a boolean as data, "NULL" given.
      */
     public function testErrorDataIsNull()

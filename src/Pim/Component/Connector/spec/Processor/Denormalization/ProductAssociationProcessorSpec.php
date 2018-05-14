@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
@@ -41,8 +41,8 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
     function it_is_a_processor()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
-        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_updates_an_existing_product(
@@ -169,7 +169,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productDetacher->detach($product)->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$convertedData]
@@ -243,7 +243,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productDetacher->detach($product)->shouldBeCalled();
 
         $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$convertedData]

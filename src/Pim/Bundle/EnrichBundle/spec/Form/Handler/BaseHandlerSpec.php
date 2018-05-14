@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Handler;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Form\FormInterface;

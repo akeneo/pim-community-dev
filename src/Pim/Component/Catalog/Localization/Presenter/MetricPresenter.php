@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Localization\Presenter;
 
-use Akeneo\Component\Localization\Factory\NumberFactory;
-use Akeneo\Component\Localization\Presenter\NumberPresenter;
-use Akeneo\Component\Localization\TranslatorProxy;
+use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
+use Akeneo\Tool\Component\Localization\Presenter\NumberPresenter;
+use Akeneo\Tool\Component\Localization\TranslatorProxy;
 
 /**
  * Metric presenter, able to render metric data readable for a human

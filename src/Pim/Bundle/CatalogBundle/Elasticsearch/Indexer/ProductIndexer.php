@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Indexer;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
-use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
+use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\NotificationBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;

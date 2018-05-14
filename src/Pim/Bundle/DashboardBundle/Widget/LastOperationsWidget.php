@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DashboardBundle\Widget;
 
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

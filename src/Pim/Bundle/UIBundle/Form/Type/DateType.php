@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
-use Akeneo\Component\Localization\Factory\DateFactory;
-use Akeneo\Component\Localization\Validator\Constraints\DateFormat;
+use Akeneo\Tool\Component\Localization\Factory\DateFactory;
+use Akeneo\Tool\Component\Localization\Validator\Constraints\DateFormat;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType as BaseDateType;

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\VersioningBundle\Purger;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Akeneo\Component\Versioning\Model\VersionInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Pim\Bundle\VersioningBundle\Event\PreAdvisementVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\PrePurgeVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\PurgeVersionEvents;

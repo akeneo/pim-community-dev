@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Builder;
 
-use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

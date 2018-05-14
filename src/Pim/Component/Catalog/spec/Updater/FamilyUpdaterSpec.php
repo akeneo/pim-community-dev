@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
-use Akeneo\Component\Localization\TranslatableUpdater;
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
+use Akeneo\Tool\Component\Localization\TranslatableUpdater;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Component\Catalog\AttributeTypes;
@@ -49,7 +49,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
     function it_is_a_updater()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface');
     }
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_family()

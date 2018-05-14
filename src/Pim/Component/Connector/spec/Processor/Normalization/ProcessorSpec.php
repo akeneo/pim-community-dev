@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Processor\Normalization;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -16,7 +16,7 @@ class ProcessorSpec extends ObjectBehavior
 
     function it_is_a_processor()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_processes_items($objectDetacher, NormalizerInterface $normalizer, GroupInterface $group)

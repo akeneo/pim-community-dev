@@ -72,7 +72,7 @@ extensions:
         aclResourceId: pim_importexport_export_profile_history
         position: 140
         config:
-            class: Akeneo\Component\Batch\Model\JobInstance
+            class: Akeneo\Tool\Component\Batch\Model\JobInstance
             title: pim_common.history
             tabCode: pim-job-instance-history
 

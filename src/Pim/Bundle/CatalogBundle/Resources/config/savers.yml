@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.saver.base.class:                          Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
+    pim_catalog.saver.base.class:                          Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
     pim_catalog.saver.product.class:                       Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver
     pim_catalog.saver.group_options_resolver.class:        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSavingOptionsResolver
     pim_catalog.saver.group.class:                         Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver

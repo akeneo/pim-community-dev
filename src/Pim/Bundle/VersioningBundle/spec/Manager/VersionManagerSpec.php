@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Manager;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
-use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
@@ -50,7 +50,7 @@ class VersionManagerSpec extends ObjectBehavior
 
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
-        $versions[0]->shouldBeAnInstanceOf('Akeneo\Component\Versioning\Model\Version');
+        $versions[0]->shouldBeAnInstanceOf(Version::class);
     }
 
     function it_creates_pending_versions_when_real_time_versioning_is_disabled(ProductInterface $product, $builder)
@@ -61,7 +61,7 @@ class VersionManagerSpec extends ObjectBehavior
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
         $version = $versions[0];
-        $version->shouldBeAnInstanceOf('Akeneo\Component\Versioning\Model\Version');
+        $version->shouldBeAnInstanceOf(Version::class);
         $version->isPending()->shouldReturn(true);
     }
 

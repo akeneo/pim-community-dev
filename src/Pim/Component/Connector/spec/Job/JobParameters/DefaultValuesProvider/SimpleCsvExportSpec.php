@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
 
-use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use PhpSpec\ObjectBehavior;
 
 class SimpleCsvExportSpec extends ObjectBehavior
@@ -14,7 +14,7 @@ class SimpleCsvExportSpec extends ObjectBehavior
 
     function it_is_a_provider()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface');
     }
 
     function it_provides_default_values()

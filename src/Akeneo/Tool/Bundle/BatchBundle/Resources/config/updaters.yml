@@ -1,0 +1,9 @@
+parameters:
+    akeneo_batch.updater.job_instance.class: Akeneo\Tool\Component\Batch\Updater\JobInstanceUpdater
+
+services:
+    akeneo_batch.updater.job_instance:
+        class: '%akeneo_batch.updater.job_instance.class%'
+        arguments:
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_registry'

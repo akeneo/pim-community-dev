@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\NotificationBundle\EventSubscriber;
 
-use Akeneo\Component\Batch\Event\EventInterface;
-use Akeneo\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Event\EventInterface;
+use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry;
 use Pim\Bundle\NotificationBundle\NotifierInterface;

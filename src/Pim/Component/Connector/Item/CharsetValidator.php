@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Item;
 
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Component\Connector\Exception\CharsetException;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
-use Akeneo\Component\Batch\Job\JobInterface;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use PhpSpec\ObjectBehavior;
 
 class SimpleYamlExportSpec extends ObjectBehavior
@@ -14,7 +14,7 @@ class SimpleYamlExportSpec extends ObjectBehavior
 
     function it_is_a_provider()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface');
     }
 
     function it_provides_constraints_collection()

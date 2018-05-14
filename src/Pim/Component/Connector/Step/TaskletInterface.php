@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Step;
 
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
 /**
  * Simple task to be executed from a TaskletStep.

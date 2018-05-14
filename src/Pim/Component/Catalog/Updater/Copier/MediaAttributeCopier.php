@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Akeneo\Component\FileStorage\File\FileFetcherInterface;
-use Akeneo\Component\FileStorage\File\FileStorerInterface;
-use Akeneo\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\AttributeInterface;

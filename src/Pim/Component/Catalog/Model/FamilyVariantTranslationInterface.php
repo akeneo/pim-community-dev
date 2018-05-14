@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Akeneo\Component\Localization\Model\TranslationInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

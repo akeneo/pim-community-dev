@@ -33,7 +33,7 @@ class FixturesContext extends PimContext
         'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
         'ProductCategory'  => 'PimCatalogBundle:Category',
         'AssociationType'  => 'PimCatalogBundle:AssociationType',
-        'JobInstance'      => 'Akeneo\Component\Batch\Model\JobInstance',
+        'JobInstance'      => 'Akeneo\Tool\Component\Batch\Model\JobInstance',
         'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',
         'User'             => 'Pim\Component\User\Model\User',
         'Role'             => 'Pim\Component\User\Model\Role',

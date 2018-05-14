@@ -1,2 +1,0 @@
-parameters:
-    akeneo_classification.factory.category.class: Akeneo\Component\Classification\Factory\CategoryFactory

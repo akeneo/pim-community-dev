@@ -1,0 +1,3 @@
+parameters:
+    akeneo_file_storage.model.file_info.class:     Akeneo\Tool\Component\FileStorage\Model\FileInfo
+    akeneo_file_storage.model.file_info.interface: Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface

@@ -1,7 +1,7 @@
 parameters:
-    pim_catalog.localization.factory.date.class:     Akeneo\Component\Localization\Factory\DateFactory
-    pim_catalog.localization.factory.datetime.class: Akeneo\Component\Localization\Factory\DateTimeFactory
-    pim_catalog.localization.factory.number.class:   Akeneo\Component\Localization\Factory\NumberFactory
+    pim_catalog.localization.factory.date.class:     Akeneo\Tool\Component\Localization\Factory\DateFactory
+    pim_catalog.localization.factory.datetime.class: Akeneo\Tool\Component\Localization\Factory\DateTimeFactory
+    pim_catalog.localization.factory.number.class:   Akeneo\Tool\Component\Localization\Factory\NumberFactory
 
     pim_catalog.localization.factory.date.formats:
         en_US: 'MM/dd/yyyy'

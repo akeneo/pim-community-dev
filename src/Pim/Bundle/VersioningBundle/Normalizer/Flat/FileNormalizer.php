@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * @author    Julien Janvier <janvier@akeneo.com>

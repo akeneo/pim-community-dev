@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Akeneo\Component\Localization\Model\TranslatableInterface;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 

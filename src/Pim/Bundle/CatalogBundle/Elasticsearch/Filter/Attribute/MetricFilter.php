@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 
-use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;

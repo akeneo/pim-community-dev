@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\EventListener\Storage;
 
-use Akeneo\Component\Console\CommandLauncher;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Tool\Component\Console\CommandLauncher;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;

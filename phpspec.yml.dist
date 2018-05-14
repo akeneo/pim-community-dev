@@ -5,99 +5,94 @@ extensions:
 suites:
     ## Akeneo Components
     Analytics:
-        namespace: Akeneo\Component\Analytics
-        psr4_prefix: Akeneo\Component\Analytics
-        spec_path: src/Akeneo/Component/Analytics
-        src_path: src/Akeneo/Component/Analytics
+        namespace: Akeneo\Tool\Component\Analytics
+        psr4_prefix: Akeneo\Tool\Component\Analytics
+        spec_path: src/Akeneo/Tool/Component/Analytics
+        src_path: src/Akeneo/Tool/Component/Analytics
     Batch:
-        namespace: Akeneo\Component\Batch
-        psr4_prefix: Akeneo\Component\Batch
-        spec_path: src/Akeneo/Component/Batch
-        src_path: src/Akeneo/Component/Batch
+        namespace: Akeneo\Tool\Component\Batch
+        psr4_prefix: Akeneo\Tool\Component\Batch
+        spec_path: src/Akeneo/Tool/Component/Batch
+        src_path: src/Akeneo/Tool/Component/Batch
     BatchQueue:
-        namespace: Akeneo\Component\BatchQueue
-        psr4_prefix: Akeneo\Component\BatchQueue
-        spec_path: src/Akeneo/Component/BatchQueue
-        src_path: src/Akeneo/Component/BatchQueue
+        namespace: Akeneo\Tool\Component\BatchQueue
+        psr4_prefix: Akeneo\Tool\Component\BatchQueue
+        spec_path: src/Akeneo/Tool/Component/BatchQueue
+        src_path: src/Akeneo/Tool/Component/BatchQueue
     Buffer:
-        namespace: Akeneo\Component\Buffer
-        psr4_prefix: Akeneo\Component\Buffer
-        spec_path: src/Akeneo/Component/Buffer
-        src_path: src/Akeneo/Component/Buffer
+        namespace: Akeneo\Tool\Component\Buffer
+        psr4_prefix: Akeneo\Tool\Component\Buffer
+        spec_path: src/Akeneo/Tool/Component/Buffer
+        src_path: src/Akeneo/Tool/Component/Buffer
     Classification:
-        namespace: Akeneo\Component\Classification
-        psr4_prefix: Akeneo\Component\Classification
-        spec_path: src/Akeneo/Component/Classification
-        src_path: src/Akeneo/Component/Classification
+        namespace: Akeneo\Tool\Component\Classification
+        psr4_prefix: Akeneo\Tool\Component\Classification
+        spec_path: src/Akeneo/Tool/Component/Classification
+        src_path: src/Akeneo/Tool/Component/Classification
     Console:
-        namespace: Akeneo\Component\Console
-        psr4_prefix: Akeneo\Component\Console
-        spec_path: src/Akeneo/Component/Console
-        src_path: src/Akeneo/Component/Console
+        namespace: Akeneo\Tool\Component\Console
+        psr4_prefix: Akeneo\Tool\Component\Console
+        spec_path: src/Akeneo/Tool/Component/Console
+        src_path: src/Akeneo/Tool/Component/Console
     FileStorage:
-        namespace: Akeneo\Component\FileStorage
-        psr4_prefix: Akeneo\Component\FileStorage
-        spec_path: src/Akeneo/Component/FileStorage
-        src_path: src/Akeneo/Component/FileStorage
+        namespace: Akeneo\Tool\Component\FileStorage
+        psr4_prefix: Akeneo\Tool\Component\FileStorage
+        spec_path: src/Akeneo/Tool/Component/FileStorage
+        src_path: src/Akeneo/Tool/Component/FileStorage
     Localization:
-        namespace: Akeneo\Component\Localization
-        psr4_prefix: Akeneo\Component\Localization
-        spec_path: src/Akeneo/Component/Localization
-        src_path: src/Akeneo/Component/Localization
+        namespace: Akeneo\Tool\Component\Localization
+        psr4_prefix: Akeneo\Tool\Component\Localization
+        spec_path: src/Akeneo/Tool/Component/Localization
+        src_path: src/Akeneo/Tool/Component/Localization
     StorageUtils:
-        namespace: Akeneo\Component\StorageUtils
-        psr4_prefix: Akeneo\Component\StorageUtils
-        spec_path: src/Akeneo/Component/StorageUtils
-        src_path: src/Akeneo/Component/StorageUtils
+        namespace: Akeneo\Tool\Component\StorageUtils
+        psr4_prefix: Akeneo\Tool\Component\StorageUtils
+        spec_path: src/Akeneo/Tool/Component/StorageUtils
+        src_path: src/Akeneo/Tool/Component/StorageUtils
     Versioning:
-        namespace: Akeneo\Component\Versioning
-        psr4_prefix: Akeneo\Component\Versioning
-        spec_path: src/Akeneo/Component/Versioning
-        src_path: src/Akeneo/Component/Versioning
+        namespace: Akeneo\Tool\Component\Versioning
+        psr4_prefix: Akeneo\Tool\Component\Versioning
+        spec_path: src/Akeneo/Tool/Component/Versioning
+        src_path: src/Akeneo/Tool/Component/Versioning
 
     ## Akeneo Bundles
     BatchBundle:
-        namespace: Akeneo\Bundle\BatchBundle
-        psr4_prefix: Akeneo\Bundle\BatchBundle
-        spec_path: src/Akeneo/Bundle/BatchBundle
-        src_path: src/Akeneo/Bundle/BatchBundle
+        namespace: Akeneo\Tool\Bundle\BatchBundle
+        psr4_prefix: Akeneo\Tool\Bundle\BatchBundle
+        spec_path: src/Akeneo/Tool/Bundle/BatchBundle
+        src_path: src/Akeneo/Tool/Bundle/BatchBundle
     BatchQueueBundle:
-        namespace: Akeneo\Bundle\BatchQueueBundle
-        psr4_prefix: Akeneo\Bundle\BatchQueueBundle
-        spec_path: src/Akeneo/Bundle/BatchQueueBundle
-        src_path: src/Akeneo/Bundle/BatchQueueBundle
+        namespace: Akeneo\Tool\Bundle\BatchQueueBundle
+        psr4_prefix: Akeneo\Tool\Bundle\BatchQueueBundle
+        spec_path: src/Akeneo/Tool/Bundle/BatchQueueBundle
+        src_path: src/Akeneo/Tool/Bundle/BatchQueueBundle
     ClassificationBundle:
-        namespace: Akeneo\Bundle\ClassificationBundle
-        psr4_prefix: Akeneo\Bundle\ClassificationBundle
-        spec_path: src/Akeneo/Bundle/ClassificationBundle
-        src_path: src/Akeneo/Bundle/ClassificationBundle
+        namespace: Akeneo\Tool\Bundle\ClassificationBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ClassificationBundle
+        spec_path: src/Akeneo/Tool/Bundle/ClassificationBundle
+        src_path: src/Akeneo/Tool/Bundle/ClassificationBundle
     ElasticsearchBundle:
-        namespace: Akeneo\Bundle\ElasticsearchBundle
-        psr4_prefix: Akeneo\Bundle\ElasticsearchBundle
-        spec_path: src/Akeneo/Bundle/ElasticsearchBundle
-        src_path: src/Akeneo/Bundle/ElasticsearchBundle
+        namespace: Akeneo\Tool\Bundle\ElasticsearchBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ElasticsearchBundle
+        spec_path: src/Akeneo/Tool/Bundle/ElasticsearchBundle
+        src_path: src/Akeneo/Tool/Bundle/ElasticsearchBundle
     StorageUtilsBundle:
-        namespace: Akeneo\Bundle\StorageUtilsBundle
-        psr4_prefix: Akeneo\Bundle\StorageUtilsBundle
-        spec_path: src/Akeneo/Bundle/StorageUtilsBundle
-        src_path: src/Akeneo/Bundle/StorageUtilsBundle
+        namespace: Akeneo\Tool\Bundle\StorageUtilsBundle
+        psr4_prefix: Akeneo\Tool\Bundle\StorageUtilsBundle
+        spec_path: src/Akeneo/Tool/Bundle/StorageUtilsBundle
+        src_path: src/Akeneo/Tool/Bundle/StorageUtilsBundle
     MeasureBundle:
-        namespace: Akeneo\Bundle\MeasureBundle
-        psr4_prefix: Akeneo\Bundle\MeasureBundle
-        spec_path: src/Akeneo/Bundle/MeasureBundle
-        src_path: src/Akeneo/Bundle/MeasureBundle
-    StorageUtilsBundle:
-        namespace: Akeneo\Bundle\StorageUtilsBundle
-        psr4_prefix: Akeneo\Bundle\StorageUtilsBundle
-        spec_path: src/Akeneo/Bundle/StorageUtilsBundle
-        src_path: src/Akeneo/Bundle/StorageUtilsBundle
+        namespace: Akeneo\Tool\Bundle\MeasureBundle
+        psr4_prefix: Akeneo\Tool\Bundle\MeasureBundle
+        spec_path: src/Akeneo/Tool/Bundle/MeasureBundle
+        src_path: src/Akeneo/Tool/Bundle/MeasureBundle
 
     ## Pim Components
     Api:
-        namespace: Pim\Component\Api
-        psr4_prefix: Pim\Component\Api
-        spec_path: src/Pim/Component/Api
-        src_path: src/Pim/Component/Api
+        namespace: Akeneo\Tool\Component\Api
+        psr4_prefix: Akeneo\Tool\Component\Api
+        spec_path: src/Akeneo/Tool/Component/Api
+        src_path: src/Akeneo/Tool/Component/Api
     ReferenceData:
         namespace: Pim\Component\ReferenceData
         psr4_prefix: Pim\Component\ReferenceData
@@ -136,10 +131,10 @@ suites:
         spec_path: src/Pim/Bundle/AnalyticsBundle
         src_path: src/Pim/Bundle/AnalyticsBundle
     ApiBundle:
-        namespace: Pim\Bundle\ApiBundle
-        psr4_prefix: Pim\Bundle\ApiBundle
-        spec_path: src/Pim/Bundle/ApiBundle
-        src_path: src/Pim/Bundle/ApiBundle
+        namespace: Akeneo\Tool\Bundle\ApiBundle
+        psr4_prefix: Akeneo\Tool\Bundle\ApiBundle
+        spec_path: src/Akeneo/Tool/Bundle/ApiBundle
+        src_path: src/Akeneo/Tool/Bundle/ApiBundle
     CatalogBundle:
         namespace: Pim\Bundle\CatalogBundle
         psr4_prefix: Pim\Bundle\CatalogBundle

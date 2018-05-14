@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Connector\Writer\Database;
 
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductAssociation;
@@ -24,8 +24,8 @@ class ProductAssociationWriterSpec extends ObjectBehavior
 
     function it_is_a_writer()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemWriterInterface');
-        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemWriterInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_massively_insert_and_update_objects(

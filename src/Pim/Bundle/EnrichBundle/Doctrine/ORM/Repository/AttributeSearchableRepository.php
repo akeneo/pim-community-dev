@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -105,7 +105,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
     protected function findBySearchQb($search, array $options)
     {
         //TODO: refactor on master because this is exactly the same that FamilySearchableRepository
-        //TODO: and should be put in Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository
+        //TODO: and should be put in Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository
         $qb = $this->entityManager
             ->createQueryBuilder()
             ->select('a')

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
-use Akeneo\Component\Batch\Job\JobParametersFactory;
-use Akeneo\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
+use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceFormType;

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\EventListener;
 
-use Akeneo\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 

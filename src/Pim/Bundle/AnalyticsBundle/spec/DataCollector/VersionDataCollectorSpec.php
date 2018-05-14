@@ -2,7 +2,9 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
 use Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 use Prophecy\Argument;
@@ -22,8 +24,8 @@ class VersionDataCollectorSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector');
-        $this->shouldImplement('Akeneo\Component\Analytics\DataCollectorInterface');
+        $this->shouldHaveType(VersionDataCollector::class);
+        $this->shouldImplement(DataCollectorInterface::class);
     }
 
     public function it_collects_pim_version_edition_and_storage_driver

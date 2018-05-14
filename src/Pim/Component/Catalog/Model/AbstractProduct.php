@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;

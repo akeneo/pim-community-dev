@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Pim\Component\Catalog\Normalizer\Standard\CategoryNormalizer;

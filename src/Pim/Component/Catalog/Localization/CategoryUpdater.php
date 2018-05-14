@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Localization;
 
-use Akeneo\Component\Localization\Model\TranslatableInterface;
-use Akeneo\Component\Localization\TranslatableUpdater;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\Localization\TranslatableUpdater;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 
 /**
  * Decorates category updater to translate labels.

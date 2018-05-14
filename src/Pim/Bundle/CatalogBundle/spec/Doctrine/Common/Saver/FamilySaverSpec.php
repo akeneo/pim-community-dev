@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Manager\CompletenessManager;
@@ -22,7 +22,7 @@ class FamilySaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
+        $this->shouldHaveType('Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_saves_a_family($objectManager, $eventDispatcher, FamilyInterface $family)

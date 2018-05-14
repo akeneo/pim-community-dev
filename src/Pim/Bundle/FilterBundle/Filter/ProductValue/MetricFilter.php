@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;

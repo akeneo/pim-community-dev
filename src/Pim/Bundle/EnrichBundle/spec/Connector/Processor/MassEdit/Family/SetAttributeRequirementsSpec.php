@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
-use Akeneo\Component\Batch\Job\JobParameters;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -40,7 +40,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
 
     function it_is_a_processor()
     {
-        $this->beAnInstanceOf('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
+        $this->beAnInstanceOf('\Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
     }
 
     function it_processes_a_family(

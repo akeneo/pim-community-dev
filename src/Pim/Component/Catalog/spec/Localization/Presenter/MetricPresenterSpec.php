@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Localization\Presenter;
 
-use Akeneo\Component\Localization\Factory\NumberFactory;
-use Akeneo\Component\Localization\TranslatorProxy;
+use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
+use Akeneo\Tool\Component\Localization\TranslatorProxy;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -28,7 +28,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $numberFactory->create([])->willReturn($numberFormatter);
         $numberFormatter->format(12000.34)->willReturn('12,000.34');
         $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
-        $translatorProxy->trans('pim_measure.units.KILOGRAM', Argument::type('array'))->willReturn('Kilogram');
+        $translatorProxy->trans('pim_measure.units.KILOGRAM')->willReturn('Kilogram');
         $this
             ->present(['amount' => 12000.34, 'unit' => 'KILOGRAM'])
             ->shouldReturn('12,000.34 Kilogram');
@@ -42,7 +42,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $numberFactory->create(['locale' => 'fr_FR'])->willReturn($numberFormatter);
         $numberFormatter->format(12000.34)->willReturn('12 000,34');
         $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
-        $translatorProxy->trans('pim_measure.units.KILOGRAM', Argument::type('array'))->willReturn('Kilogram');
+        $translatorProxy->trans('pim_measure.units.KILOGRAM')->willReturn('Kilogram');
         $this
             ->present(['amount' => 12000.34, 'unit' => 'KILOGRAM'], ['locale' => 'fr_FR'])
             ->shouldReturn('12 000,34 Kilogram');
@@ -57,7 +57,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $numberFormatter->setSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '')->willReturn(null);
         $numberFormatter->format(12000.34)->willReturn('12000.34');
         $numberFormatter->setAttribute(Argument::any(), Argument::any())->willReturn(null);
-        $translatorProxy->trans('pim_measure.units.KILOGRAM', Argument::type('array'))->willReturn('Kilogram');
+        $translatorProxy->trans('pim_measure.units.KILOGRAM')->willReturn('Kilogram');
         $this
             ->present(['amount' => 12000.34, 'unit' => 'KILOGRAM'], ['disable_grouping_separator' => true])
             ->shouldReturn('12000.34 Kilogram');

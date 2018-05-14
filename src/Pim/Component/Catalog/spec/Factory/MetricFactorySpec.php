@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Factory;
 
-use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
-use Akeneo\Bundle\MeasureBundle\Exception\UnknownMeasureException;
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException;
+use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

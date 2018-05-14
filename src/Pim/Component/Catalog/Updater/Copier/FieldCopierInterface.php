@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**

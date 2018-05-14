@@ -17,7 +17,7 @@ class UpdateVariantProductIntegration extends TestCase
     /**
      * TODO: This will become possible in PIM-6350.
      *
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException
      * @expectedExceptionMessage Property "parent" cannot be modified, "amor" given.
      */
     public function testTheParentCannotBeChanged(): void
@@ -27,7 +27,7 @@ class UpdateVariantProductIntegration extends TestCase
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException
      * @expectedExceptionMessage Property "parent" cannot be modified, "" given.
      */
     public function testTheParentCannotBeRemoved(): void

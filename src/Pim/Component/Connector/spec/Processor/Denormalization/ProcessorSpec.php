@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Component\Batch\Item\ExecutionContext;
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactory;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactory;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Prophecy\Argument;
@@ -36,8 +36,8 @@ class ProcessorSpec extends ObjectBehavior
 
     function it_is_a_processor()
     {
-        $this->shouldImplement('Akeneo\Component\Batch\Item\ItemProcessorInterface');
-        $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
     function it_updates_an_existing_channel(
@@ -98,7 +98,7 @@ class ProcessorSpec extends ObjectBehavior
             ->willThrow(new InvalidPropertyException('code', 'value', 'className', 'The code could not be blank.'));
 
         $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values]
@@ -130,7 +130,7 @@ class ProcessorSpec extends ObjectBehavior
 
         $objectDetacher->detach($channel)->shouldBeCalled();
         $this
-            ->shouldThrow('Akeneo\Component\Batch\Item\InvalidItemException')
+            ->shouldThrow('Akeneo\Tool\Component\Batch\Item\InvalidItemException')
             ->during(
                 'process',
                 [$values]

@@ -51,3 +51,24 @@
 - Change constructor of `Pim\Bundle\ImportExportBundle\Normalizer\StepExecutionNormalizer`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument  
 
 - Change constructor of `Pim\Bundle\UserBundle\Form\Type\UserType`, remove `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and `Pim\Bundle\UserBundle\Form\Subscriber\UserSubscriber` argument  
+
+- Move namespace `Pim\Component\Api` to `Akeneo\Tool\Component\Api`
+- Move namespace `Pim\Bundle\ApiBundle` to `Akeneo\Tool\Bundle\ApiBundle`
+- Move namespace `Pim\Component\Batch` to `Akeneo\Tool\Component\Batch`
+- Move namespace `Pim\Bundle\BatchBundle` to `Akeneo\Tool\Bundle\BatchBundle`
+- Move namespace `Pim\Component\BatchQueue` to `Akeneo\Tool\Component\BatchQueue`
+- Move namespace `Pim\Bundle\BatchQueueBundle` to `Akeneo\Tool\Bundle\BatchQueueBundle`
+- Move namespace `Pim\Component\StorageUtilsQueue` to `Akeneo\Tool\Component\StorageUtilsQueue`
+- Move namespace `Pim\Bundle\StorageUtilsQueueBundle` to `Akeneo\Tool\Bundle\StorageUtilsQueueBundle`
+- Move namespace `Pim\Bundle\ElasticsearchBundle` to `Akeneo\Tool\Bundle\ElasticsearchBundle`
+- Move namespace `Pim\Component\Analytics` to `Akeneo\Tool\Component\Analytics`
+- Move namespace `Pim\Component\Buffer` to `Akeneo\Tool\Component\Buffer`
+- Move namespace `Pim\Component\Console` to `Akeneo\Tool\Component\Console`
+- Move namespace `Pim\Component\Localization` to `Akeneo\Tool\Component\Localization`
+- Move namespace `Pim\Component\Versionning` to `Akeneo\Tool\Component\Versionning`
+- Move namespace `Pim\Bundle\MeasureBundle` to `Akeneo\Tool\Bundle\MeasureBundle`
+- Move namespace `Pim\Component\FileStorage` to `Akeneo\Tool\Component\FileStorage`
+- Move namespace `Pim\Bundle\FileStorageBundle` to `Akeneo\Tool\Bundle\FileStorageBundle`
+- Move namespace `Pim\Component\Classification` to `Akeneo\Tool\Component\Classification`
+- Move namespace `Pim\Bundle\ClassificationBundle` to `Akeneo\Tool\Bundle\ClassificationBundle`
+- Move namespace `Pim\Bundle\BufferBundle` to `Akeneo\Tool\Bundle\BufferBundle`

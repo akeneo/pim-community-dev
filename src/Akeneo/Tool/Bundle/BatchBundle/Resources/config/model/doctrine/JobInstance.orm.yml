@@ -1,0 +1,51 @@
+Akeneo\Tool\Component\Batch\Model\JobInstance:
+    type: entity
+    table: akeneo_batch_job_instance
+    # TODO: should be like other entities
+    #changeTrackingPolicy: DEFERRED_EXPLICIT
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - code
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            nullable: false
+            column: code
+        label:
+            type: string
+            length: 255
+            nullable: true
+            column: label
+        jobName:
+            type: string
+            length: 50
+            column: job_name
+        status:
+            type: integer
+            lenght: 11
+            column: status
+        connector:
+            type: string
+            length: 255
+            column: connector
+        rawParameters:
+            type: array
+            column: raw_parameters
+        type:
+            type: string
+            length: 255
+            column: type
+    oneToMany:
+        jobExecutions:
+            targetEntity: Akeneo\Tool\Component\Batch\Model\JobExecution
+            mappedBy: jobInstance
+            cascade:
+                - remove
+            orphanRemoval: true

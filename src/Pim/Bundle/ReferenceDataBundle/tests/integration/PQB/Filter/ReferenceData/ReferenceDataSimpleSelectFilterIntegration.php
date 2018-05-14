@@ -76,7 +76,7 @@ class ReferenceDataSimpleSelectFilterIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "a_ref_data_simple_select" expects an array as data, "string" given.
      */
     public function testErrorDataIsMalformed()
@@ -85,7 +85,7 @@ class ReferenceDataSimpleSelectFilterIntegration extends AbstractProductQueryBui
     }
 
     /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "a_ref_data_simple_select" expects a valid code. No reference data "color" with code "NOT_FOUND" has been found, "NOT_FOUND" given.
      */
     public function testErrorOptionNotFound()

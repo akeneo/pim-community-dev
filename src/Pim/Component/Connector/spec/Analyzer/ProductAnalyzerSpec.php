@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Analyzer;
 
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use PhpSpec\ObjectBehavior;
 
 class ProductAnalyzerSpec extends ObjectBehavior

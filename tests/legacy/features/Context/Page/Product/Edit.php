@@ -2,7 +2,7 @@
 
 namespace Context\Page\Product;
 
-use Akeneo\Component\Classification\Model\Category;
+use Akeneo\Tool\Component\Classification\Model\Category;
 use Behat\Mink\Element\ElementInterface;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;

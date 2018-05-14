@@ -78,9 +78,9 @@ class AppKernel extends Kernel
             new Pim\Bundle\UserBundle\PimUserBundle(),
 
             // PIM bundles
-            new Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
+            new Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
             new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
-            new Pim\Bundle\ApiBundle\PimApiBundle(),
+            new Akeneo\Tool\Bundle\ApiBundle\PimApiBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\CommentBundle\PimCommentBundle(),
             new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
@@ -107,13 +107,13 @@ class AppKernel extends Kernel
     protected function getPimDependenciesBundles()
     {
         return [
-            new Akeneo\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
-            new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle(),
-            new Akeneo\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
-            new Akeneo\Bundle\BufferBundle\AkeneoBufferBundle(),
-            new Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
-            new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
-            new Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
+            new Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle(),
+            new Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle(),
+            new Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle(),
+            new Akeneo\Tool\Bundle\BufferBundle\AkeneoBufferBundle(),
+            new Akeneo\Tool\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
+            new Akeneo\Tool\Bundle\MeasureBundle\AkeneoMeasureBundle(),
+            new Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),

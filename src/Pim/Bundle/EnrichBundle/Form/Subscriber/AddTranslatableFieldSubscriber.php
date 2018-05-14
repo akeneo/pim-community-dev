@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Akeneo\Component\Localization\Factory\TranslationFactory;
+use Akeneo\Tool\Component\Localization\Factory\TranslationFactory;
 use Doctrine\Common\Inflector\Inflector;
 use Pim\Bundle\EnrichBundle\Exception\MissingOptionException;
 use Pim\Bundle\UserBundle\Context\UserContext;

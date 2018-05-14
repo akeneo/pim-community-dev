@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Writer;
 
-use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 
 /**
  * Dummy step, can be use to do nothing until you'll have concret implementation

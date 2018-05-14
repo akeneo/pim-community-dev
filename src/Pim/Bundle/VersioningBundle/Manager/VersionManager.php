@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Manager;
 
-use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
@@ -175,7 +175,7 @@ class VersionManager
      */
     public function getVersionRepository()
     {
-        return $this->objectManager->getRepository('Akeneo\Component\Versioning\Model\Version');
+        return $this->objectManager->getRepository(Version::class);
     }
 
     /**

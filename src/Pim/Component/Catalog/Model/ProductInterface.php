@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Model;
 
-use Akeneo\Component\Classification\CategoryAwareInterface;
-use Akeneo\Component\Localization\Model\LocalizableInterface;
-use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
+use Akeneo\Tool\Component\Localization\Model\LocalizableInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;

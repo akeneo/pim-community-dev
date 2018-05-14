@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard;
 
-use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

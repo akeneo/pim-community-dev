@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Command;
 
-use Akeneo\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;

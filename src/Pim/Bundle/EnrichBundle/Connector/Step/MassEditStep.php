@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Step;
 
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
-use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\AbstractStep;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Step\AbstractStep;
+use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

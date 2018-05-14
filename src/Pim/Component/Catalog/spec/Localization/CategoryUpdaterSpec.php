@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Component\Catalog\Localization;
 
-use Akeneo\Component\Localization\TranslatableUpdater;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\Localization\TranslatableUpdater;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

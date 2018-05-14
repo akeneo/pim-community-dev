@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\Controller;
 
-use Akeneo\Component\Analytics\ChainedDataCollector;
+use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
 use PhpSpec\ObjectBehavior;
 
 class DataControllerSpec extends ObjectBehavior

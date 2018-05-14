@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Enrich\Converter\StandardToEnrich;
 
-use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 

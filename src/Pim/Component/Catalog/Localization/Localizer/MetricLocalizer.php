@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Localization\Localizer;
 
-use Akeneo\Component\Localization\Localizer\NumberLocalizer;
+use Akeneo\Tool\Component\Localization\Localizer\NumberLocalizer;
 
 /**
  * Check and convert if metric provided respects the format expected

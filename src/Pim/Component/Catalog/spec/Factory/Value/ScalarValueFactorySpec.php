@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Factory\Value;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\Value\ScalarValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;

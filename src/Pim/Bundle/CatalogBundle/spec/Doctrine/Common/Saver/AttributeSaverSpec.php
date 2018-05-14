@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -20,12 +20,12 @@ class AttributeSaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\SaverInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface');
     }
 
     function it_is_a_bulk_saver()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
+        $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface');
     }
 
     function it_saves_an_attribute_and_flushes_by_default(

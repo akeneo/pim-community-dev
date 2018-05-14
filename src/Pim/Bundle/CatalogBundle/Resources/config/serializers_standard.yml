@@ -22,7 +22,7 @@ parameters:
     pim_catalog.normalizer.standard.group_type.class: Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer
     pim_catalog.normalizer.standard.locale.class: Pim\Component\Catalog\Normalizer\Standard\LocaleNormalizer
     pim_catalog.normalizer.standard.translation.class: Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer
-    pim_catalog.normalizer.standard.job_instance.class: Akeneo\Component\Batch\Normalizer\Standard\JobInstanceNormalizer
+    pim_catalog.normalizer.standard.job_instance.class: Akeneo\Tool\Component\Batch\Normalizer\Standard\JobInstanceNormalizer
 
 services:
     pim_catalog.normalizer.standard.product:

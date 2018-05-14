@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Purger;
 
-use Akeneo\Component\Versioning\Model\VersionInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 
 /**
  * Prevents first version of an entity from being purged

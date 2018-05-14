@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Connector\Archiver;
 
-use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Component\Batch\Job\JobRegistry;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Step\ItemStep;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use League\Flysystem\Filesystem;
 use Pim\Component\Connector\Writer\File\ArchivableWriterInterface;
 
