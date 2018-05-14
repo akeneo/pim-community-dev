@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -44,7 +46,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($product, 'flat')->shouldBe(false);
     }
 
-    function it_normalizes_a_product_model(
+    function it_normalizes_a_root_product_model(
         Serializer $serializer,
         ProductModelInterface $productModel,
         ValueInterface $sku,
@@ -58,8 +60,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getCode()->willReturn('product_model_1');
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $productModel->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
-        $productModel->getAssociations()->willReturn([]);
         $productModel->getValuesForVariation()->willReturn($values);
+        $productModel->getParent()->willReturn(null);
 
         $values->getIterator()->willReturn($iterator);
         $iterator->rewind()->shouldBeCalled();
@@ -74,7 +76,47 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'family_variant' => 'family_variant_2',
                 'code' => 'product_model_1',
                 'categories' => 'nice shoes,converse',
-                'sku' => 'sku-001',
+                'parent'     => '',
+                'sku'        => 'sku-001',
+            ]
+        );
+    }
+
+    function it_normalizes_a_sub_product_model(
+        Serializer $serializer,
+        ProductModelInterface $productModel,
+        ProductModelInterface $parent,
+        ValueInterface $sku,
+        ValueCollectionInterface $values,
+        \Iterator $iterator,
+        FamilyVariantInterface $familyVariant
+    ) {
+        $this->setSerializer($serializer);
+
+        $familyVariant->getCode()->willReturn('family_variant_2');
+        $productModel->getCode()->willReturn('product_model_1');
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+        $productModel->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
+        $productModel->getAssociations()->willReturn([]);
+        $productModel->getValuesForVariation()->willReturn($values);
+        $productModel->getParent()->willReturn($parent);
+        $parent->getCode()->willReturn('parent_code');
+
+        $values->getIterator()->willReturn($iterator);
+        $iterator->rewind()->shouldBeCalled();
+        $iterator->valid()->willReturn(true, false);
+        $iterator->current()->willReturn($sku);
+        $iterator->next()->shouldBeCalled();
+
+        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+
+        $this->normalize($productModel, 'flat', [])->shouldReturn(
+            [
+                'family_variant' => 'family_variant_2',
+                'code' => 'product_model_1',
+                'categories' => 'nice shoes,converse',
+                'parent'     => 'parent_code',
+                'sku'        => 'sku-001',
             ]
         );
     }

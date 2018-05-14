@@ -61,6 +61,7 @@ legacy:
                     - '@pim_catalog.saver.product'
                     - '@pim_catalog.validator.product'
                     - '@doctrine.orm.entity_manager'
+                    - '@pim_versioning.repository.version'
                 - Pim\Behat\Context\Domain\Enrich\VariantNavigationContext:
                     - 'Context\FeatureContext'
                 - Pim\Behat\Context\Domain\Spread\ExportBuilderContext:

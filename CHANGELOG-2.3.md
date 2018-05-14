@@ -4,6 +4,7 @@
 
 - PIM-6897: As Julia, I would like to update the family variant labels from the UI
 - PIM-7330: Improve validation message in case of product model or variant product axis values duplication
+- PIM-7326: Create a version when the parent of a variant product or a sub product model is changed.
 
 ## BC Breaks
 
