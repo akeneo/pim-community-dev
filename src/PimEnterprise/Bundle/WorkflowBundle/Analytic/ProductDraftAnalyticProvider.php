@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Analytic;
 
-use Akeneo\Component\Analytics\DataCollectorInterface;
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;

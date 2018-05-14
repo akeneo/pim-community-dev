@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 
-use Akeneo\Bundle\FileStorageBundle\Form\Type\FileInfoType;
+use Akeneo\Tool\Bundle\FileStorageBundle\Form\Type\FileInfoType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
