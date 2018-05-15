@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
@@ -81,7 +81,7 @@ class CompletenessManager
     /**
      * Insert missing completenesses for a given channel
      *
-     * @param ChannelInterface $channel
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
@@ -124,10 +124,10 @@ class CompletenessManager
     /**
      * Returns an array containing all completeness info and missing attributes for a product
      *
-     * @param ProductInterface   $product
-     * @param ChannelInterface[] $channels
-     * @param LocaleInterface[]  $locales
-     * @param string             $localeCode
+     * @param ProductInterface                                   $product
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface[] $channels
+     * @param LocaleInterface[]                                  $locales
+     * @param string                                             $localeCode
      *
      * @return array
      * [

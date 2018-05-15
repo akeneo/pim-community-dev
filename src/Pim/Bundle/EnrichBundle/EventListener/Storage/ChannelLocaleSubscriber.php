@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -139,7 +139,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
      * Update the channel and if at least a locale is removed, it launches the completeness cleaning with a command.
      * @see https://akeneo.atlassian.net/browse/PIM-7155
      *
-     * @param ChannelInterface $channel
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      */
     private function updateChannelInBackend(ChannelInterface $channel): void
     {

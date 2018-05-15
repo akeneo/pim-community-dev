@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 
 /**
  * Updates a channel
@@ -133,9 +133,9 @@ class ChannelUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param ChannelInterface $channel
-     * @param string           $field
-     * @param mixed            $data
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param string                                           $field
+     * @param mixed                                            $data
      *
      * @throws InvalidPropertyException
      */
@@ -164,8 +164,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param ChannelInterface $channel
-     * @param string           $treeCode
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param string                                           $treeCode
      *
      * @throws InvalidPropertyException
      */
@@ -185,8 +185,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param ChannelInterface $channel
-     * @param array            $currencyCodes
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param array                                            $currencyCodes
      *
      * @throws InvalidPropertyException
      */
@@ -212,8 +212,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param ChannelInterface $channel
-     * @param array            $localeCodes
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param array                                            $localeCodes
      *
      * @throws InvalidPropertyException
      */

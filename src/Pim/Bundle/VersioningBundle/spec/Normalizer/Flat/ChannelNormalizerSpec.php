@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Normalizer\Standard;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

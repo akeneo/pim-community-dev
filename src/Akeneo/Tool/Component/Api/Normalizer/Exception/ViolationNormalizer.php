@@ -5,7 +5,7 @@ namespace Akeneo\Tool\Component\Api\Normalizer\Exception;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Doctrine\Common\Inflector\Inflector;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

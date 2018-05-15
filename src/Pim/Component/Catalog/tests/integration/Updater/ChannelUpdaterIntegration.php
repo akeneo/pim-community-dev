@@ -5,13 +5,13 @@ namespace Pim\Component\Catalog\tests\integration\Updater;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 
 class ChannelUpdaterIntegration extends TestCase
 {
     /**
      * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException
-     * @expectedExceptionMessage Expects a "Pim\Component\Catalog\Model\ChannelInterface", "stdClass" given.
+     * @expectedExceptionMessage Expects a "Akeneo\Channel\Component\Model\ChannelInterface", "stdClass" given.
      */
     public function testUpdateObjectInChannelUpdater()
     {
@@ -208,7 +208,7 @@ class ChannelUpdaterIntegration extends TestCase
     }
 
     /**
-     * @return ChannelInterface
+     * @return \Akeneo\Channel\Component\Model\ChannelInterface
      */
     protected function createChannel()
     {

@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -304,9 +304,9 @@ class ChannelController
     /**
      * Update a channel. It throws an error 422 if a problem occurred during the update.
      *
-     * @param ChannelInterface        $channel
-     * @param array                   $data
-     * @param string                  $anchor
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param array                                            $data
+     * @param string                                           $anchor
      *
      * @throws DocumentedHttpException
      */
@@ -327,7 +327,7 @@ class ChannelController
      * Validate a channel. It throws an error 422 with every violated constraints if
      * the validation failed.
      *
-     * @param ChannelInterface $channel
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @throws ViolationHttpException
      */
@@ -342,8 +342,8 @@ class ChannelController
     /**
      * Get a response with a location header to the created or updated resource.
      *
-     * @param ChannelInterface $channel
-     * @param int              $status
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param int                                              $status
      *
      * @return Response
      */

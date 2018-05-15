@@ -18,7 +18,7 @@ Akeneo\Channel\Component\Model\Locale:
             column: is_activated
     manyToMany:
         channels:
-            targetEntity: Pim\Component\Catalog\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
             mappedBy: locales
             cascade:
                 - persist

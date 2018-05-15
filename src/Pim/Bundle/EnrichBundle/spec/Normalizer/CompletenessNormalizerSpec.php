@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 

@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
@@ -125,7 +125,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
      *
      * @throws ObjectNotFoundException
      *
-     * @return ChannelInterface|null
+     * @return \Akeneo\Channel\Component\Model\ChannelInterface|null
      */
     protected function getConfiguredChannel()
     {
@@ -163,8 +163,8 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     }
 
     /**
-     * @param array            $filters
-     * @param ChannelInterface $channel
+     * @param array                                            $filters
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @return CursorInterface
      */

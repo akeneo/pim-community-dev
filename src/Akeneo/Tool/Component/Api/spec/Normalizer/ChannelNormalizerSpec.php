@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Component\Api\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Normalizer\ChannelNormalizer;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

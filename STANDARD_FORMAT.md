@@ -1504,7 +1504,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 | code           | string         | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA_variationA.jpg"` | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*       |
 | asset          | string         | `"my_asset"`                                                               | it represents the *code* of the object *PimEnterprise\Component\ProductAsset\Model\AssetInterface* |
 | locale         | string         | `"fr_FR"`                                                                  | it represents the *code* of the object *Akeneo\Channel\Component\Model\LocaleInterface*               |
-| channel        | string         | `"tablet"`                                                                 | it represents the *code* of the object *Pim\Component\Catalog\Model\ChannelInterface*              |
+| channel        | string         | `"tablet"`                                                                 | it represents the *code* of the object *Akeneo\Channel\Component\Model\ChannelInterface*              |
 | reference_file | string      	  | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"`            | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*       |
 
 
@@ -1520,7 +1520,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 
 | type           | data structure | data example                     | notes                                                                                 |
 | -------------- | -------------- | -------------------------------- | ------------------------------------------------------------------------------------- |
-| channel        | string         | `tablet`                         | it represents the *code* of the object *Pim\Component\Catalog\Model\ChannelInterface* |
+| channel        | string         | `tablet`                         | it represents the *code* of the object *Akeneo\Channel\Component\Model\ChannelInterface* |
 | configuration  | array          | `["width" => 200, "scale" => 2]` |                                                                                       |
 
 

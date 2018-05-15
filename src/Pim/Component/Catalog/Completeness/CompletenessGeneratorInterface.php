@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Completeness;
 
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -24,7 +24,7 @@ interface CompletenessGeneratorInterface
     /**
      * Generate completeness for a channel
      *
-     * @param ChannelInterface $channel
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      */
     public function generateMissingForChannel(ChannelInterface $channel);
 

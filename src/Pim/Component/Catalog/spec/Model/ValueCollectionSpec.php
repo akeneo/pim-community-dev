@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Model;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
@@ -17,7 +17,7 @@ class ValueCollectionSpec extends ObjectBehavior
         AttributeInterface $price,
         AttributeInterface $description,
         AttributeInterface $releaseDate,
-        ChannelInterface $ecommerce,
+        \Akeneo\Channel\Component\Model\ChannelInterface $ecommerce,
         ChannelInterface $print,
         LocaleInterface $en_US,
         LocaleInterface $fr_FR,
