@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Context;
 
+use Akeneo\Channel\Component\Model\Locale;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
@@ -38,7 +39,7 @@ class FixturesContext extends PimContext
         'User'             => 'Pim\Component\User\Model\User',
         'Role'             => 'Pim\Component\User\Model\Role',
         'UserGroup'        => 'Pim\Component\User\Model\Group',
-        'Locale'           => 'PimCatalogBundle:Locale',
+        'Locale'           => Locale::class,
         'GroupType'        => 'PimCatalogBundle:GroupType',
         'Product'          => 'Pim\Component\Catalog\Model\Product',
         'ProductGroup'     => 'Pim\Bundle\CatalogBundle\Entity\Group',

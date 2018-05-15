@@ -3,6 +3,7 @@
 namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
 use Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository;
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
@@ -88,7 +89,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             'catalogLocale',
             EntityType::class,
             [
-                'class'         => 'PimCatalogBundle:Locale',
+                'class'         => Locale::class,
                 'choice_label'  => 'code',
                 'select2'       => true,
                 'query_builder' => function (EntityRepository $repository) {
@@ -145,7 +146,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             'uiLocale',
             EntityType::class,
             [
-                'class'         => 'PimCatalogBundle:Locale',
+                'class'         => Locale::class,
                 'choice_label'  => 'getName',
                 'select2'       => true,
                 'data'          => $uiLocale,
