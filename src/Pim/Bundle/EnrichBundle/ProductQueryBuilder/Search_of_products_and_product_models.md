@@ -19,11 +19,11 @@ Before explaining how I propose to solve this issue, we need to understand how t
 
 Let's say we have a product model 'shoe' and it's variance by size and color (2 levels):
 
-![screen shot 2018-04-20 at 10 10 36](https://user-images.githubusercontent.com/1826473/39038197-2bdd0a9a-4483-11e8-92aa-ce0288e47ac4.png)
+![screen shot 2018-04-20 at 10 10 36](images/data-set.png)
 
 ### Naïve filtering by attribute
 
-![image](https://user-images.githubusercontent.com/1826473/39038216-3a6ea1f4-4483-11e8-8ce2-32cef3240392.png)
+![image](images/naive-filtering.png)
 
 _(The node in blue correspond to lines shown in the datagrid)_
 
@@ -35,27 +35,28 @@ This search does not correspond to our business need because it is very noisy an
 
 The Smart Search feature could also be translated as **"Show me the most relevant nodes corresponding to my search criterias"**
 
-![image](https://user-images.githubusercontent.com/1826473/39038238-4a628364-4483-11e8-8f0d-64e99a055637.png)
+![image](images/smart-filtering-attribute.png)
 
-To achieve it, you can see that we use additional information (indexed in ES) like 'attribute_for_this_level'. This property is the cornerstone of the working of the actual search because it gives us the opportunity to **differienciate** nodes from one level from other levels, hence showing to the user the right node (in the right level) corresponding to the search criterias.
+To achieve it, you can see that we use additional information (indexed in ES) like 'attribute_for_this_level'. This property is the cornerstone of the working of the actual search because it gives us the opportunity to **differienciate** nodes of one level from other levels, hence showing to the user the right node (in the right level) corresponding to the search criterias.
 
 ## Pitfalls
 
 ### Search on Categories does not work
 
-![image](https://user-images.githubusercontent.com/1826473/39038513-00a410de-4484-11e8-8451-879deade060d.png)
+![image](images/filtering-on-categories-not-working.png)
 
 But if you look for the 'footwear' category, all the node of the tree are returned where in fact in this case, we only want the node **'model-shoe'** to be shown to the user (because it's the most relevant).
 
 ## Expected results examples
 
-![image](https://user-images.githubusercontent.com/1826473/39038536-11749618-4484-11e8-96ad-663f0068e0a1.png)
+![image](images/expected-result-1.png)
 
-![image](https://user-images.githubusercontent.com/1826473/39038554-1da44e88-4484-11e8-9634-447c7e6c970e.png)
+![image](images/expected-result-2.png)
 
-![image](https://user-images.githubusercontent.com/1826473/39038580-2a306df8-4484-11e8-9998-78bb108001ad.png)
+![image](images/expected-result-3.png)
 
-![image](https://user-images.githubusercontent.com/1826473/39038606-39b62ccc-4484-11e8-97e0-443521090279.png)
+![image](images/expected-result-4.png)
+
 
 ## Brainstorming
 
@@ -75,7 +76,7 @@ returns the 'model-shoe' node and that's what we want !
 
 **BUT**: Let's see how this request performs when we also filter on some attributes
 
-![image](https://user-images.githubusercontent.com/1826473/39040206-2a2c32d0-4487-11e8-9a73-63782f3e6eff.png)
+![image](images/categories-for-this-level.png)
 
 The predicate #1 here will return 'model-shoe' just like before
 The predicate #2 will return 'model-shoe-s'
@@ -83,7 +84,7 @@ The intersection of those set is unfortunately **empty**.
 
 The difficulty here is we have to deal with one data structure (Product model hierarchy) which depends on one meta structure (the family variant attribute sets) and is linked to another datastructure (the category tree).
 
-![image](https://user-images.githubusercontent.com/1826473/39040292-49c2bb8c-4487-11e8-9042-15f954a9865b.png)
+![image](images/sumup-structure.png)
 
 **Is it possible conciliate both meta structure in the search to always show the topmost / most relevant node in the hierarchy depending on the search criterias ?**
 
@@ -116,18 +117,18 @@ NOT( attributes_of_ancestors HAS 'attribute_1' AND attributes_of_ancestors HAS '
 
 Let's take our failing search example back from above: "'footwear' IN category"
 
-![image](https://user-images.githubusercontent.com/1826473/39040574-c29445da-4487-11e8-888b-054bf8999e56.png)
+![image](images/testing-solution-1.png)
 
 The only one node, not having a parent holding the 'footwear' category is the 'model-shoe' node. So that makes sense.
 
 Let's try to mix it up with a filter on attributes: Let's say a user wants to filter "footwear' IN category AND size = 's'" in the datagrid.
 
-![image](https://user-images.githubusercontent.com/1826473/39041970-12a3d1ce-448a-11e8-9f3b-76f84d63d7df.png)
+![image](images/testing-solution-2.png)
 
 This first part of the request is inclusive, it returns all the nodes matching at least the criterias of the user (category is 'footwear' and the size is 's').
 **For sure, the right answer lies within this selection**, and it is the second part of the request that will help us to find it.
 
-![image](https://user-images.githubusercontent.com/1826473/39042246-a0efaf3e-448a-11e8-9405-65ca6070a207.png)
+![image](images/testing-solution-3.png)
 
 The second part of the request, excludes the nodes that are children: by saying "within the large selection" excludes all the nodes which have a parent already holding the property (therefore they are children). In the end, the only nodes not removed are the topmost nodes matching the criterias.
 
