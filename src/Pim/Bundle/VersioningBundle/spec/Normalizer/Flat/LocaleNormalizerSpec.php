@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Normalizer\Standard\LocaleNormalizer as LocaleNormalizerStandard;
+use Akeneo\Channel\Component\Normalizer\Standard\LocaleNormalizer as LocaleNormalizerStandard;
 
 class LocaleNormalizerSpec extends ObjectBehavior
 {

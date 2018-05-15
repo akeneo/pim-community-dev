@@ -3,6 +3,12 @@ parameters:
     pim_catalog.entity.locale.class: 'Akeneo\Channel\Component\Model\Locale'
 
 services:
+    ### Locale
+    pim_catalog.normalizer.standard.locale:
+        class: 'Akeneo\Channel\Component\Normalizer\Standard\LocaleNormalizer'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
     pim_catalog.repository.locale:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository'
         factory: 'doctrine.orm.entity_manager:getRepository'
