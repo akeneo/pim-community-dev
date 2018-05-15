@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Standard;
+namespace Akeneo\Channel\Component\Normalizer\Standard;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
