@@ -56,7 +56,7 @@ Akeneo\Channel\Component\Model\Channel:
                         onDelete: CASCADE
     oneToMany:
         translations:
-            targetEntity: Pim\Component\Catalog\Model\ChannelTranslationInterface
+            targetEntity: Akeneo\Channel\Component\Model\ChannelTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist
