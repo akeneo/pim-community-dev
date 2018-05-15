@@ -23,7 +23,7 @@ parameters:
     pim_catalog.entity.family.class:                       Pim\Bundle\CatalogBundle\Entity\Family
     pim_catalog.entity.family_translation.class:           Pim\Bundle\CatalogBundle\Entity\FamilyTranslation
     pim_catalog.entity.channel.class:                      Akeneo\Channel\Component\Model\Channel
-    pim_catalog.entity.channel_translation.class:          Pim\Bundle\CatalogBundle\Entity\ChannelTranslation
+    pim_catalog.entity.channel_translation.class:          Akeneo\Channel\Component\Model\ChannelTranslation
     pim_catalog.entity.currency.class:                     Pim\Bundle\CatalogBundle\Entity\Currency
     pim_catalog.entity.metric.class:                       Pim\Component\Catalog\Model\Metric
     pim_catalog.entity.product_price.class:                Pim\Component\Catalog\Model\ProductPrice
