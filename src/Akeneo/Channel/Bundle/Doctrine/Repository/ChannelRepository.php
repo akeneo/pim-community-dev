@@ -14,7 +14,7 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelRepository extends EntityRepository implements \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface
+class ChannelRepository extends EntityRepository implements ChannelRepositoryInterface
 {
     /**
      * {@inheritdoc}
