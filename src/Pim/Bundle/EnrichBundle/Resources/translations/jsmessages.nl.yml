@@ -195,7 +195,6 @@ pim_enrich:
       localizable:
         channel_locale_unavailable: Dit lokaliseerbaar veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
       create_popin:
-        type: Product
         title: Aanmaken
         labels:
           family: Kies een familie
@@ -812,6 +811,8 @@ pim_enrich:
           description: De producten zullen worden verwijderd uit de volgende categorieën.
 pim_enrich.error:
   exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
+  http:
+    403: Forbidden. You are not allowed to access this page
 page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Attribuutgroepen

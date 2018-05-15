@@ -5,7 +5,7 @@ pim_analytics:
       notification.title: Ilmoitukset
       version_update.title: Versiopäivitykset
     form:
-      version_update.label: Uuden version päivitykset
+      version_update.label: Versiopäivitykset
       version_update.tooltip: Lähetä pyyntö etäpalvelimelle hakemaan tietoa uusien päivityksien julkaisuista
   system_info:
     title: Järjestelmätiedot
