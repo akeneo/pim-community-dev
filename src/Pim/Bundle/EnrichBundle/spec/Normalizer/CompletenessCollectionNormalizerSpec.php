@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\ChannelTranslationInterface;
+use Akeneo\Channel\Component\Model\ChannelTranslationInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Prophecy\Argument;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
+namespace Akeneo\Channel\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 
