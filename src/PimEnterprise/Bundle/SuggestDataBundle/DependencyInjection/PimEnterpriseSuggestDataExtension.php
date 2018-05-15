@@ -20,7 +20,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  * Enterprise Security extension
  *
  * @author Romain Monceau <romain@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class PimEnterpriseSuggestDataExtension extends Extension
 {
@@ -32,5 +31,6 @@ class PimEnterpriseSuggestDataExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.yml');
         $loader->load('data_providers.yml');
+        $loader->load('product_grid.yml');
     }
 }
