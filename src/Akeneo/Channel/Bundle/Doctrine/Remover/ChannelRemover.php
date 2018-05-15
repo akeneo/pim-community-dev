@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
+namespace Akeneo\Channel\Bundle\Doctrine\Remover;
 
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
