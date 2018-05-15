@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Channel\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 use Pim\Component\Catalog\Model\ChannelTranslationInterface;
