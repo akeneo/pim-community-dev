@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Factory;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Akeneo\Channel\Component\Model\Currency;
 use Pim\Component\Catalog\Factory\PriceFactory;
 use Pim\Component\Catalog\Model\ProductPrice;
 

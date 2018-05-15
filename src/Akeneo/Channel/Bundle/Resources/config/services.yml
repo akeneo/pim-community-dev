@@ -6,6 +6,7 @@ parameters:
     pim_catalog.entity.channel.class: 'Akeneo\Channel\Component\Model\Channel'
     pim_catalog.model.channel_translation.interface: 'Akeneo\Channel\Component\Model\ChannelTranslationInterface'
     pim_catalog.entity.channel_translation.class: 'Akeneo\Channel\Component\Model\ChannelTranslation'
+    pim_catalog.entity.currency.class: 'Akeneo\Channel\Component\Model\Currency'
 
 services:
     ### Locale
