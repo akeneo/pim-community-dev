@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -eu -o pipefail
+
+chown -R mysql:mysql /var/lib/mysql /var/run/mysqld
+su -s /bin/bash -c "/usr/sbin/mysqld '--basedir=/usr' '--datadir=/var/lib/mysql' '--user=mysql' '--log-error=/var/log/mysql/mysqld.log' '--socket=/var/run/mysqld/mysqld.sock' '--port=3306'&" mysql
+
+while [[ $(mysqladmin ping --silent) != "mysqld is alive" ]]; do
+    printf .
+    sleep 1
+done
