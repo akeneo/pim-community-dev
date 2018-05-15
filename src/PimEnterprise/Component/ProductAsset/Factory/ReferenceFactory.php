@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Factory;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**

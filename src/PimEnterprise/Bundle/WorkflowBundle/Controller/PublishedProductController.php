@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 use Akeneo\Channel\Component\Model\Locale;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Catalog\Manager\CompletenessManager;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
@@ -64,15 +64,15 @@ class PublishedProductController
     protected $authorizationChecker;
 
     /**
-     * @param RequestStack                  $requestStack
-     * @param RouterInterface               $router
-     * @param EngineInterface               $templating
-     * @param TranslatorInterface           $translator
-     * @param UserContext                   $userContext
-     * @param PublishedProductManager       $manager
-     * @param CompletenessManager           $completenessManager
-     * @param ChannelRepositoryInterface    $channelRepository
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param RequestStack                                                    $requestStack
+     * @param RouterInterface                                                 $router
+     * @param EngineInterface                                                 $templating
+     * @param TranslatorInterface                                             $translator
+     * @param UserContext                                                     $userContext
+     * @param PublishedProductManager                                         $manager
+     * @param CompletenessManager                                             $completenessManager
+     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
+     * @param AuthorizationCheckerInterface                                   $authorizationChecker
      */
     public function __construct(
         RequestStack $requestStack,

@@ -12,7 +12,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -128,7 +128,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
     }
 
     /**
-     * @return ChannelRepositoryInterface
+     * @return \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface
      */
     protected function getChannelRepository()
     {

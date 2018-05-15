@@ -18,7 +18,7 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer as PimProductPdfRenderer;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -33,7 +33,7 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     /** @var FilterProductValuesHelper */
     protected $filterHelper;
 
-    /** @var ChannelRepositoryInterface */
+    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var LocaleRepositoryInterface */

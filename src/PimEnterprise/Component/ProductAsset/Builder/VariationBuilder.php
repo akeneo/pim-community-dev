@@ -11,7 +11,7 @@
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**

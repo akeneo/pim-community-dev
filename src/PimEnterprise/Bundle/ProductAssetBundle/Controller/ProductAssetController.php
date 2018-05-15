@@ -26,7 +26,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Controller\FileController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType;

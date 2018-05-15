@@ -19,7 +19,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterfa
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty;
 use Pim\Bundle\EnrichBundle\Controller\FileController;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 
 /**

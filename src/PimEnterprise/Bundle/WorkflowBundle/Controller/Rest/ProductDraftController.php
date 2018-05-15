@@ -19,7 +19,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
@@ -84,18 +84,18 @@ class ProductDraftController
     protected $attributeSearchableRepository;
 
     /**
-     * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param ProductDraftRepositoryInterface $repository
-     * @param ProductDraftManager             $manager
-     * @param ProductRepositoryInterface      $productRepository
-     * @param NormalizerInterface             $normalizer
-     * @param TokenStorageInterface           $tokenStorage
-     * @param AttributeRepositoryInterface    $attributeRepository
-     * @param ChannelRepositoryInterface      $channelRepository
-     * @param LocaleRepositoryInterface       $localeRepository
-     * @param UserContext                     $userContext
-     * @param CollectionFilterInterface       $collectionFilter
-     * @param SearchableRepositoryInterface   $attributeSearchableRepository
+     * @param AuthorizationCheckerInterface                                   $authorizationChecker
+     * @param ProductDraftRepositoryInterface                                 $repository
+     * @param ProductDraftManager                                             $manager
+     * @param ProductRepositoryInterface                                      $productRepository
+     * @param NormalizerInterface                                             $normalizer
+     * @param TokenStorageInterface                                           $tokenStorage
+     * @param AttributeRepositoryInterface                                    $attributeRepository
+     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface                                       $localeRepository
+     * @param UserContext                                                     $userContext
+     * @param CollectionFilterInterface                                       $collectionFilter
+     * @param SearchableRepositoryInterface                                   $attributeSearchableRepository
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,

@@ -17,7 +17,7 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -41,16 +41,16 @@ class UserContext extends BaseUserContext
     protected $treeOptionKey;
 
     /**
-     * @param TokenStorageInterface         $tokenStorage
-     * @param LocaleRepositoryInterface     $localeRepository
-     * @param ChannelRepositoryInterface    $channelRepository
-     * @param CategoryRepositoryInterface   $categoryRepository
-     * @param RequestStack                  $requestStack
-     * @param ChoicesBuilderInterface       $choicesBuilder
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param CategoryAccessRepository      $categoryAccessRepo
-     * @param string                        $defaultLocale
-     * @param string                        $treeOptionKey
+     * @param TokenStorageInterface                                           $tokenStorage
+     * @param LocaleRepositoryInterface                                       $localeRepository
+     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
+     * @param CategoryRepositoryInterface                                     $categoryRepository
+     * @param RequestStack                                                    $requestStack
+     * @param ChoicesBuilderInterface                                         $choicesBuilder
+     * @param AuthorizationCheckerInterface                                   $authorizationChecker
+     * @param CategoryAccessRepository                                        $categoryAccessRepo
+     * @param string                                                          $defaultLocale
+     * @param string                                                          $treeOptionKey
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,

@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Factory;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Factory\VariationFactory;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 

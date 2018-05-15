@@ -23,7 +23,7 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
@@ -43,17 +43,17 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     /** @var ProductQueryBuilderFactoryInterface */
     protected $queryBuilderFactory;
 
-    /** @var ChannelRepositoryInterface */
+    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
     /**
-     * @param PublishedProductRepositoryInterface $publishedRepository
-     * @param ProductQueryBuilderFactoryInterface $queryBuilderFactory
-     * @param ChannelRepositoryInterface          $channelRepository
-     * @param LocaleRepositoryInterface           $localeRepository
+     * @param PublishedProductRepositoryInterface                             $publishedRepository
+     * @param ProductQueryBuilderFactoryInterface                             $queryBuilderFactory
+     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface                                       $localeRepository
      */
     public function __construct(
         PublishedProductRepositoryInterface $publishedRepository,
