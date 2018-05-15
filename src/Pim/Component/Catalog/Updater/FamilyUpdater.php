@@ -14,7 +14,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
@@ -307,9 +307,9 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface    $family
-     * @param AttributeInterface $attribute
-     * @param ChannelInterface   $channel
+     * @param FamilyInterface                                  $family
+     * @param AttributeInterface                               $attribute
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @throws InvalidPropertyException
      *

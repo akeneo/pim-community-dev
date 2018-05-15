@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -84,12 +84,12 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     }
 
     /**
-     * @param ProductInterface $product
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
-     * @param Collection       $missingAttributes
-     * @param int              $missingCount
-     * @param int              $requiredCount
+     * @param ProductInterface                                 $product
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param LocaleInterface                                  $locale
+     * @param Collection                                       $missingAttributes
+     * @param int                                              $missingCount
+     * @param int                                              $requiredCount
      *
      * @return CompletenessInterface
      */

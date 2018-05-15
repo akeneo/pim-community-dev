@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -41,7 +41,7 @@ class ChannelNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param ChannelInterface $channel
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @return array
      */
