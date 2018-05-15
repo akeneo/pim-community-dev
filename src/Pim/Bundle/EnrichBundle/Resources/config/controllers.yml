@@ -13,7 +13,6 @@ parameters:
     pim_enrich.controller.rest.attribute_type.class:          Pim\Bundle\EnrichBundle\Controller\Rest\AttributeTypeController
     pim_enrich.controller.rest.attribute_group.class:         Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController
     pim_enrich.controller.rest.category.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CategoryController
-    pim_enrich.controller.rest.channel.class:                 Pim\Bundle\EnrichBundle\Controller\Rest\ChannelController
     pim_enrich.controller.rest.currency.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CurrencyController
     pim_enrich.controller.rest.family.class:                  Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController
     pim_enrich.controller.rest.family_variant.class:          Pim\Bundle\EnrichBundle\Controller\Rest\FamilyVariantController
@@ -232,17 +231,6 @@ services:
         class: '%pim_enrich.controller.rest.currency.class%'
         arguments:
             - '@pim_catalog.repository.currency'
-
-    pim_enrich.controller.rest.channel:
-        class: '%pim_enrich.controller.rest.channel.class%'
-        arguments:
-            - '@pim_catalog.repository.channel'
-            - '@pim_internal_api_serializer'
-            - '@pim_catalog.updater.channel'
-            - '@pim_catalog.saver.channel'
-            - '@pim_catalog.remover.channel'
-            - '@pim_catalog.factory.channel'
-            - '@validator'
 
     pim_enrich.controller.rest.mass_edit:
         class: '%pim_enrich.controller.rest.mass_edit.class%'
