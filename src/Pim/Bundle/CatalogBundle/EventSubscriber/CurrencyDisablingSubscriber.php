@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Exception\LinkedChannelException;
 use Pim\Component\Catalog\Model\CurrencyInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class CurrencyDisablingSubscriber implements EventSubscriberInterface
 {
-    /** @var ChannelRepositoryInterface */
+    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
     protected $channelRepository;
 
     /**

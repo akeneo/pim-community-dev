@@ -13,7 +13,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 /**
@@ -29,7 +29,7 @@ class CompletenessManager
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
-    /** @var ChannelRepositoryInterface */
+    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var LocaleRepositoryInterface */

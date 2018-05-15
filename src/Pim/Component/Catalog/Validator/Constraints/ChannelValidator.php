@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -20,7 +20,7 @@ class ChannelValidator extends ChoiceValidator
     protected $channelRepository;
 
     /**
-     * @param ChannelRepositoryInterface $channelRepository
+     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
      */
     public function __construct(ChannelRepositoryInterface $channelRepository)
     {
