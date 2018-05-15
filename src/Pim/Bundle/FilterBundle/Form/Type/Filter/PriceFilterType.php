@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
+use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;

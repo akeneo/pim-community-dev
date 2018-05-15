@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\ValuesFiller;
 
+use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 
 /**
  * Abstract values filler for entities with a family.

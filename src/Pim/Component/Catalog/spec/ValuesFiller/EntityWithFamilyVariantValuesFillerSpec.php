@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Prophecy\Argument;
 
 class EntityWithFamilyVariantValuesFillerSpec extends ObjectBehavior

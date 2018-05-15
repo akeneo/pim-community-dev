@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
