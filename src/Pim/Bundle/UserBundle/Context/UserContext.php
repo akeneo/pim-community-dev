@@ -7,7 +7,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -163,7 +163,7 @@ class UserContext
     /**
      * Get user channel
      *
-     * @return ChannelInterface
+     * @return \Akeneo\Channel\Component\Model\ChannelInterface
      */
     public function getUserChannel(): ChannelInterface
     {

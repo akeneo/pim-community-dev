@@ -13,7 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Updater\ChannelUpdater;

@@ -22,7 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\ChannelTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Component\Catalog\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

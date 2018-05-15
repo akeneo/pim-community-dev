@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\UserBundle\Manager\UserManager;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\User\Model\GroupInterface;
 use Pim\Component\User\Model\Role;
 use Pim\Component\User\Model\UserInterface;
@@ -249,7 +249,7 @@ class UserUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      *
-     * @return ChannelInterface|null
+     * @return \Akeneo\Channel\Component\Model\ChannelInterface|null
      */
     protected function findChannel($code)
     {

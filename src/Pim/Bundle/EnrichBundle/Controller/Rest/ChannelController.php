@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Updater\ChannelUpdater;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -187,7 +187,7 @@ class ChannelController
      *
      * @throws HttpExceptionInterface
      *
-     * @return ChannelInterface
+     * @return \Akeneo\Channel\Component\Model\ChannelInterface
      */
     protected function getChannel($code)
     {
@@ -207,8 +207,8 @@ class ChannelController
     }
 
     /**
-     * @param ChannelInterface $channel
-     * @param Request          $request
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param Request                                          $request
      *
      * @throws \LogicException
      * @throws PropertyException

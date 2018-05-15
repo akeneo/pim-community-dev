@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Api\Normalizer;
 
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

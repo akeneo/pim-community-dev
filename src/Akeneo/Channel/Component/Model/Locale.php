@@ -5,7 +5,7 @@ namespace Akeneo\Channel\Component\Model;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Intl\Intl;
 

@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 
 /**
@@ -33,7 +33,7 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
     /**
      * Get full channels with locales and currencies
      *
-     * @return ChannelInterface[]
+     * @return \Akeneo\Channel\Component\Model\ChannelInterface[]
      */
     public function getFullChannels();
 

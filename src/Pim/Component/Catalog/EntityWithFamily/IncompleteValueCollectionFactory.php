@@ -6,7 +6,7 @@ namespace Pim\Component\Catalog\EntityWithFamily;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 

@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Akeneo\Channel\Component\Model\Channel;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -939,7 +939,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setCatalogScope(ChannelInterface $catalogScope)
+    public function setCatalogScope(\Akeneo\Channel\Component\Model\ChannelInterface $catalogScope)
     {
         $this->catalogScope = $catalogScope;
 

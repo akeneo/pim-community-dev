@@ -9,7 +9,7 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

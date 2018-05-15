@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Completeness\Checker;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
@@ -21,9 +21,9 @@ interface ValueCompleteCheckerInterface
     /**
      * Is the given product value complete on the given couple channel/locale?
      *
-     * @param ValueInterface        $value
-     * @param ChannelInterface|null $channel
-     * @param LocaleInterface|null  $locale
+     * @param ValueInterface                                        $value
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface|null $channel
+     * @param LocaleInterface|null                                  $locale
      *
      * @return bool
      */

@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -110,9 +110,9 @@ class CompletenessRemover implements CompletenessRemoverInterface
      * Drops the current completenesses from the database and from the index for
      * a list of products and optionally for a channel and/or locale.
      *
-     * @param CursorInterface       $products
-     * @param null|ChannelInterface $channel
-     * @param null|LocaleInterface  $locale
+     * @param CursorInterface                                       $products
+     * @param null|\Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param null|LocaleInterface                                  $locale
      */
     protected function bulkRemoveCompletenesses(
         CursorInterface $products,
@@ -201,9 +201,9 @@ class CompletenessRemover implements CompletenessRemoverInterface
     }
 
     /**
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
-     * @param array            $filters
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param LocaleInterface                                  $locale
+     * @param array                                            $filters
      *
      * @return ProductQueryBuilderInterface
      */
