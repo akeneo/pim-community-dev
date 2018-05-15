@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\Currency:
+Akeneo\Channel\Component\Model\Currency:
     type: entity
     table: pim_catalog_currency
     changeTrackingPolicy: DEFERRED_EXPLICIT
