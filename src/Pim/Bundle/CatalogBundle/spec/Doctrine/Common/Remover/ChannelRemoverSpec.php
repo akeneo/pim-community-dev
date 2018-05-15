@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Akeneo\Channel\Component\Model\Channel;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -22,7 +22,7 @@ class ChannelRemoverSpec extends ObjectBehavior
             $eventDispatcher,
             $channelRepository,
             $translator,
-            'Pim\Bundle\CatalogBundle\Entity\Channel'
+            'Akeneo\Channel\Component\Model\Channel'
         );
     }
 
@@ -47,7 +47,7 @@ class ChannelRemoverSpec extends ObjectBehavior
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
-            'Expects a "Pim\Bundle\CatalogBundle\Entity\Channel", "%s" provided.',
+            'Expects a "Akeneo\Channel\Component\Model\Channel", "%s" provided.',
                 get_class($anythingElse)
             )
         );
