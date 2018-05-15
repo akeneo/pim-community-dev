@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider;
 
@@ -7,10 +8,10 @@ use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\Memory\InM
 
 /**
  * Data provider factory
- * Create the right adapter depending of the data provider used
- * and configure it
+ * Creates the right adapter depending of the data provider used
+ * and configures it
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class DataProviderFactory
 {

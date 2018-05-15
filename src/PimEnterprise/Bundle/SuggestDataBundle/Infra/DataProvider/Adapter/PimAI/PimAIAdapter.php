@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\PimAI;
 
@@ -9,7 +10,7 @@ use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\DataProvid
 /**
  * Pim.ai implementation to connect to a data provider
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class PimAIAdapter implements DataProviderAdapterInterface
 {

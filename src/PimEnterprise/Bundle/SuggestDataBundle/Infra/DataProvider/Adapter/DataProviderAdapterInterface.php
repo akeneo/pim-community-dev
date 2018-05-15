@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 interface DataProviderAdapterInterface
 {

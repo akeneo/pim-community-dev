@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\Memory;
 
@@ -8,7 +9,7 @@ use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\DataProvid
 /**
  * In memory implementation to connect to a data provider
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class InMemoryAdapter implements DataProviderAdapterInterface
 {

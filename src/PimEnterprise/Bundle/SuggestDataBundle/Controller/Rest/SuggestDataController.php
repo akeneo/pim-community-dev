@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\SuggestDataBundle\Controller;
+namespace PimEnterprise\Bundle\SuggestDataBundle\Controller\Rest;
 
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory;
@@ -9,8 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * Suggest data REST controller to interact between UI
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class SuggestDataController
 {
@@ -22,7 +21,7 @@ class SuggestDataController
 
     /**
      * @param ProductRepositoryInterface $repository
-     * @param DataProviderFactory $dataProviderFactory
+     * @param DataProviderFactory        $dataProviderFactory
      */
     public function __construct(
         ProductRepositoryInterface $repository,
@@ -32,7 +31,7 @@ class SuggestDataController
         $this->dataProviderFactory = $dataProviderFactory;
     }
 
-    public function pushAction($productId)
+    public function pushAction($productId): void
     {
         $product = $this->repository->find($productId);
         if (null === $product) {
