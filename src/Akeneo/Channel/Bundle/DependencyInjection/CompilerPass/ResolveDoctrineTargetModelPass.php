@@ -22,7 +22,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping(): array
     {
         return [
-            LocaleInterface::class => 'akeneo_channel.entity.locale.class',
+            LocaleInterface::class => 'pim_catalog.entity.locale.class',
         ];
     }
 }

@@ -88,7 +88,7 @@ services:
         class: '%pim_enrich.repository.locale.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '%akeneo_channel.entity.locale.class%'
+            - '%pim_catalog.entity.locale.class%'
 
     pim_enrich.repository.channel:
         class: '%pim_enrich.repository.channel.class%'

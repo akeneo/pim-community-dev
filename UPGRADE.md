@@ -11,7 +11,6 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Valida
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\LocaleRepository/Akeneo\\Channel\\Bundle\\Doctrine\\Repository\\LocaleRepository/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\LocaleRepositoryInterface/Akeneo\\Channel\\Component\\Repository\\LocaleRepositoryInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\Locale/Akeneo\\Channel\\Component\\Model\\Locale/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.entity.locale.class:/akeneo_channel.entity.locale.class/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\LocaleInterface/Akeneo\\Channel\\Component\\Model\\LocaleInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.model.locale.interface/akeneo_channel.model.locale.interface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\UserBundle\\Entity\\UserManager/Pim\\Bundle\\UserBundle\\Manager\\UserManager/g'
