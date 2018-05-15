@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Updater;
+namespace Akeneo\Channel\Component\Updater;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;

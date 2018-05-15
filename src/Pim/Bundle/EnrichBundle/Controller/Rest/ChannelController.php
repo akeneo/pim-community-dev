@@ -6,10 +6,10 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Updater\ChannelUpdater;
+use Akeneo\Channel\Component\Updater\ChannelUpdater;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,18 +51,18 @@ class ChannelController
     protected $validator;
 
     /**
-     * @param ChannelRepositoryInterface    $channelRepository
-     * @param NormalizerInterface           $normalizer
-     * @param ChannelUpdater                $updater
-     * @param SaverInterface                $saver
-     * @param RemoverInterface              $remover
-     * @param SimpleFactoryInterface        $channelFactory
-     * @param ValidatorInterface            $validator
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param NormalizerInterface        $normalizer
+     * @param ObjectUpdaterInterface     $updater
+     * @param SaverInterface             $saver
+     * @param RemoverInterface           $remover
+     * @param SimpleFactoryInterface     $channelFactory
+     * @param ValidatorInterface         $validator
      */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         NormalizerInterface $normalizer,
-        ChannelUpdater $updater,
+        ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         RemoverInterface $remover,
         SimpleFactoryInterface $channelFactory,
