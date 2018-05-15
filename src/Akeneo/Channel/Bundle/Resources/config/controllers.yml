@@ -6,3 +6,13 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
+
+    pim_api.controller.locale:
+        class: 'Akeneo\Channel\Bundle\Controller\ExternalApi\LocaleController'
+        arguments:
+            - '@pim_api.repository.locale'
+            - '@pim_serializer'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.checker.query_parameters'
+            - '%pim_api.configuration%'
