@@ -16,3 +16,29 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
+
+    pim_api.controller.channel:
+        class: 'Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController'
+        arguments:
+            - '@pim_api.repository.channel'
+            - '@pim_serializer'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_catalog.factory.channel'
+            - '@pim_catalog.updater.channel'
+            - '@validator'
+            - '@router'
+            - '@pim_catalog.saver.channel'
+            - '@pim_api.stream.channel_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pim_enrich.controller.rest.channel:
+        class: 'Akeneo\Channel\Bundle\Controller\InternalApi\ChannelController'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.updater.channel'
+            - '@pim_catalog.saver.channel'
+            - '@pim_catalog.remover.channel'
+            - '@pim_catalog.factory.channel'
+            - '@validator'
