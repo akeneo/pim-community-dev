@@ -2,7 +2,7 @@ Akeneo\Channel\Component\Model\Channel:
     type: entity
     table: pim_catalog_channel
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository
+    repositoryClass: Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository
     fields:
         id:
             type: integer
