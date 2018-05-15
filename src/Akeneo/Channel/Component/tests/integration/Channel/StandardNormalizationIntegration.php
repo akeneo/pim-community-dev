@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
+namespace Akeneo\Channel\Componenttests\integration\Channel;
 
 use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
 
@@ -9,9 +9,9 @@ use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandard
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelIntegration extends AbstractStandardNormalizerTestCase
+class StandardNormalizationIntegration extends AbstractStandardNormalizerTestCase
 {
-    public function testChannel()
+    public function test_channel_normalization()
     {
         $expected = [
             'code'             => 'tablet',

@@ -1,13 +1,11 @@
 <?php
 
-namespace Pim\Component\Catalog\tests\integration\Updater;
+namespace Pim\Component\Catalog\tests\integration\Channel;
 
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 
-class ChannelUpdaterIntegration extends TestCase
+class UpdaterIntegration extends TestCase
 {
     /**
      * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException
