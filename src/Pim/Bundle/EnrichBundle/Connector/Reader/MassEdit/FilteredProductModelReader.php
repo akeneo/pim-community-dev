@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Manager\CompletenessManager;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 
 /**
  * Product reader that only returns product model entities and skips simple products.

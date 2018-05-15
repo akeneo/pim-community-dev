@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -24,12 +24,12 @@ class FamilyRequirementsValidator extends ConstraintValidator
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ChannelRepositoryInterface */
+    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
     protected $channelRepository;
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ChannelRepositoryInterface   $channelRepository
+     * @param AttributeRepositoryInterface                                    $attributeRepository
+     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
