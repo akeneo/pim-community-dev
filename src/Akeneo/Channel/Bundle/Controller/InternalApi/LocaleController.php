@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller\Rest;
+namespace Akeneo\Channel\Bundle\Controller\InternalApi;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
