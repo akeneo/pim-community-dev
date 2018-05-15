@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\Completeness\Checker;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -24,9 +24,9 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 class AssetCollectionCompleteChecker implements ValueCompleteCheckerInterface
 {
     /**
-     * @param ValueInterface        $productValue
-     * @param ChannelInterface|null $channel
-     * @param LocaleInterface|null  $locale
+     * @param ValueInterface                                        $productValue
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface|null $channel
+     * @param LocaleInterface|null                                  $locale
      *
      * @return bool
      */
@@ -53,9 +53,9 @@ class AssetCollectionCompleteChecker implements ValueCompleteCheckerInterface
     /**
      * Check if asset is complete for a tuple channel/locale
      *
-     * @param AssetInterface   $asset
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
+     * @param AssetInterface                                   $asset
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param LocaleInterface                                  $locale
      *
      * @return bool
      */

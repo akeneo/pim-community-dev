@@ -23,7 +23,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use PimEnterprise\Bundle\ApiBundle\Controller\FileRemovalException;
 use PimEnterprise\Component\ProductAsset\Factory\ReferenceFactory;
 use PimEnterprise\Component\ProductAsset\Factory\VariationFactory;
@@ -280,7 +280,7 @@ class AssetVariationController
      *
      * @throws NotFoundHttpException
      *
-     * @return ChannelInterface
+     * @return \Akeneo\Channel\Component\Model\ChannelInterface
      */
     protected function getChannel(string $channelCode): ChannelInterface
     {
@@ -355,8 +355,8 @@ class AssetVariationController
     }
 
     /**
-     * @param null|LocaleInterface $locale
-     * @param ChannelInterface     $channel
+     * @param null|LocaleInterface                             $locale
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @throws NotFoundHttpException
      */

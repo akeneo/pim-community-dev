@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\Classification\TagAwareInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -123,7 +123,7 @@ interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, Cate
      *
      * @return bool
      */
-    public function hasVariation(ChannelInterface $channel, LocaleInterface $locale = null);
+    public function hasVariation(\Akeneo\Channel\Component\Model\ChannelInterface $channel, LocaleInterface $locale = null);
 
     /**
      * @return bool

@@ -10,7 +10,7 @@
  */
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 
 /**
  * Configuration of a channel for the product asset variations
@@ -22,7 +22,7 @@ class ChannelVariationsConfiguration implements ChannelVariationsConfigurationIn
     /** @var int */
     protected $id;
 
-    /** @var ChannelInterface */
+    /** @var \Akeneo\Channel\Component\Model\ChannelInterface */
     protected $channel;
 
     /** @var array */

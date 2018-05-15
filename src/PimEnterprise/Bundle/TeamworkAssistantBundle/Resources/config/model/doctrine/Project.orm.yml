@@ -35,7 +35,7 @@ PimEnterprise\Component\TeamworkAssistant\Model\Project:
                     nullable: false
                     referencedColumnName: id
         channel:
-            targetEntity: Pim\Component\Catalog\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
             joinColumns:
                 channel_id:
                     nullable: false

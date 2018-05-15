@@ -28,7 +28,7 @@ use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -222,10 +222,10 @@ class PublishedProductController
     }
 
     /**
-     * @param Request               $request
-     * @param null|ChannelInterface $channel
-     * @param array                 $queryParameters
-     * @param array                 $normalizerOptions
+     * @param Request                                               $request
+     * @param null|\Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param array                                                 $queryParameters
+     * @param array                                                 $normalizerOptions
      *
      * @throws UnprocessableEntityHttpException
      *
@@ -289,10 +289,10 @@ class PublishedProductController
     }
 
     /**
-     * @param Request               $request
-     * @param null|ChannelInterface $channel
-     * @param array                 $queryParameters
-     * @param array                 $normalizerOptions
+     * @param Request                                               $request
+     * @param null|\Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param array                                                 $queryParameters
+     * @param array                                                 $normalizerOptions
      *
      * @throws UnprocessableEntityHttpException
      *
@@ -362,9 +362,9 @@ class PublishedProductController
      * Set the PQB filters.
      * If a scope is requested, add a filter to return only products linked to its category tree
      *
-     * @param ProductQueryBuilderInterface $pqb
-     * @param Request                      $request
-     * @param ChannelInterface|null        $channel
+     * @param ProductQueryBuilderInterface                          $pqb
+     * @param Request                                               $request
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface|null $channel
      *
      * @throws UnprocessableEntityHttpException
      */

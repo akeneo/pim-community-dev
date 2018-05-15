@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\ProductAsset\Model;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 
 /**
  * Product asset reference
@@ -151,7 +151,7 @@ class Reference implements ReferenceInterface
     /**
      * {@inheritdoc}
      */
-    public function getVariation(ChannelInterface $channel)
+    public function getVariation(\Akeneo\Channel\Component\Model\ChannelInterface $channel)
     {
         if ($this->getVariations()->isEmpty()) {
             return null;
@@ -169,7 +169,7 @@ class Reference implements ReferenceInterface
     /**
      * {@inheritdoc}
      */
-    public function hasVariation(ChannelInterface $channel)
+    public function hasVariation(\Akeneo\Channel\Component\Model\ChannelInterface $channel)
     {
         return null !== $this->getVariation($channel);
     }

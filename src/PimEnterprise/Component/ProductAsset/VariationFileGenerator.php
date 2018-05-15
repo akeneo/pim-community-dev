@@ -18,7 +18,7 @@ use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
@@ -131,7 +131,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     }
 
     /**
-     * @param ChannelInterface $channel
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @throws \LogicException
      *
@@ -184,9 +184,9 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      *      this_is_my_source_file-en_US-ecommerce.txt or
      *      this_is_my_source_file-ecommerce.txt
      *
-     * @param FileInfoInterface $sourceFileInfo
-     * @param ChannelInterface  $channel
-     * @param LocaleInterface   $locale
+     * @param FileInfoInterface                                $sourceFileInfo
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param LocaleInterface                                  $locale
      *
      * @return string
      */

@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\Model;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 
 /**
  * Product asset reference interface
@@ -90,7 +90,7 @@ interface ReferenceInterface
     public function removeVariation(VariationInterface $variation);
 
     /**
-     * @param ChannelInterface $channel
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @return VariationInterface|null
      */

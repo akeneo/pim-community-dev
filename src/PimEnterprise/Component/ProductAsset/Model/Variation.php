@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 
 /**
  * Product asset variation
@@ -27,7 +27,7 @@ class Variation implements VariationInterface
     /** @var ReferenceInterface */
     protected $reference;
 
-    /** @var ChannelInterface */
+    /** @var \Akeneo\Channel\Component\Model\ChannelInterface */
     protected $channel;
 
     /** @var FileInfoInterface */
@@ -109,7 +109,7 @@ class Variation implements VariationInterface
     /**
      * {@inheritdoc}
      */
-    public function setChannel(ChannelInterface $channel)
+    public function setChannel(\Akeneo\Channel\Component\Model\ChannelInterface $channel)
     {
         $this->channel = $channel;
 

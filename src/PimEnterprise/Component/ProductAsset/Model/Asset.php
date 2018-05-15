@@ -17,7 +17,7 @@ use Akeneo\Tool\Component\Classification\Model\TagInterface as BaseTagInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 
 /**
  * Product asset
@@ -232,7 +232,7 @@ class Asset implements AssetInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function getVariation(ChannelInterface $channel, LocaleInterface $locale = null)
+    public function getVariation(\Akeneo\Channel\Component\Model\ChannelInterface $channel, LocaleInterface $locale = null)
     {
         foreach ($this->getVariations() as $variation) {
             if ($variation->getChannel() === $channel && $variation->getLocale() === $locale) {
@@ -330,7 +330,7 @@ class Asset implements AssetInterface, VersionableInterface
      *
      * {@inheritdoc}
      */
-    public function getFileForContext(ChannelInterface $channel, LocaleInterface $locale = null)
+    public function getFileForContext(\Akeneo\Channel\Component\Model\ChannelInterface $channel, LocaleInterface $locale = null)
     {
         $reference = $this->getReference($locale);
 

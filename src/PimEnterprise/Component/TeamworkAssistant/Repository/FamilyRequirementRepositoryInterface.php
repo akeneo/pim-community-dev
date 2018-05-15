@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\TeamworkAssistant\Repository;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -25,8 +25,8 @@ interface FamilyRequirementRepositoryInterface
      * Find attribute group identifiers which have at least one attribute required
      * by a family and a channel.
      *
-     * @param FamilyInterface  $family
-     * @param ChannelInterface $channel
+     * @param FamilyInterface                                  $family
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @return string[]
      */

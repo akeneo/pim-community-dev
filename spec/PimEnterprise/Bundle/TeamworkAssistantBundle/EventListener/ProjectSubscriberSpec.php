@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\ProjectSubscriber;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
@@ -60,7 +60,7 @@ class ProjectSubscriberSpec extends ObjectBehavior
 
         $this->generateCode($event)->shouldReturn(null);
     }
-    
+
     function it_removes_pre_processed_entries_when_a_project_is_deleted(
         $preProcessingRepository,
         GenericEvent $event,

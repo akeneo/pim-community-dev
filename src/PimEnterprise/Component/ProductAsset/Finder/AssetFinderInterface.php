@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Finder;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
@@ -42,8 +42,8 @@ interface AssetFinderInterface
     public function retrieveVariationsNotGenerated(AssetInterface $asset = null);
 
     /**
-     * @param ReferenceInterface $reference
-     * @param ChannelInterface   $channel
+     * @param ReferenceInterface                               $reference
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @throws \LogicException
      *

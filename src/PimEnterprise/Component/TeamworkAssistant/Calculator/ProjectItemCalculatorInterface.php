@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\TeamworkAssistant\Calculator;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -21,9 +21,9 @@ use Pim\Component\Catalog\Model\ProductInterface;
 interface ProjectItemCalculatorInterface
 {
     /**
-     * @param ProductInterface $product
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
+     * @param ProductInterface                                 $product
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param LocaleInterface                                  $locale
      *
      * @return array
      */

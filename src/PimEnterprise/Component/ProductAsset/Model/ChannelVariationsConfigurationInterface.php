@@ -10,7 +10,7 @@
  */
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 
 /**
  * Configuration interface of a channel for the product asset variations
@@ -25,16 +25,16 @@ interface ChannelVariationsConfigurationInterface
     public function getId();
 
     /**
-     * @return ChannelInterface
+     * @return \Akeneo\Channel\Component\Model\ChannelInterface
      */
     public function getChannel();
 
     /**
-     * @param ChannelInterface $channel
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @return ChannelVariationsConfigurationInterface
      */
-    public function setChannel(ChannelInterface $channel);
+    public function setChannel(\Akeneo\Channel\Component\Model\ChannelInterface $channel);
 
     /**
      * @return array

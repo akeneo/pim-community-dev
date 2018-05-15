@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
@@ -37,8 +37,8 @@ interface VariationBuilderInterface
     public function buildMissing(ReferenceInterface $reference);
 
     /**
-     * @param ReferenceInterface $reference
-     * @param ChannelInterface   $channel
+     * @param ReferenceInterface                               $reference
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @throws \LogicException in case it's impossible to build the variation
      *

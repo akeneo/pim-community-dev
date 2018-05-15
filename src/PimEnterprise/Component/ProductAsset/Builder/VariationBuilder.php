@@ -10,7 +10,7 @@
  */
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
@@ -100,8 +100,8 @@ class VariationBuilder implements VariationBuilderInterface
      *    - either the reference has no locale
      *    - either the reference has a locale, this locale is activated and belongs to the channel
      *
-     * @param ReferenceInterface $reference
-     * @param ChannelInterface   $channel
+     * @param ReferenceInterface                               $reference
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @return bool
      */

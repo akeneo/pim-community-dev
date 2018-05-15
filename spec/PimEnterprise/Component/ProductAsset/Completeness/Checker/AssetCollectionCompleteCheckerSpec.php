@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Completeness\Checker;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
