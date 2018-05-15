@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Standard;
+namespace spec\Akeneo\Channel\Component\Normalizer\Standard;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
@@ -20,7 +20,7 @@ class ChannelNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Normalizer\Standard\ChannelNormalizer');
+        $this->shouldHaveType('Akeneo\Channel\Component\Normalizer\Standard\ChannelNormalizer');
     }
 
     function it_is_a_normalizer()
