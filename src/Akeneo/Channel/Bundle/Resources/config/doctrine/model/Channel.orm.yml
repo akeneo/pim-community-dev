@@ -1,4 +1,4 @@
-Akeneo\Channel\Component\Model:
+Akeneo\Channel\Component\Model\Channel:
     type: entity
     table: pim_catalog_channel
     changeTrackingPolicy: DEFERRED_EXPLICIT
