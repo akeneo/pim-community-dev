@@ -4,7 +4,7 @@ namespace Akeneo\Channel\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\ChannelTranslation;
+use Akeneo\Channel\Component\Model\ChannelTranslation;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 
@@ -162,7 +162,7 @@ class Channel implements ChannelInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\ChannelTranslation';
+        return 'Akeneo\Channel\Component\Model\ChannelTranslation';
     }
 
     /**
