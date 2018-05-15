@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Channel;
 
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 
 final class InMemoryChannelRepository implements ChannelRepositoryInterface, SaverInterface

@@ -81,7 +81,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '%pim_catalog.model.currency.interface%'
+            - '%akeneo_channel.model.currency.interface%'
 
     pim_catalog.saver.attribute:
         class: '%pim_catalog.saver.attribute.class%'

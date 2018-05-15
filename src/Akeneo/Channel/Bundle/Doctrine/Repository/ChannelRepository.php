@@ -3,8 +3,8 @@
 namespace Akeneo\Channel\Bundle\Doctrine\Repository;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\CurrencyInterface;
 
 /**
  * Channel repository

@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Api\Normalizer;
 
-use Pim\Component\Catalog\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

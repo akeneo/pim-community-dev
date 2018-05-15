@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 
 class CurrencyUpdaterSpec extends ObjectBehavior
 {
@@ -23,7 +23,7 @@ class CurrencyUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Pim\Component\Catalog\Model\CurrencyInterface'
+                'Akeneo\Channel\Component\Model\CurrencyInterface'
             )
         )->during(
             'update',

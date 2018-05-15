@@ -10,6 +10,7 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Model\CurrencyInterface` to `Akeneo\Channel\Component\Model\CurrencyInterface`
 - Move `Pim\Component\Catalog\Validator\Constraints\ActivatedLocale` to `Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale`
 - Move `Pim\Component\Catalog\Validator\Constraints\Locale` to `Akeneo\Channel\Component\Validator\Constraint\Locale`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository`

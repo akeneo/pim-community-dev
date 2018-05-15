@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 
 class CurrencyNormalizerSpec extends ObjectBehavior
 {

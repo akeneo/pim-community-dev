@@ -25,7 +25,7 @@ Akeneo\Channel\Component\Model\Channel:
                     referencedColumnName: id
     manyToMany:
         currencies:
-            targetEntity: Pim\Component\Catalog\Model\CurrencyInterface
+            targetEntity: Akeneo\Channel\Component\Model\CurrencyInterface
             joinTable:
                 name: pim_catalog_channel_currency
                 schema: null
