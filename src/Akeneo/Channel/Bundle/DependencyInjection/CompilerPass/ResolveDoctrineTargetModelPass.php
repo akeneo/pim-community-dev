@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Bundle\DependencyInjection\CompilerPass;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
@@ -23,6 +24,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     {
         return [
             LocaleInterface::class => 'pim_catalog.entity.locale.class',
+            ChannelInterface::class => 'pim_catalog.entity.channel.class',
         ];
     }
 }
