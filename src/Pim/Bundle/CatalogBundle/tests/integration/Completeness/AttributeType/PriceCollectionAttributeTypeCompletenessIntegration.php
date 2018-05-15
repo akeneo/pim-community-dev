@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessTestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
-use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\LinkedChannelException;
-use Pim\Component\Catalog\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Channel\Component\Model;
 
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;

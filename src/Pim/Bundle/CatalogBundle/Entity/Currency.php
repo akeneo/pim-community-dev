@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Pim\Component\Catalog\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**

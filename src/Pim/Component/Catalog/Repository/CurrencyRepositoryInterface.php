@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Repository;
 
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Catalog\Model\CurrencyInterface;
 
 /**
  * Currency repository interface
