@@ -9,11 +9,11 @@ The result of a search of products and product models in the product grid heavil
 
 # Context
 
-Prior to this PR, the search of product models in the datagrid was not fully functional with categories. To be more precise, the search was not properly working when a user would only filter on categories.
+Prior to 2.2, the search of product models in the datagrid was not fully functional with categories. To be more precise, the search was not properly working when a user would only filter on categories.
 
-Before explaining how I propose to solve this issue, we need to understand how the actual datagrid search works and its pitfalls.
+Before explaining how I propose to solve this issue, we need to understand how the datagrid search works prior to 2.2 and its pitfalls.
 
-## Today's datagrid search (Also known as 'Smart search')
+## Datagrid search (Also known as 'Smart search') prior to 2.2
 
 ### Data set: Shoes
 
@@ -86,13 +86,13 @@ The difficulty here is we have to deal with one data structure (Product model hi
 
 ![image](images/sumup-structure.png)
 
-**Is it possible conciliate both meta structure in the search to always show the topmost / most relevant node in the hierarchy depending on the search criterias ?**
+**Is it possible to conciliate both meta structure in the search to always show the topmost / most relevant node in the hierarchy depending on the search criterias ?**
 
 # Proposed solution
 
 The proposed solution has been discussed with @pierallard and @willy-ahva. (_Thanks to them for the help!)_
 
-Just like before, it relies on the ability to differentiate nodes of one levels from another by indexing additional information.
+Just like before, it relies on the ability to differentiate nodes of one level from another by indexing additional information.
 
 ## Filtering on attribute and categories
 
