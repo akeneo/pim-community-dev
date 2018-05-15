@@ -104,6 +104,7 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
             'add_attribute_value',
             'add_to_group',
             'change_parent_product',
+            'suggest_data_push_products'
         ];
     }
 

@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 
 /**
- * Add suggest data mass action button in product grid.
+ * Add suggest data mass action button in product grid. [WIP]
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
