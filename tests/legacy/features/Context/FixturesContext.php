@@ -22,7 +22,7 @@ use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Akeneo\Channel\Component\Model\Channel;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
@@ -158,7 +158,7 @@ class FixturesContext extends BaseFixturesContext
         if (!isset($data['user_default_locale'])) {
             $data['user_default_locale'] = 'en_US';
         }
-        
+
         if (!isset($data['catalog_default_locale'])) {
             $data['catalog_default_locale'] = 'en_US';
         }
