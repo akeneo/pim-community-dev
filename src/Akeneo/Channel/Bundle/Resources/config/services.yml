@@ -37,6 +37,9 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_activated_locale_validator }
 
+    pim_catalog.updater.locale:
+        class: 'Akeneo\Channel\Component\Updater\LocaleUpdater'
+
     ### Channel
     pim_catalog.repository.channel:
         class: '%pim_catalog.repository.channel.class%'

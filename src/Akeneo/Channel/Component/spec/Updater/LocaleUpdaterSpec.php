@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\Akeneo\Channel\Component\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
@@ -10,7 +10,7 @@ class LocaleUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\LocaleUpdater');
+        $this->shouldHaveType('Akeneo\Channel\Component\Updater\LocaleUpdater');
     }
 
     function it_is_a_updater()
