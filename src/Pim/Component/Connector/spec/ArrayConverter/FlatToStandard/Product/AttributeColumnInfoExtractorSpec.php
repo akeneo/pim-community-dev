@@ -13,7 +13,7 @@ class AttributeColumnInfoExtractorSpec extends ObjectBehavior
 {
     const ASSOC_TYPE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
     const ATTRIBUTE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
-    const CHANNEL_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Channel';
+    const CHANNEL_CLASS = 'Akeneo\Channel\Component\Model\Channel';
     const LOCALE_CLASS = 'Akeneo\Channel\Component\Model\Locale';
 
     function let(

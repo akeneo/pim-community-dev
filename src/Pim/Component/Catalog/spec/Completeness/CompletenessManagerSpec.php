@@ -35,7 +35,7 @@ class CompletenessManagerSpec extends ObjectBehavior
             $localeRepository,
             $generator,
             $productValueCompleteChecker,
-            'Pim\Bundle\CatalogBundle\Entity\Channel'
+            'Akeneo\Channel\Component\Model\Channel'
         );
     }
 
