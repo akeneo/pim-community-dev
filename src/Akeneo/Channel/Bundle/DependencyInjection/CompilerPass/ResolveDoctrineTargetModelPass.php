@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Channel\Bundle\DependencyInjection\CompilerPass;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
 /**
@@ -16,10 +19,10 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     /**
      * {@inheritdoc}
      */
-    protected function getParametersMapping()
+    protected function getParametersMapping(): array
     {
         return [
-            'Akeneo\Channel\Component\Model\LocaleInterface' => 'akeneo_channel.entity.locale.class',
+            LocaleInterface::class => 'akeneo_channel.entity.locale.class',
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
+use Akeneo\Channel\Component\Model\Locale;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -35,8 +36,8 @@ class ImmutableValidator extends ConstraintValidator
     /**
      * Validate the property
      *
-     * @param \Akeneo\Channel\Component\Model\Locale $entity
-     * @param Constraint                             $constraint
+     * @param Locale     $entity
+     * @param Constraint $constraint
      */
     public function validate($entity, Constraint $constraint)
     {
