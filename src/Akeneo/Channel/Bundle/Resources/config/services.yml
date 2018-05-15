@@ -1,12 +1,12 @@
 parameters:
     akeneo_channel.model.locale.interface: 'Akeneo\Channel\Component\Model\LocaleInterface'
-    akeneo_channel.entity.locale.class: 'Akeneo\Channel\Component\Model\Locale'
+    pim_catalog.entity.locale.class: 'Akeneo\Channel\Component\Model\Locale'
 
 services:
     pim_catalog.repository.locale:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository'
         factory: 'doctrine.orm.entity_manager:getRepository'
-        arguments: ['%akeneo_channel.entity.locale.class%']
+        arguments: ['%pim_catalog.entity.locale.class%']
         tags:
             - { name: 'channel_repository' }
 
@@ -14,7 +14,7 @@ services:
         class: 'Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '%akeneo_channel.entity.locale.class%'
+            - '%pim_catalog.entity.locale.class%'
             - '@pim_catalog.repository.locale'
 
     pim_catalog.validator.constraints.locale_validator:
