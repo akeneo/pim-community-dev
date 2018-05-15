@@ -28,7 +28,7 @@ class ChannelRepositorySpec extends ObjectBehavior
 
     function it_is_a_channel_repository()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Repository\ChannelRepositoryInterface');
+        $this->shouldImplement('Akeneo\Channel\Component\Repository\ChannelRepositoryInterface');
     }
 
     function it_count_all_channels($em, QueryBuilder $queryBuilder, AbstractQuery $query)

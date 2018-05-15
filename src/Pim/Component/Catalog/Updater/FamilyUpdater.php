@@ -18,7 +18,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -41,7 +41,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ChannelRepositoryInterface */
+    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var AttributeRequirementFactory */
@@ -54,12 +54,12 @@ class FamilyUpdater implements ObjectUpdaterInterface
     protected $translatableUpdater;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface   $familyRepository
-     * @param AttributeRepositoryInterface            $attributeRepository
-     * @param ChannelRepositoryInterface              $channelRepository
-     * @param AttributeRequirementFactory             $attrRequiFactory
-     * @param AttributeRequirementRepositoryInterface $requirementRepo
-     * @param TranslatableUpdater                     $translatableUpdater
+     * @param IdentifiableObjectRepositoryInterface                           $familyRepository
+     * @param AttributeRepositoryInterface                                    $attributeRepository
+     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
+     * @param AttributeRequirementFactory                                     $attrRequiFactory
+     * @param AttributeRequirementRepositoryInterface                         $requirementRepo
+     * @param TranslatableUpdater                                             $translatableUpdater
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,

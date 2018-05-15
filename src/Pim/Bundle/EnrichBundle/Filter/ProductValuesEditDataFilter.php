@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 
 /**
  * Product edit data filter
@@ -29,7 +29,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var ChannelRepositoryInterface */
+    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var AttributeInterface[] */
@@ -42,10 +42,10 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     protected $channels = [];
 
     /**
-     * @param ObjectFilterInterface        $objectFilter
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param LocaleRepositoryInterface    $localeRepository
-     * @param ChannelRepositoryInterface   $channelRepository
+     * @param ObjectFilterInterface                                           $objectFilter
+     * @param AttributeRepositoryInterface                                    $attributeRepository
+     * @param LocaleRepositoryInterface                                       $localeRepository
+     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
      */
     public function __construct(
         ObjectFilterInterface $objectFilter,

@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Validator;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 
 /**
  * AttributeValidatorHelper
@@ -28,8 +28,8 @@ class AttributeValidatorHelper
     protected $scopeCodes;
 
     /**
-     * @param LocaleRepositoryInterface  $localeRepository
-     * @param ChannelRepositoryInterface $scopeRepository
+     * @param LocaleRepositoryInterface                                       $localeRepository
+     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $scopeRepository
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
