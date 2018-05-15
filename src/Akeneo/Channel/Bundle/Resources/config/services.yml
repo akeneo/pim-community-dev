@@ -51,3 +51,13 @@ services:
             - '@pim_catalog.normalizer.standard.translation'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.updater.channel:
+        class: 'Akeneo\Channel\Component\Updater\ChannelUpdater'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_measure.manager'
+            - '@pim_localization.updater.translatable'
