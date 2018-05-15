@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\ChannelTranslation:
+Akeneo\Channel\Component\Model\ChannelTranslation:
     type: entity
     table: pim_catalog_channel_translation
     changeTrackingPolicy: DEFERRED_EXPLICIT
