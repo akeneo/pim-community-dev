@@ -64,3 +64,12 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@akeneo_measure.manager'
             - '@pim_localization.updater.translatable'
+
+    pim_catalog.remover.channel:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Remover\ChannelRemover'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '@pim_catalog.repository.channel'
+            - '@translator'
+            - '%pim_catalog.entity.channel.class%'
