@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7338: Fix attribute groups labels in the grid
+
 # 2.0.24 (2018-05-16)
 
 ## Bug fixes
