@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
+namespace Akeneo\Channel\Component\Normalizer\Versioning;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
