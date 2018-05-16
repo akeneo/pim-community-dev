@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

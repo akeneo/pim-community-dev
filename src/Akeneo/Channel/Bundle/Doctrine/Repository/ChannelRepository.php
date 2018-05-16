@@ -2,9 +2,9 @@
 
 namespace Akeneo\Channel\Bundle\Doctrine\Repository;
 
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 
 /**
  * Channel repository
