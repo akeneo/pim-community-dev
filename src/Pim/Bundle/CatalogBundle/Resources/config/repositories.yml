@@ -64,8 +64,6 @@ services:
         tags:
             - { name: 'pim_repository' }
 
-
-
     pim_catalog.repository.family:
         class: '%pim_catalog.repository.family.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
