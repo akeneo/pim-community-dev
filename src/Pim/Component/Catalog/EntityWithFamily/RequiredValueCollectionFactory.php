@@ -38,12 +38,16 @@ class RequiredValueCollectionFactory
                     $channel = $attributeRequirement->getChannel();
 
                     $attribute = $attributeRequirement->getAttribute();
+                    $channelCode = $attribute->isScopable() ? $channel->getCode() : null;
+                    $localeCode = $attribute->isLocalizable() ? $locale->getCode() : null;
+
                     if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
                         continue;
                     }
 
-                    $channelCode = $attribute->isScopable() ? $channel->getCode() : null;
-                    $localeCode = $attribute->isLocalizable() ? $locale->getCode() : null;
+                    if ($attribute->isLocaleSpecific() && $attribute->hasLocaleSpecific($locale)) {
+                        $localeCode = $locale->getCode();
+                    }
 
                     $requiredValues[] = new RequiredValue($attribute, $channelCode, $localeCode);
                 }

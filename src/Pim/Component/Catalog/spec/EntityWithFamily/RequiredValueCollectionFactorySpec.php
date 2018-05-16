@@ -17,6 +17,7 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         AttributeInterface $sku,
         AttributeInterface $price,
         AttributeInterface $description,
+        AttributeInterface $image,
         ChannelInterface $ecommerce,
         ChannelInterface $print,
         LocaleInterface $en_US,
@@ -25,6 +26,7 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         $sku->getCode()->willReturn('sku');
         $price->getCode()->willReturn('price');
         $description->getCode()->willReturn('description');
+        $image->getCode()->willReturn('image');
         $ecommerce->getCode()->willReturn('ecommerce');
         $print->getCode()->willReturn('print');
         $en_US->getCode()->willReturn('en_US');
@@ -42,6 +44,7 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         $sku,
         $description,
         $price,
+        $image,
         $ecommerce,
         $print,
         FamilyInterface $family,
@@ -50,10 +53,12 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         AttributeRequirementInterface $requirement3,
         AttributeRequirementInterface $requirement4,
         AttributeRequirementInterface $requirement5,
+        AttributeRequirementInterface $requirement6,
         ValueInterface $expectedValue1,
         ValueInterface $expectedValue2,
         ValueInterface $expectedValue3,
-        ValueInterface $expectedValue4
+        ValueInterface $expectedValue4,
+        ValueInterface $expectedValue5
     ) {
         $expectedValue1->getAttribute()->willReturn($sku);
         $expectedValue1->getScope()->willReturn(null);
@@ -71,7 +76,11 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         $expectedValue4->getScope()->willReturn(null);
         $expectedValue4->getLocale()->willReturn(null);
 
-        $family->getAttributeRequirements()->willReturn([$requirement1, $requirement2, $requirement3, $requirement4, $requirement5]);
+        $expectedValue5->getAttribute()->willReturn($image);
+        $expectedValue5->getScope()->willReturn(null);
+        $expectedValue5->getLocale()->willReturn('fr_FR');
+
+        $family->getAttributeRequirements()->willReturn([$requirement1, $requirement2, $requirement3, $requirement4, $requirement5, $requirement6]);
 
         $ecommerce->getLocales()->willReturn([$en_US, $fr_FR]);
         $print->getLocales()->willReturn([$en_US]);
@@ -85,6 +94,11 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
         $price->isLocalizable()->willReturn(false);
         $price->isLocaleSpecific()->willReturn(false);
+        $image->isScopable()->willReturn(false);
+        $image->isLocalizable()->willReturn(false);
+        $image->isLocaleSpecific()->willReturn(true);
+        $image->hasLocaleSpecific($fr_FR)->willReturn(true);
+        $image->hasLocaleSpecific($en_US)->willReturn(false);
 
         $requirement1->getAttribute()->willReturn($sku);
         $requirement1->getChannel()->willReturn($ecommerce);
@@ -106,11 +120,16 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         $requirement5->getChannel()->willReturn($print);
         $requirement5->isRequired()->willReturn(true);
 
+        $requirement6->getAttribute()->willReturn($image);
+        $requirement6->getChannel()->willReturn($ecommerce);
+        $requirement6->isRequired()->willReturn(true);
+
         $expectedRequiredValuesEcommerce = $this->forChannel($family, $ecommerce);
-        $expectedRequiredValuesEcommerce->count()->shouldReturn(3);
+        $expectedRequiredValuesEcommerce->count()->shouldReturn(4);
         $expectedRequiredValuesEcommerce->hasSame($expectedValue1)->shouldReturn(true);
         $expectedRequiredValuesEcommerce->hasSame($expectedValue2)->shouldReturn(true);
         $expectedRequiredValuesEcommerce->hasSame($expectedValue3)->shouldReturn(true);
+        $expectedRequiredValuesEcommerce->hasSame($expectedValue5)->shouldReturn(true);
 
         $expectedRequiredValuesPrint = $this->forChannel($family, $print);
         $expectedRequiredValuesPrint->count()->shouldReturn(1);
