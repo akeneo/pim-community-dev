@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Configuration;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Akeneo\Channel\Component\Model\Locale;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Pim\Component\User\Model\UserInterface;

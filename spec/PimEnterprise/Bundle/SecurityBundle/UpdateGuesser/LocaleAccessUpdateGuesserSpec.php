@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\UpdateGuesser;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
 
 class LocaleAccessUpdateGuesserSpec extends ObjectBehavior

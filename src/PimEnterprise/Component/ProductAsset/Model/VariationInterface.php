@@ -10,9 +10,9 @@
  */
 namespace PimEnterprise\Component\ProductAsset\Model;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * Product asset variation interface

@@ -41,7 +41,7 @@ PimEnterprise\Component\TeamworkAssistant\Model\Project:
                     nullable: false
                     referencedColumnName: id
         locale:
-            targetEntity: Pim\Component\Catalog\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
             joinColumns:
                 locale_id:
                     nullable: false
