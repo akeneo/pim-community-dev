@@ -128,7 +128,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
     }
 
     /**
-     * @return \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface
+     * @return ChannelRepositoryInterface
      */
     protected function getChannelRepository()
     {
