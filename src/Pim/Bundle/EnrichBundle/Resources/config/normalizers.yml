@@ -15,7 +15,6 @@ parameters:
     pim_enrich.normalizer.family_variant.class:                    Pim\Bundle\EnrichBundle\Normalizer\FamilyVariantNormalizer
     pim_enrich.normalizer.attribute.class:                         Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer
     pim_enrich.normalizer.attribute.versioned.class:               Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer
-    pim_enrich.normalizer.locale.class:                            Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
     pim_enrich.normalizer.product_violation.class:                 Pim\Bundle\EnrichBundle\Normalizer\ProductViolationNormalizer
@@ -166,13 +165,6 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_enrich.provider.structure_version.group_type'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
-
-    pim_enrich.normalizer.locale:
-        class: '%pim_enrich.normalizer.locale.class%'
-        arguments:
-            - '@pim_user.context.user'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

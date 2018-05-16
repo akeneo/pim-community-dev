@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
+namespace spec\Akeneo\Channel\Component\Normalizer\Versioning;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
@@ -15,7 +15,7 @@ class LocaleNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\VersioningBundle\Normalizer\Flat\LocaleNormalizer');
+        $this->shouldHaveType('Akeneo\Channel\Component\Normalizer\Versioning\LocaleNormalizer');
     }
 
     function it_is_a_normalizer()
