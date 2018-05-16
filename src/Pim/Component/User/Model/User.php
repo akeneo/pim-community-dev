@@ -2,14 +2,14 @@
 
 namespace Pim\Component\User\Model;
 
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\User\Model\UserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

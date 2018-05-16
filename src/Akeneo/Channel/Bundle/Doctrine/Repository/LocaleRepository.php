@@ -2,10 +2,10 @@
 
 namespace Akeneo\Channel\Bundle\Doctrine\Repository;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 
 /**
  * Locale repository

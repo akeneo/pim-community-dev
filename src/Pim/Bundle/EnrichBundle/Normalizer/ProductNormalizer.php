@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
@@ -16,7 +17,6 @@ use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Pim\Component\Enrich\Query\AscendantCategoriesInterface;

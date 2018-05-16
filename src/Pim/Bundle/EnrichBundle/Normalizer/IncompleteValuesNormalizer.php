@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

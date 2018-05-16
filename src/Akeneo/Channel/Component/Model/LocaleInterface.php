@@ -2,8 +2,8 @@
 
 namespace Akeneo\Channel\Component\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\ReferableInterface;
 
 /**

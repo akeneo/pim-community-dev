@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

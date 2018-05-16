@@ -2,6 +2,7 @@
 
 namespace Akeneo\Channel\Component\Updater;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -11,7 +12,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 
 /**
  * Updates a channel
