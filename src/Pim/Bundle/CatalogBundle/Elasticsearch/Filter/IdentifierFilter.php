@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Escaper\QueryString;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
@@ -123,7 +124,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
                 $clause = [
                     'query_string' => [
                         'default_field' => self::IDENTIFIER_KEY,
-                        'query'         => $value . '*',
+                        'query'         => QueryString::escapeValue($value) . '*',
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
@@ -133,7 +134,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
                 $clause = [
                     'query_string' => [
                         'default_field' => self::IDENTIFIER_KEY,
-                        'query'         => '*' . $value . '*',
+                        'query'         => '*' . QueryString::escapeValue($value) . '*',
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
@@ -143,7 +144,7 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
                 $mustNotClause = [
                     'query_string' => [
                         'default_field' => self::IDENTIFIER_KEY,
-                        'query'         => '*' . $value . '*',
+                        'query'         => '*' . QueryString::escapeValue($value) . '*',
                     ],
                 ];
 

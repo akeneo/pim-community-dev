@@ -20,7 +20,7 @@ Feature: Filter products
       | sku    | family    | enabled | name-en_US  | name-fr_FR   | info-en_US-ecommerce    | info-fr_FR-ecommerce     | info-fr_FR-mobile     | image-ecommerce  | image-mobile     |
       | postit | furniture | yes     | Post it     | Etiquette    | My ecommerce info       | Ma info ecommerce        | Ma info mobile        | large.jpeg       | small.jpeg       |
       | book   | library   | no      | Book        | Livre        | My ecommerce book info  | Ma info livre ecommerce  | Ma info livre mobile  | book_large.jpeg  | book_small.jpeg  |
-      | book2  |           | yes     | Book2       | Livre2       | My ecommerce book2 info | Ma info livre2 ecommerce | Ma info livre2 mobile | book2_large.jpeg | book2_small.jpeg |
+      | book/2 |           | yes     | Book2       | Livre2       | My ecommerce book2 info | Ma info livre2 ecommerce | Ma info livre2 mobile | book2_large.jpeg | book2_small.jpeg |
       | 01234  |           | yes     | 01234       | 01234        | My ecommerce 01234 info | Ma info 01234 ecommerce  | Ma info 01234 mobile  |                  |                  |
       | ebook  |           | yes     | eBook       | Ebook        | My ecommerce ebook info | Ma info ebook ecommerce  | Ma info ebook mobile  |                  |                  |
       | chair  | furniture | yes     | Chair/Slash | Chaise/Slash | My ecommerce chair .    | Ma info chaise ecommerce | Ma info chaise mobile |                  |                  |
@@ -29,22 +29,25 @@ Feature: Filter products
   Scenario: Successfully filter products
     Given I am on the products grid
     Then the grid should contain 6 elements
-    And I should see products postit, book, book2, ebook, chair and 01234
+    And I should see products postit, book, book/2, ebook, chair and 01234
     And I should be able to use the following filters:
-      | filter  | operator         | value         | result                                      |
-      | sku     | contains         | book          | book, ebook and book2                       |
-      | name    | contains         | post          | postit                                      |
-      | info    | contains         | book          | book, ebook and book2                       |
-      | enabled |                  | Enabled       | postit, ebook, book2, chair and 01234       |
-      | enabled |                  | Disabled      | book                                        |
-      | sku     | does not contain | book          | postit and chair and 01234                  |
-      | sku     | starts with      | boo           | book and book2                              |
-      | sku     | starts with      | 0             | 01234                                       |
-      | sku     | is equal to      | book          | book                                        |
-      | sku     | in list          | book          | book                                        |
-      | sku     | in list          | postit, book2 | postit and book2                            |
-      | name    | is empty         |               |                                             |
-      | name    | is not empty     |               | postit, book, ebook, book2, chair and 01234 |
+      | filter  | operator         | value         | result                                       |
+      | sku     | contains         | book          | book, ebook and book/2                       |
+      | sku     | contains         | k/            | book/2                                       |
+      | name    | contains         | post          | postit                                       |
+      | info    | contains         | book          | book, ebook and book/2                       |
+      | enabled |                  | Enabled       | postit, ebook, book/2, chair and 01234       |
+      | enabled |                  | Disabled      | book                                         |
+      | sku     | does not contain | book          | postit and chair and 01234                   |
+      | sku     | does not contain | k/2           | postit, book, ebook, chair and 01234         |
+      | sku     | starts with      | boo           | book and book/2                              |
+      | sku     | starts with      | 0             | 01234                                        |
+      | sku     | starts with      | book/         | book/2                                       |
+      | sku     | is equal to      | book          | book                                         |
+      | sku     | in list          | book          | book                                         |
+      | sku     | in list          | postit,book/2 | postit and book/2                            |
+      | name    | is empty         |               |                                              |
+      | name    | is not empty     |               | postit, book, ebook, book/2, chair and 01234 |
 
   Scenario: Successfully hide/show filters
     Given I am on the products grid
