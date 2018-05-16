@@ -71,8 +71,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param LocaleInterface                                  $locale
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
      *
      * @return ProductQueryBuilderInterface
      */

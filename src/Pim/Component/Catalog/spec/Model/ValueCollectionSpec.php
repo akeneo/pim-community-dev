@@ -17,7 +17,7 @@ class ValueCollectionSpec extends ObjectBehavior
         AttributeInterface $price,
         AttributeInterface $description,
         AttributeInterface $releaseDate,
-        \Akeneo\Channel\Component\Model\ChannelInterface $ecommerce,
+        ChannelInterface $ecommerce,
         ChannelInterface $print,
         LocaleInterface $en_US,
         LocaleInterface $fr_FR,

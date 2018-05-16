@@ -29,7 +29,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var AttributeInterface[] */
@@ -42,10 +42,10 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     protected $channels = [];
 
     /**
-     * @param ObjectFilterInterface                                           $objectFilter
-     * @param AttributeRepositoryInterface                                    $attributeRepository
-     * @param LocaleRepositoryInterface                                       $localeRepository
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
+     * @param ObjectFilterInterface        $objectFilter
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param LocaleRepositoryInterface    $localeRepository
+     * @param ChannelRepositoryInterface   $channelRepository
      */
     public function __construct(
         ObjectFilterInterface $objectFilter,

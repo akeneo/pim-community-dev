@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Completeness;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

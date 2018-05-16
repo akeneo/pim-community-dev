@@ -249,7 +249,7 @@ class UserUpdater implements ObjectUpdaterInterface
      *
      * @throws InvalidPropertyException
      *
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface|null
+     * @return ChannelInterface|null
      */
     protected function findChannel($code)
     {

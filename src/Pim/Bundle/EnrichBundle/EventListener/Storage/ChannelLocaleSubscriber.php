@@ -139,7 +139,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
      * Update the channel and if at least a locale is removed, it launches the completeness cleaning with a command.
      * @see https://akeneo.atlassian.net/browse/PIM-7155
      *
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param ChannelInterface $channel
      */
     private function updateChannelInBackend(ChannelInterface $channel): void
     {

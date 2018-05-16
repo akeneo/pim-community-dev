@@ -28,8 +28,8 @@ class AttributeValidatorHelper
     protected $scopeCodes;
 
     /**
-     * @param LocaleRepositoryInterface                                       $localeRepository
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $scopeRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param ChannelRepositoryInterface $scopeRepository
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,

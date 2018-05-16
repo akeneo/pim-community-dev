@@ -17,7 +17,7 @@ services:
             - { name: 'channel_repository' }
 
     pim_api.repository.locale:
-        class: 'Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository'
+        class: 'Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.locale.class%'

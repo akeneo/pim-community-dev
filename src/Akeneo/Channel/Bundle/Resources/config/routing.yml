@@ -1,7 +1,8 @@
+internal_api_locale:
+    resource: '@AkeneoChannelBundle/Resources/config/routing/internal_api/locale.yml'
+    prefix: /configuration/locale
+
 external_api_locale:
     resource: '@AkeneoChannelBundle/Resources/config/routing/external_api/locale.yml'
-    prefix: /rest/v1
+    prefix: /api/rest/v1
 
-ui_locale:
-    resource: '@AkeneoChannelBundle/Resources/config/routing/ui/locale.yml'
-    prefix: /configuration/locale

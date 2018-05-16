@@ -21,9 +21,9 @@ interface ValueCompleteCheckerInterface
     /**
      * Is the given product value complete on the given couple channel/locale?
      *
-     * @param ValueInterface                                        $value
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface|null $channel
-     * @param LocaleInterface|null                                  $locale
+     * @param ValueInterface        $value
+     * @param ChannelInterface|null $channel
+     * @param LocaleInterface|null  $locale
      *
      * @return bool
      */

@@ -78,7 +78,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\UserBundle\PimUserBundle(),
 
             // Channel bundles
-            new \Akeneo\Channel\Bundle\AkeneoChannelBundle(),
+            new Akeneo\Channel\Bundle\AkeneoChannelBundle(),
 
             // PIM bundles
             new Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
