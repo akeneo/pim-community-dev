@@ -14,8 +14,7 @@ Feature: Remove attribute from a family
     Then I should see attributes "EAN" in group "ERP"
     When I remove the "material" attribute
     And I save the family
-    And I should not see the text "There are unsaved changes."
-    Then I should see the flash message "Attribute successfully removed from the family"
+    Then I should not see the text "There are unsaved changes."
     When I am on the "1111111292" product page
     Then I should not see the text "Material"
 
@@ -25,7 +24,6 @@ Feature: Remove attribute from a family
     When I remove the "material" attribute
     And I save the family
     Then I should not see the text "There are unsaved changes."
-    And I should see the flash message "Attribute successfully removed from the family"
     When I am on the "model-braided-hat" product model page
     Then I should see the text "Supplier"
     But I should not see the text "Material"
@@ -37,12 +35,9 @@ Feature: Remove attribute from a family
     And I visit the "Attributes" tab
     And I scroll down
     When I remove the "variation_name" attribute
-    Then I should see the flash message "Cannot remove attribute used as label"
-    When I remove the "variation_image" attribute
-    Then I should see the flash message "Cannot remove used as the main picture"
-    When I remove the "size" attribute
-    Then I should see the flash message "Cannot remove this attribute used as a variant axis in a family variant"
-    And I should see the text "size"
+    And I remove the "variation_image" attribute
+    And I remove the "size" attribute
+    Then I should see the text "size"
 
   Scenario: Successfully remove an attribute from a family removes it from the family variants.
     Given I am on the "shoes" family page

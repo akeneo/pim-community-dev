@@ -20,7 +20,7 @@ Feature: Product edition clicking on another action
     And I fill in the following information:
       | Price | foo EUR |
     When I save the product
-    Then I should see the flash message "The product could not be updated."
+    Then I should not see the text "There are unsaved changes."
     When I click on the Akeneo logo
     Then I should see "You will lose changes to the product if you leave the page." in popup
 

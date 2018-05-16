@@ -25,7 +25,7 @@ Feature: Create attribute options
       | green |
     Then I should see the text "green"
     When I save the attribute
-    Then I should see the flash message "Attribute successfully updated"
+    Then I should not see the text "There are unsaved changes."
     And I should see the text "green"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6033

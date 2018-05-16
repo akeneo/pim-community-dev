@@ -21,5 +21,4 @@ Feature:
       | Groups column     | grp      |
     And I press the "Save" button
     When I am on the "csv_footwear_product_import" import job page
-    And I upload and import an invalid file "akeneo2.jpg"
-    Then I should see the flash message "The file extension is not allowed (allowed extensions: csv, zip)."
+    Then I upload and import an invalid file "akeneo2.jpg"

@@ -17,7 +17,7 @@ Feature: Join an image to a product
   @ce
   Scenario: Successfully leave the image empty
     When I save the product
-    Then I should see the flash message "Product successfully updated"
+    Then I should not see the text "There are unsaved changes."
 
   Scenario: Successfully upload an image
     When I attach file "akeneo.jpg" to "Visual"

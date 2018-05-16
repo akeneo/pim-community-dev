@@ -15,7 +15,7 @@ Feature: Add attribute options
       | Reference data type | color   |
       | Attribute group     | Other   |
     When I save the attribute
-    Then I should see the flash message "Attribute successfully created"
+    Then I should not see the text "There are unsaved changes."
 
   Scenario: Successfully create a multiple reference data
     Given I create a "Reference data multi select" attribute
@@ -24,4 +24,4 @@ Feature: Add attribute options
       | Reference data type | fabric  |
       | Attribute group     | Other   |
     When I save the attribute
-    Then I should see the flash message "Attribute successfully created"
+    Then I should not see the text "There are unsaved changes."

@@ -12,7 +12,7 @@ Feature: Change my profile
     Given I edit the "admin" user
     When I attach file "akeneo.jpg" to "Avatar"
     And I save the user
-    Then I should see the flash message "User saved"
+    Then I should not see the text "There are unsaved changes."
     And I should not see the default avatar
 
   @jira https://akeneo.atlassian.net/browse/PIM-6258
@@ -24,7 +24,7 @@ Feature: Change my profile
     And I am on the User profile edit page
     When I attach file "akeneo.jpg" to "Avatar"
     And I save the user
-    Then I should see the flash message "User saved"
+    Then I should not see the text "There are unsaved changes."
 
   @jira https://akeneo.atlassian.net/browse/PIM-6894
   Scenario: Successfully update my password with any characters

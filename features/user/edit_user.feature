@@ -14,7 +14,7 @@ Feature: Edit a user
       | First name | John  |
       | Last name  | Smith |
     And I save the user
-    Then I should see the flash message "User saved"
+    Then I should not see the text "There are unsaved changes."
     And I should see the text "John Smith"
 
   Scenario: Successfully edit and apply user preferences
@@ -26,7 +26,7 @@ Feature: Edit a user
       | Default tree         | 2015 collection   |
       | Product grid filters | SKU, Name, Family |
     And I save the user
-    Then I should see the flash message "User saved"
+    Then I should not see the text "There are unsaved changes."
     When I am on the products grid
     And I open the category tree
     Then I should see the text "Kollektion"

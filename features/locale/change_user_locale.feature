@@ -14,7 +14,7 @@ Feature: Change user locale
     And I fill in the following information:
      | UI locale | French (France) |
     And I save the user
-    Then I should see the flash message "Utilisateur enregistré"
+    Then I should not see the text "There are unsaved changes."
     And I should see the text "Langue de l'interface"
 
   Scenario: Successfully change Mary's locale
@@ -23,7 +23,7 @@ Feature: Change user locale
     And I fill in the following information:
      | UI locale | French (France) |
     And I save the user
-    Then I should see the flash message "User saved"
+    Then I should not see the text "There are unsaved changes."
     Then I should not see the text "Collecter"
 
   Scenario: Should only see translated locales

@@ -248,27 +248,11 @@ class AssertionContext extends PimContext
     }
 
     /**
-     * @deprecated This function was disabled because it generates too many failing tests. Warning, some tests are
-     * always using it, and it checks nothing at all.
-     *
-     * @param $text
-     *
      * @Then /^I should see the flash message "(.*)"$/
      */
     public function iShouldSeeTheFlashMessage($text)
     {
-        return;
-
-        $this->spin(function () use ($text) {
-            $flashes = $this->getCurrentPage()->findAll('css', '.flash-messages-holder > div');
-            foreach ($flashes as $flash) {
-                if (false !== strpos($flash->getText(), $text)) {
-                    return true;
-                }
-            }
-
-            return null;
-        }, sprintf('Can not find flash message with text "%s"', $text));
+        Throw new \Exception('Do not use this legacy function.');
     }
 
     /**

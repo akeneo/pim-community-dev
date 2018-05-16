@@ -39,7 +39,7 @@ Feature: Edit a product with localizable and scopable attribute options
     Then the field Simple should display the Print scope label
     And I change the Simple to "US1"
     When I save the product
-    Then I should see the flash message "Product successfully updated"
+    Then I should not see the text "There are unsaved changes."
     Given I switch the scope to "ecommerce"
     Then the field Simple should display the Ecommerce scope label
     And I change the Simple to "US2"
@@ -59,7 +59,7 @@ Feature: Edit a product with localizable and scopable attribute options
     And I switch the locale to "de_DE"
     And I change the Multi to "DE3, DE2"
     When I save the product
-    Then I should see the flash message "Product successfully updated"
+    Then I should not see the text "There are unsaved changes."
     When I switch the scope to "ecommerce"
     And I switch the locale to "en_US"
     Then I should see the text "US1 US3"

@@ -41,7 +41,7 @@ Feature: Display the category history
     And I fill in the following information:
       | English (United States) | <script>document.getElementById('top-page').classList.add('foo');</script> |
     And I save the category
-    Then I should see the flash message "Category successfully updated."
+    Then I should not see the text "There are unsaved changes."
     When I visit the "History" tab
     Then I should not see a "#top-page.foo" element
     And I should see history:

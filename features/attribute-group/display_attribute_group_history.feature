@@ -15,7 +15,7 @@ Feature: Display the attribute group history
     Given I am on the attribute group creation page
     And I change the Code to "Technical"
     And I save the group
-    And I should see the flash message "Attribute group successfully created"
+    Then I should not see the text "There are unsaved changes."
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
@@ -25,7 +25,7 @@ Feature: Display the attribute group history
     And I fill in the following information:
       | English (United States) | My technical group |
     And I save the group
-    And I should see the flash message "Attribute group successfully updated"
+    Then I should not see the text "There are unsaved changes."
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
@@ -36,7 +36,7 @@ Feature: Display the attribute group history
     When I visit the "Attributes" tab
     And I add available attributes SKU, Description
     And I save the group
-    And I should see the flash message "Attribute group successfully updated"
+    Then I should not see the text "There are unsaved changes."
     When I visit the "History" tab
     Then there should be 3 updates
     And I should see history:
@@ -49,7 +49,7 @@ Feature: Display the attribute group history
     And I remove the "Description" attribute
     And I confirm the deletion
     And I save the group
-    And I should see the flash message "Attribute group successfully updated"
+    Then I should not see the text "There are unsaved changes."
     When I visit the "History" tab
     Then there should be 4 updates
     And I should see history:
@@ -65,7 +65,7 @@ Feature: Display the attribute group history
     And I fill in the following information:
       | English (United States) | <script>document.getElementById('top-page').classList.add('foo');</script> |
     And I save the attribute group
-    Then I should see the flash message "Attribute group successfully updated."
+    Then I should not see the text "There are unsaved changes."
     When I visit the "History" tab
     Then I should not see a "#top-page.foo" element
     And I should see history:

@@ -14,7 +14,7 @@ Feature: Delete attribute options
       | Attribute group | Other |
     And I save the attribute
     When I visit the "Options" tab
-    Then I should see the flash message "Attribute successfully created"
+    Then I should not see the text "There are unsaved changes."
     And I check the "Sort automatically options by alphabetical order" switch
 
   @jira https://akeneo.atlassian.net/browse/PIM-2166

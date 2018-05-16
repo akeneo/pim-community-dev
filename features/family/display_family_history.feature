@@ -20,7 +20,6 @@ Feature: Display the family history
     And I fill in the following information in the popin:
       | Code | Flyer |
     And I press the "Save" button
-    And I should see the flash message "Family successfully created"
     And I should not see the text "There are unsaved changes."
     And I am on the "Flyer" family page
     When I visit the "History" tab
@@ -32,7 +31,6 @@ Feature: Display the family history
     And I fill in the following information:
       | English (United States) | Fly |
     And I press the "Save" button
-    And I should see the flash message "Family successfully updated"
     And I should not see the text "There are unsaved changes."
     When I visit the "History" tab
     Then there should be 2 updates

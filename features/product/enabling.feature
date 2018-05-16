@@ -13,13 +13,11 @@ Feature: Enable and disable a product
     Given an enabled "boat" product
     When I am on the "boat" product page
     And I disable the product
-    Then I should see the flash message "Product successfully updated"
-    And product "boat" should be disabled
+    Then product "boat" should be disabled
 
   @ce
   Scenario: Successfully enable a product
     Given a disabled "boat" product
     When I am on the "boat" product page
     And I enable the product
-    Then I should see the flash message "Product successfully updated"
-    And product "boat" should be enabled
+    Then product "boat" should be enabled

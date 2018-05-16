@@ -17,7 +17,6 @@ Feature: Remove a category
     When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the category "summer_collection" edit page
-    And I should see the flash message "Category successfully removed"
     And I should not see the "Sandals" category under the "summer_collection" category
 
   @skip
@@ -26,7 +25,6 @@ Feature: Remove a category
     When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the category "2014_collection" edit page
-    And I should see the flash message "Category successfully removed"
     And I should not see "Winter collection"
 
   @unstable
@@ -35,7 +33,6 @@ Feature: Remove a category
     When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the category "winter_collection" edit page
-    And I should see the flash message "Category successfully removed"
     When I expand the "winter_collection" category
     Then I should not see "Winter boots"
     When I edit the "caterpillar_2" product
@@ -51,9 +48,8 @@ Feature: Remove a category
     When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the category "2014_collection" edit page
-    And I should see the flash message "Category successfully removed"
-    Then I should not see "Winter collection"
-    And I should not see "Winter boots"
+    And I should not see "Winter collection"
+    Then I should not see "Winter boots"
 
   Scenario: Remove a category tree
     Given the following category:
@@ -64,7 +60,6 @@ Feature: Remove a category
     When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be redirected on the category tree creation page
-    And I should see the flash message "Tree successfully removed"
 
   Scenario: Cancel the removal of a category
     Given I am on the "sandals" category page

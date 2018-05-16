@@ -50,4 +50,3 @@ Feature: Upload and import products with media
       """
     And I am on the "xlsx_footwear_product_import" import job page
     When I upload and import the file "%file to import%"
-    Then I should see the flash message "The file extension is not allowed (allowed extensions: xlsx, zip)."

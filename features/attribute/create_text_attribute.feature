@@ -15,7 +15,7 @@ Feature: Create an attribute
       | Code            | short_description |
       | Attribute group | Other             |
     And I save the attribute
-    Then I should see the flash message "Attribute successfully created"
+    Then I should not see the text "There are unsaved changes."
 
   Scenario: Fail to create a text attribute with an invalid code
     Given I change the Code to an invalid value

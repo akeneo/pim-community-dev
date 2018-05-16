@@ -13,14 +13,12 @@ Feature: Delete a channel
     And I should see channels Tablet and Mobile
     When I click on the "Delete" action of the row which contains "Tablet"
     And I confirm the deletion
-    Then I should see the flash message "Channel successfully removed"
-    And the grid should contain 1 element
+    Then the grid should contain 1 element
     And I should not see channel Tablet
 
   Scenario: Successfully delete a channel
     Given I am on the "mobile" channel page
     When I press the secondary action "Delete"
     And I confirm the deletion
-    Then I should see the flash message "Channel successfully removed"
-    And the grid should contain 1 element
+    Then the grid should contain 1 element
     And I should not see channel Mobile

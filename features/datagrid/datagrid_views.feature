@@ -23,7 +23,6 @@ Feature: Datagrid views
     And I create the view:
       | new-view-label | Sneakers only |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
@@ -43,7 +42,6 @@ Feature: Datagrid views
     And I create the view:
       | new-view-label | Some shoes |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Some shoes"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
@@ -63,7 +61,6 @@ Feature: Datagrid views
     And I create the view:
       | new-view-label | Some shoes |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Some shoes"
     When I display the columns SKU, Name, Family and Manufacturer
     Then I should see the text "Nike"
@@ -80,14 +77,12 @@ Feature: Datagrid views
     And I create the view:
       | new-view-label | Boots only |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Boots only"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
     When I delete the view
     And I confirm the deletion
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully removed"
     And I should see the text "Default view"
     But I should not see "Boots only"
     And I should see products black-boots, purple-sneakers and black-sneakers
@@ -98,7 +93,6 @@ Feature: Datagrid views
     And I create the view:
       | new-view-label | Boots only |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Boots only"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
@@ -117,7 +111,6 @@ Feature: Datagrid views
     And I create the view:
       | new-view-label | Sneakers only |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     When I am on the User profile show page
     And I press the "Edit" button
     Then I should see the text "Edit user - Mary Smith"
@@ -156,7 +149,6 @@ Feature: Datagrid views
     And I create the view:
       | new-view-label | Sneakers only |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     When I am on the User profile show page
     And I press the "Edit" button
     Then I should see the text "Edit user - Mary Smith"
@@ -171,7 +163,6 @@ Feature: Datagrid views
     When I delete the view
     And I confirm the deletion
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully removed"
     And I should see the text "Default view"
     And I should not see the text "Sneakers only"
 
@@ -182,7 +173,6 @@ Feature: Datagrid views
     When I create the view:
       | new-view-label | With name |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     When I am on the my account page
     And I press the "Edit" button
     And I visit the "Additional" tab
@@ -216,7 +206,6 @@ Feature: Datagrid views
     And I create the view:
       | new-view-label | Mobile only |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Mobile only"
     And I should see the text "Mobile"
 
@@ -226,7 +215,6 @@ Feature: Datagrid views
     And I create the view:
       | new-view-label | Boots only |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     When I logout
     And I am logged in as "Julia"
     And I am on the my account page
@@ -245,7 +233,6 @@ Feature: Datagrid views
     And I delete the view
     And I confirm the deletion
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully removed"
     And I should see the text "Default view"
     When I logout
     And I am logged in as "Julia"
@@ -264,7 +251,6 @@ Feature: Datagrid views
     And I create the view:
       | new-view-label | Empty family |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     And I refresh current page
     And I apply the "Empty family" view
     Then I should see the text "Family is empty"
