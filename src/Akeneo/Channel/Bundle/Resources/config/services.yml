@@ -44,6 +44,16 @@ services:
     pim_catalog.updater.locale:
         class: 'Akeneo\Channel\Component\Updater\LocaleUpdater'
 
+    pim_enrich.event_subscriber.storage.channel_locale:
+        class: 'Akeneo\Channel\Bundle\EventListener\ChannelLocaleSubscriber'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.saver.locale'
+            - '@pim_catalog.command_launcher'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
     ### Channel
     pim_catalog.repository.channel:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository'
