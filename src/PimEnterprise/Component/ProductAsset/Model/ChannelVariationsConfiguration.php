@@ -22,7 +22,7 @@ class ChannelVariationsConfiguration implements ChannelVariationsConfigurationIn
     /** @var int */
     protected $id;
 
-    /** @var \Akeneo\Channel\Component\Model\ChannelInterface */
+    /** @var ChannelInterface */
     protected $channel;
 
     /** @var array */

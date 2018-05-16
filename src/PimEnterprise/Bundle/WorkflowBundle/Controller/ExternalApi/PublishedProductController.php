@@ -222,10 +222,10 @@ class PublishedProductController
     }
 
     /**
-     * @param Request                                               $request
-     * @param null|\Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param array                                                 $queryParameters
-     * @param array                                                 $normalizerOptions
+     * @param Request               $request
+     * @param null|ChannelInterface $channel
+     * @param array                 $queryParameters
+     * @param array                 $normalizerOptions
      *
      * @throws UnprocessableEntityHttpException
      *
@@ -289,10 +289,10 @@ class PublishedProductController
     }
 
     /**
-     * @param Request                                               $request
-     * @param null|\Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param array                                                 $queryParameters
-     * @param array                                                 $normalizerOptions
+     * @param Request               $request
+     * @param null|ChannelInterface $channel
+     * @param array                 $queryParameters
+     * @param array                 $normalizerOptions
      *
      * @throws UnprocessableEntityHttpException
      *
@@ -362,9 +362,9 @@ class PublishedProductController
      * Set the PQB filters.
      * If a scope is requested, add a filter to return only products linked to its category tree
      *
-     * @param ProductQueryBuilderInterface                          $pqb
-     * @param Request                                               $request
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface|null $channel
+     * @param ProductQueryBuilderInterface $pqb
+     * @param Request                      $request
+     * @param ChannelInterface|null        $channel
      *
      * @throws UnprocessableEntityHttpException
      */

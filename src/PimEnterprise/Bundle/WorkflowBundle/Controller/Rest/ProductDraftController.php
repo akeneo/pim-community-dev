@@ -84,18 +84,18 @@ class ProductDraftController
     protected $attributeSearchableRepository;
 
     /**
-     * @param AuthorizationCheckerInterface                                   $authorizationChecker
-     * @param ProductDraftRepositoryInterface                                 $repository
-     * @param ProductDraftManager                                             $manager
-     * @param ProductRepositoryInterface                                      $productRepository
-     * @param NormalizerInterface                                             $normalizer
-     * @param TokenStorageInterface                                           $tokenStorage
-     * @param AttributeRepositoryInterface                                    $attributeRepository
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
-     * @param LocaleRepositoryInterface                                       $localeRepository
-     * @param UserContext                                                     $userContext
-     * @param CollectionFilterInterface                                       $collectionFilter
-     * @param SearchableRepositoryInterface                                   $attributeSearchableRepository
+     * @param AuthorizationCheckerInterface   $authorizationChecker
+     * @param ProductDraftRepositoryInterface $repository
+     * @param ProductDraftManager             $manager
+     * @param ProductRepositoryInterface      $productRepository
+     * @param NormalizerInterface             $normalizer
+     * @param TokenStorageInterface           $tokenStorage
+     * @param AttributeRepositoryInterface    $attributeRepository
+     * @param ChannelRepositoryInterface      $channelRepository
+     * @param LocaleRepositoryInterface       $localeRepository
+     * @param UserContext                     $userContext
+     * @param CollectionFilterInterface       $collectionFilter
+     * @param SearchableRepositoryInterface   $attributeSearchableRepository
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -455,7 +455,7 @@ class ProductDraftController
      *
      * @throws NotFoundHttpException
      *
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface
+     * @return ChannelInterface
      */
     protected function findChannelOr404($code)
     {

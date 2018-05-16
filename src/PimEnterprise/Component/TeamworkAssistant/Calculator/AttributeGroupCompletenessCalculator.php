@@ -91,9 +91,9 @@ class AttributeGroupCompletenessCalculator implements ProjectItemCalculatorInter
      *      ],
      * ];
      *
-     * @param ProductInterface                                 $product
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param LocaleInterface                                  $locale
+     * @param ProductInterface $product
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
      *
      * @return array
      */

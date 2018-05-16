@@ -43,17 +43,17 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     /** @var ProductQueryBuilderFactoryInterface */
     protected $queryBuilderFactory;
 
-    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
     /**
-     * @param PublishedProductRepositoryInterface                             $publishedRepository
-     * @param ProductQueryBuilderFactoryInterface                             $queryBuilderFactory
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
-     * @param LocaleRepositoryInterface                                       $localeRepository
+     * @param PublishedProductRepositoryInterface $publishedRepository
+     * @param ProductQueryBuilderFactoryInterface $queryBuilderFactory
+     * @param ChannelRepositoryInterface          $channelRepository
+     * @param LocaleRepositoryInterface           $localeRepository
      */
     public function __construct(
         PublishedProductRepositoryInterface $publishedRepository,

@@ -64,15 +64,15 @@ class PublishedProductController
     protected $authorizationChecker;
 
     /**
-     * @param RequestStack                                                    $requestStack
-     * @param RouterInterface                                                 $router
-     * @param EngineInterface                                                 $templating
-     * @param TranslatorInterface                                             $translator
-     * @param UserContext                                                     $userContext
-     * @param PublishedProductManager                                         $manager
-     * @param CompletenessManager                                             $completenessManager
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
-     * @param AuthorizationCheckerInterface                                   $authorizationChecker
+     * @param RequestStack                  $requestStack
+     * @param RouterInterface               $router
+     * @param EngineInterface               $templating
+     * @param TranslatorInterface           $translator
+     * @param UserContext                   $userContext
+     * @param PublishedProductManager       $manager
+     * @param CompletenessManager           $completenessManager
+     * @param ChannelRepositoryInterface    $channelRepository
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         RequestStack $requestStack,

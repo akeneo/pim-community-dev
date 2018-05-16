@@ -37,8 +37,8 @@ interface VariationBuilderInterface
     public function buildMissing(ReferenceInterface $reference);
 
     /**
-     * @param ReferenceInterface                               $reference
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param ReferenceInterface $reference
+     * @param ChannelInterface   $channel
      *
      * @throws \LogicException in case it's impossible to build the variation
      *

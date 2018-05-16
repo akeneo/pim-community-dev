@@ -42,8 +42,8 @@ interface AssetFinderInterface
     public function retrieveVariationsNotGenerated(AssetInterface $asset = null);
 
     /**
-     * @param ReferenceInterface                               $reference
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param ReferenceInterface $reference
+     * @param ChannelInterface   $channel
      *
      * @throws \LogicException
      *

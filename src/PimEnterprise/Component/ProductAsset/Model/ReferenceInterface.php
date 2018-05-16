@@ -90,7 +90,7 @@ interface ReferenceInterface
     public function removeVariation(VariationInterface $variation);
 
     /**
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param ChannelInterface $channel
      *
      * @return VariationInterface|null
      */

@@ -81,7 +81,7 @@ interface ProjectInterface
     public function setOwner(UserInterface $owner);
 
     /**
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface
+     * @return ChannelInterface
      */
     public function getChannel();
 

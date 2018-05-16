@@ -25,16 +25,16 @@ interface ChannelVariationsConfigurationInterface
     public function getId();
 
     /**
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface
+     * @return ChannelInterface
      */
     public function getChannel();
 
     /**
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param ChannelInterface $channel
      *
      * @return ChannelVariationsConfigurationInterface
      */
-    public function setChannel(\Akeneo\Channel\Component\Model\ChannelInterface $channel);
+    public function setChannel(ChannelInterface $channel);
 
     /**
      * @return array

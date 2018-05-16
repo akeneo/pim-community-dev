@@ -151,7 +151,7 @@ class Reference implements ReferenceInterface
     /**
      * {@inheritdoc}
      */
-    public function getVariation(\Akeneo\Channel\Component\Model\ChannelInterface $channel)
+    public function getVariation(ChannelInterface $channel)
     {
         if ($this->getVariations()->isEmpty()) {
             return null;
@@ -169,7 +169,7 @@ class Reference implements ReferenceInterface
     /**
      * {@inheritdoc}
      */
-    public function hasVariation(\Akeneo\Channel\Component\Model\ChannelInterface $channel)
+    public function hasVariation(ChannelInterface $channel)
     {
         return null !== $this->getVariation($channel);
     }

@@ -280,7 +280,7 @@ class AssetVariationController
      *
      * @throws NotFoundHttpException
      *
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface
+     * @return ChannelInterface
      */
     protected function getChannel(string $channelCode): ChannelInterface
     {
@@ -355,8 +355,8 @@ class AssetVariationController
     }
 
     /**
-     * @param null|LocaleInterface                             $locale
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param null|LocaleInterface $locale
+     * @param ChannelInterface     $channel
      *
      * @throws NotFoundHttpException
      */

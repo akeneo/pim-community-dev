@@ -41,16 +41,16 @@ class UserContext extends BaseUserContext
     protected $treeOptionKey;
 
     /**
-     * @param TokenStorageInterface                                           $tokenStorage
-     * @param LocaleRepositoryInterface                                       $localeRepository
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
-     * @param CategoryRepositoryInterface                                     $categoryRepository
-     * @param RequestStack                                                    $requestStack
-     * @param ChoicesBuilderInterface                                         $choicesBuilder
-     * @param AuthorizationCheckerInterface                                   $authorizationChecker
-     * @param CategoryAccessRepository                                        $categoryAccessRepo
-     * @param string                                                          $defaultLocale
-     * @param string                                                          $treeOptionKey
+     * @param TokenStorageInterface         $tokenStorage
+     * @param LocaleRepositoryInterface     $localeRepository
+     * @param ChannelRepositoryInterface    $channelRepository
+     * @param CategoryRepositoryInterface   $categoryRepository
+     * @param RequestStack                  $requestStack
+     * @param ChoicesBuilderInterface       $choicesBuilder
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param CategoryAccessRepository      $categoryAccessRepo
+     * @param string                        $defaultLocale
+     * @param string                        $treeOptionKey
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,

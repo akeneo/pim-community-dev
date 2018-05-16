@@ -131,7 +131,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     }
 
     /**
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param ChannelInterface $channel
      *
      * @throws \LogicException
      *
@@ -184,9 +184,9 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      *      this_is_my_source_file-en_US-ecommerce.txt or
      *      this_is_my_source_file-ecommerce.txt
      *
-     * @param FileInfoInterface                                $sourceFileInfo
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param LocaleInterface                                  $locale
+     * @param FileInfoInterface $sourceFileInfo
+     * @param ChannelInterface  $channel
+     * @param LocaleInterface   $locale
      *
      * @return string
      */

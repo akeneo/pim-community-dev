@@ -123,7 +123,7 @@ interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, Cate
      *
      * @return bool
      */
-    public function hasVariation(\Akeneo\Channel\Component\Model\ChannelInterface $channel, LocaleInterface $locale = null);
+    public function hasVariation(ChannelInterface $channel, LocaleInterface $locale = null);
 
     /**
      * @return bool

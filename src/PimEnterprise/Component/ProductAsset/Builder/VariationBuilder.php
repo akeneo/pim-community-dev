@@ -100,8 +100,8 @@ class VariationBuilder implements VariationBuilderInterface
      *    - either the reference has no locale
      *    - either the reference has a locale, this locale is activated and belongs to the channel
      *
-     * @param ReferenceInterface                               $reference
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param ReferenceInterface $reference
+     * @param ChannelInterface   $channel
      *
      * @return bool
      */

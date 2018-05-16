@@ -25,8 +25,8 @@ interface FamilyRequirementRepositoryInterface
      * Find attribute group identifiers which have at least one attribute required
      * by a family and a channel.
      *
-     * @param FamilyInterface                                  $family
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param FamilyInterface  $family
+     * @param ChannelInterface $channel
      *
      * @return string[]
      */

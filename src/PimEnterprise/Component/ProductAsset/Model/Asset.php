@@ -232,7 +232,7 @@ class Asset implements AssetInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
-    public function getVariation(\Akeneo\Channel\Component\Model\ChannelInterface $channel, LocaleInterface $locale = null)
+    public function getVariation(ChannelInterface $channel, LocaleInterface $locale = null)
     {
         foreach ($this->getVariations() as $variation) {
             if ($variation->getChannel() === $channel && $variation->getLocale() === $locale) {
@@ -330,7 +330,7 @@ class Asset implements AssetInterface, VersionableInterface
      *
      * {@inheritdoc}
      */
-    public function getFileForContext(\Akeneo\Channel\Component\Model\ChannelInterface $channel, LocaleInterface $locale = null)
+    public function getFileForContext(ChannelInterface $channel, LocaleInterface $locale = null)
     {
         $reference = $this->getReference($locale);
 

@@ -27,7 +27,7 @@ class Variation implements VariationInterface
     /** @var ReferenceInterface */
     protected $reference;
 
-    /** @var \Akeneo\Channel\Component\Model\ChannelInterface */
+    /** @var ChannelInterface */
     protected $channel;
 
     /** @var FileInfoInterface */
@@ -109,7 +109,7 @@ class Variation implements VariationInterface
     /**
      * {@inheritdoc}
      */
-    public function setChannel(\Akeneo\Channel\Component\Model\ChannelInterface $channel)
+    public function setChannel(ChannelInterface $channel)
     {
         $this->channel = $channel;
 
