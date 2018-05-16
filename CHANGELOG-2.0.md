@@ -1,3 +1,7 @@
+# 2.0.x
+
+- PIM-7337: Fix completeness popup when no label on attribute
+
 # 2.0.24 (2018-05-16)
 
 ## Bug fixes
