@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\Akeneo\Channel\Component\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
@@ -10,7 +10,7 @@ class CurrencyUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\CurrencyUpdater');
+        $this->shouldHaveType('Akeneo\Channel\Component\Updater\CurrencyUpdater');
     }
 
     function it_is_an_updater()
