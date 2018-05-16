@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Channel\Bundle\Doctrine\Repository;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
