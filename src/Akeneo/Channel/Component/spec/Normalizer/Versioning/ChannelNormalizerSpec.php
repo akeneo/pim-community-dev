@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
+namespace spec\Akeneo\Channel\Component\Normalizer\Versioning;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Normalizer\Standard;
-use Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer;
+use Akeneo\Channel\Component\Normalizer\Versioning\ChannelNormalizer;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Prophecy\Argument;
