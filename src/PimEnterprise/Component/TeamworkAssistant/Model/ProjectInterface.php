@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Model;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\User\Model\GroupInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

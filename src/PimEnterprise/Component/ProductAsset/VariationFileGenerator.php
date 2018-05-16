@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
@@ -18,7 +19,6 @@ use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;

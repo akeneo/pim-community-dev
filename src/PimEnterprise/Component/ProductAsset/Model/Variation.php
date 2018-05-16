@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * Product asset variation

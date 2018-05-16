@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -28,7 +29,6 @@ use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;

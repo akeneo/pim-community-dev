@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Remover;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
 
 /**
