@@ -15,7 +15,6 @@ parameters:
     pim_catalog.model.attribute_requirement.interface:  Pim\Component\Catalog\Model\AttributeRequirementInterface
     pim_catalog.model.family.interface:                 Pim\Component\Catalog\Model\FamilyInterface
     pim_catalog.model.family_variant.interface:         Pim\Component\Catalog\Model\FamilyVariantInterface
-    pim_catalog.model.channel.interface:                Pim\Component\Catalog\Model\ChannelInterface
     pim_catalog.model.currency.interface:               Pim\Component\Catalog\Model\CurrencyInterface
     pim_catalog.model.metric.interface:                 Pim\Component\Catalog\Model\MetricInterface
     pim_catalog.model.product_price.interface:          Pim\Component\Catalog\Model\ProductPriceInterface
@@ -27,5 +26,3 @@ parameters:
     pim_catalog.model.attribute_translation.interface:        Pim\Component\Catalog\Model\AttributeTranslationInterface
     pim_catalog.model.group_translation.interface:            Pim\Component\Catalog\Model\GroupTranslationInterface
     pim_catalog.model.group_type_translation.interface:       Pim\Component\Catalog\Model\GroupTypeTranslationInterface
-    pim_catalog.model.channel_translation.interface:          Pim\Component\Catalog\Model\ChannelTranslationInterface
-

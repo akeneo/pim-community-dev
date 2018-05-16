@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -14,11 +16,9 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -41,7 +41,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ChannelRepositoryInterface */
+    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var AttributeRequirementFactory */
@@ -54,12 +54,12 @@ class FamilyUpdater implements ObjectUpdaterInterface
     protected $translatableUpdater;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface   $familyRepository
-     * @param AttributeRepositoryInterface            $attributeRepository
-     * @param ChannelRepositoryInterface              $channelRepository
-     * @param AttributeRequirementFactory             $attrRequiFactory
-     * @param AttributeRequirementRepositoryInterface $requirementRepo
-     * @param TranslatableUpdater                     $translatableUpdater
+     * @param IdentifiableObjectRepositoryInterface                           $familyRepository
+     * @param AttributeRepositoryInterface                                    $attributeRepository
+     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
+     * @param AttributeRequirementFactory                                     $attrRequiFactory
+     * @param AttributeRequirementRepositoryInterface                         $requirementRepo
+     * @param TranslatableUpdater                                             $translatableUpdater
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
@@ -307,9 +307,9 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface    $family
-     * @param AttributeInterface $attribute
-     * @param ChannelInterface   $channel
+     * @param FamilyInterface                                  $family
+     * @param AttributeInterface                               $attribute
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @throws InvalidPropertyException
      *

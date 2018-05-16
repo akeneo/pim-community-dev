@@ -2,18 +2,18 @@
 
 namespace Pim\Component\Catalog\Manager;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 /**
@@ -29,7 +29,7 @@ class CompletenessManager
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
-    /** @var ChannelRepositoryInterface */
+    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var LocaleRepositoryInterface */
@@ -81,7 +81,7 @@ class CompletenessManager
     /**
      * Insert missing completenesses for a given channel
      *
-     * @param ChannelInterface $channel
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
@@ -124,10 +124,10 @@ class CompletenessManager
     /**
      * Returns an array containing all completeness info and missing attributes for a product
      *
-     * @param ProductInterface   $product
-     * @param ChannelInterface[] $channels
-     * @param LocaleInterface[]  $locales
-     * @param string             $localeCode
+     * @param ProductInterface                                   $product
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface[] $channels
+     * @param LocaleInterface[]                                  $locales
+     * @param string                                             $localeCode
      *
      * @return array
      * [

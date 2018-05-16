@@ -1,8 +1,18 @@
 parameters:
+    pim_catalog.model.channel.interface: 'Akeneo\Channel\Component\Model\ChannelInterface'
     akeneo_channel.model.locale.interface: 'Akeneo\Channel\Component\Model\LocaleInterface'
     pim_catalog.entity.locale.class: 'Akeneo\Channel\Component\Model\Locale'
+    pim_catalog.entity.channel.class: 'Akeneo\Channel\Component\Model\Channel'
+    pim_catalog.model.channel_translation.interface: 'Akeneo\Channel\Component\Model\ChannelTranslationInterface'
+    pim_catalog.entity.channel_translation.class: 'Akeneo\Channel\Component\Model\ChannelTranslation'
 
 services:
+    ### Locale
+    pim_catalog.normalizer.standard.locale:
+        class: 'Akeneo\Channel\Component\Normalizer\Standard\LocaleNormalizer'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
     pim_catalog.repository.locale:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository'
         factory: 'doctrine.orm.entity_manager:getRepository'
@@ -30,3 +40,76 @@ services:
             - '@pim_catalog.repository.cached_locale'
         tags:
             - { name: validator.constraint_validator, alias: pim_activated_locale_validator }
+
+    pim_catalog.updater.locale:
+        class: 'Akeneo\Channel\Component\Updater\LocaleUpdater'
+
+    pim_enrich.event_subscriber.storage.channel_locale:
+        class: 'Akeneo\Channel\Bundle\EventListener\ChannelLocaleSubscriber'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.saver.locale'
+            - '@pim_catalog.command_launcher'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ### Channel
+    pim_catalog.repository.channel:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%pim_catalog.entity.channel.class%']
+        tags:
+            - { name: 'pim_repository' }
+
+    pim_catalog.normalizer.standard.channel:
+        class: 'Akeneo\Channel\Component\Normalizer\Standard\ChannelNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.updater.channel:
+        class: 'Akeneo\Channel\Component\Updater\ChannelUpdater'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_measure.manager'
+            - '@pim_localization.updater.translatable'
+
+    pim_catalog.remover.channel:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Remover\ChannelRemover'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '@pim_catalog.repository.channel'
+            - '@translator'
+            - '%pim_catalog.entity.channel.class%'
+
+    pim_enrich.normalizer.channel:
+        class: 'Akeneo\Channel\Component\Normalizer\InternalApi\ChannelNormalizer'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_enrich.normalizer.locale'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_catalog.filter.chained'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_versioning.serializer.normalizer.flat.channel:
+        class: 'Akeneo\Channel\Component\Normalizer\Versioning\ChannelNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.channel'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.channel:
+        class: 'Akeneo\Channel\Component\Normalizer\ExternalApi\ChannelNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.channel'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

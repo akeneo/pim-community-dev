@@ -53,7 +53,7 @@ Pim\Bundle\CatalogBundle\Entity\Category:
                 - detach
             orphanRemoval: true
         channels:
-            targetEntity: Pim\Component\Catalog\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
             mappedBy: category
         children:
             targetEntity: Pim\Component\Catalog\Model\CategoryInterface

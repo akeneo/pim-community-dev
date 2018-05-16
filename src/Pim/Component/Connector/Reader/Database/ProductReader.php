@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Connector\Reader\Database;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -10,9 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * Storage-agnostic product reader using the Product Query Builder
@@ -48,11 +48,11 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     private $firstRead = true;
 
     /**
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param ChannelRepositoryInterface          $channelRepository
-     * @param CompletenessManager                 $completenessManager
-     * @param MetricConverter                     $metricConverter
-     * @param bool                                $generateCompleteness
+     * @param ProductQueryBuilderFactoryInterface                             $pqbFactory
+     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
+     * @param CompletenessManager                                             $completenessManager
+     * @param MetricConverter                                                 $metricConverter
+     * @param bool                                                            $generateCompleteness
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -125,7 +125,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
      *
      * @throws ObjectNotFoundException
      *
-     * @return ChannelInterface|null
+     * @return \Akeneo\Channel\Component\Model\ChannelInterface|null
      */
     protected function getConfiguredChannel()
     {
@@ -163,8 +163,8 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     }
 
     /**
-     * @param array            $filters
-     * @param ChannelInterface $channel
+     * @param array                                            $filters
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @return CursorInterface
      */

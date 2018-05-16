@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\EntityWithFamily;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
@@ -23,8 +23,8 @@ class RequiredValueCollectionFactory
     /**
      * Create a collection of required values from family's attribute requirements for the given $channel.
      *
-     * @param FamilyInterface  $family
-     * @param ChannelInterface $channel
+     * @param FamilyInterface                                  $family
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @return RequiredValueCollection
      */
@@ -54,8 +54,8 @@ class RequiredValueCollectionFactory
     }
 
     /**
-     * @param FamilyInterface  $family
-     * @param ChannelInterface $channel
+     * @param FamilyInterface                                  $family
+     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
      *
      * @return Collection
      */
