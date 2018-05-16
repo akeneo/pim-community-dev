@@ -12,6 +12,11 @@ pim_user:
     tab:
       general.title: Yleinen
       users.title: Käyttäjät
+  roles:
+    tab:
+      general: Yleinen
+      action: Käyttöoikeudet
+      users: Käyttäjät
 oro.user.controller:
   group.message.saved: "Ryhmä tallennettu"
   role.message.saved: "Rooli tallennettu"
@@ -103,8 +108,6 @@ role:
   edit: Muokkaa roolia
   create: Luo rooli
 btn.create.role: Luo rooli
-rights:
-  action: Käyttöoikeudet
 oro_security:
   acl_group:
     user: Käyttäjät

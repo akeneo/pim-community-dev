@@ -1,15 +1,7 @@
 pim_dashboard:
   title: Tableau de bord
   version: Version
-  link.label:
-    product: Gérer les produits
-    category: Gérer les catégories
-    attribute: Gérer les attributs
-    family: Gérer les familles
   widget:
-    error:
-      title: Erreur lors du chargement du widget
-      message: Le widget "%alias%" n'existe pas
     completeness:
       title: Complétude par canal et par locale
     last_operations:

@@ -12,6 +12,11 @@ pim_user:
     tab:
       general.title: Allmänna
       users.title: Användare
+  roles:
+    tab:
+      general: Allmänna
+      action: Behörigheter
+      users: Användare
 oro.user.controller:
   group.message.saved: "Grupp sparad"
   role.message.saved: "Roll sparad"
@@ -103,8 +108,6 @@ role:
   edit: Redigera roll
   create: Skapa roll
 btn.create.role: Skapa roll
-rights:
-  action: Behörigheter
 oro_security:
   acl_group:
     user: Användare

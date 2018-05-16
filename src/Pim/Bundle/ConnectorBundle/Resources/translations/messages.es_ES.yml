@@ -1,31 +1,7 @@
 pim_connector:
   steps:
-    dummy_reader.title: Lector de prueba
-    product_reader.title: Extracción de productos
-    entity_reader.title: Extracción de entidades
-    csv_reader:
-      title: Lector de CSV
     file_reader:
       invalid_item_columns_count: 'Se esperan tener %totalColumnsCount% columnas, actualmente hay %itemColumnsCount% en %filePath%:%lineno%'
-    csv_product_reader.title: Lector CSV de productos
-    csv_category_reader.title: Lector CSV de categorías
-    dummy_processor.title: Procesador de prueba
-    product_processor.title: Creación de productos
-    category_processor.title: Creación de categorías
-    association_processor.title: Creación de asociaciones
-    product_association_processor.title: Creación de asociaciones
-    group_processor.title: Creación de grupos
-    attribute_processor.title: Creación de atributos
-    attribute_option_processor.title: Creación de opciones de atributos
-    heterogeneous_processor.title: Serializador CSV de productos
-    homogeneous_processor.title: Serializador CSV de entidades
-    transformer_processor.title: Transformación
-    dummy_writer.title: Escritor de prueba
-    file_writer.title: Salida
-    product_writer.title: Almacenamiento de productos
-    category_writer.title: Almacenamiento de categorías
-    writer.title: Almacenamiento de entidades
-    csv_writer.title: Editor Csv
 job_execution.summary:
   read: leer
   write: escrito

@@ -12,6 +12,11 @@ pim_user:
     tab:
       general.title: Generale
       users.title: Utenti
+  roles:
+    tab:
+      general: Generale
+      action: Autorizzazioni
+      users: Utenti
 oro.user.controller:
   group.message.saved: "Gruppo salvato"
   role.message.saved: "Ruolo salvato"
@@ -103,8 +108,6 @@ role:
   edit: Modifica ruolo
   create: Crea Ruolo
 btn.create.role: Crea Ruolo
-rights:
-  action: Autorizzazioni
 oro_security:
   acl_group:
     user: Utenti

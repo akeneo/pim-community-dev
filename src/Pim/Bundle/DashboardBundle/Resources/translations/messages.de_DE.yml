@@ -1,15 +1,7 @@
 pim_dashboard:
   title: Dashboard
   version: Version
-  link.label:
-    product: Produkte verwalten
-    category: Kategorien verwalten
-    attribute: Attribute verwalten
-    family: Produktfamilien verwalten
   widget:
-    error:
-      title: Fehler beim Laden des Widgets
-      message: Widget '%alias%' ist nicht vorhanden
     completeness:
       title: Vollständigkeit über Ausgabekanäle und Gebietsschemata
     last_operations:

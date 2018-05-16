@@ -1,0 +1,8 @@
+pim_catalog_volume:
+  axis:
+    count_products: Productos
+    count_channels: Canales
+    count_families: Familias
+    count_attributes: Atributos
+    count_categories: Categorías
+    count_category_trees: Árbol de categoría

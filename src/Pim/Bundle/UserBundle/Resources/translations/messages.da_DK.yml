@@ -12,6 +12,11 @@ pim_user:
     tab:
       general.title: Generelt
       users.title: Brugere
+  roles:
+    tab:
+      general: Generelt
+      action: Rettigheder
+      users: Brugere
 oro.user.controller:
   group.message.saved: "Gruppe gemt"
   role.message.saved: "Rolle gemt"
@@ -103,8 +108,6 @@ role:
   edit: Rediger rolle
   create: Opret rolle
 btn.create.role: Opret rolle
-rights:
-  action: Rettigheder
 oro_security:
   acl_group:
     user: Brugere
