@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ChannelNormalizerSpec extends ObjectBehavior
 {
     function let(
-        \Akeneo\Channel\Component\Normalizer\Standard\ChannelNormalizer $channelNormalizerStandard,
+        ChannelNormalizer $channelNormalizerStandard,
         TranslationNormalizer $translationNormalizer
     ) {
         $this->beConstructedWith($channelNormalizerStandard, $translationNormalizer);

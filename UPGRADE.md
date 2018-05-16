@@ -62,7 +62,6 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Classificati
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\ClassificationBundle/Akeneo\\Tool\\Bundle\\ClassificationBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\BufferBundle/Akeneo\\Tool\\Bundle\\BufferBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Bundle\\ApiBundle\\Controller\\ChannelController/Akeneo\\Channel\\Bundle\\Controller\\ExternalApi\\ChannelController/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Bundle\\ApiBundle\\Controller\\ChannelController/Akeneo\\Channel\\Bundle\\Controller\\ExternalApi\\ChannelController/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Remover\\ChannelRemover/Akeneo\\Channel\\Bundle\\Doctrine\\Remover\\ChannelRemover/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\ChannelRepository/Akeneo\\Channel\\Bundle\\Doctrine\\Repository\\ChannelRepository/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\EventListener\\Storage\\ChannelLocaleSubscriber/Akeneo\\Channel\\Bundle\\EventListener\\ChannelLocaleSubscriber/g'
