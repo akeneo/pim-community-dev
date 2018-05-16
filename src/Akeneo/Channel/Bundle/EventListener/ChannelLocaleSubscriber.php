@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\EventListener\Storage;
+namespace Akeneo\Channel\Bundle\EventListener;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
@@ -38,24 +38,19 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     protected $tokenStorage;
 
     /**
-     * @param LocaleRepositoryInterface      $repository
-     * @param BulkSaverInterface             $saver
-     * @param CompletenessRemoverInterface   $completenessRemover
-     * @param CommandLauncher                $commandLauncher
-     *
-     * TODO: Pull-up day. During merge in master remove = null
-     * and $completenessRemover can be remove as it is not used anymore
+     * @param LocaleRepositoryInterface $repository
+     * @param BulkSaverInterface        $saver
+     * @param CommandLauncher           $commandLauncher
+     * @param TokenStorageInterface     $tokenStorage
      */
     public function __construct(
         LocaleRepositoryInterface $repository,
         BulkSaverInterface $saver,
-        CompletenessRemoverInterface $completenessRemover,
-        CommandLauncher $commandLauncher = null,
-        TokenStorageInterface $tokenStorage = null
+        CommandLauncher $commandLauncher,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->repository = $repository;
         $this->saver = $saver;
-        $this->completenessRemover = $completenessRemover;
         $this->commandLauncher = $commandLauncher;
         $this->tokenStorage = $tokenStorage;
     }
@@ -106,33 +101,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        /**
-         * TODO: Pull-up day. During merge in master remove condition and `else` part.
-         */
-        if (null !== $this->commandLauncher && null !== $this->tokenStorage) {
-            $this->updateChannelInBackend($channel);
-        } else {
-            $oldLocales = $this->repository->getDeletedLocalesForChannel($channel);
-            $newLocales = $channel->getLocales();
-            $updatedLocales = [];
-
-            foreach ($oldLocales as $locale) {
-                $locale->removeChannel($channel);
-                $updatedLocales[] = $locale;
-                $this->completenessRemover->removeForChannelAndLocale($channel, $locale);
-            }
-
-            foreach ($newLocales as $locale) {
-                if (!$locale->hasChannel($channel)) {
-                    $locale->addChannel($channel);
-                }
-                $updatedLocales[] = $locale;
-            }
-
-            if (!empty($updatedLocales)) {
-                $this->saver->saveAll($updatedLocales);
-            }
-        }
+        $this->updateChannelInBackend($channel);
     }
 
     /**

@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\EventListener\Storage;
+namespace spec\Akeneo\Channel\Bundle\EventListener;
 
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber;
+use Akeneo\Channel\Bundle\EventListener\ChannelLocaleSubscriber;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
@@ -21,11 +21,10 @@ class ChannelLocaleSubscriberSpec extends ObjectBehavior
     function let(
         LocaleRepositoryInterface $repository,
         BulkSaverInterface $saver,
-        CompletenessRemoverInterface $completeness,
         CommandLauncher $commandLauncher,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->beConstructedWith($repository, $saver, $completeness, $commandLauncher, $tokenStorage);
+        $this->beConstructedWith($repository, $saver, $commandLauncher, $tokenStorage);
     }
 
     function it_is_initializable()
