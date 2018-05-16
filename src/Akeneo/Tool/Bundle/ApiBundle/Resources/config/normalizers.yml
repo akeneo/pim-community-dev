@@ -10,7 +10,6 @@ parameters:
     pim_api.normalizer.attribute_option.class: Akeneo\Tool\Component\Api\Normalizer\AttributeOptionNormalizer
     pim_api.normalizer.attribute_group.class: Akeneo\Tool\Component\Api\Normalizer\AttributeGroupNormalizer
     pim_api.normalizer.file.class: Akeneo\Tool\Component\Api\Normalizer\FileNormalizer
-    pim_api.normalizer.currency.class: Akeneo\Tool\Component\Api\Normalizer\CurrencyNormalizer
     pim_api.normalizer.association_type.class: Akeneo\Tool\Component\Api\Normalizer\AssociationTypeNormalizer
 
 services:
@@ -98,13 +97,6 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.file'
             - '@router'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_api.normalizer.currency:
-        class: '%pim_api.normalizer.currency.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.currency'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
