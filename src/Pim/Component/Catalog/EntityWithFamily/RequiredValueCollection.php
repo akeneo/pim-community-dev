@@ -81,6 +81,10 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
                     return false;
                 }
 
+                if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
+                    return false;
+                }
+
                 return true;
             }
         );
