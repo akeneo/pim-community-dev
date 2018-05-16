@@ -83,6 +83,7 @@
 - Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover` to `Akeneo\Channel\Bundle\Doctrine\Remover\ChannelRemover`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository`
 - Move `Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber` to `Akeneo\Channel\Bundle\EventListener\ChannelLocaleSubscriber`
+- Change constructor of `Akeneo\Channel\Bundle\EventListener\ChannelLocaleSubscriber`, remove `Pim\Component\Catalog\Completeness\CompletenessRemoverInterface` argument  
 - Move `Pim\Bundle\CatalogBundle\Entity\Channel` to `Akeneo\Channel\Component\Model\Channel`
 - Move `Pim\Component\Catalog\Model\ChannelInterface` to `Akeneo\Channel\Component\Model\ChannelInterface`
 - Move `Pim\Bundle\CatalogBundle\Entity\ChannelTranslation` to `Akeneo\Channel\Component\Model\ChannelTranslation`
