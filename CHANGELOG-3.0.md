@@ -10,7 +10,6 @@
 
 ## BC breaks
 
-- Move `Pim\Component\Catalog\Model\CurrencyInterface` to `Akeneo\Channel\Component\Model\CurrencyInterface`
 - Move `Pim\Component\Catalog\Validator\Constraints\ActivatedLocale` to `Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale`
 - Move `Pim\Component\Catalog\Validator\Constraints\Locale` to `Akeneo\Channel\Component\Validator\Constraint\Locale`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository`
@@ -100,3 +99,10 @@
 - Move `Akeneo\Tool\Component\Api\Normalizer\LocaleNormalizer` to `Akeneo\Channel\Component\Normalizer\ExternalApi\LocaleNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer` to `Akeneo\Channel\Component\Normalizer\InternalApi\LocaleNormalizer`
 - Move `Pim\Bundle\VersioningBundle\Normalizer\Flat` to `Akeneo\Channel\Component\Normalizer\Versioning`
+- Move `Pim\Component\Catalog\Model\CurrencyInterface` to `Akeneo\Channel\Component\Model\CurrencyInterface`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CurrencyRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\CurrencyRepository`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber\CurrencyDisablingSubscriber` to `Akeneo\Channel\Bundle\EventListener\CurrencyDisablingSubscriber`
+- Move `Akeneo\Tool\Component\Api\Normalizer\CurrencyNormalizer` to `Akeneo\Tool\Component\Api\Normalizer\CurrencyNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\CurrencyNormalizer` to `Akeneo\Channel\Component\Normalizer\Standard\CurrencyNormalizer`
+- Move `Pim\Component\Catalog\Repository\CurrencyRepositoryInterface` to `Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface`
+- Move `Pim\Component\Catalog\Updater\CurrencyUpdater` to `Akeneo\Channel\Component\Updater\CurrencyUpdater`

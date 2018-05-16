@@ -6,7 +6,6 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\CurrencyInterface/Akeneo\\Channel\\Component\\Model\\CurrencyInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.model.currency.interface/akeneo_channel.model.currency.interface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ActivatedLocale/Akeneo\\Channel\\Component\\Validator\\Constraint\\ActivatedLocale`/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\Locale/Akeneo\\Channel\\Component\\Validator\\Constraint\\Locale/g'
@@ -81,3 +80,11 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Update
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Tool\Component\Api\Normalizer\LocaleNormalizer/Akeneo\Channel\Component\Normalizer\ExternalApi\LocaleNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer/Akeneo\Channel\Component\Normalizer\InternalApi\LocaleNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\VersioningBundle\Normalizer\Flat/Akeneo\Channel\Component\Normalizer\Versioning/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\\\Component\\\\Catalog\\\\Model\\\\CurrencyInterface/Akeneo\\\\Channel\\\\Component\\\\Model\\\\CurrencyInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\CurrencyInterface/Akeneo\\Channel\\Component\\Model\\CurrencyInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\CurrencyRepository/Akeneo\\Channel\\Bundle\\Doctrine\\Repository\\CurrencyRepository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber\\CurrencyDisablingSubscriber/Akeneo\\Channel\\Bundle\\EventListener\\CurrencyDisablingSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Normalizer\\CurrencyNormalizer/Akeneo\\Tool\\Component\\Api\\Normalizer\\CurrencyNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Normalizer\\Standard\\CurrencyNormalizer/Akeneo\\Channel\\Component\\Normalizer\\Standard\\CurrencyNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\CurrencyRepositoryInterface/Akeneo\\Channel\\Component\\Repository\\CurrencyRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Updater\\CurrencyUpdater/Akeneo\\Channel\\Component\\Updater\\CurrencyUpdater/g'
