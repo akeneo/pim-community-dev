@@ -8,7 +8,6 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -27,9 +26,6 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
 
     /** @var BulkSaverInterface */
     protected $saver;
-
-    /** @var CompletenessRemoverInterface */
-    protected $completenessRemover;
 
     /** @var CommandLauncher */
     protected $commandLauncher;
