@@ -110,9 +110,9 @@ class CompletenessRemover implements CompletenessRemoverInterface
      * Drops the current completenesses from the database and from the index for
      * a list of products and optionally for a channel and/or locale.
      *
-     * @param CursorInterface                                       $products
-     * @param null|\Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param null|LocaleInterface                                  $locale
+     * @param CursorInterface       $products
+     * @param null|ChannelInterface $channel
+     * @param null|LocaleInterface  $locale
      */
     protected function bulkRemoveCompletenesses(
         CursorInterface $products,
@@ -201,9 +201,9 @@ class CompletenessRemover implements CompletenessRemoverInterface
     }
 
     /**
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param LocaleInterface                                  $locale
-     * @param array                                            $filters
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
+     * @param array            $filters
      *
      * @return ProductQueryBuilderInterface
      */

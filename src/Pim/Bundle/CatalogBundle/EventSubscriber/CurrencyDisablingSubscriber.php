@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class CurrencyDisablingSubscriber implements EventSubscriberInterface
 {
-    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
     /**

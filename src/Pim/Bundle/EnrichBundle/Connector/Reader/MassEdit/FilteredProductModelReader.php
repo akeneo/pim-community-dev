@@ -100,7 +100,7 @@ class FilteredProductModelReader implements
      *
      * @throws ObjectNotFoundException
      *
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface|null
+     * @return ChannelInterface|null
      */
     private function getConfiguredChannel(): ?ChannelInterface
     {
@@ -138,8 +138,8 @@ class FilteredProductModelReader implements
     }
 
     /**
-     * @param array                                                 $filters
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface|null $channel
+     * @param array                 $filters
+     * @param ChannelInterface|null $channel
      *
      * @return CursorInterface
      */

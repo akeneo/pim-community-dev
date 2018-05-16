@@ -133,9 +133,9 @@ class ChannelUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param string                                           $field
-     * @param mixed                                            $data
+     * @param ChannelInterface $channel
+     * @param string           $field
+     * @param mixed            $data
      *
      * @throws InvalidPropertyException
      */
@@ -164,8 +164,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param string                                           $treeCode
+     * @param ChannelInterface $channel
+     * @param string           $treeCode
      *
      * @throws InvalidPropertyException
      */
@@ -185,8 +185,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param array                                            $currencyCodes
+     * @param ChannelInterface $channel
+     * @param array            $currencyCodes
      *
      * @throws InvalidPropertyException
      */
@@ -212,8 +212,8 @@ class ChannelUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param array                                            $localeCodes
+     * @param ChannelInterface $channel
+     * @param array            $localeCodes
      *
      * @throws InvalidPropertyException
      */

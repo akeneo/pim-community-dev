@@ -41,7 +41,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var AttributeRequirementFactory */
@@ -54,12 +54,12 @@ class FamilyUpdater implements ObjectUpdaterInterface
     protected $translatableUpdater;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface                           $familyRepository
-     * @param AttributeRepositoryInterface                                    $attributeRepository
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
-     * @param AttributeRequirementFactory                                     $attrRequiFactory
-     * @param AttributeRequirementRepositoryInterface                         $requirementRepo
-     * @param TranslatableUpdater                                             $translatableUpdater
+     * @param IdentifiableObjectRepositoryInterface   $familyRepository
+     * @param AttributeRepositoryInterface            $attributeRepository
+     * @param ChannelRepositoryInterface              $channelRepository
+     * @param AttributeRequirementFactory             $attrRequiFactory
+     * @param AttributeRequirementRepositoryInterface $requirementRepo
+     * @param TranslatableUpdater                     $translatableUpdater
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
@@ -307,9 +307,9 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface                                  $family
-     * @param AttributeInterface                               $attribute
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param FamilyInterface    $family
+     * @param AttributeInterface $attribute
+     * @param ChannelInterface   $channel
      *
      * @throws InvalidPropertyException
      *

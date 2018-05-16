@@ -29,7 +29,7 @@ class CompletenessManager
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
-    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var LocaleRepositoryInterface */
@@ -81,7 +81,7 @@ class CompletenessManager
     /**
      * Insert missing completenesses for a given channel
      *
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param ChannelInterface $channel
      */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
@@ -124,10 +124,10 @@ class CompletenessManager
     /**
      * Returns an array containing all completeness info and missing attributes for a product
      *
-     * @param ProductInterface                                   $product
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface[] $channels
-     * @param LocaleInterface[]                                  $locales
-     * @param string                                             $localeCode
+     * @param ProductInterface   $product
+     * @param ChannelInterface[] $channels
+     * @param LocaleInterface[]  $locales
+     * @param string             $localeCode
      *
      * @return array
      * [

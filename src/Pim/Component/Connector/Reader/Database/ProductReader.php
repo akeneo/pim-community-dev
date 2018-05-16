@@ -48,11 +48,11 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     private $firstRead = true;
 
     /**
-     * @param ProductQueryBuilderFactoryInterface                             $pqbFactory
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
-     * @param CompletenessManager                                             $completenessManager
-     * @param MetricConverter                                                 $metricConverter
-     * @param bool                                                            $generateCompleteness
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param ChannelRepositoryInterface          $channelRepository
+     * @param CompletenessManager                 $completenessManager
+     * @param MetricConverter                     $metricConverter
+     * @param bool                                $generateCompleteness
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -125,7 +125,7 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
      *
      * @throws ObjectNotFoundException
      *
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface|null
+     * @return ChannelInterface|null
      */
     protected function getConfiguredChannel()
     {
@@ -163,8 +163,8 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     }
 
     /**
-     * @param array                                            $filters
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param array            $filters
+     * @param ChannelInterface $channel
      *
      * @return CursorInterface
      */

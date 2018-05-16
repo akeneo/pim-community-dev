@@ -939,7 +939,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setCatalogScope(\Akeneo\Channel\Component\Model\ChannelInterface $catalogScope)
+    public function setCatalogScope(ChannelInterface $catalogScope)
     {
         $this->catalogScope = $catalogScope;
 

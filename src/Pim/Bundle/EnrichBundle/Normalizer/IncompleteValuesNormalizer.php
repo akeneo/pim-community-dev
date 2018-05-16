@@ -25,7 +25,7 @@ class IncompleteValuesNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $normalizer;
 
-    /** @var \Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory */
+    /** @var RequiredValueCollectionFactory */
     private $requiredValueCollectionFactory;
 
     /** @var IncompleteValueCollectionFactory */

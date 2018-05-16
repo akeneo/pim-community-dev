@@ -163,7 +163,7 @@ class UserContext
     /**
      * Get user channel
      *
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface
+     * @return ChannelInterface
      */
     public function getUserChannel(): ChannelInterface
     {

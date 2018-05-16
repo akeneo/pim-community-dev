@@ -23,8 +23,8 @@ class RequiredValueCollectionFactory
     /**
      * Create a collection of required values from family's attribute requirements for the given $channel.
      *
-     * @param FamilyInterface                                  $family
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param FamilyInterface  $family
+     * @param ChannelInterface $channel
      *
      * @return RequiredValueCollection
      */
@@ -54,8 +54,8 @@ class RequiredValueCollectionFactory
     }
 
     /**
-     * @param FamilyInterface                                  $family
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param FamilyInterface  $family
+     * @param ChannelInterface $channel
      *
      * @return Collection
      */

@@ -67,7 +67,7 @@ class ProductNormalizer implements NormalizerInterface
     /** @var CompletenessManager */
     protected $completenessManager;
 
-    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var CollectionFilterInterface */
@@ -105,20 +105,20 @@ class ProductNormalizer implements NormalizerInterface
      * @param NormalizerInterface                       $versionNormalizer
      * @param VersionManager                            $versionManager
      * @param ImageNormalizer                           $imageNormalizer
-     * @param LocaleRepositoryInterface                                       $localeRepository
-     * @param StructureVersionProviderInterface                               $structureVersionProvider
-     * @param FormProviderInterface                                           $formProvider
-     * @param AttributeConverterInterface                                     $localizedConverter
-     * @param ConverterInterface                                              $productValueConverter
-     * @param ObjectManager                                                   $productManager
-     * @param CompletenessManager                                             $completenessManager
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
-     * @param CollectionFilterInterface                                       $collectionFilter
-     * @param NormalizerInterface                                             $completenessCollectionNormalizer
-     * @param UserContext                                                     $userContext
-     * @param CompletenessCalculatorInterface                                 $completenessCalculator
-     * @param ProductBuilderInterface                                         $productBuilder
-     * @param EntityWithFamilyValuesFillerInterface                           $productValuesFiller
+     * @param LocaleRepositoryInterface                 $localeRepository
+     * @param StructureVersionProviderInterface         $structureVersionProvider
+     * @param FormProviderInterface                     $formProvider
+     * @param AttributeConverterInterface               $localizedConverter
+     * @param ConverterInterface                        $productValueConverter
+     * @param ObjectManager                             $productManager
+     * @param CompletenessManager                       $completenessManager
+     * @param ChannelRepositoryInterface                $channelRepository
+     * @param CollectionFilterInterface                 $collectionFilter
+     * @param NormalizerInterface                       $completenessCollectionNormalizer
+     * @param UserContext                               $userContext
+     * @param CompletenessCalculatorInterface           $completenessCalculator
+     * @param ProductBuilderInterface                   $productBuilder
+     * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param VariantNavigationNormalizer               $navigationNormalizer
      * @param AscendantCategoriesInterface|null         $ascendantCategoriesQuery

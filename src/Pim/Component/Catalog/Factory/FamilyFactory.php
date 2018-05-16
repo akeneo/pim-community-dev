@@ -29,10 +29,10 @@ class FamilyFactory implements SimpleFactoryInterface
     protected $familyClass;
 
     /**
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
-     * @param AttributeRequirementFactory                                     $factory
-     * @param AttributeRepositoryInterface                                    $attributeRepository
-     * @param string                                                          $familyClass
+     * @param ChannelRepositoryInterface   $channelRepository
+     * @param AttributeRequirementFactory  $factory
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param string                       $familyClass
      */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,

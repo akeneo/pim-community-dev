@@ -84,12 +84,12 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
     }
 
     /**
-     * @param ProductInterface                                 $product
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param LocaleInterface                                  $locale
-     * @param Collection                                       $missingAttributes
-     * @param int                                              $missingCount
-     * @param int                                              $requiredCount
+     * @param ProductInterface $product
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
+     * @param Collection       $missingAttributes
+     * @param int              $missingCount
+     * @param int              $requiredCount
      *
      * @return CompletenessInterface
      */
