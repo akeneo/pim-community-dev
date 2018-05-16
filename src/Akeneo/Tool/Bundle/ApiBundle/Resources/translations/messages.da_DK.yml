@@ -39,5 +39,7 @@ pim_api:
     locale: Landestandarder
     currency: Valutaer
     association_type: Sammenhængstyper
-rights:
-  api: Web API tilladelser
+pim_user:
+  roles:
+    tab:
+      api: Web API tilladelser

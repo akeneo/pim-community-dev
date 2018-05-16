@@ -12,6 +12,11 @@ pim_user:
     tab:
       general.title: Allgemein
       users.title: Benutzer
+  roles:
+    tab:
+      general: Allgemein
+      action: Berechtigungen
+      users: Benutzer
 oro.user.controller:
   group.message.saved: "Gruppe gespeichert"
   role.message.saved: "Rolle gespeichert"
@@ -103,8 +108,6 @@ role:
   edit: Rolle bearbeiten
   create: Rolle anlegen
 btn.create.role: Rolle anlegen
-rights:
-  action: Berechtigungen
 oro_security:
   acl_group:
     user: Benutzer

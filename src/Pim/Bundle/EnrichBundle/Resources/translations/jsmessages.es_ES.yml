@@ -84,6 +84,13 @@ pim_datagrid:
       confirm_content: '¿Está seguro que quiere borrar los productos seleccionados?'
       success: Productos seleccionados eliminados exitosamente.
       error: Se ha producido un error al intentar eliminar los productos seleccionados, por favor inténtelo de nuevo.
+    quick_export:
+      csv_all: CSV (todos los atributos)
+      csv_grid_context: CSV (contexto de la grilla)
+      xlsx_all: Excel (todos los atributos)
+      xlsx_grid_context: Excel (contexto de la grilla)
+    mass_edit: Acciones en masa
+    sequential_edit: Edición secuencial
   view_selector:
     view: Vistas
   actions:
@@ -154,22 +161,7 @@ alert:
     not_available: Su navegador parece no ser compatible con sessionStorage. Por favor contacte a su administrador
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: ADVERTENCIA, perderá los datos no guardados. ¿Está seguro de que desea cancelar la modificación de esta nueva opción ?
     cancel_edition_on_new_option_title: Cancelar modificación
-label:
-  attribute_option:
-    add_option: Agregar una opción
-pim:
-  grid:
-    mass_action:
-      quick_export:
-        csv_all: CSV (todos los atributos)
-        csv_grid_context: CSV (contexto de la grilla)
-        xlsx_all: Excel (todos los atributos)
-        xlsx_grid_context: Excel (contexto de la grilla)
-      mass_edit: Acciones en masa
-      category_edit: Mover producto en categorías
-      sequential_edit: Edición secuencial
 pim_enrich:
   item:
     list:
@@ -501,6 +493,7 @@ pim_enrich:
         error_creating_option: Un error ha ocurrido durante la creación de la opción de atributo
       add_option_modal:
         title: Agregar opción de atributo
+      add_option: Agregar una opción
     attribute_group:
       tab:
         attribute:
@@ -909,8 +902,6 @@ pim_menu:
     logout: Salir
     user_account: Mi cuenta
 pim_notification:
-  mark_all_as_read: Marcar todo como leído
-  no_notifications: Sin notificaciones
   types:
     import: Importar
     export: Exportar
@@ -926,11 +917,3 @@ batch_jobs:
   edit_common_attributes:
     label: Editar atributos
     perform.label: Editar atributos
-catalog_volume:
-  axis:
-    count_products: Productos
-    count_channels: Canales
-    count_families: Familias
-    count_attributes: Atributos
-    count_categories: Categorías
-    count_category_trees: Árbol de categoría

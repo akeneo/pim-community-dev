@@ -12,6 +12,11 @@ pim_user:
     tab:
       general.title: 全般
       users.title: ユーザー
+  roles:
+    tab:
+      general: 全般
+      action: パーミッション
+      users: ユーザー
 oro.user.controller:
   group.message.saved: "グループが保存されました"
   role.message.saved: "ロールを保存しました"
@@ -103,8 +108,6 @@ role:
   edit: 権限を編集
   create: 権限を作成
 btn.create.role: 権限を作成
-rights:
-  action: パーミッション
 oro_security:
   acl_group:
     user: ユーザー
