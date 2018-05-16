@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -1,0 +1,21 @@
+services:
+
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.database.locale:
+        class: 'Pim\Component\Connector\Reader\Database\Reader'
+        arguments:
+            - '@pim_catalog.repository.locale'
+
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.file.csv_locale:
+        class: 'Pim\Component\Connector\Reader\File\Csv\Reader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.locale'
+
+    #TODO: fix the dependency to the reader class
+    pim_connector.reader.file.xlsx_locale:
+        class: 'Pim\Component\Connector\Reader\File\Xlsx\Reader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.locale'

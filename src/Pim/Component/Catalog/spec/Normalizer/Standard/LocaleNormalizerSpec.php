@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 
 class LocaleNormalizerSpec extends ObjectBehavior
 {

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * DefaultParameters for product model CSV export

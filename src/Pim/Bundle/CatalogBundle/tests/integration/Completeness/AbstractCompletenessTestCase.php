@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

@@ -115,7 +115,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '%pim_catalog.model.locale.interface%'
+            - '%akeneo_channel.model.locale.interface%'
 
     pim_catalog.saver.group_options_resolver:
         class: '%pim_catalog.saver.group_options_resolver.class%'

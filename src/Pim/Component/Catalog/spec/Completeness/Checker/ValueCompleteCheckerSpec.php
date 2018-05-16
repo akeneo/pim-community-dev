@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Completeness\Checker;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 

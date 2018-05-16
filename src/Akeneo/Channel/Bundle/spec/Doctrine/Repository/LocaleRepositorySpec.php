@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace spec\Akeneo\Channel\Bundle\Doctrine\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
@@ -29,7 +29,7 @@ class LocaleRepositorySpec extends ObjectBehavior
 
     function it_is_a_locale_repository()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Repository\LocaleRepositoryInterface');
+        $this->shouldImplement('Akeneo\Channel\Component\Repository\LocaleRepositoryInterface');
     }
 
     function it_count_all_activated_locales($em, QueryBuilder $queryBuilder, AbstractQuery $query, Expr $expr)

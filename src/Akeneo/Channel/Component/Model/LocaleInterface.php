@@ -1,8 +1,10 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
+namespace Akeneo\Channel\Component\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\ReferableInterface;
 
 /**
  * Locale interface

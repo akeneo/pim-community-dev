@@ -85,11 +85,6 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
 
-    pim_connector.reader.database.locale:
-        class: '%pim_connector.reader.database.class%'
-        arguments:
-            - '@pim_catalog.repository.locale'
-
     pim_connector.reader.database.attribute_group:
         class: '%pim_connector.reader.database.class%'
         arguments:
@@ -180,12 +175,6 @@ services:
         arguments:
             - '@pim_connector.reader.file.csv_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.channel'
-
-    pim_connector.reader.file.csv_locale:
-        class: '%pim_connector.reader.file.csv.class%'
-        arguments:
-            - '@pim_connector.reader.file.csv_iterator_factory'
-            - '@pim_connector.array_converter.flat_to_standard.locale'
 
     pim_connector.reader.file.csv_attribute_group:
         class: '%pim_connector.reader.file.csv.class%'
@@ -315,12 +304,6 @@ services:
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.channel'
-
-    pim_connector.reader.file.xlsx_locale:
-        class: '%pim_connector.reader.file.xlsx.class%'
-        arguments:
-            - '@pim_connector.reader.file.xlsx_iterator_factory'
-            - '@pim_connector.array_converter.flat_to_standard.locale'
 
     pim_connector.reader.file.xlsx_attribute_group:
         class: '%pim_connector.reader.file.xlsx.class%'

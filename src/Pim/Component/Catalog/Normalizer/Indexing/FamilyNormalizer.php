@@ -2,12 +2,12 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

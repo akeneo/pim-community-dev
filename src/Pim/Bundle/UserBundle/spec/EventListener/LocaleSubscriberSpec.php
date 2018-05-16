@@ -7,7 +7,7 @@ use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 use Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\User\Model\UserInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

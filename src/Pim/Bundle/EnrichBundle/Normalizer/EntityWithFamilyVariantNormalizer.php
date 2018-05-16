@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
@@ -13,7 +14,6 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

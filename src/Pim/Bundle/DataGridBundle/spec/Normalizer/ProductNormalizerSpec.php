@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyTranslationInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTranslationInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;

@@ -21,8 +21,6 @@ parameters:
     pim_connector.job_name.csv_category_import: 'csv_category_import'
     pim_connector.job_name.csv_channel_export: 'csv_channel_export'
     pim_connector.job_name.csv_channel_import: 'csv_channel_import'
-    pim_connector.job_name.csv_locale_export: 'csv_locale_export'
-    pim_connector.job_name.csv_locale_import: 'csv_locale_import'
     pim_connector.job_name.csv_attribute_group_export: 'csv_attribute_group_export'
     pim_connector.job_name.csv_attribute_group_import: 'csv_attribute_group_import'
     pim_connector.job_name.csv_currency_export: 'csv_currency_export'
@@ -49,8 +47,6 @@ parameters:
     pim_connector.job_name.xlsx_category_import: 'xlsx_category_import'
     pim_connector.job_name.xlsx_channel_export: 'xlsx_channel_export'
     pim_connector.job_name.xlsx_channel_import: 'xlsx_channel_import'
-    pim_connector.job_name.xlsx_locale_export: 'xlsx_locale_export'
-    pim_connector.job_name.xlsx_locale_import: 'xlsx_locale_import'
     pim_connector.job_name.xlsx_attribute_group_export: 'xlsx_attribute_group_export'
     pim_connector.job_name.xlsx_attribute_group_import: 'xlsx_attribute_group_import'
     pim_connector.job_name.xlsx_currency_export: 'xlsx_currency_export'
@@ -186,18 +182,6 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_channel_import.import'
-        tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
-
-    pim_connector.job.csv_locale_import:
-        class: '%pim_connector.job.simple_job.class%'
-        arguments:
-            - '%pim_connector.job_name.csv_locale_import%'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            -
-                - '@pim_connector.step.charset_validator'
-                - '@pim_connector.step.csv_locale_import.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -345,17 +329,6 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.csv_channel_export.export'
-        tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
-
-    pim_connector.job.csv_locale_export:
-        class: '%pim_connector.job.simple_job.class%'
-        arguments:
-            - '%pim_connector.job_name.csv_locale_export%'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            -
-                - '@pim_connector.step.csv_locale_export.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
 
@@ -518,18 +491,6 @@ services:
             tags:
                 - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 
-    pim_connector.job.xlsx_locale_import:
-        class: '%pim_connector.job.simple_job.class%'
-        arguments:
-            - '%pim_connector.job_name.xlsx_locale_import%'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            -
-                - '@pim_connector.step.charset_validator'
-                - '@pim_connector.step.xlsx_locale_import.import'
-        tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
-
     pim_connector.job.xlsx_attribute_group_import:
         class: '%pim_connector.job.simple_job.class%'
         arguments:
@@ -677,17 +638,6 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.xlsx_channel_export.export'
-        tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
-
-    pim_connector.job.xlsx_locale_export:
-        class: '%pim_connector.job.simple_job.class%'
-        arguments:
-            - '%pim_connector.job_name.xlsx_locale_export%'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            -
-                - '@pim_connector.step.xlsx_locale_export.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 

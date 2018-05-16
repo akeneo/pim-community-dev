@@ -1,0 +1,32 @@
+parameters:
+    akeneo_channel.model.locale.interface: 'Akeneo\Channel\Component\Model\LocaleInterface'
+    pim_catalog.entity.locale.class: 'Akeneo\Channel\Component\Model\Locale'
+
+services:
+    pim_catalog.repository.locale:
+        class: 'Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%pim_catalog.entity.locale.class%']
+        tags:
+            - { name: 'channel_repository' }
+
+    pim_api.repository.locale:
+        class: 'Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.locale.class%'
+            - '@pim_catalog.repository.locale'
+
+    pim_catalog.validator.constraints.locale_validator:
+        class: 'Akeneo\Channel\Component\Validator\Constraint\LocaleValidator'
+        arguments:
+            - '@pim_catalog.repository.locale'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_locale_validator }
+
+    pim_catalog.validator.constraint.activated_locale:
+        class: 'Akeneo\Channel\Component\Validator\Constraint\ActivatedLocaleValidator'
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_activated_locale_validator }

@@ -38,10 +38,6 @@ family_variant:
     resource: '@PimEnrichBundle/Resources/config/routing/family_variant.yml'
     prefix: /configuration/family-variant
 
-locale:
-    resource: '@PimEnrichBundle/Resources/config/routing/locale.yml'
-    prefix: /configuration/locale
-
 attribute_front:
     resource: '@PimEnrichBundle/Resources/config/routing/attribute/front.yml'
     prefix: /configuration/attribute

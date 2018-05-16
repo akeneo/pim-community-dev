@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\Controller;
+namespace Akeneo\Channel\Bundle\Controller\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;

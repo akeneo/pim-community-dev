@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\AttributeTypes;

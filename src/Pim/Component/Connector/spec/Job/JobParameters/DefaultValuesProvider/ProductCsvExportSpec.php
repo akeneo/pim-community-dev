@@ -6,9 +6,9 @@ use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 
 class ProductCsvExportSpec extends ObjectBehavior
 {

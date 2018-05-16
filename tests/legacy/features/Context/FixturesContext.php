@@ -4,6 +4,7 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -30,7 +31,6 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;

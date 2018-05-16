@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Component\Catalog\Repository;
+namespace Akeneo\Channel\Component\Repository;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * Locale repository interface

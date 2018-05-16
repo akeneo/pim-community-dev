@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
@@ -10,7 +11,6 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

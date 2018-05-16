@@ -67,13 +67,6 @@ services:
             - '%pim_catalog.entity.family_variant.class%'
             - '@pim_catalog.repository.family_variant'
 
-    pim_api.repository.locale:
-        class: '%pim_api.repository.api_resource.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.locale.class%'
-            - '@pim_catalog.repository.locale'
-
     pim_api.repository.media_file:
         class: '%pim_api.repository.api_resource.class%'
         arguments:

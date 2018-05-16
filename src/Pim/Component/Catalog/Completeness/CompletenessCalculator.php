@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Completeness;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
@@ -9,7 +10,6 @@ use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

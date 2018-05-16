@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\Exception\StructureArrayConversionException;

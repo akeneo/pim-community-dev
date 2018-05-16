@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Doctrine\DBAL\Connection;
@@ -11,7 +12,6 @@ use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;

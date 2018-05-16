@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 /**

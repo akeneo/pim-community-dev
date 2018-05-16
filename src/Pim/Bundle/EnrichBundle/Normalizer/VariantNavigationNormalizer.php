@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

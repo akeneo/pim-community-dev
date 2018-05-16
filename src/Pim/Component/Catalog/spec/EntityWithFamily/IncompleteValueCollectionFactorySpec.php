@@ -9,7 +9,7 @@ use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;

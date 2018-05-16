@@ -18,7 +18,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Pim\Component\Enrich\Query\AscendantCategoriesInterface;

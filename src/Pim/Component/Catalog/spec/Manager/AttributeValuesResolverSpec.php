@@ -7,9 +7,9 @@ use Pim\Component\Catalog\Manager\AttributeValuesResolver;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 
 class AttributeValuesResolverSpec extends ObjectBehavior
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Channel\Component\Model;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Intl\Intl;
 
