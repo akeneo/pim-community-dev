@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Completeness\Checker;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**

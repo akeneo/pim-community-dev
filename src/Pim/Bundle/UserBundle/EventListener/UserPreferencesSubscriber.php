@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\EventListener;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
@@ -9,7 +10,6 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

@@ -2,10 +2,10 @@
 
 namespace Akeneo\Channel\Component\Model;
 
+use Akeneo\Channel\Component\Model\ChannelTranslation;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Akeneo\Channel\Component\Model\ChannelTranslation;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 
