@@ -1,6 +1,10 @@
 parameters:
+    pim_catalog.model.channel.interface: 'Akeneo\Channel\Component\Model\ChannelInterface'
     akeneo_channel.model.locale.interface: 'Akeneo\Channel\Component\Model\LocaleInterface'
     pim_catalog.entity.locale.class: 'Akeneo\Channel\Component\Model\Locale'
+    pim_catalog.entity.channel.class: 'Akeneo\Channel\Component\Model\Channel'
+    pim_catalog.model.channel_translation.interface: 'Akeneo\Channel\Component\Model\ChannelTranslationInterface'
+    pim_catalog.entity.channel_translation.class: 'Akeneo\Channel\Component\Model\ChannelTranslation'
 
 services:
     ### Locale
@@ -42,7 +46,7 @@ services:
 
     ### Channel
     pim_catalog.repository.channel:
-        class: '%pim_catalog.repository.channel.class%'
+        class: 'Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository'
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_catalog.entity.channel.class%']
         tags:
