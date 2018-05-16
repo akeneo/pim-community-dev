@@ -103,15 +103,6 @@ pim_menu:
     item:
         published_product: Published products
         proposal:          Proposals
-pim_title:
-    published_product:
-        index: Published products
-        view: Published product %product.label% | View
-    product:
-        dispatch: "Product %product.label%"
-        show: "Product %product.label% | Show"
-    proposal:
-        index: Proposals
 
 btn.editworkingcopy: Edit working copy
 confirmation:

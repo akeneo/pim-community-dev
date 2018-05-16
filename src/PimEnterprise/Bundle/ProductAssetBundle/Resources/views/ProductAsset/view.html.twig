@@ -7,8 +7,8 @@
 
     {% set meta %}
         <ul class="inline">
-            <li>{{ 'Created'|trans }}: {{ asset.createdAt ? asset.createdAt|datetime_presenter : 'N/A'|trans }}</li>
-            <li>{{ 'Last update'|trans }}: {{ asset.updatedAt ? asset.updatedAt|datetime_presenter : 'N/A'|trans }}</li>
+            <li>{{ 'pim_common.created'|trans }}: {{ asset.createdAt ? asset.createdAt|datetime_presenter : 'N/A'|trans }}</li>
+            <li>{{ 'pim_common.updated'|trans }}: {{ asset.updatedAt ? asset.updatedAt|datetime_presenter : 'N/A'|trans }}</li>
         </ul>
     {% endset %}
 

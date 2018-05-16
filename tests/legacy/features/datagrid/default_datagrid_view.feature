@@ -24,7 +24,8 @@ Feature: Published products datagrid views
     And I should see the flash message "Datagrid view successfully created"
     When I am on the User profile show page
     And I press the "Edit" button
-    Then I should see the text "Edit user - Mary Smith"
+    Then I should see the text "Mary Smith"
+    And I should see the text "Save"
     When I visit the "Additional" tab
     Then I should see the text "Default published product grid view"
     When I fill in the following information:

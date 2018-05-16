@@ -172,7 +172,8 @@ Feature: Products datagrid projects
     Then I should be on the products page
     When I am on the User profile show page
     And I press the "Edit" button
-    Then I should see the text "Edit user - Julia Stark"
+    Then I should see the text "Julia Stark"
+    And I should see the text "Save"
     When I visit the "Additional" tab
     Then I should see the text "Default product grid view"
     When I fill in the following information:

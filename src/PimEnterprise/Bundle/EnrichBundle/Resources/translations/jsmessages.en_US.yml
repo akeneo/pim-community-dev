@@ -216,7 +216,7 @@ pim_menu:
         rule: Rules
         upload_asset: Upload Assets
 
-page_title:
+pim_title:
     pimee_workflow_proposal_index: Proposals
     pimee_workflow_published_product_index: Published products
     pimee_workflow_published_product_view: Published product {{ product.label }} | View
