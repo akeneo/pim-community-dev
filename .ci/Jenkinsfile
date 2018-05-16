@@ -1,9 +1,10 @@
 #!groovy
+@Library("k8s-utils@fix-selenium")
 
 String[] editions = ["ce"]
-String[] features = ["features"]
-String launchUnitTests = "yes"
-String launchIntegrationTests = "yes"
+String[] features = ["features/channel"]
+String launchUnitTests = "no"
+String launchIntegrationTests = "no"
 String launchEndToEndTests = "yes"
 String verboseOutputs = "yes"
 String slackChannel = ""
@@ -74,54 +75,58 @@ stage("Test") {
             "php-coupling-detector": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
+                script: "cd /var/www/html && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
             )},
             "phpunit": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit %workspace%/junit_output.xml",
+                script: "cd /var/www/html && vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
             "phpspec": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && su -s /bin/sh www-data -c './vendor/bin/phpspec run --format=junit' > %workspace%/junit_output.xml",
+                script: "cd /var/www/html && su -s /bin/sh www-data -c './vendor/bin/phpspec run --format=junit' > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
             "php-cs-fixer": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
+                script: "cd /var/www/html && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
             "grunt": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && yarn run lint"
+                script: "cd /var/www/html && yarn run lint"
             )},
             "integration-ce": {queue(
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
-                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/src /var/www/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+                containers: pimContainers(image: tag, selenium: false),
+                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/html/src /var/www/html/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
             )},
             "integration-ee": {queue(
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
-                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/src /var/www/pim/tests /var/www/pim/vendor/akeneo/pim-community-dev/src /var/www/pim/vendor/akeneo/pim-community-dev/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+                containers: pimContainers(image: "${tag}-ee", selenium: false),
+                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/html/src /var/www/html/tests /var/www/html/vendor/akeneo/pim-community-dev/src /var/www/html/vendor/akeneo/pim-community-dev/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
             )},
             "behat-ce": {queue(
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
-                fetcher: {return pimBehatFetcher(features: features)}
+                containers: pimContainers(image: tag),
+                fetcher: {return pimBehatFetcher(hasToInstall: true, script: "cd /var/www/html/ && vendor/bin/behat -p default --list-scenarios", features: features)}
             )},
             "behat-ee": {queue(
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
-                fetcher: {return pimBehatFetcher(features: features)}
+                containers: pimContainers(image: "${tag}-ee"),
+                fetcher: {return pimBehatFetcher(hasToInstall: true, script: "cd /var/www/html/ && vendor/bin/behat -p default --list-scenarios", features: features)}
             )}
         )
     } finally {

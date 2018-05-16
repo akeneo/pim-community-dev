@@ -196,8 +196,7 @@ class PimRequirements extends SymfonyRequirements
      * Gets the MySQL server version thanks to a PDO connection.
      *
      * If no connection is reached, or that "parameters.yml" do not exists, an
-     * exception is thrown, then catch. If "parameters_test.yml" do not exists
-     * either, then the exception is thrown again.
+     * exception is thrown.
      * If it exits, an attempt to connect is done, and can result in an exception
      * if no connection is reached.
      *
@@ -215,23 +214,13 @@ class PimRequirements extends SymfonyRequirements
 
         $parameters = Yaml::parse($file);
 
-        try {
-            if (null === $parameters) {
-                throw new RuntimeException(
-                    'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
-                );
-            }
-
-            return $this->getConnection($parameters)->getAttribute(PDO::ATTR_SERVER_VERSION);
-        } catch (RuntimeException $e) {
-            $parameters = Yaml::parse(file_get_contents(__DIR__.'/config/parameters_test.yml'));
-
-            if (null === $parameters) {
-                throw $e;
-            }
-
-            return $this->getConnection($parameters)->getAttribute(PDO::ATTR_SERVER_VERSION);
+        if (null === $parameters) {
+            throw new RuntimeException(
+                'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
+            );
         }
+
+        return $this->getConnection($parameters)->getAttribute(PDO::ATTR_SERVER_VERSION);
     }
 
     /**
