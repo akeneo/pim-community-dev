@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
 
 /**
  * Simple factory of a "required value" collection.
@@ -40,16 +41,18 @@ class RequiredValueCollectionFactory
                     $attribute = $attributeRequirement->getAttribute();
                     $channelCode = $attribute->isScopable() ? $channel->getCode() : null;
                     $localeCode = $attribute->isLocalizable() ? $locale->getCode() : null;
+                    $valueKey = ValueCollection::generateKey($attribute->getCode(), $channelCode, $localeCode);
 
                     if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
                         continue;
                     }
 
-                    if ($attribute->isLocaleSpecific() && $attribute->hasLocaleSpecific($locale)) {
+                    if (!$attribute->isLocalizable() && $attribute->isLocaleSpecific() && $attribute->hasLocaleSpecific($locale)) {
                         $localeCode = $locale->getCode();
+                        $valueKey = ValueCollection::generateKey($attribute->getCode(), $channelCode, null);
                     }
 
-                    $requiredValues[] = new RequiredValue($attribute, $channelCode, $localeCode);
+                    $requiredValues[] = new RequiredValue($attribute, $channelCode, $localeCode, $valueKey);
                 }
             }
         }

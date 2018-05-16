@@ -70,13 +70,12 @@ class IncompleteValueCollectionFactory
      * @return bool
      */
     private function isValueMissingOrEmpty(
-        ValueInterface $value,
+        RequiredValue $value,
         ChannelInterface $channel,
         LocaleInterface $locale,
         EntityWithValuesInterface $entityWithValues
     ) {
-        $values = $entityWithValues->getValues();
-        $actualValue = $values->getSame($value);
+        $actualValue = $entityWithValues->getValues()->getByKey($value->getValueKey());
 
         if (null === $actualValue) {
             return true;
