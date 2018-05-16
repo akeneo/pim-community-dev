@@ -22,10 +22,6 @@ catalog_volume:
     resource: '@PimEnrichBundle/Resources/config/routing/catalog_volume.yml'
     prefix: /system/catalog-volume
 
-channel:
-    resource: '@PimEnrichBundle/Resources/config/routing/channel.yml'
-    prefix: /configuration/channel
-
 currency:
     resource: '@PimEnrichBundle/Resources/config/routing/currency.yml'
     prefix: /configuration/currency
