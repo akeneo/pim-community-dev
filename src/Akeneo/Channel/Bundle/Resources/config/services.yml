@@ -15,6 +15,13 @@ services:
         arguments:
             - '%pim_catalog.entity.locale.class%'
 
+    pim_catalog.saver.locale:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%akeneo_channel.model.locale.interface%'
+
     pim_catalog.normalizer.standard.locale:
         class: 'Akeneo\Channel\Component\Normalizer\Standard\LocaleNormalizer'
         tags:
@@ -87,6 +94,13 @@ services:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
             - '%pim_catalog.entity.channel.class%'
+
+    pim_catalog.saver.channel:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.channel.interface%'
 
     pim_catalog.repository.channel:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository'
@@ -181,3 +195,10 @@ services:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
             - '%pim_catalog.entity.currency.class%'
+
+    pim_catalog.saver.currency:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%akeneo_channel.model.currency.interface%'
