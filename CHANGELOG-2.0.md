@@ -1,3 +1,7 @@
+# 2.0.x
+
+- PIM-7337: Fix the focus on asset field when clic on completeness panel
+
 # 2.0.24 (2018-05-16)
 
 # 2.0.23 (2018-04-30)
@@ -9,7 +13,7 @@
 
 ## Bug fixes
 
-- PIM-7283: Fix slowness on count product in categories for the product grid 
+- PIM-7283: Fix slowness on count product in categories for the product grid
 
 # 2.0.21 (2018-04-09)
 
