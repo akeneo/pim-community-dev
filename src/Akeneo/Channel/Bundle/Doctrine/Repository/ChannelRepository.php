@@ -2,8 +2,8 @@
 
 namespace Akeneo\Channel\Bundle\Doctrine\Repository;
 
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**
