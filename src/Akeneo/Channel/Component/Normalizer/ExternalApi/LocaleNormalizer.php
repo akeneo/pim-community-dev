@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Component\Api\Normalizer;
+namespace Akeneo\Channel\Component\Normalizer\ExternalApi;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

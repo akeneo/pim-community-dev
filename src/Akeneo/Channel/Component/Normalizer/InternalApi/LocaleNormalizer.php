@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Normalizer;
+namespace Akeneo\Channel\Component\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
