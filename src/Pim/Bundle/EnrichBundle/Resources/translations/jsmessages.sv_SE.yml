@@ -81,6 +81,12 @@ pim_datagrid:
     delete:
       success: Valda produkter har tagits bort.
       error: Ett fel uppstod när de valda produkterna skulle tas bort, vänligen försök igen.
+    quick_export:
+      csv_all: CSV (alla attribut)
+      csv_grid_context: CSV (från tabellen)
+      xlsx_all: Excel (alla attribut)
+      xlsx_grid_context: Excel (från tabellen)
+    mass_edit: Massåtgärder
   view_selector:
     view: Vyer
   actions:
@@ -149,21 +155,7 @@ alert:
     not_available: Din webbläsare inte verkar kompatibel med 'sessionStorage'. Vänligen kontakta administratören
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Varning, du kommer att förlora data som inte sparats. Är du säker på att du vill avbryta ändring av detta nya alternativ?
     cancel_edition_on_new_option_title: Avbryt ändringar
-label:
-  attribute_option:
-    add_option: Lägg till alternativ
-pim:
-  grid:
-    mass_action:
-      quick_export:
-        csv_all: CSV (alla attribut)
-        csv_grid_context: CSV (från tabellen)
-        xlsx_all: Excel (alla attribut)
-        xlsx_grid_context: Excel (från tabellen)
-      mass_edit: Massåtgärder
-      category_edit: Flytta produkter i kategorier
 pim_enrich:
   item:
     list:
@@ -411,6 +403,7 @@ pim_enrich:
         error_creating_option: Ett fel uppstod när du försökte skapa attributalternativet
       add_option_modal:
         title: Lägg till attributalternativ
+      add_option: Lägg till alternativ
     attribute_group:
       tab:
         attribute:
@@ -764,7 +757,6 @@ pim_menu:
     logout: Logga ut
     user_account: Mitt konto
 pim_notification:
-  mark_all_as_read: Markera alla som lästa
   types:
     import: Import
     export: Export
@@ -792,11 +784,3 @@ batch_jobs:
   xlsx_product_grid_context_quick_export:
     quick_export.label: XLSX produkt rutnät sammanhang snabb export
     perform.label: XLSX produkt rutnät sammanhang snabb export
-catalog_volume:
-  axis:
-    count_products: Products
-    count_channels: Kanaler
-    count_families: Familjer
-    count_attributes: Attribut
-    count_categories: Kategorier
-    count_category_trees: Kategoriträd

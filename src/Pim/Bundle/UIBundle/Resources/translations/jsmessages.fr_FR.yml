@@ -106,3 +106,6 @@ oro_config:
           label: Activer les messages au chargement
         loading_messages:
           label: Messages de chargement disponibles
+pim_ui:
+  flash:
+    unsaved_changes: 'Vous avez des modifications non enregistrées, êtes-vous sûr de vouloir quitter ?'

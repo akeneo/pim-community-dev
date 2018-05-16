@@ -1,6 +1,3 @@
-btn:
-  post: Tilføj en ny kommentar
-  reply: Besvar
 confirmation:
   remove:
     comment: Er du sikker på du vil slette denne kommentar?
@@ -15,7 +12,13 @@ flash:
     reply:
       success: Dit svar er blevet oprettet.
       error: Der opstod en fejl under oprettelsen af dit svar.
-comment:
+pim_comment:
+  product:
+    panel:
+      comment:
+        post: Tilføj en ny kommentar
+        reply: Besvar
+        title: Kommentarer
   index:
     empty: Ingen kommentarer for nu
     header_comment: '{{ user }} kommenterede produktet'
@@ -23,5 +26,3 @@ comment:
   placeholder:
     new: Skriv en ny kommentar...
     reply: Besvar denne kommentar...
-pim_comment:
-  product.panel.comment.title: Kommentarer

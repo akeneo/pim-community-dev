@@ -1,308 +1,8 @@
 pim_common:
   cancel: Annuller
+  save: Gem
+  delete: Slet
 pim_enrich:
-  product:
-    tab:
-      attribute.title: Egenskaber
-      category.title: Kategorier
-      association.title: Tilknytninger
-      completeness.title: Fuldstændighed
-      history.title: Historik
-    no_comparison_locale_available: Ingen andre landestandarder er tilgængelige for sammenligning
-    no_compared_media: Ingen medier er tilgængelig til sammenligning
-  attribute:
-    tab:
-      parameter.title: Parametre
-      value.title: Værdier
-      history.title: Historik
-  attribute_group:
-    tab:
-      property.title: Egenskaber
-      attribute.title: Egenskaber
-      history.title: Historik
-  family:
-    info:
-      cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
-    tab:
-      property.title: Egenskaber
-      attribute.title: Egenskaber
-      history.title: Historik
-  association_type:
-    tab:
-      property.title: Egenskaber
-      history.title: Historik
-  group_type:
-    tab:
-      property.title: Egenskaber
-  category:
-    tab:
-      property.title: Egenskaber
-      history.title: Historik
-  locale:
-    tab:
-      property.title: Egenskaber
-      permission.title: Rettigheder
-  group:
-    axis.help: 'Akse er attributter, der definerer varianter af gruppen variant. Akse er attributter med optioner, ikke oversættelige og ikke postobjektet. Det kan ikke ændres efter oprettelsen af gruppen variant.'
-    type:
-      VARIANT: Variant
-      X_SELL: Krydssalg
-      ADDITIONAL: Yderligere
-      RELATED: Relateret
-    tab:
-      product.title: Produkter
-      property.title: Egenskaber
-      history.title: Historik
-  completeness:
-    progress_bar.title: '%ratio%% komplet (1 værdi kræves) |%ratio%% komplet (%count% krævede værdier)'
-    subtitle: '{0} komplet|{1} 1 værdi mangler|]1, Inf] %count% manglende værdier'
-    missing_attributes: Mangler værdi|Manglende værdier
-    legend:
-      locale_not_associated: Landestandarden er ikke er knyttet til denne kanal
-  mass_edit_action:
-    limit_exceeded: Vælg venligst mindst %limit% elementer der skal redigeres
-    product:
-      page_title: Produkter
-      page_subtitle: Masse redigere (1 produkt) | Masse redigere (%count% produkter)
-      title: Vælg handling
-      subtitle: Vælg den handling, du ønsker at udføre på det valgte produkt|Vælg den handling, du ønsker at udføre på de valgte %count% produkter
-      confirm: Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere %count% produkter med følgende oplysninger, bekræft venligst.
-      steps:
-        first: Vælg produkter
-        second: Vælg handling
-        third: Konfigurér
-        fourth: Bekræft
-    family:
-      page_title: Familier
-      page_subtitle: Masse redigere (1 familie) |Masse redigere (%count% familier)
-      title: Vælg handling
-      subtitle: Vælg den handling, du ønsker at udføre på den valgte familie|Vælg den handling, du ønsker at udføre på de valgte %count% familier
-      confirm: Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere %count% produkter med følgende oplysninger, bekræft venligst.
-      steps:
-        first: Vælg familier
-        second: Vælg handling
-        third: Konfigurér
-        fourth: Bekræft
-    change-status:
-      label: Skift status
-      description: De valgte produkter vil blive aktiveret eller deaktiveret.
-      success_flash: Produkt(er) status er blevet ændret
-      launched_flash: Bulk-handlingen "Skift status" er blevet startet. Du får besked, når det er gjort.
-    edit-common-attributes:
-      label: Rediger attributter
-      description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
-      empty: Vælg venligst den eller de attribut(ter), du vil redigere
-      success_flash: Kørslen der opdaterer produkt(er) status kører i øjeblikket
-      launched_flash: Massehandling "Tilføj etiketter til aktiver" er blevet igangsat. Du får besked, når det er afsluttet.
-      message:
-        warning: Der er ingen fælles egenskaber  de valgte produkter. Venligst ændre dit valg.
-        invalid_attribute: Attribut med koden "attribute_code" er ikke fælles for de valgte produkter, attributten springes over.
-        no_valid_attribute: Ingen af de valgte attributter kan anvendes på dette produkt.
-    classify-add:
-      label: Tilføje til kategorier
-      description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
-      success_flash: Produkt(er), der er blevet klassificeret i udvalgte kategorier
-      launched_flash: Handlingen bulk "Føj til kategorier" er blevet startet. Du får besked, når det er afsluttet.
-    classify-move:
-      label: Flyt mellem kategorier
-      description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
-      success_flash: Produkt(er), der er blevet flyttet til udvalgte kategorier
-      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
-    classify-remove:
-      label: Fjern fra kategorier
-      description: Produkterne vil blive fjernet fra følgende kategorier.
-      success_flash: Produkt(er), der er blevet fjernet fra de valgte kategorier
-      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
-    change-family:
-      label: Ændre familie
-      description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
-      success_flash: Familien af valgte produkt(er) er blevet ændret
-      launched_flash: Bulk-handlingen "Skift status" er blevet ignagsat. Du får besked, når den er afsluttet.
-    add-to-groups:
-      label: Tilføj til grupper
-      description: Vælg de grupper hvor de udvalgte produkter skal tilføjes til
-      success_flash: Produkter blev tilføjet til de valgte grupper
-      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
-      no_group: Ingen gruppe for nu. Start med at oprette en gruppe.
-    set-attribute-requirements:
-      label: Indstil attribut krav
-      description: Følgende attribut krav vil blive anvendt til de valgte familier
-      success_flash: Attribut krav blev anvendt til de valgte familier
-      launched_flash: Bulk handling "sæt attribut krav" er igangsat. Du får besked, når den afsluttet.
-    mass_action:
-      quick_export:
-        launched_flash: Jobbet, der eksporterer produkter kører i øjeblikket
-  sequential_edit_action:
-    product:
-      previous: Spring tilbage til "%product%" uden at gemme.
-      next: Spring til "%product%" uden at gemme.
-  acl:
-    locale:
-      index: Liste over landestandarder
-    currency:
-      index: Liste over valutaer
-      toggle: Skift valutaer
-    product:
-      index: Liste over produkter
-      create: Opret et produkt
-      edit_attributes: Rediger attributterne for et produkt
-      remove: Fjern et produkt
-      add_attribute: Tilføj en attribut til et produkt
-      remove_attribute: Fjerne en attribut fra et produkt
-      categories_view: Konsultere kategorierne af et produkt
-      change_family: Ændre produktfamilie
-      change_state: Ændre tilstand af produktet
-      add_to_groups: Tilføj produkt til grupper
-      mass_edit: Handlinger for masse redigering af produkter
-      comment: Kommenter produkter
-      download: Download produktet som PDF
-      history: Se produkt historik
-    product_model:
-      create: Oprette en produktmodel
-      edit_attributes: Rediger attributterne for en produktmodel
-      categories_view: Konsultere kategorierne af en produktmodel
-      history: Se produkt model historik
-      remove: Fjern en produktmodel
-    category:
-      list: Kategoriliste
-      create: Opret en kategori
-      edit: Redigere en kategori
-      remove: Fjern en kategori
-      move: Flyt kategori
-      children: Se underliggende kategorier
-      products: Se produkter i denne kategori
-      history: Se kategori historie
-    channel:
-      index: Liste over kanaler
-      create: Opret en kanal
-      edit: Redigere en kanal
-      remove: Fjern en kanal
-      history: Se kanal historik
-    family:
-      index: Liste over familier
-      create: Opret en familie
-      edit_properties: Rediger egenskaberne for en familie
-      edit_attributes: Rediger attributterne for en familie
-      remove: Fjern en familie
-      history: Se familie historik
-    family_variant:
-      remove: Vælg en familie variant
-    attribute_group:
-      index: List attributgrupper
-      create: Opret en attributgruppe
-      edit: Redigere en attributgruppe
-      remove: Fjern en attributgruppe
-      sort: Sorter attributgrupper
-      add_attribute: Tilføj attribut til en gruppe
-      remove_attribute: Fjerne attributten fra en gruppe
-      history: Se attribut gruppe historik
-    attribute:
-      index: Liste over attributter
-      create: Opret en attribut
-      edit: Rediger en attribut
-      remove: Fjern en attribut
-      sort: Sorter attributter i attributgrupper
-      history: Se attribut historik
-    group:
-      index: List grupper
-      create: Opret en gruppe
-      edit: Redigere en gruppe
-      remove: Fjern en gruppe
-      history: Se gruppe historik
-    group_type:
-      index: List gruppetyper
-      create: Opret en gruppetype
-      edit: Redigere en gruppetype
-      remove: Fjern en gruppetype
-    association_type:
-      index: List sammenhængstyper
-      create: Opret en sammenhængstype
-      edit: Redigere en sammenhængstype
-      remove: Fjern en sammenhængstype
-      history: Se sammenhængs type historik
-    job_tracker:
-      index: Se process overvågning
-    api_connection:
-      manage: Administrere API-forbindelser
-  acl_group:
-    association_type: Sammenhængstyper
-    attribute: Egenskaber
-    attribute_group: Attributgrupper
-    category: Kategorier
-    channel: Kanaler
-    currency: Valutaer
-    family: Familier
-    group: Grupper
-    group_type: Gruppetyper
-    locale: Landestandarder
-    product: Produkter
-    product_model: Produktmodeller
-  reference_data:
-    empty_value:
-      reference_data_type:
-        label: Vælg reference datatype
-  notification:
-    settings:
-      remove_completeness_for_channel_and_locale:
-        start: Landestandard er blevet fjernet fra denne kannal. Relaterede fulstændighed ajourføres 
-        done: Fjernelse af landestandard fra denne kannal er afsluttet.
-attribute:
-  title: attribut
-  edit: rediger attribut
-  create: opret attribut
-attribute group:
-  title: attributgruppe
-  overview: attributgruppe oversigt
-  create: opret attributgruppe
-  edit: redigere attributgruppe
-  suggest creation: Vælg venligst en attributgruppe til venstre
-  or: eller
-  create new: Opret en ny attributgruppe
-category:
-  title: kategori
-  overview: Kategorier
-  create: opret kategori
-  edit: redigere kategori
-  suggest selection: Vælg venligst en kategori til venstre
-  or: eller
-  create new: Opret ny kategori
-tree:
-  title: træ
-  create: opret træ
-  edit: redigere træ
-channel:
-  title: kanal
-  overview: kanaloversigt
-  create: opret kanal
-  edit: rediger kanal
-currency:
-  title: valuta
-  create: opret valuta
-  edit: redigere valuta
-family:
-  title: familie
-  edit: redigere familie
-locale:
-  title: landestandard
-  create: opret landestandard
-  edit: redigere landestandard
-product:
-  title: produkt
-  overview: produktoversigt
-  create: opret produkt
-  edit: redigere produkt
-group:
-  title: gruppe
-  edit: rediger gruppe
-group type:
-  title: gruppetype
-  edit: redigere gruppetype
-association type:
-  title: sammenhængstype
-  create: opret sammenhængstype
-  edit: redigere sammehængstype
-products: produkter
-btn:
   create:
     attribute: opret attribut
     attribute group: opret attributgruppe
@@ -317,101 +17,33 @@ btn:
     association type: opret sammenhængstype
     group type: opret gruppetype
     drag_or_upload: Træk og slip for at uploade eller klik her
-  edit: rediger
-  save: gem
-  save and create: gem og opret ny
-  save and next: gem og næste
-  save and finish: gem og afslut
-  remove: fjern
-  delete: slet
-  cancel: annuller
-  next: næste
-  back: tilbage
-  confirm: bekræft
-  to grid: tilbage til liste
-  to parent: tilbage til forældre
-  download_pdf: PDF
-  download: download
+category:
+  overview: Kategorier
 confirmation:
-  confirm: Bekræftelse
   delete: Bekræft sletning
   leave: Er du sikker på du vil forlade denne side?
   discard changes: Du vil miste ændringer til %entity%, hvis du forlader siden.
   remove:
-    attribute: Er du sikker på du vil slette attributten %name%?
-    attribute group: Er du sikker på du vil slette attributgruppen %name%?
     category: Er du sikker på du vil slette kategorien %name%?
-    family: Er du sikker på du vil slette denne familie %name%?
-    family_variant: Er du sikker på at du vil slette denne familie variant %name%?
-    product: Er du sikker på du vil slette produktet %name%?
-    group: Er du sikker på du vil slette produktet %name%?
-    group type: Er du sikker på du vil slette produktet %name%?
     user: Er du sikker på du vil slette brugeren %name%?
-  attribute group:
-    remove attribute: Vil du fjerne attributten %name% fra denne attributgruppe?
-  family:
-    remove attribute: Vil du fjerne attributten %name% fra denne familie?
-  product:
-    remove attribute: Vil du fjerne attributten %name% fra denne familie?
 flash:
   entity:
     removed: Elementet blev slettet
   attribute:
-    created: Attributten er blevet oprettet
-    updated: Attributten opdateret
-    removed: Attributten blev slettet
     identifier_not_removable: Id attribut kan ikke fjernes
-  attribute group:
-    created: Attributgruppe oprettet
-    updated: Attributgruppe opdateret
-    removed: Attributgruppe fjernet
-    attributes added: Attributter føjet til attributgruppe
-    attribute removed: Attributten er nu fjernet fra attributgruppen
-    not removed attributes: Attributgruppe kan ikke fjernes, da den indeholder attributter
-    not removed default: Standard attributgruppe kan ikke fjernes
-    not removed default attributes: Attributten kan ikke fjernes fra standard attributgruppe
   category:
-    created: Kategori oprettet
-    updated: Kategori opdateret
     removed: Kategori fjernet
   tree:
-    created: Træet blev oprettet
-    updated: Træet er opdateret
     removed: Træet er fjernet
     not removable: Træer knyttet til kanaler kan ikke fjernes.
   currency:
     updated: Valuta opdateret
     error.linked_to_channel: Du kan ikke deaktivere en valuta, der er knyttet til en kanal.
-  family:
-    updated: Familien opdateret
-    removed: Familien fjernet
-    identifier not removable: Id attribut kan ikke fjernes fra en familie
-    label attribute not removable: Denne attribut kan ikke fjernes, fordi det bruges som etiket for familien
-    attribute not found: Attributten hører ikke til denne familie
-    attributes added: Attributter føjet til familien
-    attribute removed: Attributten fjernet fra familien
   product:
-    created: Produktet blev oprettet
-    updated: Produktet blev opdateret
-    removed: Produktet blev fjernet
-    invalid: Kontrollér din indtastning og prøv igen
-    attributes added: Attributter føjet til produktet
-    attribute removed: Attributten er nu fjernet fra produktet
-    attribute not removable: Attributtet kan ikke fjernes fra dette produkt
     enabled: Produktet er blevet aktiveret
     disabled: Produktet er blevet deaktiveret
-  group:
-    updated: Gruppe opdateret
-    removed: Gruppen blev slettet
   group type:
     created: Gruppetypen oprettet
-    updated: Gruppetypen opdateret
-    removed: Gruppetypen fjernet
-    cant remove used: Gruppetypen bruges af nogle grupper og kan ikke fjernes
-  association type:
-    created: Sammenhængstype oprettet
-    updated: Sammenhængstype opdateret
-    removed: Sammenhængstypen blev slettet
   user:
     removed: Brugeren blev fjernet
   error ocurred: Handlingen fejlede. Prøv venligst igen.
@@ -449,9 +81,6 @@ info:
     auto option sorting: Hvis aktiveret, bliver etiketter automatisk sorteret efter deres oversatte etiket
   completeness:
     not calculated: Endnu ikke beregnet
-Options: Muligheder
-Created at: Oprettet den
-Updated at: Opdateret den
 Created: Oprettet
 Updated: Opdateret
 Last update: Sidst opdateret
@@ -554,51 +183,6 @@ Minimum input length: Minimum inputlængde
 Default: Standard
 Attributes: Egenskaber
 Title: Titel
-pim_title.attribute_group:
-  index: "Attributgrupper"
-  create: "Attribut grupper | Oprette"
-  edit: "Attribut grupper %group.label% | Rediger"
-pim_title.category:
-  index: "Kategoritræstrukturen"
-  create: "Kategori træer | Oprette"
-  edit: "Kategori træer %category.label% | Rediger"
-pim_title.attribute:
-  index: "Egenskaber"
-  create: "Attributter | Oprette"
-  edit: "Attributter %attribute.label% | Rediger"
-pim_title.product:
-  index: "Produkter"
-  edit: "Produkter %product.label% | Rediger"
-pim_title.family:
-  index: "Familier"
-  edit: "Familier %family.label% | Rediger"
-pim_title.channel:
-  index: "Kanaler"
-  create: "Kanaler | Oprette"
-  edit: "Kanaler %channel.label% | Rediger"
-pim_title.currency:
-  index: "Valutaer"
-pim_title.locale:
-  index: "Landestandarder"
-pim_title.group:
-  index: "Grupper"
-  edit: "Grupper %group.label% | Rediger"
-pim_title.association_type:
-  index: "Sammenhængstyper"
-  edit: "Sammenhængstyper %association type.label% | Rediger"
-pim_title.group_type:
-  index: "Gruppetyper"
-  edit: "Gruppetyper %group type.label% | Rediger"
-pim_title.mass_edit_product_action:
-  choose: "Masse Rediger | Vælg"
-  configure: "Masse Rediger | Konfigurere"
-pim_title.mass_edit_family_action:
-  choose: "Masse Rediger | Vælg"
-  configure: "Masse Rediger | Konfigurere"
-pim_title.job_tracker:
-  index: Processen overvågning
-  show: "Process overvågning | Vis job"
-pim_title.dashboard: "Kontrolpanel"
 pim_catalog_identifier: Id
 pim_catalog_text: Tekst
 pim_catalog_textarea: Tekstområde
@@ -615,10 +199,6 @@ pim_reference_data_simpleselect: Referencedata simpel Vælg
 pim_reference_data_multiselect: Reference data multi Vælg
 Activated: Aktiveret
 Disable: Deaktivér
-pim_enrich.sequential_edit_action:
-  product:
-    previous: Spring tilbage til "%product%" uden at gemme.
-    next: Spring til "%product%" uden at gemme.
 pim_enrich.mass_edit_action:
   limit_exceeded: Vælg venligst mindst %limit% elementer der skal redigeres
   product:

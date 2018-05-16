@@ -1,6 +1,3 @@
-btn:
-  post: Añadir un nuevo comentario
-  reply: Responder
 confirmation:
   remove:
     comment: '¿Está seguro de que desea borrar este comentario?'
@@ -15,7 +12,13 @@ flash:
     reply:
       success: Su respuesta ha sido creada exitosamente.
       error: Ocurrió un error durante la creación de su respuesta.
-comment:
+pim_comment:
+  product:
+    panel:
+      comment:
+        post: Añadir un nuevo comentario
+        reply: Responder
+        title: Comentarios
   index:
     empty: Ningún comentario por el momento
     header_comment: '{{ user }} comenta el producto'
@@ -23,5 +26,3 @@ comment:
   placeholder:
     new: Escribir un nuevo comentario...
     reply: Responder a este comentario...
-pim_comment:
-  product.panel.comment.title: Comentarios
