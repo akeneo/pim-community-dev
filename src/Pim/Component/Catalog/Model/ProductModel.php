@@ -605,6 +605,14 @@ class ProductModel implements ProductModelInterface
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getLabel();
+    }
+
+    /**
      * Does the ancestry of the entity already has the $category?
      *
      * @param CategoryInterface $category

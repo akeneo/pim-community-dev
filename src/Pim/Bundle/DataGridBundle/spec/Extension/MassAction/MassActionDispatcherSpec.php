@@ -88,42 +88,50 @@ class MassActionDispatcherSpec extends ObjectBehavior
         ])->shouldReturnAnInstanceOf('\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface');
     }
 
-    function it_throws_an_exception_without_extension($parametersParser, Acceptor $acceptor)
-    {
+    function it_throws_an_exception_without_extension(
+        $parametersParser,
+        $datasource,
+        Acceptor $acceptor,
+        ProductMassActionRepositoryInterface $massActionRepository
+    ) {
         $request = new Request([
             'inset'      => 'inset',
-            'values'     => 1,
+            'values'     => [1],
             'gridName'   => 'grid',
             'actionName' => 'mass_edit_action',
         ]);
 
         $parametersParser->parse($request)->willReturn([
             'inset'      => 'inset',
-            'values'     => 1,
+            'values'     => [1],
             'gridName'   => 'grid',
             'actionName' => 'mass_edit_action']);
         $acceptor->getExtensions()->willReturn([]);
 
+        $datasource->getMassActionRepository()->willReturn($massActionRepository);
+
         $this->shouldThrow(new \LogicException("MassAction extension is not applied to datagrid."))
             ->during('dispatch', [[
             'inset'      => 'inset',
-            'values'     => 1,
+            'values'     => [1],
             'gridName'   => 'grid',
-            'actionName' => 'mass_edit_action']
-        ]);
+            'actionName' => 'mass_edit_action'
+        ]]);
     }
 
-    function it_throws_an_exception_with_not_found_mass_action(
+    function it_throws_an_exception_when_the_mass_action_does_not_exist(
         $parametersParser,
+        $datasource,
         DatagridInterface $grid,
         Acceptor $acceptor,
         MassActionExtension $massActionExtension,
-        MassActionInterface $massActionInterface
+        MassActionInterface $massActionInterface,
+        ProductMassActionRepositoryInterface $massActionRepository
     ) {
         $massActionName = 'mass_edit_action';
         $request = new Request([
             'inset'      => 'inset',
-            'values'     => 1,
+            'values'     => [1],
             'gridName'   => 'grid',
             'massAction' => $massActionInterface,
             'actionName' => $massActionName,
@@ -131,18 +139,19 @@ class MassActionDispatcherSpec extends ObjectBehavior
 
         $parametersParser->parse($request)->willReturn([
             'inset'      => 'inset',
-            'values'     => 1,
+            'values'     => [1],
             'gridName'   => 'grid',
             'massAction' => $massActionInterface,
             'actionName' => $massActionName
         ]);
+        $datasource->getMassActionRepository()->willReturn($massActionRepository);
         $acceptor->getExtensions()->willReturn([$massActionExtension]);
         $massActionExtension->getMassAction($massActionName, $grid)->willReturn(false);
 
         $this->shouldThrow(new \LogicException(sprintf('Can\'t find mass action "%s"', $massActionName)))
             ->during('dispatch', [[
             'inset'      => 'inset',
-            'values'     => 1,
+            'values'     => [1],
             'gridName'   => 'grid',
             'massAction' => $massActionInterface,
             'actionName' => $massActionName
@@ -174,7 +183,7 @@ class MassActionDispatcherSpec extends ObjectBehavior
         $massActionName = 'mass_edit_action';
         $request = new Request([
             'inset'      => 'inset',
-            'values'     => 1,
+            'values'     => [1],
             'gridName'   => 'grid',
             'massAction' => $massActionInterface,
             'actionName' => $massActionName,

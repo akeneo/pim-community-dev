@@ -60,9 +60,14 @@ SQL;
     }
 
     /**
+     * Update a job execution message.
+     * Only an unconsumed job execution message can be updated.
+     *
      * @param JobExecutionMessage $jobExecutionMessage
+     *
+     * @return bool return whether the job has been updated or not
      */
-    public function updateJobExecutionMessage(JobExecutionMessage $jobExecutionMessage)
+    public function updateJobExecutionMessage(JobExecutionMessage $jobExecutionMessage): bool
     {
         $sql = <<<SQL
 UPDATE 
@@ -74,7 +79,8 @@ SET
     q.create_time = :create_time,
     q.updated_time = :updated_time
 WHERE
-    q.id = :id;
+    q.id = :id
+    AND q.consumer IS NULL;
 SQL;
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
@@ -85,6 +91,8 @@ SQL;
         $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
         $stmt->bindValue('id', $jobExecutionMessage->getId());
         $stmt->execute();
+
+        return $stmt->rowCount() > 0;
     }
 
     /**

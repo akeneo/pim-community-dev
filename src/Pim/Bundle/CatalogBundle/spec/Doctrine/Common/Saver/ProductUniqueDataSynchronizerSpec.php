@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Saver\Common;
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
@@ -25,58 +26,48 @@ class ProductUniqueDataSynchronizerSpec extends ObjectBehavior
         $this->beConstructedWith($factory);
     }
 
-    function it_synchronizes_new_unique_values(
+    function it_synchronizes_unique_values(
         $factory,
+        $repository,
         ProductInterface $product,
-        Collection $uniqueDataCollection,
+        Collection $uniqueDataCollectionToUpdate,
         ValueCollectionInterface $values,
         ValueInterface $skuValue,
-        AttributeInterface $sku,
-        \ArrayIterator $uniqueDataCollectionIterator,
-        ProductUniqueDataInterface $uniqueData
+        ValueInterface $nameValue,
+        ProductUniqueDataInterface $eanUniqueData,
+        ProductUniqueDataInterface $skuUniqueData,
+        ProductUniqueDataInterface $newNameUniqueData,
+        ProductUniqueDataInterface $newSkuUniqueData,
+        AttributeInterface $skuAttribute,
+        AttributeInterface $eanAttribute,
+        AttributeInterface $nameAttribute
     ) {
-        $product->getUniqueData()->willReturn($uniqueDataCollection);
+        $product->getUniqueData()->willReturn($uniqueDataCollectionToUpdate);
+        $uniqueDataCollectionToUpdate->toArray()->willReturn([$skuUniqueData, $eanUniqueData]);
+
         $product->getValues()->willReturn($values);
-        $values->getUniqueValues()->willReturn([$skuValue]);
+        $product->getValue('sku')->willReturn($skuValue);
+        $skuUniqueData->setProductValue($skuValue)->shouldBeCalled();
+        $values->getUniqueValues()->willReturn([$skuValue, $nameValue]);
 
-        $skuValue->getAttribute()->willReturn($sku);
+        $uniqueDataCollectionToUpdate->removeElement($eanUniqueData)->shouldBeCalled();
+        $uniqueDataCollectionToUpdate->add($newNameUniqueData)->shouldBeCalled();
 
-        $uniqueDataCollection->getIterator()->willReturn($uniqueDataCollectionIterator);
-        $uniqueDataCollectionIterator->rewind()->shouldBeCalled();
-        $uniqueDataCollectionIterator->valid()->willReturn(false);
+        $skuValue->getAttribute()->willReturn($skuAttribute);
+        $nameValue->getAttribute()->willReturn($nameAttribute);
 
-        $factory->create($product, $skuValue)->willReturn($uniqueData);
-        $product->addUniqueData($uniqueData)->shouldBeCalled();
+        $skuAttribute->getCode()->willReturn('sku');
+        $nameAttribute->getCode()->willReturn('name');
+        $eanAttribute->getCode()->willReturn('ean');
 
-        $this->synchronize($product);
-    }
+        $eanUniqueData->getAttribute()->willReturn($eanAttribute);
+        $skuUniqueData->getAttribute()->willReturn($skuAttribute);
+        $newSkuUniqueData->getAttribute()->willReturn($skuAttribute);
+        $newNameUniqueData->getAttribute()->willReturn($nameAttribute);
 
-    function it_synchronizes_existing_unique_values(
-        $factory,
-        ProductInterface $product,
-        Collection $uniqueDataCollection,
-        ValueCollectionInterface $values,
-        ValueInterface $skuValue,
-        AttributeInterface $sku,
-        \ArrayIterator $uniqueDataCollectionIterator,
-        ProductUniqueDataInterface $uniqueData
-    ) {
-        $product->getUniqueData()->willReturn($uniqueDataCollection);
-        $product->getValues()->willReturn($values);
-        $values->getUniqueValues()->willReturn([$skuValue]);
 
-        $skuValue->getAttribute()->willReturn($sku);
-
-        $uniqueDataCollection->getIterator()->willReturn($uniqueDataCollectionIterator);
-        $uniqueDataCollectionIterator->rewind()->shouldBeCalled();
-        $uniqueDataCollectionIterator->valid()->willReturn(true, false);
-        $uniqueDataCollectionIterator->current()->willReturn($uniqueData);
-
-        $uniqueData->getAttribute()->willReturn($sku);
-
-        $factory->create(Argument::cetera())->shouldNotBeCalled($uniqueData);
-        $product->addUniqueData($uniqueData)->shouldNotBeCalled();
-        $uniqueData->setProductValue($skuValue)->shouldBeCalled();
+        $factory->create($product, $skuValue)->willReturn($newSkuUniqueData);
+        $factory->create($product, $nameValue)->willReturn($newNameUniqueData);
 
         $this->synchronize($product);
     }

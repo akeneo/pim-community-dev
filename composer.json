@@ -124,11 +124,11 @@
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
-            "php bin/console fos:js-routing:dump --target=web/js/routes.js"
+            "php bin/console --ansi fos:js-routing:dump --target=web/js/routes.js",
+            "php bin/console --ansi pim:installer:assets"
         ],
         "post-install-cmd": [
             "@symfony-scripts"
@@ -152,7 +152,8 @@
                 "database_port": "PIM_DATABASE_PORT",
                 "database_name": "PIM_DATABASE_NAME",
                 "database_user": "PIM_DATABASE_USER",
-                "database_password": "PIM_DATABASE_PASSWORD"
+                "database_password": "PIM_DATABASE_PASSWORD",
+                "index_hosts": "PIM_INDEX_HOSTS"
             }
         },
         "branch-alias": {
