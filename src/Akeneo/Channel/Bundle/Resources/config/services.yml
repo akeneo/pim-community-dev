@@ -87,3 +87,29 @@ services:
             - '@pim_catalog.repository.channel'
             - '@translator'
             - '%pim_catalog.entity.channel.class%'
+
+    pim_enrich.normalizer.channel:
+        class: 'Akeneo\Channel\Component\Normalizer\InternalApi\ChannelNormalizer'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_enrich.normalizer.locale'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+            - '@pim_catalog.filter.chained'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_versioning.serializer.normalizer.flat.channel:
+        class: 'Akeneo\Channel\Component\Normalizer\Versioning\ChannelNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.channel'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.channel:
+        class: 'Akeneo\Channel\Component\Normalizer\ExternalApi\ChannelNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.channel'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
