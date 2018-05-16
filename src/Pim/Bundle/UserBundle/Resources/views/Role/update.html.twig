@@ -76,7 +76,7 @@
         }
     }) }}
 
-        {% set title = entityId ? 'role.edit'|trans ~ ' - ' ~ form.vars.value.label : 'role.create'|trans %}
+        {% set title = entityId ? 'pim_common.edit'|trans ~ ' - ' ~ form.vars.value.label : 'pim_common.create'|trans %}
 
         {% set buttons %}
             {% if entityId %}
@@ -88,8 +88,8 @@
                             path('pim_user_role_delete', { id: entityId }),
                             'pim_user_role_remove',
                             path('pim_user_role_index'),
-                            'Are you sure you want to delete this role?'|trans,
-                            'Role removed'|trans,
+                            'confirmation.remove.role'|trans,
+                            'flash.role.removed'|trans,
                             'confirmation.delete'|trans,
                             'AknDropdown-menuLink delete',
                             'Roles'|trans

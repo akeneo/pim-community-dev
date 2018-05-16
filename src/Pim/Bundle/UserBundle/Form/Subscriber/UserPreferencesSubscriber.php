@@ -90,6 +90,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             EntityType::class,
             [
                 'class'         => Locale::class,
+                'label'         => 'pim_user.user.fields.catalog_locale',
                 'choice_label'  => 'code',
                 'select2'       => true,
                 'query_builder' => function (EntityRepository $repository) {
@@ -108,6 +109,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             'catalogScope',
             EntityType::class,
             [
+                'label'        => 'pim_user.user.fields.catalog_scope',
                 'class'        => 'PimCatalogBundle:Channel',
                 'choice_label' => 'label',
                 'select2'      => true
@@ -124,6 +126,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             'defaultTree',
             LightEntityType::class,
             [
+                'label'      => 'pim_user.user.fields.default_tree',
                 'select2'    => true,
                 'repository' => $this->categoryRepository,
             ]
@@ -147,6 +150,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             EntityType::class,
             [
                 'class'         => Locale::class,
+                'label'         => 'pim_user.user.fields.ui_locale',
                 'choice_label'  => 'getName',
                 'select2'       => true,
                 'data'          => $uiLocale,

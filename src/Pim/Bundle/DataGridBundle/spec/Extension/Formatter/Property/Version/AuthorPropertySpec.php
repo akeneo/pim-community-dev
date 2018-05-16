@@ -33,7 +33,7 @@ class AuthorPropertySpec extends ObjectBehavior
         $record->getValue('author')->willReturn('julia');
         $record->getValue('context')->willReturn(null);
         $userManager->findUserByUsername(Argument::any())->shouldBeCalled()->willReturn(null);
-        $translator->trans('Removed user')->willReturn('Removed user');
+        $translator->trans('pim_user.user.removed_user')->willReturn('Removed user');
 
         $this->getValue($record)->shouldReturn(' - Removed user');
     }

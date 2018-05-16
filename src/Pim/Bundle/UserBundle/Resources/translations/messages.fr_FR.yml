@@ -1,5 +1,7 @@
 pim_user:
   user:
+    fields:
+      ui_locale: "Langue de l'interface"
     tab:
       general.title: Général
       additional.title: Supplémentaire
@@ -8,6 +10,8 @@ pim_user:
       business_unit.title: Entités commerciales
       email_synchronization.title: Paramètres de synchronisation de messagerie
       interfaces.title: Interfaces
+    login:
+      log_in: Connexion
   group:
     tab:
       general.title: Général

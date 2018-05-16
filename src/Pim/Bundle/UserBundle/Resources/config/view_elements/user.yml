@@ -9,7 +9,7 @@ services:
     pim_user.view_element.user.tab.general:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'pim_user.user.tab.general'
+            - 'pim_user.user.tabs.general'
             - '%pim_user.view_element.user.tab.general.template%'
         tags:
             - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 90 }
@@ -17,7 +17,7 @@ services:
     pim_user.view_element.user.tab.additional:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'pim_user.user.tab.additional'
+            - 'pim_user.user.tabs.additional'
             - '%pim_user.view_element.user.tab.additional.template%'
         tags:
             - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 100 }
@@ -25,7 +25,7 @@ services:
     pim_user.view_element.user.tab.group_and_role:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'pim_user.user.tab.group_and_role'
+            - 'pim_user.user.tabs.group_and_role'
             - '%pim_user.view_element.user.tab.group_and_role.template%'
         calls:
             - [ addVisibilityChecker, ['@pim_user.view_element.visibility_checker.groups_and_roles'] ]
@@ -35,7 +35,7 @@ services:
     pim_user.view_element.user.tab.password:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'pim_user.user.tab.password'
+            - 'pim_user.user.tabs.password'
             - '%pim_user.view_element.user.tab.password.template%'
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.non_empty_property', {property: '[form].children[change_password]'}] ]
@@ -45,7 +45,7 @@ services:
     pim_user.view_element.user.tab.interfaces:
         parent: pim_enrich.view_element.base
         arguments:
-            - 'pim_user.user.tab.interfaces'
+            - 'pim_user.user.tabs.interfaces'
             - '%pim_user.view_element.user.tab.interfaces.template%'
         tags:
             - { name: pim_enrich.view_element, type: pim_user_user_form.form_tab, position: 130 }

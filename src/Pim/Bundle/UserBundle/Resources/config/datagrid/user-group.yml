@@ -17,7 +17,7 @@ datagrid:
                         - g.name <> '%pim_user.entity.user.class%::GROUP_DEFAULT'
         columns:
             name:
-                label: oro.user.grid.groups.columns.name
+                label: pim_datagrid.columns.groups.label
                 frontend_type: label
 
         properties:

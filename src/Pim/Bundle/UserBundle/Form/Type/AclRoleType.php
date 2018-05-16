@@ -64,7 +64,7 @@ class AclRoleType extends AbstractType
             TextType::class,
             [
                 'required' => true,
-                'label' => 'Role',
+                'label' => 'pim_user.roles.title',
             ]
         );
 

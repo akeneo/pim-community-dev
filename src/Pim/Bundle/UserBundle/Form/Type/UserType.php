@@ -101,7 +101,7 @@ class UserType extends AbstractType
                 'rolesCollection',
                 EntityType::class,
                 [
-                    'label'         => 'Roles',
+                    'label'         => 'pim_user.user.fields.roles',
                     'class'         => Role::class,
                     'choice_label'  => 'label',
                     'query_builder' => $this->roleRepository->getAllButAnonymousQB(),
@@ -118,6 +118,7 @@ class UserType extends AbstractType
                 'groups',
                 EntityType::class,
                 [
+                    'label'         => 'pim_user.user.fields.groups',
                     'class'         => Group::class,
                     'choice_label'  => 'name',
                     'query_builder' => $this->groupRepository->getAllButDefaultQB(),
@@ -136,8 +137,8 @@ class UserType extends AbstractType
                 [
                     'type'           => PasswordType::class,
                     'required'       => true,
-                    'first_options'  => ['label' => 'Password'],
-                    'second_options' => ['label' => 'Re-enter password'],
+                    'first_options'  => ['label' => 'pim_user.user.fields.password'],
+                    'second_options' => ['label' => 'pim_user.user.fields.password_again'],
                 ]
             )
             ->add(
@@ -145,7 +146,7 @@ class UserType extends AbstractType
                 ChangePasswordType::class
             )
             ->add('productGridFilters', $this->productGridFilterTypeClassName, [
-                'label'    => 'user.product_grid_filters',
+                'label'    => 'pim_user.user.fields.product_grid_filters',
                 'multiple' => true,
                 'required' => false,
             ]);
@@ -202,6 +203,7 @@ class UserType extends AbstractType
                 'username',
                 TextType::class,
                 [
+                    'label'    => 'pim_user.user.fields.username',
                     'required' => true,
                 ]
             )
@@ -209,7 +211,7 @@ class UserType extends AbstractType
                 'email',
                 EmailType::class,
                 [
-                    'label'    => 'E-mail',
+                    'label'    => 'pim_user.user.fields.email',
                     'required' => true,
                 ]
             )
@@ -217,7 +219,7 @@ class UserType extends AbstractType
                 'namePrefix',
                 TextType::class,
                 [
-                    'label'    => 'Name prefix',
+                    'label'    => 'pim_user.user.fields.name_prefix',
                     'required' => false,
                 ]
             )
@@ -225,7 +227,7 @@ class UserType extends AbstractType
                 'firstName',
                 TextType::class,
                 [
-                    'label'    => 'First name',
+                    'label'    => 'pim_user.user.fields.first_name',
                     'required' => true,
                 ]
             )
@@ -233,7 +235,7 @@ class UserType extends AbstractType
                 'middleName',
                 TextType::class,
                 [
-                    'label'    => 'Middle name',
+                    'label'    => 'pim_user.user.fields.middle_name',
                     'required' => false,
                 ]
             )
@@ -241,7 +243,7 @@ class UserType extends AbstractType
                 'lastName',
                 TextType::class,
                 [
-                    'label'    => 'Last name',
+                    'label'    => 'pim_user.user.fields.last_name',
                     'required' => true,
                 ]
             )
@@ -249,7 +251,7 @@ class UserType extends AbstractType
                 'nameSuffix',
                 TextType::class,
                 [
-                    'label'    => 'Name suffix',
+                    'label'    => 'pim_user.user.fields.name_suffix',
                     'required' => false,
                 ]
             )
@@ -257,7 +259,7 @@ class UserType extends AbstractType
                 'phone',
                 TextType::class,
                 [
-                    'label'    => 'Phone',
+                    'label'    => 'pim_user.user.fields.phone',
                     'required' => false,
                 ]
             )
@@ -265,7 +267,7 @@ class UserType extends AbstractType
                 'birthday',
                 DateType::class,
                 [
-                    'label'    => 'Date of birth',
+                    'label'    => 'pim_user.user.fields.date_of_birth',
                     'required' => false,
                 ]
             )
@@ -273,7 +275,7 @@ class UserType extends AbstractType
                 'imageFile',
                 FileType::class,
                 [
-                    'label'    => 'Avatar',
+                    'label'    => 'pim_user.user.fields.avatar',
                     'required' => false,
                 ]
             )
@@ -281,7 +283,7 @@ class UserType extends AbstractType
                 'timezone',
                 TimezoneType::class,
                 [
-                    'label'    => 'user.timezone',
+                    'label'    => 'pim_user.user.fields.timezone',
                     'required' => true,
                     'choice_label' => function ($timezone, $key) {
                         $currentDateTime = new \DateTime('now', new \DateTimeZone($timezone));

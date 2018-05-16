@@ -21,14 +21,14 @@ datagrid:
                     - { table: '%pim_user.entity.user.class%', alias: u }
         columns:
             username:
-                label: oro.user.grid.users.columns.username
+                label: pim_user.user.fields.username
                 frontend_type: label
             firstName:
-                label: oro.user.grid.users.columns.firstName
+                label: pim_user.user.fields.first_name
             lastName:
-                label: oro.user.grid.users.columns.lastName
+                label: pim_user.user.fields.last_name
             enabled:
-                label: oro.user.grid.users.columns.enabled
+                label: pim_user.user.fields.status
                 frontend_type: select
                 choices:
                    - Inactive
@@ -89,7 +89,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--view
                 type:          navigate
-                label:         View
+                label:         pim_common.view
                 link:          view_link
                 acl_resource:  pim_user_user_index
                 rowAction:     true
@@ -97,7 +97,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:          navigate
-                label:         Update
+                label:         pim_common.update
                 link:          update_link
                 acl_resource:  pim_user_user_edit
             delete:

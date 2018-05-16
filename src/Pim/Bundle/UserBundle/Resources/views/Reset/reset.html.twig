@@ -13,7 +13,7 @@
         'method': 'post',
         'class': 'form-signin'
     }) }}
-    <h2 class="title">{{ 'Password Reset'|trans }}</h2>
+    <h2 class="title">{{ 'pim_user.user.login.password_reset'|trans }}</h2>
     <fieldset>
         {{ form_errors(form) }}
         {{ form_widget(form.plainPassword) }}
@@ -22,7 +22,7 @@
             <div class="AknLogin-formCell"></div>
             <div class="AknLogin-formCell AknLogin-formCell--small">
                 <a href="{{ path('pim_user_security_login') }}" class="AknLogin-link">{{ 'pim_common.cancel'|trans }}</a>
-                <button type="submit" class="AknButton AknButton--apply AknButton--big AknButton--uppercase">{{ 'Reset'|trans }}</button>
+                <button type="submit" class="AknButton AknButton--apply AknButton--big AknButton--uppercase">{{ 'pim_user.user.login.reset'|trans }}</button>
             </div>
         </div>
     </fieldset>

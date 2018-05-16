@@ -61,7 +61,7 @@ class AuthorProperty extends FieldProperty
             $user = $this->userManager->findUserByUsername($value['author']);
 
             if (null === $user) {
-                $userName = sprintf('%s - %s', $value['author'], $this->translator->trans('Removed user'));
+                $userName = sprintf('%s - %s', $value['author'], $this->translator->trans('pim_user.user.removed_user'));
             } else {
                 $userName = sprintf('%s %s - %s', $user->getFirstName(), $user->getLastName(), $user->getEmail());
             }

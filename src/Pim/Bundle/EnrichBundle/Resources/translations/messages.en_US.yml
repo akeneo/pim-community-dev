@@ -2,6 +2,12 @@ pim_common:
     cancel: Cancel
     save: Save
     delete: Delete
+    update: Update
+    view: View
+    edit: Edit
+    created: Created
+    updated: Updated
+    create: Create
 
 pim_enrich:
     # Attribute

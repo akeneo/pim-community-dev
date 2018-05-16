@@ -14,11 +14,11 @@
                     'dataRedirect': path('pim_user_index'),
                     'aCss': 'AknDropdown-menuLink delete remove-button',
                     'dataId': entity.id,
-                    'dataMessage': 'Are you sure you want to delete this user?'|trans,
-                    'successMessage': 'User deleted'|trans,
+                    'dataMessage': 'confirmation.remove.user'|trans,
+                    'successMessage': 'flas.user.removed'|trans,
                     'title': 'confirmation.delete'|trans,
-                    'label': 'Delete'|trans,
-                    'subTitle': 'Users'|trans
+                    'label': 'pim_common.delete'|trans,
+                    'subTitle': 'pim_user.user.title'|trans
                 }) }}
             </div>
         </div>
@@ -27,8 +27,7 @@
         {{ UI.button({
             'path' : path('pim_user_update', { id: entity.id }),
             'iClass' : 'icon-pencil ',
-            'title' : 'Edit user',
-            'label' : 'Edit',
+            'label' : 'pim_common.edit',
             'aClass' : 'AknButtonList-item AknButton--action edit-user'
         }) }}
     {% endif %}
@@ -47,15 +46,15 @@
 
 {% block stats %}
     {{ parent() }}
-    <span class="AknTitleContainer-metaItem">{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? entity.lastLogin|datetime_presenter : 'N/A' }}</span>
-    <span class="AknTitleContainer-metaItem">{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</span>
+    <span class="AknTitleContainer-metaItem">{{ 'pim_user.user.fields.last_logged_in'|trans }}: {{ entity.lastLogin ? entity.lastLogin|datetime_presenter : 'N/A' }}</span>
+    <span class="AknTitleContainer-metaItem">{{ 'pim_user.user.fields.login_count'|trans }}: {{ entity.loginCount|default(0) }}</span>
 {% endblock stats %}
 
 {% block context %}
     {% if entity.enabled %}
-        <div class="AknBadge AknBadge--medium AknBadge--enabled status-enabled"><i class="AknBadge-icon icon-status-enabled icon-circle"></i>{{ 'Active'|trans }}</div>
+        <div class="AknBadge AknBadge--medium AknBadge--enabled status-enabled"><i class="AknBadge-icon icon-status-enabled icon-circle"></i>{{ 'pim_user.user.fields.active'|trans }}</div>
     {% else %}
-        <div class="AknBadge AknBadge--medium AknBadge--disabled status-disabled"><i class="AknBadge-icon icon-status-disabled icon-circle"></i>{{ 'Inactive'|trans }}</div>
+        <div class="AknBadge AknBadge--medium AknBadge--disabled status-disabled"><i class="AknBadge-icon icon-status-disabled icon-circle"></i>{{ 'pim_user.user.fields.inactive'|trans }}</div>
     {% endif %}
 {% endblock context %}
 
@@ -63,29 +62,29 @@
     <div>
     {% set id = 'user-profile' %}
 
-    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: ''|trans})] %}
+    {% set dataSubBlocks = [UI.attibuteRow('pim_user.user.fields.email'|trans, {value: entity.email, hint: ''})] %}
 
     {% set dataBlocks = [
         {
-            'title': 'General'|trans,
+            'title': 'pim_user.user.tabs.general.title'|trans,
             'class': 'active',
             'subblocks': [
                 {
-                    'title': 'Basic Information'|trans,
+                    'title': 'pim_user.user.tabs.basic_information'|trans,
                     'class': 'AknFormContainer AknFormContainer--withPadding',
                     'data': [
-                        UI.attibuteRow('User name'|trans, entity.username),
-                        entity.namePrefix ? UI.attibuteRow('Name prefix'|trans, entity.namePrefix),
-                        UI.attibuteRow('First name'|trans, entity.firstName|default('N/A')),
-                        entity.middleName ? UI.attibuteRow('Middle name'|trans, entity.middleName),
-                        UI.attibuteRow('Last name'|trans, entity.lastName|default('N/A')),
-                        entity.nameSuffix ? UI.attibuteRow('Name suffix'|trans, entity.nameSuffix),
-                        entity.phone ? UI.attibuteRow('Phone'|trans, entity.phone),
-                        UI.attibuteRow('Birthday'|trans, entity.birthday ? entity.birthday|date_presenter : 'N/A')
+                        UI.attibuteRow('pim_user.user.fields.username'|trans, entity.username),
+                        entity.namePrefix ? UI.attibuteRow('pim_user.user.fields.name_prefix'|trans, entity.namePrefix),
+                        UI.attibuteRow('pim_user.user.fields.first_name'|trans, entity.firstName|default('N/A')),
+                        entity.middleName ? UI.attibuteRow('pim_user.user.fields.middle_name'|trans, entity.middleName),
+                        UI.attibuteRow('pim_user.user.fields.last_name'|trans, entity.lastName|default('N/A')),
+                        entity.nameSuffix ? UI.attibuteRow('pim_user.user.fields.name_suffix'|trans, entity.nameSuffix),
+                        entity.phone ? UI.attibuteRow('pim_user.user.fields.phone'|trans, entity.phone),
+                        UI.attibuteRow('pim_user.user.fields.date_of_birth'|trans, entity.birthday ? entity.birthday|date_presenter : 'N/A')
                     ]
                 },
                 {
-                    'title': 'Contact Information'|trans,
+                    'title': 'pim_user.user.tabs.general.contact_information'|trans,
                     'class': 'AknFormContainer AknFormContainer--withPadding',
                     'data': dataSubBlocks
                 }
@@ -104,28 +103,28 @@
     {% endfor %}
 
     {% set additionalData = [
-        UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
-        UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
-        UI.attibuteRow('Default tree'|trans, entity.defaultTree),
-        UI.attibuteRow('user.product_grid_filters'|trans, filters|join(', '))
+        UI.attibuteRow('pim_user.user.fields.catalog_locale'|trans, entity.catalogLocale),
+        UI.attibuteRow('pim_user.user.fields.catalog_scope'|trans, entity.catalogScope),
+        UI.attibuteRow('pim_user.user.fields.default_tree'|trans, entity.defaultTree),
+        UI.attibuteRow('pim_user.user.fields.product_grid_filters'|trans, filters|join(', '))
     ] %}
 
     {% for view in entity.getDefaultGridViews() %}
         {% set additionalData = additionalData|merge([
             UI.attibuteRow(
-                'user.default_' ~ view.datagridAlias|replace('-', '_') ~ '_view.label'|trans,
-                view.label|default('user.default_grid_view.none'|trans)
+                'pim_user.user.fields.default_' ~ view.datagridAlias|replace('-', '_') ~ '_view.label'|trans,
+                view.label|default('pim_user.user.fields.default_grid_view.none'|trans)
             )
         ]) %}
     {% endfor %}
 
     {% set additionalData = additionalData|merge([
-        UI.attibuteRow('User salt'|trans, entity.salt)
+        UI.attibuteRow('pim_user.user.fields.user_salt'|trans, entity.salt)
     ]) %}
 
     {% set additional = [
         {
-            'title': 'Additional Information'|trans,
+            'title': 'pim_user.user.tabs.additional.title'|trans,
             'class': 'active',
             'subblocks': [
                 {
@@ -140,14 +139,14 @@
 
     {% set interfaces = [
         {
-            'title': 'Interfaces'|trans,
+            'title': 'pim_user.user.tabs.interfaces.title'|trans,
             'subblocks': [
                 {
                     'title': '',
                     'class': 'AknFormContainer AknFormContainer--withPadding',
                     'data': [
-                        UI.attibuteRow('UI locale'|trans, entity.uiLocale.getName),
-                        UI.attibuteRow('user.timezone'|trans, entity.timezone),
+                        UI.attibuteRow('pim_user.user.fields.ui_locale'|trans, entity.uiLocale.getName),
+                        UI.attibuteRow('pim_user.user.fields.timezone'|trans, entity.timezone),
                     ]
                 }
             ]
@@ -168,7 +167,7 @@
     {% if additional_data is not empty %}
         {% set dataBlocks = dataBlocks|merge(
             [{
-                'title': 'Additional data'|trans,
+                'title': 'pim_user.user.tabs.additional_data.title'|trans,
                 'subblocks': [
                     {
                         'title': '',

@@ -161,7 +161,7 @@ class UserController extends Controller
 
         $this->get('session')->getFlashBag()->add(
             'success',
-            $this->get('translator')->trans('oro.user.controller.user.message.saved')
+            $this->get('translator')->trans('pim_user.controller.user.message.saved')
         );
 
         $this->get('session')->remove('dataLocale');

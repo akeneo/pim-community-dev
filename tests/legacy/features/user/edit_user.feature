@@ -54,7 +54,8 @@ Feature: Edit a user
     And I logout
     When I am logged in as "Mary"
     And I edit the "admin" user
-    Then I should see the text "Edit user - John Doe"
+    Then I should see the text "John Doe"
+    And I should see the text "Save"
 
   Scenario: Successfully setup user timezone
     Given I edit the "Peter" user

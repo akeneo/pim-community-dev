@@ -66,7 +66,7 @@ class UserSubscriber implements EventSubscriberInterface
                 ChoiceType::class,
                 $entity->getId() ? $entity->isEnabled() : '',
                 [
-                    'label'           => 'Status',
+                    'label'           => 'pim_user.user.fields.status',
                     'required'        => true,
                     'disabled'        => $this->isCurrentUser($entity),
                     'choices'         => ['Inactive' => 0, 'Active' => 1],

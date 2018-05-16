@@ -38,7 +38,7 @@ class ChangePasswordType extends AbstractType
             PasswordType::class,
             [
                 'required'    => false,
-                'label'       => 'Current password',
+                'label'       => 'pim_user.user.fields.current_password',
                 'constraints' => [
                     new UserPassword()
                 ],
@@ -57,8 +57,8 @@ class ChangePasswordType extends AbstractType
                         'class' => 'password-field'
                     ]
                 ],
-                'first_options'      => ['label' => 'New password'],
-                'second_options'     => ['label' => 'Repeat new password'],
+                'first_options'      => ['label' => 'pim_user.user.fields.new_password'],
+                'second_options'     => ['label' => 'pim_user.user.fields.new_password_again'],
                 'mapped'             => false,
             ]
         );
