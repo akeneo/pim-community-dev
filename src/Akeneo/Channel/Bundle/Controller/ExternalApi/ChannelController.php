@@ -304,9 +304,9 @@ class ChannelController
     /**
      * Update a channel. It throws an error 422 if a problem occurred during the update.
      *
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param array                                            $data
-     * @param string                                           $anchor
+     * @param ChannelInterface $channel
+     * @param array            $data
+     * @param string           $anchor
      *
      * @throws DocumentedHttpException
      */
