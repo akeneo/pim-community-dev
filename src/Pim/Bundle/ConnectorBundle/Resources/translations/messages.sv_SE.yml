@@ -1,31 +1,7 @@
 pim_connector:
   steps:
-    dummy_reader.title: Dummy läsare
-    product_reader.title: Extrahering produkt
-    entity_reader.title: Extrahering entitet
-    csv_reader:
-      title: CSV-läsare
     file_reader:
       invalid_item_columns_count: 'Förväntade %totalColumnsCount% kolumner, faktiskt antal %itemColumnsCount% i %filePath%:%lineno%'
-    csv_product_reader.title: CSV produkt-läsare
-    csv_category_reader.title: CSV kategori-läsare
-    dummy_processor.title: Dummy-processor
-    product_processor.title: Produkt skapande
-    category_processor.title: Kategoriskapande
-    association_processor.title: Associationsskapande
-    product_association_processor.title: Associationsskapande
-    group_processor.title: Gruppskapande
-    attribute_processor.title: Attributskapande
-    attribute_option_processor.title: Attributvalsskapande
-    heterogeneous_processor.title: CSV produkt-serialiseraren
-    homogeneous_processor.title: CSV entitet-serialiseraren
-    transformer_processor.title: Omvandling
-    dummy_writer.title: Dummyskrivare
-    file_writer.title: Utdata
-    product_writer.title: Produktlagring
-    category_writer.title: Kategorilagring
-    writer.title: Entitetslagring
-    csv_writer.title: Csv skrivare
 job_execution.summary:
   read: läst
   write: skrivet

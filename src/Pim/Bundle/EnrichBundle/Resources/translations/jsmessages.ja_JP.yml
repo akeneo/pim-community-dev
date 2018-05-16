@@ -83,6 +83,13 @@ pim_datagrid:
       confirm_content: 選択された製品を削除してもよろしいですか？
       success: 選択した製品が正常に削除されました。
       error: 商品の削除中にエラーが発生しました、やり直してください
+    quick_export:
+      csv_all: CSV (すべての属性)
+      csv_grid_context: CSV (グリッド コンテキスト)
+      xlsx_all: エクセル (すべての属性)
+      xlsx_grid_context: エクセル (グリッド コンテキスト)
+    mass_edit: 一括操作
+    sequential_edit: 連続編集
   view_selector:
     view: ビュー
   actions:
@@ -151,22 +158,7 @@ alert:
     not_available: あなたのウェブブラウザはsessionStorageと互換性がありません。管理者に問い合わせてください。
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: 警告：未保存のデータは失われます。この新しいオプションの変更を取り消しますか？
     cancel_edition_on_new_option_title: 変更をキャンセル
-label:
-  attribute_option:
-    add_option: オプションを追加
-pim:
-  grid:
-    mass_action:
-      quick_export:
-        csv_all: CSV (すべての属性)
-        csv_grid_context: CSV (グリッド コンテキスト)
-        xlsx_all: エクセル (すべての属性)
-        xlsx_grid_context: エクセル (グリッド コンテキスト)
-      mass_edit: 一括操作
-      category_edit: 製品をカテゴリに移動する
-      sequential_edit: 連続編集
 pim_enrich:
   item:
     list:
@@ -492,6 +484,7 @@ pim_enrich:
         error_creating_option: 属性オプションの作成中にエラーが発生しました
       add_option_modal:
         title: 属性オプションの追加
+      add_option: オプションを追加
     attribute_group:
       tab:
         attribute:
@@ -928,8 +921,6 @@ pim_menu:
     logout: ログアウト
     user_account: マイアカウント
 pim_notification:
-  mark_all_as_read: 全て既読にする
-  no_notifications: 通知はありません
   types:
     import: インポート
     export: エクスポート
@@ -964,12 +955,3 @@ batch_jobs:
     quick_export.label: XSLX製品のグリッドコンテキストのクイックエクスポート
     quick_export_product_model.label: XSLX製品モデルのグリッドコンテキストのクイックエクスポート
     perform.label: XSLX製品のグリッドコンテキストのクイックエクスポート
-catalog_volume:
-  axis:
-    count_products: 製品
-    count_channels: チャンネル
-    count_families: ファミリー
-    count_attributes: 属性
-    count_categories: カテゴリ
-    count_category_trees: カテゴリツリー
-    count_product_models: 製品モデル

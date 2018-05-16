@@ -86,6 +86,14 @@ pim_datagrid:
       confirm_content: Er du sikker på du vil slette de valgte produkter?
       success: Udvalgte produkter blev slettet.
       error: Der opstod en fejl under forsøget på at slette de valgte produkter, prøv venligst igen.
+    quick_export:
+      csv_all: CSV (alle attributter)
+      csv_grid_context: CSV (gitter kontekst)
+      xlsx_all: Excel (alle attributter)
+      xlsx_grid_context: Excel (gitter kontekst)
+    mass_edit: Massehandlinger
+    sequential_edit: Sekventiel redigering
+    mass_delete: Masse slet
   view_selector:
     view: Visninger
   actions:
@@ -158,23 +166,7 @@ alert:
     not_available: Din webbrowser er ikke kompatibel med sessionStorage. Kontakt din administrator
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Advarsel, du vil miste ikke gemte data. Er du sikker på du vil annullere ændringen af denne nye indstilling ?
     cancel_edition_on_new_option_title: Annullere ændringer
-label:
-  attribute_option:
-    add_option: Tilføje en mulighed
-mass_delete: Masse slet
-pim:
-  grid:
-    mass_action:
-      quick_export:
-        csv_all: CSV (alle attributter)
-        csv_grid_context: CSV (gitter kontekst)
-        xlsx_all: Excel (alle attributter)
-        xlsx_grid_context: Excel (gitter kontekst)
-      mass_edit: Massehandlinger
-      category_edit: Flytte produkter i kategorier
-      sequential_edit: Sekventiel redigering
 pim_enrich:
   item:
     list:
@@ -496,6 +488,7 @@ pim_enrich:
         error_creating_option: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
       add_option_modal:
         title: Tilføj attribut tilvalg
+      add_option: Tilføje en mulighed
     attribute_group:
       tab:
         attribute:
@@ -944,8 +937,6 @@ pim_menu:
     logout: Log ud
     user_account: Min konto
 pim_notification:
-  mark_all_as_read: Markér alle som læst
-  no_notifications: Ingen notifikation
   types:
     import: Import
     export: Eksport
@@ -986,12 +977,3 @@ batch_jobs:
     perform.label: Xlsx-produkt gitter sammenhæng hurtig eksport
   delete_products_and_product_models:
     delete_products_and_product_models.label: Masse slet produkter
-catalog_volume:
-  axis:
-    count_products: Produkter
-    count_channels: Kanaler
-    count_families: Familier
-    count_attributes: Egenskaber
-    count_categories: Kategorier
-    count_category_trees: Kategoritræstrukturen
-    count_product_models: Produktmodeller

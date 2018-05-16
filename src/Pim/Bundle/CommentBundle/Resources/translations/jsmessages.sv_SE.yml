@@ -1,6 +1,3 @@
-btn:
-  post: Lägg till ny kommentar
-  reply: Svara
 confirmation:
   remove:
     comment: Är du säker på att du vill ta bort den här kommentaren?
@@ -15,7 +12,13 @@ flash:
     reply:
       success: Ditt svar har skapats.
       error: Ett fel uppstod under skapandet av ditt svar.
-comment:
+pim_comment:
+  product:
+    panel:
+      comment:
+        post: Lägg till ny kommentar
+        reply: Svara
+        title: Kommentarer
   index:
     empty: Inga kommentarer hittades
     header_comment: '{{ user }} kommentarer produkt'
@@ -23,5 +26,3 @@ comment:
   placeholder:
     new: Skriv en ny kommentar...
     reply: Svara på denna kommentar...
-pim_comment:
-  product.panel.comment.title: Kommentarer

@@ -1,0 +1,9 @@
+pim_catalog_volume:
+  axis:
+    count_products: 製品
+    count_channels: チャンネル
+    count_families: ファミリー
+    count_attributes: 属性
+    count_categories: カテゴリ
+    count_category_trees: カテゴリツリー
+    count_product_models: 製品モデル

@@ -39,5 +39,7 @@ pim_api:
     locale: ロケール
     currency: 通貨
     association_type: 関連タイプ
-rights:
-  api: Web API のアクセス権限
+pim_user:
+  roles:
+    tab:
+      api: Web API のアクセス権限

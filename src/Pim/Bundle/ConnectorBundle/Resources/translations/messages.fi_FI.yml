@@ -1,31 +1,7 @@
 pim_connector:
   steps:
-    dummy_reader.title: Mallilukija
-    product_reader.title: Tuotteen poisto
-    entity_reader.title: Kohteen poisto
-    csv_reader:
-      title: CSV-lukija
     file_reader:
       invalid_item_columns_count: 'Odotettiin %totalColumnsCount% saraketta, mutta havaittiin %itemColumnsCount% tiedostossa %filePath%:%lineno%'
-    csv_product_reader.title: CSV-tuotteen lukija
-    csv_category_reader.title: CSV-kategorian lukija
-    dummy_processor.title: Malliprosessori
-    product_processor.title: Tuotteen luominen
-    category_processor.title: Kategorian luominen
-    association_processor.title: Assosiaation luominen
-    product_association_processor.title: Assosiaation luominen
-    group_processor.title: Ryhmän perustaminen
-    attribute_processor.title: Attribuutin luominen
-    attribute_option_processor.title: Attribuutin vaihtoehdon luominen
-    heterogeneous_processor.title: CSV-tuotteiden sarjanmuodostoja
-    homogeneous_processor.title: CSV-entiteettien sarjanmuodostaja
-    transformer_processor.title: Muunnos
-    dummy_writer.title: Mallikirjoittaja
-    file_writer.title: Ulostulo
-    product_writer.title: Tuotteen varastointi
-    category_writer.title: Kategorian varastointi
-    writer.title: Yksikön varastointi
-    csv_writer.title: CSV-kirjoittaja
 job_execution.summary:
   read: luettu
   write: kirjoitettu
