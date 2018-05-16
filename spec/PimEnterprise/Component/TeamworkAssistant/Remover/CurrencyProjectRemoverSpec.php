@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Remover\CurrencyProjectRemover;
