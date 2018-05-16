@@ -33,7 +33,6 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'Pim\Component\Catalog\Model\ProductModelInterface'              => 'pim_catalog.entity.product_model.class',
             'Pim\Component\Catalog\Model\ProductUniqueDataInterface'         => 'pim_catalog.entity.product_unique_data.class',
             'Pim\Component\Catalog\Model\CategoryInterface'                  => 'pim_catalog.entity.category.class',
-            'Akeneo\Channel\Component\Model\CurrencyInterface'               => 'pim_catalog.entity.currency.class',
             'Pim\Component\Catalog\Model\FamilyInterface'                    => 'pim_catalog.entity.family.class',
             'Pim\Component\Catalog\Model\CategoryTranslationInterface'       => 'pim_catalog.entity.category_translation.class',
             'Pim\Component\Catalog\Model\FamilyTranslationInterface'         => 'pim_catalog.entity.family_translation.class',
