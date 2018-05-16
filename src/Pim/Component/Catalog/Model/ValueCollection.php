@@ -182,10 +182,9 @@ class ValueCollection implements ValueCollectionInterface
      */
     public function getSame(ValueInterface $value)
     {
-        $channelCode = null !== $value->getScope() ? $value->getScope() : '<all_channels>';
-        $localeCode = null !== $value->getLocale() ? $value->getLocale() : '<all_locales>';
+        $key = self::generateKey($value->getAttribute()->getCode(), $value->getScope(), $value->getLocale());
 
-        return $this->getByCodes($value->getAttribute()->getCode(), $channelCode, $localeCode);
+        return $this->getByKey($key);
     }
 
     /**
@@ -201,9 +200,7 @@ class ValueCollection implements ValueCollectionInterface
      */
     public function getByCodes($attributeCode, $channelCode = null, $localeCode = null)
     {
-        $channelCode = null !== $channelCode ? $channelCode : '<all_channels>';
-        $localeCode = null !== $localeCode ? $localeCode : '<all_locales>';
-        $key = sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
+        $key = self::generateKey($attributeCode, $channelCode, $localeCode);
 
         return $this->getByKey($key);
     }
@@ -238,9 +235,7 @@ class ValueCollection implements ValueCollectionInterface
     public function add(ValueInterface $value)
     {
         $attribute = $value->getAttribute();
-        $channelCode = null !== $value->getScope() ? $value->getScope() : '<all_channels>';
-        $localeCode = null !== $value->getLocale() ? $value->getLocale() : '<all_locales>';
-        $key = sprintf('%s-%s-%s', $attribute->getCode(), $channelCode, $localeCode);
+        $key = self::generateKey($value->getAttribute()->getCode(), $value->getScope(), $value->getLocale());
 
         if (isset($this->values[$key])) {
             return false;
@@ -318,5 +313,21 @@ class ValueCollection implements ValueCollectionInterface
         $filteredValues = array_filter($this->values, $filterBy);
 
         return new self($filteredValues);
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param string $channelCode
+     * @param string $localeCode
+     *
+     * @return string
+     */
+    public static function generateKey(string $attributeCode, ?string $channelCode, ?string $localeCode): string
+    {
+        $channelCode = null !== $channelCode ? $channelCode : '<all_channels>';
+        $localeCode = null !== $localeCode ? $localeCode : '<all_locales>';
+        $key = sprintf('%s-%s-%s', $attributeCode, $channelCode, $localeCode);
+
+        return $key;
     }
 }
