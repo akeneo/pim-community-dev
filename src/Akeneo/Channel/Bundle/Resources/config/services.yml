@@ -159,3 +159,10 @@ services:
         class: 'Akeneo\Channel\Component\Normalizer\Standard\CurrencyNormalizer'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.event_subscriber.currency_disabling:
+        class: 'Akeneo\Channel\Bundle\EventListener\CurrencyDisablingSubscriber'
+        arguments:
+            - '@pim_catalog.repository.channel'
+        tags:
+            - { name: kernel.event_subscriber }
