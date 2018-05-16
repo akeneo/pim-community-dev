@@ -76,3 +76,6 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle\\
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\ChannelRepositoryInterface/Akeneo\\Channel\\Component\\Repository\\ChannelRepositoryInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Updater\\ChannelUpdater/Akeneo\\Channel\\Component\\Updater\\ChannelUpdater/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Updater\\LocalelUpdater/Akeneo\\Channel\\Component\\Updater\\LocalelUpdater/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Tool\Component\Api\Normalizer\LocaleNormalizer/Akeneo\Channel\Component\Normalizer\ExternalApi\LocaleNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer/Akeneo\Channel\Component\Normalizer\InternalApi\LocaleNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\VersioningBundle\Normalizer\Flat/Akeneo\Channel\Component\Normalizer\Versioning/g'

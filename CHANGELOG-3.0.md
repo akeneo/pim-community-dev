@@ -95,3 +95,6 @@
 - Move `Pim\Component\Catalog\Repository\ChannelRepositoryInterface` to `Akeneo\Channel\Component\Repository\ChannelRepositoryInterface`
 - Move `Pim\Component\Catalog\Updater\ChannelUpdater` to `Akeneo\Channel\Component\Updater\ChannelUpdater`
 - Move `Pim\Component\Catalog\Updater\LocalelUpdater` to `Akeneo\Channel\Component\Updater\LocaleUpdater`
+- Move `Akeneo\Tool\Component\Api\Normalizer\LocaleNormalizer` to `Akeneo\Channel\Component\Normalizer\ExternalApi\LocaleNormalizer`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer` to `Akeneo\Channel\Component\Normalizer\InternalApi\LocaleNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat` to `Akeneo\Channel\Component\Normalizer\Versioning`
