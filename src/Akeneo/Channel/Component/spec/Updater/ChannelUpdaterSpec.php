@@ -41,7 +41,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Akeneo\Channel\Component\Updater\ChannelUpdater::class);
+        $this->shouldHaveType(ChannelUpdater::class);
     }
 
     function it_is_an_updater()
@@ -139,7 +139,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
                 'category_tree',
                 'code',
                 'The category does not exist',
-                \Akeneo\Channel\Component\Updater\ChannelUpdater::class,
+                ChannelUpdater::class,
                 'unknown'
             )
         )->during(
@@ -201,7 +201,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::arrayExpected(
                     'labels',
-                    \Akeneo\Channel\Component\Updater\ChannelUpdater::class,
+                    ChannelUpdater::class,
                     'foo'
                 )
             )
@@ -222,7 +222,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'labels',
                     'one of the "labels" values is not a scalar',
-                    \Akeneo\Channel\Component\Updater\ChannelUpdater::class,
+                    ChannelUpdater::class,
                     ['en_US' => 'us_Label', 'fr_FR' => []]
                 )
             )
@@ -239,7 +239,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::arrayExpected(
                     'locales',
-                    \Akeneo\Channel\Component\Updater\ChannelUpdater::class,
+                    ChannelUpdater::class,
                     'foo'
                 )
             )
@@ -257,7 +257,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'locales',
                     'one of the "locales" values is not a scalar',
-                    \Akeneo\Channel\Component\Updater\ChannelUpdater::class,
+                    ChannelUpdater::class,
                     ['en_US', []]
                 )
             )
@@ -274,7 +274,7 @@ class ChannelUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::arrayExpected(
                     'currencies',
-                    \Akeneo\Channel\Component\Updater\ChannelUpdater::class,
+                    ChannelUpdater::class,
                     'EUR'
                 )
             )

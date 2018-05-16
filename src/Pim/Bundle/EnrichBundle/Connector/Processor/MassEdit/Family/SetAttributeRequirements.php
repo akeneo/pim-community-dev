@@ -23,7 +23,7 @@ class SetAttributeRequirements extends AbstractProcessor
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
+    /** @var \ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var AttributeRequirementFactory */
@@ -36,11 +36,11 @@ class SetAttributeRequirements extends AbstractProcessor
     protected $detacher;
 
     /**
-     * @param AttributeRepositoryInterface                                    $attributeRepository
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
-     * @param AttributeRequirementFactory                                     $factory
-     * @param ValidatorInterface                                              $validator
-     * @param ObjectDetacherInterface                                         $detacher
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ChannelRepositoryInterface   $channelRepository
+     * @param AttributeRequirementFactory  $factory
+     * @param ValidatorInterface           $validator
+     * @param ObjectDetacherInterface      $detacher
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

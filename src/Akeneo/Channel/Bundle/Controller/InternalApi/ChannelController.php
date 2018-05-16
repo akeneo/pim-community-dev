@@ -187,7 +187,7 @@ class ChannelController
      *
      * @throws HttpExceptionInterface
      *
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface
+     * @return ChannelInterface
      */
     protected function getChannel($code)
     {
@@ -207,8 +207,8 @@ class ChannelController
     }
 
     /**
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
-     * @param Request                                          $request
+     * @param ChannelInterface $channel
+     * @param Request          $request
      *
      * @throws \LogicException
      * @throws PropertyException

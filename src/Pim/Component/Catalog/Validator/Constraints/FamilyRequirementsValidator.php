@@ -24,12 +24,12 @@ class FamilyRequirementsValidator extends ConstraintValidator
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
     /**
-     * @param AttributeRepositoryInterface                                    $attributeRepository
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ChannelRepositoryInterface   $channelRepository
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

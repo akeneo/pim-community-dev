@@ -24,7 +24,7 @@ interface CompletenessGeneratorInterface
     /**
      * Generate completeness for a channel
      *
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param ChannelInterface $channel
      */
     public function generateMissingForChannel(ChannelInterface $channel);
 

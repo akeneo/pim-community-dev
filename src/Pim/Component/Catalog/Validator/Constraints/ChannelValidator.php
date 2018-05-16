@@ -20,7 +20,7 @@ class ChannelValidator extends ChoiceValidator
     protected $channelRepository;
 
     /**
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
+     * @param ChannelRepositoryInterface $channelRepository
      */
     public function __construct(ChannelRepositoryInterface $channelRepository)
     {

@@ -33,7 +33,7 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
     /**
      * Get full channels with locales and currencies
      *
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface[]
+     * @return ChannelInterface[]
      */
     public function getFullChannels();
 

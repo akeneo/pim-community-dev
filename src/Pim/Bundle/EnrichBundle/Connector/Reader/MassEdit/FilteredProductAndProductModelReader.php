@@ -34,7 +34,7 @@ class FilteredProductAndProductModelReader implements
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
 
-    /** @var \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface */
+    /** @var ChannelRepositoryInterface */
     private $channelRepository;
 
     /** @var CompletenessManager */
@@ -59,12 +59,12 @@ class FilteredProductAndProductModelReader implements
     private $firstRead = true;
 
     /**
-     * @param ProductQueryBuilderFactoryInterface                             $pqbFactory
-     * @param \Akeneo\Channel\Component\Repository\ChannelRepositoryInterface $channelRepository
-     * @param CompletenessManager                                             $completenessManager
-     * @param MetricConverter                                                 $metricConverter
-     * @param bool                                                            $generateCompleteness
-     * @param bool                                                            $readChildren
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param ChannelRepositoryInterface          $channelRepository
+     * @param CompletenessManager                 $completenessManager
+     * @param MetricConverter                     $metricConverter
+     * @param bool                                $generateCompleteness
+     * @param bool                                $readChildren
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -128,7 +128,7 @@ class FilteredProductAndProductModelReader implements
      *
      * @throws ObjectNotFoundException
      *
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface|null
+     * @return ChannelInterface|null
      */
     private function getConfiguredChannel(): ?ChannelInterface
     {
