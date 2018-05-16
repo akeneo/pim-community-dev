@@ -74,7 +74,7 @@ class ChangeParentProcessor extends AbstractProcessor
             $updater = $this->productModelUpdater;
         }
 
-        $updater->update($product, ['values' => $newParentCode]);
+        $updater->update($product, ['parent' => $newParentCode]);
     }
 
     private function isProductValid(EntityWithFamilyVariantInterface $product): bool

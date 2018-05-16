@@ -20,6 +20,7 @@ services:
                 - 'add_association'
                 - 'edit_common_attributes'
                 - 'add_to_existing_product_model'
+                - 'change_product_parent'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 

@@ -47,7 +47,7 @@ class ChangeParentProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $productValidator->validate($product)->willReturn($violations);
 
-        $productUpdater->update($product, ['values' => '42'])->shouldBeCalled();
+        $productUpdater->update($product, ['parent' => '42'])->shouldBeCalled();
 
         $this->process($product)->shouldReturn($product);
     }
@@ -72,7 +72,7 @@ class ChangeParentProcessorSpec extends ObjectBehavior
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
 
-        $productUpdater->update($product, ['values' => '42'])->shouldBeCalled();
+        $productUpdater->update($product, ['parent' => '42'])->shouldBeCalled();
 
         $this->process($product)->shouldReturn(null);
     }

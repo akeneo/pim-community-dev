@@ -64,6 +64,11 @@ jobs:
         alias:     add_to_existing_product_model
         label:     Add to existing product model
         type:      mass_edit
+    change_product_parent:
+        connector: Akeneo Mass Edit Connector
+        alias:     change_product_parent
+        label:     Change product parent
+        type:      mass_edit
     csv_product_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_product_quick_export
