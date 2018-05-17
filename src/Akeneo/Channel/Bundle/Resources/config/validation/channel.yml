@@ -1,4 +1,4 @@
-Akeneo\Channel\Component\Model:
+Akeneo\Channel\Component\Model\Channel:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
@@ -32,7 +32,7 @@ Akeneo\Channel\Component\Model:
         conversionUnits:
             - Pim\Component\Catalog\Validator\Constraints\ConversionUnits: ~
 
-Pim\Bundle\CatalogBundle\Entity\ChannelTranslation:
+Akeneo\Channel\Component\Model\ChannelTranslation:
     properties:
         label:
             - Length:
