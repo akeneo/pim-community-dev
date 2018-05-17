@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -252,11 +252,11 @@ class AssociatedProductModelDatasource extends ProductDatasource
     }
 
     /**
-     * @param AssociationAwareInterface  $sourceProduct
-     * @param mixed                      $associationTypeId
+     * @param EntityWithAssociationsInterface $sourceProduct
+     * @param mixed                           $associationTypeId
      * @return null|AssociationInterface
      */
-    private function getAssociation(AssociationAwareInterface $sourceProduct, $associationTypeId): ?AssociationInterface
+    private function getAssociation(EntityWithAssociationsInterface $sourceProduct, $associationTypeId): ?AssociationInterface
     {
         foreach ($sourceProduct->getAllAssociations() as $association) {
             if ($association->getAssociationType()->getId() === (int)$associationTypeId) {

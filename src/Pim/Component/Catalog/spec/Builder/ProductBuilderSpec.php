@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\ProductAssociation;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -81,8 +81,8 @@ class ProductBuilderSpec extends ObjectBehavior
 
     function it_adds_missing_product_associations(
         MissingAssociationAdder $missingAssociationAdder,
-        AssociationAwareInterface $productOne,
-        AssociationAwareInterface $productTwo,
+        EntityWithAssociationsInterface $productOne,
+        EntityWithAssociationsInterface $productTwo,
         AssociationTypeInterface $type
     ) {
         $missingAssociationAdder->addMissingAssociations($productOne)->shouldBeCalled();
