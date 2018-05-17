@@ -218,8 +218,8 @@ suites:
         spec_path: src/Pim/Bundle/UIBundle
         src_path: src/Pim/Bundle/UIBundle
     UserBundle:
-        namespace: Pim\Bundle\UserBundle
-        psr4_prefix: Pim\Bundle\UserBundle
+        namespace: Akeneo\UserManagement\Bundle
+        psr4_prefix: Akeneo\UserManagement\Bundle
         spec_path: src/Pim/Bundle/UserBundle
         src_path: src/Pim/Bundle/UserBundle
     VersioningBundle:

@@ -1,5 +1,5 @@
 parameters:
-    pim_user.view_element.visibility_checker.groups_and_roles.class: Pim\Bundle\UserBundle\ViewElement\Checker\GroupsAndRolesVisibilityChecker
+    pim_user.view_element.visibility_checker.groups_and_roles.class: Akeneo\UserManagement\Bundle\ViewElement\Checker\GroupsAndRolesVisibilityChecker
 
 services:
     pim_user.view_element.visibility_checker.groups_and_roles:

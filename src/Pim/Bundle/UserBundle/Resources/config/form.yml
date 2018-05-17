@@ -1,15 +1,15 @@
 parameters:
-    pim_user.form.type.reset.class:             Pim\Bundle\UserBundle\Form\Type\ResetType
-    pim_user.form.type.acl_role_type.class:     Pim\Bundle\UserBundle\Form\Type\AclRoleType
-    pim_user.form.type.role.api.class:          Pim\Bundle\UserBundle\Form\Type\RoleApiType
-    pim_user.form.type.group.class:             Pim\Bundle\UserBundle\Form\Type\GroupType
-    pim_user.form.type.group.api.class:         Pim\Bundle\UserBundle\Form\Type\GroupApiType
-    pim_user.form.type.change_password.class:   Pim\Bundle\UserBundle\Form\Type\ChangePasswordType
-    pim_user.form.handler.user.class:           Pim\Bundle\UserBundle\Form\Handler\UserHandler
-    pim_user.form.handler.reset.class:          Pim\Bundle\UserBundle\Form\Handler\ResetHandler
-    pim_user.form.handler.role.class:           Pim\Bundle\UserBundle\Form\Handler\RoleHandler
-    pim_user.form.handler.group.class:          Pim\Bundle\UserBundle\Form\Handler\GroupHandler
-    pim_user.form.handler.acl_role.class:       Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler
+    pim_user.form.type.reset.class:             Akeneo\UserManagement\Bundle\Form\Type\ResetType
+    pim_user.form.type.acl_role_type.class:     Akeneo\UserManagement\Bundle\Form\Type\AclRoleType
+    pim_user.form.type.role.api.class:          Akeneo\UserManagement\Bundle\Form\Type\RoleApiType
+    pim_user.form.type.group.class:             Akeneo\UserManagement\Bundle\Form\Type\GroupType
+    pim_user.form.type.group.api.class:         Akeneo\UserManagement\Bundle\Form\Type\GroupApiType
+    pim_user.form.type.change_password.class:   Akeneo\UserManagement\Bundle\Form\Type\ChangePasswordType
+    pim_user.form.handler.user.class:           Akeneo\UserManagement\Bundle\Form\Handler\UserHandler
+    pim_user.form.handler.reset.class:          Akeneo\UserManagement\Bundle\Form\Handler\ResetHandler
+    pim_user.form.handler.role.class:           Akeneo\UserManagement\Bundle\Form\Handler\RoleHandler
+    pim_user.form.handler.group.class:          Akeneo\UserManagement\Bundle\Form\Handler\GroupHandler
+    pim_user.form.handler.acl_role.class:       Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler
 
 services:
     pim_user.form.user:

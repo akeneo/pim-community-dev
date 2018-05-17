@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 
 /**
  * Configure the displayed filters on the product datagrid based on user preferences

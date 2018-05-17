@@ -1,5 +1,5 @@
 parameters:
-    pim_user.twig.acl_groups_extension.class: Pim\Bundle\UserBundle\Twig\AclGroupsExtension
+    pim_user.twig.acl_groups_extension.class: Akeneo\UserManagement\Bundle\Twig\AclGroupsExtension
 
 services:
     pim_user.twig.acl_groups_extension:

@@ -281,10 +281,10 @@
 - Move DoctrineOrmMappingsPass from Oro/EntityBundle to Akeneo/StorageUtilsBundle
 - Remove OroDistributionBundle (explicitely define oro bundles routing, means oro/rounting.yml are not automaticaly loaded anymore, and remove useless twig config)
 - Change constructor of `Pim\Bundle\TranslationBundle\Twig\TranslationsExtension`. Replace `Oro\Bundle\LocaleBundle\Model\LocaleSettings` by `Symfony\Component\HttpFoundation\RequestStack`.
-- Removed `Pim\Bundle\UserBundle\EventListener\LocalListener` (use `Pim\Bundle\UserBundle\EventListener\LocaleListener` instead).
-- Change constructor of `Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`. Add `Akeneo\Component\Localization\Provider\LocaleProviderInterface` as the first argument.
+- Removed `Akeneo\UserManagement\Bundle\EventListener\LocalListener` (use `Akeneo\UserManagement\Bundle\EventListener\LocaleListener` instead).
+- Change constructor of `Akeneo\UserManagement\Bundle\Form\Subscriber\UserPreferencesSubscriber`. Add `Akeneo\Component\Localization\Provider\LocaleProviderInterface` as the first argument.
 - Move `LocaleType` from `Oro\Bundle\LocalBundle\Form\Type` to `Pim\Bundle\LocalizationBundle\Form\Type`
-- Move `UserType` from `Oro\Bundle\UserBundle\Form\Type` to `Pim\Bundle\UserBundle\Form\Type`
+- Move `UserType` from `Oro\Bundle\UserBundle\Form\Type` to `Akeneo\UserManagement\Bundle\Form\Type`
 - Added Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface to the constructor of Pim\Component\Catalog\Updater\Remover\RemoverRegistry, Pim\Component\Catalog\Updater\Adder\AdderRegistry, Pim\Component\Catalog\Updater\Setter\SetterRegistry and Pim\Component\Catalog\Updater\Copier\CopierRegistry
 - Added Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface to the constructor of Pim\Component\Catalog\Updater\FamilyUpdater
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`
@@ -308,7 +308,7 @@
 - Change `Pim\Bundle\EnrichBundle\Controller\FamilyController` methods parameters for `editAction`, `removeAction`, `historyAction` and `addAttributesAction` changing Family by integer (id).
 - Change parameters of `renderStatefulGrid` of `Pim\Bundle\DataGridBundle\Resources\views\macros.html.twig` array `defaultView` has been added.
 - Change constructor of `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator`. Unused datagrid view repository has been removed.
-- Change constructor of `Pim\Bundle\UserBundle\Form\Type\UserType`. Added EventDispatcher as last parameter.
+- Change constructor of `Akeneo\UserManagement\Bundle\Form\Type\UserType`. Added EventDispatcher as last parameter.
 - Remove class `Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager`
 - Remove class `Pim\Bundle\CatalogBundle\Manager\AssociationManager`
 - Remove deprecated method valueExists from `Pim\Bundle\CatalogBundle\Manager\ProductManager`

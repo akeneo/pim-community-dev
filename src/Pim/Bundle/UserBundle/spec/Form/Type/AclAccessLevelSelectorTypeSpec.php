@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\UserBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Form\Transformer\AccessLevelToBooleanTransformer;
-use Pim\Bundle\UserBundle\Form\Type\AclAccessLevelSelectorType;
+use Akeneo\UserManagement\Bundle\Form\Transformer\AccessLevelToBooleanTransformer;
+use Akeneo\UserManagement\Bundle\Form\Type\AclAccessLevelSelectorType;
 use Prophecy\Argument;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;

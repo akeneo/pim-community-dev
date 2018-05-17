@@ -1,5 +1,5 @@
 parameters:
-    pim_user.context.user.class: Pim\Bundle\UserBundle\Context\UserContext
+    pim_user.context.user.class: Akeneo\UserManagement\Bundle\Context\UserContext
 
 services:
     pim_user.context.user:

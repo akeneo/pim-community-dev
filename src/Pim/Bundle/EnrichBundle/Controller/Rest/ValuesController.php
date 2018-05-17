@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;

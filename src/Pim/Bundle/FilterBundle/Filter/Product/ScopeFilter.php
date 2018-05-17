@@ -7,7 +7,7 @@ use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**

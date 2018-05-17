@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 
 class LocaleExtensionSpec extends ObjectBehavior

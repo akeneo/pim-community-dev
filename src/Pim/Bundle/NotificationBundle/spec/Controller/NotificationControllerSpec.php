@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\HttpFoundation\Request;

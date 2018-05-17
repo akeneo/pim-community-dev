@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 use Akeneo\Tool\Component\Localization\Factory\TranslationFactory;
 use Doctrine\Common\Inflector\Inflector;
 use Pim\Bundle\EnrichBundle\Exception\MissingOptionException;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;

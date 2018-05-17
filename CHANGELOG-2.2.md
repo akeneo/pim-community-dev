@@ -49,16 +49,16 @@
 
 ### Interfaces
 
-- AOB-99: Add method `getTimezone` and `setTimezone` to `Pim\Bundle\UserBundle\Entity\UserInterface`
-- PIM-7163: Add `Pim\Bundle\UserBundle\Entity\UserInterface::setPhone` and `Pim\Bundle\UserBundle\Entity\UserInterface::getPhone`
+- AOB-99: Add method `getTimezone` and `setTimezone` to `Akeneo\UserManagement\Bundle\Entity\UserInterface`
+- PIM-7163: Add `Akeneo\UserManagement\Bundle\Entity\UserInterface::setPhone` and `Akeneo\UserManagement\Bundle\Entity\UserInterface::getPhone`
 
 ### Constructors
 
 - AOB-97: Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - AOB-97: Change the constructor of `Akeneo\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface`
-- AOB-100: Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController` to add `Pim\Bundle\UserBundle\Context\UserContext`
-- AOB-100: Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Pim\Bundle\UserBundle\Context\UserContext`
-- AOB-100: Change the constructor of `Pim\Bundle\LocalizationBundle\Controller\FormatController` to add `Pim\Bundle\UserBundle\Context\UserContext`
+- AOB-100: Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController` to add `Akeneo\UserManagement\Bundle\Context\UserContext`
+- AOB-100: Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Akeneo\UserManagement\Bundle\Context\UserContext`
+- AOB-100: Change the constructor of `Pim\Bundle\LocalizationBundle\Controller\FormatController` to add `Akeneo\UserManagement\Bundle\Context\UserContext`
 
 ## Migration
 
@@ -76,7 +76,7 @@ IMPORTANT: In order for your PIM to work properly, you will need to run the foll
 
 - AOB-2: Change the constructor of `Pim\Bundle\DataGridBundle\EventListener\ConfigureProductGridListner` to add `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
 - AOB-2: Change the constructor of `Pim\Bundle\DataGridBundle\EventListener\ConfigureProductGridListner` to remove `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator`
-- AOB-2: Add `Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface` to `Pim\Bundle\UserBundle\Repository\UserRepositoryInterface`
+- AOB-2: Add `Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface` to `Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface`
 
 ## Improve Julia's experience
 

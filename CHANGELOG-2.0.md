@@ -1120,7 +1120,7 @@ IMPORTANT: In order for your PIM to work properly, you will need to run the foll
     `Symfony\Component\Routing\RouterInterface`,
     `Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface`,
     `Symfony\Component\Form\FormFactoryInterface`,
-    `Pim\Bundle\UserBundle\Context\UserContext`,
+    `Akeneo\UserManagement\Bundle\Context\UserContext`,
     `Oro\Bundle\SecurityBundle\SecurityFacade`,
     `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager`,
 

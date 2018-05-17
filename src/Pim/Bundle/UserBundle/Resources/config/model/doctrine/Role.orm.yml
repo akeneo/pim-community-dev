@@ -2,7 +2,7 @@ Pim\Component\User\Model\Role:
     type: entity
     table: oro_access_role
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository
+    repositoryClass: Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository
     fields:
         id:
             type: integer
