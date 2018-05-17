@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace spec\Akeneo\Channel\Bundle\EventListener;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\LinkedChannelException;
-use Pim\Component\Catalog\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -17,7 +17,7 @@ class CurrencyDisablingSubscriberSpec extends ObjectBehavior
 
     public function it_is_an_event_subscriber()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\EventSubscriber\CurrencyDisablingSubscriber');
+        $this->shouldImplement('Akeneo\Channel\Bundle\EventListener\CurrencyDisablingSubscriber');
     }
 
     public function it_does_not_throw_when_this_is_not_a_currency(

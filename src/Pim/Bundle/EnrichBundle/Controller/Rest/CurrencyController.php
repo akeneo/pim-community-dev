@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

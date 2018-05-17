@@ -1,8 +1,8 @@
-Pim\Bundle\CatalogBundle\Entity\Currency:
+Akeneo\Channel\Component\Model\Currency:
     type: entity
     table: pim_catalog_currency
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CurrencyRepository
+    repositoryClass: Akeneo\Channel\Bundle\Doctrine\Repository\CurrencyRepository
     fields:
         id:
             type: integer

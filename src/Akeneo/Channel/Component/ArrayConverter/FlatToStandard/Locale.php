@@ -1,18 +1,18 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
+namespace Akeneo\Channel\Component\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 /**
- * Currency Flat to Standard format Converter
+ * Locale Flat to Standard format Converter
  *
- * @author    Pierre Allard <pierre.allard@akeneo.com>
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Currency implements ArrayConverterInterface
+class Locale implements ArrayConverterInterface
 {
     /** @var FieldsRequirementChecker */
     protected $fieldChecker;
@@ -32,13 +32,13 @@ class Currency implements ArrayConverterInterface
      *
      * Before:
      * [
-     *     'code'      => 'USD',
+     *     'code'      => 'en_US',
      *     'activated' => 1,
      * ]
      *
      * After:
      * [
-     *     'code'    => 'USD',
+     *     'code'    => 'en_US',
      *     'enabled' => true,
      * ]
      */
@@ -67,7 +67,7 @@ class Currency implements ArrayConverterInterface
         if ('code' === $field) {
             $convertedItem[$field] = $data;
         } elseif ('activated' === $field) {
-            $convertedItem['enabled'] = (bool) $data;
+            $convertedItem['enabled'] = in_array($data, ['1', '0']) ? (bool) $data : (string) $data;
         }
 
         return $convertedItem;

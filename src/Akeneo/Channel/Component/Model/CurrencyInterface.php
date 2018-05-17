@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
+namespace Akeneo\Channel\Component\Model;
+
+use Pim\Component\Catalog\Model\ReferableInterface;
 
 /**
  * Currency interface

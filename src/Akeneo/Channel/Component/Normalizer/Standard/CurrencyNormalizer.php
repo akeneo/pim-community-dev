@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Standard;
+namespace Akeneo\Channel\Component\Normalizer\Standard;
 
-use Pim\Component\Catalog\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

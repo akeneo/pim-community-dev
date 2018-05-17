@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Pim\Component\Catalog\Validator\Constraints\IsCurrencyActivated;
 use Pim\Component\Catalog\Validator\Constraints\IsCurrencyActivatedValidator;
 use Symfony\Component\Validator\ConstraintValidator;

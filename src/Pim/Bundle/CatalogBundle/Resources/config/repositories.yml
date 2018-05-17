@@ -5,7 +5,6 @@ parameters:
     pim_catalog.repository.attribute.class:             Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository
     pim_catalog.repository.attribute_requirement.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRequirementRepository
     pim_catalog.repository.category.class:              Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
-    pim_catalog.repository.currency.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CurrencyRepository
     pim_catalog.repository.family.class:                Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository
     pim_catalog.repository.family_variant.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyVariantRepository
     pim_catalog.repository.group.class:                 Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupRepository
@@ -62,13 +61,6 @@ services:
         class: '%pim_catalog.repository.category.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_catalog.entity.category.class%']
-        tags:
-            - { name: 'pim_repository' }
-
-    pim_catalog.repository.currency:
-        class: '%pim_catalog.repository.currency.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
-        arguments: ['%pim_catalog.entity.currency.class%']
         tags:
             - { name: 'pim_repository' }
 

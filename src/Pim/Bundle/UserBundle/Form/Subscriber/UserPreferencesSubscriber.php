@@ -3,6 +3,7 @@
 namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
 use Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository;
+use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -108,7 +109,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             'catalogScope',
             EntityType::class,
             [
-                'class'        => 'PimCatalogBundle:Channel',
+                'class'        => Channel::class,
                 'choice_label' => 'label',
                 'select2'      => true
             ]

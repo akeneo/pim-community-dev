@@ -61,33 +61,15 @@ batch_jobs:
     csv_group_import:
         label: Group import in CSV
         import.label: Group import
-    csv_channel_export:
-        label: Channel export in CSV
-        export.label: Channel export
-    csv_locale_export:
-        label: Locale export in CSV
-        export.label: Locale export
     csv_attribute_group_export:
         label: Attribute group export in CSV
         export.label: Attribute group export
-    csv_currency_export:
-        label: Currency export in CSV
-        export.label: Currency export
     csv_group_type_export:
         label: Group type export in CSV
         export.label: Group type export
-    csv_channel_import:
-        label: Channel import in CSV
-        import.label: Channel import
-    csv_locale_import:
-        label: Locale import in CSV
-        import.label: Locale import
     csv_attribute_group_import:
         label: Attribute group import in CSV
         import.label: Attribute group import
-    csv_currency_import:
-        label: Currency import in CSV
-        import.label: Currency import
     csv_group_type_import:
         label: Group type import in CSV
         import.label: Group type import
@@ -147,33 +129,15 @@ batch_jobs:
     xlsx_association_type_export:
         label: Association type export in XLSX
         export.label: Association type export in XLSX
-    xlsx_channel_export:
-        label: Channel export in XLSX
-        export.label: Channel export
-    xlsx_locale_export:
-        label: Locale export in XLSX
-        export.label: Locale export
     xlsx_attribute_group_export:
         label: Attribute group export in XLSX
         export.label: Attribute group export
-    xlsx_currency_export:
-        label: Currency export in XLSX
-        export.label: Currency export
     xlsx_group_type_export:
         label: Group type export in XLSX
         export.label: Group type export
-    xlsx_channel_import:
-        label: Channel import in XLSX
-        import.label: Channel import
-    xlsx_locale_import:
-        label: Locale import in XLSX
-        import.label: Locale import
     xlsx_attribute_group_import:
         label: Attribute group import in XLSX
         import.label: Attribute group import
-    xlsx_currency_import:
-        label: Currency import in XLSX
-        import.label: Currency import
     xlsx_group_type_import:
         label: Group type import in XLSX
         import.label: Group type import

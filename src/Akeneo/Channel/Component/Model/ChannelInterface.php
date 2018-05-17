@@ -2,11 +2,11 @@
 
 namespace Akeneo\Channel\Component\Model;
 
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\ReferableInterface;
 use Pim\Component\Enrich\Model\ChosableInterface;
 

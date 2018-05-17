@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace Akeneo\Channel\Bundle\EventListener;
 
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Exception\LinkedChannelException;
-use Pim\Component\Catalog\Model\CurrencyInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

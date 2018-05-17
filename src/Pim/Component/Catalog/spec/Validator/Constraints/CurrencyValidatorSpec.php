@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\Currency;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

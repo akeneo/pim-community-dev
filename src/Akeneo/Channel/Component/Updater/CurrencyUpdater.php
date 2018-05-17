@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Component\Catalog\Updater;
+namespace Akeneo\Channel\Component\Updater;
 
+use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\CurrencyInterface;
 
 /**
  * Updates a currency

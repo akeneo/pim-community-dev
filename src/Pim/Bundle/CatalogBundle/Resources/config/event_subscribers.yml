@@ -5,7 +5,6 @@ parameters:
     pim_catalog.event_subscriber.scopable.class: Pim\Bundle\CatalogBundle\EventSubscriber\ScopableSubscriber
     pim_catalog.event_subscriber.timestampable.class: Pim\Bundle\CatalogBundle\EventSubscriber\TimestampableSubscriber
     pim_catalog.event_subscriber.category.check_channels.class: Pim\Bundle\CatalogBundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
-    pim_catalog.event_subscriber.currency_disabling.class: Pim\Bundle\CatalogBundle\EventSubscriber\CurrencyDisablingSubscriber
     pim_catalog.event_subscriber.reset_unique_validation.class: Pim\Bundle\CatalogBundle\EventSubscriber\ResetUniqueValidationSubscriber
     pim_catalog.event_subscriber.compute_product_raw_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeEntityRawValuesSubscriber
     pim_catalog.event_subscriber.load_product_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\LoadEntityWithValuesSubscriber
@@ -52,13 +51,6 @@ services:
         class: '%pim_catalog.event_subscriber.category.check_channels.class%'
         arguments:
             - '@translator'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pim_catalog.event_subscriber.currency_disabling:
-        class: '%pim_catalog.event_subscriber.currency_disabling.class%'
-        arguments:
-            - '@pim_catalog.repository.channel'
         tags:
             - { name: kernel.event_subscriber }
 
