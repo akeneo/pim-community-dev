@@ -66,21 +66,30 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
         $files = [];
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
-            $reflection = new \ReflectionClass($bundle);
-            $directory = sprintf(
-                '%s/Resources/config/%s',
-                dirname($reflection->getFilename()),
-                'form_extensions'
-            );
-            $file = $directory . '.yml';
+            $files = array_merge($files, $this->getConfigurationFiles($bundle, 'Resources/config'));
+        }
 
-            if (is_file($file)) {
-                $files[] = new \SplFileInfo($file);
-            }
+        return $files;
+    }
 
-            if (is_dir($directory)) {
-                $files = array_merge($files, $this->listConfigFilesInDirectory($directory));
-            }
+    private function getConfigurationFiles(string $bundle, string $path): array
+    {
+        $files = [];
+        $reflection = new \ReflectionClass($bundle);
+        $directory = sprintf(
+            '%s/%s/%s',
+            dirname($reflection->getFilename()),
+            $path,
+            'form_extensions'
+        );
+        $file = $directory . '.yml';
+
+        if (is_file($file)) {
+            $files[] = new \SplFileInfo($file);
+        }
+
+        if (is_dir($directory)) {
+            $files = $this->listConfigFilesInDirectory($directory);
         }
 
         return $files;
