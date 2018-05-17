@@ -133,8 +133,8 @@ RUN cp app/config/parameters_test.yml.dist app/config/parameters_test.yml \
   && bin/console --env=test pim:install --force \
   && a2ensite pim \
   && chown -R www-data:www-data var web \
-  && chmod 777 -R /tmp/pim app/file_storage app/uploads app/archive features/Context/fixtures/
+  && chmod 777 -R /tmp/pim app/file_storage app/uploads app/archive tests/legacy/features/Context/fixtures/
 
 EXPOSE 80 9200 4444 3306
 
-CMD /bin/sh -c /var/www/pim/.ci/bin/start-mysql && /var/www/pim/.ci/bin/start-elasticsearch && /var/www/pim/.ci/bin/start-webserver && /var/www/pim/.ci/bin/start-selenium && sleep infinity
+CMD /var/www/pim/.ci/bin/start-mysql && /var/www/pim/.ci/bin/start-elasticsearch && /var/www/pim/.ci/bin/start-webserver && /var/www/pim/.ci/bin/start-selenium && sleep infinity
