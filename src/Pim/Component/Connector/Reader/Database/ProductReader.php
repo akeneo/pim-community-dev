@@ -77,22 +77,9 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         $channel = $this->getConfiguredChannel();
         $filters = $this->getConfiguredFilters();
 
-        $familyFilter = $this->getConfiguredFilter('family');
-        $completenessFilter = $this->getConfiguredFilter('completeness');
-        $calculateCompleteness = isset($completenessFilter) && $completenessFilter['operator'] !== 'ALL';
+        $this->generateCompletenessForMissings();
 
         $this->products = $this->getProductsCursor($filters, $channel);
-
-        if (null === $familyFilter) {
-           $filters = array_merge($filters, [
-               ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
-           ]);
-        }
-
-        if (null !== $channel && $this->generateCompleteness && $calculateCompleteness) {
-            $this->completenessManager->generateMissingForProducts($channel, $filters);
-        }
-
         $this->firstRead = true;
     }
 
@@ -207,5 +194,25 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         $productQueryBuilder = $this->pqbFactory->create($options);
 
         return $productQueryBuilder->execute();
+    }
+
+    private function generateCompletenessForMissings(): void
+    {
+        $channel = $this->getConfiguredChannel();
+        $filters = $this->getConfiguredFilters();
+
+        $familyFilter = $this->getConfiguredFilter('family');
+        $completenessFilter = $this->getConfiguredFilter('completeness');
+        $calculateCompleteness = !empty($completenessFilter) && $completenessFilter['operator'] !== 'ALL';
+
+        if (null === $familyFilter) {
+            $filters = array_merge($filters, [
+                ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+            ]);
+        }
+
+        if (null !== $channel && $this->generateCompleteness && $calculateCompleteness) {
+            $this->completenessManager->generateMissingForProducts($channel, $filters);
+        }
     }
 }

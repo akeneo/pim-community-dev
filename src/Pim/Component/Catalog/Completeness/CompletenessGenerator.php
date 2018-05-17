@@ -50,6 +50,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @TODO @merge PIM-7348 - Add to interface
      */
     public function generateMissingForProducts(ChannelInterface $channel, array $filters)
     {
