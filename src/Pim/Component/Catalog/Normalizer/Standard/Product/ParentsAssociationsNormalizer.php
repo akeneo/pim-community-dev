@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -58,7 +58,7 @@ class ParentsAssociationsNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AssociationAwareInterface && 'standard' === $format;
+        return $data instanceof EntityWithAssociationsInterface && 'standard' === $format;
     }
 
     /**

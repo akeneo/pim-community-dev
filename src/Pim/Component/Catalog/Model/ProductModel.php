@@ -559,7 +559,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function addAssociation(AssociationInterface $association): AssociationAwareInterface
+    public function addAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
         if (!$this->associations->contains($association)) {
             $associationType = $association->getAssociationType();
@@ -582,7 +582,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAssociation(AssociationInterface $association): AssociationAwareInterface
+    public function removeAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
         $this->associations->removeElement($association);
 
@@ -622,7 +622,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(Collection $associations): AssociationAwareInterface
+    public function setAssociations(Collection $associations): EntityWithAssociationsInterface
     {
         $this->associations = $associations;
 

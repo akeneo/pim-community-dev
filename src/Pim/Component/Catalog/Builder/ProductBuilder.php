@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Builder;
 
 use Pim\Component\Catalog\Association\MissingAssociationAdder;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\ProductEvents;
@@ -91,7 +91,7 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addMissingAssociations(AssociationAwareInterface $entity)
+    public function addMissingAssociations(EntityWithAssociationsInterface $entity)
     {
         $this->missingAssociationAdder->addMissingAssociations($entity);
 
