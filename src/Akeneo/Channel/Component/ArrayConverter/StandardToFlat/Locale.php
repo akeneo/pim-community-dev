@@ -1,17 +1,18 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\StandardToFlat;
+namespace Akeneo\Channel\Component\ArrayConverter\StandardToFlat;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 
 /**
- * Convert standard format to flat format for currency
+ * Convert standard format to flat format for locale
  *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class Currency extends AbstractSimpleArrayConverter implements ArrayConverterInterface
+class Locale extends AbstractSimpleArrayConverter implements ArrayConverterInterface
 {
     /**
      * {@inheritdoc}

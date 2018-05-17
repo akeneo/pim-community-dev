@@ -22,6 +22,7 @@ class AkeneoChannelExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('array_converters.yml');
         $loader->load('controllers.yml');
         $loader->load('processors.yml');
         $loader->load('readers.yml');

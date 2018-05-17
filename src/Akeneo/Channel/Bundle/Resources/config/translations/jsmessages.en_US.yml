@@ -1,0 +1,37 @@
+batch_jobs:
+    csv_currency_export:
+        label: Currency export in CSV
+        export.label: Currency export
+    csv_currency_import:
+        label: Currency import in CSV
+        import.label: Currency import
+    xlsx_currency_export:
+        label: Currency export in XLSX
+        export.label: Currency export
+    xlsx_currency_import:
+        label: Currency import in XLSX
+        import.label: Currency import
+    csv_locale_export:
+        label: Locale export in CSV
+        export.label: Locale export
+    csv_locale_import:
+        label: Locale import in CSV
+        import.label: Locale import
+    xlsx_locale_export:
+        label: Locale export in XLSX
+        export.label: Locale export
+    xlsx_locale_import:
+        label: Locale import in XLSX
+        import.label: Locale import
+    csv_channel_export:
+        label: Channel export in CSV
+        export.label: Channel export
+    csv_channel_import:
+        label: Channel import in CSV
+        import.label: Channel import
+    xlsx_channel_export:
+        label: Channel export in XLSX
+        export.label: Channel export
+    xlsx_channel_import:
+        label: Channel import in XLSX
+        import.label: Channel import
