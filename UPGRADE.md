@@ -80,7 +80,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Update
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Tool\Component\Api\Normalizer\LocaleNormalizer/Akeneo\Channel\Component\Normalizer\ExternalApi\LocaleNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer/Akeneo\Channel\Component\Normalizer\InternalApi\LocaleNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\Bundle\VersioningBundle\Normalizer\Flat/Akeneo\Channel\Component\Normalizer\Versioning/g'
-find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\\\Component\\\\Catalog\\\\Model\\\\CurrencyInterface/Akeneo\\\\Channel\\\\Component\\\\Model\\\\CurrencyInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\CurrencyInterface/Akeneo\\Channel\\Component\\Model\\CurrencyInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\CurrencyInterface/Akeneo\\Channel\\Component\\Model\\CurrencyInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\CurrencyRepository/Akeneo\\Channel\\Bundle\\Doctrine\\Repository\\CurrencyRepository/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber\\CurrencyDisablingSubscriber/Akeneo\\Channel\\Bundle\\EventListener\\CurrencyDisablingSubscriber/g'
