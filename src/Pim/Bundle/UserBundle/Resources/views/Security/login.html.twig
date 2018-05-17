@@ -22,23 +22,23 @@
     <form action="{{ path('pim_user_security_check') }}" method="post" class="form-signin form-inline">
         <div class="AknLogin-form">
             <div class="AknLogin-formCell">
-                <input class="AknTextField" type="text" id="prependedInput" autofocus="autofocus" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" size="1"/>
+                <input class="AknTextField" type="text" id="prependedInput" autofocus="autofocus" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'pim_user.user.login.username_or_email'|trans }}" size="1"/>
             </div>
             <div class="AknLogin-formCell">
-                <input class="AknTextField" type="password" id="prependedInput2" name="_password" required="required" placeholder="{{ 'Password'|trans }}" autocomplete="off" size="1"/>
+                <input class="AknTextField" type="password" id="prependedInput2" name="_password" required="required" placeholder="{{ 'pim_user.user.fields.password'|trans }}" autocomplete="off" size="1"/>
             </div>
         </div>
         <div class="AknLogin-form">
             <div class="AknLogin-formCell">
                 <label class="checkbox remember-me">
-                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'Remember me on this computer'|trans }}
+                    <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'pim_user.user.login.remember_me'|trans }}
                 </label>
             </div>
             <div class="AknLogin-formCell AknLogin-formCell--small">
                 <div class="signin-help">
-                    <a class="AknLogin-link" href="{{ path('pim_user_reset_request') }}">{{ 'Forgot your password?'|trans }}</a>
+                    <a class="AknLogin-link" href="{{ path('pim_user_reset_request') }}">{{ 'pim_user.user.login.password_forgotten'|trans }}</a>
                 </div>
-                <button class="AknButton AknButton--apply AknButton--big" type="submit" id="_submit" name="_submit">{{ 'Log in'|trans }}</button>
+                <button class="AknButton AknButton--apply AknButton--big" type="submit" id="_submit" name="_submit">{{ 'pim_user.user.login.log_in'|trans }}</button>
             </div>
         </div>
         <input type="hidden" name="_target_path" value="" />

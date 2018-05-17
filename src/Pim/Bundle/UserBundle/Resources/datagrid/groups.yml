@@ -16,7 +16,7 @@ datagrid:
                         - g.name <> '%pim_user.entity.user.class%::GROUP_DEFAULT'
         columns:
             name:
-                label: oro.user.grid.groups.columns.name
+                label: pim_datagrid.columns.groups.label
 
         properties:
             id: ~
@@ -37,7 +37,7 @@ datagrid:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:          navigate
-                label:         Update
+                label:         pim_common.update
                 link:          update_link
                 acl_resource:  pim_user_group_edit
                 rowAction:     true

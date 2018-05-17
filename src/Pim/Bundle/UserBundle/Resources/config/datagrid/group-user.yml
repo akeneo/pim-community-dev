@@ -15,18 +15,18 @@ datagrid:
                       END) as has_group
         columns:
             has_group:
-                label: Has group
+                label: pim_user.user.fields.has_group
                 editable: true
                 frontend_type: boolean
             username:
-                label: oro.user.grid.users.columns.username
+                label: pim_user.user.fields.username
                 frontend_type: label
             email:
-                label: oro.user.grid.users.columns.email
+                label: pim_user.user.fields.email
             firstName:
-                label: oro.user.grid.users.columns.firstName
+                label: pim_user.user.fields.first_name
             lastName:
-                label: oro.user.grid.users.columns.lastName
+                label: pim_user.user.fields.last_name
         filters:
             columns:
                 has_group:

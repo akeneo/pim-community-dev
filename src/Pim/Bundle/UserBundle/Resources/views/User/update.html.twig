@@ -2,7 +2,7 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% set fullname = form.vars.value.fullName|default('N/A') %}
-{% set title = form.vars.value.id ? 'Edit user'|trans ~ ' - ' ~ fullname : 'New user'|trans %}
+{% set title = form.vars.value.id ? fullname : 'pim_common.create'|trans %}
 
 {% block head_script %}
     <script type="text/javascript">
@@ -51,17 +51,17 @@
         'action': editRoute,
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
-            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'user.title'|trans }),
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'pim_user.user.title'|trans }),
             'novalidate': ''
         }
     }) }}
 
         {% set meta %}
             {% if form.vars.value.id %}
-                <span class="AknTitleContainer-metaItem">{{ 'Created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|datetime_presenter : 'N/A' }}</span>
-                <span class="AknTitleContainer-metaItem">{{ 'Updated'|trans }}: {{ form.vars.value.updatedAt ? form.vars.value.updatedAt|datetime_presenter : 'N/A' }}</span>
-                <span class="AknTitleContainer-metaItem">{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|datetime_presenter : 'N/A' }}</span>
-                <span class="AknTitleContainer-metaItem">{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</span>
+                <span class="AknTitleContainer-metaItem">{{ 'pim_common.created'|trans }}: {{ form.vars.value.createdAt ? form.vars.value.createdAt|datetime_presenter : 'N/A' }}</span>
+                <span class="AknTitleContainer-metaItem">{{ 'pim_common.updated'|trans }}: {{ form.vars.value.updatedAt ? form.vars.value.updatedAt|datetime_presenter : 'N/A' }}</span>
+                <span class="AknTitleContainer-metaItem">{{ 'pim_user.user.fields.last_logged_in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|datetime_presenter : 'N/A' }}</span>
+                <span class="AknTitleContainer-metaItem">{{ 'pim_user.user.fields.login_count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</span>
             {% endif %}
         {% endset %}
 
@@ -77,9 +77,9 @@
                         path('pim_user_index'),
                         'confirmation.remove.user'|trans({ '%name%': fullname }),
                         'flash.user.removed'|trans,
-                        'Confirm deletion'|trans,
+                        'confirmation.delete'|trans,
                         'AknDropdown-menuLink delete',
-                        'Users'|trans
+                        'pim_user.user.title'|trans
                     ) }}
                 </div>
               </div>
@@ -155,8 +155,6 @@
 
 {% block content_data %}
     <script type="text/javascript">
-        require('pim/page-title').set({'user': '{{ form.vars.value.name }}'});
-
         window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
     </script>
 {% endblock %}

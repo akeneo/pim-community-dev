@@ -93,7 +93,7 @@ class VersionNormalizer implements NormalizerInterface
             $user = $this->userManager->findUserByUsername($author);
 
             if (null === $user) {
-                $userName = sprintf('%s - %s', $author, $this->translator->trans('Removed user'));
+                $userName = sprintf('%s - %s', $author, $this->translator->trans('pim_user.user.removed_user'));
             } else {
                 $userName = sprintf('%s %s', $user->getFirstName(), $user->getLastName());
             }

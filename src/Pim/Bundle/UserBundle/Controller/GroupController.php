@@ -73,7 +73,7 @@ class GroupController extends Controller
         if ($this->get('pim_user.form.handler.group')->process($entity)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('oro.user.controller.group.message.saved')
+                $this->get('translator')->trans('pim_user.controller.group.message.saved')
             );
 
             return new JsonResponse(

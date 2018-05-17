@@ -902,7 +902,7 @@ pim_enrich.error:
         403: Forbidden. You are not allowed to access this page
 
 # Page titles
-page_title:
+pim_title:
     oro_default:                           Dashboard
     pim_enrich_attributegroup_index:       Attribute groups
     pim_enrich_attributegroup_create:      Attribute groups | Create

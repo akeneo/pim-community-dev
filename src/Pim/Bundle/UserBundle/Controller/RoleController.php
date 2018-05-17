@@ -74,7 +74,7 @@ class RoleController extends Controller
         if ($aclRoleHandler->process($entity)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('oro.user.controller.role.message.saved')
+                $this->get('translator')->trans('pim_user.controller.role.message.saved')
             );
 
             return new JsonResponse(

@@ -77,7 +77,7 @@ class DefaultViewSubscriber implements EventSubscriberInterface
                 [
                     'class'         => 'PimDataGridBundle:DatagridView',
                     'choice_label'  => 'label',
-                    'label'         => 'user.default_' . str_replace('-', '_', $alias) . '_view.label',
+                    'label'         => 'pim_user.user.fields.default_' . str_replace('-', '_', $alias) . '_view.label',
                     'query_builder' => function (DatagridViewRepositoryInterface $gridViewRepository) use ($alias) {
                         return $gridViewRepository->findDatagridViewByAlias($alias);
                     },

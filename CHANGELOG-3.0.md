@@ -48,7 +48,6 @@
 
 - Remove `Oro\Bundle\UserBundle\OroUserBundle`
 - Remove `Oro\Bundle\UserBundle\DependencyInjection`
-- Remove `Oro\Bundle\UserBundle\OroUserBundle`
 - Remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
 
 - Change constructor of `Pim\Bundle\ImportExportBundle\Datagrid\JobDatagridProvider`, remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider` argument 

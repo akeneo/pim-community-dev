@@ -121,7 +121,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $version->getAuthor()->willReturn('steve');
         $userManager->findUserByUsername('steve')->willReturn(null);
 
-        $translator->trans('Removed user')->willReturn('Utilisateur supprimé');
+        $translator->trans('pim_user.user.removed_user')->willReturn('Utilisateur supprimé');
 
         $this->normalize($version, 'internal_api')->shouldReturn([
             'id'          => 12,
