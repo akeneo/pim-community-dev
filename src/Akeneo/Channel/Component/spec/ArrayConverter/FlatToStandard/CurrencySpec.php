@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
+namespace spec\Akeneo\Channel\Component\ArrayConverter\FlatToStandard;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
@@ -15,7 +15,7 @@ class CurrencySpec extends ObjectBehavior
     function it_is_a_standard_array_converter()
     {
         $this->shouldImplement(
-            'Pim\Component\Connector\ArrayConverter\FlatToStandard\Currency'
+            'Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Currency'
         );
     }
 

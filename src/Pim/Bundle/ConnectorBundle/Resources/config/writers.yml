@@ -130,12 +130,6 @@ services:
             - '@pim_catalog.saver.group_type'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pim_connector.writer.database.currency:
-        class: '%pim_connector.writer.database.class%'
-        arguments:
-            - '@pim_catalog.saver.currency'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-
     pim_connector.writer.database.job_instance:
         class: '%pim_connector.writer.database.class%'
         arguments:
@@ -304,13 +298,6 @@ services:
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
-    pim_connector.writer.file.csv_currency:
-        class: '%pim_connector.writer.file.csv.class%'
-        arguments:
-            - '@pim_connector.array_converter.standard_to_flat.currency'
-            - '@pim_connector.factory.flat_item_buffer'
-            - '@pim_connector.writer.file.flat_item_buffer_flusher'
-
     pim_connector.writer.file.csv_group_type:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:
@@ -428,13 +415,6 @@ services:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.attribute_group'
-            - '@pim_connector.factory.flat_item_buffer'
-            - '@pim_connector.writer.file.flat_item_buffer_flusher'
-
-    pim_connector.writer.file.xlsx_currency:
-        class: '%pim_connector.writer.file.xlsx.class%'
-        arguments:
-            - '@pim_connector.array_converter.standard_to_flat.currency'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
