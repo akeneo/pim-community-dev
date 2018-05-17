@@ -99,11 +99,13 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && yarn run unit"
             )},
-            "behat": {queue(
+
+            // END TO END TESTS
+            "legacy-end-to-end-behat": {queue(
                 condition: launchEndToEndTests.equals("yes"),
                 container: tag,
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimBehatFetcher(features: features)}
+                fetcher: {return pimBehatFetcher(profiles: ["legacy", "acceptance"], features: legacyFeatures)}
             )}
         )
     } finally {
