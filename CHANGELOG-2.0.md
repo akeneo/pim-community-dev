@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7338: Fix attribute groups labels in the grid
+- PIM-7334: Fix identifier filter with special characters
 
 # 2.0.24 (2018-05-16)
 
