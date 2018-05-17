@@ -39,5 +39,7 @@ pim_api:
     locale: Alueet
     currency: Valuutat
     association_type: Assosiaatiotyypit
-rights:
-  api: Web API-käyttöoikeudet
+pim_user:
+  roles:
+    tab:
+      api: Web API-käyttöoikeudet

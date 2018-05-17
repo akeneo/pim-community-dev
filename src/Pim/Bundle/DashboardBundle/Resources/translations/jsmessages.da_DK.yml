@@ -19,5 +19,5 @@ pim_dashboard:
       load_more: 'Indlæs mere...'
     header:
       view_all: Vis alle
-page_title:
+pim_title:
   pim_dashboard_index: Kontrolpanel

@@ -35,6 +35,7 @@ pim_datagrid:
   mass_action:
     delete:
       empty_selection: Ningún producto seleccionado
+      success_message: "{0} Ninguna entidad fue  eliminada|{1} Una entidad eliminada|]1, Inf [%count% entidades fueron eliminadas"
     default:
       confirmation:
         content: '¿Está seguro de quere hacer esto?'
