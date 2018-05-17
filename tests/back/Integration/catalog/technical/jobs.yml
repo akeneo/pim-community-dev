@@ -106,4 +106,4 @@ jobs:
         connector: suggest_data
         alias:     suggest_data_push_products
         label:     Suggest data push products
-        type:      suggest_data_push_products
+        type:      mass_edit

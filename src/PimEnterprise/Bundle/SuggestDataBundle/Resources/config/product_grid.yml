@@ -1,5 +1,0 @@
-services:
-#    pim_inner_variation.datagrid.product.event_listener.toto:
-#        class: 'PimEnterprise\Bundle\SuggestDataBundle\Datagrid\Product\BuildProductDatagridEventListener'
-#        tags:
-#            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: addSuggestDataMassActionButton }
