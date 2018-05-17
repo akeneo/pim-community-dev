@@ -69,7 +69,7 @@ pim_dashboard:
             job_type:
                 mass_upload: Mass upload
 
-page_title:
+pim_title:
     pimee_product_asset_mass_upload: Upload assets
 
 batch_jobs:

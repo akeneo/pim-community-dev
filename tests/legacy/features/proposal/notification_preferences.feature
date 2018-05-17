@@ -41,7 +41,8 @@ Feature: Manage notifications preferences
     Given I am logged in as "Julia"
     And I am on the User profile show page
     And I press the "Edit" button
-    Then I should see the text "Edit user - Julia Stark"
+    Then I should see the text "Julia Stark"
+    And I should see the text "Save"
     When I visit the "Notifications" tab
     And I uncheck the "When new proposal to review" switch
     And I save the user
@@ -58,7 +59,8 @@ Feature: Manage notifications preferences
     Given I am logged in as "Mary"
     When I am on the User profile show page
     And I press the "Edit" button
-    Then I should see the text "Edit user - Mary Smith"
+    Then I should see the text "Mary Smith"
+    And I should see the text "Save"
     When I visit the "Notifications" tab
     Then I should not see "When new proposal to review"
     But I should see the text "When proposal is accepted or rejected"

@@ -35,8 +35,8 @@
     {% endset %}
 
     {% set meta %}
-        <span class="AknTitleContainer-metaItem">{{ 'Created'|trans }}: {{ asset.createdAt ? asset.createdAt|datetime_presenter : 'N/A'|trans }}</span>
-        <span class="AknTitleContainer-metaItem">{{ 'Last update'|trans }}: {{ asset.updatedAt ? asset.updatedAt|datetime_presenter : 'N/A'|trans }}</span>
+        <span class="AknTitleContainer-metaItem">{{ 'pim_common.created'|trans }}: {{ asset.createdAt ? asset.createdAt|datetime_presenter : 'N/A'|trans }}</span>
+        <span class="AknTitleContainer-metaItem">{{ 'pim_common.updated'|trans }}: {{ asset.updatedAt ? asset.updatedAt|datetime_presenter : 'N/A'|trans }}</span>
     {% endset %}
 
     {{ elements.page_header(

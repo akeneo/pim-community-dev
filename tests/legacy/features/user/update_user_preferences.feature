@@ -37,7 +37,7 @@ Feature: Update user preferences
     And I logout
     And I am logged in as "Peter"
     When I edit the "Peter" user
-    Then I should see the text "Edit user"
+    Then I should see the text "Save"
 
   @javascript @jira https://akeneo.atlassian.net/browse/PIM-6470
   Scenario: Add permissions filter on default grid filters
