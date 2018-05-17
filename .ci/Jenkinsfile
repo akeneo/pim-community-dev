@@ -144,17 +144,19 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
-            "behat-ce": {queue(
+
+            // END TO END TESTS
+            "legacy-end-to-end-behat-ce": {queue(
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
-                fetcher: {return pimBehatFetcher(profiles: ["legacy", "acceptance"], features: features)}
+                fetcher: {return pimBehatFetcher(profiles: ["legacy"], features: legacyFeatures)}
             )},
-            "behat-ee": {queue(
+            "legacy-end-to-end-behat-ee": {queue(
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
-                fetcher: {return pimBehatFetcher(profiles: ["default"], features: features)}
+                fetcher: {return pimBehatFetcher(profiles: ["legacy"], features: legacyFeatures)}
             )}
         )
     } finally {
