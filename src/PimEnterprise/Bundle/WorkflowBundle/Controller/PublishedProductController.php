@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
 use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Catalog\Manager\CompletenessManager;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;

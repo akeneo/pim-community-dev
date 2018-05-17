@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

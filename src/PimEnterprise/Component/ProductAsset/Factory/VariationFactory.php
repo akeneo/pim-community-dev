@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Factory;
 
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 /**

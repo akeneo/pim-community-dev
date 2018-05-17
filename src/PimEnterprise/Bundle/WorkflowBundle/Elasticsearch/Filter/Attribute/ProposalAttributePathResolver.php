@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * Resolve path for a proposal attribute.
