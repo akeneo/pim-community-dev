@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Catalog\Factory;
 
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * Creates and configures a family instance.
@@ -29,7 +29,7 @@ class FamilyFactory implements SimpleFactoryInterface
     protected $familyClass;
 
     /**
-     * @param ChannelRepositoryInterface               $channelRepository
+     * @param ChannelRepositoryInterface   $channelRepository
      * @param AttributeRequirementFactory  $factory
      * @param AttributeRepositoryInterface $attributeRepository
      * @param string                       $familyClass

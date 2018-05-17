@@ -2,6 +2,8 @@
 
 namespace Pim\Behat\Context;
 
+use Akeneo\Channel\Component\Model\Channel;
+use Akeneo\Channel\Component\Model\Currency;
 use Akeneo\Channel\Component\Model\Locale;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
@@ -27,8 +29,8 @@ class FixturesContext extends PimContext
         'Attribute'        => 'PimCatalogBundle:Attribute',
         'AttributeGroup'   => 'PimCatalogBundle:AttributeGroup',
         'AttributeOption'  => 'PimCatalogBundle:AttributeOption',
-        'Channel'          => 'PimCatalogBundle:Channel',
-        'Currency'         => 'PimCatalogBundle:Currency',
+        'Channel'          => Channel::class,
+        'Currency'         => Currency::class,
         'Family'           => 'PimCatalogBundle:Family',
         'FamilyVariant'    => FamilyVariant::class,
         'Category'         => 'PimCatalogBundle:Category', // TODO: To remove

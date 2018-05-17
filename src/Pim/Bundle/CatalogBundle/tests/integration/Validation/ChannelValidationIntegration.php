@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Validation;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -364,7 +364,7 @@ class ChannelValidationIntegration extends TestCase
     }
 
     /**
-     * @return ChannelInterface
+     * @return \Akeneo\Channel\Component\Model\ChannelInterface
      */
     protected function createChannel()
     {

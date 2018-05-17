@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\EntityWithFamily;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollection;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 

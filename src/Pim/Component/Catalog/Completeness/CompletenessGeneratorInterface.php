@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Completeness;
 
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

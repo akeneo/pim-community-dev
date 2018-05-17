@@ -77,3 +77,37 @@
 - Move namespace `Pim\Component\Classification` to `Akeneo\Tool\Component\Classification`
 - Move namespace `Pim\Bundle\ClassificationBundle` to `Akeneo\Tool\Bundle\ClassificationBundle`
 - Move namespace `Pim\Bundle\BufferBundle` to `Akeneo\Tool\Bundle\BufferBundle`
+- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\ChannelController` to `Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController`
+- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\ChannelController` to `Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\ChannelController` to `Akeneo\Channel\Bundle\Controller\InternalApi\ChannelController`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover` to `Akeneo\Channel\Bundle\Doctrine\Remover\ChannelRemover`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository`
+- Move `Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber` to `Akeneo\Channel\Bundle\EventListener\ChannelLocaleSubscriber`
+- Change constructor of `Akeneo\Channel\Bundle\EventListener\ChannelLocaleSubscriber`, remove `Pim\Component\Catalog\Completeness\CompletenessRemoverInterface` argument  
+- Move `Pim\Bundle\CatalogBundle\Entity\Channel` to `Akeneo\Channel\Component\Model\Channel`
+- Move `Pim\Component\Catalog\Model\ChannelInterface` to `Akeneo\Channel\Component\Model\ChannelInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\ChannelTranslation` to `Akeneo\Channel\Component\Model\ChannelTranslation`
+- Move `Pim\Component\Catalog\Model\ChannelTranslationInterface` to `Akeneo\Channel\Component\Model\ChannelTranslationInterface`
+- Move `Akeneo\Tool\Component\Api\Normalizer\ChannelNormalizer` to `Akeneo\Channel\Component\Normalizer\ExternalApi\ChannelNormalizer`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\ChannelNormalizer` to `Akeneo\Channel\Component\Normalizer\InternalApi\ChannelNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\ChannelNormalizer` to `Akeneo\Channel\Component\Normalizer\Standard\ChannelNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer` to `Akeneo\Channel\Component\Normalizer\Versioning\ChannelNormalizer`
+- Move `Pim\Component\Catalog\Repository\ChannelRepositoryInterface` to `Akeneo\Channel\Component\Repository\ChannelRepositoryInterface`
+- Move `Pim\Component\Catalog\Updater\ChannelUpdater` to `Akeneo\Channel\Component\Updater\ChannelUpdater`
+- Move `Pim\Component\Catalog\Updater\LocaleUpdater` to `Akeneo\Channel\Component\Updater\LocaleUpdater`
+- Move `Akeneo\Tool\Component\Api\Normalizer\LocaleNormalizer` to `Akeneo\Channel\Component\Normalizer\ExternalApi\LocaleNormalizer`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer` to `Akeneo\Channel\Component\Normalizer\InternalApi\LocaleNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat` to `Akeneo\Channel\Component\Normalizer\Versioning`
+- Move `Pim\Component\Catalog\Model\CurrencyInterface` to `Akeneo\Channel\Component\Model\CurrencyInterface`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CurrencyRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\CurrencyRepository`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber\CurrencyDisablingSubscriber` to `Akeneo\Channel\Bundle\EventListener\CurrencyDisablingSubscriber`
+- Move `Akeneo\Tool\Component\Api\Normalizer\CurrencyNormalizer` to `Akeneo\Tool\Component\Api\Normalizer\CurrencyNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\CurrencyNormalizer` to `Akeneo\Channel\Component\Normalizer\Standard\CurrencyNormalizer`
+- Move `Pim\Component\Catalog\Repository\CurrencyRepositoryInterface` to `Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface`
+- Move `Pim\Component\Catalog\Updater\CurrencyUpdater` to `Akeneo\Channel\Component\Updater\CurrencyUpdater`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Channel` to `Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Channel`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Locale` to `Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Locale`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Currency` to `Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Currency`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Channel` to `Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Channel`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Locale` to `Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Locale`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Currency` to `Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Currency`

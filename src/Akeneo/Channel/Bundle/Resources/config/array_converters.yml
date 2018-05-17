@@ -1,0 +1,27 @@
+services:
+    ### Locale
+    pim_connector.array_converter.flat_to_standard.locale:
+        class: 'Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Locale'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.standard_to_flat.locale:
+        class: 'Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Locale'
+
+    ### Channel
+    pim_connector.array_converter.flat_to_standard.channel:
+        class: 'Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Channel'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.standard_to_flat.channel:
+        class: 'Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Channel'
+
+    ### Currency
+    pim_connector.array_converter.flat_to_standard.currency:
+        class: 'Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Currency'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    pim_connector.array_converter.standard_to_flat.currency:
+        class: 'Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Currency'

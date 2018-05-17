@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Converter;
 
+use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 

@@ -1310,7 +1310,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | ---------------- | -------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | code             | string         | `"ecommerce"`                                  | it's the identifier of the channel                                                                                                                                                                                                                     |
 | labels           | string[]       | `["en_US" => "Tablet", "fr_FR" => "Tablette"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*                                                                                                                                                       |
-| currencies       | string[]       | `[0 => "USD", "1 => "EUR"]`                    | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\CurrencyInterface*                                                                                                                                                 |
+| currencies       | string[]       | `[0 => "USD", "1 => "EUR"]`                    | each element of the array represents the *code* of the *Akeneo\Channel\Component\Model\CurrencyInterface*                                                                                                                                                 |
 | locales          | string[]       | `[0 => "en_US", 1 => "fr_FR"]`                 | each element of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*                                                                                                                                                   |
 | category_tree    | string         | `"master"`                                     | only root category. It represents the *code* of the object *Akeneo\Tool\Component\Classification\Model\CategoryInterface*                                                                                                                                   |
 | conversion_units | string[]       |                                                | keys of each element of the array represent the *code* of the *Pim\Component\Catalog\Model\AttributeInterface*. Values of each element of the array represent one of the constant in classes of *Akeneo/Bundle/MeasureBundle/Family/*, except *FAMILY* |
@@ -1504,7 +1504,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 | code           | string         | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA_variationA.jpg"` | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*       |
 | asset          | string         | `"my_asset"`                                                               | it represents the *code* of the object *PimEnterprise\Component\ProductAsset\Model\AssetInterface* |
 | locale         | string         | `"fr_FR"`                                                                  | it represents the *code* of the object *Akeneo\Channel\Component\Model\LocaleInterface*               |
-| channel        | string         | `"tablet"`                                                                 | it represents the *code* of the object *Pim\Component\Catalog\Model\ChannelInterface*              |
+| channel        | string         | `"tablet"`                                                                 | it represents the *code* of the object *Akeneo\Channel\Component\Model\ChannelInterface*              |
 | reference_file | string      	  | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"`            | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*       |
 
 
@@ -1520,7 +1520,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 
 | type           | data structure | data example                     | notes                                                                                 |
 | -------------- | -------------- | -------------------------------- | ------------------------------------------------------------------------------------- |
-| channel        | string         | `tablet`                         | it represents the *code* of the object *Pim\Component\Catalog\Model\ChannelInterface* |
+| channel        | string         | `tablet`                         | it represents the *code* of the object *Akeneo\Channel\Component\Model\ChannelInterface* |
 | configuration  | array          | `["width" => 200, "scale" => 2]` |                                                                                       |
 
 
