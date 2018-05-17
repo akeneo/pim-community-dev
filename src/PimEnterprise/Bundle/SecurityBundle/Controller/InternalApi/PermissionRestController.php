@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Controller\InternalApi;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;

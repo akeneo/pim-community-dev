@@ -17,7 +17,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
-use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext as BaseUserContext;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\HttpFoundation\RequestStack;

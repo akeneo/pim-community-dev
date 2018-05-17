@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
-use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;

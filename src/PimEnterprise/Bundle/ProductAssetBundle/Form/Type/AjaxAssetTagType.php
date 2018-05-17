@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\UIBundle\Form\Transformer\AjaxCreatableEntityTransformerFactory;
 use Pim\Bundle\UIBundle\Form\Type\AjaxEntityType;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Routing\RouterInterface;
 
 /**

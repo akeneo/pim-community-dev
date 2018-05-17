@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\User\Repository\UserRepositoryInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
