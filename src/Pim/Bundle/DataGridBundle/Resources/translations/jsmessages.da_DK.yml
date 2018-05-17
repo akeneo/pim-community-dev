@@ -35,6 +35,7 @@ pim_datagrid:
   mass_action:
     delete:
       empty_selection: Du har ikke valgt et produkt
+      success_message: "{0} ingen enheder blev fjernet|{1} én enhed blev fjernet|]1, Inf [%count% enheder blev fjernet"
     default:
       confirmation:
         content: Er du sikker på du ønsker at gøre det?

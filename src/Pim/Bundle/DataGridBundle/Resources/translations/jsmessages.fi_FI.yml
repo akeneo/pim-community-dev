@@ -37,6 +37,7 @@ pim_datagrid:
   mass_action:
     delete:
       empty_selection: Ei valittuja tuotteita
+      success_message: "{0} yksiköitä ei poistettu|{1} yksi kokonaisuus poistettiin|] 1, Inf [%count% yksiköt poistettiin"
     default:
       confirmation:
         content: Oletko varma, että haluat tehdä tämän?

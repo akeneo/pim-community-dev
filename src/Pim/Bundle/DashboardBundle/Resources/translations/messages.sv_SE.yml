@@ -1,15 +1,7 @@
 pim_dashboard:
   title: Instrumentpanel
   version: Version
-  link.label:
-    product: Hantera produkter
-    category: Hantera kategorier
-    attribute: Hantera attribut
-    family: Hantera familjer
   widget:
-    error:
-      title: Fel vid inläsning av widget
-      message: Widget '%alias%' finns inte
     completeness:
       title: Fullständighet över kanaler och språk
     last_operations:

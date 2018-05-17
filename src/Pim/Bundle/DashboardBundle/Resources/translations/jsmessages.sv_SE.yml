@@ -15,5 +15,5 @@ pim_dashboard:
       load_more: 'Ladda fler...'
     header:
       view_all: Visa alla
-page_title:
+pim_title:
   pim_dashboard_index: Instrumentpanel

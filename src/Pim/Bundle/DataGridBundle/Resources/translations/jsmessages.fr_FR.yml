@@ -3,6 +3,7 @@ pim_datagrid:
   no_entities: "Aucun(e) {{ entityHint }} trouvé(e)"
   no_results: "Désolé, il n’y a aucun(e) {{ entityHint }} pour votre recherche."
   no_results_subtitle: "Essayez à nouveau avec d'autres critères de recherche."
+  search: "Rechercher sur {{ label }}"
   select:
     title: Sélectionner
     all_visible: Tous les éléments visibles
@@ -42,6 +43,7 @@ pim_datagrid:
   mass_action:
     delete:
       empty_selection: Aucun produit sélectionné
+      success_message: "{0} Aucune entité n'a été supprimée|{1} Une entité a été supprimée|]1, Inf [ %count% entités ont été supprimées"
     default:
       confirmation:
         title: Confirmation de l'Action de masse

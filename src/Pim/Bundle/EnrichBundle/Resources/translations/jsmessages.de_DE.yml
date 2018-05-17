@@ -81,6 +81,13 @@ pim_datagrid:
     delete:
       success: Ausgewählte Produkte erfolgreich gelöscht.
       error: Es ist ein Fehler beim Löschen der ausgewählten Produkte aufgetreten, bitte versuchen Sie es erneut.
+    quick_export:
+      csv_all: CSV (alle Attribute)
+      csv_grid_context: CSV (Kontextabhängig)
+      xlsx_all: Excel (alle Attribute)
+      xlsx_grid_context: Excel (Kontextabhängig)
+    mass_edit: Massenbearbeitung
+    sequential_edit: Sequentielle Bearbeitung
   view_selector:
     view: Ansichten
   actions:
@@ -147,22 +154,7 @@ alert:
     not_available: Ihr Webbrowser scheint nicht kompatibel mit sessionStorage zu sein. Bitte kontaktieren Sie Ihren Administrator
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Achtung, ungespeicherte Daten werden verloren gehen! Sind Sie sicher, dass Sie die Bearbeitung an der neuen Auswahlmöglichkeit abbrechen möchten ?
     cancel_edition_on_new_option_title: Änderung abbrechen
-label:
-  attribute_option:
-    add_option: Auswahlmöglichkeit hinzufügen
-pim:
-  grid:
-    mass_action:
-      quick_export:
-        csv_all: CSV (alle Attribute)
-        csv_grid_context: CSV (Kontextabhängig)
-        xlsx_all: Excel (alle Attribute)
-        xlsx_grid_context: Excel (Kontextabhängig)
-      mass_edit: Massenbearbeitung
-      category_edit: Produkte in Kategorien verschieben
-      sequential_edit: Sequentielle Bearbeitung
 pim_enrich:
   item:
     list:
@@ -440,6 +432,7 @@ pim_enrich:
         error_creating_option: Während des Erstellens der Attributoption ist ein Fehler aufgetreten
       add_option_modal:
         title: Attributoption hinzufügen
+      add_option: Auswahlmöglichkeit hinzufügen
     attribute_group:
       tab:
         attribute:
@@ -756,7 +749,7 @@ pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   http:
     403: Sie haben keine Berechtigung, diese Seite anzuzeigen
-page_title:
+pim_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Attributgruppen
   pim_enrich_attributegroup_create: Attributgruppen | Anlegen
@@ -827,8 +820,6 @@ pim_menu:
     logout: Abmelden
     user_account: Mein Konto
 pim_notification:
-  mark_all_as_read: Alle als gelesen markieren
-  no_notifications: Keine Benachrichtigungen
   types:
     import: Import
     export: Export
@@ -859,13 +850,3 @@ batch_jobs:
   xlsx_product_grid_context_quick_export:
     quick_export.label: XLSX Produkt-Schnellexport kontextabhängig
     perform.label: XLSX Produkt-Schnellexport kontextabhängig
-catalog_volume:
-  axis:
-    count_products: Produkte
-    count_channels: Ausgabekanäle
-    count_families: Produktfamilien
-    count_attributes: Attribute
-    count_categories: Kategorien
-    count_category_trees: Kategorie-Strukturbäume
-    count_variant_products: Produktvarianten
-    count_product_models: Produktmodelle

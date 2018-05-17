@@ -1,6 +1,3 @@
-btn:
-  post: Lisää uusi kommentti
-  reply: Vastaa
 confirmation:
   remove:
     comment: Oletko varma että haluat poistaa tämän kommentin?
@@ -15,7 +12,13 @@ flash:
     reply:
       success: Vastaus luotu.
       error: Virhe luotaessa vastausta.
-comment:
+pim_comment:
+  product:
+    panel:
+      comment:
+        post: Lisää uusi kommentti
+        reply: Vastaa
+        title: Kommentit
   index:
     empty: Ei kommentteja tällä hetkellä
     header_comment: '{{ user }} kommentoi tuotetta'
@@ -23,5 +26,3 @@ comment:
   placeholder:
     new: Kirjoita uusi kommentti...
     reply: Vastaa tähän kommenttiin...
-pim_comment:
-  product.panel.comment.title: Kommentit

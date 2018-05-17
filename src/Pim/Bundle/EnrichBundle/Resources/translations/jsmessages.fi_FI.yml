@@ -84,6 +84,13 @@ pim_datagrid:
       confirm_content: Oletko varma, että haluat poistaa valitut tuotteet?
       success: Valitut tuotteet poistettiin.
       error: Virhe yritettäessä poistaa valitut tuotteet, yritä uudelleen.
+    quick_export:
+      csv_all: CSV (kaikki määritteet)
+      csv_grid_context: CSV (Ruudukon konteksti)
+      xlsx_all: Excel (Kaikki attribuutit)
+      xlsx_grid_context: Excel (Ruudukon konteksti)
+    mass_edit: Massamuokkaus
+    sequential_edit: Peräkkäinen muokkaus
   view_selector:
     view: Näkymät
   actions:
@@ -92,6 +99,10 @@ pim_datagrid:
     delete_product: Poista tuote
     change_status: Muuta tuotteen tila
     toggle_status: Vaihda tuotteen tilaa
+  empty_results:
+    associated_product:
+      hint: Tuotteen assosiaatioita ei ole
+      subHint: 'Klikkaa "Lisää assosiaatioita" lisätäksesi assosiaatioita tälle tuotteelle'
 flash:
   item:
     removed: Kohde poistettu
@@ -154,22 +165,7 @@ alert:
     not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Varoitus, menetät tallentamattomat tiedot. Oletko varma, että haluat peruuttaa muutoksesi tallentamatta tätä uutta mahdollisuutta?
     cancel_edition_on_new_option_title: Peruuta muokkaukset
-label:
-  attribute_option:
-    add_option: Lisää vaihtoehto
-pim:
-  grid:
-    mass_action:
-      quick_export:
-        csv_all: CSV (kaikki määritteet)
-        csv_grid_context: CSV (Ruudukon konteksti)
-        xlsx_all: Excel (Kaikki attribuutit)
-        xlsx_grid_context: Excel (Ruudukon konteksti)
-      mass_edit: Massamuokkaus
-      category_edit: Siirrä tuotteita kategorioihin
-      sequential_edit: Peräkkäinen muokkaus
 pim_enrich:
   item:
     list:
@@ -503,6 +499,7 @@ pim_enrich:
         error_creating_option: Virhe yritettäessä luoda määritteen asetusta
       add_option_modal:
         title: Lisää määritteen vaihtoehto
+      add_option: Lisää vaihtoehto
     attribute_group:
       tab:
         attribute:
@@ -863,7 +860,7 @@ pim_enrich.error:
   exception.title: Voi ei! {{ status_code }} virhe tapahtui...
   http:
     403: Käyttö estetty. Et saa käyttää tätä sivua
-page_title:
+pim_title:
   oro_default: Ohjauspaneeli
   pim_enrich_attributegroup_index: Attribuuttiryhmät
   pim_enrich_attributegroup_create: Attribuuttiryhmät | Luo
@@ -949,18 +946,11 @@ pim_menu:
     logout: Kirjaudu ulos
     user_account: Oma tili
 pim_notification:
-  mark_all_as_read: Merkitse kaikki luetuiksi
-  no_notifications: Ei ilmoituksia
   types:
     import: Tuonti
     export: Vienti
     quick_export: Nopea vienti
     mass_edit: Massamuokkaus
-grid:
-  empty_results:
-    associated_product:
-      hint: Tuotteen assosiaatioita ei ole
-      subHint: 'Klikkaa "Lisää assosiaatioita" lisätäksesi assosiaatioita tälle tuotteelle'
 batch_jobs:
   add_product_value:
     label: Lisää tuotteen arvo
@@ -993,12 +983,3 @@ batch_jobs:
     quick_export.label: Tuoteruudukon kontekstin nopea vienti XLSX-muodossa
     quick_export_product_model.label: Tuotemalliruudukon kontekstin nopea vienti XLSX-muodossa
     perform.label: Tuoteruudukon kontekstin nopea vienti XLSX-muodossa
-catalog_volume:
-  axis:
-    count_products: Tuotteet
-    count_channels: Kanavat
-    count_families: Perheet
-    count_attributes: Attribuutit
-    count_categories: Kategoriat
-    count_category_trees: Kategoriahierarkia
-    count_product_models: Tuotemallit

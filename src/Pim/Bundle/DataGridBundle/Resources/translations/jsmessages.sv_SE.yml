@@ -28,6 +28,7 @@ pim_datagrid:
   mass_action:
     delete:
       empty_selection: Ingen produkt har valts
+      success_message: "{0} Inga entiteter togs bort|{1} En entitet togs bort|]1,Inf[ %count% entiteter togs bort"
     default:
       confirmation:
         content: Är du säker på att du vill göra detta?
