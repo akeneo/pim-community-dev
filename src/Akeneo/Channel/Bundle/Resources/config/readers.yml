@@ -20,6 +20,24 @@ services:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.locale'
 
+    ### Channel
+    pim_connector.reader.database.channel:
+        class: 'Pim\Component\Connector\Reader\Database\Reader'
+        arguments:
+            - '@pim_catalog.repository.channel'
+
+    pim_connector.reader.file.csv_channel:
+        class: 'Pim\Component\Connector\Reader\File\Csv\Reader
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.channel'
+
+    pim_connector.reader.file.xlsx_channel:
+        class: 'Pim\Component\Connector\Reader\File\Xlsx\Reader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.channel'
+
     ### Currency
     #TODO: fix the dependency to the reader class
     pim_connector.reader.database.currency:

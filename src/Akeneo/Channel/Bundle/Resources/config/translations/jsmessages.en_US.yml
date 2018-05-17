@@ -23,3 +23,15 @@ batch_jobs:
     xlsx_locale_import:
         label: Locale import in XLSX
         import.label: Locale import
+    csv_channel_export:
+        label: Channel export in CSV
+        export.label: Channel export
+    csv_channel_import:
+        label: Channel import in CSV
+        import.label: Channel import
+    xlsx_channel_export:
+        label: Channel export in XLSX
+        export.label: Channel export
+    xlsx_channel_import:
+        label: Channel import in XLSX
+        import.label: Channel import
