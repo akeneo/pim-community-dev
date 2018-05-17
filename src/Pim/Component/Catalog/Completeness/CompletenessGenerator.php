@@ -93,7 +93,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected function createProductQueryBuilderForMissings(
         ChannelInterface $channel = null,
         LocaleInterface $locale = null,
-        array $filters = null
+        ?array $filters = null
     ) {
         $defaultFilters = [
             ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null],
