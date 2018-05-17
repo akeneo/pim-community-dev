@@ -95,7 +95,7 @@
 - Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer` to `Akeneo\Channel\Component\Normalizer\Versioning\ChannelNormalizer`
 - Move `Pim\Component\Catalog\Repository\ChannelRepositoryInterface` to `Akeneo\Channel\Component\Repository\ChannelRepositoryInterface`
 - Move `Pim\Component\Catalog\Updater\ChannelUpdater` to `Akeneo\Channel\Component\Updater\ChannelUpdater`
-- Move `Pim\Component\Catalog\Updater\LocalelUpdater` to `Akeneo\Channel\Component\Updater\LocaleUpdater`
+- Move `Pim\Component\Catalog\Updater\LocaleUpdater` to `Akeneo\Channel\Component\Updater\LocaleUpdater`
 - Move `Akeneo\Tool\Component\Api\Normalizer\LocaleNormalizer` to `Akeneo\Channel\Component\Normalizer\ExternalApi\LocaleNormalizer`
 - Move `Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer` to `Akeneo\Channel\Component\Normalizer\InternalApi\LocaleNormalizer`
 - Move `Pim\Bundle\VersioningBundle\Normalizer\Flat` to `Akeneo\Channel\Component\Normalizer\Versioning`
@@ -106,3 +106,9 @@
 - Move `Pim\Component\Catalog\Normalizer\Standard\CurrencyNormalizer` to `Akeneo\Channel\Component\Normalizer\Standard\CurrencyNormalizer`
 - Move `Pim\Component\Catalog\Repository\CurrencyRepositoryInterface` to `Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface`
 - Move `Pim\Component\Catalog\Updater\CurrencyUpdater` to `Akeneo\Channel\Component\Updater\CurrencyUpdater`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Channel` to `Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Channel`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Locale` to `Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Locale`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Currency` to `Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Currency`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Channel` to `Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Channel`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Locale` to `Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Locale`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Currency` to `Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Currency`
