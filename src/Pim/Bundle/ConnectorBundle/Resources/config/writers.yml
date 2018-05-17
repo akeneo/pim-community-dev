@@ -111,12 +111,6 @@ services:
             - '@pim_catalog.saver.association_type'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pim_connector.writer.database.channel:
-        class: '%pim_connector.writer.database.class%'
-        arguments:
-            - '@pim_catalog.saver.channel'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-
     pim_connector.writer.database.attribute_group:
         class: '%pim_connector.writer.database.attribute_group.class%'
         arguments:
@@ -284,13 +278,6 @@ services:
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.family_variant.flat_item_buffer_flusher'
 
-    pim_connector.writer.file.csv_channel:
-        class: '%pim_connector.writer.file.csv.class%'
-        arguments:
-            - '@pim_connector.array_converter.standard_to_flat.channel'
-            - '@pim_connector.factory.flat_item_buffer'
-            - '@pim_connector.writer.file.flat_item_buffer_flusher'
-
     pim_connector.writer.file.csv_attribute_group:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:
@@ -401,13 +388,6 @@ services:
         class: '%pim_connector.writer.file.xlsx.class%'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.association_type'
-            - '@pim_connector.factory.flat_item_buffer'
-            - '@pim_connector.writer.file.flat_item_buffer_flusher'
-
-    pim_connector.writer.file.xlsx_channel:
-        class: '%pim_connector.writer.file.xlsx.class%'
-        arguments:
-            - '@pim_connector.array_converter.standard_to_flat.channel'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 

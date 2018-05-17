@@ -23,6 +23,30 @@ services:
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.flat_item_buffer_flusher'
 
+    ### Channel
+    #TODO: fix the dependency to the writer class
+    pim_connector.writer.database.channel:
+        class: 'Pim\Component\Connector\Writer\Database\Writer'
+        arguments:
+            - '@pim_catalog.saver.channel'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    #TODO: fix the dependency to the writer class
+    pim_connector.writer.file.csv_channel:
+        class: 'Pim\Component\Connector\Writer\File\Csv\Writer'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.channel'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    #TODO: fix the dependency to the writer class
+    pim_connector.writer.file.xlsx_channel:
+        class: 'Pim\Component\Connector\Writer\File\Xlsx\Writer'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.channel'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
     ### Currency
     #TODO: fix the dependency to the writer class
     pim_connector.writer.database.currency:
