@@ -4,6 +4,7 @@
 
 - PIM-7338: Fix attribute groups labels in the grid
 - PIM-7334: Fix identifier filter with special characters
+- PIM-7337: Fix completeness popup when no label on attribute
 
 # 2.0.24 (2018-05-16)
 
