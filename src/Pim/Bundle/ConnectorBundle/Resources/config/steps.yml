@@ -192,7 +192,6 @@ services:
             - '@pim_connector.processor.denormalization.attribute_group'
             - '@pim_connector.writer.database.attribute_group'
 
-
     pim_connector.step.csv_group_type_import.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
