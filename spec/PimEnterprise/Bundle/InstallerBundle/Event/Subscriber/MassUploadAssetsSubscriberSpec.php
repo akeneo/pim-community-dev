@@ -69,10 +69,19 @@ class MassUploadAssetsSubscriberSpec extends ObjectBehavior
         $this->massUploadAssets($event);
     }
 
-    function it_throws_an_exception_if_no_command_executor_is_provided(GenericEvent $event)
+    function it_throws_an_exception_if_no_command_executor_argument_is_provided(GenericEvent $event)
     {
         $event->getSubject()->willReturn('fixtures_asset_csv');
         $event->hasArgument('command_executor')->willReturn(false);
+
+        $this->shouldThrow(\Exception::class)->during('massUploadAssets', [$event]);
+    }
+
+    function it_throws_an_exception_if_argument_is_not_a_command_executor(GenericEvent $event)
+    {
+        $event->getSubject()->willReturn('fixtures_asset_csv');
+        $event->hasArgument('command_executor')->willReturn(true);
+        $event->getArgument('command_executor')->willReturn(new \stdClass());
 
         $this->shouldThrow(\Exception::class)->during('massUploadAssets', [$event]);
     }

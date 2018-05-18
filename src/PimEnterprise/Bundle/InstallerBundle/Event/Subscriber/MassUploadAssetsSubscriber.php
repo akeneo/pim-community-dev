@@ -67,7 +67,10 @@ class MassUploadAssetsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$event->hasArgument('command_executor')) {
+        if (
+            !$event->hasArgument('command_executor') ||
+            !$event->getArgument('command_executor') instanceof CommandExecutor
+        ) {
             throw new \Exception(sprintf(
                 '%s expects $event parameter to have a \'command_executor\' argument of type %s',
                 __METHOD__,
