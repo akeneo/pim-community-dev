@@ -2,10 +2,12 @@
 
 namespace spec\Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -34,8 +36,8 @@ class UserRepositorySpec extends ObjectBehavior
 
     function it_is_a_user_repository()
     {
-        $this->shouldHaveType('Doctrine\ORM\EntityRepository');
-        $this->shouldHaveType('Pim\Component\User\Repository\UserRepositoryInterface');
+        $this->shouldHaveType(EntityRepository::class);
+        $this->shouldHaveType(UserRepositoryInterface::class);
     }
 
     function it_get_identifier_properties()

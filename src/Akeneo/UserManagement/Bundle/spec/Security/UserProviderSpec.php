@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\UserBundle\Security;
+namespace spec\Akeneo\UserManagement\Bundle\Security;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
