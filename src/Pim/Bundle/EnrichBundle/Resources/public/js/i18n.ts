@@ -1,8 +1,8 @@
 const flagTemplate = (country: string, language: string, displayLanguage: boolean) => {
   return `
 <span class="flag-language">
-  <i class="flag flag-${country}"></i>
-  ${displayLanguage ? `<span class="language">${language}</span>` : ''}
+  <i class="flag flag-${country}"></i>${displayLanguage ? `
+  <span class="language">${language}</span>` : ''}
 </span>`;
 };
 
