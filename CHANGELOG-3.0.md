@@ -16,8 +16,8 @@
 - Move `Pim\Component\Catalog\Repository\LocaleRepositoryInterface` to `Akeneo\Channel\Component\Repository\LocaleRepositoryInterface`
 - Move `Pim\Bundle\CatalogBundle\Entity\Locale` to `Akeneo\Channel\Component\Model\Locale`
 - Move `Pim\Component\Catalog\Model\LocaleInterface` to `Akeneo\Channel\Component\Model\LocaleInterface`
-- Move `Pim\Bundle\UserBundle\Bundle\Entity\UserInterface` to `Akeneo\UserManagement\Component\Model\UserInterface`
-- Move `Pim\Bundle\UserBundle\Bundle\Entity\User` to `Akeneo\UserManagement\Component\Model\User`
+- Move `Pim\Bundle\UserBundle\Entity\UserInterface` to `Akeneo\UserManagement\Component\Model\UserInterface`
+- Move `Pim\Bundle\UserBundle\Entity\User` to `Akeneo\UserManagement\Component\Model\User`
 - Move `Oro\Bundle\UserBundle\Entity\Group` to `Akeneo\UserManagement\Component\Model\Group`
 - Move `Oro\Bundle\UserBundle\Entity\Role` to `Akeneo\UserManagement\Component\Model\Role`
 - Move `Oro\Bundle\UserBundle\Entity\UserManager` to `Akeneo\UserManagement\Bundle\Manager\UserManager`
@@ -38,7 +38,8 @@
 - Move `Oro\Bundle\UserBundle\Form\Type\GroupType` to `Akeneo\UserManagement\Bundle\Form\Type\GroupType`
 - Move `Oro\Bundle\UserBundle\Form\Type\ResetType` to `Akeneo\UserManagement\Bundle\Form\Type\ResetType`
 - Move `Oro\Bundle\UserBundle\Security\UserProvider` to `Akeneo\UserManagement\Bundle\Security\UserProvider`
-
+- Move `Pim\Bundle\UserBundle` to `Akeneo\UserManagement\Bundle`
+- Move `Pim\Component\User` to `Akeneo\UserManagement\Component`
 - Merge `Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler` with `Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler`
 - Merge `Oro\Bundle\UserBundle\Form\Handler\ResetHandler` with `Akeneo\UserManagement\Bundle\Form\Handler\ResetHandler`
 - Merge `Oro\Bundle\UserBundle\Form\Handler\UserHandler` with `Akeneo\UserManagement\Bundle\Form\Handler\UserHandler`

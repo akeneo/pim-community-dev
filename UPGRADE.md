@@ -42,6 +42,8 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\UserBundle\\Entity
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\UserBundle\\Entity\\Group/Akeneo\\UserManagement\\Component\\Model\\Group/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\UserBundle\\Entity\\User/Akeneo\\UserManagement\\Component\\Model\\User/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\UserBundle\\Entity\\UserInterface/Akeneo\\UserManagement\\Component\\Model\\UserInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\UserBundle/Akeneo\\UserManagement\\Bundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\User/Akeneo\\UserManagement\\Component/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Api/Akeneo\\Tool\\Component\\Api/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\ApiBundle/Akeneo\\Tool\\Bundle\\ApiBundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\Batch/Akeneo\\Tool\\Component\\Batch/g'
