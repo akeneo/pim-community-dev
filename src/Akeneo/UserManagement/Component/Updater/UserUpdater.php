@@ -10,11 +10,11 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Util\ClassUtils;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\Common\Util\ClassUtils;
 
 /**
  * Updates an user

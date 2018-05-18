@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
-use Pim\Bundle\UIBundle\Form\Transformer\TransformerFactoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Pim\Bundle\UIBundle\Form\Transformer\TransformerFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

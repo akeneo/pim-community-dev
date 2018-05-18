@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version;
 
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

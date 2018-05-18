@@ -3,12 +3,12 @@
 namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * Version repository

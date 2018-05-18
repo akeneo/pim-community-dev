@@ -2,8 +2,8 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller;
 
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\UserManagement\Component\Model\Role;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;

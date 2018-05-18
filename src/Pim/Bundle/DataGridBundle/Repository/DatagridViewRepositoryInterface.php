@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Repository;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Datagrid view repository interface

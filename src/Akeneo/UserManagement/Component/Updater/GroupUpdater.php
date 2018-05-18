@@ -4,8 +4,8 @@ namespace Akeneo\UserManagement\Component\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Util\ClassUtils;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Doctrine\Common\Util\ClassUtils;
 
 /**
  * Updates a group

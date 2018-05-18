@@ -2,8 +2,8 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Type;
 
-use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Akeneo\UserManagement\Bundle\Form\Transformer\AccessLevelToBooleanTransformer;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;

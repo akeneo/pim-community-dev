@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;

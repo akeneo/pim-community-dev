@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config;
 
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
-use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserConfigManagerTest extends \PHPUnit_Framework_TestCase

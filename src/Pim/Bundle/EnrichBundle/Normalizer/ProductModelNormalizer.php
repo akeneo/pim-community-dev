@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;

@@ -14,6 +14,8 @@ use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\User;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
@@ -43,8 +45,6 @@ use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModel
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Akeneo\UserManagement\Component\Model\Role;
-use Akeneo\UserManagement\Component\Model\User;
 
 /**
  * A context for creating entities

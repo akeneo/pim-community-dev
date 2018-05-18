@@ -4,8 +4,8 @@ namespace Pim\Bundle\LocalizationBundle\Controller;
 
 use Akeneo\Tool\Component\Localization\Factory\DateFactory;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
-use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

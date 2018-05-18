@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\EnrichBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

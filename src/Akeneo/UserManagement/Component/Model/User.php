@@ -6,11 +6,11 @@ use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**

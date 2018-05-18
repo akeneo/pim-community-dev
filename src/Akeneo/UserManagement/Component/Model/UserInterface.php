@@ -5,11 +5,11 @@ namespace Akeneo\UserManagement\Component\Model;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\UserManagement\Component\EntityUploadedImageInterface;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Akeneo\UserManagement\Component\EntityUploadedImageInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 

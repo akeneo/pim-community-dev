@@ -4,8 +4,8 @@ namespace Akeneo\UserManagement\Component\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * User repository interface

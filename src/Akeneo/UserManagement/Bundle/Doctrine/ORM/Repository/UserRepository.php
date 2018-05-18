@@ -2,8 +2,8 @@
 
 namespace Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * User repository

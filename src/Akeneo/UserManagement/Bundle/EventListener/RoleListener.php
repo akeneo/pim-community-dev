@@ -2,10 +2,10 @@
 
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
+use Akeneo\UserManagement\Component\Model\Role;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 use Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink;
-use Akeneo\UserManagement\Component\Model\Role;
 
 class RoleListener
 {

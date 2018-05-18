@@ -2,12 +2,12 @@
 
 namespace Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Role repository
