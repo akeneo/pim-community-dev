@@ -2,8 +2,40 @@
 
 ## Bug fixes
 
-- PIM-7300: fix the status filter on product grid for products with parent.
+- PIM-7335: Fix locale rendering on product form completeness panel
+- PIM-7323: Fix unique data synchronizer to handle value removal
+
+# 2.0.23 (2018-04-30)
+
+## Bug fixes
+
+- PIM-7325: Fix family grid search filter
+- PIM-7328: Fix a bug that prevents to index very large texts in Elasticsearch
+
+# 2.0.22 (2018-04-25)
+
+## Bug fixes
+
+- PIM-7300: Fix the status filter on product grid for products with parent.
 - PIM-7282: Add validation on the code value during the attribute creation to prohibit the "entity_type" value.
+- PIM-7304: Fix the SKU filter to be scrollable
+- PIM-7043: Remove the last pagination button if it has more than 10 000 products on the product grid.
+- PIM-7299: Add pagination for family variants on several screens
+- PIM-7313: Prevent the same job to be executed by two different daemons due to race condition
+- PIM-7297: Fix memory leak on completeness purge command
+- PIM-7312: Fix attribute requirements update for a newly created channel
+- PIM-7322: Fix cast of a product model as string to format correctly violations
+- PIM-7320: Fix memory leak on boolean values purge command
+- PIM-7317: Fix iterator misuse in the database product model reader
+
+## BC Breaks
+
+- Changes the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyVariant` to add `Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface`
+
+## Improvements
+
+- PIM-7321: Prevent concurrent calculation of the completeness
+- GITHUB-7179: Add index_hosts to the incenteev parameters (cheers [Jan Schneider](https://github.com/yunosh))
 
 # 2.0.21 (2018-04-10)
 
@@ -58,6 +90,7 @@
 - PIM-7214: Fix a bug that prevents to select multiple items across pages in Products, Family and associations grids
 - PIM-7215: Fix wrong direction of sorting arrow in the grids
 - PIM-7220: Fix the filter "is empty" when the attribute belongs to a family
+- PIM-7216: Allow to easily override Product and VariantProduct classes
 
 # 2.0.17 (2018-03-06)
 

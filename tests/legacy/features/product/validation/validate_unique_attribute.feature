@@ -44,7 +44,20 @@ Feature: Validate unique attribute of a product
     When I am on the "text2" product page
     And I change the Text to ""
     And I save the product
-    Then I should not see validation tooltip "The value is already set on another product for the unique attribute text"
+    Then I should not see validation tooltip "The value  is already set on another product for the unique attribute text"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7323
+  Scenario: Validate the unique constraint of text attribute with an removed value
+    Given I am on the "text1" product page
+    And I change the Text to "my-text"
+    And I save the product
+    Given I am on the "text1" product page
+    And I change the Text to ""
+    And I save the product
+    When I am on the "text2" product page
+    And I change the Text to "my-text"
+    And I save the product
+    Then I should not see validation tooltip "The value my-text is already set on another product for the unique attribute text"
 
   Scenario: Validate the unique constraint of number attribute with a provided number greater than 0
     Given I am on the "number1" product page
@@ -64,7 +77,7 @@ Feature: Validate unique attribute of a product
     When I am on the "number2" product page
     And I change the Number to ""
     And I save the product
-    Then I should not see validation tooltip "The value is already set on another product for the unique attribute number"
+    Then I should not see validation tooltip "The value  is already set on another product for the unique attribute number"
 
   @skip @info date picker does not work properly on CI
   Scenario: Validate the unique constraint of date attribute with a provided date
@@ -83,4 +96,4 @@ Feature: Validate unique attribute of a product
     And I save the product
     When I am on the "date2" product page
     And I save the product
-    Then I should not see validation tooltip "The value is already set on another product for the unique attribute date1"
+    Then I should not see validation tooltip "The value  is already set on another product for the unique attribute date1"

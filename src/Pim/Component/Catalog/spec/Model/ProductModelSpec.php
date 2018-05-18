@@ -387,4 +387,25 @@ class ProductModelSpec extends ObjectBehavior
             'otherValue-<all_channels>-<all_locales>' => $otherValue
         ]);
     }
+
+    function it_gets_label_when_casting_object_as_string(
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values
+    ) {
+        $familyVariant->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isScopable()->willReturn(false);
+
+        $values->toArray()->willreturn([]);
+
+        $this->setFamilyVariant($familyVariant);
+        $this->setValues($values);
+        $this->setCode('shovel');
+
+        $this->__toString()->shouldReturn('shovel');
+    }
 }

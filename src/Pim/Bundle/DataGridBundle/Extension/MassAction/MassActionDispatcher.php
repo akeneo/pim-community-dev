@@ -145,7 +145,6 @@ class MassActionDispatcher
         }
 
         $datagrid = $this->manager->getDatagrid($parameters['gridName']);
-        $massAction = $this->getMassActionByName($parameters['actionName'], $datagrid);
         $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
         $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
@@ -164,12 +163,17 @@ class MassActionDispatcher
         $repository = $datasource->getMassActionRepository();
         $repository->applyMassActionParameters($qb, $inset, $values);
 
-        return [
+        $preparedParams = [
             'datagrid'   => $datagrid,
-            'massAction' => $massAction,
             'inset'      => $inset,
-            'values'     => $values
+            'values'     => $values,
         ];
+
+        if (array_key_exists('actionName', $parameters) && null !== $parameters['actionName']) {
+            $preparedParams['massAction'] = $this->getMassActionByName($parameters['actionName'], $datagrid);
+        }
+
+        return $preparedParams;
     }
 
     /**

@@ -33,7 +33,7 @@ Feature: Display the category history
       | 1       | label-en_US | Book category    | now  |
       | 2       | label-en_US | My book category | now  |
 
-  @ce @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
+  @ce @jira https://akeneo.atlassian.net/browse/PIM-7279
   Scenario: Prevent javascript execution from history tab while updating category label translations
     Given a "default" catalog configuration
     And I am logged in as "Julia"

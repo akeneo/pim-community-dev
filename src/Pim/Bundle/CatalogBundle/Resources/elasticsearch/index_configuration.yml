@@ -61,8 +61,9 @@ mappings:
                     mapping:
                         fields:
                             preprocessed:
-                                type: 'keyword'
-                                normalizer: 'textarea_normalizer'
+                                type: 'text'
+                                analyzer: 'textarea_preprocessed_analyzer'
+                                fielddata: true
                         type: 'text'
                         analyzer: 'textarea_analyzer'
             -
@@ -245,14 +246,6 @@ mappings:
 settings:
     analysis:
         normalizer:
-            textarea_normalizer:
-                # Value is htmlstripped and newline pattern processed prior to indexing (in the PIM)
-                # ES Normalizers is an experimental feature and they do not support
-                # html_strip and newlinepattern filters yet.
-                # see https://www.elastic.co/guide/en/elasticsearch/reference/5.2/analysis-normalizers.html#analysis-normalizers
-                filter: ['lowercase']
-                char_filter: []
-                type: 'custom'
             text_normalizer:
                 filter: ['lowercase']
             family_normalizer:
@@ -264,12 +257,21 @@ settings:
                 pattern: '\\n'
                 type: 'pattern_replace'
                 replacement: ''
+        filter:
+            text_area_truncate:
+                type: 'truncate'
+                length: 100
         analyzer:
             textarea_analyzer:
                 filter: ['lowercase']
                 char_filter: ['html_strip', 'newline_pattern']
                 type: 'custom'
                 tokenizer: 'standard'
+            textarea_preprocessed_analyzer:
+                filter: ['lowercase', 'text_area_truncate']
+                char_filter: ['html_strip', 'newline_pattern']
+                type: 'custom'
+                tokenizer: 'keyword'
     mapping:
         # ES default value is 1000. This value can be too low for big catalogs.
         # For more information see https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#mapping-limit-settings

@@ -12,7 +12,7 @@ define(
     ) {
         return BaseForm.extend({
             displayAsPanel: false,
-            className: 'Toto',
+            isLoaded: false,
 
             /**
              * @inheritdoc
@@ -20,7 +20,7 @@ define(
             initialize(meta) {
                 this.displayAsPanel = undefined === meta.config.displayAsPanel ? false : meta.config.displayAsPanel;
 
-                mediator.once('datagrid_filters:loaded', this.showFilterManager.bind(this));
+                this.listenTo(mediator, 'datagrid_filters:loaded', this.showFilterManager.bind(this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -32,6 +32,10 @@ define(
              */
             showFilterManager(options) {
                 options.displayAsPanel = this.displayAsPanel;
+                if (this.isLoaded) {
+                    return;
+                }
+                this.isLoaded = true;
 
                 const filtersList = new FiltersManager(options);
 

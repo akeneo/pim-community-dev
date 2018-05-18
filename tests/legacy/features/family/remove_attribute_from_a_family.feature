@@ -24,14 +24,13 @@ Feature: Remove attribute from a family
     And I visit the "Attributes" tab
     When I remove the "material" attribute
     And I save the family
-    And I should not see the text "There are unsaved changes."
-    Then I should see the flash message "Attribute successfully removed from the family"
-    When I wait 5 seconds
+    Then I should not see the text "There are unsaved changes."
+    And I should see the flash message "Attribute successfully removed from the family"
     And I am on the "model-braided-hat" product model page
     Then I should see the text "Supplier"
-    And I should not see the text "Material"
-    And I am on the "braided-hat-m" product page
-    And I should not see the text "Material"
+    But I should not see the text "Material"
+    When I am on the "braided-hat-m" product page
+    Then I should not see the Material field
 
   Scenario: Impossible to remove some attributes from a family (used as label, used as image, used as axis)
     Given I am on the "shoes" family page

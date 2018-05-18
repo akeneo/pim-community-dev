@@ -16,7 +16,7 @@ pim_analytics:
     pim_storage_driver: Lagringsutrymme
     pim_environment: Miljö
     pim_install_time: Installationstid
-    registered_bundles: Registrerade bundlar
+    registered_bundles: Registrerade bundles
     nb_channels: Antal kanaler
     nb_products: Antal produkter
     nb_product_models: Antal produktmodeller

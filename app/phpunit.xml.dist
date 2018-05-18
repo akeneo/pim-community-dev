@@ -30,7 +30,8 @@
 
         <!-- Complete suite for PIM integration tests -->
         <testsuite name="PIM_Integration_Test">
-            <file></file>
+            <directory suffix="Integration.php">../src</directory>
+            <directory suffix="Integration.php">../tests</directory>
         </testsuite>
 
     </testsuites>
