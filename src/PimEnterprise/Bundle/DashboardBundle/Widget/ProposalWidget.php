@@ -15,7 +15,7 @@ use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -30,7 +30,7 @@ class ProposalWidget implements WidgetInterface
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $repository;
 
     /** @var UserManager */
@@ -47,7 +47,7 @@ class ProposalWidget implements WidgetInterface
 
     /**
      * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param ProductDraftRepositoryInterface $ownershipRepository
+     * @param EntityWithValuesDraftRepositoryInterface $ownershipRepository
      * @param UserManager                     $userManager
      * @param TokenStorageInterface           $tokenStorage
      * @param PresenterInterface              $presenter
@@ -55,7 +55,7 @@ class ProposalWidget implements WidgetInterface
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductDraftRepositoryInterface $ownershipRepository,
+        EntityWithValuesDraftRepositoryInterface $ownershipRepository,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         PresenterInterface $presenter,

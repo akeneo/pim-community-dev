@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\ApiBundle\Router;
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -36,7 +36,7 @@ class ProxyProductRouter implements UrlGeneratorInterface
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     private $productDraftRepository;
 
     /** @var ProductRepositoryInterface */
@@ -48,14 +48,14 @@ class ProxyProductRouter implements UrlGeneratorInterface
     /**
      * @param UrlGeneratorInterface           $router
      * @param TokenStorageInterface           $tokenStorage
-     * @param ProductDraftRepositoryInterface $productDraftRepository
+     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
      * @param ProductRepositoryInterface      $productRepository
      * @param string                          $productDraftRoute
      */
     public function __construct(
         UrlGeneratorInterface $router,
         TokenStorageInterface $tokenStorage,
-        ProductDraftRepositoryInterface $productDraftRepository,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         ProductRepositoryInterface $productRepository,
         string $productDraftRoute
     ) {
@@ -81,7 +81,7 @@ class ProxyProductRouter implements UrlGeneratorInterface
         }
 
         $username = $this->tokenStorage->getToken()->getUser()->getUsername();
-        $name = null === $this->productDraftRepository->findUserProductDraft($product, $username)
+        $name = null === $this->productDraftRepository->findUserEntityWithValuesDraft($product, $username)
             ? $name : $this->productDraftRoute;
 
         return $this->router->generate($name, $parameters, $referenceType);

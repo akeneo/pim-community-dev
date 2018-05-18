@@ -42,13 +42,13 @@ class InjectProductForProductDraftSubscriber
      */
     public function buildBefore(BuildBefore $event)
     {
-        $productId = $this->requestParams->get('product', null);
+        $entityWithValuesId = $this->requestParams->get('entityWithValues', null);
 
-        if (null !== $productId) {
+        if (null !== $entityWithValuesId) {
             $datagridConfig = $event->getConfig();
             $datagridConfig->offsetSetByPath(
                 sprintf(ConfiguratorInterface::SOURCE_PATH, ConfiguratorInterface::REPOSITORY_PARAMETERS_KEY),
-                ['product' => $productId]
+                ['entityWithValues' => $entityWithValuesId]
             );
         }
     }

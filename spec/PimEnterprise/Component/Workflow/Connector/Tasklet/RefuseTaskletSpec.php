@@ -12,7 +12,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelp
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class RefuseTaskletSpec extends ObjectBehavior
 {
     function let(
-        ProductDraftRepositoryInterface $productDraftRepository,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         ProductDraftManager $productDraftManager,
         UserProviderInterface $userProvider,
         AuthorizationCheckerInterface $authorizationChecker,

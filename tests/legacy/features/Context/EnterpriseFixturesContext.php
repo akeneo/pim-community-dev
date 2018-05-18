@@ -33,7 +33,7 @@ use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Yaml\Parser;
@@ -338,7 +338,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     public function getProductDraft(ProductInterface $product, $username)
     {
-        $productDraft = $this->getProposalRepository()->findUserProductDraft($product, $username);
+        $productDraft = $this->getProposalRepository()->findUserEntityWithValuesDraft($product, $username);
 
         if ($productDraft) {
             $this->refresh($productDraft);
@@ -1200,7 +1200,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return ProductDraftRepositoryInterface
+     * @return EntityWithValuesDraftRepositoryInterface
      */
     protected function getProposalRepository()
     {

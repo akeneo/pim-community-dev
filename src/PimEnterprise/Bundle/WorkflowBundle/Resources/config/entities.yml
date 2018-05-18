@@ -4,3 +4,4 @@ parameters:
     pimee_workflow.entity.published_product_association.class:  PimEnterprise\Component\Workflow\Model\PublishedProductAssociation
     pimee_workflow.entity.published_product_unique_data.class:  PimEnterprise\Component\Workflow\Model\PublishedProductUniqueData
     pimee_workflow.model.product_draft.class:                   PimEnterprise\Component\Workflow\Model\ProductDraft
+    pimee_workflow.model.product_model_draft.class:             PimEnterprise\Component\Workflow\Model\ProductModelDraft

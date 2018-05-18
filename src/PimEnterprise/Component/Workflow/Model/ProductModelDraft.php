@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,20 +15,19 @@ namespace PimEnterprise\Component\Workflow\Model;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
- * Product draft
- *
- * @author Gildas Quemener <gildas@akeneo.com>
+ * Product model model draft
  */
-class ProductDraft implements EntityWithValuesDraftInterface
+class ProductModelDraft implements EntityWithValuesDraftInterface
 {
     /** @var int */
     protected $id;
 
-    /** @var EntityWithValuesInterface */
+    /** @var ProductModelInterface */
     protected $entityWithValues;
 
     /** @var string */
@@ -52,7 +51,7 @@ class ProductDraft implements EntityWithValuesDraftInterface
     /** @var array */
     protected $categoryIds = [];
 
-    /** @var string not persisted, used to contextualize the product draft */
+    /** @var string not persisted, used to contextualize the productModel draft */
     protected $dataLocale = null;
 
     public function __construct()
@@ -161,7 +160,7 @@ class ProductDraft implements EntityWithValuesDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(): ?array
+    public function getChanges(): array
     {
         return $this->changes;
     }
@@ -202,7 +201,7 @@ class ProductDraft implements EntityWithValuesDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChange(string $fieldCode, ?string $localeCode, ?string $channelCode)
+    public function getChange(string $fieldCode, ?string $localeCode, ?string $channelCode): ?array
     {
         if (!isset($this->changes['values'])) {
             return null;

@@ -1,6 +1,6 @@
-PimEnterprise\Component\Workflow\Model\ProductDraft:
+PimEnterprise\Component\Workflow\Model\ProductModelDraft:
     type: entity
-    table: pimee_workflow_product_draft
+    table: pimee_workflow_product_model_draft
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\EntityWithValuesDraftRepository
     id:
@@ -26,12 +26,12 @@ PimEnterprise\Component\Workflow\Model\ProductDraft:
             nullable: false
     manyToOne:
         entityWithValues:
-            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
             joinColumn:
-                name: product_id
+                name: product_model_id
                 referencedColumnName: id
                 nullable: false
                 onDelete: CASCADE
     uniqueConstraints:
         unique_idx:
-            columns: [ author, product_id ]
+            columns: [ author, product_model_id ]

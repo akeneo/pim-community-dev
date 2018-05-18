@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class ProposalWidgetSpec extends ObjectBehavior
 {
     function let(
-        ProductDraftRepositoryInterface $repository,
+        EntityWithValuesDraftRepositoryInterface $repository,
         AuthorizationCheckerInterface $authorizationChecker,
         UserInterface $user,
         TokenInterface $token,

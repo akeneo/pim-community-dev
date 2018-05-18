@@ -24,7 +24,7 @@ use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -44,7 +44,7 @@ class ProductDraftManager
     /** @var ProductDraftFactory */
     protected $factory;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $repository;
 
     /** @var ProductDraftApplierInterface */
@@ -66,7 +66,7 @@ class ProductDraftManager
      * @param SaverInterface                  $workingCopySaver
      * @param UserContext                     $userContext
      * @param ProductDraftFactory             $factory
-     * @param ProductDraftRepositoryInterface $repository
+     * @param EntityWithValuesDraftRepositoryInterface $repository
      * @param ProductDraftApplierInterface    $applier
      * @param EventDispatcherInterface        $dispatcher
      * @param SaverInterface                  $productDraftSaver
@@ -77,7 +77,7 @@ class ProductDraftManager
         SaverInterface $workingCopySaver,
         UserContext $userContext,
         ProductDraftFactory $factory,
-        ProductDraftRepositoryInterface $repository,
+        EntityWithValuesDraftRepositoryInterface $repository,
         ProductDraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
         SaverInterface $productDraftSaver,
@@ -334,7 +334,7 @@ class ProductDraftManager
             throw new \LogicException('Current user cannot be resolved');
         }
         $username = $this->userContext->getUser()->getUsername();
-        $productDraft = $this->repository->findUserProductDraft($product, $username);
+        $productDraft = $this->repository->findUserEntityWithValuesDraft($product, $username);
 
         if (null === $productDraft) {
             $productDraft = $this->factory->createProductDraft($product, $username);

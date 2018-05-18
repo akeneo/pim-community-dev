@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -24,7 +24,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductDraftBuilderInterface $productDraftBuilder,
         ProductDraftApplierInterface $productDraftApplier,
-        ProductDraftRepositoryInterface $productDraftRepo,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(

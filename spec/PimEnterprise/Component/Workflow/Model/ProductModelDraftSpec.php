@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\Workflow\Model;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
-class ProductDraftSpec extends ObjectBehavior
+class ProductModelDraftSpec extends ObjectBehavior
 {
     function it_gives_changes_for_attribute() {
         $this->setChanges([

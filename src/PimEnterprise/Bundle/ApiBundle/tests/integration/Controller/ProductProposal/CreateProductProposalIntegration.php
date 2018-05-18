@@ -29,7 +29,7 @@ class CreateProductProposalIntegration extends AbstractProposalIntegration
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
-        $productDraft = $this->get('pimee_workflow.repository.product_draft')->findUserProductDraft($productDraft->getEntityWithValue(), 'mary');
+        $productDraft = $this->get('pimee_workflow.repository.product_draft')->findUserEntityWithValuesDraft($productDraft->getEntityWithValue(), 'mary');
         $this->assertSame(ProductDraft::READY, $productDraft->getStatus());
     }
 

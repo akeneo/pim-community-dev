@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Api\Normalizer\ProductNormalizer;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -17,7 +17,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $productNormalizer,
-        ProductDraftRepositoryInterface $productDraftRepository,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage
     ) {
@@ -94,7 +94,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUsername()->willReturn('Kevin');
 
-        $productDraftRepository->findUserProductDraft($product, 'Kevin')->willReturn(null);
+        $productDraftRepository->findUserEntityWithValuesDraft($product, 'Kevin')->willReturn(null);
 
         $productNormalizer->normalize($product, 'external_api', [])->willReturn([
             'identifier' => 'foo',
@@ -125,7 +125,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUsername()->willReturn('Kevin');
 
-        $productDraftRepository->findUserProductDraft($product, 'Kevin')->willReturn($productDraft);
+        $productDraftRepository->findUserEntityWithValuesDraft($product, 'Kevin')->willReturn($productDraft);
         $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
 
         $productNormalizer->normalize($product, 'external_api', [])->willReturn([
@@ -157,7 +157,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUsername()->willReturn('Kevin');
 
-        $productDraftRepository->findUserProductDraft($product, 'Kevin')->willReturn($productDraft);
+        $productDraftRepository->findUserEntityWithValuesDraft($product, 'Kevin')->willReturn($productDraft);
         $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
 
         $productNormalizer->normalize($product, 'external_api', [])->willReturn([

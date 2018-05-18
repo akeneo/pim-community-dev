@@ -6,7 +6,7 @@ use League\Flysystem\FilesystemInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\FileStorage;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -22,7 +22,7 @@ class CreateMediaFileWithPermissionsIntegration extends AbstractMediaFileTestCas
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     private $productDraftRepository;
 
     /*** @var FilesystemInterface */
@@ -80,7 +80,7 @@ class CreateMediaFileWithPermissionsIntegration extends AbstractMediaFileTestCas
         $this->assertSame('catalogStorage', $fileInfo->getStorage());
 
         // check if product value has been created
-        $productDraft = $this->testKernel->getContainer()->get('pimee_workflow.repository.product_draft')->findByProduct($product);
+        $productDraft = $this->testKernel->getContainer()->get('pimee_workflow.repository.product_draft')->findByEntityWithValues($product);
         $this->assertContains('akeneo.jpg', $productDraft[0]->getChange('an_image', null, null));
     }
 

@@ -15,7 +15,7 @@ use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -32,7 +32,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftBuilderInterface $filteredProductDraftBuilder,
         TokenStorageInterface $tokenStorage,
-        ProductDraftRepositoryInterface $filteredProductDraftRepo,
+        EntityWithValuesDraftRepositoryInterface $filteredProductDraftRepo,
         RemoverInterface $filteredProductDraftRemover,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         NotGrantedDataMergerInterface $mergeDataOnProduct,
@@ -184,7 +184,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             ->willReturn(null)
             ->shouldBeCalled();
 
-        $filteredProductDraftRepo->findUserProductDraft($filteredProduct, 'username')->willReturn($filteredProductDraft);
+        $filteredProductDraftRepo->findUserEntityWithValuesDraft($filteredProduct, 'username')->willReturn($filteredProductDraft);
         $filteredProductDraftRemover->remove($filteredProductDraft)->shouldBeCalled();
 
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
@@ -226,7 +226,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             ->willReturn(null)
             ->shouldBeCalled();
 
-        $filteredProductDraftRepo->findUserProductDraft($filteredProduct, 'username')->willReturn($filteredProductDraft);
+        $filteredProductDraftRepo->findUserEntityWithValuesDraft($filteredProduct, 'username')->willReturn($filteredProductDraft);
         $filteredProductDraftRemover->remove($filteredProductDraft)->shouldBeCalled();
 
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
@@ -266,7 +266,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             ->willReturn(null)
             ->shouldBeCalled();
 
-        $filteredProductDraftRepo->findUserProductDraft($filteredProduct, 'username')->willReturn();
+        $filteredProductDraftRepo->findUserEntityWithValuesDraft($filteredProduct, 'username')->willReturn();
         $filteredProductDraftRemover->remove(Argument::any())->shouldNotBeCalled();
 
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
