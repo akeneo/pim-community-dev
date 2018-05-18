@@ -2,11 +2,7 @@
 
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle;
 
-use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
-use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler\RegisterUpdateGuessersPass;
-use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler\RegisterVersionPurgerAdvisorPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

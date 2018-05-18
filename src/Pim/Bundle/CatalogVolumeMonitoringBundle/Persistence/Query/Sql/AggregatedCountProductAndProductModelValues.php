@@ -9,13 +9,15 @@ use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 
 /**
- * @author    Elodie Raposo <elodie.raposo@akeneo.com>
+ * Count the total number of product values for products and product models together.
+ *
+ * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CountProductValues implements CountQuery
+class AggregatedCountProductAndProductModelValues implements CountQuery
 {
-    private const VOLUME_NAME = 'count_product_values';
+    private const VOLUME_NAME = 'count_product_and_product_model_values';
 
     /** @var Connection */
     private $connection;
@@ -33,19 +35,16 @@ class CountProductValues implements CountQuery
         $this->limit = $limit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function fetch(): CountVolume
     {
         $sql = <<<SQL
-           SELECT SUM(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) as sum_product_values
-           FROM pim_catalog_product
+SELECT SUM(JSON_EXTRACT(volume, '$.value')) AS value
+FROM pim_aggregated_volume WHERE volume_name IN ('count_product_values', 'count_product_model_values')
 SQL;
-        $result = $this->connection->query($sql)->fetch();
 
-        $volume = new CountVolume((int) $result['sum_product_values'], $this->limit, self::VOLUME_NAME);
+        $sqlResult = $this->connection->query($sql)->fetch();
+        $volumeValue = isset($sqlResult['value']) ? (int) $sqlResult['value'] : 0;
 
-        return $volume;
+        return new CountVolume($volumeValue, $this->limit, self::VOLUME_NAME);
     }
 }

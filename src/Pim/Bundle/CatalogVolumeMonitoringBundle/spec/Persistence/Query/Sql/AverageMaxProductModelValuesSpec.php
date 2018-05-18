@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace spec\Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Statement;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductValues;
+use Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductModelValues;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
 use Prophecy\Argument;
 
-class AverageMaxProductValuesSpec extends ObjectBehavior
+class AverageMaxProductModelValuesSpec extends ObjectBehavior
 {
     function let(Connection $connection)
     {
@@ -21,7 +21,7 @@ class AverageMaxProductValuesSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AverageMaxProductValues::class);
+        $this->shouldHaveType(AverageMaxProductModelValues::class);
     }
 
     function it_is_an_average_and_max_query()
@@ -33,7 +33,8 @@ class AverageMaxProductValuesSpec extends ObjectBehavior
     {
         $connection->query(Argument::type('string'))->willReturn($statement);
         $statement->fetch()->willReturn(['average' => '4', 'max' => '10']);
-        $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 4, 12, 'average_max_product_values'));
+
+        $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 4, 12, 'average_max_product_model_values'));
     }
 
     function it_gets_average_and_max_volume_of_an_empty_catalog($connection, Statement $statement)
@@ -41,6 +42,6 @@ class AverageMaxProductValuesSpec extends ObjectBehavior
         $connection->query(Argument::type('string'))->willReturn($statement);
         $statement->fetch()->willReturn(['average' => null, 'max' => null]);
 
-        $this->fetch()->shouldBeLike(new AverageMaxVolumes(0, 0, 12, 'average_max_product_values'));
+        $this->fetch()->shouldBeLike(new AverageMaxVolumes(0, 0, 12, 'average_max_product_model_values'));
     }
 }

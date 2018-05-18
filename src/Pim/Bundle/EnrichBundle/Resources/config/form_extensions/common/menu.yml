@@ -237,15 +237,14 @@ extensions:
         config:
             title: pim_menu.navigation.system
 
-    # @TODO uncomment when PIM-7247 and PIM-7246 are complete
-    # pim-menu-system-catalog-volume:
-    #     module: pim/menu/item
-    #     parent: pim-menu-system-navigation-block
-    #     aclResourceId: oro_config_system
-    #     position: 100
-    #     config:
-    #         title: pim_menu.item.catalog_volume
-    #         to: pim_enrich_catalog_volume_index
+    pim-menu-system-catalog-volume:
+        module: pim/menu/item
+        parent: pim-menu-system-navigation-block
+        aclResourceId: oro_config_system
+        position: 100
+        config:
+            title: pim_menu.item.catalog_volume
+            to: pim_enrich_catalog_volume_index
 
     pim-menu-system-configuration:
         module: pim/menu/item

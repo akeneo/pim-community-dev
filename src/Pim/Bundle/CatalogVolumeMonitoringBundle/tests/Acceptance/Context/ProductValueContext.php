@@ -51,7 +51,7 @@ final class ProductValueContext implements Context
     {
         $volumes = $this->reportContext->getVolumes();
 
-        Assert::eq($numberOfProductValues, $volumes['count_product_values']['value']);
+        Assert::eq($numberOfProductValues, $volumes['count_product_and_product_model_values']['value']);
     }
 
     /**
@@ -73,7 +73,7 @@ final class ProductValueContext implements Context
     {
         $volumes = $this->reportContext->getVolumes();
 
-        Assert::eq($volumes['average_max_product_values']['value']['average'], $number);
+        Assert::eq($volumes['average_max_product_and_product_model_values']['value']['average'], $number);
     }
 
     /**
@@ -85,6 +85,6 @@ final class ProductValueContext implements Context
     {
         $volumes = $this->reportContext->getVolumes();
 
-        Assert::eq($volumes['average_max_product_values']['value']['max'], $number);
+        Assert::eq($volumes['average_max_product_and_product_model_values']['value']['max'], $number);
     }
 }
