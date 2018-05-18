@@ -16,15 +16,15 @@
 - Move `Pim\Component\Catalog\Repository\LocaleRepositoryInterface` to `Akeneo\Channel\Component\Repository\LocaleRepositoryInterface`
 - Move `Pim\Bundle\CatalogBundle\Entity\Locale` to `Akeneo\Channel\Component\Model\Locale`
 - Move `Pim\Component\Catalog\Model\LocaleInterface` to `Akeneo\Channel\Component\Model\LocaleInterface`
-- Move `Akeneo\UserManagement\Bundle\Entity\UserInterface` to `Akeneo\UserManagement\Component\Model\UserInterface`
-- Move `Akeneo\UserManagement\Bundle\Entity\User` to `Akeneo\UserManagement\Component\Model\User`
+- Move `Pim\Bundle\UserBundle\Bundle\Entity\UserInterface` to `Akeneo\UserManagement\Component\Model\UserInterface`
+- Move `Pim\Bundle\UserBundle\Bundle\Entity\User` to `Akeneo\UserManagement\Component\Model\User`
 - Move `Oro\Bundle\UserBundle\Entity\Group` to `Akeneo\UserManagement\Component\Model\Group`
 - Move `Oro\Bundle\UserBundle\Entity\Role` to `Akeneo\UserManagement\Component\Model\Role`
 - Move `Oro\Bundle\UserBundle\Entity\UserManager` to `Akeneo\UserManagement\Bundle\Manager\UserManager`
 - Move `Oro\Bundle\UserBundle\OroUserEvents` to `Akeneo\UserManagement\Component\UserEvents`
-- Move `Akeneo\UserManagement\Bundle\Controller\UserGroupRestController` to `Akeneo\UserManagement\Bundle\Controller\Rest\UserGroupController`
-- Move `Akeneo\UserManagement\Bundle\Controller\SecurityRestController` to `Akeneo\UserManagement\Bundle\Controller\Rest\SecurityController`
-- Move `Akeneo\UserManagement\Bundle\Controller\UserRestController` to `Akeneo\UserManagement\Bundle\Controller\Rest\UserController`
+- Move `Pim\Bundle\UserBundle\Bundle\Controller\UserGroupRestController` to `Akeneo\UserManagement\Bundle\Controller\Rest\UserGroupController`
+- Move `Pim\Bundle\UserBundle\Bundle\Controller\SecurityRestController` to `Akeneo\UserManagement\Bundle\Controller\Rest\SecurityController`
+- Move `Pim\Bundle\UserBundle\Bundle\Controller\UserRestController` to `Akeneo\UserManagement\Bundle\Controller\Rest\UserController`
 - Move all classes from `Oro\Bundle\UserBundle\Controller` to `Akeneo\UserManagement\Bundle\Controller`
 - Move all classes from `Oro\Bundle\UserBundle\EventListener` to `Akeneo\UserManagement\Bundle\EventListener`
 - Move all classes from `Oro\Bundle\UserBundle\Form\EventListener` to `Akeneo\UserManagement\Bundle\Form\Subscriber`

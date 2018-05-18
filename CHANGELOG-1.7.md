@@ -250,7 +250,7 @@ PIM-6901: Fix ACL with a new role when we want to edit users
 
 ### Methods
 
-- Remove `getApi` and `setApi` methods from `Akeneo\UserManagement\Bundle\Entity\UserInterface`
+- Remove `getApi` and `setApi` methods from `Pim\Bundle\UserBundle\Entity\UserInterface`
 
 ### Classes
 
@@ -260,7 +260,7 @@ PIM-6901: Fix ACL with a new role when we want to edit users
 - Remove class `Oro\Bundle\UserBundle\Command\GenerateWSSEHeaderCommand`
 - Remove class `Oro\Bundle\UserBundle\Security\WsseAuthListener`
 - Remove class `Oro\Bundle\UserBundle\Security\WsseUserProvider`
-- Remove Class `Akeneo\UserManagement\Bundle\Security\WsseUserProvider`
+- Remove Class `Pim\Bundle\UserBundle\Security\WsseUserProvider`
 
 # 1.7.0-BETA2 (2017-03-06)
 
@@ -326,7 +326,7 @@ PIM-6901: Fix ACL with a new role when we want to edit users
 - TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product` as it was not used anymore.
 - TIP-667: Introduce a product value factory service to instanciate product values.
 - TIP-652: Redo the import/export screens in new PEF architecture
-- GITHUB-5380: Add `Akeneo\UserManagement\Component\Model\GroupInterface`
+- GITHUB-5380: Add `Pim\Component\User\Model\GroupInterface`
 - GITHUB-4696: Ping the server before updating job and step execution data to prevent "MySQL Server has gone away" issue cheers @qrz-io!
 - GITHUB-5391: Redo association type edit form using backbonejs architecture and internal REST API
 - GITHUB-5455: Redo channel edit form using backbonejs architecture and internal REST API, implement `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover` and move validation logic from controller to newly created remover
@@ -455,12 +455,12 @@ PIM-6901: Fix ACL with a new role when we want to edit users
 - Move `Pim\Component\Catalog\Normalizer\Structured\ProductValuesNormalizer` to `Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Structured\TranslationNormalizer` to `Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer`
 - Move `Pim\Bundle\CommentBundle\Normalizer\Structured\CommentNormalizer` to `Pim\Bundle\CommentBundle\Normalizer\Standard\CommentNormalizer` and remove `Akeneo\Component\Localization\Presenter\PresenterInterface` and `Pim\Bundle\EnrichBundle\Resolver\LocaleResolver` from constructor.
-- Move `Akeneo\UserManagement\Bundle\Entity\Repository\GroupRepository` to `Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository`
-- Move `Akeneo\UserManagement\Bundle\Entity\Repository\RoleRepository` to `Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository`
-- Move `Akeneo\UserManagement\Bundle\Entity\Repository\UserRepository` to `Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\UserRepository`
-- Move `Akeneo\UserManagement\Bundle\Entity\Repository\UserRepositoryInterface` to `Pim\Bundle\Repository\UserRepositoryInterface`
+- Move `Pim\Bundle\UserBundle\Entity\Repository\GroupRepository` to `Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository`
+- Move `Pim\Bundle\UserBundle\Entity\Repository\RoleRepository` to `Pim\Bundle\UserBundle\Doctrine\ORM\Repository\RoleRepository`
+- Move `Pim\Bundle\UserBundle\Entity\Repository\UserRepository` to `Pim\Bundle\UserBundle\Doctrine\ORM\Repository\UserRepository`
+- Move `Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface` to `Pim\Bundle\Repository\UserRepositoryInterface`
 - `Pim\Component\Catalog\Model\ChannelInterface` implements `Akeneo\Component\Localization\Model\TranslatableInterface`
-- Update classes and services to use the interface `Akeneo\UserManagement\Component\Model\GroupInterface` in place of `Oro\Bundle\UserBundle\Entity\Group`
+- Update classes and services to use the interface `Pim\Component\User\Model\GroupInterface` in place of `Oro\Bundle\UserBundle\Entity\Group`
 
 ### Constructors
 
@@ -480,7 +480,7 @@ PIM-6901: Fix ACL with a new role when we want to edit users
 - Change the constructor of `Pim\Bundle\VersioningBundle\Normalizer\Flat\LocaleNormalizer` to add `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
 - Change the constructor of `Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductValueNormalizer` to remove `Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface`
 - Change the constructor of `Pim\Bundle\DashboardBundle\Widget\CompletenessWidget` to add the FQCN `Pim\Bundle\CatalogBundle\Entity\ChannelTranslation` (string)
-- Change the constructor of `Pim\Bundle\EnrichBundle\Form\Type\ChannelType` to add `Akeneo\UserManagement\Bundle\Context\UserContext`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Form\Type\ChannelType` to add `Pim\Bundle\UserBundle\Context\UserContext`
 - Change the constructor of `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductAssociation` to remove `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver`
 - Change the constructor of `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product`. Add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` and `Pim\Component\Connector\ArrayConverter\ArrayConverterInterface`. Remove `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter\ValueConverterRegistryInterface` and `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Controller\DatagridViewController` to keep `Symfony\Bundle\FrameworkBundle\Templating\EngineInterface` as the only argument

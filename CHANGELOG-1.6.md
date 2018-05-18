@@ -380,7 +380,7 @@
 - Replace all parameters in `Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface::getItemsCountInCategory()` by `array $categoryIds`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController`. Remove `Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager`
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\ChannelType`. Add `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface`
-- Change constructor of `Akeneo\UserManagement\Bundle\Form\Subscriber\UserPreferencesSubscriber`. Add `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface`
+- Change constructor of `Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`. Add `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface`
 - Remove deprecated methods `getProductCountByTree` and `getProductsCountInCategory` in `Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\FamilyController`. Add Symfony validator.
 - Change constructor of `Pim\Bundle\NotificationBundle\Controller\NotificationController`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` and add `Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface`.
@@ -482,7 +482,7 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\ProductTemplateType` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\EnrichBundle\Twig\ChannelExtension` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadUserData` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
-- Change constructor of `Akeneo\UserManagement\Bundle\EventSubscriber\UserPreferencesSubscriber` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
+- Change constructor of `Pim\Bundle\UserBundle\EventSubscriber\UserPreferencesSubscriber` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Change constructor of `Pim\Component\Catalog\Repository\ChannelRepositoryInterface` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Rename `Pim\Component\Catalog\Repository\ChannelRepositoryInterface::getChannelChoices` to `Pim\Component\Catalog\Repository\ChannelRepositoryInterface::getLabelsIndexedByCode`
 - Change constructor of `Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository` to inject two more arguments `%akeneo_batch.entity.job_instance.class%` and `%pim_import_export.repository.job_instance.class%`
@@ -534,19 +534,19 @@
     replace `Pim\Bundle\CatalogBundle\Manager\GroupManager` by `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\VariantGroupController`
     replace `Pim\Bundle\CatalogBundle\Manager\GroupManager` by `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
-    add `Akeneo\UserManagement\Bundle\Context\UserContext`
+    add `Pim\Bundle\UserBundle\Context\UserContext`
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`
     replace `Pim\Bundle\CatalogBundle\Manager\CategoryManager` by `Pim\Component\Catalog\Repository\CategoryRepositoryInterface`
     remove the parameter `$categoryClass`
     remove method `getTrees()`
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType`
     replace `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
-    remove `Akeneo\UserManagement\Bundle\Context\UserContext`
+    remove `Pim\Bundle\UserBundle\Context\UserContext`
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\ChannelType`
     replace `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\ProductEditType`
     replace `Pim\Component\Catalog\Repository\FamilyRepositoryInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
-- Change constructor of `Akeneo\UserManagement\Bundle\Form\Subscriber\UserPreferencesSubscriber`
+- Change constructor of `Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber`
     replace `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface` by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` remove `Pim\Bundle\CatalogBundle\Manager\GroupManager`
 - Remove interface `Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface` (replace by `Pim\Component\Enrich\Repository\TranslatedLabelsProviderInterface`)
