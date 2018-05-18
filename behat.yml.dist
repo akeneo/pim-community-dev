@@ -1,15 +1,17 @@
 legacy:
     suites:
-        TEST-enterprise-pim:
+        all:
             paths:
-                - '%paths.base%/tests/legacy/features'
-                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/legacy/features'
+                - tests/legacy/features
+                - vendor/akeneo/pim-community-dev/tests/legacy/features
+            filters:
+                tags: "~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@ce"
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
                 - Context\EnterpriseFeatureContext:
                     - 'Context\EnterpriseFeatureContext'
                     -
-                        base_url: 'http://akeneo-pim-enterprise-behat.local/'
+                        base_url: 'http://127.0.0.1/'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024
@@ -92,7 +94,7 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
-                    - 'http://akeneo-pim-enterprise-behat.local/'
+                    - 'http://127.0.0.1/'
                 - Pim\Behat\Context\Storage\ProductStorage:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -122,8 +124,9 @@ legacy:
                 symfony2:
                     symfony2: ~
                 selenium2:
-                    selenium2: ~
-            base_url: 'http://akeneo-pim-enterprise-behat.local/'
+                    selenium2:
+                        wd_host: 'http://127.0.0.1:4444/wd/hub'
+            base_url: 'http://127.0.0.1/'
             files_path: 'tests/legacy/features/Context/fixtures/'
         Behat\Symfony2Extension:
             kernel:
@@ -134,16 +137,21 @@ legacy:
                 page: [Context\Page]
             factory:
                 page_parameters:
-                    base_url: 'http://akeneo-pim-enterprise-behat.local/'
+                    base_url: 'http://127.0.0.1/'
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
         Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
+
+    formatters:
+        pretty: true
+        pim:
+            output_path: /tmp/pod/
 
 acceptance:
     suites:
         pim:
             paths:
-                - '%paths.base%/tests/features/pim'
-                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/pim'
+                - 'tests/features/pim'
+                - 'vendor/akeneo/pim-community-dev/tests/features/pim'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
