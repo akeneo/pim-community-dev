@@ -180,6 +180,17 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
         return $qb->getQuery()->execute();
     }
 
+    public function findProductModelsForFamilyVariant(FamilyVariantInterface $familyVariant): array
+    {
+        $qb = $this
+            ->createQueryBuilder('pm')
+            ->andWhere('pm.familyVariant = :familyVariant')
+            ->setParameter('familyVariant', $familyVariant->getId())
+        ;
+
+        return $qb->getQuery()->execute();
+    }
+
     /**
      * {@inheritdoc}
      */

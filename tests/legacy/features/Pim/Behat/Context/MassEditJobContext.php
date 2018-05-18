@@ -15,7 +15,7 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
 
     private const USERNAME_FOR_JOB_LAUNCH = 'admin';
 
-    private const MASS_CHANGE_PARENT_JOB_NAME = 'change_product_parent';
+    private const MASS_CHANGE_PARENT_JOB_NAME = 'change_parent_product';
 
     private $productRepository;
 

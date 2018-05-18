@@ -13,6 +13,7 @@ use Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
@@ -347,10 +348,7 @@ class ProductModelController
         $options = $request->query->get('options');
         $familyVariantCode = $options['family_variant'];
         $page = intval($options['page']) - 1;
-        $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode);
-        if (null === $familyVariant) {
-            throw new \InvalidArgumentException(sprintf('Unknown family variant code "%s"', $familyVariantCode));
-        }
+        $familyVariant = $this->getFamilyVariant($familyVariantCode);
 
         $productModels = $this->productModelRepository->searchLastLevelByCode(
             $familyVariant,
@@ -359,12 +357,18 @@ class ProductModelController
             $page
         );
 
-        $normalizedProductModels = [];
-        foreach ($productModels as $productModel) {
-            $normalizedProductModels[$productModel->getCode()] = $this->normalizeProductModel(
-                $productModel
-            );
-        }
+        $normalizedProductModels = $this->buildNormalizedProductModeldsList($productModels);
+
+        return new JsonResponse($normalizedProductModels);
+    }
+
+    public function listFamilyVariantProductModels(Request $request)
+    {
+        $options = $request->query->get('options');
+        $familyVariant = $this->getFamilyVariant($options['family_variant']);
+
+        $productModels = $this->productModelRepository->findProductModelsForFamilyVariant($familyVariant);
+        $normalizedProductModels = $this->buildNormalizedProductModeldsList($productModels);
 
         return new JsonResponse($normalizedProductModels);
     }
@@ -389,6 +393,28 @@ class ProductModelController
         $this->productModelRemover->remove($productModel);
 
         return new JsonResponse();
+    }
+
+    private function getFamilyVariant(string $familyVariantCode): FamilyVariantInterface
+    {
+        $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode);
+        if (null === $familyVariant) {
+            throw new \InvalidArgumentException(sprintf('Unknown family variant code "%s"', $familyVariantCode));
+        }
+
+        return $familyVariant;
+    }
+
+    private function buildNormalizedProductModeldsList(array $productModels): array
+    {
+        $normalizedProductModels = [];
+        foreach ($productModels as $productModel) {
+            $normalizedProductModels[$productModel->getCode()] = $this->normalizeProductModel(
+                $productModel
+            );
+        }
+
+        return $normalizedProductModels;
     }
 
     /**

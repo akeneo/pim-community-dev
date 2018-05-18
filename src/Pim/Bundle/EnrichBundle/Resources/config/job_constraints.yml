@@ -21,7 +21,7 @@ services:
                 - 'edit_common_attributes'
                 - 'add_to_existing_product_model'
                 - 'delete_products_and_product_models'
-                - 'change_product_parent'
+                - 'change_parent_product'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 

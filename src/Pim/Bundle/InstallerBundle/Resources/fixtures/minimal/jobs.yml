@@ -120,8 +120,8 @@ jobs:
         alias:     compute_family_variant_structure_changes
         label:     Compute variant structure changes
         type:      compute_family_variant_structure_changes
-    change_product_parent:
+    change_parent_product:
         connector: Akeneo Mass Edit Connector
-        alias:     change_product_parent
+        alias:     change_parent_product
         label:     Change product parent
         type:      mass_edit

@@ -1098,6 +1098,10 @@ pim_enrich:
                     label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|] 1, Inf [Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
                     description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
                     validate: Please add association before going to the next step
+                change_parent_product_model:
+                    label: Change the parent product model
+                    label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
         family:
             title: Families bulk action
             confirm: "{1}You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."

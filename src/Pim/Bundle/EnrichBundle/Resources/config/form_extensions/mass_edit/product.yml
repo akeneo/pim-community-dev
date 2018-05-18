@@ -175,3 +175,18 @@ extensions:
             jobInstanceCode: add_association
             icon: icon-association
             illustration: association
+
+    pim-mass-product-edit-configure-change-parent-product-model:
+        module: pim/mass-edit-form/product/change-parent-product
+        parent: pim-mass-product-edit
+        aclResourceId: pim_enrich_product_edit_attributes #TODO : voir avec Delphine si droit spécifique
+        position: 210
+        config:
+            title: pim_enrich.mass_edit.product.title
+            label: pim_enrich.mass_edit.product.operation.change_parent_product_model.label
+            labelCount: pim_enrich.mass_edit.product.operation.change_parent_product_model.label_count
+            description: pim_enrich.mass_edit.product.operation.change_parent_product_model.description
+            code: change_parent_product
+            jobInstanceCode: change_parent_product
+            icon: icon-model
+            illustration: product-models
