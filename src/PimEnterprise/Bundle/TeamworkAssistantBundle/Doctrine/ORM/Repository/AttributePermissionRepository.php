@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository;
 
+use Akeneo\UserManagement\Component\Model\Group;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Akeneo\UserManagement\Component\Model\Group;
 use PimEnterprise\Component\TeamworkAssistant\Repository\AttributePermissionRepositoryInterface;
 
 /**

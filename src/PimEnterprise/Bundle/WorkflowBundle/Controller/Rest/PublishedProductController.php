@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;

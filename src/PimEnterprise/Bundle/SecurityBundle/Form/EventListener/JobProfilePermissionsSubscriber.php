@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Form\EventListener;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PimEnterprise\Bundle\SecurityBundle\Form\Type\JobProfilePermissionsType;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

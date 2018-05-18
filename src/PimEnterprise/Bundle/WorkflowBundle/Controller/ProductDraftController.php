@@ -13,12 +13,12 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Pim\Bundle\EnrichBundle\Flash\Message;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;

@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Doctrine\Common\Collections\Collection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\Common\Collections\Collection;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

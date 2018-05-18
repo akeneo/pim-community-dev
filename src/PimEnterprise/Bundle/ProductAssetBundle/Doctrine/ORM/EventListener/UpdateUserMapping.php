@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\EventListener;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 /**

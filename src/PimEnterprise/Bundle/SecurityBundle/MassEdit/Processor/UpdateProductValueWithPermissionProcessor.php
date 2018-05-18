@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor;
 
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
-use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor as BaseProcessor;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
+use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor as BaseProcessor;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
