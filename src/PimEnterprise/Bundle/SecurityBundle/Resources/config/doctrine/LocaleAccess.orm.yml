@@ -32,7 +32,7 @@ PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess:
                     onDelete: CASCADE
                     nullable: false
         userGroup:
-            targetEntity: Pim\Component\User\Model\Group
+            targetEntity: Akeneo\UserManagement\Component\Model\Group
             joinColumns:
                 user_group_id:
                     referencedColumnName: id

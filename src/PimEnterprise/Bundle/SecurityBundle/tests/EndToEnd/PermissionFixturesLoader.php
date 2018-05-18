@@ -9,7 +9,7 @@ use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\User\Model\Group;
+use Akeneo\UserManagement\Component\Model\Group;
 use PimEnterprise\Component\Security\Attributes;
 use Psr\Container\ContainerInterface;
 

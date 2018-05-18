@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Repository;
 
-use Pim\Component\User\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

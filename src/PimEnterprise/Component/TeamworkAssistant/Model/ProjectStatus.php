@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Model;
 
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @author Soulet Olivier <olivier.soulet@akeneo.com>

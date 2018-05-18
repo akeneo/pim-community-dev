@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
 use PimEnterprise\Component\Security\Attributes;

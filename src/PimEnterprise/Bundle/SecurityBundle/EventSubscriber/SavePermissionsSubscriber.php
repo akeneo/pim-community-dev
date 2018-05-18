@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\JobInstanceEvents;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\User\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

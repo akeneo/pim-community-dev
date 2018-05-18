@@ -188,7 +188,7 @@
 - Move `PimEnterprise\Component\ProductAsset\Normalizer\Structured\VariationNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\Standard\VariationNormalizer`
 - Move `Akeneo\Bundle\RuleEngineBundle\Normalizer\RuleNormalizer` to `Akeneo\Bundle\RuleEngineBundle\Normalizer\Standard\RuleNormalizer`
 - Replace `Pim\Component\Catalog\Query\Filter\FieldFilterInterface` by `PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface` in `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\AssetCategoryAccessSubscriber`
-- Update classes and services to use the interface `Pim\Component\User\Model\GroupInterface`in place of `Oro\Bundle\UserBundle\Entity\Group`
+- Update classes and services to use the interface `Akeneo\UserManagement\Component\Model\GroupInterface`in place of `Oro\Bundle\UserBundle\Entity\Group`
 
 ### Methods
 

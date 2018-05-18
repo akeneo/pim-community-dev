@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\User\Model\User;
+use Akeneo\UserManagement\Component\Model\User;
 
 /**
  * Data collector to return the category Access count

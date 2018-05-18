@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\User\Model\Group;
-use Pim\Component\User\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**

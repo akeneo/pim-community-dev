@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectDueDateReminderNotifier;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectNotificationFactory;

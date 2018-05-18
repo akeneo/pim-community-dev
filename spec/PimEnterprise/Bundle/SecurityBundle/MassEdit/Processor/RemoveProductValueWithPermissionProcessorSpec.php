@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

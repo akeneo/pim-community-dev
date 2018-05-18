@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Security\Repository;
 
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * Interface for access repository

@@ -15,7 +15,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\EventListener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 /**

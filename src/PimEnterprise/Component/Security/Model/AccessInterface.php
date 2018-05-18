@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Security\Model;
 
-use Pim\Component\User\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 
 /**
  * Base interface for all access entities

@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Locale;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 
 class AssetContextConfiguratorSpec extends ObjectBehavior

@@ -17,7 +17,7 @@ PimEnterprise\Component\TeamworkAssistant\Model\ProjectStatus:
             nullable: true
     manyToOne:
         user:
-            targetEntity: Pim\Component\User\Model\UserInterface
+            targetEntity: Akeneo\UserManagement\Component\Model\UserInterface
             joinColumns:
                 user_id:
                     nullable: false
