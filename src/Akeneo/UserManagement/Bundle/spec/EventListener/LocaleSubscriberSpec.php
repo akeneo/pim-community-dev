@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\UserBundle\EventListener;
+namespace spec\Akeneo\UserManagement\Bundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;

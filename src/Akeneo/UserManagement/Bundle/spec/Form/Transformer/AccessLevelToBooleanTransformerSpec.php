@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\UserBundle\Form\Transformer;
+namespace spec\Akeneo\UserManagement\Bundle\Form\Transformer;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use PhpSpec\ObjectBehavior;

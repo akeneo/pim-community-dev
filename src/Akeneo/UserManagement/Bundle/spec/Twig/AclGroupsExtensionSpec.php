@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\UserBundle\Twig;
+namespace spec\Akeneo\UserManagement\Bundle\Twig;
 
 use PhpSpec\ObjectBehavior;
 

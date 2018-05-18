@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\UserBundle\Form\Type;
+namespace spec\Akeneo\UserManagement\Bundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Form\Transformer\AccessLevelToBooleanTransformer;
