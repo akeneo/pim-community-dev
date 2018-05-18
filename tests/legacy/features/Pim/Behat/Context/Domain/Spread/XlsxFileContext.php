@@ -34,6 +34,27 @@ class XlsxFileContext extends PimContext
     }
 
     /**
+     * @param int|null  $number
+     * @param string    $code
+     * @param TableNode $expectedLines
+     *
+     * @Then /^exported xlsx file( \d+)? of "([^"]*)" should contain the lines:$/
+     */
+    public function exportedXlsxFileOfShouldContainTheLines($number = null, $code, TableNode $expectedLines)
+    {
+        $number = '' === $number ? null : trim($number);
+        $path = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
+
+        $reader = ReaderFactory::create(Type::XLSX);
+        $reader->open($path);
+        $sheet = current(iterator_to_array($reader->getSheetIterator()));
+        $actualLines = iterator_to_array($sheet->getRowIterator());
+        $reader->close();
+
+        $this->compareLines(array_values($expectedLines->getRows()), array_values($actualLines), $path);
+    }
+
+    /**
      * @param string    $code
      * @param TableNode $expectedLines
      *
@@ -205,6 +226,44 @@ class XlsxFileContext extends PimContext
     }
 
     /**
+     * @param array  $expectedLines
+     * @param array  $actualLines
+     * @param string $path
+     *
+     * @throws UnsupportedTypeException
+     * @throws \Exception
+     */
+    protected function compareLines(array $expectedLines, array $actualLines, $path)
+    {
+        $expectedCount = count($expectedLines);
+        $actualCount = count($actualLines);
+
+        $headerDiff = array_diff($actualLines[0], $expectedLines[0]);
+        if (0 !== count(array_diff($actualLines[0], $expectedLines[0]))) {
+            throw new \Exception(
+                sprintf(
+                    "Header in the file %s does not match \n expected one: %s \n missing headers : %s",
+                    $path,
+                    implode(' | ', $actualLines[0]),
+                    implode(' | ', $headerDiff)
+                )
+            );
+        }
+
+        unset($actualLines[0]);
+        unset($expectedLines[0]);
+
+
+        foreach ($expectedLines as $expectedLine) {
+            if (false === $this->lineExists($expectedLine, $actualLines)) {
+                throw new \Exception(
+                    sprintf('Could not find a line containing "%s" in %s', implode(' | ', $expectedLine), $path)
+                );
+            }
+        }
+    }
+
+    /**
      * @param array $expectedHeaders
      * @param array $actualHeaders
      */
@@ -215,5 +274,27 @@ class XlsxFileContext extends PimContext
             $actualHeaders[0],
             sprintf('Expecting to see headers order like %d , found %d', $expectedHeaders[0], $actualHeaders[0])
         );
+    }
+
+    /**
+     * Test if a line exists in an array of lines
+     *
+     * @param $searchedLine
+     * @param $actualLines
+     * @return bool
+     */
+    private function lineExists($searchedLine, $actualLines): bool
+    {
+        $clean = array_map(function (string $value){
+            return trim($value, '"');
+        }, $searchedLine);
+
+        foreach ($actualLines as $actualLine) {
+            if (count($actualLine) === count($clean) && $actualLine == $clean) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
