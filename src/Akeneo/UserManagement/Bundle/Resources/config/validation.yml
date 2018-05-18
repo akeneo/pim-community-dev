@@ -1,6 +1,6 @@
-Pim\Component\User\Model\User:
+Akeneo\UserManagement\Component\Model\User:
     constraints:
-        - Pim\Bundle\UserBundle\Validator\Constraints\UserPreferences:
+        - Akeneo\UserManagement\Bundle\Validator\Constraints\UserPreferences:
             groups: [User]
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
@@ -52,7 +52,7 @@ Pim\Component\User\Model\User:
             - Length:
                 max: 20
 
-Pim\Component\User\Model\Role:
+Akeneo\UserManagement\Component\Model\Role:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
     properties:
@@ -61,7 +61,7 @@ Pim\Component\User\Model\Role:
             - Length:
                 max:        25
 
-Pim\Component\User\Model\Group:
+Akeneo\UserManagement\Component\Model\Group:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
     properties:

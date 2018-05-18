@@ -80,7 +80,7 @@ class AjaxEntityTypeTest extends TestCase
                     }
                 )
             );
-        $this->userContext = $this->getMockBuilder('Pim\Bundle\UserBundle\Context\UserContext')
+        $this->userContext = $this->getMockBuilder('Akeneo\UserManagement\Bundle\Context\UserContext')
             ->disableOriginalConstructor()
             ->getMock();
         $this->userContext->expects($this->any())

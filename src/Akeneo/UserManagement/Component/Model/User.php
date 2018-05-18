@@ -209,7 +209,7 @@ class User implements UserInterface
 
     public function getClass()
     {
-        return 'Pim\Component\User\Model\UserInterface';
+        return 'Akeneo\UserManagement\Component\Model\UserInterface';
     }
 
     /**
