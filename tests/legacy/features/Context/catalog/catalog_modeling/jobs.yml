@@ -295,6 +295,24 @@ jobs:
                     scope: ecommerce
                     locales:
                         - en_US
+    xlsx_summer_2016_models_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_model_export
+        label:     XLSX summer 2016 models for ecommerce
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/product_models.xlsx
+            filters:
+                data:
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value: ['master']
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - en_US
     compute_product_models_descendants:
         connector: internal
         alias:     compute_product_models_descendants
