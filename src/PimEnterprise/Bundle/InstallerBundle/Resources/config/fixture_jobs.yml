@@ -75,7 +75,7 @@ jobs:
             filePath: assets.csv
 
     fixtures_asset_channel_configurations_yml:
-        order:     110
+        order:     60
         connector: Data fixtures
         alias:     fixtures_asset_channel_configurations_yml
         label:     assets data fixtures

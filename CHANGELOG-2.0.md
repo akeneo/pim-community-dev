@@ -1,6 +1,12 @@
 # 2.0.x
 
+## Bug fixes
+
 - PIM-7337: Fix the focus on asset field when clic on completeness panel
+
+## Improvements
+
+- PIM-7339: Allow to mass upload assets during install process
 
 # 2.0.24 (2018-05-16)
 
