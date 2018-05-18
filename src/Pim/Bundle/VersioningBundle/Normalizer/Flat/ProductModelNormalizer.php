@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
+use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\scalar;
@@ -40,6 +41,7 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
         $results[self::FIELD_FAMILY_VARIANT] = null === $familyVariant ? null : $familyVariant->getCode();
         $results[self::FIELD_CODE] = $object->getCode();
         $results[self::FIELD_CATEGORY] = implode(self::ITEM_SEPARATOR, $object->getCategoryCodes());
+        $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
         $results = array_replace($results, $this->normalizeValues($object, $format, $context));
 
         return $results;
@@ -96,5 +98,41 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
             ],
             $context
         );
+    }
+
+    /**
+     * Normalize associations
+     *
+     * @param AssociationInterface[] $associations
+     *
+     * @return array
+     */
+    protected function normalizeAssociations($associations = [])
+    {
+        $results = [];
+        foreach ($associations as $association) {
+            $columnPrefix = $association->getAssociationType()->getCode();
+
+            $groups = [];
+            foreach ($association->getGroups() as $group) {
+                $groups[] = $group->getCode();
+            }
+
+            $products = [];
+            foreach ($association->getProducts() as $product) {
+                $products[] = $product->getIdentifier();
+            }
+
+            $productModels = [];
+            foreach ($association->getProductModels() as $productModel) {
+                $productModels[] = $productModel->getCode();
+            }
+
+            $results[$columnPrefix . '-groups'] = implode(',', $groups);
+            $results[$columnPrefix . '-products'] = implode(',', $products);
+            $results[$columnPrefix . '-product_models'] = implode(',', $productModels);
+        }
+
+        return $results;
     }
 }
