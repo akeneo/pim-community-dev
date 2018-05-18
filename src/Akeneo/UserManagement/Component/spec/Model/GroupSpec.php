@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\User\Model;
+namespace spec\Akeneo\UserManagement\Component\Model;
 
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;

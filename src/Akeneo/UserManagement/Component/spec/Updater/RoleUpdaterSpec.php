@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\User\Updater;
+namespace spec\Akeneo\UserManagement\Component\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
