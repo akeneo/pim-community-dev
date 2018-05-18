@@ -4,10 +4,10 @@ namespace Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Model\UserInterface;
-use Pim\Component\User\Repository\GroupRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
 
 /**
  * User group repository

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\Updater;
+namespace Akeneo\UserManagement\Component\Updater;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
@@ -12,9 +12,9 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * Updates an user

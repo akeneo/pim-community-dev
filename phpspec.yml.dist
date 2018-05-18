@@ -126,8 +126,8 @@ suites:
         spec_path: src/Pim/Component/Catalog
         src_path: src/Pim/Component/Catalog
     User:
-        namespace: Pim\Component\User
-        psr4_prefix: Pim\Component\User
+        namespace: Akeneo\UserManagement\Component
+        psr4_prefix: Akeneo\UserManagement\Component
         spec_path: src/Pim/Component/User
         src_path: src/Pim/Component/User
     CatalogVolumeMonitoring:

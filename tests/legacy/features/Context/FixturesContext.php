@@ -43,8 +43,8 @@ use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModel
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\User;
+use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\User;
 
 /**
  * A context for creating entities

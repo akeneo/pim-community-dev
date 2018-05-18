@@ -16,12 +16,12 @@
 - Move `Pim\Component\Catalog\Repository\LocaleRepositoryInterface` to `Akeneo\Channel\Component\Repository\LocaleRepositoryInterface`
 - Move `Pim\Bundle\CatalogBundle\Entity\Locale` to `Akeneo\Channel\Component\Model\Locale`
 - Move `Pim\Component\Catalog\Model\LocaleInterface` to `Akeneo\Channel\Component\Model\LocaleInterface`
-- Move `Akeneo\UserManagement\Bundle\Entity\UserInterface` to `Pim\Component\User\Model\UserInterface`
-- Move `Akeneo\UserManagement\Bundle\Entity\User` to `Pim\Component\User\Model\User`
-- Move `Oro\Bundle\UserBundle\Entity\Group` to `Pim\Component\User\Model\Group`
-- Move `Oro\Bundle\UserBundle\Entity\Role` to `Pim\Component\User\Model\Role`
+- Move `Akeneo\UserManagement\Bundle\Entity\UserInterface` to `Akeneo\UserManagement\Component\Model\UserInterface`
+- Move `Akeneo\UserManagement\Bundle\Entity\User` to `Akeneo\UserManagement\Component\Model\User`
+- Move `Oro\Bundle\UserBundle\Entity\Group` to `Akeneo\UserManagement\Component\Model\Group`
+- Move `Oro\Bundle\UserBundle\Entity\Role` to `Akeneo\UserManagement\Component\Model\Role`
 - Move `Oro\Bundle\UserBundle\Entity\UserManager` to `Akeneo\UserManagement\Bundle\Manager\UserManager`
-- Move `Oro\Bundle\UserBundle\OroUserEvents` to `Pim\Component\User\UserEvents`
+- Move `Oro\Bundle\UserBundle\OroUserEvents` to `Akeneo\UserManagement\Component\UserEvents`
 - Move `Akeneo\UserManagement\Bundle\Controller\UserGroupRestController` to `Akeneo\UserManagement\Bundle\Controller\Rest\UserGroupController`
 - Move `Akeneo\UserManagement\Bundle\Controller\SecurityRestController` to `Akeneo\UserManagement\Bundle\Controller\Rest\SecurityController`
 - Move `Akeneo\UserManagement\Bundle\Controller\UserRestController` to `Akeneo\UserManagement\Bundle\Controller\Rest\UserController`
@@ -29,7 +29,7 @@
 - Move all classes from `Oro\Bundle\UserBundle\EventListener` to `Akeneo\UserManagement\Bundle\EventListener`
 - Move all classes from `Oro\Bundle\UserBundle\Form\EventListener` to `Akeneo\UserManagement\Bundle\Form\Subscriber`
 - Move all classes from `Oro\Bundle\UserBundle\Entity\Repository` to `Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository`
-- Move `Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface` to `Pim\Component\User\EntityUploadedImageInterface`
+- Move `Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface` to `Akeneo\UserManagement\Component\EntityUploadedImageInterface`
 - Move `Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber` to `Akeneo\UserManagement\Bundle\EventSubscriber\UploadedImageSubscriber`
 - Move `Oro\Bundle\UserBundle\Form\Handler\AbstractUserHandler` to `Akeneo\UserManagement\Bundle\Form\Handler\AbstractUserHandler`
 - Move `Oro\Bundle\UserBundle\Form\Handler\GroupHandler` to `Akeneo\UserManagement\Bundle\Form\Handler\GroupHandler`

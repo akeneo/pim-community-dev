@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
-use Pim\Component\User\Model\User;
+use Akeneo\UserManagement\Component\Model\User;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 

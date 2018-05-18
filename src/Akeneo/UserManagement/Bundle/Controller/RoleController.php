@@ -3,7 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\User\Model\Role;
+use Akeneo\UserManagement\Component\Model\Role;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;

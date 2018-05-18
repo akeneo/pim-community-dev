@@ -105,7 +105,7 @@ Pim\Component\User\Model\User:
             length: 30
     manyToMany:
         roles:
-            targetEntity: Pim\Component\User\Model\Role
+            targetEntity: Akeneo\UserManagement\Component\Model\Role
             joinTable:
                 name: oro_user_access_role
                 joinColumns:
@@ -117,7 +117,7 @@ Pim\Component\User\Model\User:
                         referencedColumnName: id
                         onDelete: CASCADE
         groups:
-            targetEntity: Pim\Component\User\Model\Group
+            targetEntity: Akeneo\UserManagement\Component\Model\Group
             joinTable:
                 name: oro_user_access_group
                 joinColumns:

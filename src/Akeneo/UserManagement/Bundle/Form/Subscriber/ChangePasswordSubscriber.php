@@ -2,7 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Subscriber;
 
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

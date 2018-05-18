@@ -3,7 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class LoginSubscriber

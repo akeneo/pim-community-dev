@@ -16,7 +16,7 @@ Pim\Component\User\Model\Group:
             lenght: 30
     manyToMany:
         roles:
-            targetEntity: Pim\Component\User\Model\Role
+            targetEntity: Akeneo\UserManagement\Component\Model\Role
             joinTable:
                 name: oro_user_access_group_role
                 joinColumns:

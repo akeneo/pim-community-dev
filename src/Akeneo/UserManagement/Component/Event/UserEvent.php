@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\Event;
+namespace Akeneo\UserManagement\Component\Event;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 

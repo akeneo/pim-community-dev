@@ -10,7 +10,7 @@ datagrid:
                     - g.id
                     - g.name
                 from:
-                    - { table: Pim\Component\User\Model\Group, alias: g }
+                    - { table: Akeneo\UserManagement\Component\Model\Group, alias: g }
                 where:
                     and:
                         - g.name <> '%pim_user.entity.user.class%::GROUP_DEFAULT'

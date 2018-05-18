@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\Model;
+namespace Akeneo\UserManagement\Component\Model;
 
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\ChannelInterface;
@@ -10,7 +10,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**

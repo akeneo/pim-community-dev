@@ -3,8 +3,8 @@
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

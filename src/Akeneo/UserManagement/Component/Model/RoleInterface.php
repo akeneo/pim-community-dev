@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\Model;
+namespace Akeneo\UserManagement\Component\Model;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

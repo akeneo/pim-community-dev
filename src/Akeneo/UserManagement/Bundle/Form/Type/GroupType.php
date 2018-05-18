@@ -3,8 +3,8 @@
 namespace Akeneo\UserManagement\Bundle\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType;
-use Pim\Component\User\Model\Group;
-use Pim\Component\User\Model\User;
+use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

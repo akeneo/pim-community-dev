@@ -2,9 +2,9 @@
 
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\UserEvents;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\UserEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

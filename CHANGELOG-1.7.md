@@ -326,7 +326,7 @@ PIM-6901: Fix ACL with a new role when we want to edit users
 - TIP-662: Removed the WITH_REQUIRED_IDENTIFIER option from `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product` as it was not used anymore.
 - TIP-667: Introduce a product value factory service to instanciate product values.
 - TIP-652: Redo the import/export screens in new PEF architecture
-- GITHUB-5380: Add `Pim\Component\User\Model\GroupInterface`
+- GITHUB-5380: Add `Akeneo\UserManagement\Component\Model\GroupInterface`
 - GITHUB-4696: Ping the server before updating job and step execution data to prevent "MySQL Server has gone away" issue cheers @qrz-io!
 - GITHUB-5391: Redo association type edit form using backbonejs architecture and internal REST API
 - GITHUB-5455: Redo channel edit form using backbonejs architecture and internal REST API, implement `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover` and move validation logic from controller to newly created remover
@@ -460,7 +460,7 @@ PIM-6901: Fix ACL with a new role when we want to edit users
 - Move `Akeneo\UserManagement\Bundle\Entity\Repository\UserRepository` to `Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\UserRepository`
 - Move `Akeneo\UserManagement\Bundle\Entity\Repository\UserRepositoryInterface` to `Pim\Bundle\Repository\UserRepositoryInterface`
 - `Pim\Component\Catalog\Model\ChannelInterface` implements `Akeneo\Component\Localization\Model\TranslatableInterface`
-- Update classes and services to use the interface `Pim\Component\User\Model\GroupInterface` in place of `Oro\Bundle\UserBundle\Entity\Group`
+- Update classes and services to use the interface `Akeneo\UserManagement\Component\Model\GroupInterface` in place of `Oro\Bundle\UserBundle\Entity\Group`
 
 ### Constructors
 

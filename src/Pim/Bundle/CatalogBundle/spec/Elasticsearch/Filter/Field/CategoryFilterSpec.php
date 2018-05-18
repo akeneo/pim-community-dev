@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\User\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 
 class CategoryFilterSpec extends ObjectBehavior
 {

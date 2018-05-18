@@ -1,13 +1,13 @@
 <?php
 
-namespace Pim\Component\User\Updater;
+namespace Akeneo\UserManagement\Component\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Pim\Component\User\Model\RoleInterface;
-use Pim\Component\User\Model\User;
+use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Akeneo\UserManagement\Component\Model\User;
 
 /**
  * Updates a role

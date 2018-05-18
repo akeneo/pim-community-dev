@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\UserBundle\Security;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Repository\UserRepositoryInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserProviderSpec extends ObjectBehavior

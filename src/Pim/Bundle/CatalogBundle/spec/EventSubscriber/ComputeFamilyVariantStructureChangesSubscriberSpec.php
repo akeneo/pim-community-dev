@@ -7,7 +7,7 @@ use Akeneo\Tool\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;

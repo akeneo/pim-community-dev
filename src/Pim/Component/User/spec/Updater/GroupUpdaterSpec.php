@@ -4,9 +4,9 @@ namespace spec\Pim\Component\User\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Updater\GroupUpdater;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Updater\GroupUpdater;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

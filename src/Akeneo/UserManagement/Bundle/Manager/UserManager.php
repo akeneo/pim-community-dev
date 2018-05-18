@@ -5,9 +5,9 @@ namespace Akeneo\UserManagement\Bundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -202,7 +202,7 @@ class UserManager implements UserProviderInterface
 
         if (!$user instanceof SecurityUserInterface) {
             throw new UnsupportedUserException(
-                sprintf('Expected an instance of Pim\Component\User\Model\UserInterface, but got "%s"', get_class($user))
+                sprintf('Expected an instance of Akeneo\UserManagement\Component\Model\UserInterface, but got "%s"', get_class($user))
             );
         }
 

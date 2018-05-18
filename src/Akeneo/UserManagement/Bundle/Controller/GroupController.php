@@ -3,8 +3,8 @@
 namespace Akeneo\UserManagement\Bundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\User\Model\Group;
-use Pim\Component\User\UserEvents;
+use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\UserEvents;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;

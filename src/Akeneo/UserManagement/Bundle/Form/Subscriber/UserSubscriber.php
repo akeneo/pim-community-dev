@@ -2,7 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Subscriber;
 
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormEvent;
@@ -85,7 +85,7 @@ class UserSubscriber implements EventSubscriberInterface
     /**
      * Returns true if passed user is currently authenticated
      *
-     * @param  \Pim\Component\User\Model\UserInterface $user
+     * @param  \Akeneo\UserManagement\Component\Model\UserInterface $user
      *
      * @return bool
      */

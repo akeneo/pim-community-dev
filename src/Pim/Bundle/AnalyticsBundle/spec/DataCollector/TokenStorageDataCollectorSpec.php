@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\AnalyticsBundle\DataCollector\TokenStorageDataCollector;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 

@@ -8,7 +8,7 @@ use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Prophecy\Argument;
 
 class ConfigureProductFiltersListenerSpec extends ObjectBehavior

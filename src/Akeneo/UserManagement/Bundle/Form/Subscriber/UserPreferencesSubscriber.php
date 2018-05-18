@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -136,7 +136,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
 
     /**
      * @param FormInterface                           $form
-     * @param \Pim\Component\User\Model\UserInterface $user
+     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
      */
     protected function updateUiLocale(FormInterface $form, UserInterface $user)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User;
+namespace Akeneo\UserManagement\Component;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

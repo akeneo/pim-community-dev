@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\tests\integration\Updater;
+namespace Akeneo\UserManagement\Component\tests\integration\Updater;
 
 use Akeneo\Test\Integration\TestCase;
 

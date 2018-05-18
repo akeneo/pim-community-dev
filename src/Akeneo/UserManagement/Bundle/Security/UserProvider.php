@@ -3,7 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\Security;
 
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\User\Repository\UserRepositoryInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;

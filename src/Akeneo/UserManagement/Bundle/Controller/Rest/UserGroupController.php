@@ -3,7 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
-use Pim\Component\User\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

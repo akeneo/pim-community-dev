@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\Model;
+namespace Akeneo\UserManagement\Component\Model;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
@@ -9,7 +9,7 @@ use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Component\User\EntityUploadedImageInterface;
+use Akeneo\UserManagement\Component\EntityUploadedImageInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 

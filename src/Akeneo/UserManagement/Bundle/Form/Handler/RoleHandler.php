@@ -3,8 +3,8 @@
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\User\Model\Role;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -71,7 +71,7 @@ class RoleHandler
      * "Success" form handler
      *
      * @param Role                                      $entity
-     * @param \Pim\Component\User\Model\UserInterface[] $appendUsers
+     * @param \Akeneo\UserManagement\Component\Model\UserInterface[] $appendUsers
      * @param UserInterface[]                           $removeUsers
      */
     protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers)

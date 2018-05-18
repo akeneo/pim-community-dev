@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Component\User\Normalizer;
+namespace Akeneo\UserManagement\Component\Normalizer;
 
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

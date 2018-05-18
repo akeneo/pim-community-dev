@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Component\User\Model;
 
-use Pim\Component\User\Model\Group;
+use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\Role;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\Role;
 use Prophecy\Argument;
 
 class GroupSpec extends ObjectBehavior

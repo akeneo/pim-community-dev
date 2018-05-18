@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\User\Model;
+namespace Akeneo\UserManagement\Component\Model;
 
 use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
 

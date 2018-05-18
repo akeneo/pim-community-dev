@@ -3,7 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -74,7 +74,7 @@ abstract class AbstractUserHandler
     /**
      * "Success" form handler
      *
-     * @param \Pim\Component\User\Model\UserInterface $user
+     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
      */
     abstract protected function onSuccess(UserInterface $user);
 }

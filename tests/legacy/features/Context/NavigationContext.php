@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModel;
-use Pim\Component\User\Model\Role;
+use Akeneo\UserManagement\Component\Model\Role;
 
 /**
  * Context for navigating the website

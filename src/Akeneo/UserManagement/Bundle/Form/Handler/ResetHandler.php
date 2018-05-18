@@ -2,7 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * Overridden ResetHandler in order to manage the reset password

@@ -3,7 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Component\User\Event\UserEvent;
+use Akeneo\UserManagement\Component\Event\UserEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;

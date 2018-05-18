@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\User\Model;
 
-use Pim\Component\User\Model\Role;
+use Akeneo\UserManagement\Component\Model\Role;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\RoleInterface;
+use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Prophecy\Argument;
 
 class RoleSpec extends ObjectBehavior

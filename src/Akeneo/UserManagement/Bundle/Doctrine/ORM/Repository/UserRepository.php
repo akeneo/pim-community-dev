@@ -3,7 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\User\Repository\UserRepositoryInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 
 /**
  * User repository

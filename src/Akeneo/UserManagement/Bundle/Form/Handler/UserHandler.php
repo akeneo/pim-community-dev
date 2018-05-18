@@ -2,9 +2,9 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Handler;
 
-use Pim\Component\User\Model\Group;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * Overridden UserHandler to remove tag management
@@ -36,7 +36,7 @@ class UserHandler extends AbstractUserHandler
     }
 
     /**
-     * @param \Pim\Component\User\Model\UserInterface $user
+     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
      */
     protected function onSuccess(UserInterface $user)
     {

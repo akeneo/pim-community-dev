@@ -4,10 +4,10 @@ namespace Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\User\Model\RoleInterface;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Model\UserInterface;
-use Pim\Component\User\Repository\RoleRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 
 /**
  * Role repository

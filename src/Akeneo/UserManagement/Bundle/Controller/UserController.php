@@ -3,9 +3,9 @@
 namespace Akeneo\UserManagement\Bundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\User\Event\UserEvent;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Event\UserEvent;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;

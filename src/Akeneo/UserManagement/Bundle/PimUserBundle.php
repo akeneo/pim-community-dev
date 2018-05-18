@@ -22,7 +22,7 @@ class PimUserBundle extends Bundle
         $container->addCompilerPass(new ResolveDoctrineTargetModelPass());
 
         $productMappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\User\Model'
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\UserManagement\Component\Model'
         ];
 
         $container->addCompilerPass(
