@@ -36,12 +36,12 @@ pim_import_export:
       history.title: Historique
       job_content.title: Contenu
 pim_title.export_profile.index: Gestion des profils d'export
-pim_title.export_profile.edit: Profil d'export %job.label% | Modification
+pim_title.export_profile.edit: Profil d'export %job.label% | Édition
 pim_title.export_profile.show: Profil d'export %job.label% | Visualisation
 pim_title.export_execution.index: Exporter l'historique des exécutions
 pim_title.export_execution.show: Executions d'exports | Détails
 pim_title.import_profile.index: Gestion des profils d’import
-pim_title.import_profile.edit: Profil d'import %job.label% | Modification
+pim_title.import_profile.edit: Profil d'import %job.label% | Édition
 pim_title.import_profile.show: Profil d'import %job.label% | Visualisation
 pim_title.import_execution.index: Historique d'exécution des imports
 pim_title.import_execution.show: Executions d'imports | Détails

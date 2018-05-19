@@ -60,33 +60,15 @@ batch_jobs:
   csv_group_import:
     label: Gruppe import fra CSV
     import.label: Gruppe import
-  csv_channel_export:
-    label: Kanal eksportet til CSV
-    export.label: Kanal eksport
-  csv_locale_export:
-    label: Landestandard eksport i CSV
-    export.label: Landestandard eksport
   csv_attribute_group_export:
     label: Attribut gruppe eksport til CSV
     export.label: Attribut gruppe eksport
-  csv_currency_export:
-    label: Valuta eksport til CSV
-    export.label: Valuta eksport
   csv_group_type_export:
     label: Gruppen type eksport til CSV
     export.label: Grupp type eksport
-  csv_channel_import:
-    label: Kanal import fra CSV
-    import.label: Kanal import
-  csv_locale_import:
-    label: Landestandard import fra CSV
-    import.label: Landestandard import
   csv_attribute_group_import:
     label: Attribut gruppe import fra CSV
     import.label: Attribut gruppe import
-  csv_currency_import:
-    label: Valuta import fra CSV
-    import.label: Valuta import
   csv_group_type_import:
     label: Gruppe type import fra CSV
     import.label: Gruppe type import
@@ -146,33 +128,15 @@ batch_jobs:
   xlsx_association_type_export:
     label: Sammenkædningstype eksport til CSV
     export.label: Sammenkædningstype eksport til CSV
-  xlsx_channel_export:
-    label: Kanal eksport til XLSX
-    export.label: Kanal eksport
-  xlsx_locale_export:
-    label: Landestandard eksport til XLSX
-    export.label: Landestandard eksport
   xlsx_attribute_group_export:
     label: Attribut gruppe eksport til CSV
     export.label: Attribut gruppe eksport
-  xlsx_currency_export:
-    label: Valuta eksport til XLSX
-    export.label: Valuta eksport
   xlsx_group_type_export:
     label: Gruppe type eksport til XLSX
     export.label: Grupp type eksport
-  xlsx_channel_import:
-    label: Kanal import fra XLSX
-    import.label: Kanal import
-  xlsx_locale_import:
-    label: Landestandard import fra XLSX
-    import.label: Landestandard import
   xlsx_attribute_group_import:
     label: Attribut gruppe import fra CSV
     import.label: Attribut gruppe import
-  xlsx_currency_import:
-    label: Valuta import fra XLSX
-    import.label: Valuta import
   xlsx_group_type_import:
     label: Gruppen type import fra XLSX
     import.label: Gruppe type import

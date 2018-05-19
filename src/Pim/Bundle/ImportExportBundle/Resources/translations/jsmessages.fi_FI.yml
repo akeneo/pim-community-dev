@@ -12,7 +12,7 @@ pim_connector:
     locales:
       validation:
         not_blank: Yksi lokaatio on valittava, valitse vietävä lokaatio.
-page_title:
+pim_title:
   pim_importexport_export_profile_index: Vientiprofiilien hallinta
   pim_importexport_export_profile_edit: Vientiprofiili {{ job.label }} | Muokkaa
   pim_importexport_export_profile_show: Vientiprofiili {{ job.label }} | Näytä

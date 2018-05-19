@@ -35,5 +35,7 @@ pim_api:
     locale: Språk
     currency: Valutor
     association_type: Associationstyp
-rights:
-  api: Web API-rättigheter
+pim_user:
+  roles:
+    tab:
+      api: Web API-rättigheter

@@ -39,5 +39,7 @@ pim_api:
     locale: Locales
     currency: Devises
     association_type: Types d'association
-rights:
-  api: Autorisations de l'API Web
+pim_user:
+  roles:
+    tab:
+      api: Autorisations de l'API Web

@@ -16,5 +16,5 @@ pim_dashboard:
       load_more: 'さらに読み込む...'
     header:
       view_all: 全て表示
-page_title:
+pim_title:
   pim_dashboard_index: ダッシュ ボード

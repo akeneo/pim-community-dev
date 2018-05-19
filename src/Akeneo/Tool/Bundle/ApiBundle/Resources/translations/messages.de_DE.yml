@@ -35,5 +35,7 @@ pim_api:
     locale: Gebietsschemata
     currency: Währungen
     association_type: Verbindungstypen
-rights:
-  api: Web-API Berechtigungen
+pim_user:
+  roles:
+    tab:
+      api: Web-API Berechtigungen

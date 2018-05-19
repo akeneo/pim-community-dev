@@ -58,33 +58,15 @@ batch_jobs:
   csv_group_import:
     label: importazione gruppi in CSV
     import.label: importazione gruppi
-  csv_channel_export:
-    label: Esportazione canali in CSV
-    export.label: Esportazione canali
-  csv_locale_export:
-    label: Esportazione localizzazioni in CSV
-    export.label: Esportazione delle localizzazioni
   csv_attribute_group_export:
     label: Esportazione dei gruppi di attributi in CSV
     export.label: Esportazione dei gruppi di attributi
-  csv_currency_export:
-    label: Esportazione valute in CSV
-    export.label: Esportazione valute
   csv_group_type_export:
     label: Esportazione dei tipi di gruppo in CSV
     export.label: Esportazione dei tipi di gruppo
-  csv_channel_import:
-    label: Importazione canali in CSB
-    import.label: Importazione canali
-  csv_locale_import:
-    label: Importazione localizzazioni in CSV
-    import.label: Importazione localizzazione
   csv_attribute_group_import:
     label: Importazione dei gruppi di attributi in CSV
     import.label: Importazione dei gruppi di attributi
-  csv_currency_import:
-    label: Importazione valute in CSV
-    import.label: Importazione valute
   csv_group_type_import:
     label: Importazione dei tipi di gruppo in CSV
     import.label: Importazione dei tipi di gruppo
@@ -142,33 +124,15 @@ batch_jobs:
   xlsx_association_type_export:
     label: Esportazione dei tipi di associazione in XLSX
     export.label: Esportazione dei tipi di associazione in XLSX
-  xlsx_channel_export:
-    label: Esportazione canali in XLSX
-    export.label: Esportazione canali
-  xlsx_locale_export:
-    label: Esportazione localizzazioni in XLSX
-    export.label: Esportazione delle localizzazioni
   xlsx_attribute_group_export:
     label: Esportazione dei gruppi di attributi in XLSX
     export.label: Esportazione dei gruppi di attributi
-  xlsx_currency_export:
-    label: Esportazione valute in XLSX
-    export.label: Esportazione valute
   xlsx_group_type_export:
     label: Esportazione dei tipi di gruppo in XLSX
     export.label: Esportazione dei tipi di gruppo
-  xlsx_channel_import:
-    label: Importazione canali in XLSX
-    import.label: Importazione canali
-  xlsx_locale_import:
-    label: Importazione localizzazioni in XLSX
-    import.label: Importazione localizzazione
   xlsx_attribute_group_import:
     label: Importazione dei gruppi di attributi in XLSX
     import.label: Importazione dei gruppi di attributi
-  xlsx_currency_import:
-    label: Importazione valute in XLSX
-    import.label: Importazione valute
   xlsx_group_type_import:
     label: Importazione dei tipi di gruppo in XLSX
     import.label: Importazione dei tipi di gruppo

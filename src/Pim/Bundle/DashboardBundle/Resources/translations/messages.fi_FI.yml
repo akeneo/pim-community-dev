@@ -1,15 +1,7 @@
 pim_dashboard:
   title: Ohjauspaneeli
   version: Versio
-  link.label:
-    product: Tuotteiden hallinta
-    category: Kategorioiden hallinta
-    attribute: Attribuuttien hallinta
-    family: Tuoterperheiden hallinta
   widget:
-    error:
-      title: Virhe ladatessa widgettiä
-      message: Widgettiä "%alias%" ei ole
     completeness:
       title: Kanavien ja lokaatioiden täyttöaste
     last_operations:

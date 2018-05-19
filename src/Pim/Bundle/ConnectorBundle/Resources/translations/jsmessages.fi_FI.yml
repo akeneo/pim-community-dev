@@ -58,33 +58,15 @@ batch_jobs:
   csv_group_import:
     label: Ryhmien tuonti CSV-muodossa
     import.label: Ryhmien tuonti
-  csv_channel_export:
-    label: Kanavavienti CSV-muodossa
-    export.label: Kanavavienti
-  csv_locale_export:
-    label: Lokaatiovienti CSV-muodossa
-    export.label: Lokaatiovienti
   csv_attribute_group_export:
     label: Attribuuttiryhmävienti CSV-muodossa
     export.label: Attribuuttiryhmävienti
-  csv_currency_export:
-    label: Valuuttavienti CSV-muodossa
-    export.label: Valuuttavienti
   csv_group_type_export:
     label: Ryhmätyyppivienti CSV-muodossa
     export.label: Ryhmätyyppivienti
-  csv_channel_import:
-    label: Kanavatuonti CSV-muodossa
-    import.label: Kanavatuonti
-  csv_locale_import:
-    label: Lokaatiotuonti CSV-muodossa
-    import.label: Lokaatiotuonti
   csv_attribute_group_import:
     label: Attribuuttiryhmätuonti CSV-muodossa
     import.label: Attribuuttiryhmätuonti
-  csv_currency_import:
-    label: Valuuttatuonti CSV-muodossa
-    import.label: Valuuttatuonti
   csv_group_type_import:
     label: Ryhmätyyppituonti CSV-muodossa
     import.label: Ryhmätyyppituonti
@@ -142,33 +124,15 @@ batch_jobs:
   xlsx_association_type_export:
     label: Liitännäistyyppien vienti XLSX-muodossa
     export.label: Liitännäistyyppien vienti XLSX-muodossa
-  xlsx_channel_export:
-    label: Kanavavienti XLSX-muodossa
-    export.label: Kanavavienti
-  xlsx_locale_export:
-    label: Lokaatiovienti XLSX-muodossa
-    export.label: Lokaatiovienti
   xlsx_attribute_group_export:
     label: Attribuuttiryhmävienti XLSX-muodossa
     export.label: Attribuuttiryhmävienti
-  xlsx_currency_export:
-    label: Valuuttavienti XLSX-muodossa
-    export.label: Valuuttavienti
   xlsx_group_type_export:
     label: Ryhmätyyppivienti XLSX-muodossa
     export.label: Ryhmätyyppivienti
-  xlsx_channel_import:
-    label: Kanavatuonti XLSX-muodossa
-    import.label: Kanavatuonti
-  xlsx_locale_import:
-    label: Lokaatiotuonti XLSX-muodossa
-    import.label: Lokaatiotuonti
   xlsx_attribute_group_import:
     label: Attribuuttiryhmätuonti XLSX-muodossa
     import.label: Attribuuttiryhmätuonti
-  xlsx_currency_import:
-    label: Valuuttatuonti XLSX-muodossa
-    import.label: Valuuttatuonti
   xlsx_group_type_import:
     label: Ryhmätyyppituonti XLSX-muodossa
     import.label: Ryhmätyyppituonti

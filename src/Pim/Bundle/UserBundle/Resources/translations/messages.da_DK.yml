@@ -1,110 +1,105 @@
 pim_user:
   user:
-    tab:
-      general.title: Generelt
-      additional.title: Yderligere
+    title: Bruger
+    fields:
+      name_prefix: Navnepræfiks
+      email: E-mail
+      username: Brugernavn
+      first_name: Fornavn
+      middle_name: Mellemnavn
+      last_name: Efternavn
+      name_suffix: Navnesuffiks
+      date_of_birth: Fødselsdato
+      avatar: Avatar
+      timezone: Tidszone
+      roles: Roller
+      groups: Grupper
+      password: Adgangskode
+      password_again: Indtast adgangskode igen
+      product_grid_filters: Produkt gitter filtre
+      catalog_locale: Katalog landestandard
+      catalog_scope: Katalog anvendelsesområde
+      default_tree: Standardtræ
+      current_password: Nuværende adgangskode
+      new_password: Ny adgangskode
+      new_password_again: Ny adgangskode (gentag)
+      default_grid_view:
+        none: Ingen
+      default_product_grid_view:
+        label: Standard produkt gittervisningen
+      ui_locale: UI landestandard
+      last_logged_in: Sidst logget ind
+      login_count: Antal logins
+      user_salt: Bruger salt
+      created: Oprettet
+      updated: Opdateret
+      status: Status
+      capabilities: Kapaciteter
+      has_role: Har rolle
+      has_group: Har gruppen
+      active: Aktiv
+      inactive: Inaktiv
+    tabs:
+      general:
+        title: Generelt
+        contact_information: Kontaktoplysninger
+      additional:
+        title: Yderligere
+      interfaces:
+        title: Grænseflader
       group_and_role.title: Grupper og roller
       password.title: Adgangskode
       business_unit.title: Afdelinger
       email_synchronization.title: Email synkroniseringsindstillinger
-      interfaces.title: Grænseflader
+    removed_user: Slet bruger
+    login:
+      username_or_email: Brugernavn eller e-mail
+      remember_me: Husk mig på denne computer
+      password_forgotten: Glemt din adgangskode?
+      log_in: Log på
+      forgot_password: Glemt adgangskode
+      request: Anmodning
+      reset: Nulstil
+      password_reset_email_sent: En e-mail er blevet sendt til % e-mail %. Den indeholder et link du skal klikke på for at nulstille din adgangskode.
+      homepage: Gå til hjemmeside
   group:
     tab:
       general.title: Generelt
       users.title: Brugere
-oro.user.controller:
-  group.message.saved: "Gruppe gemt"
-  role.message.saved: "Rolle gemt"
-  user.message.saved: "Brugeren gemt"
-  status.message.saved: "Status gemt"
-oro.user.grid.users:
+  roles:
+    title: Rolle
+    tab:
+      general: Generelt
+      action: Rettigheder
+      users: Brugere
+  controller:
+    group:
+      message:
+        saved: "Gruppe gemt"
+    role:
+      message:
+        saved: "Rolle gemt"
+    user:
+      message:
+        saved: "Brugeren gemt"
+pim_datagrid:
   columns:
-    username: "Brugernavn"
-    email: "E-mail"
-    firstName: "Fornavn"
-    lastName: "Efternavn"
-    createdAt: "Oprettet den"
-    updatedAt: "Opdateret den"
-    enabled: "Status"
-oro.user.grid.roles:
-  columns:
-    label: "Etiket"
-oro.user.grid.groups:
-  columns:
-    name: "Navn"
-pim_title:
-  user.index: Brugere
-  user_role.index: Roller
-  user_group.index: Brugergrupper
-  system_configuration.index: Konfiguration
-user.title: Bruger
-user.overview: Bruger
-Users Management: Bruger administration
-Create user: Opret bruger
-btn.create.user: Opret bruger
-New user: Ny bruger
-Additional: Yderligere
-Groups and Roles: Grupper og roller
-Username: Brugernavn
-Password: Adgangskode
-Re-enter password: Indtast adgangskode igen
-Name prefix: Navnepræfiks
-First name: Fornavn
-Middle name: Mellemnavn
-Last name: Efternavn
-Name suffix: Navnesuffiks
-Date of birth: Fødselsdato
-Avatar: Avatar
-Additional emails: Yderligere e-mails
-Add another email: Tilføje en anden e-mail
-Catalog locale: Katalog landestandard
-Catalog scope: Katalog anvendelsesområde
-Default tree: Standardtræ
-Business Units: Afdelinger
-Email synchronization settings: Email synkroniseringsindstillinger
-Host: Vært
-Port: Port
-Ssl: SSL
-Last logged in: Sidst logget ind
-Login count: Antal logins
-Additional Information: Yderligere oplysninger
-Interfaces: Grænseflader
-Basic Information: Grundlæggende oplysninger
-Contact Information: Kontaktoplysninger
-User name: Brugernavn
-Birthday: Fødselsdag
-API key: API-nøgle
-Ui locale: UI landestandard
-UI locale: UI landestandard
-User salt: Bruger salt
-Current password: Nuværende adgangskode
-New password: Ny adgangskode
-Repeat new password: Ny adgangskode (gentag)
-Generate key: Generer nøgle
-Primary: primære
-Removed user: Slet bruger
-user:
-  product_grid_filters: Produkt gitter filtre
-  default_product_grid_view:
-    label: Standard produkt gittervisningen
-  default_grid_view:
-    none: Ingen
-  timezone: Tidszone
-Role: Rolle
-Owner: Ejer
-General: Generelt
-Entity: Enhed
-Capabilities: Kapaciteter
-Save and close: Gem og luk
-Has role: Har rolle
-role:
-  title: rolle
-  overview: rolle
-  edit: Rediger rolle
-  create: Opret rolle
-btn.create.role: Opret rolle
-rights:
-  action: Rettigheder
+    user:
+      createdAt: "Oprettet den"
+      updatedAt: "Opdateret den"
+    roles:
+      label: "Etiket"
+    groups:
+      name: "Navn"
+confirmation:
+  remove:
+    role: Er du sikker på du vil slette denne rolle?
+    user: Er du sikker på du vil slette denne bruger?
+flash:
+  role:
+    removed: Rollen blev slettet
+  user:
+    removed: Brugeren blev fjernet
 oro_security:
   acl_group:
     user: Brugere
@@ -133,52 +128,3 @@ EDIT: Redigér
 DELETE: Slet
 ASSIGN: Tildel
 SHARE: Del
-oro:
-  user:
-    controller:
-      group:
-        message:
-          saved: "Gruppe gemt"
-      role:
-        message:
-          saved: "Rolle gemt"
-      user:
-        message:
-          saved: "Brugeren gemt"
-      status:
-        message:
-          saved: "Status gemt"
-    grid:
-      users:
-        columns:
-          username: "Brugernavn"
-          email: "E-mail"
-          firstName: "Fornavn"
-          lastName: "Efternavn"
-          createdAt: "Oprettet den"
-          updatedAt: "Opdateret den"
-          enabled: "Status"
-      roles:
-        columns:
-          label: "Etiket"
-      groups:
-        columns:
-          name: "Navn"
-"Create group": "Opret gruppe"
-btn.create.user-group: Opret gruppe
-Has group: Har gruppen
-Save and Close: Gem og luk
-user-group.overview: Brugergrupper
-Log in: Log på
-Remember me on this computer: Husk mig på denne computer
-Forgot your password?: Glemt din adgangskode?
-Username or Email: Brugernavn eller e-mail
-"Forgot Password": "Glemt adgangskode"
-Request: Anmodning
-Check Email: Tjek Email
-password_reset_email_sent: En e-mail er blevet sendt til % e-mail %. Den indeholder et link du skal klikke på for at nulstille din adgangskode.
-Go to homepage: Gå til hjemmeside
-Login: Login
-"Create role": "Opret rolle"
-"Edit role": "Rediger rolle"
-"Logout": "Log ud"
