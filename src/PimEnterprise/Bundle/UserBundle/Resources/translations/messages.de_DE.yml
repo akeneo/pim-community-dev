@@ -1,3 +1,8 @@
+pim_user:
+  user:
+    fields:
+      default_published_product_grid_view:
+        label: Standardansicht Produktliste veröffentlichte Produkte
 user:
   email:
     notifications: E-Mail-Benachrichtigungen
@@ -8,8 +13,6 @@ user:
       yes: true
       no: false
   asset_delay_reminder: Wiedervorlage (Tage)
-  default_published_product_grid_view:
-    label: Standardansicht Produktliste veröffentlichte Produkte
 Default asset tree: Standardkategoriebaum Assets
 pimee_user:
   user:

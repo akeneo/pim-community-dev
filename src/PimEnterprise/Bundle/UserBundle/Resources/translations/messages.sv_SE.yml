@@ -1,3 +1,8 @@
+pim_user:
+  user:
+    fields:
+      default_published_product_grid_view:
+        label: Standard produkt publicerad i listan
 user:
   email:
     notifications: E-postaviseringar
@@ -8,8 +13,6 @@ user:
       yes: true
       no: false
   asset_delay_reminder: Fördröjning för påminnelse av tillgång (i dagar)
-  default_published_product_grid_view:
-    label: Standard produkt publicerad i listan
 Default asset tree: Standard träd för tillgångar
 pimee_user:
   user:

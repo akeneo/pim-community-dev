@@ -1,3 +1,8 @@
+pim_user:
+  user:
+    fields:
+      default_published_product_grid_view:
+        label: デフォルト公開商品のグリッドビュー
 user:
   email:
     notifications: メール通知
@@ -8,8 +13,6 @@ user:
       yes: true
       no: false
   asset_delay_reminder: アセット遅延通知(日)
-  default_published_product_grid_view:
-    label: デフォルト公開商品のグリッドビュー
 Default asset tree: デフォルトのアセットツリー
 pimee_user:
   user:

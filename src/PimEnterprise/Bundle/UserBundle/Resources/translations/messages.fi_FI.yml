@@ -1,3 +1,8 @@
+pim_user:
+  user:
+    fields:
+      default_published_product_grid_view:
+        label: Oletusarvoinen julkaistujen tuotteiden ruudukkonäkymä
 user:
   email:
     notifications: Sähköposti-ilmoitukset
@@ -8,8 +13,6 @@ user:
       yes: true
       no: false
   asset_delay_reminder: Muistutus assetin käyttöoikeuden päättymisestä (päivissä)
-  default_published_product_grid_view:
-    label: Oletusarvoinen julkaistujen tuotteiden ruudukkonäkymä
 Default asset tree: Omaisuuden oletuspuu
 pimee_user:
   user:

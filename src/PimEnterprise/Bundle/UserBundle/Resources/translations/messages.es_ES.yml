@@ -1,3 +1,8 @@
+pim_user:
+  user:
+    fields:
+      default_published_product_grid_view:
+        label: Vista por defecto de grilla de productos publicados
 user:
   email:
     notifications: Notificaciones por e-mail
@@ -8,8 +13,6 @@ user:
       yes: true
       no: false
   asset_delay_reminder: Recordatorio de fecha límite de uso de recursos (en días)
-  default_published_product_grid_view:
-    label: Vista por defecto de grilla de productos publicados
 Default asset tree: Árbol por defecto de recursos
 pimee_user:
   user:

@@ -200,7 +200,7 @@ pim_menu:
     published_product: Veröffentlichte Produkte
     rule: Regeln
     upload_asset: Assets hochladen
-page_title:
+pim_title:
   pimee_workflow_proposal_index: Vorschläge
   pimee_workflow_published_product_index: Veröffentlichte Produkte
   pimee_product_asset_index: Assets
