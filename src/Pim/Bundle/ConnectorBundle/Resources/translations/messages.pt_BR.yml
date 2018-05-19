@@ -131,32 +131,25 @@ batch_jobs:
     validation.label: Validação de arquivo
     import.label: Grupo tipo importação
   xlsx_category_import:
-    label: Importação de categorias em XLSX
     validation.label: Validação de arquivo
     import.label: Importação de categoria
   xlsx_association_type_import:
-    label: Importação de tipos de associação em XLSX
     validation.label: Validação de arquivo
     import.label: Importação de tipo de associação
   xlsx_attribute_import:
-    label: Importação de atributos em XLSX
     validation.label: Validação de arquivo
     import.label: Importação de atributo
   xlsx_attribute_option_import:
-    label: Importação de opções de atributos em XLSX
     validation.label: Validação de arquivo
     import.label: Importação de opções de atributo
   xlsx_family_import:
-    label: Importação de família em XLSX
     validation.label: Validação de arquivo
     import.label: Importar família
   xlsx_family_variant_import:
     validation.label: Validação de arquivo
   xlsx_product_export:
-    label: Exportação de produto em XLSX
     export.label: Exportação de produto
   xlsx_product_import:
-    label: Importação de produtos por XLSX
     validation.label: Validação de arquivo
     import.label: Importação de produto
     import_associations.label: Importação de associação

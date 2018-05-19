@@ -1,8 +1,8 @@
 pim_connector:
   steps:
     dummy_reader.title: Dummy läsare
-    product_reader.title: Produktextrahering
-    entity_reader.title: Entitetextrahering
+    product_reader.title: Extrahering produkt
+    entity_reader.title: Extrahering entitet
     csv_reader:
       title: CSV-läsare
     file_reader:

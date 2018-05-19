@@ -39,7 +39,7 @@ job_execution.summary:
   charset_validator:
     title: 'ファイルの文字コード:'
     skipped: スキップしました。拡張子がホワイトリストにあります
-  product_skipped_no_diff: スキップされた製品 (変更なし)
+  product_skipped_no_diff: スキップされた商品 (変更なし)
   product_skipped_no_associations: スキップされた商品 (関連性はなし)
   product_model_skipped_no_diff: スキップされた製品モデル (変更なし)
   item_position: 行の読み込み
