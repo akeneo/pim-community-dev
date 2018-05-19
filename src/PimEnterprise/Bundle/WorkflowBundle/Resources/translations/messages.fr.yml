@@ -109,10 +109,10 @@ pim_menu:
 pim_title:
   published_product:
     index: Produits publiés
-    view: Produits publiés %product.sku% | Voir
+    view: Produits publiés %product.sku% | Visualisation
   product:
     dispatch: "Produits %product.sku%"
-    show: "Produits %product.sku% | Voir"
+    show: "Produit %product.sku% | Visualisation"
   proposal:
     index: Propositions
 btn.editworkingcopy: Editer la copie de travail
