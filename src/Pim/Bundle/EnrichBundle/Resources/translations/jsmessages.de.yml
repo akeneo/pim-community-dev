@@ -151,6 +151,7 @@ pim_enrich:
       category: Kategorie
       create: Anlegen
       subTitle: Produkt anlegen
+      modalTitle: Wählen Sie eine Aktion aus
       filters: Filter
       btn:
         enabled: Aktiviert
@@ -226,6 +227,8 @@ pim_enrich:
       sequential_edit:
         empty: Ihre Auswahl ist leer, bitte ändern Sie Ihre Suchparameter
     product_model:
+      create_popin:
+        type: Produktmodell
       info:
         update_successful: Produktmodell erfolgreich aktualisiert. Die Vollständigkeit der Produktvarianten wird neu berechnet.
         update_failed: Das Produktmodell konnte nicht aktualisiert werden.
@@ -933,6 +936,7 @@ pim_enrich:
           label: Produkte auswählen
         choose:
           title: Massenbearbeitung Produkte
+          label_count: "] 0, Inf [Wählen Sie eine Aktion aus"
         configure:
           label: Konfigurieren
         confirm:
@@ -963,6 +967,7 @@ pim_enrich:
           label: Produktfamilien auswählen
         choose:
           title: Massenbearbeitung Produktfamilien
+          label_count: "] 0, Inf [Wählen Sie eine Aktion aus"
         configure:
           label: Konfigurieren
         confirm:
