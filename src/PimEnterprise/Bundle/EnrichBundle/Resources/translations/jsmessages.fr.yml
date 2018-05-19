@@ -219,9 +219,9 @@ page_title:
   pimee_workflow_published_product_index: Produits publiés
   pimee_workflow_published_product_view: Produit publié {{ product.label }} | Visualisation
   pimee_product_asset_index: Ressources
-  pimee_product_asset_edit: Ressource {{ asset.label }} | Modification
+  pimee_product_asset_edit: Ressource {{ asset.label }} | Édition
   pimee_asset_categorytree_index: Catégories
-  pimee_asset_categorytree_edit: Catégorie {{ category.label }} | Modification
+  pimee_asset_categorytree_edit: Catégorie {{ category.label }} | Édition
   pimee_catalog_rule_rule_index: Règles
 batch_jobs:
   yml_asset_channel_configuration_import:
