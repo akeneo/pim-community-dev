@@ -82,8 +82,8 @@ pimee_product_asset:
   menu: Ressources
   page_tab:
     title:
-      view: Ressource produit %asset.code% | Vue
-      edit: Ressource produit %asset.code% | Edition
+      view: Ressource produit %asset.code% | Visualisation
+      edit: Ressource produit %asset.code% | Édition
       index: Ressources du produit
   code:
     label: Code
