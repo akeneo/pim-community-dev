@@ -1,110 +1,104 @@
 pim_user:
   user:
-    tab:
-      general.title: 全般
-      additional.title: 追加
+    title: ユーザー
+    fields:
+      name_prefix: 尊称
+      email: 電子メール
+      username: ユーザー名
+      first_name: 名
+      middle_name: ミドルネーム
+      last_name: 姓
+      name_suffix: 尊称
+      date_of_birth: 生年月日
+      avatar: アバター
+      timezone: タイムゾーン
+      roles: 権限
+      groups: グループ
+      password: パスワード
+      password_again: パスワード再入力
+      product_grid_filters: 製品グリッドフィルター
+      catalog_locale: カタログのロケール
+      catalog_scope: カタログのスコープ
+      default_tree: 既定のツリー
+      current_password: 現在のパスワード
+      new_password: 新しいパスワード
+      new_password_again: 新しいパスワード (再入力)
+      default_grid_view:
+        none: なし
+      default_product_grid_view:
+        label: デフォルト製品のグリッドビュー
+      ui_locale: UI ロケール
+      last_logged_in: 最終ログイン
+      login_count: ログイン回数
+      user_salt: ユーザソルト
+      created: 作成日時
+      updated: 更新日時
+      status: ステータス
+      capabilities: 機能
+      has_role: ロールあり
+      has_group: グループあり
+      active: アクティブ
+      inactive: 非アクティブ
+    tabs:
+      general:
+        title: 全般
+        contact_information: 連絡先情報
+      additional:
+        title: 追加
+      interfaces:
+        title: インタフェース
       group_and_role.title: グループとロール
       password.title: パスワード
       business_unit.title: 部署
       email_synchronization.title: メール同期設定
-      interfaces.title: インタフェース
+    removed_user: 削除されたユーザ
+    login:
+      username_or_email: ユーザー名またはメールアドレス
+      remember_me: ログイン状態を維持する
+      password_forgotten: パスワードをお忘れですか?
+      log_in: ログイン
+      forgot_password: パスワードを忘れた
+      request: リクエスト
+      reset: リセット
+      homepage: ホームページに移動
   group:
     tab:
       general.title: 全般
       users.title: ユーザー
-oro.user.controller:
-  group.message.saved: "グループが保存されました"
-  role.message.saved: "ロールを保存しました"
-  user.message.saved: "ユーザーを保存しました"
-  status.message.saved: "ステータスを保存しました"
-oro.user.grid.users:
+  roles:
+    title: ロール
+    tab:
+      general: 全般
+      action: パーミッション
+      users: ユーザー
+  controller:
+    group:
+      message:
+        saved: "グループが保存されました"
+    role:
+      message:
+        saved: "ロールを保存しました"
+    user:
+      message:
+        saved: "ユーザーを保存しました"
+pim_datagrid:
   columns:
-    username: "ユーザー名"
-    email: "電子メール"
-    firstName: "名"
-    lastName: "姓"
-    createdAt: "作成日"
-    updatedAt: "更新日"
-    enabled: "ステータス"
-oro.user.grid.roles:
-  columns:
-    label: "ラベル"
-oro.user.grid.groups:
-  columns:
-    name: "名前"
-pim_title:
-  user.index: ユーザー
-  user_role.index: 権限
-  user_group.index: ユーザーグループ
-  system_configuration.index: 設定
-user.title: ユーザー
-user.overview: ユーザー
-Users Management: ユーザー管理
-Create user: ユーザー作成
-btn.create.user: ユーザー作成
-New user: 新しいユーザー
-Additional: 追加
-Groups and Roles: グループとロール
-Username: ユーザー名
-Password: パスワード
-Re-enter password: パスワード再入力
-Name prefix: 尊称
-First name: 名
-Middle name: ミドルネーム
-Last name: 姓
-Name suffix: 尊称
-Date of birth: 生年月日
-Avatar: アバター
-Additional emails: 追加のメールアドレス
-Add another email: 別のメール アドレスを追加
-Catalog locale: カタログのロケール
-Catalog scope: カタログのスコープ
-Default tree: 既定のツリー
-Business Units: 部署
-Email synchronization settings: メール同期設定
-Host: ホスト
-Port: ポート
-Ssl: SSL
-Last logged in: 最終ログイン
-Login count: ログイン回数
-Additional Information: 追加情報
-Interfaces: インタフェース
-Basic Information: 基本情報
-Contact Information: 連絡先情報
-User name: ユーザー名
-Birthday: 誕生日
-API key: API キー
-Ui locale: UI ロケール
-UI locale: UI ロケール
-User salt: ユーザソルト
-Current password: 現在のパスワード
-New password: 新しいパスワード
-Repeat new password: 新しいパスワード (再入力)
-Generate key: キーを生成
-Primary: プライマリ
-Removed user: 削除されたユーザ
-user:
-  product_grid_filters: 製品グリッドフィルター
-  default_product_grid_view:
-    label: デフォルト製品のグリッドビュー
-  default_grid_view:
-    none: なし
-  timezone: タイムゾーン
-Role: ロール
-Owner: オーナー
-General: 全般
-Entity: エンティティ
-Capabilities: 機能
-Save and close: 保存して閉じる
-Has role: ロールあり
-role:
-  title: 権限
-  overview: 権限
-  edit: 権限を編集
-  create: 権限を作成
-btn.create.role: 権限を作成
-rights:
-  action: パーミッション
+    user:
+      createdAt: "作成日"
+      updatedAt: "更新日"
+    roles:
+      label: "ラベル"
+    groups:
+      name: "名前"
+confirmation:
+  remove:
+    role: このロールを削除してもよろしいですか？
+    user: このユーザーを削除してもよろしいですか?
+flash:
+  role:
+    removed: ロールを削除しました
+  user:
+    removed: ユーザーを削除しました
 oro_security:
   acl_group:
     user: ユーザー
@@ -133,51 +127,3 @@ EDIT: 編集
 DELETE: 削除
 ASSIGN: 割り当て
 SHARE: 共有
-oro:
-  user:
-    controller:
-      group:
-        message:
-          saved: "グループが保存されました"
-      role:
-        message:
-          saved: "ロールを保存しました"
-      user:
-        message:
-          saved: "ユーザーを保存しました"
-      status:
-        message:
-          saved: "ステータスを保存しました"
-    grid:
-      users:
-        columns:
-          username: "ユーザー名"
-          email: "電子メール"
-          firstName: "名"
-          lastName: "姓"
-          createdAt: "作成日"
-          updatedAt: "更新日"
-          enabled: "ステータス"
-      roles:
-        columns:
-          label: "ラベル"
-      groups:
-        columns:
-          name: "名前"
-"Create group": "グループを作成"
-btn.create.user-group: グループを作成
-Has group: グループあり
-Save and Close: 保存して閉じる
-user-group.overview: ユーザーグループ
-Log in: ログイン
-Remember me on this computer: ログイン状態を維持する
-Forgot your password?: パスワードをお忘れですか?
-Username or Email: ユーザー名またはメールアドレス
-"Forgot Password": "パスワードを忘れた"
-Request: リクエスト
-Check Email: メールをチェック
-Go to homepage: ホームページに移動
-Login: ログイン
-"Create role": "権限を作成"
-"Edit role": "権限を編集"
-"Logout": "ログアウト"

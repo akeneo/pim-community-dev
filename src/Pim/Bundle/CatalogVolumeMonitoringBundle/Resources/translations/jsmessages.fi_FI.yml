@@ -1,0 +1,9 @@
+pim_catalog_volume:
+  axis:
+    count_products: Tuotteet
+    count_channels: Kanavat
+    count_families: Perheet
+    count_attributes: Attribuutit
+    count_categories: Kategoriat
+    count_category_trees: Kategoriahierarkia
+    count_product_models: Tuotemallit

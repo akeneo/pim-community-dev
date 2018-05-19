@@ -82,6 +82,13 @@ pim_datagrid:
     delete:
       success: I prodotti selezionati sono stati eliminati con successo.
       error: Si è verificato un errore cancellando i prodotti selezionati, per favore riprova.
+    quick_export:
+      csv_all: CSV (tutti gli attributi)
+      csv_grid_context: CSV (Contesto di griglia)
+      xlsx_all: Excel (Tutti gli attributi)
+      xlsx_grid_context: Excel (Contesto di griglia)
+    mass_edit: Azioni di massa
+    sequential_edit: Modifica sequenziale
   view_selector:
     view: Visualizzazione
   actions:
@@ -150,22 +157,7 @@ alert:
     not_available: Il tuo browser non sembra compatibile con il sessionStorage. Contattare l'amministratore
 confirm:
   attribute_option:
-    cancel_edition_on_new_option_text: Attenzione, si perderanno i dati non salvati. Sei sicuro di voler annullare le modifiche su questa nuova opzione?
     cancel_edition_on_new_option_title: Annulla la modifica
-label:
-  attribute_option:
-    add_option: Aggiungi un'opzione
-pim:
-  grid:
-    mass_action:
-      quick_export:
-        csv_all: CSV (tutti gli attributi)
-        csv_grid_context: CSV (Contesto di griglia)
-        xlsx_all: Excel (Tutti gli attributi)
-        xlsx_grid_context: Excel (Contesto di griglia)
-      mass_edit: Azioni di massa
-      category_edit: Spostare i prodotti nelle categorie
-      sequential_edit: Modifica sequenziale
 pim_enrich:
   item:
     list:
@@ -461,6 +453,7 @@ pim_enrich:
         error_creating_option: Si è verificato un errore durante il tentativo di creare l'opzione di attributo
       add_option_modal:
         title: Aggiungi l'opzione dell'attributo
+      add_option: Aggiungi un'opzione
     attribute_group:
       tab:
         attribute:
@@ -812,7 +805,7 @@ pim_enrich.error:
   exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
   http:
     403: Vietato. Non è consentito accedere a questa pagina
-page_title:
+pim_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Gruppi di attributi
   pim_enrich_attributegroup_create: Gruppi di attributo | Crea
@@ -894,8 +887,6 @@ pim_menu:
     logout: Disconnetti
     user_account: Il mio profilo
 pim_notification:
-  mark_all_as_read: Segna tutti come già letti
-  no_notifications: Nessuna notifica
   types:
     import: Importa
     export: Esporta
@@ -926,12 +917,3 @@ batch_jobs:
   xlsx_product_grid_context_quick_export:
     quick_export.label: Esportazione rapida prodotti in XLSX presenti nel contesto griglia
     perform.label: Esportazione rapida prodotti in XLSX presenti nel contesto griglia
-catalog_volume:
-  axis:
-    count_products: Articoli
-    count_channels: Canali
-    count_families: Famiglie
-    count_attributes: Attributi
-    count_categories: Categorie
-    count_category_trees: Albero della categoria
-    count_product_models: Modelli di prodotto

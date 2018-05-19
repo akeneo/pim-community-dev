@@ -1,6 +1,3 @@
-btn:
-  post: Ajouter un nouveau commentaire
-  reply: Répondre
 confirmation:
   remove:
     comment: Voulez-vous vraiment supprimer ce commentaire ?
@@ -15,7 +12,13 @@ flash:
     reply:
       success: Votre réponse a été ajoutée.
       error: Une erreur s'est produite lors de la création de votre réponse.
-comment:
+pim_comment:
+  product:
+    panel:
+      comment:
+        post: Ajouter un nouveau commentaire
+        reply: Répondre
+        title: Commentaires
   index:
     empty: Aucun commentaire pour l'instant
     header_comment: '{{ user }} a commenté le produit'
@@ -23,5 +26,3 @@ comment:
   placeholder:
     new: Ajouter un nouveau commentaire...
     reply: Répondre à ce commentaire...
-pim_comment:
-  product.panel.comment.title: Commentaires

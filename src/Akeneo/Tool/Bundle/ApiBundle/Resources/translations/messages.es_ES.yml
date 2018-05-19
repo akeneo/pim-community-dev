@@ -39,5 +39,7 @@ pim_api:
     locale: Locales
     currency: Monedas
     association_type: Tipos de asociaciones
-rights:
-  api: Permisiones del API Web
+pim_user:
+  roles:
+    tab:
+      api: Permisiones del API Web

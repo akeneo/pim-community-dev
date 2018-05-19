@@ -35,6 +35,7 @@ pim_datagrid:
   mass_action:
     delete:
       empty_selection: 商品が選択されていません。
+      success_message: "{0} 削除されたエンティティはありませんでした| {1} 1件のエンティティが削除されました|]1,Inf [%count% 件のエンティティが削除されました"
     default:
       confirmation:
         content: 実行してもよろしいですか？

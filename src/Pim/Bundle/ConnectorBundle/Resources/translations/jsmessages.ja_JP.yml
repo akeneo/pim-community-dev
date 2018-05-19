@@ -58,33 +58,15 @@ batch_jobs:
   csv_group_import:
     label: グループをCSVでインポート
     import.label: グループのインポート
-  csv_channel_export:
-    label: チャネルをCSV形式でエクスポート
-    export.label: チャネルエクスポート
-  csv_locale_export:
-    label: ロケールをCSV形式でエクスポート
-    export.label: ロケールエクスポート
   csv_attribute_group_export:
     label: 属性グループをCSV形式でエクスポート
     export.label: 属性グループエクスポート
-  csv_currency_export:
-    label: 通貨をCSV形式でエクスポート
-    export.label: 通貨エクスポート
   csv_group_type_export:
     label: グループタイプをCSV形式でエクスポート
     export.label: グループタイプエクスポート
-  csv_channel_import:
-    label: チャネルをCSV形式でインポート
-    import.label: チャネルインポート
-  csv_locale_import:
-    label: ロケールをCSV形式でインポート
-    import.label: ロケールインポート
   csv_attribute_group_import:
     label: 属性グループをCSV形式でインポート
     import.label: 属性グループインポート
-  csv_currency_import:
-    label: 通貨をCSV形式でインポート
-    import.label: 通貨インポート
   csv_group_type_import:
     label: グループタイプをCSV形式でインポート
     import.label: グループタイプインポート
@@ -142,33 +124,15 @@ batch_jobs:
   xlsx_association_type_export:
     label: 関連タイプをXLSX形式でインポート
     export.label: 関連タイプをXLSX形式でインポート
-  xlsx_channel_export:
-    label: チャネルをXLSX形式でエクスポート
-    export.label: チャネルエクスポート
-  xlsx_locale_export:
-    label: ロケールをXLSX形式でエクスポート
-    export.label: ロケールエクスポート
   xlsx_attribute_group_export:
     label: 属性グループをXLSX形式でエクスポート
     export.label: 属性グループエクスポート
-  xlsx_currency_export:
-    label: 通貨をXLSX形式でエクスポート
-    export.label: 通貨エクスポート
   xlsx_group_type_export:
     label: グループタイプをXLSX形式でエクスポート
     export.label: グループタイプエクスポート
-  xlsx_channel_import:
-    label: チャネルをXLSX形式でインポート
-    import.label: チャネルインポート
-  xlsx_locale_import:
-    label: ロケールをXLSX形式でインポート
-    import.label: ロケールインポート
   xlsx_attribute_group_import:
     label: 属性グループをXLSX形式でインポート
     import.label: 属性グループインポート
-  xlsx_currency_import:
-    label: 通貨をXLSX形式でインポート
-    import.label: 通貨インポート
   xlsx_group_type_import:
     label: グループタイプをXLSX形式でインポート
     import.label: グループタイプインポート

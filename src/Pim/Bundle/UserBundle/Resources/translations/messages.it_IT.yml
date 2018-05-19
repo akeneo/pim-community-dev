@@ -1,110 +1,104 @@
 pim_user:
   user:
-    tab:
-      general.title: Generale
-      additional.title: Aggiuntive
+    title: Utente
+    fields:
+      name_prefix: Prefisso del nome
+      email: E-mail
+      username: Nome utente
+      first_name: Nome
+      middle_name: Secondo nome
+      last_name: Cognome
+      name_suffix: Suffisso del nome
+      date_of_birth: Data di nascita
+      avatar: Avatar
+      timezone: Fuso orario
+      roles: Ruoli
+      groups: Gruppi
+      password: Password
+      password_again: Reinserisci password
+      product_grid_filters: Filtri per la griglia prodotti
+      catalog_locale: Impostazioni di localizzazione per il catalogo
+      catalog_scope: Ambito del catalogo
+      default_tree: Struttura predefinita
+      current_password: Password attuale
+      new_password: Nuova password
+      new_password_again: Nuova password (di nuovo)
+      default_grid_view:
+        none: Nessun
+      default_product_grid_view:
+        label: Visualizzazione predefinita griglia prodotti
+      ui_locale: Impostazioni locali dell'interfaccia utente
+      last_logged_in: Ultimo accesso
+      login_count: Conteggio login
+      user_salt: Salt utente
+      created: Creato
+      updated: Caricato
+      status: Stato
+      capabilities: Funzionalità
+      has_role: Ha il ruolo
+      has_group: Ha gruppo
+      active: Attivo
+      inactive: Inattivo
+    tabs:
+      general:
+        title: Generale
+        contact_information: Informazioni di contatto
+      additional:
+        title: Aggiuntive
+      interfaces:
+        title: Interfacce
       group_and_role.title: Gruppi e Ruoli
       password.title: Password
       business_unit.title: Business Unit
       email_synchronization.title: Impostazioni per la sincronizzazione email
-      interfaces.title: Interfacce
+    removed_user: Utente rimosso
+    login:
+      username_or_email: Nome utente o Email
+      remember_me: Ricordami su questo computer
+      password_forgotten: Hai dimenticato la password?
+      log_in: Accedi
+      forgot_password: Password Dimenticata
+      request: Richiesta
+      reset: Azzera
+      homepage: Vai alla Homepage
   group:
     tab:
       general.title: Generale
       users.title: Utenti
-oro.user.controller:
-  group.message.saved: "Gruppo salvato"
-  role.message.saved: "Ruolo salvato"
-  user.message.saved: "Utente salvato"
-  status.message.saved: "Stato salvato"
-oro.user.grid.users:
+  roles:
+    title: Ruolo
+    tab:
+      general: Generale
+      action: Autorizzazioni
+      users: Utenti
+  controller:
+    group:
+      message:
+        saved: "Gruppo salvato"
+    role:
+      message:
+        saved: "Ruolo salvato"
+    user:
+      message:
+        saved: "Utente salvato"
+pim_datagrid:
   columns:
-    username: "Nome utente"
-    email: "Email"
-    firstName: "Nome"
-    lastName: "Cognome"
-    createdAt: "Creato il"
-    updatedAt: "Caricato il"
-    enabled: "Stato"
-oro.user.grid.roles:
-  columns:
-    label: "Etichetta"
-oro.user.grid.groups:
-  columns:
-    name: "Nome"
-pim_title:
-  user.index: Utenti
-  user_role.index: Ruoli
-  user_group.index: Gruppi degli utenti
-  system_configuration.index: Configurazione
-user.title: Utente
-user.overview: Utente
-Users Management: Gestione degli utenti
-Create user: Crea utente
-btn.create.user: Crea utente
-New user: Nuovo utente
-Additional: Aggiuntive
-Groups and Roles: Gruppi e Ruoli
-Username: Nome utente
-Password: Password
-Re-enter password: Reinserisci password
-Name prefix: Prefisso del nome
-First name: Nome
-Middle name: Secondo nome
-Last name: Cognome
-Name suffix: Suffisso del nome
-Date of birth: Data di nascita
-Avatar: Avatar
-Additional emails: Email aggiuntive
-Add another email: Aggiungi un altro indirizzo email
-Catalog locale: Impostazioni di localizzazione per il catalogo
-Catalog scope: Ambito del catalogo
-Default tree: Struttura predefinita
-Business Units: Business Unit
-Email synchronization settings: Impostazioni per la sincronizzazione email
-Host: Host
-Port: Port
-Ssl: SSL
-Last logged in: Ultimo accesso
-Login count: Conteggio login
-Additional Information: Informazioni aggiuntive
-Interfaces: Interfacce
-Basic Information: Informazioni di base
-Contact Information: Informazioni di contatto
-User name: Nome utente
-Birthday: Data di nascita
-API key: Chiave API
-Ui locale: Impostazioni locali dell'interfaccia utente
-UI locale: Impostazioni locali dell'interfaccia utente
-User salt: Salt utente
-Current password: Password attuale
-New password: Nuova password
-Repeat new password: Nuova password (di nuovo)
-Generate key: Genera chiave
-Primary: primaria
-Removed user: Utente rimosso
-user:
-  product_grid_filters: Filtri per la griglia prodotti
-  default_product_grid_view:
-    label: Visualizzazione predefinita griglia prodotti
-  default_grid_view:
-    none: Nessun
-  timezone: Fuso orario
-Role: Ruolo
-Owner: Proprietario
-General: Generale
-Entity: Entità
-Capabilities: Funzionalità
-Save and close: Salva e chiudi
-Has role: Ha il ruolo
-role:
-  title: ruolo
-  overview: ruolo
-  edit: Modifica ruolo
-  create: Crea Ruolo
-btn.create.role: Crea Ruolo
-rights:
-  action: Autorizzazioni
+    user:
+      createdAt: "Creato il"
+      updatedAt: "Caricato il"
+    roles:
+      label: "Etichetta"
+    groups:
+      name: "Nome"
+confirmation:
+  remove:
+    role: Sei sicuro di voler eliminare questo ruolo?
+    user: Sei sicuro di voler eliminare questo utente?
+flash:
+  role:
+    removed: Ruolo rimosso con successo
+  user:
+    removed: Utente rimosso con successo
 oro_security:
   acl_group:
     user: Utenti
@@ -133,51 +127,3 @@ EDIT: Modifica
 DELETE: Eliminare
 ASSIGN: Assegna
 SHARE: Condividi
-oro:
-  user:
-    controller:
-      group:
-        message:
-          saved: "Gruppo salvato"
-      role:
-        message:
-          saved: "Ruolo salvato"
-      user:
-        message:
-          saved: "Utente salvato"
-      status:
-        message:
-          saved: "Stato salvato"
-    grid:
-      users:
-        columns:
-          username: "Nome utente"
-          email: "Email"
-          firstName: "Nome"
-          lastName: "Cognome"
-          createdAt: "Creato il"
-          updatedAt: "Caricato il"
-          enabled: "Stato"
-      roles:
-        columns:
-          label: "Etichetta"
-      groups:
-        columns:
-          name: "Nome"
-"Create group": "Crea gruppo"
-btn.create.user-group: Crea gruppo
-Has group: Ha gruppo
-Save and Close: Salva e chiudi
-user-group.overview: Gruppi degli utenti
-Log in: Accedi
-Remember me on this computer: Ricordami su questo computer
-Forgot your password?: Hai dimenticato la password?
-Username or Email: Nome utente o Email
-"Forgot Password": "Password Dimenticata"
-Request: Richiesta
-Check Email: Controlla la tua email
-Go to homepage: Vai alla Homepage
-Login: Login
-"Create role": "Crea Ruolo"
-"Edit role": "Modifica ruolo"
-"Logout": "Disconnetti"

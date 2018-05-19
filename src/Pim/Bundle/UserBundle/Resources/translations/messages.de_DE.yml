@@ -1,110 +1,104 @@
 pim_user:
   user:
-    tab:
-      general.title: Allgemein
-      additional.title: Ergänzend
+    title: Benutzer
+    fields:
+      name_prefix: Namenspräfix
+      email: E-Mail
+      username: Benutzername
+      first_name: Vorname
+      middle_name: Zweiter Vorname
+      last_name: Nachname
+      name_suffix: Namenssuffix
+      date_of_birth: Geburtsdatum
+      avatar: Benutzerbild
+      timezone: Zeitzone
+      roles: Rollen
+      groups: Gruppen
+      password: Passwort
+      password_again: Passwort erneut eingeben
+      product_grid_filters: Filter Produktliste
+      catalog_locale: Katalog-Gebietsschema
+      catalog_scope: Standard-Gültigkeitsbereich
+      default_tree: Standardkategoriebaum Produkte
+      current_password: Aktuelles Passwort
+      new_password: Neues Passwort
+      new_password_again: Neues Passwort (Wiederholung)
+      default_grid_view:
+        none: Keine
+      default_product_grid_view:
+        label: Standardansicht Produktliste
+      ui_locale: UI-Gebietsschema
+      last_logged_in: Zuletzt eingeloggt
+      login_count: Anzahl der Anmeldungen
+      user_salt: Benutzer-Streuung
+      created: Erstellt
+      updated: Aktualisiert
+      status: Status
+      capabilities: Fähigkeiten
+      has_role: hat Rolle
+      has_group: hat Gruppe
+      active: Aktiv
+      inactive: Inaktiv
+    tabs:
+      general:
+        title: Allgemein
+        contact_information: Kontaktinformationen
+      additional:
+        title: Ergänzend
+      interfaces:
+        title: Benutzeroberfläche
       group_and_role.title: Gruppen und Rollen
       password.title: Passwort
       business_unit.title: Geschäftsbereich
       email_synchronization.title: Einstellungen für E-Mail Synchronisierung
-      interfaces.title: Benutzeroberfläche
+    removed_user: Benutzer gelöscht
+    login:
+      username_or_email: Benutzername oder E-Mail
+      remember_me: Automatisch anmelden
+      password_forgotten: Passwort vergessen?
+      log_in: Anmelden
+      forgot_password: Passwort vergessen
+      request: Anfrage
+      reset: Zurücksetzen
+      homepage: Zurück zur Hauptseite
   group:
     tab:
       general.title: Allgemein
       users.title: Benutzer
-oro.user.controller:
-  group.message.saved: "Gruppe gespeichert"
-  role.message.saved: "Rolle gespeichert"
-  user.message.saved: "Benutzer gespeichert"
-  status.message.saved: "Status gespeichert"
-oro.user.grid.users:
+  roles:
+    title: Rolle
+    tab:
+      general: Allgemein
+      action: Berechtigungen
+      users: Benutzer
+  controller:
+    group:
+      message:
+        saved: "Gruppe gespeichert"
+    role:
+      message:
+        saved: "Rolle gespeichert"
+    user:
+      message:
+        saved: "Benutzer gespeichert"
+pim_datagrid:
   columns:
-    username: "Benutzername"
-    email: "E-Mail"
-    firstName: "Vorname"
-    lastName: "Nachname"
-    createdAt: "Erstellt am"
-    updatedAt: "Aktualisiert am"
-    enabled: "Status"
-oro.user.grid.roles:
-  columns:
-    label: "Bezeichnung"
-oro.user.grid.groups:
-  columns:
-    name: "Name"
-pim_title:
-  user.index: Benutzer
-  user_role.index: Rollen
-  user_group.index: Benutzergruppen
-  system_configuration.index: Konfiguration
-user.title: Benutzer
-user.overview: Benutzer
-Users Management: Benutzerverwaltung
-Create user: Benutzer anlegen
-btn.create.user: Benutzer anlegen
-New user: Neuer Benutzer
-Additional: Ergänzend
-Groups and Roles: Gruppen und Rollen
-Username: Benutzername
-Password: Passwort
-Re-enter password: Passwort erneut eingeben
-Name prefix: Namenspräfix
-First name: Vorname
-Middle name: Zweiter Vorname
-Last name: Nachname
-Name suffix: Namenssuffix
-Date of birth: Geburtsdatum
-Avatar: Benutzerbild
-Additional emails: Zusätzliche E-Mail Adressen
-Add another email: Weitere E-Mail Adresse hinzufügen
-Catalog locale: Katalog-Gebietsschema
-Catalog scope: Standard-Gültigkeitsbereich
-Default tree: Standardkategoriebaum Produkte
-Business Units: Geschäftsbereich
-Email synchronization settings: Einstellungen für E-Mail Synchronisierung
-Host: Host
-Port: Port
-Ssl: SSL
-Last logged in: Zuletzt eingeloggt
-Login count: Anzahl der Anmeldungen
-Additional Information: Zusätzliche Informationen
-Interfaces: Benutzeroberfläche
-Basic Information: Basisinformationen
-Contact Information: Kontaktinformationen
-User name: Benutzername
-Birthday: Geburtstag
-API key: API-Schlüssel
-Ui locale: UI-Gebietsschema
-UI locale: UI-Gebietsschema
-User salt: Benutzer-Streuung
-Current password: Aktuelles Passwort
-New password: Neues Passwort
-Repeat new password: Neues Passwort (Wiederholung)
-Generate key: Schlüssel erzeugen
-Primary: Primär
-Removed user: Benutzer gelöscht
-user:
-  product_grid_filters: Filter Produktliste
-  default_product_grid_view:
-    label: Standardansicht Produktliste
-  default_grid_view:
-    none: Keine
-  timezone: Zeitzone
-Role: Rolle
-Owner: Eigentümer
-General: Allgemein
-Entity: Entität
-Capabilities: Fähigkeiten
-Save and close: Speichern und schließen
-Has role: hat Rolle
-role:
-  title: Rolle
-  overview: Rolle
-  edit: Rolle bearbeiten
-  create: Rolle anlegen
-btn.create.role: Rolle anlegen
-rights:
-  action: Berechtigungen
+    user:
+      createdAt: "Erstellt am"
+      updatedAt: "Aktualisiert am"
+    roles:
+      label: "Bezeichnung"
+    groups:
+      name: "Name"
+confirmation:
+  remove:
+    role: Möchten Sie diese Rolle wirklich löschen?
+    user: Möchten Sie diesen Benutzer wirklich löschen?
+flash:
+  role:
+    removed: Rolle erfolgreich entfernt
+  user:
+    removed: Benutzer erfolgreich gelöscht
 oro_security:
   acl_group:
     user: Benutzer
@@ -133,51 +127,3 @@ EDIT: Bearbeiten
 DELETE: Löschen
 ASSIGN: Zuweisen
 SHARE: Teilen
-oro:
-  user:
-    controller:
-      group:
-        message:
-          saved: "Gruppe gespeichert"
-      role:
-        message:
-          saved: "Rolle gespeichert"
-      user:
-        message:
-          saved: "Benutzer gespeichert"
-      status:
-        message:
-          saved: "Status gespeichert"
-    grid:
-      users:
-        columns:
-          username: "Benutzername"
-          email: "E-Mail"
-          firstName: "Vorname"
-          lastName: "Nachname"
-          createdAt: "Erstellt am"
-          updatedAt: "Aktualisiert am"
-          enabled: "Status"
-      roles:
-        columns:
-          label: "Bezeichnung"
-      groups:
-        columns:
-          name: "Name"
-"Create group": "Gruppe anlegen"
-btn.create.user-group: Gruppe anlegen
-Has group: hat Gruppe
-Save and Close: Speichern und schließen
-user-group.overview: Benutzergruppen
-Log in: Anmelden
-Remember me on this computer: Automatisch anmelden
-Forgot your password?: Passwort vergessen?
-Username or Email: Benutzername oder E-Mail
-"Forgot Password": "Passwort vergessen"
-Request: Anfrage
-Check Email: Posteingang überprüfen
-Go to homepage: Zurück zur Hauptseite
-Login: Anmelden
-"Create role": "Rolle anlegen"
-"Edit role": "Rolle bearbeiten"
-"Logout": "Abmelden"

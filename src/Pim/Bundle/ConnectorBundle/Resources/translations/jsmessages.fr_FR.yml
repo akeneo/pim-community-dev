@@ -60,33 +60,15 @@ batch_jobs:
   csv_group_import:
     label: Import des groupes en CSV
     import.label: Import des groupes
-  csv_channel_export:
-    label: Export des canaux en CSV
-    export.label: Export des canaux
-  csv_locale_export:
-    label: Export des locales en CSV
-    export.label: Export des locales
   csv_attribute_group_export:
     label: Export des groupes d'attributs en CSV
     export.label: Export des groupes d'attributs
-  csv_currency_export:
-    label: Export des devises en CSV
-    export.label: Export des devises
   csv_group_type_export:
     label: Export des types de groupe en CSV
     export.label: Export des types de groupe
-  csv_channel_import:
-    label: Import des canaux en CSV
-    import.label: Import des canaux
-  csv_locale_import:
-    label: Import des locales en CSV
-    import.label: Import des locales
   csv_attribute_group_import:
     label: Import des groupes d'attributs en CSV
     import.label: Import des groupes d'attributs
-  csv_currency_import:
-    label: Import des devises en CSV
-    import.label: Import des devises
   csv_group_type_import:
     label: Import des types de groupe en CSV
     import.label: Import des types de groupe
@@ -146,33 +128,15 @@ batch_jobs:
   xlsx_association_type_export:
     label: Export des types d'association en XLSX
     export.label: Export des types d'association en XLSX
-  xlsx_channel_export:
-    label: Export des canaux en XLSX
-    export.label: Export des canaux
-  xlsx_locale_export:
-    label: Export des locales en XLSX
-    export.label: Export des locales
   xlsx_attribute_group_export:
     label: Export des groupes d'attributs en XLSX
     export.label: Export des groupes d'attributs
-  xlsx_currency_export:
-    label: Export des devises en XLSX
-    export.label: Export des devises
   xlsx_group_type_export:
     label: Export des types de groupe en XLSX
     export.label: Export des types de groupe
-  xlsx_channel_import:
-    label: Import des canaux en XLSX
-    import.label: Import des canaux
-  xlsx_locale_import:
-    label: Import des locales en XLSX
-    import.label: Import des locales
   xlsx_attribute_group_import:
     label: Import des groupes d'attributs en XLSX
     import.label: Import des groupes d'attributs
-  xlsx_currency_import:
-    label: Import des devises en XLSX
-    import.label: Import des devises
   xlsx_group_type_import:
     label: Import des types de groupe en XLSX
     import.label: Import des types de groupe
