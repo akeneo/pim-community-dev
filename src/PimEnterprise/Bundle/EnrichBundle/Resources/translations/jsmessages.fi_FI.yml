@@ -193,7 +193,7 @@ pim_menu:
     published_product: Julkaistut tuotteet
     rule: Säännöt
     upload_asset: Tuo assetteja
-page_title:
+pim_title:
   pimee_workflow_proposal_index: Ehdotukset
   pimee_workflow_published_product_index: Julkaistut tuotteet
   pimee_workflow_published_product_view: Julkaistu tuote {{ product.label }} | Näytä

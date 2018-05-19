@@ -1,3 +1,8 @@
+pim_user:
+  user:
+    fields:
+      default_published_product_grid_view:
+        label: Standard offentliggjorte produkter grid view
 user:
   email:
     notifications: E-mail påmindelser
@@ -8,8 +13,6 @@ user:
       yes: true
       no: false
   asset_delay_reminder: Aktiver forsinkelses rykker (i dage)
-  default_published_product_grid_view:
-    label: Standard offentliggjorte produkter grid view
 Default asset tree: Standard aktiver træ
 pimee_user:
   user:

@@ -203,7 +203,7 @@ pim_menu:
     published_product: 公開済み製品
     rule: ルール
     upload_asset: アセットをアップロードする
-page_title:
+pim_title:
   pimee_workflow_proposal_index: 提案
   pimee_workflow_published_product_index: 公開済み製品
   pimee_workflow_published_product_view: 公開製品 {{ product.label }} | ビュー

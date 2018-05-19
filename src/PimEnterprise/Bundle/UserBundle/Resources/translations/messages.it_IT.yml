@@ -1,3 +1,8 @@
+pim_user:
+  user:
+    fields:
+      default_published_product_grid_view:
+        label: Visualizzazione predefinita griglia dei prodotti pubblicati
 user:
   email:
     notifications: Notifiche email
@@ -8,8 +13,6 @@ user:
       yes: true
       no: false
   asset_delay_reminder: Promemoria di ritardo dell'asset (in giorni)
-  default_published_product_grid_view:
-    label: Visualizzazione predefinita griglia dei prodotti pubblicati
 Default asset tree: Struttura predefinita per gli asset
 pimee_user:
   user:

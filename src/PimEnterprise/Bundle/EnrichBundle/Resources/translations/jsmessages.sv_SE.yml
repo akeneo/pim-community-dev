@@ -182,7 +182,7 @@ pim_menu:
     proposal: Förslag
     published_product: Publicerade produkter
     rule: Regler
-page_title:
+pim_title:
   pimee_workflow_proposal_index: Förslag
   pimee_workflow_published_product_index: Publicerade produkter
   pimee_product_asset_index: Tillgångar

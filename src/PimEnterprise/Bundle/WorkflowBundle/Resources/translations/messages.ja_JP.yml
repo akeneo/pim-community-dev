@@ -98,15 +98,6 @@ pim_menu:
   item:
     published_product: 公開済み製品
     proposal: 提案
-pim_title:
-  published_product:
-    index: 公開済み製品
-    view: 公開製品 %product.label%| ビュー
-  product:
-    dispatch: "製品 %product.label%"
-    show: "製品 %product.label% |表示"
-  proposal:
-    index: 提案
 btn.editworkingcopy: 作業コピーを編集します。
 confirmation:
   product:

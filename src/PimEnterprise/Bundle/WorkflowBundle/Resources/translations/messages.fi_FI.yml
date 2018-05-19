@@ -72,15 +72,6 @@ pim_menu:
   item:
     published_product: Julkaistut tuotteet
     proposal: Ehdotukset
-pim_title:
-  published_product:
-    index: Julkaistut tuotteet
-    view: Julkaistu tuote %product.label% | Näytä
-  product:
-    dispatch: "Tuote %product.label%"
-    show: "Tuote %product.label% | Näytä"
-  proposal:
-    index: Ehdotukset
 btn.editworkingcopy: Muokkaa työn alla olevaa kopiota
 confirmation:
   product:

@@ -98,11 +98,6 @@ pim_menu:
   item:
     published_product: Publicerade produkter
     proposal: Förslag
-pim_title:
-  published_product:
-    index: Publicerade produkter
-  proposal:
-    index: Förslag
 btn.editworkingcopy: Redigera arbetskopian
 confirmation:
   product:

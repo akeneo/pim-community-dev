@@ -98,11 +98,6 @@ pim_menu:
   item:
     published_product: Productos publicados
     proposal: Propuestas
-pim_title:
-  published_product:
-    index: Productos publicados
-  proposal:
-    index: Propuestas
 btn.editworkingcopy: Editar copia de trabajo
 confirmation:
   product:
