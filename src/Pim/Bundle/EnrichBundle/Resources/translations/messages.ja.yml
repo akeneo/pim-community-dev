@@ -102,7 +102,7 @@ pim_enrich:
       launched_flash: '"カテゴリに追加"一括操作が開始されています。終了後に通知されます。'
     classify-move:
       label: カテゴリ間を移動
-      description: 製品は以下のカテゴリに配置され、既存の表示順は削除されます。
+      description: 製品は以下のカテゴリに配置されます、既存の表示順は削除されます。
       success_flash: 選択したカテゴリに製品が移動されました
       launched_flash: カテゴリに移動する一括操作が開始されています。終了後に通知されます。
     classify-remove:

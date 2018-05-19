@@ -19,12 +19,12 @@ All: Alla
 Per page: Per sida
 Mass Action Confirmation: Bekräfta massåtgärd
 Mass action performed.: Massåtgärd utförd.
-Mass action is not performed.: Massåtgärd inte utförd.
+Mass action is not performed.: Massåtgärd har inte utförts.
 Please, select items to perform mass action.: Välj objekt för massåtgärd.
 Execution Confirmation: Bekräfta åtgärd
 Are you sure you want to do this?: Är du säker på att du vill göra detta?
 Action performed.: Åtgärd utförd.
-Action is not performed.: Åtgärd inte utförd.
+Action is not performed.: Åtgärd har inte utförts.
 Please, select item to perform action.: Välj ett objekt för åtgärd.
 View per page: Visa per sida
 Enabled: Aktiverad
@@ -33,7 +33,7 @@ not_available: '-'
 Yes: true
 No: false
 oro.datagrid.entityHint: Enhet
-oro.datagrid.noentities: Inga poster funna
+oro.datagrid.noentities: Inga resultat hittades
 oro.datagrid.nocolumns: Inga kolumner konfigurerade för denna tabell
 oro.datagrid.pagination.label: "Sida"
 oro.datagrid.pagination.totalPages: "av {{ totalPages }}"
@@ -50,6 +50,7 @@ pim:
   grid:
     choice_filter:
       label_empty: är tom
+      label_not_empty: är inte tom
       label_in_list: i listan
     price_filter:
       label: Valuta

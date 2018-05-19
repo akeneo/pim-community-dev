@@ -1,11 +1,11 @@
 confirmation:
+  title: Bekräfta
   remove:
     item: Är du säker på att du vill radera det här objektet?
     association_type: Är du säker på att du vill radera den här assosiationstypen?
     attribute: Är du säker på att du vill radera det här attributet?
     attribute_group: Är du säker på att du vill radera det här attributet?
     family: Är du säker på att du vill radera den här familjen?
-    product: Är du säker på att du vill ta bort denna produkt?
     channel: Är du säker på att du vill ta bort denna kanal?
     group: Är du säker på att du vill ta bort denna grupp?
     group_type: Är du säker på att du vill ta bort denna grupptyp?
@@ -98,28 +98,56 @@ label:
   attribute_option:
     add_option: Lägg till alternativ
 Code: Kod
+Edit: Redigera
+Delete: Ta bort
+Edit attributes of the product: Redigera attribut för produkten
+Classify the product: Klassificera produkten
+Delete the product: Ta bort denna produkt
+Change status: Ändra status
+Toggle status: Växla status
 pim:
   grid:
     mass_action:
+      quick_export:
+        csv_all: CSV (alla attribut)
+        csv_grid_context: CSV (från tabellen)
+        xlsx_all: Excel (alla attribut)
+        xlsx_grid_context: Excel (från tabellen)
       delete: Ta bort
       mass_edit: Massåtgärder
+      category_edit: Flytta produkter i kategorier
 jstree.create: Skapa
 jstree.done: Slutförd
 switch_on: "Ja"
 switch_off: "Nej"
 pim_enrich:
+  item:
+    list:
+      delete.label: Ta bort
+      delete.error: Fel under radering av artikel
+    delete:
+      confirm.content: Är du säker du vill ta bort denna {{ itemName }}? Det går inte att ångra åtgärden
+      confirm.title: Ta bort {{ itemName }}
   navigation:
+    link:
+      back_to_grid: Tillbaka till listan
     other_actions: Andra åtgärder
   entity:
     save:
       label: Spara
+    info:
+      update_failed: Uppdateringen misslyckades
+      update_successful: Uppdatering gick bra
     create_popin:
+      code: Kod
+      label: Etikett
       labels:
         save: Spara
         cancel: Avbryt
     product:
       navigation: Produkt navigering
       infos: Produkt information
+      title: produkt
       locale: Språk
       category: Kategori
       create: Skapa
@@ -129,14 +157,34 @@ pim_enrich:
         enabled: Aktiverad
         disabled: Avaktiverad
         download_pdf: PDF
+        compare_translate: Jämför / Översätta
+        delete: Ta bort
         save: Spara
       history:
+        version: Version
         author: Upphovsman
         logged_at: Loggad den
+        from: Från
+        modified: Ändrad
         old_value: Gammalt värde
         new_value: Nytt värde
+        actions: Åtgärder
+      info:
+        deletion_successful: Produkten har raderats.
+        deletion_failed: Produkten kunde inte raderas.
+        update_successful: Produkten har uppdaterats.
+        update_failed: Produkten kunde inte uppdateras.
+        field_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
+        already_in_upload: En fil är har redan laddats upp för det här attributet i språkvariant "{{ locale }}" och omfattning "{{ scope }}"
+      error:
+        upload: Ett fel inträffade under filuppladdning
       meta:
+        created: Skapat
+        created_by: Av
+        updated_by: Av
+        updated: Senaste uppdatering
         family:
+          title: Familj
           none: Ingen
         family_variant:
           title: Variant
@@ -144,7 +192,10 @@ pim_enrich:
         groups:
           title: Grupper
           modal:
+            title: Grupp {{ group }}
             view_group: Visa grupp
+            group_label: Etikett
+            more_products: '{{ count }} produkter till...'
             close: Stäng
         status: Status
         scope: Kanal
@@ -172,7 +223,7 @@ pim_enrich:
           cancel: Avbryt
       message:
         created: Produkten har skapts
-      completeness: Slutförd
+      completeness: Klart
     product_model:
       add_child:
         cancel: Avbryt
@@ -187,9 +238,9 @@ pim_enrich:
         update_failed: Associationstypen kunde inte ändras.
         field_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
       meta:
-        created: Skapad
+        created: Skapat
         created_by: Skapad av
-        updated: Uppdaterad
+        updated: Ändrad
         updated_by: Ändrad av
       btn:
         save: Spara
@@ -206,10 +257,10 @@ pim_enrich:
         update_failed: Produkten kunde inte uppdateras.
         field_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
       meta:
-        created: Skapad
+        created: Skapat
         created_by: Skapad av
-        updated: Uppdaterad
-        updated_by: Uppdaterad av
+        updated: Ändrad
+        updated_by: Ändrad av
       btn:
         save: Spara
       title: grupp typ
@@ -228,10 +279,10 @@ pim_enrich:
         create_failed: Kanalen kunde inte skapas.
         field_not_ready: "Kanalen kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
       meta:
-        created: Skapad
+        created: Skapat
         created_by: Skapad av
-        updated: Uppdaterad
-        updated_by: Uppdaterad av
+        updated: Ändrad
+        updated_by: Ändrad av
       btn:
         save: Spara
     family:
@@ -244,10 +295,10 @@ pim_enrich:
         cant_remove_attribute_as_image: Kan inte ta bort attributet används som huvudbild
         attribute_edit_permission_is_not_granted: Du saknar rättigheter för att ändra på en familjs attribut
       meta:
-        created: Skapad
+        created: Skapat
         created_by: Skapad av
-        updated: Uppdaterad
-        updated_by: Uppdaterad av
+        updated: Ändrad
+        updated_by: Ändrad av
       btn:
         save: Spara
       create_popin:
@@ -348,6 +399,7 @@ pim_enrich:
             add: Lägg tilll
             add_attributes: Lägg till attribut
           info:
+            search_attributes: Sök...
             no_available_attributes: Det finns inga fler attribut att lägga till
             no_match: Inga träffar hittades
             load_more: Laddar fler resultat...
@@ -425,12 +477,12 @@ pim_enrich:
           title: Egenskaper
           general: Allmänna
           code: Kod
-          attribute_as_label: Attribut används som etikett
+          attribute_as_label: Attribut som etikett
           attribute_as_image: Attribut används som huvudbilden
           empty_attribute_as_image: Inte markerad
           label_translations: Etikettsöversättningar
         attributes:
-          title: Attributer
+          title: Attribut
           label_label: Etikett
           toolbox:
             select_attributes_by_groups: Lägg till efter grupper
@@ -473,9 +525,14 @@ pim_enrich:
           title: Egenskaper
           general: Allmänna egenskaper
           code: Kod
+          label_translations: Etikettsöversättningar
         attribute:
+          title: Attribut
           table:
+            name: Namn
+            type: Typ
             scopable: Omfattningbar
+            localizable: Lokaliserbar
         history.title: Historik
     common:
       tab:
@@ -484,6 +541,7 @@ pim_enrich:
             add: Lägg tilll
             add_attributes: Lägg till attribut
           info:
+            search_attributes: Sök...
             no_available_attributes: Det finns inga fler attribut att lägga till
     job_execution:
       loading: Laddar...
@@ -513,6 +571,7 @@ pim_enrich:
         import: Importprofil
         export: Exportprofil
       button:
+        edit.title: Redigera
         export.title: Exportera nu
         import.launch: Importera nu
         import.upload: Ladda upp och importera nu
@@ -527,7 +586,15 @@ pim_enrich:
           title: Innehåll
         properties:
           title: Egenskaper
+          code:
+            title: Kod
+          label:
+            title: Etikett
+          decimal_separator:
+            title: Decimalavgränsare
+            help: Bestäm decimalavgränsare
           date_format:
+            title: Datumformat
             help: Bestäm vilket datumformat som ska användas
           file_path:
             title: Filsökväg
@@ -564,7 +631,7 @@ pim_enrich:
             help: Namnet på gruppkolumnen
           enabled:
             title: Aktivera produkten
-            help: Om den importerade produkten ska vara aktiv eller inte
+            help: Om den importerade produkten ska vara aktiv
           enabled_comparison:
             title: Jämför värden
             help: Aktivera jämförelsen mellan ursprungliga och importerade värden. Kan påskynda import om importerade värden är mycket liknande ursprungliga värden
@@ -576,9 +643,9 @@ pim_enrich:
       file_path: Filsökväg
     attribute:
       meta:
-        created: Skapad
+        created: Skapat
         created_by: av
-        updated: Senast uppdaterad
+        updated: Senaste uppdatering
         updated_by: av
       tab:
         properties:
@@ -598,7 +665,6 @@ pim_enrich:
             default_metric_unit: Metrisk standardenhet
             group: Attributgrupp
             is_locale_specific: Specifik språk
-            localizable: Värde per språk
             max_characters: Max tecken
             max_file_size: Max filstorlek (MB)
             metric_family: Metrisk familj
@@ -607,7 +673,6 @@ pim_enrich:
             number_max: Max antal
             number_min: Min antal
             reference_data_name: Referens datatyp
-            scopable: Värde per kanal
             type: Typ
             unique: Unikt värde
             useable_as_grid_filter: Användbara i rutnät
@@ -622,7 +687,7 @@ pim_enrich:
         labels:
           title: Etikettsöversättningar
         choices:
-          title: Alternativ
+          title: Inställningar
         history:
           title: Historik
     mass_edit:
@@ -634,6 +699,9 @@ pim_enrich:
             select_attributes: Lägg till attribut
             add: Lägg tilll
             attributes_groups_selected: '{{ itemsCount }} grupp(er) valda'
+    basket:
+      title: Korg
+      empty_basket: Korgen är tom
   export:
     product:
       data:
@@ -641,7 +709,7 @@ pim_enrich:
       structure:
         title: Filtrera datan
         attributes:
-          title: Attributer
+          title: Attribut
       filter:
         channel:
           title: Kanal
@@ -650,8 +718,8 @@ pim_enrich:
           title: Språk
           help: "Språken väljer de lokaliserade produktvärdena att exportera. Ex: endast produktinformation på franska."
         attributes:
-          title: Attributer
-          edit: Ändra
+          title: Attribut
+          edit: Redigera
           help: "Välj vilken produktinformation som ska exporteras. Ex: endast tekniska attribut."
           empty: Alla attribut kommer att exporteras
           modal:
@@ -667,6 +735,7 @@ pim_enrich:
           empty_selection: Alla attribut kommer att exporteras
           title: Attribut
         family:
+          title: Familj
           help: "Välj vilka produkter som exporteras beroende på familj. T. ex. exportera endast skor och klänningar."
           operators:
             IN: I listan
@@ -707,12 +776,31 @@ pim_enrich:
             "=": Är lika med
             "!=": Är inte lika med
             ">=": Större än eller lika
+            ">": Större än
             "<=": Lägre än eller lika
             "<": Lägre än
             EMPTY: Är tomt
+            NOT EMPTY: Är inte tom
         string:
           operators:
             ALL: Alla
+            CONTAINS: Innehåller
+            DOES NOT CONTAIN: Innehåller inte
+            "=": Är lika med
+            STARTS WITH: Börjar med
+            ENDS WITH: Slutar med
+            EMPTY: Är tomt
+            NOT EMPTY: Är inte tom
+        price-collection:
+          operators:
+            "=": Är lika med
+            "!=": Är inte lika med
+            ">=": Större än eller lika
+            ">": Större än
+            "<=": Lägre än eller lika
+            "<": Lägre än
+            EMPTY: Är tomt
+            NOT EMPTY: Är inte tom
         multi_select:
           operators:
             IN: I listan
@@ -807,15 +895,13 @@ pim_enrich:
           label: Ändra status
           description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
           field: Aktivera
-        edit_common:
-          label: Redigera Attribut
         change_family:
           description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
+          field: Familj
         add_to_group:
+          label: Lägg till i grupp
           description: Markera de grupper som du vill lägga till valda produkter
           field: Grupper
-        move_to_category:
-          description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen är förlorad.
         remove_from_category:
           description: Produkterna kommer att tas bort från följande kategorier.
     family:
@@ -831,6 +917,7 @@ pim_enrich.error:
   http:
     403: Forbidden. You are not allowed to access this page
 page_title:
+  oro_default: Instrumentpanel
   pim_enrich_attributegroup_index: Attributgrupper
   pim_enrich_attributegroup_create: Attributgrupp | Skapa
   pim_enrich_categorytree_index: Kategoriträd
@@ -857,9 +944,9 @@ page_title:
   pim_analytics_system_info_index: Systeminformation
 batch_jobs:
   add_product_value:
-    label: Lägg till produkt värde
+    label: Lägga till produktens värde
     perform:
-      label: Lägg till produkt värde
+      label: Lägga till produktens värde
   update_product_value:
     label: Uppdatera produktens värde
     perform:
@@ -927,7 +1014,7 @@ batch_jobs:
   csv_association_type_import:
     label: Importera associationstyp från CSV
     validation.label: Filvalidering
-    import.label: Importera associationer
+    import.label: Importera associationstyp
   csv_family_import:
     label: Importera familjer från CSV
     validation.label: Filvalidering
@@ -1063,7 +1150,10 @@ batch_jobs:
 job_tracker:
   download_archive:
     archive: Ladda ner genererat arkiv
+    output: Ladda ner genererade filer
+    input: Laddar ner lästa filer
     invalid_xlsx: Hämta ogiltig data
+    invalid_csv: Hämta ogiltig data
 pim_menu:
   tab:
     activity: Aktivitet
@@ -1071,14 +1161,21 @@ pim_menu:
     products: Products
     exports: Exporter
     settings: Inställningar
+    system: System
     help:
       title: Hjälp
   item:
-    association_type: Associationstyp
+    association_type: Associationstyper
+    attribute: Attribut
     attribute_group: Attributgrupper
     category: Kategorier
+    channel: Kanaler
+    currency: Valutor
     dashboard: Instrumentpanel
+    family: Familjer
     group: Grupper
+    group_type: Grupptyper
+    locale: Språk
     product: Products
     published_product: Publicerade produkter
     export_history: Exporthistorik
@@ -1091,6 +1188,10 @@ pim_menu:
     user_group: Grupper
     user_role: Roller
     info: Systeminformation
+    job_tracker: Spåra process
+    api_connection: API-anslutning
+  navigation:
+    system: Systemnavigering
   user:
     logout: Logga ut
     user_account: Mitt konto

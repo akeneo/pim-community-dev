@@ -81,7 +81,7 @@ pim_importexport:
     import_execution:
       index: Näytä vientiraporttien lista
       show: Näytä vientiraportin yksityiskohdat
-      dl_log: Lataa vientiraporttilogi
+      dl_log: Lataa tuontiraporttilogi
       dl_files: Lataa tuodut tiedostot
   acl_group:
     export: Vientiprofiili

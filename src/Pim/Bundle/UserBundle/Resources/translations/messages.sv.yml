@@ -28,7 +28,7 @@ oro.user.grid.users:
     enabled: "Status"
 oro.user.grid.roles:
   columns:
-    label: "Titel"
+    label: "Etikett"
 oro.user.grid.groups:
   columns:
     name: "Namn"
@@ -57,8 +57,8 @@ Date of birth: Födelsedatum
 Avatar: Profilbild
 Additional emails: Ytterligare e-post
 Add another email: Lägga till en annan e-post
-Catalog locale: Språkkatalog
-Catalog scope: Katalogen räckvidd
+Catalog locale: Katalogspråk
+Catalog scope: Område för katalog
 Default tree: Standardträd
 Business Units: Affärsenheter
 Email synchronization settings: Inställningar för synkronisering av e-post
@@ -89,6 +89,7 @@ user:
     label: Standard produktlistningsvy
   default_grid_view:
     none: Ingen
+  timezone: Tidszon
 Role: Roll
 Owner: Ägare
 General: Allmänna
@@ -111,17 +112,17 @@ oro_security:
     group: Användargrupper
   acl:
     user:
-      view: Lista användare
+      view: Visa användare
       create: Skapa en användare
       edit: Redigera användare
       delete: Ta bort en användare
     role:
-      view: Lista roller
+      view: Visa roller
       create: Skapa en roll
       edit: Redigera roller
       delete: Ta bort en roll
     group:
-      view: Lista användargrupper
+      view: Visa användargrupper
       create: Skapa en användargrupp
       edit: Redigera användargrupper
       delete: Ta bort en användargrupp

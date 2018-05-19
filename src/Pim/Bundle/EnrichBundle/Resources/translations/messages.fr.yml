@@ -561,39 +561,39 @@ Attributes: Attributs
 Title: Titre
 pim_title.attribute_group:
   index: "Groupes d'attributs"
-  create: "Groupe d'attributs | Créer"
-  edit: "Groupe d'attribut %group.label% | Modifier"
+  create: "Groupe d'attributs | Création"
+  edit: "Groupe d'attribut %group.label% | Édition"
 pim_title.category:
   index: "Arborescences des catégories"
-  create: "Arborescences | Créer"
-  edit: "Arborescences %category.label% | Modifier"
+  create: "Arborescences | Création"
+  edit: "Arborescences %category.label% | Édition"
 pim_title.attribute:
   index: "Attributs"
-  create: "Attributs | Créer"
-  edit: "Attributs %attribute.label% | Modifier"
+  create: "Attributs | Création"
+  edit: "Attributs %attribute.label% | Édition"
 pim_title.product:
   index: "Produits"
-  edit: "Produits %product.label% | Modification"
+  edit: "Produits %product.label% | Édition"
 pim_title.family:
   index: "Familles"
-  edit: "Famille %family.label% | Modifier"
+  edit: "Famille %family.label% | Édition"
 pim_title.channel:
   index: "Canaux"
-  create: "Canaux | Créer"
-  edit: "Canal %channel.label% | Modifier"
+  create: "Canaux | Création"
+  edit: "Canal %channel.label% | Édition"
 pim_title.currency:
   index: "Devises"
 pim_title.locale:
   index: "Locales"
 pim_title.group:
   index: "Groupes"
-  edit: "Groupes %group.label% | Modifier"
+  edit: "Groupes %group.label% | Édition"
 pim_title.association_type:
   index: "Types d'association"
-  edit: "Types d'association %association type.label% | Modifier"
+  edit: "Types d'association %association type.label% | Édition"
 pim_title.group_type:
   index: "Types de groupe"
-  edit: "Type de groupe %group type.label% | Modifier"
+  edit: "Type de groupe %group type.label% | Édition"
 pim_title.mass_edit_product_action:
   choose: "Édition en masse | Choisir"
   configure: "Édition en masse | Configurer"

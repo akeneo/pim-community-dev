@@ -310,7 +310,7 @@ btn:
   next: Vor
   back: Zurück
   confirm: Bestätigen
-  to grid: Zurück zur Übersicht
+  to grid: Zurück zur Tabellenansicht
   to parent: Zurück zur übergeordneten Ebene
   download_pdf: PDF
   download: Download
@@ -449,7 +449,7 @@ Required: Erforderlich
 Unique: Eindeutig
 Not required: Nicht erforderlich
 Translatable: Übersetzbar
-Scopable: Je Ausgabekanal individualisierbar
+Scopable: Wert je Ausgabekanal
 Localizable: Lokalisierbar
 Unique value: Eindeutiger Wert
 Attribute group: Attributgruppe
@@ -472,7 +472,7 @@ Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
 Useable as grid column: Verwendbar als Spalte in der Übersicht
-Useable as grid filter: Verwendbar im Raster
+Useable as grid filter: Verwendbar in der Tabellenansicht
 Family: Produktfamilie
 Image: Abbildung
 Variant products: Produktvarianten
@@ -527,7 +527,7 @@ Negative allowed: Negative Werte zulassen
 Date min: Min. Datum
 Date max: Max. Datum
 Metric family: Metrische Gruppe
-Default metric unit: Standard-Maßeinheit
+Default metric unit: Standardmaßeinheit
 Max file size: Maximale Dateigröße (MB)
 Allowed extensions: Zulässige Dateiendungen
 None: Keine
@@ -549,7 +549,6 @@ pim_title.category:
 pim_title.attribute:
   index: "Attribute"
   create: "Attribute | Anlegen"
-  edit: "Attributee %attribute.label% | Bearbeiten"
 pim_title.product:
   index: "Produkte"
 pim_title.family:
@@ -652,7 +651,7 @@ pim_enrich.mass_edit_action:
     label: Benötigte Attribute auswählen
     description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
     success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
-To enable: Aktivieren
+To enable: Zu aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
 Remove this attribute: Dieses Attribut löschen
@@ -806,4 +805,4 @@ pim_enrich_attribute_form:
   availableLocales: Verfügbare Gebietsschemata
   locale_specific: Gebietsschemaspezifisch
   group: Attributgruppe
-  useableAsGridFilter: Verwendbar im Raster
+  useableAsGridFilter: Verwendbar in der Tabellenansicht

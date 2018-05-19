@@ -100,7 +100,7 @@ pim_enrich:
       launched_flash: L'azione di massa "aggiungi alle categorie" è stata lanciata. Sarai avvisato quando finisce.
     classify-move:
       label: Sposta tra categorie
-      description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
+      description: I prodotti saranno posizionati nelle seguenti categorie, il posizionamento attuale viene perso.
       success_flash: Il prodotto/i prodotti è stato spostato/sono stati spostati nelle categorie selezionate
       launched_flash: L'azione di massa "sposta nelle categorie" è stata lanciata. Sarai avvisato quando finisce.
     classify-remove:
@@ -130,7 +130,7 @@ pim_enrich:
   sequential_edit_action:
     product:
       previous: Torna indietro a "%product%" senza salvare.
-      next: Vai a "%product%" senza salvare.
+      next: Torna a "%product%" senza salvare.
   acl:
     locale:
       index: Elenco formato impostazioni locali
@@ -151,7 +151,7 @@ pim_enrich:
       mass_edit: Azione di modifica di massa dell'articolo
       comment: Commenta i prodotti
       download: Scarica il prodotto in formato PDF
-      history: Visualizza la storia del prodotto
+      history: Visualizza lo storico del prodotto
     product_model:
       edit_attributes: Modifica gli attributi di modello di prodotto
       categories_view: Consulta le categorie di un modello di prodotto
@@ -231,7 +231,7 @@ pim_enrich:
   reference_data:
     empty_value:
       reference_data_type:
-        label: Scegli il tipo di dati di riferimento
+        label: Sceglii il tipo di dati di riferimento
 attribute:
   title: attributo
   edit: Modifica attributo
@@ -302,7 +302,7 @@ btn:
     group: Crea gruppo
     association type: Crea tipo associazione
     group type: Crea tipo gruppo
-    drag_or_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+    drag_or_upload: Drag and drop per caricare un file o fai click qui
   edit: modifica
   save: salva
   save and create: salva e crea nuovo
@@ -605,7 +605,7 @@ Disable: Disabilita
 pim_enrich.sequential_edit_action:
   product:
     previous: Torna indietro a "%product%" senza salvare.
-    next: Vai a "%product%" senza salvare.
+    next: Torna a "%product%" senza salvare.
 pim_enrich.mass_edit_action:
   limit_exceeded: Si prega di scegliere meno di %limit% elementi da modificare
   product:
@@ -743,8 +743,8 @@ pim_mass_edit:
   notification:
     mass_edit:
       error: Modifica di massa <strong>%label%</strong> non riuscita
-      warning: La modifica di massa <strong>%label%</strong> è stata completata con alcuni avvisi
-      success: La modifica di massa <strong>%label%</strong> è stata completata
+      warning: Modifica di massa <strong>%label%</strong> completata con alcuni avvisi
+      success: Modifica di massa <strong>%label%</strong> completata
     quick_export:
       error: Esportazione rapida <strong>%label%</strong> non riuscita
       warning: Esportazione rapida <strong>%label%</strong> completata con alcuni avvisi
