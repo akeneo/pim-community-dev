@@ -21,6 +21,7 @@
 
 - PIM-7325: Fix family grid search filter
 - PIM-7328: Fix a bug that prevents to index very large texts in Elasticsearch
+- GITHUB-7619: Fix a bug in measure family converter thats break the API (Cheers [Jan Schneider](https://github.com/yunosh))
 
 # 2.0.22 (2018-04-25)
 
