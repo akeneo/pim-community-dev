@@ -7,8 +7,8 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
