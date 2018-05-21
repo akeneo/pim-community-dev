@@ -97,5 +97,4 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
 
         return $convertedItem;
     }
-
 }
