@@ -43,7 +43,10 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
         $output->writeln("<info>Generating missing completenesses...</info>");
 
         $options = [
-            'filters' => [['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null]]
+            'filters' => [
+                ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null],
+                ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+            ]
         ];
 
         $container = $this->getContainer();

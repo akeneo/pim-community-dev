@@ -103,3 +103,17 @@ Feature: List attribute groups
     Then I should see the text "[attribute_group_1]"
     And I should see the text "[attribute_group_22]"
     And the order of groups should be "[attribute_group_1], [attribute_group_2], [attribute_group_4], [attribute_group_5], [attribute_group_6], [attribute_group_7], [attribute_group_8], [attribute_group_9], [attribute_group_10], [attribute_group_11], [attribute_group_12], [attribute_group_14], [attribute_group_15], [attribute_group_16], [attribute_group_17], [attribute_group_18], [attribute_group_19], [attribute_group_21], [attribute_group_22], [attribute_group_3], [attribute_group_20], [attribute_group_13]"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7338
+  Scenario: Successfully display attribute group labels translated from the catalog locale
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the "tablet" channel page
+    And I add the "german" locale to the "tablet" channel
+    And I edit the "Julia" user
+    And I visit the "Additional" tab
+    And I fill in the following information:
+      | Catalog locale       | de_DE             |
+    And I save the user
+    When I am on the attribute groups page
+    Then I should see the text "[marketing]"
