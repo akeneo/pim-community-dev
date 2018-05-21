@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
 

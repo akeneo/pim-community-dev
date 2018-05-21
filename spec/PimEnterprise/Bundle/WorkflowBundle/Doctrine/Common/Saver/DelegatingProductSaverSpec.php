@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -111,7 +111,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $productRepository->find(42)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
+
         $tokenStorage->getToken()->willReturn($token);
         $filteredProduct->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
@@ -137,7 +137,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         ProductInterface $filteredProduct
     ) {
         $mergeDataOnProduct->merge($filteredProduct)->willReturn($filteredProduct);
-        
+
         $filteredProduct->getId()->willReturn(null);
 
         $objectManager->persist($filteredProduct)->shouldBeCalled();
@@ -168,7 +168,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $productRepository->find(42)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
+
         $filteredProduct->getId()->willReturn(42);
         $filteredProduct->getIdentifier()->willReturn('sku');
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
@@ -210,7 +210,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $productRepository->find(42)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
+
         $filteredProduct->getId()->willReturn(42);
         $filteredProduct->getIdentifier()->willReturn('sku');
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
@@ -251,7 +251,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $productRepository->find(42)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
+
         $filteredProduct->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
             ->willReturn(false);
@@ -291,7 +291,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     ) {
         $productRepository->find(42)->willReturn($fullProduct);
         $mergeDataOnProduct->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
+
         $filteredProduct->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
             ->willReturn(false);

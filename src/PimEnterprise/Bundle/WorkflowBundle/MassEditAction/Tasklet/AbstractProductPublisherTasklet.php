@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Bundle\UserBundle\Manager\UserManager;
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Connector\Step\TaskletInterface;

@@ -4,10 +4,10 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Widget;
 
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Manager\UserManager;
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;

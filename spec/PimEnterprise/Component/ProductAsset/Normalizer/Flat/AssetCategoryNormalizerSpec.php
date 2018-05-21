@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\User\Model\Group;
+use Akeneo\UserManagement\Component\Model\Group;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

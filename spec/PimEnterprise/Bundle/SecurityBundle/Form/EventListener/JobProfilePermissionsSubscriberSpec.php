@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Form\EventListener;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Form\Type\JobProfilePermissionsType;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Prophecy\Argument;

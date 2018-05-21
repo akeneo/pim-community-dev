@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\UserManagement\Component\Model\Group;
 use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\User\Model\Group;
 use PimEnterprise\Component\Security\Attributes;
 use Psr\Container\ContainerInterface;
 

@@ -14,12 +14,12 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\User\Model\Group;
-use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\User\UserInterface;
 

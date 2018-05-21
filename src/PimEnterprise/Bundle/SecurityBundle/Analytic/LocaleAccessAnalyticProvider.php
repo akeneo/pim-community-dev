@@ -12,10 +12,10 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Analytic;
 
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\User\Model\User;
 
 /**
  * Data collector to return the locale access count

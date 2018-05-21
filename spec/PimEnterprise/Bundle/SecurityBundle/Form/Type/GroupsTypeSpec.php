@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\Group;
+use Akeneo\UserManagement\Component\Model\Group;
 use Prophecy\Argument;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

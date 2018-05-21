@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Form\EventListener;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

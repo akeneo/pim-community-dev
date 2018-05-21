@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Voter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Voter\AssetVoter;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;

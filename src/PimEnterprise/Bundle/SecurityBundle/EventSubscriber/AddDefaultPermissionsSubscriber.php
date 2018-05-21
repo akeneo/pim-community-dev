@@ -15,7 +15,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;

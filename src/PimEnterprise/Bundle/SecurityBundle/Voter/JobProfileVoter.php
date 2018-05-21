@@ -69,7 +69,7 @@ class JobProfileVoter extends Voter implements VoterInterface
      * @param string      $attribute
      * @param JobInstance $object
      *
-     * @return \Pim\Component\User\Model\Group[]
+     * @return \Akeneo\UserManagement\Component\Model\Group[]
      */
     protected function extractGroups($attribute, $object)
     {

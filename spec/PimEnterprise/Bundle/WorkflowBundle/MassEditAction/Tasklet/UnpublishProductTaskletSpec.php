@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Manager\UserManager;
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Pim\Component\Catalog\Query\ProductQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;

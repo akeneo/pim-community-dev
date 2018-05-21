@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 
 /**

@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

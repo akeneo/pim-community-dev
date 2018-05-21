@@ -2,13 +2,13 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Model;
 
-use Pim\Component\User\Model\Group;
+use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\User\Model\GroupInterface;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\Project;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 

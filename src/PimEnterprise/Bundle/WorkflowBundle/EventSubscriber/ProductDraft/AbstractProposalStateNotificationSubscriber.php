@@ -12,10 +12,10 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\User\Repository\UserRepositoryInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

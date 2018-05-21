@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
 
-use Pim\Component\User\Model\Group;
+use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;

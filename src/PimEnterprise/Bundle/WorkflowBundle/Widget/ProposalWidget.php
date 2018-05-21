@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Widget;
 
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
-use Pim\Bundle\UserBundle\Manager\UserManager;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;

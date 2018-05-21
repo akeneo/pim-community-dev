@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Calculator;
 
-use Pim\Component\User\Model\Group;
+use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;

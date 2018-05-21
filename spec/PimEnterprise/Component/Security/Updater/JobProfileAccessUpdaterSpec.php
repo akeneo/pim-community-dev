@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use PimEnterprise\Component\Security\Model\JobProfileAccessInterface;
 
 class JobProfileAccessUpdaterSpec extends ObjectBehavior

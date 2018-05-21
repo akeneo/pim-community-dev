@@ -7,8 +7,8 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\RoleInterface;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\EventListener\UpdateUserMapping;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 

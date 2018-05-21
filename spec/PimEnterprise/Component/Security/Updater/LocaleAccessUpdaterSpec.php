@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\User\Model\GroupInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
 
 class LocaleAccessUpdaterSpec extends ObjectBehavior
