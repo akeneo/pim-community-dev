@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Repository;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Component\User\Model\UserInterface;
 
 /**
  * Datagrid view repository

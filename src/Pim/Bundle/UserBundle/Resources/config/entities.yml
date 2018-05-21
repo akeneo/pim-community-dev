@@ -1,4 +1,0 @@
-parameters:
-    pim_user.entity.role.class:     Pim\Component\User\Model\Role
-    pim_user.entity.group.class:    Pim\Component\User\Model\Group
-    pim_user.entity.user.class:     Pim\Component\User\Model\User

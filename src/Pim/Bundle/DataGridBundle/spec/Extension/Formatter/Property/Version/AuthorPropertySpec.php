@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Manager\UserManager;
-use Pim\Component\User\Model\User;
+use Akeneo\UserManagement\Bundle\Manager\UserManager;
+use Akeneo\UserManagement\Component\Model\User;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 

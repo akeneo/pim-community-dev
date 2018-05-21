@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\EventListener;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\EnrichBundle\EventListener\AddLocaleListener;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;

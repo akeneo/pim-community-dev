@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Resolver\FQCNResolver;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

@@ -3,7 +3,7 @@
 namespace Akeneo\Channel\Component\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

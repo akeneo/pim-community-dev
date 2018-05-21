@@ -126,10 +126,10 @@ suites:
         spec_path: src/Pim/Component/Catalog
         src_path: src/Pim/Component/Catalog
     User:
-        namespace: Pim\Component\User
-        psr4_prefix: Pim\Component\User
-        spec_path: src/Pim/Component/User
-        src_path: src/Pim/Component/User
+        namespace: Akeneo\UserManagement\Component
+        psr4_prefix: Akeneo\UserManagement\Component
+        spec_path: src/Akeneo/UserManagement/Component
+        src_path: src/Akeneo/UserManagement/Component
     CatalogVolumeMonitoring:
         namespace: Pim\Component\CatalogVolumeMonitoring
         psr4_prefix: Pim\Component\CatalogVolumeMonitoring
@@ -218,10 +218,10 @@ suites:
         spec_path: src/Pim/Bundle/UIBundle
         src_path: src/Pim/Bundle/UIBundle
     UserBundle:
-        namespace: Pim\Bundle\UserBundle
-        psr4_prefix: Pim\Bundle\UserBundle
-        spec_path: src/Pim/Bundle/UserBundle
-        src_path: src/Pim/Bundle/UserBundle
+        namespace: Akeneo\UserManagement\Bundle
+        psr4_prefix: Akeneo\UserManagement\Bundle
+        spec_path: src/Akeneo/UserManagement/Bundle
+        src_path: src/Akeneo/UserManagement/Bundle
     VersioningBundle:
         namespace: Pim\Bundle\VersioningBundle
         psr4_prefix: Pim\Bundle\VersioningBundle

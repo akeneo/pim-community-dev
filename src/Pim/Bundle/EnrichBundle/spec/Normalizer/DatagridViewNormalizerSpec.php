@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 class DatagridViewNormalizerSpec extends ObjectBehavior
 {

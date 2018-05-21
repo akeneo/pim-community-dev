@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\DataGridBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\User;
+use Akeneo\UserManagement\Component\Model\User;
 
 class DatagridViewSpec extends ObjectBehavior
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

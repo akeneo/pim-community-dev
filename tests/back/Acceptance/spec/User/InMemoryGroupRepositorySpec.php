@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\User\InMemoryGroupRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\Group;
+use Akeneo\UserManagement\Component\Model\Group;
 use Prophecy\Argument;
 
 class InMemoryGroupRepositorySpec extends ObjectBehavior

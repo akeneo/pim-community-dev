@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyConfiguration;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class DateTimeWithUserTimezonePropertySpec extends ObjectBehavior

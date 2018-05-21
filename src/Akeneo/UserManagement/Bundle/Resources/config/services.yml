@@ -1,0 +1,29 @@
+services:
+    pim_user.manager:
+        class: 'Akeneo\UserManagement\Bundle\Manager\UserManager'
+        arguments: ['%pim_user.entity.user.class%', "@doctrine.orm.entity_manager", "@security.encoder_factory"]
+
+    pim_user.security.login:
+        class: 'Akeneo\UserManagement\Bundle\EventListener\LoginSubscriber'
+        arguments: ["@pim_user.manager"]
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
+
+    pim_user.role.listener:
+        class: 'Akeneo\UserManagement\Bundle\EventListener\RoleListener'
+        arguments: ["@oro_security.link.sid_manager"]
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate }
+
+    pim_user.entity_with_image.subscriber:
+        class: 'Akeneo\UserManagement\Bundle\EventListener\UploadedImageSubscriber'
+        arguments:
+            - '%kernel.root_dir%'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_user.change_password.subscriber:
+        class: 'Akeneo\UserManagement\Bundle\Form\Subscriber\ChangePasswordSubscriber'
+        arguments:
+            - '@form.factory'
+            - '@security.token_storage'

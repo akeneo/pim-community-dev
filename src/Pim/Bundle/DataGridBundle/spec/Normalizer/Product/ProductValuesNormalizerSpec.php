@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Value\ScalarValue;

@@ -1,0 +1,63 @@
+datagrid:
+    groups-grid:
+        options:
+            entityHint: group
+        source:
+            acl_resource: pim_user_group_index
+            type: orm
+            query:
+                select:
+                    - g.id
+                    - g.name
+                from:
+                    - { table: Akeneo\UserManagement\Component\Model\Group, alias: g }
+                where:
+                    and:
+                        - g.name <> '%pim_user.entity.user.class%::GROUP_DEFAULT'
+        columns:
+            name:
+                label: pim_datagrid.columns.groups.label
+
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: pim_user_group_update
+                params:
+                    - id
+
+            delete_link:
+                type: url
+                route: pim_user_group_delete
+                params:
+                    - id
+
+        actions:
+            update:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:          navigate
+                label:         pim_common.update
+                link:          update_link
+                acl_resource:  pim_user_group_edit
+                rowAction:     true
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:          delete
+                label:         pim_common.delete
+                link:          delete_link
+                acl_resource:  pim_user_group_remove
+
+        sorters:
+            columns:
+                name:
+                    data_name: g.name
+            default:
+                name: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: g.name
