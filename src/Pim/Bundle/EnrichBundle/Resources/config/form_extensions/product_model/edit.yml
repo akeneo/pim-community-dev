@@ -184,6 +184,7 @@ extensions:
         aclResourceId: pim_enrich_associations_view
         position: 110
         config:
+            tabCode: pim-product-edit-form-associations
             aclAddAssociations: pim_enrich_associations_edit
             datagridName: 'association-product-model-grid'
 
