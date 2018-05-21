@@ -11,7 +11,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueVariantAxis extends Constraint
 {
-    public const DUPLICATE_VALUE_IN_SIBLING = 'pim_catalog.constraint.can_have_family_variant_duplicate_axis_value';
+    public const DUPLICATE_VALUE_IN_PRODUCT_MODEL = 'pim_catalog.constraint.product_model_with_same_axis_value_already_exists';
+    public const DUPLICATE_VALUE_IN_VARIANT_PRODUCT = 'pim_catalog.constraint.variant_product_with_same_axis_value_already_exists';
 
     /**
      * {@inheritdoc}

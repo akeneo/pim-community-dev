@@ -58,7 +58,7 @@ class CreateVariantProductIntegration extends TestCase
 
         $this->assertEquals(1, $errors->count());
         $this->assertEquals(
-            'Cannot set value "[m]" for the attribute axis "size", as another sibling entity already has this value',
+            'Cannot set value "[m]" for the attribute axis "size" on variant product "apollon_blue_m_bis", as the variant product "1111111120" already has this value',
             $errors->get(0)->getMessage()
         );
     }
@@ -97,7 +97,7 @@ class CreateVariantProductIntegration extends TestCase
         $errors = $this->get('pim_catalog.validator.product')->validate($variantProduct2);
         $this->assertEquals(1, $errors->count());
         $this->assertEquals(
-            'Cannot set value "[l]" for the attribute axis "size", as another sibling entity already has this value',
+            'Cannot set value "[l]" for the attribute axis "size" on variant product "apollon_blue_l_2", as the variant product "apollon_blue_l_1" already has this value',
             $errors->get(0)->getMessage()
         );
     }

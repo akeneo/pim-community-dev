@@ -148,7 +148,7 @@ Feature: Skip invalid product models through CSV
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then I should see the text "Status: Completed"
     And I should see the text "skipped 1"
-    And I should see the text "Cannot set value \"[blue]\" for the attribute axis \"color\", as another sibling entity already has this value"
+    And I should see the text "Cannot set value \"[blue]\" for the attribute axis \"color\" on product model \"code-003\", as the product model \"code-002\" already has this value"
     And the invalid data file of "csv_catalog_modeling_product_model_import" should contain:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
