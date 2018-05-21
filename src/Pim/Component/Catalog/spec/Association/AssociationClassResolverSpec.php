@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Association;
 
 use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\ProductModel;
@@ -37,7 +37,7 @@ class AssociationClassResolverSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_no_association_class_is_found_for_the_entity(
-        AssociationAwareInterface $entity
+        EntityWithAssociationsInterface $entity
     ) {
         $this->shouldThrow(InvalidArgumentException::class)->during('resolveAssociationClass', [$entity]);
     }

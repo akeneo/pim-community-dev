@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\Collection;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface AssociationAwareInterface
+interface EntityWithAssociationsInterface
 {
     /**
      * Get types of associations
@@ -33,9 +33,9 @@ interface AssociationAwareInterface
      *
      * @param Collection $associations
      *
-     * @return AssociationAwareInterface
+     * @return EntityWithAssociationsInterface
      */
-    public function setAssociations(Collection $associations): AssociationAwareInterface;
+    public function setAssociations(Collection $associations): EntityWithAssociationsInterface;
 
     /**
      * Add a type of an association
@@ -44,18 +44,18 @@ interface AssociationAwareInterface
      *
      * @throws \LogicException
      *
-     * @return AssociationAwareInterface
+     * @return EntityWithAssociationsInterface
      */
-    public function addAssociation(AssociationInterface $association): AssociationAwareInterface;
+    public function addAssociation(AssociationInterface $association): EntityWithAssociationsInterface;
 
     /**
      * Remove a type of an association
      *
      * @param AssociationInterface $association
      *
-     * @return AssociationAwareInterface
+     * @return EntityWithAssociationsInterface
      */
-    public function removeAssociation(AssociationInterface $association): AssociationAwareInterface;
+    public function removeAssociation(AssociationInterface $association): EntityWithAssociationsInterface;
 
     /**
      * Get the product association for an Association type

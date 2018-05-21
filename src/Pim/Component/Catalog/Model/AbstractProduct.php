@@ -594,7 +594,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addAssociation(AssociationInterface $association): AssociationAwareInterface
+    public function addAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
         if (!$this->associations->contains($association)) {
             $associationType = $association->getAssociationType();
@@ -617,7 +617,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAssociation(AssociationInterface $association): AssociationAwareInterface
+    public function removeAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
         $this->associations->removeElement($association);
 
@@ -668,7 +668,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(Collection $associations): AssociationAwareInterface
+    public function setAssociations(Collection $associations): EntityWithAssociationsInterface
     {
         $this->associations = $associations;
 

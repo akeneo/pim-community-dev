@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Association;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Association\AssociationClassResolver;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\ProductModelAssociation;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
@@ -29,7 +29,7 @@ class MissingAssociationAdderSpec extends ObjectBehavior
         AssociationClassResolver $associationClassResolver,
         AssociationTypeInterface $associationType,
         AssociationTypeInterface $associationType2,
-        AssociationAwareInterface $entity
+        EntityWithAssociationsInterface $entity
     ) {
         $associationTypeRepository->findMissingAssociationTypes($entity)
             ->willReturn([$associationType, $associationType2]);

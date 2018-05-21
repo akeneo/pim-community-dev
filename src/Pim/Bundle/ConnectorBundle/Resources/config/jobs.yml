@@ -492,6 +492,7 @@ services:
                 - '@pim_connector.step.xlsx_root_product_model.import'
                 - '@pim_connector.step.xlsx_sub_product_model.import'
                 - '@pim_connector.step.xlsx_compute_product_models_descendants.import'
+                - '@pim_connector.step.xlsx_product_model.import_associations'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 

@@ -143,16 +143,16 @@ interface AssociationInterface extends ReferableInterface
     /**
      * Get owner
      *
-     * @return AssociationAwareInterface
+     * @return EntityWithAssociationsInterface
      */
     public function getOwner();
 
     /**
      * Set owner
      *
-     * @param AssociationAwareInterface $owner
+     * @param EntityWithAssociationsInterface $owner
      *
      * @return AssociationInterface
      */
-    public function setOwner(AssociationAwareInterface $owner);
+    public function setOwner(EntityWithAssociationsInterface $owner);
 }

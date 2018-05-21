@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Association;
 
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 
@@ -36,9 +36,9 @@ class MissingAssociationAdder
     }
 
     /**
-     * @param AssociationAwareInterface $entity
+     * @param EntityWithAssociationsInterface $entity
      */
-    public function addMissingAssociations(AssociationAwareInterface $entity): void
+    public function addMissingAssociations(EntityWithAssociationsInterface $entity): void
     {
         $missingAssocTypes = $this->associationTypeRepository->findMissingAssociationTypes($entity);
 
