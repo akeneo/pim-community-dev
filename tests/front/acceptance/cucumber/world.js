@@ -8,79 +8,79 @@ const translations = fs.readFileSync(path.join(process.cwd(), './web/js/translat
 const userBuilder = new UserBuilder();
 
 module.exports = function(cucumber) {
-    const {Before, After, Status } = cucumber;
+  const {Before, After, Status } = cucumber;
 
-    Before({timeout: 10 * 1000}, async function() {
-        this.baseUrl = 'http://pim.com/';
-        this.browser = await puppeteer.launch({
-            ignoreHTTPSErrors: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
-            headless: !this.parameters.debug,
-            slowMo: 0,
-            pipe: true
-        });
-
-        this.page = await this.browser.newPage();
-        await this.page.setRequestInterception(true);
-
-        this.consoleLogs = [];
-        this.page.on('console', message => {
-            if (['error', 'warning'].includes(message.type())) {
-                this.consoleLogs.push(message.text());
-            }
-        });
-
-        this.page.on('request', request => {
-            if (request.url() === this.baseUrl) {
-                request.respond({
-                    contentType: 'text/html',
-                    body: htmlTemplate
-                });
-            }
-            if (request.url().includes('/rest/user/')) {
-                request.respond({
-                    contentType: 'application/json',
-                    body: `${JSON.stringify(userBuilder.build())}`
-                });
-            }
-
-            if (request.url().includes('/form/extensions')) {
-                request.respond({
-                    contentType: 'application/json',
-                    body: `${JSON.stringify(extensions)}`
-                });
-            }
-
-            if (request.url().includes('/js/translation')) {
-                request.respond({
-                    contentType: 'application/json',
-                    body: `${JSON.stringify(translations)}`
-                });
-            }
-        });
-
-        await this.page.goto(this.baseUrl);
-        await this.page.evaluate(async () => await require('pim/fetcher-registry').initialize());
-        await this.page.evaluate(async () => await require('pim/user-context').initialize());
-        await this.page.evaluate(async () => await require('pim/init-translator').fetch());
+  Before({timeout: 10 * 1000}, async function() {
+    this.baseUrl = 'http://pim.com/';
+    this.browser = await puppeteer.launch({
+      ignoreHTTPSErrors: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      headless: !this.parameters.debug,
+      slowMo: 0,
+      pipe: true
     });
 
-    After(async function(scenario) {
-        this.consoleLogs = this.consoleLogs || [];
-        if (Status.FAILED === scenario.result.status) {
-            if (0 < this.consoleLogs.length) {
-                const logMessages = this.consoleLogs.reduce(
-                    (result, message) => `${result}\nError logged: ${message}`, ''
-                );
+    this.page = await this.browser.newPage();
+    await this.page.setRequestInterception(true);
 
-                await this.attach(logMessages, 'text/plain');
-                console.log(logMessages);
-            }
-        }
-
-        if (!this.parameters.debug) {
-            await this.page.close();
-            await this.browser.close();
-        }
+    this.consoleLogs = [];
+    this.page.on('console', message => {
+      if (['error', 'warning'].includes(message.type())) {
+        this.consoleLogs.push(message.text());
+      }
     });
+
+    this.page.on('request', request => {
+      if (request.url() === this.baseUrl) {
+        request.respond({
+          contentType: 'text/html',
+          body: htmlTemplate
+        });
+      }
+      if (request.url().includes('/rest/user/')) {
+        request.respond({
+          contentType: 'application/json',
+          body: `${JSON.stringify(userBuilder.build())}`
+        });
+      }
+
+      if (request.url().includes('/form/extensions')) {
+        request.respond({
+          contentType: 'application/json',
+          body: `${JSON.stringify(extensions)}`
+        });
+      }
+
+      if (request.url().includes('/js/translation')) {
+        request.respond({
+          contentType: 'application/json',
+          body: `${JSON.stringify(translations)}`
+        });
+      }
+    });
+
+    await this.page.goto(this.baseUrl);
+    await this.page.evaluate(async () => await require('pim/fetcher-registry').initialize());
+    await this.page.evaluate(async () => await require('pim/user-context').initialize());
+    await this.page.evaluate(async () => await require('pim/init-translator').fetch());
+  });
+
+  After(async function(scenario) {
+    this.consoleLogs = this.consoleLogs || [];
+    if (Status.FAILED === scenario.result.status) {
+      if (0 < this.consoleLogs.length) {
+        const logMessages = this.consoleLogs.reduce(
+          (result, message) => `${result}\nError logged: ${message}`, ''
+        );
+
+        await this.attach(logMessages, 'text/plain');
+        console.log(logMessages);
+      }
+    }
+
+    if (!this.parameters.debug) {
+      await this.page.close();
+      await this.browser.close();
+    }
+  });
 };

@@ -4,11 +4,11 @@ const decoratorFiles = glob.sync(path.resolve(__dirname, './tests/front/acceptan
 const decorators = {};
 
 decoratorFiles.forEach(file => {
-    const decorator = require(file);
-    decorators[Object.keys(decorator)[0] || decorator.name] = decorator;
+  const decorator = require(file);
+  decorators[Object.keys(decorator)[0] || decorator.name] = decorator;
 });
 
 module.exports = {
-    decorators,
-    tools: require('./tests/front/acceptance/cucumber/tools.js')
+  decorators,
+  tools: require('./tests/front/acceptance/cucumber/tools.js')
 };
