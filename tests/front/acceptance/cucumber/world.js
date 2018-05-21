@@ -3,8 +3,8 @@ const puppeteer = require('puppeteer');
 const extensions = require(`${process.cwd()}/web/js/extensions.json`);
 const fs = require('fs');
 const path = require('path');
-const os = require('os');
-
+const htmlTemplate =  fs.readFileSync(process.cwd() + '/web/test_dist/index.html', 'utf-8');
+const translations = fs.readFileSync(path.join(process.cwd(), './web/js/translation/en.js'), 'utf-8');
 const userBuilder = new UserBuilder();
 
 module.exports = function(cucumber) {
@@ -16,7 +16,8 @@ module.exports = function(cucumber) {
             ignoreHTTPSErrors: true,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
             headless: !this.parameters.debug,
-            slowMo: 0
+            slowMo: 0,
+            pipe: true
         });
 
         this.page = await this.browser.newPage();
@@ -33,7 +34,7 @@ module.exports = function(cucumber) {
             if (request.url() === this.baseUrl) {
                 request.respond({
                     contentType: 'text/html',
-                    body: fs.readFileSync(process.cwd() + '/web/test_dist/index.html', 'utf-8')
+                    body: htmlTemplate
                 });
             }
             if (request.url().includes('/rest/user/')) {
@@ -51,12 +52,9 @@ module.exports = function(cucumber) {
             }
 
             if (request.url().includes('/js/translation')) {
-                const language = path.basename(request.url());
-                const languageContents = fs.readFileSync(path.join(process.cwd(), `./web/js/translation/${language}`), 'utf-8');
-
                 request.respond({
                     contentType: 'application/json',
-                    body: `${JSON.stringify(languageContents)}`
+                    body: `${JSON.stringify(translations)}`
                 });
             }
         });
@@ -68,13 +66,14 @@ module.exports = function(cucumber) {
     });
 
     After(async function(scenario) {
+        this.consoleLogs = this.consoleLogs || [];
         if (Status.FAILED === scenario.result.status) {
             if (0 < this.consoleLogs.length) {
                 const logMessages = this.consoleLogs.reduce(
                     (result, message) => `${result}\nError logged: ${message}`, ''
                 );
 
-                this.attach(logMessages, 'text/plain');
+                await this.attach(logMessages, 'text/plain');
                 console.log(logMessages);
             }
         }

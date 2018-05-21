@@ -48,3 +48,19 @@ Feature: Edit family variant
     Then the attribute "Brand" should be on the attributes level 2
     When I move the "Variation Name" attribute from level 1 to level 2
     Then the attribute "Variation Name" should be on the attributes level 2
+
+  Scenario: Successfully update family variant label translations
+    Given I am on the "Clothing" family page
+    And I visit the "Variants" tab
+    When I click on the "Clothing by color and size" row
+    And I follow the link "Label translations"
+    And I fill in the following information in the popin:
+      | German (Germany)        | German label  |
+      | English (United States) | English label |
+      | French (France)         | French label  |
+    And I press the "Save" button in the popin
+    Then I should see the flash message "Family variant successfully updated. The products with variants will be updated with your changes."
+    And I should see "English label"
+    And there should be the following family variants:
+      | code                | family   | label-en_US   | label-de_DE  | label-fr_FR  |
+      | clothing_color_size | clothing | English label | German label | French label |

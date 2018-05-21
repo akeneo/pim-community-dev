@@ -372,14 +372,19 @@ class ProductModelController
     /**
      * Remove product model
      *
+     * @param Request $request
      * @param int $id
      *
      * @AclAncestor("pim_enrich_product_model_remove")
      *
-     * @return JsonResponse
+     * @return Response
      */
-    public function removeAction($id): JsonResponse
+    public function removeAction(Request $request, $id): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
         $productModel = $this->findProductModelOr404($id);
         $this->productModelRemover->remove($productModel);
 

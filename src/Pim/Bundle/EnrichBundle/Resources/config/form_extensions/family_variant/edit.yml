@@ -15,11 +15,46 @@ extensions:
         config:
             entity: pim_enrich.entity.family_variant.title
 
-    pim-family-variant-edit-form-attribute-set:
-        module: pim/family-variant-edit-form/attribute-set
+    pim-family-variant-edit-form-tabs:
+        module: pim/form/common/form-tabs
         parent: pim-family-variant-edit-form
         targetZone: content
+        position: 90
+        config:
+            centered: true
+
+    pim-family-variant-edit-form-attribute-set-tab:
+        module: pim/common/tab
+        parent: pim-family-variant-edit-form-tabs
+        targetZone: container
         position: 100
+        config:
+            label: 'pim_enrich.form.family_variant.tab.attributes.title'
+
+    pim-family-variant-edit-form-labels-tab:
+        module: pim/common/tab
+        parent: pim-family-variant-edit-form-tabs
+        targetZone: container
+        position: 110
+        config:
+            label: 'pim_enrich.form.family_variant.tab.labels.title'
+
+    pim-family-variant-edit-form-attribute-set:
+        module: pim/family-variant-edit-form/attribute-set
+        parent: pim-family-variant-edit-form-attribute-set-tab
+        targetZone: self
+
+    pim-family-variant-edit-form-labels-container:
+        module: pim/family-variant-edit-form/labels-container
+        parent: pim-family-variant-edit-form-labels-tab
+        targetZone: self
+
+    pim-family-variant-edit-form-labels-translation:
+        module: pim/common/properties/translation
+        parent: pim-family-variant-edit-form-labels-container
+        targetZone: fields
+        config:
+            fieldBaseId: 'pim_enrich_family_variant_form_label_'
 
     pim-family-variant-edit-form-save-buttons:
         module: pim/form/common/save-buttons

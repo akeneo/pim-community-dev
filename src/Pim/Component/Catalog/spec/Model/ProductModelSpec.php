@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Catalog\Model;
 
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
@@ -14,10 +13,8 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\TimestampableInterface;
-use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Value;
 
 class ProductModelSpec extends ObjectBehavior
 {
@@ -386,5 +383,26 @@ class ProductModelSpec extends ObjectBehavior
             'value-<all_channels>-<all_locales>' => $value,
             'otherValue-<all_channels>-<all_locales>' => $otherValue
         ]);
+    }
+
+    function it_gets_label_when_casting_object_as_string(
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values
+    ) {
+        $familyVariant->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isScopable()->willReturn(false);
+
+        $values->toArray()->willreturn([]);
+
+        $this->setFamilyVariant($familyVariant);
+        $this->setValues($values);
+        $this->setCode('shovel');
+
+        $this->__toString()->shouldReturn('shovel');
     }
 }

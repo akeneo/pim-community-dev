@@ -35,4 +35,12 @@ class AverageMaxProductValuesSpec extends ObjectBehavior
         $statement->fetch()->willReturn(['average' => '4', 'max' => '10']);
         $this->fetch()->shouldBeLike(new AverageMaxVolumes(10, 4, 12, 'average_max_product_values'));
     }
+
+    function it_gets_average_and_max_volume_of_an_empty_catalog($connection, Statement $statement)
+    {
+        $connection->query(Argument::type('string'))->willReturn($statement);
+        $statement->fetch()->willReturn(['average' => null, 'max' => null]);
+
+        $this->fetch()->shouldBeLike(new AverageMaxVolumes(0, 0, 12, 'average_max_product_values'));
+    }
 }

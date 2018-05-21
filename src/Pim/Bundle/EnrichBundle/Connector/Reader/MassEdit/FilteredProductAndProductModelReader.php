@@ -214,8 +214,6 @@ class FilteredProductAndProductModelReader implements
 
             if ($entity instanceof ProductModelInterface) {
                 if ($this->stepExecution) {
-                    $this->stepExecution->incrementSummaryInfo('skip');
-
                     if (!$this->readChildren) {
                         $warning = 'This bulk action doesn\'t support Product models entities yet.';
                         $this->stepExecution->addWarning(

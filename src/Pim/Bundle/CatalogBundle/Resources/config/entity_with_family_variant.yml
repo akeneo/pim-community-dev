@@ -9,7 +9,7 @@ services:
 
     pim_catalog.entity_with_family_variant.check_attribute_editable:
         class: '%pim_catalog.entity_with_family_variant.check_attribute_editable.class%'
-    
+
     pim_catalog.entity_with_family_variant.add_parent_to_product:
         class: '%pim_catalog.entity_with_family_variant.add_parent_to_product.class%'
         arguments:

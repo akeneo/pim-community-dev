@@ -151,7 +151,7 @@ class WriterSpec extends ObjectBehavior
             -1
         )->willReturn([
             sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my/file/path/foo1',
-            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my/file/path/foo2'
+            sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my/file/path/foo2',
         ]);
 
         $this->flush();

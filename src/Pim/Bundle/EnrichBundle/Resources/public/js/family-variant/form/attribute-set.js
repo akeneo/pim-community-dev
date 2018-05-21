@@ -65,7 +65,6 @@ define([
             attributes.find(attribute => attribute.code === attributeCode);
 
         return BaseForm.extend({
-            className: 'family-variant-levels AknFamilyVariant',
             events: {
                 'click .delete-attribute': 'removeAttributeFromVariantAttributeSet',
                 'click .delete-attribute-group': 'removeAttributeGroupFromVariantAttributeSet'
@@ -177,8 +176,9 @@ define([
                         }).disableSelection();
 
                         this.renderExtensions();
-                    });
 
+                        this.delegateEvents();
+                    });
 
                 return this;
             },

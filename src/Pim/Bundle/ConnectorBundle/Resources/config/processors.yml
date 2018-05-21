@@ -104,6 +104,15 @@ services:
             - '@pim_catalog.comparator.filter.product_association'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
+    pim_connector.processor.denormalization.product_model_association:
+        class: 'Pim\Component\Connector\Processor\Denormalization\ProductModelAssociationProcessor'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product_model'
+            - '@pim_catalog.comparator.filter.product_association'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
     pim_connector.processor.denormalization.group:
         class: '%pim_connector.processor.denormalization.class%'
         arguments:

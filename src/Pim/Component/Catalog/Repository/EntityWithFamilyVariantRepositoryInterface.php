@@ -16,7 +16,7 @@ interface EntityWithFamilyVariantRepositoryInterface
      *
      * @param EntityWithFamilyVariantInterface $entity
      *
-     * @return array
+     * @return EntityWithFamilyVariantInterface[]
      */
     public function findSiblings(EntityWithFamilyVariantInterface $entity): array;
 }

@@ -34,6 +34,11 @@ jobs:
         alias:     remove_from_category
         label:     Mass remove from categories
         type:      mass_edit
+    add_to_group:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_group
+        label:     Mass add product to group
+        type:      mass_edit
     edit_common_attributes:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes

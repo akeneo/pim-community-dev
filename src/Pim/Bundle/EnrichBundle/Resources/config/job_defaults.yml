@@ -10,6 +10,7 @@ services:
         arguments:
             -
                 - 'update_product_value'
+                - 'add_to_group'
                 - 'add_product_value'
                 - 'add_attribute_value'
                 - 'remove_product_value'

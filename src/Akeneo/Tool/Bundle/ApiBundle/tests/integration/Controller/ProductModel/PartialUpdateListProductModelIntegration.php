@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel\AbstractProductModelTestCase;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -51,7 +51,7 @@ class PartialUpdateListProductModelIntegration extends AbstractProductModelTestC
     public function testCreateAndUpdateAListOfProductModels()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"code": "sub_sweat_option_a", "family_variant": "familyVariantA1", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionA"}]}}
     {"code": "root_product_model", "family_variant": "familyVariantA1", "values": {"a_number_float": [{"locale": null, "scope": null, "data": "13"}]}}
     {"code": "sweat", "values": {"a_number_float": [{"locale": null, "scope": null, "data": "10.5000"}]}}
@@ -59,7 +59,7 @@ class PartialUpdateListProductModelIntegration extends AbstractProductModelTestC
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"code":"sub_sweat_option_a","status_code":204}
 {"line":2,"code":"root_product_model","status_code":201}
 {"line":3,"code":"sweat","status_code":204}
@@ -216,13 +216,13 @@ JSON;
     public function testCreateAndUpdateSameProductModel()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"code": "sub_sweat_option_b", "family_variant": "familyVariantA1", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionB"}]}}
     {"code": "sub_sweat_option_b", "family_variant": "familyVariantA1", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionB"}]}}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"code":"sub_sweat_option_b","status_code":201}
 {"line":2,"code":"sub_sweat_option_b","status_code":204}
 JSON;
@@ -237,12 +237,12 @@ JSON;
     public function testUpdateProductModelWithUpdatedAxeValue()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"code": "sub_sweat_option_a", "family_variant": "familyVariantA1", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionB"}]}}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"code":"sub_sweat_option_a","status_code":422,"message":"Validation failed.","errors":[{"property":"attribute","message":"Variant axis \"a_simple_select\" cannot be modified, \"Option B\" given"}]}
 JSON;
 
@@ -256,15 +256,15 @@ JSON;
     public function testCreateAndUpdateProductModelsWithUpdatedAxeValue()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"code": "sub_sweat_option_a", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionA"}]}}
     {"code": "sub_sweat_option_b", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionA"}]}}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"code":"sub_sweat_option_a","status_code":204}
-{"line":2,"code":"sub_sweat_option_b","status_code":422,"message":"Validation failed.","errors":[{"property":"attribute","message":"Cannot set value \"Option A\" for the attribute axis \"a_simple_select\", as another sibling entity already has this value"}]}
+{"line":2,"code":"sub_sweat_option_b","status_code":422,"message":"Validation failed.","errors":[{"property":"attribute","message":"Cannot set value \"Option A\" for the attribute axis \"a_simple_select\" on product model \"sub_sweat_option_b\", as the product model \"sub_sweat_option_a\" already has this value"}]}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/product-models', [], [], [], $data);
@@ -277,7 +277,7 @@ JSON;
     public function testErrorWhenCodeIsMissing()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "my_code"}
     {"code": null}
     {"code": ""}
@@ -286,7 +286,7 @@ JSON;
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"status_code":422,"message":"Code is missing."}
 {"line":2,"status_code":422,"message":"Code is missing."}
 {"line":3,"status_code":422,"message":"Code is missing."}

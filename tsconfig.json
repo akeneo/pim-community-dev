@@ -28,7 +28,8 @@
   "exclude": [
     "node_modules",
     "vendor",
-    "src"
+    "src",
+    "tests"
   ],
   "types": [
     "typePatches",

@@ -32,7 +32,7 @@ class CountProductValuesSpec extends ObjectBehavior
     function it_gets_count_volume($connection, Statement $statement)
     {
         $connection->query(Argument::type('string'))->willReturn($statement);
-        $statement->fetch()->willReturn(['count' => '4']);
+        $statement->fetch()->willReturn(['sum_product_values' => '4']);
         $this->fetch()->shouldBeLike(new CountVolume(4, 12, 'count_product_values'));
     }
 }

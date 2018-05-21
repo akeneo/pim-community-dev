@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
  */
 class OptionValue extends AbstractValue implements OptionValueInterface
 {
-    /** @var AttributeOptionInterface[] */
+    /** @var AttributeOptionInterface */
     protected $data;
 
     /**

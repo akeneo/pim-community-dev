@@ -112,7 +112,7 @@ class AssociationTypeController
 
     /**
      * @param Request $request
-     * @param string  $code
+     * @param string  $identifier
      *
      * @return Response
      *

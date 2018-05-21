@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Builder;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\AssociationAwareInterface;
@@ -12,7 +13,6 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductEvents;
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
@@ -26,9 +26,9 @@ class ProductBuilderSpec extends ObjectBehavior
     function let(
         AttributeRepositoryInterface $attributeRepository,
         FamilyRepositoryInterface $familyRepository,
-        AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
-        EntityWithValuesBuilderInterface $entityWithValuesBuilder
+        EntityWithValuesBuilderInterface $entityWithValuesBuilder,
+        MissingAssociationAdder $missingAssociationAdder
     ) {
         $entityConfig = [
             'product' => self::PRODUCT_CLASS,
@@ -38,9 +38,9 @@ class ProductBuilderSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attributeRepository,
             $familyRepository,
-            $assocTypeRepository,
             $eventDispatcher,
             $entityWithValuesBuilder,
+            $missingAssociationAdder,
             $entityConfig
         );
     }
@@ -80,17 +80,12 @@ class ProductBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_missing_product_associations(
-        $assocTypeRepository,
+        MissingAssociationAdder $missingAssociationAdder,
         AssociationAwareInterface $productOne,
         AssociationAwareInterface $productTwo,
         AssociationTypeInterface $type
     ) {
-        $assocTypeRepository->findMissingAssociationTypes($productOne)->willReturn([$type]);
-        $productOne->addAssociation(Argument::any())->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($productOne)->shouldBeCalled();
         $this->addMissingAssociations($productOne);
-
-        $assocTypeRepository->findMissingAssociationTypes($productTwo)->willReturn([]);
-        $productTwo->addAssociation(Argument::any())->shouldNotBeCalled();
-        $this->addMissingAssociations($productTwo);
     }
 }

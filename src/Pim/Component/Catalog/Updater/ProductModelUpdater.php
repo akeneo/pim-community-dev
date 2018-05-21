@@ -112,6 +112,10 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 $this->validateScalarArray($field, $data);
                 $this->propertySetter->setData($productModel, $field, $data);
                 break;
+            case 'associations':
+                $this->validateAssociationsDataType($data);
+                $this->updateProductModelFields($productModel, $field, $data);
+                break;
             default:
                 if (!in_array($field, $this->ignoredFields)) {
                     throw UnknownPropertyException::unknownProperty($field);
@@ -273,5 +277,51 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         $productModel->setFamilyVariant($familyVariant);
+    }
+
+    /**
+     * Validate association data
+     *
+     * @param $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateAssociationsDataType($data): void
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                'associations',
+                static::class,
+                $data
+            );
+        }
+
+        foreach ($data as $associationTypeCode => $associationTypeValues) {
+            $this->validateScalar('associations', $associationTypeCode);
+            if (!is_array($associationTypeValues)) {
+                throw InvalidPropertyTypeException::arrayExpected(
+                    'associations',
+                    static::class,
+                    $associationTypeValues
+                );
+            }
+
+            foreach ($associationTypeValues as $property => $value) {
+                $this->validateScalar('associations', $property);
+                $this->validateScalarArray('associations', $value);
+            }
+        }
+    }
+
+    /**
+     * Sets the field
+     *
+     * @param ProductModelInterface $productModel
+     * @param string                $field
+     * @param mixed                 $value
+     */
+    protected function updateProductModelFields(ProductModelInterface $productModel, $field, $value): void
+    {
+        $this->propertySetter->setData($productModel, $field, $value);
     }
 }

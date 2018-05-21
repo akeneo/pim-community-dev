@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
+namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter\Field\Product;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;

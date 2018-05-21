@@ -2,12 +2,9 @@
 
 namespace Akeneo\Channel\Component\Model;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Intl\Intl;
 
 /**
  * Locale entity
@@ -180,8 +177,6 @@ class Locale implements LocaleInterface, VersionableInterface
      */
     public function getName()
     {
-        $localeNames = Intl::getLocaleBundle()->getLocaleNames();
-
-        return array_key_exists($this->code, $localeNames) ? $localeNames[$this->code] : null;
+        return null !== $this->code ? \Locale::getDisplayName($this->code) : null;
     }
 }

@@ -100,7 +100,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
             case Operators::EQUALS:
                 $attributePath .= '.preprocessed';
                 $clause = [
-                    'term' => [
+                    'match_phrase' => [
                         $attributePath => $value,
                     ],
                 ];
@@ -110,7 +110,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
             case Operators::NOT_EQUAL:
                 $attributePath .= '.preprocessed';
                 $mustNotClause = [
-                    'term' => [
+                    'match_phrase' => [
                         $attributePath => $value,
                     ],
                 ];

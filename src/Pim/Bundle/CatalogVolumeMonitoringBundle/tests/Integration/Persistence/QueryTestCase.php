@@ -234,4 +234,95 @@ class QueryTestCase extends TestCase
             $i++;
         }
     }
+
+    /**
+     * @param int $numberOfProductValues
+     */
+    protected function createProductWithProductValues(int $numberOfProductValues): void
+    {
+        $family = $this->createFamily(['code' => 'new_family_' . rand()]);
+        $arrayProductValues = [];
+        $i = 0;
+
+        // -1 because sku is automatically added
+        while ($i < $numberOfProductValues -1) {
+            $attribute = $this->createAttribute([
+                'code'     => 'new_attribute_' . rand(),
+                'type'     => 'pim_catalog_text',
+                'group'    => 'other'
+            ]);
+
+            $family->addAttribute($attribute);
+            $arrayProductValues[$attribute->getCode()] = [
+                ['data' => rand().' some text random', 'locale' => null, 'scope' => null]
+            ];
+            $i++;
+        }
+
+
+        $errors = $this->get('validator')->validate($family);
+        Assert::assertCount(0, $errors);
+
+        $this->get('pim_catalog.saver.family')->save($family);
+
+        $this->createProduct([
+            'identifier' => 'new_product_'.rand(),
+            'family' => $family->getCode(),
+            'values' => $arrayProductValues
+        ]);
+    }
+
+    /**
+     * @param int $numberOfProductValues
+     */
+    protected function createProductModelWithProductValues(int $numberOfProductValues): void
+    {
+        $axisAttribute = $this->createAttribute([
+            'code'     => 'new_attribute_' . rand(),
+            'type'     => 'pim_catalog_boolean',
+            'group'    => 'other'
+        ]);
+
+        $family = $this->createFamily(['code' => 'new_family_' . rand()]);
+        $family->addAttribute($axisAttribute);
+
+        $productModelValues = [];
+        $i = 0;
+        while ($i < $numberOfProductValues) {
+            $attribute = $this->createAttribute([
+                'code'     => 'new_attribute_' . rand(),
+                'type'     => 'pim_catalog_text',
+                'group'    => 'other'
+            ]);
+
+            $family->addAttribute($attribute);
+            $productModelValues[$attribute->getCode()] = [
+                ['data' => rand().' some text random', 'locale' => null, 'scope' => null]
+            ];
+            $i++;
+        }
+
+        $errors = $this->get('validator')->validate($family);
+        Assert::assertCount(0, $errors);
+
+        $this->get('pim_catalog.saver.family')->save($family);
+
+        $familyVariant = $this->createFamilyVariant([
+            'code'     => 'new_family_variant_' . rand(),
+            'variant_attribute_sets' => [
+                [
+                    'axes' => [$axisAttribute->getCode()],
+                    'attributes' => [],
+                    'level'=> 1,
+                ]
+            ],
+            'family' => $family->getCode()
+        ]);
+
+        $this->createProductModel([
+            'code'           => 'new_product_model_' . rand(),
+            'family_variant' => $familyVariant->getCode(),
+            'values'         => $productModelValues
+        ]);
+    }
 }

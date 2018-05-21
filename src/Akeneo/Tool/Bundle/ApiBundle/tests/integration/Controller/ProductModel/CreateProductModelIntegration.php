@@ -1,8 +1,7 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,7 +12,7 @@ class CreateProductModelIntegration extends AbstractProductModelTestCase
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "sub_product_model",
         "family_variant": "familyVariantA1",
@@ -85,7 +84,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "sub_product_model",
         "parent": "sweat",
@@ -176,7 +175,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {
   "code": 422,
   "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the expected format on the API documentation.",
@@ -261,7 +260,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {
   "code": 422,
   "message": "Property \"family_variant\" does not expect an empty value. Check the expected format on the API documentation.",
@@ -433,7 +432,7 @@ JSON;
   "errors": [
     {
       "property": "attribute",
-      "message": "Cannot set value \"Option B\" for the attribute axis \"a_simple_select\", as another sibling entity already has this value"
+      "message": "Cannot set value \"Option B\" for the attribute axis \"a_simple_select\" on product model \"sub_product_model\", as the product model \"tshirt_sub_product_model\" already has this value"
     }
   ]
 }
@@ -674,7 +673,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "root_product_model",
         "family_variant": "familyVariantA1",
@@ -722,7 +721,7 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "root_product_model",
         "values": {
@@ -766,7 +765,7 @@ JSON;
         $pdfPath = $this->getFixturePath('akeneo.jpg');
 
         $data =
-<<<JSON
+            <<<JSON
     {
         "code": "root_product_model",
         "family_variant": "familyVariantA1",
@@ -783,7 +782,7 @@ JSON;
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
     {
         "code": 422,
         "message": "Validation failed.",

@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
@@ -22,15 +23,19 @@ class ProductModelSpec extends ObjectBehavior
         ArrayConverterInterface $productValueConverter,
         ColumnsMerger $columnsMerger,
         AttributeColumnsResolver $attributeColumnsResolver,
-        FieldsRequirementChecker $fieldsRequirementChecker
+        FieldsRequirementChecker $fieldsRequirementChecker,
+        AssociationColumnsResolver $assocColumnsResolver
     ) {
+        $assocColumnsResolver->resolveAssociationColumns()
+            ->willReturn(['XSELL-products', 'XSELL-product-modelss', 'XSELL-groups']);
         $this->beConstructedWith(
             $columnsMapper,
             $fieldConverter,
             $productValueConverter,
             $columnsMerger,
             $attributeColumnsResolver,
-            $fieldsRequirementChecker
+            $fieldsRequirementChecker,
+            $assocColumnsResolver
         );
     }
 
@@ -93,7 +98,7 @@ class ProductModelSpec extends ObjectBehavior
         ])->willReturn([
             'code' => 'code',
             'parent' => 1234,
-            'family_variant' => 'family_variant'
+            'family_variant' => 'family_variant',
         ]);
 
         $fieldConverter->supportsColumn('categories')->willreturn(true);
@@ -101,15 +106,15 @@ class ProductModelSpec extends ObjectBehavior
         $categoryConverter->appendTo([
             'code' => 'code',
             'parent' => 1234,
-            'family_variant' => 'family_variant'
+            'family_variant' => 'family_variant',
         ])->willReturn([
             'code' => 'code',
             'parent' => 1234,
             'family_variant' => 'family_variant',
             'categories' => [
                 'tshirt',
-                'pull'
-            ]
+                'pull',
+            ],
         ]);
 
         $fieldConverter->supportsColumn('name-en_US')->willreturn(false);
@@ -117,34 +122,34 @@ class ProductModelSpec extends ObjectBehavior
 
         $productValueConverter->convert(["name-en_US" => "name", "description-en_US-ecommerce" => "description"])
             ->willReturn([
-                'name' => [
-                    [
-                        'locale' => 'en_US',
-                        'scope' => null,
-                        'data' => 'name',
+                    'name' => [
+                        [
+                            'locale' => 'en_US',
+                            'scope' => null,
+                            'data' => 'name',
+                        ],
                     ],
-                ],
-                'description' => [
-                    [
-                        'locale' => 'en_US',
-                        'scope' => 'ecommerce',
-                        'data' => 'description',
+                    'description' => [
+                        [
+                            'locale' => 'en_US',
+                            'scope' => 'ecommerce',
+                            'data' => 'description',
+                        ],
                     ],
                 ]
-            ]
-        );
+            );
 
         $this->convert($flatProductModel, [
             'mapping' => [
                 'family' => 'family_variant',
-            ]
+            ],
         ])->shouldReturn([
             'code' => 'code',
             'parent' => 1234,
             'family_variant' => 'family_variant',
             'categories' => [
                 'tshirt',
-                'pull'
+                'pull',
             ],
             'values' => [
                 'name' => [
@@ -160,8 +165,8 @@ class ProductModelSpec extends ObjectBehavior
                         'scope' => 'ecommerce',
                         'data' => 'description',
                     ],
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -169,12 +174,14 @@ class ProductModelSpec extends ObjectBehavior
     {
         $attributeColumnsResolver->resolveAttributeColumns()->willReturn([]);
 
-        $this->shouldThrow(DataArrayConversionException::class)->during('convert', [[
-            'code' => ['code'],
-            'parent' => '1234',
-            'family_variant' => 'family_variant',
-            'categories' => 'tshirt,pull',
-        ]]);
+        $this->shouldThrow(DataArrayConversionException::class)->during('convert', [
+            [
+                'code' => ['code'],
+                'parent' => '1234',
+                'family_variant' => 'family_variant',
+                'categories' => 'tshirt,pull',
+            ],
+        ]);
     }
 
     function it_throws_an_exception_if_family_variant_is_different_from_the_parent(

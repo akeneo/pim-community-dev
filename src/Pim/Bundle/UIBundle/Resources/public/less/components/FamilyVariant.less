@@ -31,8 +31,16 @@
         left: 50px;
     }
 
+    &-subTitle {
+        text-transform: uppercase;
+    }
+
+    &-labels {
+      margin-top: @AknFullPagePadding + 6px;
+    }
+
     &-description {
-        margin: 0 auto;
+        margin: @AknFullPagePadding + 6px auto 0;
         width: 600px;
         font-size: 16px;
         text-align: center;
@@ -60,7 +68,7 @@
         min-height: 300px;
 
         &--common {
-            max-height: ~"calc(100vh - 170px)";
+            max-height: ~"calc(100vh - 320px)";
         }
     }
 
@@ -71,11 +79,11 @@
     }
 
     &-column--level2 {
-        max-height: ~"calc(100vh - (170px + 2 * 65px))";
+        max-height: ~"calc(100vh - (320px + 2 * 65px))";
     }
 
     &-column--level1 {
-        max-height: ~"calc(100vh - (170px + 65px))";
+        max-height: ~"calc(100vh - (320px + 65px))";
     }
 
     &-columTitle {

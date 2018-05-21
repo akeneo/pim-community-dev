@@ -41,7 +41,7 @@ services:
             - true
             - true
 
-    pim_enrich.reader.database.update_product_value:
+    pim_enrich.reader.database.products_and_variant_products_of_product_models:
         class: '%pim_enrich.reader.database.filtered_product_and_product_model.class%'
         arguments:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'

@@ -36,14 +36,14 @@ class HeaderView extends BaseView {
    */
   render(): BaseView {
     const data = this.getRoot().getFormData();
-    const productValues: {value: number} = data.product_values;
-    const productValuesAverage: {value: number} = data.product_values_average;
+    const productValues: {value: number} = data.count_product_and_product_model_values;
+    const productValuesAverage: {value: {max: number, average: number}} = data.average_max_product_and_product_model_values;
 
     if (undefined !== productValues && productValues.value > 0) {
       const headerContents: string = this.headerTemplate({
         title: __(this.config.title)
           .replace('{{values}}', productValues.value.toLocaleString('en', {useGrouping: true}))
-          .replace('{{average}}', productValuesAverage.value),
+          .replace('{{average}}', productValuesAverage.value.average),
         description: __(this.config.description),
       });
 
