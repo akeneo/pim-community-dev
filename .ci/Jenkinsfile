@@ -117,7 +117,7 @@ stage("Test") {
             )},
             "front-acceptance-ee": {testif(
                 condition: launchAcceptanceTests.equals("yes") && editions.contains("ee"),
-                container: tag,
+                container: "${tag}-ee",
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
             )},
             "back-acceptance-ce": {queue(
@@ -141,7 +141,7 @@ stage("Test") {
             )},
             "front-integration-ee": {testif(
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
-                container: tag,
+                container: "${tag}-ee",
                 script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
             )},
             "back-legacy-phpunit-integration-ce": {queue(
