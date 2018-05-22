@@ -77,10 +77,15 @@ stage("Test") {
                 script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
             )},
-            "front-grunt": {testif(
+            "front-lint": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && yarn run lint"
+            )},
+            "front-unit": {testif(
+                condition: launchUnitTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && yarn run unit"
             )},
 
             // ACCEPTANCE TESTS
@@ -89,11 +94,11 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance /var/www/pim/vendor/akeneo/pim-community-dev/tests/features /var/www/pim/tests/features"
             )},
-            "back-acceptance-ee": {queue(
+            "back-acceptance": {queue(
                 condition: launchAcceptanceTests.equals("yes"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
-                fetcher: {return pimBehatFetcher(profiles: ["acceptance"], features: ["tests/features", "vendor/akeneo/pim-community-dev/tests/features"])}
+                script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
 
             // INTEGRATION TESTS
@@ -106,7 +111,7 @@ stage("Test") {
                 condition: launchIntegrationTests.equals("yes"),
                 container: tag,
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimIntegrationFetcher(testsuites: ["PIM_Integration_Test"])}
+                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/vendor/akeneo/pim-community-dev/src /var/www/pim/vendor/akeneo/pim-community-dev/tests /var/www/pim/src /var/www/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
             )},
 
             // END TO END TESTS
@@ -114,7 +119,7 @@ stage("Test") {
                 condition: launchEndToEndTests.equals("yes"),
                 container: tag,
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimBehatFetcher(profiles: ["legacy", "acceptance"], features: legacyFeatures)}
+                fetcher: {return pimBehatFetcher(profiles: ["legacy"], features: legacyFeatures)}
             )}
         )
     } finally {

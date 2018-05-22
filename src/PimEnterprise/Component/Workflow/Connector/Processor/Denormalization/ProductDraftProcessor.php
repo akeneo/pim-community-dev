@@ -21,9 +21,9 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -52,7 +52,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
     /** @var ProductDraftApplierInterface */
     protected $productDraftApplier;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productDraftRepo;
 
     /**
@@ -61,7 +61,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
      * @param ValidatorInterface                    $validator           product validator
      * @param ProductDraftBuilderInterface          $productDraftBuilder product draft builder
      * @param ProductDraftApplierInterface          $productDraftApplier product draft applier
-     * @param ProductDraftRepositoryInterface       $productDraftRepo    product draft repository
+     * @param EntityWithValuesDraftRepositoryInterface       $productDraftRepo    product draft repository
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -69,7 +69,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
         ValidatorInterface $validator,
         ProductDraftBuilderInterface $productDraftBuilder,
         ProductDraftApplierInterface $productDraftApplier,
-        ProductDraftRepositoryInterface $productDraftRepo
+        EntityWithValuesDraftRepositoryInterface $productDraftRepo
     ) {
         parent::__construct($repository);
 
@@ -133,7 +133,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
      */
     protected function getProductDraft(ProductInterface $product)
     {
-        return $this->productDraftRepo->findUserProductDraft($product, $this->getCodeInstance());
+        return $this->productDraftRepo->findUserEntityWithValuesDraft($product, $this->getCodeInstance());
     }
 
     /**
@@ -206,7 +206,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
             return null;
         }
 
-        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
 
         return $productDraft;
     }

@@ -24,8 +24,8 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +47,7 @@ class ProductDraftController
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $repository;
 
     /** @var ProductDraftManager */
@@ -85,7 +85,7 @@ class ProductDraftController
 
     /**
      * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param ProductDraftRepositoryInterface $repository
+     * @param EntityWithValuesDraftRepositoryInterface $repository
      * @param ProductDraftManager             $manager
      * @param ProductRepositoryInterface      $productRepository
      * @param NormalizerInterface             $normalizer
@@ -99,7 +99,7 @@ class ProductDraftController
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductDraftRepositoryInterface $repository,
+        EntityWithValuesDraftRepositoryInterface $repository,
         ProductDraftManager $manager,
         ProductRepositoryInterface $productRepository,
         NormalizerInterface $normalizer,
@@ -190,7 +190,7 @@ class ProductDraftController
             throw new \LogicException(sprintf('"%s" is not a valid review action', $action));
         }
 
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {
             throw new AccessDeniedHttpException();
         }
 
@@ -220,7 +220,7 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
-        $product = $productDraft->getProduct();
+        $product = $productDraft->getEntityWithValue();
 
         return new JsonResponse($this->normalizer->normalize(
             $product,
@@ -253,7 +253,7 @@ class ProductDraftController
             throw new \LogicException(sprintf('"%s" is not a valid review action', $action));
         }
 
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {
             throw new AccessDeniedHttpException();
         }
 
@@ -268,10 +268,10 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
-        $product = $productDraft->getProduct();
+        $product = $productDraft->getEntityWithValue();
 
         return new JsonResponse($this->normalizer->normalize(
-            $productDraft->getProduct(),
+            $productDraft->getEntityWithValue(),
             'internal_api',
             $normalizationContext
         ));
@@ -296,7 +296,7 @@ class ProductDraftController
 
         $productDraft = $this->findProductDraftOr404($id);
 
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {
             throw new AccessDeniedHttpException();
         }
 
@@ -309,7 +309,7 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
-        $product = $productDraft->getProduct();
+        $product = $productDraft->getEntityWithValue();
 
         return new JsonResponse($this->normalizer->normalize(
             $product,
@@ -382,12 +382,12 @@ class ProductDraftController
      *
      * @throws NotFoundHttpException
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     protected function findDraftForProductOr404(ProductInterface $product)
     {
         $username = $this->tokenStorage->getToken()->getUsername();
-        $productDraft = $this->repository->findUserProductDraft($product, $username);
+        $productDraft = $this->repository->findUserEntityWithValuesDraft($product, $username);
         if (null === $productDraft) {
             throw new NotFoundHttpException(sprintf('Draft for product %s not found', $product->getId()));
         }
@@ -421,7 +421,7 @@ class ProductDraftController
      *
      * @throws NotFoundHttpException
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     protected function findProductDraftOr404($draftId)
     {

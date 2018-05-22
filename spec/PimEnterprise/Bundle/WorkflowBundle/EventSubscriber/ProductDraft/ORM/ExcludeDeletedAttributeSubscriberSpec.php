@@ -7,7 +7,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
 class ExcludeDeletedAttributeSubscriberSpec extends ObjectBehavior
 {
@@ -28,7 +28,7 @@ class ExcludeDeletedAttributeSubscriberSpec extends ObjectBehavior
 
     function it_excludes_unexistant_attributes(
         AttributeRepositoryInterface $attributeRepository,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         EntityManager $entityManager,
         AttributeInterface $nameAttribute,
         LifecycleEventArgs $args

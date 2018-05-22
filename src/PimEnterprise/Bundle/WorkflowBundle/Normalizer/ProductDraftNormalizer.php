@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Normalizer;
 
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -43,6 +43,6 @@ class ProductDraftNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductDraftInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof EntityWithValuesDraftInterface && in_array($format, $this->supportedFormats);
     }
 }

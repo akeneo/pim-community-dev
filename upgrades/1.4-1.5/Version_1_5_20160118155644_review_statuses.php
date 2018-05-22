@@ -16,7 +16,7 @@ use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Pim\Upgrade\SchemaHelperEE;
 use Pim\Upgrade\UpgradeHelper;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -79,12 +79,12 @@ class Version_1_5_20160118155644_review_statuses extends AbstractMigration imple
     {
         $draftStatus = (int) $draftStatus;
 
-        if (ProductDraftInterface::IN_PROGRESS === $draftStatus) {
-            return ProductDraftInterface::CHANGE_DRAFT;
+        if (EntityWithValuesDraftInterface::IN_PROGRESS === $draftStatus) {
+            return EntityWithValuesDraftInterface::CHANGE_DRAFT;
         }
 
-        if (ProductDraftInterface::READY === $draftStatus) {
-            return ProductDraftInterface::CHANGE_TO_REVIEW;
+        if (EntityWithValuesDraftInterface::READY === $draftStatus) {
+            return EntityWithValuesDraftInterface::CHANGE_TO_REVIEW;
         }
 
         throw new AbortMigrationException(

@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -30,7 +30,7 @@ class ProductDraftController
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productDraftRepository;
 
     /** @var ProductDraftApplierInterface */
@@ -47,7 +47,7 @@ class ProductDraftController
 
     /**
      * @param ProductRepositoryInterface      $productRepository
-     * @param ProductDraftRepositoryInterface $productDraftRepository
+     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
      * @param ProductDraftApplierInterface    $productDraftApplier
      * @param NormalizerInterface             $normalizer
      * @param TokenStorageInterface           $tokenStorage
@@ -55,7 +55,7 @@ class ProductDraftController
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        ProductDraftRepositoryInterface $productDraftRepository,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         ProductDraftApplierInterface $productDraftApplier,
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
@@ -107,7 +107,7 @@ class ProductDraftController
         }
 
         $userToken = $this->tokenStorage->getToken();
-        $productDraft = $this->productDraftRepository->findUserProductDraft($product, $userToken->getUsername());
+        $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $userToken->getUsername());
 
         if (null === $productDraft) {
             throw new NotFoundHttpException(sprintf('There is no draft created for the product "%s".', $code));

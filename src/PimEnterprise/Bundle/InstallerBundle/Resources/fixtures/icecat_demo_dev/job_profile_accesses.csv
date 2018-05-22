@@ -34,6 +34,7 @@ publish_product;All;
 unpublish_product;All;
 edit_common_attributes;All;
 add_attribute_value;All;
+add_to_group;All;
 set_attribute_requirements;All;
 approve_product_draft;All;
 refuse_product_draft;All;

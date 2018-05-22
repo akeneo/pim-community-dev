@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ORM;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
 /**
  * Exclude from a product draft all unexisting attributes
@@ -50,7 +50,7 @@ class ExcludeDeletedAttributeSubscriber implements EventSubscriber
     {
         $productDraft = $args->getObject();
 
-        if (!$productDraft instanceof ProductDraftInterface) {
+        if (!$productDraft instanceof EntityWithValuesDraftInterface) {
             return;
         }
 

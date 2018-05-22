@@ -13,7 +13,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class SendForApprovalSubscriberSpec extends ObjectBehavior
@@ -42,7 +42,7 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
         $usersProvider,
         $notificationFactory,
         GenericEvent $event,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         ProductInterface $product,
         UserInterface $owner1,
         UserInterface $owner2,
@@ -58,7 +58,7 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('666');
         $product->getLabel('en_US')->willReturn('Light Saber');
 
-        $productDraft->getProduct()->willReturn($product);
+        $productDraft->getEntityWithValue()->willReturn($product);
         $productDraft->getAuthor()->willReturn('mary');
 
         $catalogLocale->getCode()->willReturn('en_US');

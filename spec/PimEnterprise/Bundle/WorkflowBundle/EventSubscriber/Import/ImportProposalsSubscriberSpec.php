@@ -15,7 +15,7 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -47,7 +47,7 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
         $jobRepository,
         $notificationFactory,
         GenericEvent $event,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         ProductInterface $product,
         JobExecutionEvent $jobExecutionEvent,
         UserInterface $author,
@@ -57,7 +57,7 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
         NotificationInterface $notification
     ) {
         $event->getSubject()->willReturn($productDraft);
-        $productDraft->getProduct()->willReturn($product);
+        $productDraft->getEntityWithValue()->willReturn($product);
         $productDraft->getAuthor()->willReturn('import_code');
         $jobRepository
             ->findOneBy(['jobName' => 'csv_product_proposal_import', 'code' => 'import_code'])

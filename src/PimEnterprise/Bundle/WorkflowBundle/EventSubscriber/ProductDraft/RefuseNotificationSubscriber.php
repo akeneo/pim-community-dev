@@ -82,11 +82,11 @@ class RefuseNotificationSubscriber extends AbstractProposalStateNotificationSubs
             ->setType('error')
             ->setMessage($message)
             ->setRoute('pim_enrich_product_edit')
-            ->setRouteParams(['id' => $productDraft->getProduct()->getId()]);
+            ->setRouteParams(['id' => $productDraft->getEntityWithValue()->getId()]);
 
         $options = [
             'messageParams' => [
-                '%product%' => $productDraft->getProduct()->getLabel($this->userContext->getCurrentLocaleCode()),
+                '%product%' => $productDraft->getEntityWithValue()->getLabel($this->userContext->getCurrentLocaleCode()),
                 '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
             ],
             'context'       => [

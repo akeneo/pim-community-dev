@@ -17,9 +17,9 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessReposito
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -39,7 +39,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var PublishedProductManager */
     protected $publishedManager;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $draftRepository;
 
     /** @var ProductDraftApplierInterface */
@@ -63,7 +63,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * @param NormalizerInterface             $normalizer
      * @param PublishedProductManager         $publishedManager
-     * @param ProductDraftRepositoryInterface $draftRepository
+     * @param EntityWithValuesDraftRepositoryInterface $draftRepository
      * @param ProductDraftApplierInterface    $draftApplier
      * @param CategoryAccessRepository        $categoryAccessRepo
      * @param TokenStorageInterface           $tokenStorage
@@ -73,7 +73,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     public function __construct(
         NormalizerInterface $normalizer,
         PublishedProductManager $publishedManager,
-        ProductDraftRepositoryInterface $draftRepository,
+        EntityWithValuesDraftRepositoryInterface $draftRepository,
         ProductDraftApplierInterface $draftApplier,
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage,
@@ -153,11 +153,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @param ProductInterface $product
      *
-     * @return ProductDraftInterface|null
+     * @return EntityWithValuesDraftInterface|null
      */
     protected function findDraftForProduct(ProductInterface $product)
     {
-        return $this->draftRepository->findUserProductDraft($product, $this->getUsername());
+        return $this->draftRepository->findUserEntityWithValuesDraft($product, $this->getUsername());
     }
 
     /**

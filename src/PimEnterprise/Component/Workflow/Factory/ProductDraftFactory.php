@@ -13,8 +13,8 @@ namespace PimEnterprise\Component\Workflow\Factory;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 
 /**
  * Product product draft factory
@@ -40,7 +40,7 @@ class ProductDraftFactory
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     public function createProductDraft(ProductInterface $product, $username)
     {
@@ -48,7 +48,7 @@ class ProductDraftFactory
 
         $productDraft = new ProductDraft();
         $productDraft
-            ->setProduct($fullProduct)
+            ->setEntityWithValue($fullProduct)
             ->setAuthor($username)
             ->setCreatedAt(new \DateTime());
 

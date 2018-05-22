@@ -14,7 +14,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Command\CreateDraftCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\QueryPublishedProductCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\SendDraftForApprovalCommand;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -464,7 +464,7 @@ class EnterpriseCommandContext extends CommandContext
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return ProductDraftInterface|null
+     * @return EntityWithValuesDraftInterface|null
      */
     protected function getProposal(ProductInterface $product, $username)
     {

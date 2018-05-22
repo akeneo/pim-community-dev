@@ -1,8 +1,11 @@
 # 2.2.x
 
+# 2.2.4 (2018-04-26)
+
 ## Bug fixes
 
 - PIM-7314: handle all attribute case for product proposal migration
+- PIM-7310: Fix completeness filter in rules to have the operators '=', '!=', '>', '<'
 
 # 2.2.3 (2018-04-12)
 

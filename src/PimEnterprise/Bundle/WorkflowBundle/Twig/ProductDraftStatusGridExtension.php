@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -52,13 +52,13 @@ class ProductDraftStatusGridExtension extends \Twig_Extension
     /**
      * Get the human readable draft status for the grid
      *
-     * @param ProductDraftInterface $productDraft
+     * @param EntityWithValuesDraftInterface $productDraft
      *
      * @return string
      */
-    public function getDraftStatusGrid(ProductDraftInterface $productDraft)
+    public function getDraftStatusGrid(EntityWithValuesDraftInterface $productDraft)
     {
-        $toReview = $productDraft->getStatus() === ProductDraftInterface::READY;
+        $toReview = $productDraft->getStatus() === EntityWithValuesDraftInterface::READY;
         $canReview = $this->permissionHelper->canEditOneChangeToReview($productDraft);
         $canDelete = $this->permissionHelper->canEditOneChangeDraft($productDraft);
         $canReviewAll = $this->permissionHelper->canEditAllChangesToReview($productDraft);
@@ -85,13 +85,13 @@ class ProductDraftStatusGridExtension extends \Twig_Extension
     /**
      * Get the human readable draft status tooltip for the grid
      *
-     * @param ProductDraftInterface $productDraft
+     * @param EntityWithValuesDraftInterface $productDraft
      *
      * @return string
      */
-    public function getDraftStatusTooltipGrid(ProductDraftInterface $productDraft)
+    public function getDraftStatusTooltipGrid(EntityWithValuesDraftInterface $productDraft)
     {
-        $toReview = $productDraft->getStatus() === ProductDraftInterface::READY;
+        $toReview = $productDraft->getStatus() === EntityWithValuesDraftInterface::READY;
         $canReview = $this->permissionHelper->canEditOneChangeToReview($productDraft);
         $canDelete = $this->permissionHelper->canEditOneChangeDraft($productDraft);
         $canReviewAll = $this->permissionHelper->canEditAllChangesToReview($productDraft);

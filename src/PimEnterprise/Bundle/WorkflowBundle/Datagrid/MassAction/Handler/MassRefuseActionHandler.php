@@ -17,7 +17,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -59,7 +59,7 @@ class MassRefuseActionHandler implements MassActionHandlerInterface
 
         $objectIds = [];
         foreach ($cursor as $productObject) {
-            if ($productObject instanceof ProductDraftInterface) {
+            if ($productObject instanceof EntityWithValuesDraftInterface) {
                 $objectIds[] = $productObject->getId();
             }
         }

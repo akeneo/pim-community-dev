@@ -74,7 +74,7 @@ JSON;
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_draft_for_redactor');
         $this->assertSame('a text', $product->getValue('a_text')->getData());
 
-        $productDraft = $this->get('pimee_workflow.repository.product_draft')->findUserProductDraft($product, 'mary');
+        $productDraft = $this->get('pimee_workflow.repository.product_draft')->findUserEntityWithValuesDraft($product, 'mary');
         $this->assertNotNull($productDraft);
 
         $expected = <<<JSON
@@ -143,7 +143,7 @@ JSON;
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_draft_for_redactor');
         $this->assertNull($product->getValue('an_image'));
 
-        $productDraft = $this->get('pimee_workflow.repository.product_draft')->findUserProductDraft($product, 'mary');
+        $productDraft = $this->get('pimee_workflow.repository.product_draft')->findUserEntityWithValuesDraft($product, 'mary');
         $this->assertNotNull($productDraft);
 
         $expected = [

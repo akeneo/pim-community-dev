@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class ProductDraftChangesExtensionSpec extends ObjectBehavior
@@ -54,9 +54,9 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $valuePresenter,
         Model\ValueInterface $value,
         Model\ProductInterface $product,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
-        $productDraft->getProduct()->willReturn($product);
+        $productDraft->getEntityWithValue()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
 
         $change = [
@@ -78,10 +78,10 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\ValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface');
-        $productDraft->getProduct()->willReturn($product);
+        $productDraft->getEntityWithValue()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $change = [
             'attribute' => 'description',
@@ -107,10 +107,10 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\ValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface');
-        $productDraft->getProduct()->willReturn($product);
+        $productDraft->getEntityWithValue()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $change = [
             'attribute' => 'description',
@@ -136,10 +136,10 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         \Twig_Environment $twig,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface');
-        $productDraft->getProduct()->willReturn($product);
+        $productDraft->getEntityWithValue()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $change = [
             'attribute' => 'description',

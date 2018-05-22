@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\Workflow\Connector\Tasklet;
 
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
 /**
  * Tasklet for product drafts mass refusal.
@@ -58,7 +58,7 @@ class RefuseTasklet extends AbstractReviewTasklet
                         self::TASKLET_NAME,
                         $e->getMessage(),
                         [],
-                        $productDraft->getProduct()
+                        $productDraft->getEntityWithValue()
                     );
                 }
             } else {
@@ -67,7 +67,7 @@ class RefuseTasklet extends AbstractReviewTasklet
                     self::TASKLET_NAME,
                     self::ERROR_CANNOT_EDIT_ATTR,
                     [],
-                    $productDraft->getProduct()
+                    $productDraft->getEntityWithValue()
                 );
             }
         }
@@ -76,18 +76,18 @@ class RefuseTasklet extends AbstractReviewTasklet
     /**
      * Refuse a draft
      *
-     * @param ProductDraftInterface $productDraft
-     * @param array                 $context
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param array                                $context
      *
      * @throws DraftNotReviewableException
      */
-    protected function refuseDraft(ProductDraftInterface $productDraft, array $context)
+    protected function refuseDraft(EntityWithValuesDraftInterface $productDraft, array $context)
     {
-        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+        if (EntityWithValuesDraftInterface::READY !== $productDraft->getStatus()) {
             throw new DraftNotReviewableException(self::ERROR_DRAFT_NOT_READY);
         }
 
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {
             throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
         }
 

@@ -17,8 +17,8 @@ use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilder;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductDraftBuilderSpec extends ObjectBehavior
@@ -28,7 +28,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
         ProductDraftFactory $factory,
-        ProductDraftRepositoryInterface $productDraftRepo,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         ValueCollectionFactoryInterface $valueCollectionFactory,
         ValueFactory $valueFactory
     ) {
@@ -60,7 +60,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ValueInterface $textValue,
         ValueInterface $newTextValue,
         ComparatorInterface $textComparator,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         ValueCollectionInterface $newValuesCollection,
         ValueCollectionInterface $originalValuesCollection
     ) {
@@ -105,12 +105,12 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getScope()->willReturn(null);
         $newTextValue->getLocale()->willReturn(null);
 
-        $productDraftRepo->findUserProductDraft($product, 'mary')->willReturn($productDraft);
+        $productDraftRepo->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
         $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();
-        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
         $this->build($product, 'mary')->shouldReturn($productDraft);
     }
@@ -127,7 +127,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ValueInterface $textValue,
         ValueInterface $newTextValue,
         ComparatorInterface $textComparator,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         ValueCollectionInterface $newValuesCollection,
         ValueCollectionInterface $originalValuesCollection
     ) {
@@ -162,12 +162,12 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getScope()->willReturn(null);
         $newTextValue->getLocale()->willReturn(null);
 
-        $productDraftRepo->findUserProductDraft($product, 'mary')->willReturn($productDraft);
+        $productDraftRepo->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
         $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();
-        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
         $this->build($product, 'mary')->shouldReturn($productDraft);
     }
@@ -275,7 +275,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         ValueInterface $textValue,
         ValueInterface $newTextValue,
         ComparatorInterface $textComparator,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         ValueCollectionInterface $newValuesCollection,
         ValueCollectionInterface $originalValuesCollection
     ) {
@@ -320,12 +320,12 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getScope()->willReturn(null);
         $newTextValue->getLocale()->willReturn(null);
 
-        $productDraftRepo->findUserProductDraft($variantProduct, 'mary')->willReturn($productDraft);
+        $productDraftRepo->findUserEntityWithValuesDraft($variantProduct, 'mary')->willReturn($productDraft);
         $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
         ])->shouldBeCalled();
-        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
         $this->build($variantProduct, 'mary')->shouldReturn($productDraft);
     }

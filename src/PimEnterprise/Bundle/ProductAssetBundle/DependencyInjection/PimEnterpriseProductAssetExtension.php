@@ -34,6 +34,7 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
         $loader->load('category_counters.yml');
+        $loader->load('completeness_checkers.yml');
         $loader->load('connector/array_converters.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/readers.yml');
@@ -62,11 +63,13 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('normalizers.yml');
         $loader->load('providers.yml');
         $loader->load('queries.yml');
+        $loader->load('queries.yml');
         $loader->load('readers.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
         $loader->load('services.yml');
+        $loader->load('stream.yml');
         $loader->load('subscribers.yml');
         $loader->load('transformers.yml');
         $loader->load('twig_extension.yml');
@@ -79,7 +82,5 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('workflow/presenters.yml');
         $loader->load('jobs.yml');
         $loader->load('steps.yml');
-        $loader->load('completeness_checkers.yml');
-        $loader->load('stream.yml');
     }
 }

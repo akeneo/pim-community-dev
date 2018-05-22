@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductController
 {
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $repository;
 
     /** @var ProductRepositoryInterface */
@@ -39,13 +39,13 @@ class ProductController
     protected $objectFilter;
 
     /**
-     * @param ProductDraftRepositoryInterface $repository
+     * @param EntityWithValuesDraftRepositoryInterface $repository
      * @param ProductRepositoryInterface      $productRepository
      * @param NormalizerInterface             $normalizer
      * @param ObjectFilterInterface           $objectFilter
      */
     public function __construct(
-        ProductDraftRepositoryInterface $repository,
+        EntityWithValuesDraftRepositoryInterface $repository,
         ProductRepositoryInterface $productRepository,
         NormalizerInterface $normalizer,
         ObjectFilterInterface $objectFilter
@@ -78,7 +78,7 @@ class ProductController
         }
 
         return new JsonResponse($this->normalizer->normalize(
-            $this->repository->findByProduct($product),
+            $this->repository->findByEntityWithValues($product),
             'internal_api'
         ));
     }

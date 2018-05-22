@@ -19,8 +19,8 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -42,7 +42,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     /** @var ProductDraftFactory */
     protected $factory;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productDraftRepo;
 
     /** @var ValueCollectionFactoryInterface */
@@ -56,7 +56,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      * @param ComparatorRegistry                    $comparatorRegistry
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param ProductDraftFactory                   $factory
-     * @param ProductDraftRepositoryInterface       $productDraftRepo
+     * @param EntityWithValuesDraftRepositoryInterface       $productDraftRepo
      * @param ValueCollectionFactoryInterface       $valueCollectionFactory
      * @param ValueFactory                          $valueFactory
      */
@@ -65,7 +65,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         ComparatorRegistry $comparatorRegistry,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         ProductDraftFactory $factory,
-        ProductDraftRepositoryInterface $productDraftRepo,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         ValueCollectionFactoryInterface $valueCollectionFactory,
         ValueFactory $valueFactory
     ) {
@@ -120,7 +120,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
             $productDraft = $this->getProductDraft($product, $username);
             $productDraft->setValues(new ValueCollection($values));
             $productDraft->setChanges($diff);
-            $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
+            $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
 
             return $productDraft;
         }
@@ -132,11 +132,11 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     protected function getProductDraft(ProductInterface $product, $username)
     {
-        if (null === $productDraft = $this->productDraftRepo->findUserProductDraft($product, $username)) {
+        if (null === $productDraft = $this->productDraftRepo->findUserEntityWithValuesDraft($product, $username)) {
             $productDraft = $this->factory->createProductDraft($product, $username);
         }
 

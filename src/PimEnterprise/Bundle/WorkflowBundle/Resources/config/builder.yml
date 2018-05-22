@@ -19,7 +19,7 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.family'
-            - '@pim_catalog.repository.association_type'
             - '@event_dispatcher'
             - '@pim_catalog.builder.entity_with_values'
-            - {'product': '%pimee_workflow.entity.published_product.class%', 'association': '%pimee_workflow.entity.published_product_association.class%'}
+            - '@pim_catalog.association.missing_association_adder'
+            - {'product': '%pimee_workflow.entity.published_product.class%'}

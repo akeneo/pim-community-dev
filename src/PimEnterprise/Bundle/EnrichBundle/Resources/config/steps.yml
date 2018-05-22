@@ -33,7 +33,7 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.update_product_value'
+            - '@pim_enrich.reader.database.products_and_variant_products_of_product_models'
             - '@pimee_enrich.mass_edit.update_product_value.processor'
             - '@pim_connector.writer.database.product'
             - '%pim_job_product_batch_size%'

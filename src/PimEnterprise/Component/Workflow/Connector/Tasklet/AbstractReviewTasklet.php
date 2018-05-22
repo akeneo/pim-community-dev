@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -44,7 +44,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $draftRepository;
 
     /** @var ProductDraftManager */
@@ -63,7 +63,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     protected $permissionHelper;
 
     /**
-     * @param ProductDraftRepositoryInterface     $draftRepository
+     * @param EntityWithValuesDraftRepositoryInterface     $draftRepository
      * @param ProductDraftManager                 $productDraftManager
      * @param UserProviderInterface               $userProvider
      * @param AuthorizationCheckerInterface       $authorizationChecker
@@ -71,7 +71,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
      * @param ProductDraftChangesPermissionHelper $permissionHelper
      */
     public function __construct(
-        ProductDraftRepositoryInterface $draftRepository,
+        EntityWithValuesDraftRepositoryInterface $draftRepository,
         ProductDraftManager $productDraftManager,
         UserProviderInterface $userProvider,
         AuthorizationCheckerInterface $authorizationChecker,

@@ -24,8 +24,8 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -57,7 +57,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productDraftRepo;
 
     /** @var RemoverInterface */
@@ -79,7 +79,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param ProductDraftBuilderInterface    $productDraftBuilder
      * @param TokenStorageInterface           $tokenStorage
-     * @param ProductDraftRepositoryInterface $productDraftRepo
+     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepo
      * @param RemoverInterface                $productDraftRemover
      * @param ProductUniqueDataSynchronizer   $uniqueDataSynchronizer
      * @param NotGrantedDataMergerInterface   $mergeDataOnProduct
@@ -92,7 +92,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftBuilderInterface $productDraftBuilder,
         TokenStorageInterface $tokenStorage,
-        ProductDraftRepositoryInterface $productDraftRepo,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         RemoverInterface $productDraftRemover,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
         NotGrantedDataMergerInterface $mergeDataOnProduct,
@@ -247,7 +247,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $productDraft = $this->productDraftBuilder->build($fullProduct, $this->getUsername());
 
         if (null !== $productDraft) {
-            $this->validateObject($productDraft, ProductDraftInterface::class);
+            $this->validateObject($productDraft, EntityWithValuesDraftInterface::class);
             $options['unitary'] = true;
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($productDraft, $options));
             $this->objectManager->persist($productDraft);
@@ -257,7 +257,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
                 $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($productDraft, $options));
                 $this->objectManager->refresh($fullProduct);
             }
-        } elseif (null !== $draft = $this->productDraftRepo->findUserProductDraft($fullProduct, $this->getUsername())) {
+        } elseif (null !== $draft = $this->productDraftRepo->findUserEntityWithValuesDraft($fullProduct, $this->getUsername())) {
             $this->productDraftRemover->remove($draft);
         }
     }
