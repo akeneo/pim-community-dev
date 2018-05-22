@@ -6,7 +6,6 @@ ENV YARN_CACHE_FOLDER=/tmp/yarn
 ENV BUILD_PACKAGES \
   apt-transport-https \
   autoconf \
-  curl \
   g++ \
   git \
   libcurl4-gnutls-dev \
@@ -62,7 +61,6 @@ RUN apt-get update && apt-get install -y apt-transport-https \
   && docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ \
   && docker-php-ext-install \
   bcmath \
-  curl \
   exif \
   gd \
   intl \
