@@ -3,6 +3,7 @@ parameters:
     pimee_enrich.normalizer.standard.asset.class:           PimEnterprise\Bundle\EnrichBundle\Normalizer\AssetNormalizer
     pimee_enrich.normalizer.version.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer
     pimee_enrich.normalizer.product.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer
+    pimee_enrich.normalizer.product_model.class:            PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer
     pimee_enrich.normalizer.attribute.class:                PimEnterprise\Bundle\EnrichBundle\Normalizer\AttributeNormalizer
     pimee_enrich.normalizer.image.class:                    PimEnterprise\Bundle\EnrichBundle\Normalizer\ImageNormalizer
     pimee_enrich.normalizer.incomplete_values.class:        PimEnterprise\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer
@@ -40,6 +41,19 @@ services:
             - '@security.token_storage'
             - '@security.authorization_checker'
             - '@pim_catalog.repository.product'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 120 }
+
+    pimee_enrich.normalizer.product_model:
+        class: '%pimee_enrich.normalizer.product_model.class%'
+        arguments:
+            - '@pim_enrich.normalizer.product_model'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.applier.draft'
+            - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product_model'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
 

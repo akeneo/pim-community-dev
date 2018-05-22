@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -24,6 +24,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Product model normalizer
+ *
+ * @author Marie Bochu <marie.bochu@akeneo.com>
  */
 class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
@@ -89,12 +91,9 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
 
         $normalizedProductModel = $this->normalizer->normalize($productModel, 'internal_api', $context);
 
-//        $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForProduct($productModel, Attributes::OWN_PRODUCTS);
-
         $normalizedProductModel['meta'] = array_merge(
             $normalizedProductModel['meta'],
             [
-//                'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),
                 'is_owner'     => $this->authorizationChecker->isGranted(Attributes::OWN, $productModel),
                 'working_copy' => $normalizedWorkingCopy,
                 'draft_status' => $draftStatus
