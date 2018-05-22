@@ -85,7 +85,7 @@ RUN apt-get update && apt-get install -y apt-transport-https \
   && mv /opt/firefox /opt/firefox-52.8.0esr \
   && ln -fs /opt/firefox-52.8.0esr/firefox /usr/bin/firefox \
   && mkdir -p /opt/selenium \
-  && curl -SL https://selenium-release.storage.googleapis.com/3.5.3/selenium-server-standalone-3.5.3.jar -o /opt/selenium/selenium-server-standalone.jar \
+  && curl -SL https://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar -o /opt/selenium/selenium-server-standalone.jar \
   ## Pupeter & Cucumber JS
   && apt-get install -yq libgconf-2-4 \
   && apt-get install -y wget --no-install-recommends \
