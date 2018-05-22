@@ -1,9 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
+namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
 
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel\AbstractProductModelTestCase;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
