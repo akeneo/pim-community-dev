@@ -77,16 +77,12 @@ class CompletenessManager
     /**
      * Insert missing completenesses for filtered products
      *
-     * @param $products
+     * @param ChannelInterface $channel
+     * @param array            $filters
      */
     public function generateMissingForProducts(ChannelInterface $channel, array $filters)
     {
-        // @TODO @merge PIM-7348 - Remove this BC workaround when merged
-        if (method_exists($this->generator, 'generateMissingForProducts')) {
-            $this->generator->generateMissingForProducts($channel, $filters);
-        } else {
-            $this->generator->generateMissingForChannel($channel);
-        }
+        $this->generator->generateMissingForProducts($channel, $filters);
     }
 
     /**
