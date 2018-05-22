@@ -80,12 +80,12 @@ RUN apt-get update && apt-get install -y apt-transport-https \
   && a2enmod proxy \
   && a2enmod proxy_fcgi \
   && a2dissite 000-default \
-  && curl -SLO https://download-installer.cdn.mozilla.net/pub/firefox/releases/47.0.1/linux-x86_64/en-US/firefox-47.0.1.tar.bz2 \
-  && tar -C /opt -xjf firefox-47.0.1.tar.bz2 \
-  && mv /opt/firefox /opt/firefox-47.0.1 \
-  && ln -fs /opt/firefox-47.0.1/firefox /usr/bin/firefox \
+  && curl -SLO https://download-installer.cdn.mozilla.net/pub/firefox/releases/52.8.0esr/linux-x86_64/en-US/firefox-52.8.0esr.tar.bz2 \
+  && tar -C /opt -xjf firefox-52.8.0esr.tar.bz2 \
+  && mv /opt/firefox /opt/firefox-52.8.0esr \
+  && ln -fs /opt/firefox-52.8.0esr/firefox /usr/bin/firefox \
   && mkdir -p /opt/selenium \
-  && curl -SL https://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar -o /opt/selenium/selenium-server-standalone.jar \
+  && curl -SL https://selenium-release.storage.googleapis.com/3.5.3/selenium-server-standalone-3.5.3.jar -o /opt/selenium/selenium-server-standalone.jar \
   ## Pupeter & Cucumber JS
   && apt-get install -yq libgconf-2-4 \
   && apt-get install -y wget --no-install-recommends \
