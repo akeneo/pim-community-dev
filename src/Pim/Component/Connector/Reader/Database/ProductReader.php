@@ -46,6 +46,9 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
 
     /** @var bool */
     private $firstRead = true;
+    
+    /** @var ChannelInterface|null */
+    private $configuredChannel;
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -73,13 +76,13 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
      */
     public function initialize()
     {
-        $channel = $this->getConfiguredChannel();
-        if (null !== $channel && $this->generateCompleteness) {
-            $this->completenessManager->generateMissingForChannel($channel);
+        $this->configuredChannel = $this->getConfiguredChannel();
+        if (null !== $this->configuredChannel && $this->generateCompleteness) {
+            $this->completenessManager->generateMissingForChannel($this->configuredChannel);
         }
 
         $filters = $this->getConfiguredFilters();
-        $this->products = $this->getProductsCursor($filters, $channel);
+        $this->products = $this->getProductsCursor($filters, $this->configuredChannel);
 
         $this->firstRead = true;
     }
@@ -99,11 +102,8 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
             $this->stepExecution->incrementSummaryInfo('read');
         }
 
-        if (null !== $product) {
-            $channel = $this->getConfiguredChannel();
-            if (null !== $channel) {
-                $this->metricConverter->convert($product, $channel);
-            }
+        if (null !== $product && null !== $this->configuredChannel) {
+            $this->metricConverter->convert($product, $this->configuredChannel);
         }
 
         $this->firstRead = false;
