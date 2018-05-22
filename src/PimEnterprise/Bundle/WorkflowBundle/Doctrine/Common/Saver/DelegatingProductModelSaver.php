@@ -15,12 +15,11 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -31,34 +30,31 @@ class DelegatingProductModelSaver implements SaverInterface
 {
     /** @var SaverInterface */
     private $productModelSaver;
+
     /** @var SaverInterface */
     private $productModelDraftSaver;
+
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
+
     /** @var TokenStorageInterface */
     private $tokenStorage;
+
     /** @var EntityWithValuesDraftBuilderInterface */
     private $draftBuilder;
+
     /** @var RemoverInterface */
     private $productDraftRemover;
+
     /** @var NotGrantedDataMergerInterface */
     private $mergeDataOnProductModel;
+
     /** @var IdentifiableObjectRepositoryInterface */
     private $productModelRepository;
-    /** @var ProductDraftRepositoryInterface */
+
+    /** @var EntityWithValuesDraftRepositoryInterface */
     private $productModelDraftRepository;
 
-    /**
-     * @param SaverInterface                        $productModelSaver
-     * @param SaverInterface                        $productModelDraftSaver
-     * @param AuthorizationCheckerInterface         $authorizationChecker
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param EntityWithValuesDraftBuilderInterface $draftBuilder
-     * @param RemoverInterface                      $productDraftRemover
-     * @param NotGrantedDataMergerInterface         $mergeDataOnProductModel
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param ProductDraftRepositoryInterface       $productModelDraftRepository
-     */
     public function __construct(
         SaverInterface $productModelSaver,
         SaverInterface $productModelDraftSaver,
@@ -68,7 +64,7 @@ class DelegatingProductModelSaver implements SaverInterface
         RemoverInterface $productDraftRemover,
         NotGrantedDataMergerInterface $mergeDataOnProductModel,
         IdentifiableObjectRepositoryInterface $productModelRepository,
-        ProductDraftRepositoryInterface $productModelDraftRepository
+        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository
     ) {
         $this->productModelSaver = $productModelSaver;
         $this->productModelDraftSaver = $productModelDraftSaver;

@@ -15,7 +15,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -29,31 +29,28 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
 {
     /** @var NormalizerInterface */
     private $normalizer;
-    /** @var ProductDraftRepositoryInterface */
+
+    /** @var EntityWithValuesDraftRepositoryInterface */
     private $draftRepository;
+
     /** @var DraftApplierInterface */
     private $draftApplier;
+
     /** @var CategoryAccessRepository */
     private $categoryAccessRepo;
+
     /** @var TokenStorageInterface */
     private $tokenStorage;
+
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
+
     /** @var IdentifiableObjectRepositoryInterface */
     private $productModelRepository;
 
-    /**
-     * @param NormalizerInterface             $normalizer
-     * @param ProductDraftRepositoryInterface $draftRepository
-     * @param DraftApplierInterface           $draftApplier
-     * @param CategoryAccessRepository        $categoryAccessRepo
-     * @param TokenStorageInterface           $tokenStorage
-     * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     */
     public function __construct(
         NormalizerInterface $normalizer,
-        ProductDraftRepositoryInterface $draftRepository,
+        EntityWithValuesDraftRepositoryInterface $draftRepository,
         DraftApplierInterface $draftApplier,
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage,

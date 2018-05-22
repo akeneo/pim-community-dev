@@ -128,7 +128,7 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
     protected function getProductDraft(EntityWithValuesInterface $entityWithValues, $username)
     {
         if (null === $productDraft = $this->entityWithValuesDraftRepository->findUserEntityWithValuesDraft($entityWithValues, $username)) {
-            $productDraft = $this->factory->createProductDraft($entityWithValues, $username);
+            $productDraft = $this->factory->createEntityWithValueDraft($entityWithValues, $username);
         }
 
         return $productDraft;

@@ -144,6 +144,6 @@ class CreateDraftCommand extends UpdateProductCommand
      */
     protected function getEntityWithValuesDraftBuilder()
     {
-        return $this->getContainer()->get('pimee_workflow.builder.draft');
+        return $this->getContainer()->get('pimee_workflow.product.builder.draft');
     }
 }

@@ -189,7 +189,7 @@ JSON;
             ]
         ]);
 
-        return $this->createProductDraft($userName, $product, [
+        return $this->createEntityWithValuesDraft($userName, $product, [
             'values' => [
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'Modified US in draft', 'locale' => 'en_US', 'scope' => 'ecommerce'],

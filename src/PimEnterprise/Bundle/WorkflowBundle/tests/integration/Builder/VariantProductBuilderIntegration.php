@@ -80,7 +80,7 @@ class VariantProductBuilderIntegration extends TestCase
             ]
         ]);
 
-        $productDraft = $this->get('pimee_workflow.builder.draft')->build($product, 'mary');
+        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, 'mary');
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
     }
