@@ -190,7 +190,10 @@ class DatabaseCommand extends ContainerAwareCommand
 
             $this->getEventDispatcher()->dispatch(
                 InstallerEvents::PRE_LOAD_FIXTURE,
-                new GenericEvent($jobInstance->getCode())
+                new GenericEvent(
+                    $jobInstance->getCode(),
+                    ['command_executor' => $this->commandExecutor]
+                )
             );
             if ($input->getOption('verbose')) {
                 $output->writeln(

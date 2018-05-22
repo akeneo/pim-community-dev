@@ -85,7 +85,7 @@ class RemoveWrongBooleanValuesOnVariantProductsBatchCommand extends ContainerAwa
     private function getVariantProducts(array $identifiers): CursorInterface
     {
         $pqb = $this->getContainer()
-            ->get('pim_enrich.query.product_and_product_model_query_builder_factory')
+            ->get('pim_catalog.query.product_and_product_model_query_builder_factory')
             ->create();
 
         $pqb->addFilter('id', Operators::IN_LIST, $identifiers);

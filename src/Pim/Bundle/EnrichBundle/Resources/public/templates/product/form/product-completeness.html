@@ -23,7 +23,7 @@
                         <% _.each(completeness.missing, function (attribute, i) { %>
                             <% if (0 !== i) { %> | <% } %>
                             <span class="AknCompletenessPanel-highlight missing-attribute" data-attribute="<%- attribute.code %>" data-locale="<%- locale %>">
-                                <%- attribute.labels[currentLocale] %>
+                                <%- i18n.getLabel(attribute.labels, currentLocale, attribute.code) %>
                             </span>
                         <% }) %>
                     </div>
