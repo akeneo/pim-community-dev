@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\BatchBundle\Job;
+namespace Akeneo\Tool\Bundle\BatchBundle\Job;
 
 use Akeneo\Tool\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
