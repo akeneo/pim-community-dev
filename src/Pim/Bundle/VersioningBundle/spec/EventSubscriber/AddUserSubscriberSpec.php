@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;
-use Pim\Component\User\Model\User;
+use Akeneo\UserManagement\Component\Model\User;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

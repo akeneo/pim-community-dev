@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

@@ -7,7 +7,7 @@ namespace Akeneo\Test\Acceptance\User;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\User\Model\RoleInterface;
+use Akeneo\UserManagement\Component\Model\RoleInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

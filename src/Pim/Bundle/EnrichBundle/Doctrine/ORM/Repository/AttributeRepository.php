@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 
 /**

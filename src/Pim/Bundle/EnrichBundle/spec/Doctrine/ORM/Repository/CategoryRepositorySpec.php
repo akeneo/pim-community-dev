@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Gedmo\Tree\Strategy\ORM\Nested;
 use Gedmo\Tree\TreeListener;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Prophecy\Argument;
 
 class CategoryRepositorySpec extends ObjectBehavior

@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\NotificationBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\User\UserInterface;
 

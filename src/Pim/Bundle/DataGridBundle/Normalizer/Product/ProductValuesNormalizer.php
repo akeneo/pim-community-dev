@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer\Product;
 
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;

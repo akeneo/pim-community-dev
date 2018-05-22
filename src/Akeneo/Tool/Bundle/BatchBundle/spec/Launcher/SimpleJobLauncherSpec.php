@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;

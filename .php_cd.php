@@ -107,7 +107,7 @@ $cPimRules = [
         ]),
         RuleInterface::TYPE_ONLY
     ),
-//    new Rule('Pim\Component\User', $cDeps, RuleInterface::TYPE_ONLY),
+//    new Rule('Akeneo\UserManagement\Component', $cDeps, RuleInterface::TYPE_ONLY),
 ];
 
 $rules  = array_merge($cAkeneoRules, $cPimRules);

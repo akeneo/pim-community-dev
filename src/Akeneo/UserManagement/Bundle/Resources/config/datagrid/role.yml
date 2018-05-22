@@ -1,0 +1,66 @@
+datagrid:
+    pim-role-grid:
+        options:
+            entityHint: role
+            manageFilters: false
+        source:
+            acl_resource: pim_user_role_index
+            type: orm
+            query:
+                select:
+                    - r.id
+                    - r.role
+                    - r.label
+                from:
+                    - { table: Akeneo\UserManagement\Component\Model\Role, alias: r }
+                where:
+                    and:
+                        - r.role <> '%pim_user.entity.user.class%::ROLE_ANONYMOUS'
+        columns:
+            label:
+                label: pim_datagrid.columns.roles.label
+                frontend_type: label
+
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: pim_user_role_update
+                params:
+                    - id
+
+            delete_link:
+                type: url
+                route: pim_user_role_delete
+                params:
+                    - id
+
+        actions:
+            update:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
+                type:          navigate
+                label:         pim_common.update
+                link:          update_link
+                acl_resource:  pim_user_role_edit
+                rowAction:     true
+            delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
+                type:          delete
+                label:         pim_common.delete
+                link:          delete_link
+                acl_resource:  pim_user_role_remove
+
+        sorters:
+            columns:
+                label:
+                    data_name: r.label
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+
+        filters:
+            columns:
+                label:
+                    type: search
+                    data_name: r.label

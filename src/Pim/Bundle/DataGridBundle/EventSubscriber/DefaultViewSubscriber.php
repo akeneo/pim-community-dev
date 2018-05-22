@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\EventSubscriber;
 
+use Akeneo\UserManagement\Bundle\Form\Event\UserFormBuilderEvent;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Pim\Bundle\DataGridBundle\DataTransformer\DefaultViewDataTransformer;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
-use Pim\Bundle\UserBundle\Form\Event\UserFormBuilderEvent;
-use Pim\Component\User\Model\UserInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;

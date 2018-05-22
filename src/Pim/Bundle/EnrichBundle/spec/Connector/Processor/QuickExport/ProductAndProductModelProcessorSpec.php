@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;

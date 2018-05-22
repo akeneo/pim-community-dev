@@ -5,8 +5,8 @@ namespace spec\Akeneo\Test\Acceptance\User;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\User\InMemoryUserRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\User\Model\User;
-use Pim\Component\User\Repository\UserRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Prophecy\Argument;
 
 class InMemoryUserRepositorySpec extends ObjectBehavior

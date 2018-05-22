@@ -1,0 +1,57 @@
+parameters:
+    pim_user.form.type.user.class:                      Akeneo\UserManagement\Bundle\Form\Type\UserType
+    pim_user.form.type.acl_collection.class:            Akeneo\UserManagement\Bundle\Form\Type\PrivilegeCollectionType
+    pim_user.form.type.acl_role.class:                  Akeneo\UserManagement\Bundle\Form\Type\AclRoleType
+    pim_user.form.handler.user.class:                   Akeneo\UserManagement\Bundle\Form\Handler\UserHandler
+    pim_user.form.handler.acl_role.class:               Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler
+    pim_user.form.subscriber.user_preferences.class:    Akeneo\UserManagement\Bundle\Form\Subscriber\UserPreferencesSubscriber
+    pim_user.form.type.acl_access_level_selector.class: Akeneo\UserManagement\Bundle\Form\Type\AclAccessLevelSelectorType
+
+services:
+    pim_user.form.type.acl_collection:
+        class: '%pim_user.form.type.acl_collection.class%'
+        tags:
+            - { name: form.type, alias: oro_acl_collection }
+
+    pim_user.form.type.acl_access_level_selector:
+        class: '%pim_user.form.type.acl_access_level_selector.class%'
+        tags:
+            - { name: form.type, alias: pim_acl_access_level_selector }
+
+    pim_user.form.type.user:
+        class: '%pim_user.form.type.user.class%'
+        arguments:
+            - '@request_stack'
+            - '@pim_user.repository.role'
+            - '@pim_user.repository.group'
+            - '@event_dispatcher'
+            - '%pim_enrich.form.type.product_grid_filter_choice.class%'
+        tags:
+            - { name: form.type, alias: pim_user_user }
+        calls:
+            - method: 'addEventSubscribers'
+              arguments:
+                  - '@pim_user.form.subscriber.user'
+            - method: 'addEventSubscribers'
+              arguments:
+                  - '@pim_user.form.subscriber.user_preferences'
+
+    pim_user.form.type.acl_role:
+        class: '%pim_user.form.type.acl_role.class%'
+        arguments:
+            - []
+        tags:
+            - { name: form.type, alias: pim_user_acl_role }
+
+    pim_user.form.subscriber.user_preferences:
+        class: '%pim_user.form.subscriber.user_preferences.class%'
+        arguments:
+            - '@pim_localization.provider.ui_locale'
+            - '@pim_enrich.repository.category'
+            - '@pim_catalog.repository.cached_locale'
+
+    pim_user.form.subscriber.user:
+        class: 'Akeneo\UserManagement\Bundle\Form\Subscriber\UserSubscriber'
+        arguments:
+            - '@form.factory'
+            - '@security.token_storage'

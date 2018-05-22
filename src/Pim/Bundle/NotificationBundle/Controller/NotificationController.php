@@ -3,8 +3,8 @@
 namespace Pim\Bundle\NotificationBundle\Controller;
 
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
