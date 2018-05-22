@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Manager;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
+use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -16,7 +17,7 @@ class CompletenessManagerSpec extends ObjectBehavior
         FamilyRepositoryInterface $familyRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        CompletenessGenerator $generator,
+        CompletenessGeneratorInterface $generator,
         CompletenessRemoverInterface $remover,
         ValueCompleteCheckerInterface $valueCompleteChecker
     ) {
