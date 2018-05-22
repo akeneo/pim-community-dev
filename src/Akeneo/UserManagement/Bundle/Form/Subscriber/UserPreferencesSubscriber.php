@@ -2,12 +2,11 @@
 
 namespace Akeneo\UserManagement\Bundle\Form\Subscriber;
 
-use Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
@@ -155,7 +154,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
                 'choice_label'  => 'getName',
                 'select2'       => true,
                 'data'          => $uiLocale,
-                'query_builder' => function (LocaleRepository $repository) use ($localeProvider) {
+                'query_builder' => function (LocaleRepositoryInterface $repository) use ($localeProvider) {
                     $locales = $localeProvider->getLocales();
 
                     return $repository->createQueryBuilder('l')
