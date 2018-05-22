@@ -1,4 +1,14 @@
-# 2.0.x
+# 2.0.25 (2018-05-21)
+
+## Bug fixes
+
+- PIM-7337: Fix the focus on asset field when clic on completeness panel
+
+## Improvements
+
+- PIM-7339: Allow to mass upload assets during install process
+
+# 2.0.24 (2018-05-16)
 
 # 2.0.23 (2018-04-30)
 
@@ -9,7 +19,7 @@
 
 ## Bug fixes
 
-- PIM-7283: Fix slowness on count product in categories for the product grid 
+- PIM-7283: Fix slowness on count product in categories for the product grid
 
 # 2.0.21 (2018-04-09)
 
