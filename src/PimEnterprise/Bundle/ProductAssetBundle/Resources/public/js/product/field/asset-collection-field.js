@@ -47,6 +47,13 @@ define(
                 this.assetCollectionPicker.setContext(context);
 
                 return this.assetCollectionPicker.render().$el;
+            },
+
+            /**
+             * @inheritDoc
+             */
+            setFocus: function () {
+                this.el.scrollIntoView(false);
             }
         });
     }
