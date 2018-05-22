@@ -13,6 +13,7 @@ define(
         'oro/translator',
         'pim/router',
         'pim/form',
+        'pim/i18n',
         'pim/user-context',
         'pim/template/product/form/product-completeness'
     ],
@@ -21,6 +22,7 @@ define(
         __,
         router,
         BaseForm,
+        i18n,
         UserContext,
         template
     ) {
@@ -84,7 +86,8 @@ define(
                         completenesses: this.getCurrentCompletenesses(options.scope),
                         badgeClass: this.getBadgeClass(options),
                         currentLocale: options.locale,
-                        missingValues: 'pim_enrich.form.product.panel.completeness.missing_values'
+                        missingValues: 'pim_enrich.form.product.panel.completeness.missing_values',
+                        i18n: i18n
                     }));
                 } else {
                     // We drop the element for design issues, to avoid blank spaces.
