@@ -186,6 +186,8 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
             ->createQueryBuilder('pm')
             ->andWhere('pm.familyVariant = :familyVariant')
             ->setParameter('familyVariant', $familyVariant->getId())
+            ->addOrderBy('pm.root', 'ASC')
+            ->addOrderBy('pm.level', 'ASC')
         ;
 
         return $qb->getQuery()->execute();
