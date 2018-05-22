@@ -4,7 +4,6 @@
  * Push data to pim.ai
  *
  * @author Romain Monceau <romain@akeneo.com>
- * @copyright 2018 Akeneo SA (http://www.akeneo.com)
  */
 define(
     [
@@ -23,11 +22,12 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
+
             render: function () {
                 this.$el.html(
                     this.template({
                         path: Routing.generate('pimee_suggest_data_push_product', {productId: this.getFormData().meta.id}),
-                        label: __('pimee_suggest_data.entity.product.btn.push')
+                        label: __('pimee_suggest_data.product.edit.btn.push')
                     })
                 );
 
