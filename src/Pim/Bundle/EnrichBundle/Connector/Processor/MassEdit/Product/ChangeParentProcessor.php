@@ -29,8 +29,7 @@ class ChangeParentProcessor extends AbstractProcessor
         ValidatorInterface $productModelValidator,
         ObjectUpdaterInterface $productUpdater,
         ObjectUpdaterInterface $productModelUpdater
-    )
-    {
+    ) {
         $this->productValidator = $productValidator;
         $this->productModelValidator = $productModelValidator;
         $this->productUpdater = $productUpdater;
@@ -44,7 +43,7 @@ class ChangeParentProcessor extends AbstractProcessor
         $newParentCode = $this->getNewParentCode();
         $this->updateEntity($product, $newParentCode);
 
-        if(! $this->isProductValid($product)) {
+        if (! $this->isProductValid($product)) {
             return null;
         }
 
@@ -53,8 +52,7 @@ class ChangeParentProcessor extends AbstractProcessor
 
     private function validateProduct($product)
     {
-        if(! $product instanceof EntityWithFamilyVariantInterface)
-        {
+        if (! $product instanceof EntityWithFamilyVariantInterface) {
             throw new \InvalidArgumentException('The product is not correct');
         }
     }

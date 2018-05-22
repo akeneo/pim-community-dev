@@ -91,8 +91,7 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
     private function getProductIdsFromIdentifiers(array $productCodes)
     {
         $productIds = [];
-        foreach ($productCodes as $productCode)
-        {
+        foreach ($productCodes as $productCode) {
             $product = $this->productRepository->findOneByIdentifier($productCode);
             $productIds[] = 'product_' . $product->getId();
         }
@@ -103,8 +102,7 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
     private function getProductModelIdsFromIdentifiers(array $productModelCodes)
     {
         $productModelIds = [];
-        foreach ($productModelCodes as $productModelCode)
-        {
+        foreach ($productModelCodes as $productModelCode) {
             $productModel = $this->productModelRepository->findOneByIdentifier($productModelCode);
             $productModelIds[] = 'product_model_' . $productModel->getId();
         }
