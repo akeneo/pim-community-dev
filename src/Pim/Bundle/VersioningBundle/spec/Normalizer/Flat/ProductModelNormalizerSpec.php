@@ -60,6 +60,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getCode()->willReturn('product_model_1');
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $productModel->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
+        $productModel->getAssociations()->willReturn([]);
         $productModel->getValuesForVariation()->willReturn($values);
         $productModel->getParent()->willReturn(null);
 
@@ -137,9 +138,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
         ProductModelInterface $associatedProductModel1,
-        ProductModelInterface $associatedProductModel2,
-        ArrayCollection $associatedProductModelsCollection,
-        \ArrayIterator $associatedProductsModelsIterator
+        ProductModelInterface $associatedProductModel2
     ) {
         $this->setSerializer($serializer);
 
@@ -179,11 +178,14 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $associatedProductModel1->getCode()->willReturn('obi');
         $associatedProductModel2->getCode()->willReturn('wan');
 
+        $productModel->getParent()->willReturn(null);
+
         $this->normalize($productModel, 'flat', [])->shouldReturn(
             [
                 'family_variant' => 'family_variant_2',
                 'code' => 'product_model_1',
                 'categories' => 'nice shoes,converse',
+                'parent'     => '',
                 'cross_sell-groups' => '',
                 'cross_sell-products' => '',
                 'cross_sell-product_models' => '',

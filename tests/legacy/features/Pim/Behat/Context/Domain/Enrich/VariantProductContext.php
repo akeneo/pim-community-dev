@@ -126,7 +126,7 @@ class VariantProductContext extends PimContext
      *
      * @Then the last version of the variant product :identifier should be:
      */
-    public function variantProductHasLastVersion(string $identifier, TableNode $expectedVersion): void
+    public function checkVariantProductLastVersion(string $identifier, TableNode $expectedVersion): void
     {
         $product = $this->findProduct($identifier);
         $lastVersion = $this->versionRepository->getNewestLogEntry(

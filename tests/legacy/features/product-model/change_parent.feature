@@ -70,6 +70,6 @@ Feature: Change the parent of a product model
       | code             | parent     | family_variant    | color |
       | white_round_neck | round_neck | tshirts_variant_2 | white |
     When the parent of product model white_round_neck is changed for root product model v_neck
-    Then the last version of the variant product white_round_neck should be:
+    Then the last version of the product model white_round_neck should be:
       | field  | old_value  | new_value |
       | parent | round_neck | v_neck    |

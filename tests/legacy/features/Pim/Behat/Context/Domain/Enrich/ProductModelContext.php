@@ -16,8 +16,12 @@ use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webmozart\Assert\Assert;
 
+/**
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class ProductModelContext extends PimContext
 {
     use SpinCapableTrait;
@@ -44,6 +48,9 @@ class ProductModelContext extends PimContext
      * @param string                          $mainContextClass
      * @param ProductModelRepositoryInterface $productModelRepository
      * @param EntityManagerInterface          $entityManager
+     * @param ObjectUpdaterInterface          $productModelUpdater
+     * @param SaverInterface                  $productSaver
+     * @param ValidatorInterface              $validator
      * @param VersionRepositoryInterface      $versionRepository
      */
     public function __construct(
@@ -68,6 +75,8 @@ class ProductModelContext extends PimContext
     /**
      * @param string $identifier
      *
+     * @throws \Context\Spin\TimeoutException
+     *
      * @Given /^I am on the "([^"]*)" product model page$/
      * @Given /^I edit the "([^"]*)" product model$/
      */
@@ -79,6 +88,11 @@ class ProductModelContext extends PimContext
     }
 
     /**
+     * @param string $productModelCode
+     * @param string $rootProductModelCode
+     *
+     * @throws \Context\Spin\TimeoutException
+     *
      * @When the parent of product model :productModelCode is changed for root product model :rootProductModelCode
      */
     public function changeProductModelParent(string $productModelCode, string $rootProductModelCode)
@@ -91,9 +105,17 @@ class ProductModelContext extends PimContext
     }
 
     /**
+     * @param string $productModelCode
+     * @param string $rootProductModelCode
+     *
+     * @throws \Exception
+     * @throws \Context\Spin\TimeoutException
+     *
+     * @return bool
+     *
      * @Then the parent of product model :productModelCode cannot be changed for invalid root product model :rootProductModelCode
      */
-    public function cannotSetInvalidProductModelParent(string $productModelCode, string $rootProductModelCode)
+    public function cannotSetInvalidProductModelParent(string $productModelCode, string $rootProductModelCode): bool
     {
         $productModel = $this->getProductModel($productModelCode);
         try {
@@ -111,22 +133,29 @@ class ProductModelContext extends PimContext
     }
 
     /**
+     * @param string $productModelCode
+     * @param string $rootProductModelCode
+     *
+     * @throws \Context\Spin\TimeoutException
+     *
      * @Then the parent of the product model :productModelCode should be :rootProductModelCode
      */
     public function productModelHasParent(string $productModelCode, string $rootProductModelCode)
     {
         $this->entityManager->clear();
         $entity = $this->getProductModel($productModelCode);
-        Assert::assertEquals($rootProductModelCode, $entity->getParent()->getCode());
+        Assert::assertSame($rootProductModelCode, $entity->getParent()->getCode());
     }
 
     /**
      * @param string    $code
      * @param TableNode $expectedVersion
      *
-     * @Then the last version of the productmodel  :code should be:
+     * @throws \Context\Spin\TimeoutException
+     *
+     * @Then the last version of the product model :code should be:
      */
-    public function variantProductHasLastVersion(string $code, TableNode $expectedVersion): void
+    public function checkProductModelLastVersion(string $code, TableNode $expectedVersion): void
     {
         $productModel = $this->getProductModel($code);
         $lastVersion = $this->versionRepository->getNewestLogEntry(
@@ -146,13 +175,13 @@ class ProductModelContext extends PimContext
         ksort($actualChangeset);
         ksort($expectedChangeset);
 
-        Assert::same($actualChangeset, $expectedChangeset);
+        Assert::assertSame($expectedChangeset, $actualChangeset);
     }
 
     /**
      * @param string $code
      *
-     * @throws \InvalidArgumentException
+     * @throws \Context\Spin\TimeoutException
      *
      * @return ProductModelInterface
      */
