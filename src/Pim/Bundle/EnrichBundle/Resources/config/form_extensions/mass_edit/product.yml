@@ -179,7 +179,7 @@ extensions:
     pim-mass-product-edit-configure-change-parent-product-model:
         module: pim/mass-edit-form/product/change-parent-product
         parent: pim-mass-product-edit
-        aclResourceId: pim_enrich_product_edit_attributes #TODO : voir avec Delphine si droit spécifique
+        aclResourceId: pim_enrich_product_edit_attributes
         position: 210
         config:
             title: pim_enrich.mass_edit.product.title
