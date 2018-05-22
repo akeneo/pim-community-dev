@@ -333,3 +333,8 @@ jobs:
         alias:     delete_products_and_product_models
         label:     Mass delete products
         type:      mass_delete
+    change_parent_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     change_parent_product
+        label:     Change product parent
+        type:      mass_edit

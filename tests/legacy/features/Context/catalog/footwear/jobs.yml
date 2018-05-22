@@ -320,6 +320,11 @@ jobs:
         alias:     add_to_existing_product_model
         label:     Add to existing product model
         type:      mass_edit
+    change_parent_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     change_parent_product
+        label:     Change product parent
+        type:      mass_edit
     delete_products_and_product_models:
         connector: Akeneo Mass Edit Connector
         alias:     delete_products_and_product_models

@@ -265,6 +265,11 @@ jobs:
         alias:     set_attribute_requirements
         label:     Set family attribute requirements
         type:      mass_edit
+    change_parent_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     change_parent_product
+        label:     Change product parent
+        type:      mass_edit
     csv_product_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_product_quick_export
