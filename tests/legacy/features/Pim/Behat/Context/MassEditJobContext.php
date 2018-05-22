@@ -37,7 +37,7 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
         $productCodes = $this->getMainContext()->listToArray($productCodes);
         $productIds = $this->getProductIdsFromIdentifiers($productCodes);
 
-        $this->launchJob($productIds, $newParentCode);
+        $this->launchJob($productIds, 'parent', $newParentCode, self::MASS_CHANGE_PARENT_JOB_NAME);
     }
 
     /**
@@ -48,16 +48,16 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
         $productModelCodes = $this->getMainContext()->listToArray($productModelCodes);
         $productModelIds = $this->getProductModelIdsFromIdentifiers($productModelCodes);
 
-        $this->launchJob($productModelIds, $newParentCode);
+        $this->launchJob($productModelIds, 'parent', $newParentCode, self::MASS_CHANGE_PARENT_JOB_NAME);
     }
 
-    private function launchJob(array $productIds, string $newParentCode)
+    private function launchJob(array $productIds, string $fieldName, string $newFieldValue, string $jobName)
     {
-        $jobInstance = $this->mainContext->getSubcontext('job')->theFollowingJobConfiguration(self::MASS_CHANGE_PARENT_JOB_NAME, new TableNode([]));
+        $jobInstance = $this->mainContext->getSubcontext('job')->theFollowingJobConfiguration($jobName, new TableNode([]));
 
         $user = $this->getFixturesContext()->getUser(self::USERNAME_FOR_JOB_LAUNCH);
 
-        $jobExecutionConfiguration = $this->buildJobExecutionConfiguration($productIds, $newParentCode);
+        $jobExecutionConfiguration = $this->buildJobExecutionConfiguration($productIds, $fieldName, $newFieldValue);
 
         $launcher = $this->mainContext->getContainer()->get('akeneo_batch.launcher.simple_job_launcher');
         $launcher->launch($jobInstance, $user, $jobExecutionConfiguration);
@@ -65,7 +65,7 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
         $this->waitForJobToFinish($jobInstance);
     }
 
-    private function buildJobExecutionConfiguration(array $productIds, string $newParentCode)
+    private function buildJobExecutionConfiguration(array $productIds, string $fieldName, string $newFieldValue)
     {
         return [
             'filters' => [
@@ -81,8 +81,8 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
             ],
             'actions' => [
                 0 => [
-                    'field' => 'parent',
-                    'value' => $newParentCode,
+                    'field' => $fieldName,
+                    'value' => $newFieldValue,
                 ],
             ],
         ];
