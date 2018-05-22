@@ -56,6 +56,7 @@ legacy:
                     - '@pim_catalog.updater.product_model'
                     - '@pim_catalog.saver.product_model'
                     - '@pim_catalog.validator.product'
+                    - '@pim_versioning.repository.version'
                 - Pim\Behat\Context\Domain\Enrich\VariantProductContext:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
