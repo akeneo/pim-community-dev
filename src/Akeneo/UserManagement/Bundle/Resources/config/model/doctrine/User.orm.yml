@@ -152,3 +152,6 @@ Akeneo\UserManagement\Component\Model\User:
             targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
         defaultTree:
             targetEntity: Pim\Component\Catalog\Model\CategoryInterface
+    lifecycleCallbacks:
+        prePersist: [beforeSave]
+        preUpdate: [preUpdate]

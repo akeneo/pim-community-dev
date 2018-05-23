@@ -5,14 +5,14 @@ namespace Akeneo\UserManagement\Component\Model;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * @ORM\HasLifecycleCallbacks()
+ * @author    Nicolas Dupont <nicalas@akeneo.com>
+ * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class User implements UserInterface
 {
@@ -45,7 +45,7 @@ class User implements UserInterface
     /** @var string */
     protected $nameSuffix;
 
-    /** @var DateTime */
+    /** @var \DateTime */
     protected $birthday;
 
     /**
@@ -93,10 +93,10 @@ class User implements UserInterface
      */
     protected $confirmationToken;
 
-    /** @var DateTime */
+    /** @var \DateTime */
     protected $passwordRequestedAt;
 
-    /** @var DateTime */
+    /** @var \DateTime */
     protected $lastLogin;
 
     /** @var int */
@@ -111,10 +111,10 @@ class User implements UserInterface
     /** @var string */
     protected $api;
 
-    /** @var DateTime $createdAt */
+    /** @var \DateTime $createdAt */
     protected $createdAt;
 
-    /** @var DateTime $updatedAt */
+    /** @var \DateTime $updatedAt */
     protected $updatedAt;
 
     /** @var LocaleInterface */
@@ -410,7 +410,7 @@ class User implements UserInterface
      */
     public function isPasswordRequestNonExpired($ttl)
     {
-        return $this->getPasswordRequestedAt() instanceof DateTime &&
+        return $this->getPasswordRequestedAt() instanceof \DateTime &&
                $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
     }
 
@@ -491,7 +491,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setBirthday(DateTime $birthday = null)
+    public function setBirthday(\DateTime $birthday = null)
     {
         $this->birthday = $birthday;
 
@@ -515,7 +515,7 @@ class User implements UserInterface
     {
         $this->imageFile = $imageFile;
         // this will trienvogger PreUpdate callback even if only image has been changed
-        $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
 
         return $this;
     }
@@ -583,7 +583,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setPasswordRequestedAt(DateTime $time = null)
+    public function setPasswordRequestedAt(\DateTime $time = null)
     {
         $this->passwordRequestedAt = $time;
 
@@ -593,7 +593,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setLastLogin(DateTime $time)
+    public function setLastLogin(\DateTime $time)
     {
         $this->lastLogin = $time;
 
@@ -613,7 +613,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -853,8 +853,8 @@ class User implements UserInterface
      */
     public function beforeSave()
     {
-        $this->createdAt = new DateTime('now', new \DateTimeZone('UTC'));
-        $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->loginCount = 0;
     }
 
@@ -863,7 +863,7 @@ class User implements UserInterface
      */
     public function preUpdate()
     {
-        $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**
