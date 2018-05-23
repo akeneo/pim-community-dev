@@ -7,6 +7,7 @@
 - PIM-7337: Fix completeness popup when no label on attribute
 - PIM-7351: Fix boolean values display in product PDF
 - PIM-7348: Prevent completeness calculation for products without a family
+- GITHUB-7619: Fix a bug in measure family converter thats break the API (Cheers [Jan Schneider](https://github.com/yunosh))
 
 # 2.0.24 (2018-05-16)
 
@@ -21,7 +22,6 @@
 
 - PIM-7325: Fix family grid search filter
 - PIM-7328: Fix a bug that prevents to index very large texts in Elasticsearch
-- GITHUB-7619: Fix a bug in measure family converter thats break the API (Cheers [Jan Schneider](https://github.com/yunosh))
 
 # 2.0.22 (2018-04-25)
 
