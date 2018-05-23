@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
-use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
+use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -88,8 +88,8 @@ class CreateDraftCommand extends UpdateProductCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $identifier = $input->getArgument('identifier');
-        $product = $this->getProduct($identifier);
-        if (null === $product) {
+        $entityWithValues = $this->getProduct($identifier);
+        if (null === $entityWithValues) {
             $output->writeln(sprintf('<error>Product with identifier "%s" not found</error>', $identifier));
 
             return -1;
@@ -101,9 +101,9 @@ class CreateDraftCommand extends UpdateProductCommand
         }
 
         $updates = json_decode($input->getArgument('json_updates'), true);
-        $this->update($product, $updates);
+        $this->update($entityWithValues, $updates);
 
-        $violations = $this->validate($product);
+        $violations = $this->validate($entityWithValues);
         foreach ($violations as $violation) {
             $output->writeln(sprintf("<error>%s</error>", $violation->getMessage()));
         }
@@ -113,7 +113,7 @@ class CreateDraftCommand extends UpdateProductCommand
             return -1;
         }
 
-        if (null !== $productDraft = $this->getProductDraftBuilder()->build($product, $username)) {
+        if (null !== $productDraft = $this->getEntityWithValuesDraftBuilder()->build($entityWithValues, $username)) {
             $status = EntityWithValuesDraftInterface::READY === $input->getArgument('draft_status') ?
                 EntityWithValuesDraftInterface::CHANGE_TO_REVIEW :
                 EntityWithValuesDraftInterface::CHANGE_DRAFT;
@@ -140,10 +140,10 @@ class CreateDraftCommand extends UpdateProductCommand
     }
 
     /**
-     * @return ProductDraftBuilderInterface
+     * @return EntityWithValuesDraftBuilderInterface
      */
-    protected function getProductDraftBuilder()
+    protected function getEntityWithValuesDraftBuilder()
     {
-        return $this->getContainer()->get('pimee_workflow.builder.draft');
+        return $this->getContainer()->get('pimee_workflow.product.builder.draft');
     }
 }

@@ -11,8 +11,9 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
@@ -20,14 +21,14 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class ProductDraftManagerSpec extends ObjectBehavior
+class EntityWithValuesDraftManagerSpec extends ObjectBehavior
 {
     function let(
         SaverInterface $workingCopySaver,
         UserContext $userContext,
-        ProductDraftFactory $factory,
+        EntityWithValuesDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $repository,
-        ProductDraftApplierInterface $applier,
+        DraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
         SaverInterface $draftSaver,
         RemoverInterface $remover,
@@ -86,7 +87,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             'pim.internal_api.attribute.edit'
         )->shouldBeCalled()->willReturn($wholeChange);
 
-        $factory->createProductDraft($product, 'author')->shouldBeCalled()->willReturn($partialDraft);
+        $factory->createEntityWithValueDraft($product, 'author')->shouldBeCalled()->willReturn($partialDraft);
         $partialDraft->setChanges(['values' => $wholeChange])->shouldBeCalled();
         $partialDraft->getId()->willReturn(null);
 
@@ -184,7 +185,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             'pim.internal_api.attribute.edit'
         )->shouldBeCalled()->willReturn($wholeChanges);
 
-        $factory->createProductDraft(Argument::cetera())->shouldNotBeCalled();
+        $factory->createEntityWithValueDraft(Argument::cetera())->shouldNotBeCalled();
 
         $draft->getId()->willReturn(12);
         $applier->applyToReviewChanges($product, $draft)->shouldBeCalled();
@@ -244,7 +245,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             'pim.internal_api.attribute.edit'
         )->shouldBeCalled()->willReturn($approvableChanges);
 
-        $factory->createProductDraft($product, 'author')->shouldBeCalled()->willReturn($partialDraft);
+        $factory->createEntityWithValueDraft($product, 'author')->shouldBeCalled()->willReturn($partialDraft);
         $partialDraft->getId()->willReturn(null);
         $partialDraft->setChanges(['values' => $approvableChanges])->shouldBeCalled();
 
@@ -337,7 +338,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
         $repository->findUserEntityWithValuesDraft($product, 'peter')->willReturn(null);
-        $factory->createProductDraft($product, 'peter')->willReturn($productDraft);
+        $factory->createEntityWithValueDraft($product, 'peter')->willReturn($productDraft);
 
         $this->findOrCreate($product)->shouldReturn($productDraft);
     }

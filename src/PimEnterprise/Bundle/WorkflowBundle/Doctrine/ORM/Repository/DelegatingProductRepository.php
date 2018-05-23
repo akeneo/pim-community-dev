@@ -15,7 +15,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -41,22 +41,22 @@ class DelegatingProductRepository implements IdentifiableObjectRepositoryInterfa
     /** @var EntityWithValuesDraftRepositoryInterface */
     private $productDraftRepository;
 
-    /** @var ProductDraftApplierInterface */
+    /** @var DraftApplierInterface */
     private $productDraftApplier;
 
     /**
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param AuthorizationCheckerInterface         $authorizationChecker
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param EntityWithValuesDraftRepositoryInterface       $productDraftRepository
-     * @param ProductDraftApplierInterface          $productDraftApplier
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param AuthorizationCheckerInterface            $authorizationChecker
+     * @param IdentifiableObjectRepositoryInterface    $productRepository
+     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
+     * @param DraftApplierInterface                    $productDraftApplier
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         IdentifiableObjectRepositoryInterface $productRepository,
         EntityWithValuesDraftRepositoryInterface $productDraftRepository,
-        ProductDraftApplierInterface $productDraftApplier
+        DraftApplierInterface $productDraftApplier
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;

@@ -207,11 +207,11 @@ JSON;
      *
      * @return EntityWithValuesDraftInterface
      */
-    protected function createProductDraft($userName, ProductInterface $product, array $changes)
+    protected function createEntityWithValuesDraft($userName, ProductInterface $product, array $changes)
     {
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 
-        $productDraft = $this->get('pimee_workflow.builder.draft')->build($product, $userName);
+        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, $userName);
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
 
@@ -236,7 +236,7 @@ JSON;
             ]
         ]);
 
-        return $this->createProductDraft($userName, $product, [
+        return $this->createEntityWithValuesDraft($userName, $product, [
             'values' => [
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'Modified US in draft', 'locale' => 'en_US', 'scope' => 'ecommerce'],
