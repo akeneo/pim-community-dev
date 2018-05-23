@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 interface DataProviderAdapterInterface
 {
 
-    public function push(ProductInterface $product);
+    public function push(ProductInterface $product): string;
 
     public function bulkPush(array $products);
 

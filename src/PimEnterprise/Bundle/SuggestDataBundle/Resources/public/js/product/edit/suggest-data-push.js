@@ -42,7 +42,8 @@ define(
                 $.ajax({
                     method: 'GET',
                     url: Routing.generate('pimee_suggest_data_push_product', {productId: this.getFormData().meta.id})
-                }).done(function () {
+                }).done(function (xhr) {
+                    console.log(xhr);
                     messenger.notify(
                         'success',
                         _.__('pimee_suggest_data.product.edit.flash.success')
@@ -51,7 +52,8 @@ define(
                     const response = xhr.responseJSON;
                     let errorMessage = _.__('pimee_suggest_data.product.edit.flash.error');
 
-                    if (response.error) {
+                    console.log(xhr);
+                    if (!_.isUndefined(response.error)) {
                         errorMessage = response.error;
                     }
 
