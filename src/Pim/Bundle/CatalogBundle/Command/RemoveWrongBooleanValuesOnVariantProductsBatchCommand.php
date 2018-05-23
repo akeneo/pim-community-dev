@@ -47,12 +47,12 @@ class RemoveWrongBooleanValuesOnVariantProductsBatchCommand extends ContainerAwa
         $cleaner = $this->getContainer()
             ->get('pim_catalog.command.cleaner.wrong_boolean_value_on_variant_product');
         $validator = $this->getContainer()->get('pim_catalog.validator.product');
+        $identifiers = $input->getArgument('identifiers');
         $variantProducts = $this->getVariantProducts(explode(',', $identifiers));
 
         $productsToSave = [];
         foreach ($variantProducts as $variantProduct) {
-            // TODO: Replace this check for 2.2 version by ``if (!$variantProduct->isVariant()) {}``
-            if (!($variantProduct instanceof VariantProductInterface)) {
+            if (!$variantProduct->isVariant()) {
                 continue;
             }
 
@@ -85,10 +85,10 @@ class RemoveWrongBooleanValuesOnVariantProductsBatchCommand extends ContainerAwa
     private function getVariantProducts(array $identifiers): CursorInterface
     {
         $pqb = $this->getContainer()
-            ->get('pim_enrich.query.product_and_product_model_query_builder_factory')
+            ->get('pim_catalog.query.product_and_product_model_query_builder_factory')
             ->create();
 
-        $pqb->addFilter('id', Operators::IN_LIST, $identifiers);
+        $pqb->addFilter('identifier', Operators::IN_LIST, $identifiers);
 
         return $pqb->execute();
     }

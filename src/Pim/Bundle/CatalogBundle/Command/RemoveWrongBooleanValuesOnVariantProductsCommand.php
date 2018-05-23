@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\Command;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -55,7 +56,7 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
 
         $productsToClean = [];
         foreach ($variantProducts as $variantProduct) {
-            $productsToClean[] = $variantProduct->getId();
+            $productsToClean[] = $variantProduct instanceof ProductModelInterface ? $variantProduct->getCode() : $variantProduct->getIdentifier();
 
             if (count($productsToClean) >= $productBatchSize) {
                 $this->launchCleanTask($productsToClean, $env, $rootDir);
@@ -80,7 +81,7 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
     private function getVariantProducts(): CursorInterface
     {
         $pqb = $this->getContainer()
-            ->get('pim_enrich.query.product_and_product_model_query_builder_factory')
+            ->get('pim_catalog.query.product_and_product_model_query_builder_factory')
             ->create();
 
         $pqb->addFilter('parent', Operators::IS_NOT_EMPTY, null);
@@ -91,17 +92,17 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
     /**
      * Lanches the clean command on given ids
      *
-     * @param array  $productIds
+     * @param array  $productIdentifiers
      * @param string $env
      * @param string $rootDir
      */
-    private function launchCleanTask(array $productIds, string $env, string $rootDir)
+    private function launchCleanTask(array $productIdentifiers, string $env, string $rootDir)
     {
         $process = new Process([
             sprintf('%s/../bin/console', $rootDir),
             'pim:catalog:remove-wrong-boolean-values-on-variant-products-batch',
             sprintf('--env=%s', $env),
-            implode(',', $productIds)
+            implode(',', $productIdentifiers)
         ]);
         $process->run();
     }
