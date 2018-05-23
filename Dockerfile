@@ -84,6 +84,11 @@ RUN apt-get update && apt-get install -y apt-transport-https \
   && tar -C /opt -xjf firefox-52.8.0esr.tar.bz2 \
   && mv /opt/firefox /opt/firefox-52.8.0esr \
   && ln -fs /opt/firefox-52.8.0esr/firefox /usr/bin/firefox \
+  && curl -SLO https://github.com/mozilla/geckodriver/releases/download/v0.10.0/geckodriver-v0.10.0-linux64.tar.gz \
+  && tar -C /opt -zxf geckodriver-v0.10.0-linux64.tar.gz \
+  && mv /opt/geckodriver /opt/geckodriver-0.10.0 \
+  && chmod 755 /opt/geckodriver-0.10.0 \
+  && ln -fs /opt/geckodriver-0.10.0 /usr/bin/geckodriver \
   && mkdir -p /opt/selenium \
   && curl -SL https://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar -o /opt/selenium/selenium-server-standalone.jar \
   ## Pupeter & Cucumber JS
