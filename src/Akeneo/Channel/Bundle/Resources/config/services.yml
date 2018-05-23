@@ -140,7 +140,7 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_enrich.normalizer.locale'
-            - '@pim_versioning.manager.version'
+            - '@pim_versioning.repository.version'
             - '@pim_enrich.normalizer.version'
             - '@pim_catalog.filter.chained'
         tags:
