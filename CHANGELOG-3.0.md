@@ -112,3 +112,10 @@
 - Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Channel` to `Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Channel`
 - Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Locale` to `Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Locale`
 - Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\Currency` to `Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Currency`
+- Move `Pim\Component\Catalog\Exception\LinkedChannelException` to `Akeneo\Channel\Component\Exception\LinkedChannelException`
+- Move `Pim\Component\Catalog\Model\ReferableInterface` to `Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface`
+- Remove method `getChoiceValue` and `getChoiceLabel` from `Akeneo\Channel\Component\Model\Channel`
+- Change the constructor of `Akeneo\Channel\Component\Normalizer\InternalApi\ChannelNormalizer` to replace `Pim\Bundle\VersioningBundle\Manager\VersionManager` by `Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface`
+- Change the constructor of `Akeneo\UserManagement\Bundle\Context\UserContext` to remove `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
+- Remove class `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilder` 
+- Remove class `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface` 
