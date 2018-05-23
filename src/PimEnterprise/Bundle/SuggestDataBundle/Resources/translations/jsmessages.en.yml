@@ -2,6 +2,9 @@ pimee_suggest_data:
     product:
         edit:
             btn.push: Suggest data
+            flash:
+                success: Successfully asked for suggest data
+                error: Error during suggest data
         mass_edit:
             operation.suggest_data:
                 label: Suggest data

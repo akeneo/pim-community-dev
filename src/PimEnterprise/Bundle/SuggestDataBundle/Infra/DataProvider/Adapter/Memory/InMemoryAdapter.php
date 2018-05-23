@@ -20,10 +20,7 @@ class InMemoryAdapter implements DataProviderAdapterInterface
 
     public function push(ProductInterface $product)
     {
-        throw new \Exception(
-            sprintf('"%s is not yet implemented'),
-            __METHOD__
-        );
+        return;
     }
 
     public function bulkPush(array $products)
@@ -60,9 +57,6 @@ class InMemoryAdapter implements DataProviderAdapterInterface
 
     public function configure(array $config)
     {
-        throw new \Exception(
-            sprintf('"%s is not yet implemented'),
-            __METHOD__
-        );
+        return;
     }
 }

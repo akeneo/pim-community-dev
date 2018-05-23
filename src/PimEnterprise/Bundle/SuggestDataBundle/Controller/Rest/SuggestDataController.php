@@ -4,6 +4,8 @@ namespace PimEnterprise\Bundle\SuggestDataBundle\Controller\Rest;
 
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -31,16 +33,27 @@ class SuggestDataController
         $this->dataProviderFactory = $dataProviderFactory;
     }
 
-    public function pushAction($productId): void
+    /**
+     * @param $productId
+     *
+     * @return JsonResponse
+     */
+    public function pushAction($productId): JsonResponse
     {
         $product = $this->repository->find($productId);
+        $jsonResponse = new JsonResponse();
         if (null === $product) {
-            throw new NotFoundHttpException(
-                sprintf('Product id "%s" not found', $productId)
-            );
+            $jsonResponse->setStatusCode(Response::HTTP_NOT_FOUND);
+            $jsonResponse->setData([
+                'error' => 'Requested product not found.'
+            ]);
+
+            return $jsonResponse;
         }
 
         $dataProvider = $this->dataProviderFactory->create();
         $dataProvider->push($product);
+
+        return $jsonResponse;
     }
 }
