@@ -86,6 +86,11 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
 
         $this->firstRead = true;
     }
+    
+    protected function getConfiguredChannel()
+    {
+        return $this->configuredChannel;
+    }
 
     /**
      * {@inheritdoc}
