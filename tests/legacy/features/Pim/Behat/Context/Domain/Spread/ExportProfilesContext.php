@@ -49,6 +49,38 @@ class ExportProfilesContext extends ImportExportContext
     }
 
     /**
+     * @param string       $number
+     * @param string       $code
+     * @param PyStringNode $csv
+     *
+     * @Then /^(first |second )?exported file of "([^"]*)" should contain the lines:$/
+     *
+     * @throws ExpectationException
+     * @throws \Exception
+     */
+    public function exportedFileOfShouldContainTheLines($number, $code, PyStringNode $csv)
+    {
+        $intNumber = null;
+        if ('' !== $number) {
+            $intNumber = 'first ' === $number ? 1 : 2;
+        }
+
+        $lines = $this->spin(function () use ($code, $csv, $intNumber) {
+            $path = $this->getExportedFile($code, $intNumber);
+
+            $config = $this->getCsvJobConfiguration($code);
+
+            return [
+                'expectedLines' => $this->getExpectedLines($csv, $config),
+                'actualLines' => $this->getActualLines($path, 'csv', $config),
+                'path' => $path
+            ];
+        }, sprintf('Can not find lines of the file %s', $code));
+
+        $this->compareLines($lines['expectedLines'], $lines['actualLines'], $lines['path']);
+    }
+
+    /**
      * @param string $code
      *
      * @Then /^exported file of "([^"]*)" should be empty$/

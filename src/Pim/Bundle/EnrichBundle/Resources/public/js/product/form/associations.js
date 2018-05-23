@@ -122,7 +122,7 @@ define(
              */
             configure: function () {
                 this.trigger('tab:register', {
-                    code: this.code,
+                    code: (undefined === this.config.tabCode) ? this.code : this.config.tabCode,
                     isVisible: this.isVisible.bind(this),
                     label: __('pim_enrich.form.product.tab.associations.title')
                 });
@@ -154,7 +154,9 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
+                const code = (undefined === this.config.tabCode) ? this.code : this.config.tabCode;
+
+                if (!this.configured || code !== this.getParent().getCurrentTab()) {
                     return;
                 }
 

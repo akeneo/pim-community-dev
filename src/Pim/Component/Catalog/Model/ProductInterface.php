@@ -26,7 +26,7 @@ interface ProductInterface extends
     CategoryAwareInterface,
     EntityWithFamilyInterface,
     EntityWithFamilyVariantInterface,
-    AssociationAwareInterface
+    EntityWithAssociationsInterface
 {
     /**
      * Get the ID of the product
