@@ -81,7 +81,7 @@ class AppKernel extends Kernel
     protected function getPimEnterpriseBundles()
     {
         return [
-            new Akeneo\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
+            new Akeneo\Tool\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
             new Akeneo\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
             new Akeneo\EnrichedEntity\back\Infrastructure\Symfony\AkeneoEnrichedEntityBundle(),
             new PimEnterprise\Bundle\CatalogBundle\PimEnterpriseCatalogBundle(),

@@ -8,9 +8,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Akeneo\Bundle\FileMetadataBundle;
+namespace Akeneo\Tool\Bundle\FileMetadataBundle;
 
-use Akeneo\Bundle\FileMetadataBundle\DependencyInjection\Compiler\RegisterAdaptersPass;
+use Akeneo\Tool\Bundle\FileMetadataBundle\DependencyInjection\Compiler\RegisterAdaptersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
