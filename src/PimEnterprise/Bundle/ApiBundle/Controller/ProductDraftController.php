@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\ApiBundle\Controller;
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -33,7 +33,7 @@ class ProductDraftController
     /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productDraftRepository;
 
-    /** @var ProductDraftApplierInterface */
+    /** @var DraftApplierInterface */
     protected $productDraftApplier;
 
     /** @var NormalizerInterface */
@@ -46,17 +46,17 @@ class ProductDraftController
     protected $authorizationChecker;
 
     /**
-     * @param ProductRepositoryInterface      $productRepository
+     * @param ProductRepositoryInterface               $productRepository
      * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
-     * @param ProductDraftApplierInterface    $productDraftApplier
-     * @param NormalizerInterface             $normalizer
-     * @param TokenStorageInterface           $tokenStorage
-     * @param AuthorizationCheckerInterface   $authorizationChecker
+     * @param DraftApplierInterface                    $productDraftApplier
+     * @param NormalizerInterface                      $normalizer
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param AuthorizationCheckerInterface            $authorizationChecker
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         EntityWithValuesDraftRepositoryInterface $productDraftRepository,
-        ProductDraftApplierInterface $productDraftApplier,
+        DraftApplierInterface $productDraftApplier,
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker

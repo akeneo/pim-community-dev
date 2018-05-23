@@ -19,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -63,7 +63,7 @@ class ProductDraftController
     /** @var ObjectRepository */
     protected $repository;
 
-    /** @var ProductDraftManager */
+    /** @var EntityWithValuesDraftManager */
     protected $manager;
 
     /** @var UserContext */
@@ -96,7 +96,7 @@ class ProductDraftController
      * @param TokenStorageInterface                 $tokenStorage
      * @param TranslatorInterface                   $translator
      * @param ObjectRepository                      $repository
-     * @param ProductDraftManager                   $manager
+     * @param EntityWithValuesDraftManager          $manager
      * @param UserContext                           $userContext
      * @param JobLauncherInterface                  $simpleJobLauncher
      * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
@@ -112,7 +112,7 @@ class ProductDraftController
         TokenStorageInterface $tokenStorage,
         TranslatorInterface $translator,
         ObjectRepository $repository,
-        ProductDraftManager $manager,
+        EntityWithValuesDraftManager $manager,
         UserContext $userContext,
         JobLauncherInterface $simpleJobLauncher,
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,

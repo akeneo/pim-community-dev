@@ -7,12 +7,14 @@ use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplier;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
-class ProductDraftApplierSpec extends ObjectBehavior
+class DraftApplierSpec extends ObjectBehavior
 {
     function let(
         PropertySetterInterface $propertySetter,
@@ -24,7 +26,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
 
     function it_is_a_applier()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface');
+        $this->shouldBeAnInstanceOf(DraftApplier::class);
     }
 
     function it_does_not_apply_a_draft_without_values(
@@ -36,7 +38,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::PRE_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
 
@@ -44,7 +46,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::POST_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldNotBeCalled();
 
@@ -87,7 +89,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::PRE_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
 
@@ -110,7 +112,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::POST_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
 
@@ -154,7 +156,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::PRE_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
 
@@ -177,7 +179,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::POST_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
 

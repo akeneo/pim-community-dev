@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Factory;
 
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
@@ -21,7 +22,7 @@ use PimEnterprise\Component\Workflow\Model\ProductDraft;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftFactory
+class ProductDraftFactory implements EntityWithValuesDraftFactory
 {
     /** @var ProductRepositoryInterface */
     private $productRepository;
@@ -42,7 +43,7 @@ class ProductDraftFactory
      *
      * @return EntityWithValuesDraftInterface
      */
-    public function createProductDraft(ProductInterface $product, $username)
+    public function createEntityWithValueDraft(EntityWithValuesInterface $product, string $username): EntityWithValuesDraftInterface
     {
         $fullProduct = $this->productRepository->find($product->getId());
 
