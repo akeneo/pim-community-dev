@@ -5,6 +5,7 @@
 - PIM-7336: Fix channel update with "do not convert" values for conversion units
 - PIM-7385: Fix memory leak on purge job command
 - PIM-7375: Fix metric unit values on export/import with empty values
+- PIM-7370: disable multisorting on group/user and role/user grid for a better sort experience
 
 # 1.7.21 (2018-04-23)
 
