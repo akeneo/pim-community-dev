@@ -116,6 +116,11 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
         throw new NotImplementedException(__METHOD__);
     }
 
+    public function findProductModelsForFamilyVariant(FamilyVariantInterface $familyVariant): array
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
     public function searchLastLevelByCode(
         FamilyVariantInterface $familyVariant,
         string $search,
