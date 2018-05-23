@@ -285,7 +285,7 @@ class XlsxFileContext extends PimContext
      */
     private function lineExists($searchedLine, $actualLines): bool
     {
-        $clean = array_map(function (string $value){
+        $clean = array_map(function (string $value) {
             return trim($value, '"');
         }, $searchedLine);
 
