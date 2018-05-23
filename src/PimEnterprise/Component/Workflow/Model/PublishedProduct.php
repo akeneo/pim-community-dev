@@ -16,7 +16,7 @@ use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
@@ -631,7 +631,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addAssociation(AssociationInterface $association): AssociationAwareInterface
+    public function addAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
         if (!$this->associations->contains($association)) {
             $associationType = $association->getAssociationType();
@@ -654,7 +654,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAssociation(AssociationInterface $association): AssociationAwareInterface
+    public function removeAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
         $this->associations->removeElement($association);
 
@@ -694,7 +694,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(Collection $associations): AssociationAwareInterface
+    public function setAssociations(Collection $associations): EntityWithAssociationsInterface
     {
         $this->associations = $associations;
 
