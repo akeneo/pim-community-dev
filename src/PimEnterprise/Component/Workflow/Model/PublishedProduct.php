@@ -933,18 +933,20 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     public function getAllAssociations()
     {
         $associations = new ArrayCollection($this->associations->toArray());
-        $allAssociations = $this->getAncestryAssociations($this, $associations);
+        $allAssociations = $this->mergeAncestryAssociations($this, $associations);
 
         return $allAssociations;
     }
 
     /**
+     * Merge entity own associations with its ancestry associations
+     *
      * @param EntityWithFamilyVariantInterface $entity
      * @param Collection                       $associationsCollection
      *
      * @return Collection
      */
-    private function getAncestryAssociations(
+    private function mergeAncestryAssociations(
         EntityWithFamilyVariantInterface $entity,
         Collection $associationsCollection
     ): Collection {
