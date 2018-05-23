@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
@@ -186,10 +186,6 @@ class IdentifierFilterSpec extends ObjectBehavior
         $this->shouldThrow(
             new \LogicException('The search query builder is not initialized in the filter.')
         )->during('addFieldFilter', ['identifier', Operators::EQUALS, 'sku-001', null,  null, []]);
-
-        $this->shouldThrow(
-            new \LogicException('The search query builder is not initialized in the filter.')
-        )->during('addAttributeFilter', [$sku, Operators::EQUALS, 'sku-001', null,  null, []]);
     }
 
     function it_throws_an_exception_when_the_given_value_is_not_a_string_with_unsupported_operator_for_field_filter(
