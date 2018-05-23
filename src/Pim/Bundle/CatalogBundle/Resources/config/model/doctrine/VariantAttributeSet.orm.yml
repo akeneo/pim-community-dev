@@ -21,6 +21,7 @@ Pim\Component\Catalog\Model\VariantAttributeSet:
                 joinColumns:
                     variant_attribute_set_id:
                         referencedColumnName: id
+                        onDelete: CASCADE
                 inverseJoinColumns:
                     attributes_id:
                         referencedColumnName: id
@@ -32,6 +33,7 @@ Pim\Component\Catalog\Model\VariantAttributeSet:
                 joinColumns:
                     variant_attribute_set_id:
                         referencedColumnName: id
+                        onDelete: CASCADE
                 inverseJoinColumns:
                     axes_id:
                         referencedColumnName: id

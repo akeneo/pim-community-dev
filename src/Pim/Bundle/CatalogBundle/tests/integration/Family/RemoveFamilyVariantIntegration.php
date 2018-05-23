@@ -7,6 +7,7 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -18,9 +19,17 @@ class RemoveFamilyVariantIntegration extends TestCase
     public function testTheFamilyVariantRemovalSuccess(): void
     {
         $familyVariant = $this->createDefaultFamilyVariant('my_family_variant');
-        $this->removeFamilyVariant($familyVariant);
 
+        $variantAttributeSetIds = [];
+        foreach ($familyVariant->getVariantAttributeSets() as $variantAttributeSet) {
+            $variantAttributeSetIds[] = $variantAttributeSet->getId();
+        }
+
+        $this->removeFamilyVariant($familyVariant);
         $this->assertNull($this->getFamilyVariant('my_family_variant'));
+
+        $attributeSetRepo = $this->get('doctrine.orm.entity_manager')->getRepository(VariantAttributeSetInterface::class);
+        $this->assertCount(0, $attributeSetRepo->findBy(['id' => $variantAttributeSetIds]));
     }
 
     public function testTheFamilyVariantRemovalIsPrevented()
