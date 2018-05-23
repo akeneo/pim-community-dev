@@ -2,6 +2,11 @@ parameters:
     pim_ui.controller.ajax_option.class: Pim\Bundle\UIBundle\Controller\AjaxOptionController
 
 services:
+    # Ideally all controllers should be properly tagged. But that can't be done without introducing BC's.
+    # This needs a second pass in a major release to fix it properly.
+    _defaults:
+        public: true
+
     pim_ui.controller.ajax_option:
         class: '%pim_ui.controller.ajax_option.class%'
         arguments:
