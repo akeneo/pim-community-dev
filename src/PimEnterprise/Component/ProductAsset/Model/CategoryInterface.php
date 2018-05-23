@@ -23,7 +23,7 @@ use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 interface CategoryInterface extends
     BaseCategoryInterface,
     TranslatableInterface,
-    \Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface,
+    ReferableInterface,
     VersionableInterface
 {
     /**
