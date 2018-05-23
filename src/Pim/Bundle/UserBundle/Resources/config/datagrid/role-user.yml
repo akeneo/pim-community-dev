@@ -45,14 +45,11 @@ datagrid:
                     type: string
                     data_name: u.email
         sorters:
-            multiple_sorting: true
             columns:
                 has_role:
                     data_name: has_role
-
             default:
                 has_role: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
-                lastName: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
 
         options:
             requireJSModules:

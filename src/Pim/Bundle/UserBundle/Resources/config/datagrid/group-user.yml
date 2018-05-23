@@ -45,13 +45,11 @@ datagrid:
                     type: string
                     data_name: u.lastName
         sorters:
-            multiple_sorting: true
             columns:
                 has_group:
                     data_name: has_group
             default:
                 has_group: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
-                lastName: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
 
         options:
             requireJSModules:
