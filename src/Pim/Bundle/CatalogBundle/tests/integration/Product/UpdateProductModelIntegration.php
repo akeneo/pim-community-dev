@@ -15,18 +15,6 @@ use Akeneo\Test\Integration\TestCase;
 class UpdateProductModelIntegration extends TestCase
 {
     /**
-     * TODO: This will become possible in PIM-6350.
-     *
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
-     * @expectedExceptionMessage Property "parent" cannot be modified, "amor" given.
-     */
-    public function testTheParentCannotBeChanged(): void
-    {
-        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('apollon_blue');
-        $this->get('pim_catalog.updater.product_model')->update($productModel, ['parent' => 'amor',]);
-    }
-
-    /**
      * TODO: This will become possible in PIM-6344.
      *
      * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException

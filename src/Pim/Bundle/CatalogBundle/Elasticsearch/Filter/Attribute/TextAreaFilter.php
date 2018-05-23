@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Escaper\QueryString;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -52,7 +53,7 @@ class TextAreaFilter extends AbstractAttributeFilter implements AttributeFilterI
 
         if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
             $this->checkValue($attribute, $value);
-            $escapedValue = $this->escapeValue($value);
+            $escapedValue = QueryString::escapeValue($value);
         }
 
         $attributePath = $this->getAttributePath($attribute, $locale, $channel);
