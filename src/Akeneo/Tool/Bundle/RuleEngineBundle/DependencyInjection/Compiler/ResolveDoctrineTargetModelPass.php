@@ -29,8 +29,8 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
         $relationClass = 'akeneo_rule_engine.model.rule_relation.class';
 
         return [
-            'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface' => $definitionClass,
-            'Akeneo\Bundle\RuleEngineBundle\Model\RuleRelationInterface'   => $relationClass,
+            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface' => $definitionClass,
+            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface'   => $relationClass,
         ];
     }
 }

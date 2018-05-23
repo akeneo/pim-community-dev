@@ -1,6 +1,6 @@
 parameters:
-    akeneo_file_metadata.reader.class: Akeneo\Component\FileMetadata\FileMetadataReader
-    akeneo_file_metadata.reader_factory.class: Akeneo\Component\FileMetadata\FileMetadataReaderFactory
+    akeneo_file_metadata.reader.class: Akeneo\Tool\Component\FileMetadata\FileMetadataReader
+    akeneo_file_metadata.reader_factory.class: Akeneo\Tool\Component\FileMetadata\FileMetadataReaderFactory
 
 services:
     akeneo_file_metadata.reader:

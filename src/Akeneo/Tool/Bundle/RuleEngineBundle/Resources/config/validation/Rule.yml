@@ -1,4 +1,4 @@
-Akeneo\Bundle\RuleEngineBundle\Model\Rule:
+Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule:
     properties:
         definition:
             - Valid: ~

@@ -44,7 +44,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
     function it_is_a_rule_applier()
     {
-        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface');
+        $this->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface');
     }
 
     function it_applies_a_rule_which_does_not_select_products(

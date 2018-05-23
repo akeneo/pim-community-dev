@@ -24,7 +24,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
             $queryBuilderFactory,
             $repo,
             $eventDispatcher,
-            'Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSet'
+            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSet'
         );
     }
 
@@ -35,7 +35,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
 
     function it_should_be_a_selector()
     {
-        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface');
+        $this->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Engine\SelectorInterface');
     }
 
     function it_selects_subjects_of_a_rule(
@@ -61,7 +61,7 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $eventDispatcher->dispatch(RuleEvents::PRE_SELECT, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_SELECT, Argument::any())->shouldBeCalled();
 
-        $this->select($rule)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
+        $this->select($rule)->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
     }
 
     function it_selects_subject_of_a_rule_that_has_conditions(
@@ -86,6 +86,6 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         $pqb->addFilter('field', 'operator', 'value', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])->shouldBeCalled();
         $pqb->execute()->shouldBeCalled()->willReturn($cursor);
 
-        $this->select($rule)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
+        $this->select($rule)->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSet');
     }
 }

@@ -30,7 +30,7 @@ class ProductRuleRunnerSpec extends ObjectBehavior
 
     function it_is_a_runner()
     {
-        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface');
+        $this->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface');
     }
 
     function it_supports_product_rule(RuleDefinitionInterface $definition1, RuleDefinitionInterface $definition2)

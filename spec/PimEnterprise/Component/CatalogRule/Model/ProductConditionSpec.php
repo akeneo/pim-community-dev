@@ -20,7 +20,7 @@ class ProductConditionSpec extends ObjectBehavior
 
     function it_is_a_condidtion()
     {
-        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\ConditionInterface');
+        $this->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Model\ConditionInterface');
     }
 
     function it_is_a_product_condidtion()

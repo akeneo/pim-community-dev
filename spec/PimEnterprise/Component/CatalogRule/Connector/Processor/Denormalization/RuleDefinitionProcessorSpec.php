@@ -30,8 +30,8 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             $denormalizer,
             $validator,
             $detacher,
-            'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition',
-            'Akeneo\Bundle\RuleEngineBundle\Model\Rule'
+            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition',
+            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule'
         );
 
         $repository->getIdentifierProperties()->willReturn(['code']);
@@ -87,7 +87,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn(null);
         $denormalizer->denormalize(
             $item,
-            'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
+            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule',
             null,
             ['definitionObject' => null]
         )->shouldBeCalled()->willReturn($rule);
@@ -260,7 +260,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn($definition);
         $denormalizer->denormalize(
             $item,
-            'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
+            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule',
             null,
             ['definitionObject' => $definition]
         )->shouldBeCalled()->willReturn($rule);
@@ -309,7 +309,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn(null);
         $denormalizer->denormalize(
             $item,
-            'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
+            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule',
             null,
             ['definitionObject' => null]
         )->shouldBeCalled()->willReturn($rule);

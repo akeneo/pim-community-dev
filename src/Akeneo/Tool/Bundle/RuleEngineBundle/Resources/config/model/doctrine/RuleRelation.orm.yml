@@ -1,4 +1,4 @@
-Akeneo\Bundle\RuleEngineBundle\Model\RuleRelation:
+Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelation:
     type: entity
     table: akeneo_rule_engine_rule_relation
     changeTrackingPolicy: DEFERRED_EXPLICIT
