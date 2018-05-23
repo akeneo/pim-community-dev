@@ -26,7 +26,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $currencyRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        MeasureManager $measureManager,
         TranslatableUpdater $translatableUpdater
     ) {
         $this->beConstructedWith(
@@ -34,7 +33,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
             $localeRepository,
             $currencyRepository,
             $attributeRepository,
-            $measureManager,
             $translatableUpdater
         );
     }
@@ -67,7 +65,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $localeRepository,
         $currencyRepository,
         $attributeRepository,
-        $measureManager,
         $translatableUpdater,
         ChannelInterface $channel,
         CategoryInterface $tree,
@@ -111,9 +108,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
 
         $attributeRepository->findOneByIdentifier('maximum_diagonal')->willReturn($maximumDiagonalAttribute);
         $attributeRepository->findOneByIdentifier('weight')->willReturn($weightAttribute);
-
-        $measureManager->unitCodeExistsInFamily('INCHES', 'Length')->willReturn(true);
-        $measureManager->unitCodeExistsInFamily('KILOGRAM', 'Weight')->willReturn(true);
 
         $translatableUpdater->update($channel, $values['labels'])->shouldBeCalled();
 
