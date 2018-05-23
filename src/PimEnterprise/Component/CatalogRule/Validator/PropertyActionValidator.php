@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\CatalogRule\Validator;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
-use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
+use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;

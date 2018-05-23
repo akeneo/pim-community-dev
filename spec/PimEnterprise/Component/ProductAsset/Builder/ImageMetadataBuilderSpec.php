@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Builder;
 
-use Akeneo\Component\FileMetadata\FileMetadataBagInterface;
-use Akeneo\Component\FileMetadata\FileMetadataReader;
-use Akeneo\Component\FileMetadata\FileMetadataReaderFactoryInterface;
+use Akeneo\Tool\Component\FileMetadata\FileMetadataBagInterface;
+use Akeneo\Tool\Component\FileMetadata\FileMetadataReader;
+use Akeneo\Tool\Component\FileMetadata\FileMetadataReaderFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;

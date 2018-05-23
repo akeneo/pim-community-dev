@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Component\FileTransformer\Options\Image;
 
-use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
+use Akeneo\Tool\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

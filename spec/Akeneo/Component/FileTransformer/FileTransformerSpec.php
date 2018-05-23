@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Component\FileTransformer;
 
-use Akeneo\Component\FileTransformer\Transformation\TransformationInterface;
-use Akeneo\Component\FileTransformer\Transformation\TransformationRegistry;
+use Akeneo\Tool\Component\FileTransformer\Transformation\TransformationInterface;
+use Akeneo\Tool\Component\FileTransformer\Transformation\TransformationRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Component\RuleEngine\ActionApplier;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
-use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
+use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use PhpSpec\ObjectBehavior;
 
 class ActionApplierRegistrySpec extends ObjectBehavior

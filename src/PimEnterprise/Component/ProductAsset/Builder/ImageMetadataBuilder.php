@@ -10,8 +10,8 @@
  */
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
-use Akeneo\Component\FileMetadata\FileMetadataBagInterface;
-use Akeneo\Component\FileMetadata\FileMetadataReaderFactoryInterface;
+use Akeneo\Tool\Component\FileMetadata\FileMetadataBagInterface;
+use Akeneo\Tool\Component\FileMetadata\FileMetadataReaderFactoryInterface;
 
 /**
  * Builder for ImageMetadata
@@ -78,7 +78,7 @@ class ImageMetadataBuilder implements MetadataBuilderInterface
     /**
      * @param \SplFileInfo $file
      *
-     * @return \Akeneo\Component\FileMetadata\FileMetadataReaderInterface
+     * @return \Akeneo\Tool\Component\FileMetadata\FileMetadataReaderInterface
      */
     protected function getMetadataReader(\SplFileInfo $file)
     {

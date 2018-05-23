@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\Component\FileTransformer\Transformation;
 
-use Akeneo\Component\FileTransformer\Exception\AlreadyRegisteredTransformationException;
-use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
-use Akeneo\Component\FileTransformer\Transformation\TransformationInterface;
+use Akeneo\Tool\Component\FileTransformer\Exception\AlreadyRegisteredTransformationException;
+use Akeneo\Tool\Component\FileTransformer\Exception\NonRegisteredTransformationException;
+use Akeneo\Tool\Component\FileTransformer\Transformation\TransformationInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

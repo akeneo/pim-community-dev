@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Component\FileMetadata\Adapter;
 
-use Akeneo\Component\FileMetadata\Adapter\AdapterInterface;
+use Akeneo\Tool\Component\FileMetadata\Adapter\AdapterInterface;
 use PhpSpec\ObjectBehavior;
 
 class AdapterRegistrySpec extends ObjectBehavior

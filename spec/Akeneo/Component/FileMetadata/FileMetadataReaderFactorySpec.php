@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Component\FileMetadata;
 
-use Akeneo\Component\FileMetadata\Adapter\AdapterInterface;
-use Akeneo\Component\FileMetadata\Adapter\AdapterRegistry;
+use Akeneo\Tool\Component\FileMetadata\Adapter\AdapterInterface;
+use Akeneo\Tool\Component\FileMetadata\Adapter\AdapterRegistry;
 use PhpSpec\ObjectBehavior;
 
 class FileMetadataReaderFactorySpec extends ObjectBehavior

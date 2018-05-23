@@ -2,10 +2,10 @@
 
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints;
 
-use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
-use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
-use Akeneo\Component\FileTransformer\Transformation\TransformationInterface;
-use Akeneo\Component\FileTransformer\Transformation\TransformationRegistry;
+use Akeneo\Tool\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
+use Akeneo\Tool\Component\FileTransformer\Exception\NonRegisteredTransformationException;
+use Akeneo\Tool\Component\FileTransformer\Transformation\TransformationInterface;
+use Akeneo\Tool\Component\FileTransformer\Transformation\TransformationRegistry;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\ChannelConfiguration;
