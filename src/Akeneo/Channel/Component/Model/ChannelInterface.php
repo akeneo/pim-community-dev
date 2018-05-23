@@ -7,7 +7,7 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ReferableInterface;
+use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Pim\Component\Enrich\Model\ChosableInterface;
 
 /**
@@ -17,7 +17,7 @@ use Pim\Component\Enrich\Model\ChosableInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ChannelInterface extends ReferableInterface, VersionableInterface, ChosableInterface, TranslatableInterface
+interface ChannelInterface extends \Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface, VersionableInterface, ChosableInterface, TranslatableInterface
 {
     /**
      * @return int
