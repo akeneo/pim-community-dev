@@ -2,3 +2,7 @@ pimee_suggest_data_product_index:
     type: action
     label: pimee_suggest_data.acl.suggest_data.index
     group_name: pim_enrich.acl_group.product
+
+pim_ee_suggest_data_connection:
+    type: action
+    label: pim_ee_suggest_data.acl.pim_dot_ai.connection

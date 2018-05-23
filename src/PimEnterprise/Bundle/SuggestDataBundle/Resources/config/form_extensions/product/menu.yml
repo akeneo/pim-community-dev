@@ -1,0 +1,9 @@
+extensions:
+    pim-ee-suggest-data-connection:
+        module: pim/menu/item
+        parent: pim-menu-system-navigation-block
+        aclResourceId: pim_ee_suggest_data_connection
+        position: 130
+        config:
+            title: pim_ee_suggest_data.pim_dot_ai.connection
+            to: pimee_suggest_data_pim_dot_ai_connection_index

@@ -5,3 +5,12 @@ config:
 
         pimee/template/product/suggest-data-push:  pimenterprisesuggestdata/templates/product/edit/suggest-data-push.html
         pimee/template/product/mass-edit/suggest-data: pimenterprisesuggestdata/templates/product/mass-edit/suggest-data.html
+
+    config:
+        pim/controller-registry:
+            controllers:
+                pimee_suggest_data_pim_dot_ai_connection_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_ee_suggest_data_connection
+                    config:
+                        entity: pim-dot-ai-connection
