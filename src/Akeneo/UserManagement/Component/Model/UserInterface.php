@@ -7,7 +7,6 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\EntityUploadedImageInterface;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
@@ -408,15 +407,11 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
 
     /**
      * Pre persist event listener
-     *
-     * @ORM\PrePersist
      */
     public function beforeSave();
 
     /**
      * Invoked before the entity is updated.
-     *
-     * @ORM\PreUpdate
      */
     public function preUpdate();
 
