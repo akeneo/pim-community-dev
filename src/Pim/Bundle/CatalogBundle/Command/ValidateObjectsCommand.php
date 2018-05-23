@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
