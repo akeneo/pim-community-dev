@@ -9,7 +9,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
@@ -33,7 +33,7 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         EntityWithValuesDraftBuilderInterface $draftBuilder,
-        RemoverInterface $productDraftRemover,
+        RemoverInterface $productModelDraftRemover,
         NotGrantedDataMergerInterface $mergeDataOnProductModel,
         ProductModelRepositoryInterface $productModelRepository,
         EntityWithValuesDraftRepositoryInterface $productModelDraftRepository
@@ -46,7 +46,7 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
             $authorizationChecker,
             $tokenStorage,
             $draftBuilder,
-            $productDraftRemover,
+            $productModelDraftRemover,
             $mergeDataOnProductModel,
             $productModelRepository,
             $productModelDraftRepository
@@ -64,306 +64,242 @@ class DelegatingProductModelSaverSpec extends ObjectBehavior
     }
 
     function it_saves_the_product_model_when_user_is_the_owner(
-        $objectManager,
-        $eventDispatcher,
+        $productModelSaver,
         $authorizationChecker,
         $tokenStorage,
         $mergeDataOnProductModel,
         $productModelRepository,
-        ProductInterface $filteredProduct,
-        ProductInterface $fullProduct
+        ProductModelInterface $filteredProductModel,
+        ProductModelInterface $fullProductModel
     ) {
-        $productModelRepository->find(42)->willReturn($fullProduct);
-        $mergeDataOnProductModel->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
+        $productModelRepository->find(42)->willReturn($fullProductModel);
+        $productModelRepository->findOneByIdentifier('code')->willReturn($fullProductModel);
+        $mergeDataOnProductModel->merge($filteredProductModel, $fullProductModel)->willReturn($filteredProductModel);
 
-        $filteredProduct->getId()->willReturn(42);
-        $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
+        $filteredProductModel->getCode()->willReturn('code');
+        $filteredProductModel->getId()->willReturn(42);
+        $authorizationChecker->isGranted(Attributes::OWN, $filteredProductModel)
             ->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProduct)
+        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel)
             ->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::VIEW, $filteredProduct)
+        $authorizationChecker->isGranted(Attributes::VIEW, $filteredProductModel)
             ->willReturn(true);
         $tokenStorage->getToken()->willReturn('token');
 
-        $objectManager->persist($filteredProduct)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
+        $productModelSaver->save($filteredProductModel, [])->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
-
-        $this->save($filteredProduct);
+        $this->save($filteredProductModel);
     }
 
     function it_does_not_save_neither_product_model_nor_draft_if_the_user_has_only_the_view_permission_on_product_model(
         $authorizationChecker,
         $tokenStorage,
         $mergeDataOnProductModel,
-        $objectManager,
+        $productModelSaver,
         $productModelRepository,
-        ProductInterface $filteredProduct,
-        ProductInterface $fullProduct,
+        ProductModelInterface $filteredProductModel,
+        ProductModelInterface $fullProductModel,
         TokenInterface $token
     ) {
-        $productModelRepository->find(42)->willReturn($fullProduct);
-        $mergeDataOnProductModel->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
+        $productModelRepository->find(42)->willReturn($fullProductModel);
+        $mergeDataOnProductModel->merge($filteredProductModel, $fullProductModel)->willReturn($filteredProductModel);
+        $productModelRepository->findOneByIdentifier('code')->willReturn($fullProductModel);
+        $productModelRepository->findOneByIdentifier('sku')->willReturn($fullProductModel);
+
         $tokenStorage->getToken()->willReturn($token);
-        $filteredProduct->getId()->willReturn(42);
-        $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
+        $filteredProductModel->getId()->willReturn(42);
+        $filteredProductModel->getCode()->willReturn('code');
+        $authorizationChecker->isGranted(Attributes::OWN, $filteredProductModel)
             ->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProduct)
+        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel)
             ->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::VIEW, $filteredProduct)
+        $authorizationChecker->isGranted(Attributes::VIEW, $filteredProductModel)
             ->willReturn(true);
 
-        $filteredProduct->getIdentifier()->willReturn('sku');
+        $filteredProductModel->getCode()->willReturn('sku');
 
-        $objectManager->persist($filteredProduct)->shouldNotBeCalled();
-        $objectManager->flush($filteredProduct)->shouldNotBeCalled();
+        $productModelSaver->save($filteredProductModel, [])->shouldNotBeCalled();
 
-        $this->save($filteredProduct);
+        $this->save($filteredProductModel);
     }
 
-    function it_saves_the_product_model_when_user_is_not_the_owner_and_product_not_exists(
-        $objectManager,
-        $eventDispatcher,
+    function it_saves_the_product_model_when_user_is_not_the_owner_and_product_does_not_exist(
+        $productModelSaver,
         $mergeDataOnProductModel,
-        ProductInterface $filteredProduct
+        $authorizationChecker,
+        ProductModelInterface $filteredProductModel
     ) {
-        $mergeDataOnProductModel->merge($filteredProduct)->willReturn($filteredProduct);
+        $mergeDataOnProductModel->merge($filteredProductModel)->willReturn($filteredProductModel);
+        $authorizationChecker->isGranted(Attributes::OWN, $filteredProductModel)
+            ->willReturn(false);
         
-        $filteredProduct->getId()->willReturn(null);
+        $filteredProductModel->getId()->willReturn(null);
 
-        $objectManager->persist($filteredProduct)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
+        $productModelSaver->save($filteredProductModel, [])->shouldBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
-
-        $this->save($filteredProduct);
+        $this->save($filteredProductModel);
     }
 
     function it_removes_the_existing_product_model_draft_when_user_is_not_the_owner_and_product_model_exists_without_changes_anymore(
-        $objectManager,
+        $productModelSaver,
         $authorizationChecker,
-        $filteredProductDraftBuilder,
         $tokenStorage,
         $mergeDataOnProductModel,
-        $filteredProductDraftRepo,
-        $filteredProductDraftRemover,
         $productModelRepository,
-        ProductInterface $filteredProduct,
-        ProductInterface $fullProduct,
-        EntityWithValuesDraftInterface $filteredProductDraft,
+        $draftBuilder,
+        $productModelDraftRepository,
+        $productModelDraftRemover,
+        ProductModelInterface $filteredProductModel,
+        ProductModelInterface $fullProductModel,
+        EntityWithValuesDraftInterface $filteredProductModelDraft,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
-        $productModelRepository->find(42)->willReturn($fullProduct);
-        $mergeDataOnProductModel->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
-        
-        $filteredProduct->getId()->willReturn(42);
-        $filteredProduct->getIdentifier()->willReturn('sku');
-        $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
+        $productModelRepository->find(42)->willReturn($fullProductModel);
+        $mergeDataOnProductModel->merge($filteredProductModel, $fullProductModel)->willReturn($filteredProductModel);
+        $productModelRepository->findOneByIdentifier('code')->willReturn($fullProductModel);
+        $productModelRepository->findOneByIdentifier('sku')->willReturn($fullProductModel);
+
+        $filteredProductModel->getId()->willReturn(42);
+        $filteredProductModel->getCode()->willReturn('sku');
+        $authorizationChecker->isGranted(Attributes::OWN, $filteredProductModel)
             ->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProduct)
+        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel)
             ->willReturn(true);
 
         $user->getUsername()->willReturn('username');
         $token->getUser()->willReturn($user);
         $tokenStorage->getToken()->willReturn($token);
 
-        $filteredProductDraftBuilder->build($filteredProduct, 'username')
+        $draftBuilder->build($filteredProductModel, 'username')
             ->willReturn(null)
             ->shouldBeCalled();
 
-        $filteredProductDraftRepo->findUserEntityWithValuesDraft($filteredProduct, 'username')->willReturn($filteredProductDraft);
-        $filteredProductDraftRemover->remove($filteredProductDraft)->shouldBeCalled();
+        $productModelDraftRepository->findUserEntityWithValuesDraft($filteredProductModel, 'username')->willReturn($filteredProductModelDraft);
+        $productModelDraftRemover->remove($filteredProductModelDraft)->shouldBeCalled();
 
-        $objectManager->persist(Argument::any())->shouldNotBeCalled();
-        $objectManager->flush()->shouldNotBeCalled();
+        $productModelSaver->save(Argument::any(), [])->shouldNotBeCalled();
 
-        $this->save($filteredProduct);
+        $this->save($filteredProductModel);
     }
 
     function it_removes_the_existing_product_model_draft_when_user_is_not_the_owner_and_product_model_exists_without_changes_anymore_even_with_edit_rights(
-        $objectManager,
+        $productModelSaver,
         $authorizationChecker,
-        $filteredProductDraftBuilder,
+        $draftBuilder,
         $tokenStorage,
         $mergeDataOnProductModel,
-        $filteredProductDraftRepo,
-        $filteredProductDraftRemover,
         $productModelRepository,
-        ProductInterface $filteredProduct,
-        ProductInterface $fullProduct,
-        EntityWithValuesDraftInterface $filteredProductDraft,
+        $productModelDraftRemover,
+        $productModelDraftRepository,
+        ProductModelInterface $filteredProductModel,
+        ProductModelInterface $fullProductModel,
+        EntityWithValuesDraftInterface $filteredProductModelDraft,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
-        $productModelRepository->find(42)->willReturn($fullProduct);
-        $mergeDataOnProductModel->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
+        $productModelRepository->find(42)->willReturn($fullProductModel);
+        $mergeDataOnProductModel->merge($filteredProductModel, $fullProductModel)->willReturn($filteredProductModel);
         
-        $filteredProduct->getId()->willReturn(42);
-        $filteredProduct->getIdentifier()->willReturn('sku');
-        $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
+        $filteredProductModel->getId()->willReturn(42);
+        $filteredProductModel->getCode()->willReturn('sku');
+        $productModelRepository->findOneByIdentifier('sku')->willReturn($fullProductModel);
+        $authorizationChecker->isGranted(Attributes::OWN, $filteredProductModel)
             ->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProduct)
+        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel)
             ->willReturn(true);
 
         $user->getUsername()->willReturn('username');
         $token->getUser()->willReturn($user);
         $tokenStorage->getToken()->willReturn($token);
 
-        $filteredProductDraftBuilder->build($filteredProduct, 'username')
+        $draftBuilder->build($filteredProductModel, 'username')
             ->willReturn(null)
             ->shouldBeCalled();
 
-        $filteredProductDraftRepo->findUserEntityWithValuesDraft($filteredProduct, 'username')->willReturn($filteredProductDraft);
-        $filteredProductDraftRemover->remove($filteredProductDraft)->shouldBeCalled();
+        $productModelDraftRepository->findUserEntityWithValuesDraft($filteredProductModel, 'username')->willReturn($filteredProductModelDraft);
+        $productModelDraftRemover->remove($filteredProductModelDraft)->shouldBeCalled();
 
-        $objectManager->persist(Argument::any())->shouldNotBeCalled();
-        $objectManager->flush()->shouldNotBeCalled();
+        $productModelSaver->save(Argument::any(), [])->shouldNotBeCalled();
 
-        $this->save($filteredProduct);
+        $this->save($filteredProductModel);
     }
 
     function it_does_not_remove_any_product_model_draft_when_user_is_not_the_owner_and_product_model_exists_without_changes_but_the_draft_does_not_exists(
-        $objectManager,
+        $productModelSaver,
         $authorizationChecker,
-        $filteredProductDraftBuilder,
+        $draftBuilder,
         $tokenStorage,
         $mergeDataOnProductModel,
-        $filteredProductDraftRepo,
-        $filteredProductDraftRemover,
+        $productModelDraftRepository,
+        $productModelDraftRemover,
         $productModelRepository,
-        ProductInterface $filteredProduct,
-        ProductInterface $fullProduct,
+        ProductModelInterface $filteredProductModel,
+        ProductModelInterface $fullProductModel,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
-        $productModelRepository->find(42)->willReturn($fullProduct);
-        $mergeDataOnProductModel->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
+        $productModelRepository->find(42)->willReturn($fullProductModel);
+        $mergeDataOnProductModel->merge($filteredProductModel, $fullProductModel)->willReturn($filteredProductModel);
         
-        $filteredProduct->getId()->willReturn(42);
-        $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
+        $filteredProductModel->getId()->willReturn(42);
+        $filteredProductModel->getCode()->willReturn('sku');
+        $productModelRepository->findOneByIdentifier('sku')->willReturn($fullProductModel);
+        $authorizationChecker->isGranted(Attributes::OWN, $filteredProductModel)
             ->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProduct)
+        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel)
             ->willReturn(true);
 
         $user->getUsername()->willReturn('username');
         $token->getUser()->willReturn($user);
         $tokenStorage->getToken()->willReturn($token);
 
-        $filteredProductDraftBuilder->build($filteredProduct, 'username')
+        $draftBuilder->build($filteredProductModel, 'username')
             ->willReturn(null)
             ->shouldBeCalled();
 
-        $filteredProductDraftRepo->findUserEntityWithValuesDraft($filteredProduct, 'username')->willReturn();
-        $filteredProductDraftRemover->remove(Argument::any())->shouldNotBeCalled();
+        $productModelDraftRepository->findUserEntityWithValuesDraft($filteredProductModel, 'username')->willReturn();
+        $productModelDraftRemover->remove(Argument::any())->shouldNotBeCalled();
 
-        $objectManager->persist(Argument::any())->shouldNotBeCalled();
-        $objectManager->flush()->shouldNotBeCalled();
+        $productModelSaver->save(Argument::any(), [])->shouldNotBeCalled();
 
-        $this->save($filteredProduct);
+        $this->save($filteredProductModel);
     }
 
     function it_saves_the_product_model_draft_when_user_is_not_the_owner_and_product_model_exists_with_changes(
-        $objectManager,
-        $eventDispatcher,
+        $productModelSaver,
         $authorizationChecker,
-        $filteredProductDraftBuilder,
+        $draftBuilder,
         $tokenStorage,
         $mergeDataOnProductModel,
         $productModelRepository,
-        ProductInterface $filteredProduct,
-        ProductInterface $fullProduct,
+        ProductModelInterface $filteredProductModel,
+        ProductModelInterface $fullProductModel,
         EntityWithValuesDraftInterface $filteredProductDraft,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
-        $productModelRepository->find(42)->willReturn($fullProduct);
-        $mergeDataOnProductModel->merge($filteredProduct, $fullProduct)->willReturn($filteredProduct);
+        $productModelRepository->find(42)->willReturn($fullProductModel);
+        $filteredProductModel->getCode()->willReturn('sku');
+        $productModelRepository->findOneByIdentifier('sku')->willReturn($fullProductModel);
+        $mergeDataOnProductModel->merge($filteredProductModel, $fullProductModel)->willReturn($filteredProductModel);
         
-        $filteredProduct->getId()->willReturn(42);
-        $authorizationChecker->isGranted(Attributes::OWN, $filteredProduct)
+        $filteredProductModel->getId()->willReturn(42);
+        $authorizationChecker->isGranted(Attributes::OWN, $filteredProductModel)
             ->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProduct)
+        $authorizationChecker->isGranted(Attributes::EDIT, $filteredProductModel)
             ->willReturn(true);
 
         $user->getUsername()->willReturn('username');
         $token->getUser()->willReturn($user);
         $tokenStorage->getToken()->willReturn($token);
 
-        $filteredProductDraftBuilder->build($filteredProduct, 'username')
+        $draftBuilder->build($filteredProductModel, 'username')
             ->willReturn($filteredProductDraft)
             ->shouldBeCalled();
 
-        $objectManager->persist($filteredProductDraft)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
+        $productModelSaver->save(Argument::any(), [])->shouldNotBeCalled();
 
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
-
-        $objectManager->refresh($filteredProduct)->shouldBeCalled();
-
-        $this->save($filteredProduct);
-    }
-
-    function it_saves_several_product_model_and_product_drafts_depending_on_user_ownership(
-        $objectManager,
-        $completenessManager,
-        $eventDispatcher,
-        $authorizationChecker,
-        $filteredProductDraftBuilder,
-        $tokenStorage,
-        $mergeDataOnProductModel,
-        $productModelRepository,
-        ProductInterface $filteredOwnedProduct,
-        ProductInterface $fullOwnedProduct,
-        ProductInterface $filteredNotOwnedProduct,
-        ProductInterface $fullNotOwnedProduct,
-        EntityWithValuesDraftInterface $productDraft,
-        UsernamePasswordToken $token,
-        UserInterface $user
-    ) {
-        $productModelRepository->find(42)->willReturn($fullOwnedProduct);
-        $mergeDataOnProductModel->merge($filteredOwnedProduct, $fullOwnedProduct)->willReturn($fullOwnedProduct);
-
-        $productModelRepository->find(43)->willReturn($fullNotOwnedProduct);
-        $mergeDataOnProductModel->merge($filteredNotOwnedProduct, $fullNotOwnedProduct)->willReturn($fullNotOwnedProduct);
-
-        $fullOwnedProduct->getId()->willReturn(42);
-        $filteredOwnedProduct->getId()->willReturn(42);
-        $completenessManager->generateMissingForProduct($fullOwnedProduct)->shouldBeCalled();
-        $authorizationChecker->isGranted(Attributes::OWN, $fullOwnedProduct)
-            ->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT, $fullOwnedProduct)
-            ->willReturn(true);
-        $user->getUsername()->willReturn('username');
-        $token->getUser()->willReturn($user);
-        $tokenStorage->getToken()->willReturn($token);
-
-        $objectManager->persist($fullOwnedProduct)->shouldBeCalled();
-        $completenessManager->schedule($fullOwnedProduct)->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-
-        $fullNotOwnedProduct->getId()->willReturn(43);
-        $filteredNotOwnedProduct->getId()->willReturn(43);
-        $authorizationChecker->isGranted(Attributes::OWN, $fullNotOwnedProduct)
-            ->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT, $fullNotOwnedProduct)
-            ->willReturn(true);
-
-        $filteredProductDraftBuilder->build($fullNotOwnedProduct, 'username')
-            ->willReturn($productDraft)
-            ->shouldBeCalled();
-        $objectManager->persist($productDraft)->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-
-        $objectManager->flush()->shouldBeCalledTimes(1);
-
-        $this->saveAll([$filteredOwnedProduct, $filteredNotOwnedProduct]);
+        $this->save($filteredProductModel);
     }
 }
