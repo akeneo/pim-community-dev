@@ -104,7 +104,7 @@ define(
                         },
                         paramName: 'associatedIds',
                         getParamValue: function (associationType) {
-                            const associations = this.getFormData().meta.associations;
+                            const associations = this.getFormData().associations;
 
                             return associations[associationType] ? associations[associationType].groupIds : [];
                         }.bind(this),
@@ -614,7 +614,7 @@ define(
              * Opens the panel to select new products to associate
              */
             addAssociations: function () {
-                this.manageProducts().then((productAndProductModelIdentifiers) => {
+                this.launchProductPicker().then((productAndProductModelIdentifiers) => {
                     let productIds = [];
                     let productModelIds = [];
                     productAndProductModelIdentifiers.forEach((item) => {
@@ -652,7 +652,7 @@ define(
              *
              * @return {Promise}
              */
-            manageProducts: function () {
+            launchProductPicker: function () {
                 const deferred = $.Deferred();
 
                 FormBuilder.build('pim-associations-product-picker-form').then((form) => {
