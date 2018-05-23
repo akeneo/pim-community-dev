@@ -8,8 +8,6 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -44,9 +42,6 @@ class UserContext
     /** @var RequestStack */
     protected $requestStack;
 
-    /** @var ChoicesBuilderInterface */
-    protected $choicesBuilder;
-
     /** @var array */
     protected $userLocales;
 
@@ -59,7 +54,6 @@ class UserContext
      * @param ChannelRepositoryInterface  $channelRepository
      * @param CategoryRepositoryInterface $categoryRepository
      * @param RequestStack                $requestStack
-     * @param ChoicesBuilderInterface     $choicesBuilder
      * @param string                      $defaultLocale
      */
     public function __construct(
@@ -68,7 +62,6 @@ class UserContext
         ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
         RequestStack $requestStack,
-        ChoicesBuilderInterface $choicesBuilder,
         $defaultLocale
     ) {
         $this->tokenStorage = $tokenStorage;
@@ -76,7 +69,6 @@ class UserContext
         $this->channelRepository = $channelRepository;
         $this->categoryRepository= $categoryRepository;
         $this->requestStack = $requestStack;
-        $this->choicesBuilder = $choicesBuilder;
         $this->defaultLocale = $defaultLocale;
     }
 
@@ -194,8 +186,12 @@ class UserContext
     public function getChannelChoicesWithUserChannel(): array
     {
         $channels = $this->channelRepository->findAll();
-        $channelChoices = $this->choicesBuilder->buildChoices($channels);
         $userChannelCode = $this->getUserChannelCode();
+        $channelChoices = [];
+
+        foreach ($channels as $channel) {
+            $channelChoices[$channel->getCode()] = $channel->getLabel();
+        }
 
         if (array_key_exists($userChannelCode, $channelChoices)) {
             return [$userChannelCode => $channelChoices[$userChannelCode]] + $channelChoices;

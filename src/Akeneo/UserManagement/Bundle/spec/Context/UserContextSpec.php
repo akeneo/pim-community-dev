@@ -4,7 +4,6 @@ namespace spec\Akeneo\UserManagement\Bundle\Context;
 
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
@@ -35,7 +34,6 @@ class UserContextSpec extends ObjectBehavior
         CategoryInterface $secondTree,
         CategoryRepositoryInterface $productCategoryRepo,
         RequestStack $requestStack,
-        ChoicesBuilderInterface $choicesBuilder,
         Request $request,
         SessionInterface $session
     ) {
@@ -68,7 +66,6 @@ class UserContextSpec extends ObjectBehavior
             $channelRepository,
             $productCategoryRepo,
             $requestStack,
-            $choicesBuilder,
             'en_US'
         );
     }
@@ -189,7 +186,6 @@ class UserContextSpec extends ObjectBehavior
         $tokenStorage,
         $localeRepository,
         $channelRepository,
-        $choicesBuilder,
         ChannelInterface $userChannel,
         ChannelInterface $ecommerce,
         LocaleInterface $fr,
@@ -202,12 +198,12 @@ class UserContextSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
 
         $token->getUser()->willReturn($user);
+        $userChannel->getCode()->willReturn('mobile');
+        $userChannel->getLabel()->willReturn('Mobile');
+        $ecommerce->getCode()->willReturn('ecommerce');
+        $ecommerce->getLabel()->willReturn('Ecommerce');
 
-        $channelRepository->findAll()->willReturn([$ecommerce]);
-        $choicesBuilder->buildChoices([$ecommerce])->willReturn([
-            'mobile' => $userChannel,
-            'ecommerce' => $ecommerce
-        ]);
+        $channelRepository->findAll()->willReturn([$ecommerce, $userChannel]);
 
         $fr->getCode()->willReturn('fr_FR');
         $en->getCode()->willReturn('en_US');
