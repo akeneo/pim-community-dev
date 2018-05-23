@@ -75,6 +75,141 @@ class ProductReverterSpec extends ObjectBehavior
         $this->revert($version);
     }
 
+    function it_reverts_a_variant_product_parent_change(
+        $registry,
+        $productUpdater,
+        $saver,
+        $converter,
+        $validator,
+        Version $version,
+        ObjectRepository $repository,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationsList,
+        ValueCollectionInterface $productValueCollection
+    ) {
+        $snapshot = [
+            'identifier' => 'sku-1',
+            'values'     => [
+                'a_string' => [
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => 'my string',
+                ],
+            ],
+        ];
+        $version->getResourceName()->willReturn('foo');
+        $version->getSnapshot()->willReturn($snapshot);
+        $version->getResourceId()->willReturn('baz');
+
+        $product->getValues()->willReturn($productValueCollection);
+        $productValueCollection->clear()->shouldBecalled();
+
+        $registry->getRepository('foo')->willReturn($repository);
+        $repository->find('baz')->willReturn($product);
+
+        $standardProduct = ['parent' => 'bar'];
+        $converter->convert($snapshot)->willReturn($standardProduct);
+
+        $productUpdater->update($product, ['parent' => 'bar'])->shouldBeCalled();
+
+        $saver->save($product)->shouldBeCalled();
+
+        $validator->validate($product)->willReturn($violationsList);
+        $violationsList->count()->willReturn(0);
+
+        $this->revert($version);
+    }
+
+    function it_reverts_a_variant_product_without_its_empty_parent_field(
+        $registry,
+        $productUpdater,
+        $saver,
+        $converter,
+        $validator,
+        Version $version,
+        ObjectRepository $repository,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationsList,
+        ValueCollectionInterface $productValueCollection
+    ) {
+        $snapshot = [
+            'identifier' => 'sku-1',
+            'values'     => [
+                'a_string' => [
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => 'my string',
+                ],
+            ],
+        ];
+        $version->getResourceName()->willReturn('foo');
+        $version->getSnapshot()->willReturn($snapshot);
+        $version->getResourceId()->willReturn('baz');
+
+        $product->getValues()->willReturn($productValueCollection);
+        $productValueCollection->clear()->shouldBecalled();
+
+        $registry->getRepository('foo')->willReturn($repository);
+        $repository->find('baz')->willReturn($product);
+
+        $standardProduct = ['parent' => ''];
+        $converter->convert($snapshot)->willReturn($standardProduct);
+
+        $productUpdater->update($product, [])->shouldBeCalled();
+
+        $saver->save($product)->shouldBeCalled();
+
+        $validator->validate($product)->willReturn($violationsList);
+        $violationsList->count()->willReturn(0);
+
+        $this->revert($version);
+    }
+
+    function it_reverts_a_variant_product_without_its_null_parent_field(
+        $registry,
+        $productUpdater,
+        $saver,
+        $converter,
+        $validator,
+        Version $version,
+        ObjectRepository $repository,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationsList,
+        ValueCollectionInterface $productValueCollection
+    ) {
+        $snapshot = [
+            'identifier' => 'sku-1',
+            'values'     => [
+                'a_string' => [
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => 'my string',
+                ],
+            ],
+        ];
+        $version->getResourceName()->willReturn('foo');
+        $version->getSnapshot()->willReturn($snapshot);
+        $version->getResourceId()->willReturn('baz');
+
+        $product->getValues()->willReturn($productValueCollection);
+        $productValueCollection->clear()->shouldBecalled();
+
+        $registry->getRepository('foo')->willReturn($repository);
+        $repository->find('baz')->willReturn($product);
+
+        $standardProduct = ['parent' => null];
+        $converter->convert($snapshot)->willReturn($standardProduct);
+
+        $productUpdater->update($product, [])->shouldBeCalled();
+
+        $saver->save($product)->shouldBeCalled();
+
+        $validator->validate($product)->willReturn($violationsList);
+        $violationsList->count()->willReturn(0);
+
+        $this->revert($version);
+    }
+
     function it_throws_an_exception_when_the_product_is_not_valid(
         $registry,
         $productUpdater,
