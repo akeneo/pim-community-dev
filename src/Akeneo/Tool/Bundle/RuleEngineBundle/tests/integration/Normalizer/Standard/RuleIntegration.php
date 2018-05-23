@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Akeneo\Bundle\RuleEngineBundle\Normalizer\Standard;
+namespace Akeneo\Tool\Bundle\RuleEngineBundle\tests\integration\Normalizer\Standard;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
