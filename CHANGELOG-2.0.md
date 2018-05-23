@@ -6,6 +6,7 @@
 - PIM-7334: Fix identifier filter with special characters
 - PIM-7337: Fix completeness popup when no label on attribute
 - PIM-7351: Fix boolean values display in product PDF
+- PIM-7348: Prevent completeness calculation for products without a family
 
 # 2.0.24 (2018-05-16)
 
@@ -13,7 +14,6 @@
 
 - PIM-7335: Fix locale rendering on product form completeness panel
 - PIM-7323: Fix unique data synchronizer to handle value removal
-- PIM-7348: Prevent completeness calculation for products without a family
 
 # 2.0.23 (2018-04-30)
 
