@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Exception;
+namespace Akeneo\Channel\Component\Exception;
 
 /**
  * Exception occurs during currency update if the currency is linked to a channel

@@ -5,7 +5,7 @@ namespace Akeneo\Channel\Bundle\EventListener;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Exception\LinkedChannelException;
+use Akeneo\Channel\Component\Exception\LinkedChannelException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
