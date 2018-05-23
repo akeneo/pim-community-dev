@@ -147,7 +147,7 @@ extensions:
             fetcher: category
 
     pim-mass-product-edit-configure-add-to-existing-product-model:
-        module: pim/mass-edit-form/product/add-to-existing-product-model
+        module: pim/mass-edit-form/product/update-entity-with-family-variant-parent
         parent: pim-mass-product-edit
         aclResourceId: pim_enrich_product_edit_attributes
         position: 190
@@ -177,7 +177,7 @@ extensions:
             illustration: association
 
     pim-mass-product-edit-configure-change-parent-product-model:
-        module: pim/mass-edit-form/product/change-parent-product
+        module: pim/mass-edit-form/product/update-entity-with-family-variant-parent
         parent: pim-mass-product-edit
         aclResourceId: pim_enrich_product_edit_attributes
         position: 210

@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Change the parent product model
+ * Allow to search a product with family variant in order to update it
  *
- * @author    Julian Prud'homme <julian.prudhomme@akeneo.com>
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -15,7 +15,7 @@ define(
         'oro/messenger',
         'pim/mass-edit-form/product/operation',
         'pim/common/property',
-        'pim/template/mass-edit/product/change-parent-product-model'
+        'pim/template/mass-edit/product/update-entity-with-family-variant-parent'
     ],
     function (
         $,
@@ -91,7 +91,7 @@ define(
                 if (!hasUpdate) {
                     messenger.notify(
                         'error',
-                        __('pim_enrich.mass_edit.product.operation.change_parent_product_model.no_update')
+                        __('pim_enrich.mass_edit.product.operation.add_to_existing_product_model.no_update')
                     );
                 }
 
