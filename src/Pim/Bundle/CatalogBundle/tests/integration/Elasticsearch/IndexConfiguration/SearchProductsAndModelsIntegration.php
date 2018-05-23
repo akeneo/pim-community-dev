@@ -43,9 +43,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ],
         ];
 
-        $productsFound = $this->getSearchQueryResults(
-            $query
-        );
+        $productsFound = $this->getSearchQueryResults($query);
 
         $this->assertDocument(
             $productsFound,
@@ -57,6 +55,8 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                 'model-tshirt-unique-size',
                 'model-running-shoes',
                 'model-biker-jacket',
+                'empty_product',
+                'camera_nikon'
             ]
         );
     }
@@ -88,6 +88,9 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
+                                [
+                                    'terms' => ['attributes_of_family' => ['description']]
+                                ]
                             ],
                         ],
                     ],
@@ -140,6 +143,9 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
+                                [
+                                    'terms' => ['attributes_of_family' => ['color']]
+                                ]
                             ],
                         ],
                     ],
@@ -186,6 +192,9 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
+                                [
+                                    'terms' => ['attributes_of_family' => ['color']]
+                                ]
                             ],
                         ],
                     ],
@@ -222,6 +231,9 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
+                                [
+                                    'terms' => ['attributes_of_family' => ['color']]
+                                ]
                             ],
                         ],
                     ],
@@ -268,6 +280,9 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
+                                [
+                                    'terms' => ['attributes_of_family' => ['size']]
+                                ]
                             ],
                         ],
                     ],
@@ -315,6 +330,9 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
+                                [
+                                    'terms' => ['attributes_of_family' => ['size']]
+                                ]
                             ],
                         ],
                     ],
@@ -335,6 +353,147 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                 'model-running-shoes-m',
                 'biker-jacket-leather-m',
                 'biker-jacket-polyester-m',
+            ]
+        );
+    }
+
+    public function testSearchColorIsEmpty()
+    {
+        $query = [
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'must_not' => [
+                                'exists' => [
+                                    'field' => 'values.color-option.<all_channels>.<all_locales>'
+                                ]
+                            ],
+                            'filter' => [
+//                                [
+//                                    'terms' => [
+//                                        'attributes_for_this_level' => ['color'],
+//                                    ],
+//                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attributes_of_ancestors' => ['color']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertDocument(
+            $productsFound,
+            [
+            ]
+        );
+    }
+
+    public function testSearchBrandIsEmpty()
+    {
+        $query = [
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'must_not' => [
+                                [
+                                    'exists' => [
+                                        'field' => 'values.brand-option.<all_channels>.<all_locales>',
+                                    ],
+                                ],
+                            ],
+                            'filter' => [
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attributes_of_ancestors' => ['brand']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                [
+                                    'terms' => ['attributes_of_family' => ['brand']]
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertDocument(
+            $productsFound,
+            [
+                'empty_product'
+            ]
+        );
+    }
+
+    public function testSearchBrandIsNotEmpty()
+    {
+        $query = [
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'exists' => [
+                                        'field' => 'values.brand-option.<all_channels>.<all_locales>',
+                                    ],
+                                ],
+                                [
+                                    'bool' => [
+                                        'must_not' => [
+                                            'bool' => [
+                                                'filter' => [
+                                                    [
+                                                        'terms' => ['attributes_of_ancestors' => ['brand']],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                [
+                                    'terms' => ['attributes_of_family' => ['brand']]
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        ];
+
+        $productsFound = $this->getSearchQueryResults($query);
+
+        $this->assertDocument(
+            $productsFound,
+            [
+                'camera_nikon'
             ]
         );
     }

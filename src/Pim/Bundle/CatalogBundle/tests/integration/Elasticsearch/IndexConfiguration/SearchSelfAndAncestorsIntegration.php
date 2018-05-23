@@ -245,6 +245,7 @@ class SearchSelfAndAncestorsIntegration extends AbstractPimCatalogProductModelIn
                 'model-biker-jacket-leather',
                 'model-biker-jacket-polyester',
                 'watch',
+                'other_product'
             ]
         );
     }

@@ -22,71 +22,75 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
  * | accessories | -                                           | -                      | -                                     | -                               | -                              |
  * | shoes       | description, size, color, image_1, material | shoes_size_color       | description                           | size (axis)                     | color (axis), image_1, material|
  * | clothing    | description, color, image_1, material, size | clothing_material_size | description, color                    | material (axis), image_1,       | size (axis), weight            |
+ * | camera      | brand                                       |                        | brand                                 |                                 |                                |
  * -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  *
  * And here are the products and product models linked to those family variants:
  *
  * |--------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
- * | Id                       | Label                        | categories       | Color  | Size | Material  | Completeness | Complete products | Family      | Family variant         |
- * |--------------------------|------------------------------|------------------|--------|------|-----------|--------------|-------------------|-------------|------------------------|
- * | product_model_1          | model-tshirt                 |                  |        |      |           |              | 7/12              | clothing    | clothing_color_size    |
- * | product_model_2          | model-tshirt-grey            |                  | grey   |      | Cotton    |              | 4/4               | clothing    | clothing_color_size    |
- * | product_1                | tshirt-grey-s                |                  | grey   | S    | Cotton    | 100%         |                   | clothing    | clothing_color_size    |
- * | product_2                | tshirt-grey-m                |                  | grey   | M    | Cotton    | 100%         |                   | clothing    | clothing_color_size    |
- * | product_3                | tshirt-grey-l                |                  | grey   | L    | Cotton    | 100%         |                   | clothing    | clothing_color_size    |
- * | product_4                | tshirt-grey-xl               |                  | grey   | XL   | Cotton    | 100%         |                   | clothing    | clothing_color_size    |
- * | product_model_3          | model-tshirt-blue            |                  | blue   |      | Polyester |              | 3/4               | clothing    | clothing_color_size    |
- * | product_5                | tshirt-blue-s                |                  | blue   | S    | Polyester | 80%          |                   | clothing    | clothing_color_size    |
- * | product_6                | tshirt-blue-m                |                  | blue   | M    | Polyester | 100%         |                   | clothing    | clothing_color_size    |
- * | product_7                | tshirt-blue-l                |                  | blue   | L    | Polyester | 100%         |                   | clothing    | clothing_color_size    |
- * | product_8                | tshirt-blue-xl               |                  | blue   | XL   | Polyester | 100%         |                   | clothing    | clothing_color_size    |
- * | product_model_4          | model-tshirt-red             |                  | red    |      | Cotton    |              | 0/4               | clothing    | clothing_color_size    |
- * | product_9                | tshirt-red-s                 |                  | red    | S    | Cotton    | 70%          |                   | clothing    | clothing_color_size    |
- * | product_10               | tshirt-red-m                 |                  | red    | M    | Cotton    | 70%          |                   | clothing    | clothing_color_size    |
- * | product_11               | tshirt-red-l                 |                  | red    | L    | Cotton    | 60%          |                   | clothing    | clothing_color_size    |
- * | product_12               | tshirt-red-xl                |                  | red    | XL   | Cotton    | 80%          |                   | clothing    | clothing_color_size    |
- * |--------------------------|------------------------------|------------------|-----------------------------------------------------------------------------------------------------|
- * | product_model_5          | model-tshirt-unique-color    |                  | red    |      | Cotton    |              | 2/4               | clothing    | clothing_size          |
- * | product_13               | tshirt-unique-color-s        |                  | red    | S    | Cotton    | 100%         |                   | clothing    | clothing_size          |
- * | product_14               | tshirt-unique-color-m        |                  | red    | M    | Cotton    | 100%         |                   | clothing    | clothing_size          |
- * | product_15               | tshirt-unique-color-l        |                  | red    | L    | Cotton    | 50%          |                   | clothing    | clothing_size          |
- * | product_16               | tshirt-unique-color-xl       |                  | red    | XL   | Cotton    | 60%          |                   | clothing    | clothing_size          |
- * |--------------------------|------------------------------|------------------|-----------------------------------------------------------------------------------------------------|
- * | product_17               | watch                        |                  | blue   |      | Metal     | 0%           |                   | clothing    |                        |
- * |--------------------------|------------------------------|------------------|-----------------------------------------------------------------------------------------------------|
- * | product_model_6          | model-hat                    |                  | grey   |      | Wool      |              | 2/2               | accessories | accessories_size       |
- * | product_18               | hat-m                        |                  | grey   | M    | Wool      | 100%         |                   | accessories | accessories_size       |
- * | product_19               | hat-l                        |                  | grey   | L    | Wool      | 100%         |                   | accessories | accessories_size       |
- * |--------------------------|------------------------------|------------------|-----------------------------------------------------------------------------------------------------|
- * | product_model_7          | model-tshirt-unique-size     |                  |        | U    | Cotton    |              | 1/3               | clothing    | clothing_color         |
- * | product_20               | tshirt-unique-size-blue      |                  | blue   | U    | Cotton    | 100%         |                   | clothing    | clothing_color         |
- * | product_21               | tshirt-unique-size-red       |                  | red    | U    | Cotton    | 70%          |                   | clothing    | clothing_color         |
- * | product_22               | tshirt-unique-size-yellow    |                  | yellow | U    | Cotton    | 50%          |                   | clothing    | clothing_color         |
- * |--------------------------|------------------------------|------------------|-----------------------------------------------------------------------------------------------------|
- * | product_model_8          | model-running-shoes          | shoes            |        |      | Leather   |              | 4/9               | shoes       | shoes_size_color       |
- * | product_model_9          | model-running-shoes-s        | shoes            |        | S    | Leather   |              | 3/3               | shoes       | shoes_size_color       |
- * | product_23               | running-shoes-s-white        | shoes,men,women  | white  | S    | Leather   | 100%         |                   | shoes       | shoes_size_color       |
- * | product_24               | running-shoes-s-blue         | shoes,men        | blue   | S    | Leather   | 100%         |                   | shoes       | shoes_size_color       |
- * | product_25               | running-shoes-s-red          | shoes,women      | red    | S    | Leather   | 100%         |                   | shoes       | shoes_size_color       |
- * | product_model_10         | model-running-shoes-m        | shoes            |        | M    | Leather   |              | 0/3               | shoes       | shoes_size_color       |
- * | product_26               | running-shoes-m-white        | shoes,men,women  | white  | M    | Leather   | 0%           |                   | shoes       | shoes_size_color       |
- * | product_27               | running-shoes-m-blue         | shoes,men        | blue   | M    | Leather   | 0%           |                   | shoes       | shoes_size_color       |
- * | product_28               | running-shoes-m-red          | shoes,women      | red    | M    | Leather   | 0%           |                   | shoes       | shoes_size_color       |
- * | product_model_11         | model-running-shoes-l        | shoes            |        | L    | Leather   |              | 1/3               | shoes       | shoes_size_color       |
- * | product_29               | running-shoes-l-white        | shoes,men,women  | white  | L    | Leather   | 60%          |                   | shoes       | shoes_size_color       |
- * | product_30               | running-shoes-l-blue         | shoes,men        | blue   | L    | Leather   | 70%          |                   | shoes       | shoes_size_color       |
- * | product_31               | running-shoes-l-red          | shoes,women      | red    | L    | Leather   | 100%         |                   | shoes       | shoes_size_color       |
- * |--------------------------|------------------------------|------------------|-----------------------------------------------------------------------------------------------------|
- * | product_model_12         | model-biker-jacket           |                  | white  |      |           |              | 0/6               | clothing    | clothing_material_size |
- * | product_model_13         | model-biker-jacket-leather   |                  | white  |      | Leather   |              | 0/3               | clothing    | clothing_material_size |
- * | product_32               | biker-jacket-leather-s       |                  | white  | S    | Leather   | 0%           |                   | clothing    | clothing_material_size |
- * | product_33               | biker-jacket-leather-m       |                  | white  | M    | Leather   | 0%           |                   | clothing    | clothing_material_size |
- * | product_34               | biker-jacket-leather-l       |                  | white  | L    | Leather   | 0%           |                   | clothing    | clothing_material_size |
- * | product_model_14         | model-biker-jacket-polyester |                  | white  |      | Polyester |              | 0/3               | clothing    | clothing_material_size |
- * | product_35               | biker-jacket-polyester-s     |                  | white  | S    | Polyester | 19%          |                   | clothing    | clothing_material_size |
- * | product_36               | biker-jacket-polyester-m     |                  | white  | M    | Polyester | 30%          |                   | clothing    | clothing_material_size |
- * | product_37               | biker-jacket-polyester-l     |                  | white  | L    | Polyester | 20%          |                   | clothing    | clothing_material_size |
- * -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ * | Id                       | Label                        | categories       | Color  | Size | Material  | Brand       | Completeness | Complete products | Family      | Family variant         |
+ * |--------------------------|------------------------------|------------------|--------|------|-----------|-------------|--------------|-------------------|-------------|------------------------|
+ * | product_model_1          | model-tshirt                 |                  |        |      |           |             |              | 7/12              | clothing    | clothing_color_size    |
+ * | product_model_2          | model-tshirt-grey            |                  | grey   |      | Cotton    |             |              | 4/4               | clothing    | clothing_color_size    |
+ * | product_1                | tshirt-grey-s                |                  | grey   | S    | Cotton    |             | 100%         |                   | clothing    | clothing_color_size    |
+ * | product_2                | tshirt-grey-m                |                  | grey   | M    | Cotton    |             | 100%         |                   | clothing    | clothing_color_size    |
+ * | product_3                | tshirt-grey-l                |                  | grey   | L    | Cotton    |             | 100%         |                   | clothing    | clothing_color_size    |
+ * | product_4                | tshirt-grey-xl               |                  | grey   | XL   | Cotton    |             | 100%         |                   | clothing    | clothing_color_size    |
+ * | product_model_3          | model-tshirt-blue            |                  | blue   |      | Polyester |             |              | 3/4               | clothing    | clothing_color_size    |
+ * | product_5                | tshirt-blue-s                |                  | blue   | S    | Polyester |             | 80%          |                   | clothing    | clothing_color_size    |
+ * | product_6                | tshirt-blue-m                |                  | blue   | M    | Polyester |             | 100%         |                   | clothing    | clothing_color_size    |
+ * | product_7                | tshirt-blue-l                |                  | blue   | L    | Polyester |             | 100%         |                   | clothing    | clothing_color_size    |
+ * | product_8                | tshirt-blue-xl               |                  | blue   | XL   | Polyester |             | 100%         |                   | clothing    | clothing_color_size    |
+ * | product_model_4          | model-tshirt-red             |                  | red    |      | Cotton    |             |              | 0/4               | clothing    | clothing_color_size    |
+ * | product_9                | tshirt-red-s                 |                  | red    | S    | Cotton    |             | 70%          |                   | clothing    | clothing_color_size    |
+ * | product_10               | tshirt-red-m                 |                  | red    | M    | Cotton    |             | 70%          |                   | clothing    | clothing_color_size    |
+ * | product_11               | tshirt-red-l                 |                  | red    | L    | Cotton    |             | 60%          |                   | clothing    | clothing_color_size    |
+ * | product_12               | tshirt-red-xl                |                  | red    | XL   | Cotton    |             | 80%          |                   | clothing    | clothing_color_size    |
+ * |--------------------------|------------------------------|------------------|---------------------------|-------------|-------------------------------------------------------------------------|
+ * | product_model_5          | model-tshirt-unique-color    |                  | red    |      | Cotton    |             |              | 2/4               | clothing    | clothing_size          |
+ * | product_13               | tshirt-unique-color-s        |                  | red    | S    | Cotton    |             | 100%         |                   | clothing    | clothing_size          |
+ * | product_14               | tshirt-unique-color-m        |                  | red    | M    | Cotton    |             | 100%         |                   | clothing    | clothing_size          |
+ * | product_15               | tshirt-unique-color-l        |                  | red    | L    | Cotton    |             | 50%          |                   | clothing    | clothing_size          |
+ * | product_16               | tshirt-unique-color-xl       |                  | red    | XL   | Cotton    |             | 60%          |                   | clothing    | clothing_size          |
+ * |--------------------------|------------------------------|------------------|---------------------------|-------------|-------------------------------------------------------------------------|
+ * | product_17               | watch                        |                  | blue   |      | Metal     |             | 0%           |                   | clothing    | clothing_size          |
+ * |--------------------------|------------------------------|------------------|---------------------------|-------------|-------------------------------------------------------------------------|
+ * | product_model_6          | model-hat                    |                  | grey   |      | Wool      |             |              | 2/2               | accessories | accessories_size       |
+ * | product_18               | hat-m                        |                  | grey   | M    | Wool      |             | 100%         |                   | accessories | accessories_size       |
+ * | product_19               | hat-l                        |                  | grey   | L    | Wool      |             | 100%         |                   | accessories | accessories_size       |
+ * |--------------------------|------------------------------|------------------|---------------------------|-------------|-------------------------------------------------------------------------|
+ * | product_model_7          | model-tshirt-unique-size     |                  |        | U    | Cotton    |             |              | 1/3               | clothing    | clothing_color         |
+ * | product_20               | tshirt-unique-size-blue      |                  | blue   | U    | Cotton    |             | 100%         |                   | clothing    | clothing_color         |
+ * | product_21               | tshirt-unique-size-red       |                  | red    | U    | Cotton    |             | 70%          |                   | clothing    | clothing_color         |
+ * | product_22               | tshirt-unique-size-yellow    |                  | yellow | U    | Cotton    |             | 50%          |                   | clothing    | clothing_color         |
+ * |--------------------------|------------------------------|------------------|---------------------------|-------------|-------------------------------------------------------------------------|
+ * | product_model_8          | model-running-shoes          | shoes            |        |      | Leather   |             |              | 4/9               | shoes       | shoes_size_color       |
+ * | product_model_9          | model-running-shoes-s        | shoes            |        | S    | Leather   |             |              | 3/3               | shoes       | shoes_size_color       |
+ * | product_23               | running-shoes-s-white        | shoes,men,women  | white  | S    | Leather   |             | 100%         |                   | shoes       | shoes_size_color       |
+ * | product_24               | running-shoes-s-blue         | shoes,men        | blue   | S    | Leather   |             | 100%         |                   | shoes       | shoes_size_color       |
+ * | product_25               | running-shoes-s-red          | shoes,women      | red    | S    | Leather   |             | 100%         |                   | shoes       | shoes_size_color       |
+ * | product_model_10         | model-running-shoes-m        | shoes            |        | M    | Leather   |             |              | 0/3               | shoes       | shoes_size_color       |
+ * | product_26               | running-shoes-m-white        | shoes,men,women  | white  | M    | Leather   |             | 0%           |                   | shoes       | shoes_size_color       |
+ * | product_27               | running-shoes-m-blue         | shoes,men        | blue   | M    | Leather   |             | 0%           |                   | shoes       | shoes_size_color       |
+ * | product_28               | running-shoes-m-red          | shoes,women      | red    | M    | Leather   |             | 0%           |                   | shoes       | shoes_size_color       |
+ * | product_model_11         | model-running-shoes-l        | shoes            |        | L    | Leather   |             |              | 1/3               | shoes       | shoes_size_color       |
+ * | product_29               | running-shoes-l-white        | shoes,men,women  | white  | L    | Leather   |             | 60%          |                   | shoes       | shoes_size_color       |
+ * | product_30               | running-shoes-l-blue         | shoes,men        | blue   | L    | Leather   |             | 70%          |                   | shoes       | shoes_size_color       |
+ * | product_31               | running-shoes-l-red          | shoes,women      | red    | L    | Leather   |             | 100%         |                   | shoes       | shoes_size_color       |
+ * |--------------------------|------------------------------|------------------|---------------------------|-------------|-------------------------------------------------------------------------|
+ * | product_model_12         | model-biker-jacket           |                  | white  |      |           |             |              | 0/6               | clothing    | clothing_material_size |
+ * | product_model_13         | model-biker-jacket-leather   |                  | white  |      | Leather   |             |              | 0/3               | clothing    | clothing_material_size |
+ * | product_32               | biker-jacket-leather-s       |                  | white  | S    | Leather   |             | 0%           |                   | clothing    | clothing_material_size |
+ * | product_33               | biker-jacket-leather-m       |                  | white  | M    | Leather   |             | 0%           |                   | clothing    | clothing_material_size |
+ * | product_34               | biker-jacket-leather-l       |                  | white  | L    | Leather   |             | 0%           |                   | clothing    | clothing_material_size |
+ * | product_model_14         | model-biker-jacket-polyester |                  | white  |      | Polyester |             |              | 0/3               | clothing    | clothing_material_size |
+ * | product_35               | biker-jacket-polyester-s     |                  | white  | S    | Polyester |             | 19%          |                   | clothing    | clothing_material_size |
+ * | product_36               | biker-jacket-polyester-m     |                  | white  | M    | Polyester |             | 30%          |                   | clothing    | clothing_material_size |
+ * | product_37               | biker-jacket-polyester-l     |                  | white  | L    | Polyester |             | 20%          |                   | clothing    | clothing_material_size |
+ * |--------------------------|------------------------------|------------------|--------|------|-----------|-------------|-------------------------------------------------------------------------|
+ * | product_38               | camera_nikon                 |                  |        |      |           | Nike        |              |                   | camera      | clothing_material_size |
+ * | product_39               | empty_product                |                  |        |      |           |             |              |                   | camera      | clothing_material_size |
+ * -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -115,6 +119,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'attributes_of_ancestors' => [],
                 'categories_of_ancestors' => [],
+                'attributes_for_this_level' => ['description'],
                 'parent'                    => null,
                 'ancestors'                 => [
                     'codes' => null,
@@ -144,6 +149,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'attributes_of_ancestors' => [],
                 'categories_of_ancestors' => [],
+                'attributes_for_this_level' => ['description', 'color', 'image', 'material'],
                 'parent'                    => null,
                 'ancestors'                 => [
                     'codes' => null,
@@ -188,6 +194,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'attributes_of_ancestors' => [],
                 'categories_of_ancestors' => [],
+                'attributes_for_this_level' => ['description', 'color', 'material'],
                 'parent'                    => null,
                 'ancestors'                 => [
                     'codes' => null,
@@ -227,6 +234,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'attributes_of_ancestors' => [],
                 'categories_of_ancestors' => [],
+                'attributes_for_this_level' => ['description', 'size', 'material'],
                 'parent'                    => null,
                 'ancestors'                 => [
                     'codes' => null,
@@ -261,6 +269,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes'],
                 'categories_of_ancestors'      => [],
                 'attributes_of_ancestors'      => [],
+                'attributes_for_this_level' => ['description', 'material'],
                 'family'                    => [
                     'code'   => 'shoes',
                     'labels' => [
@@ -301,6 +310,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors'      => [],
                 'attributes_of_ancestors' => [],
+                'attributes_for_this_level' => ['description', 'color'],
                 'parent'                    => null,
                 'ancestors'                 => [
                     'codes' => null,
@@ -337,6 +347,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors'      => [],
                 'attributes_of_ancestors' => ['description'],
+                'attributes_for_this_level' => ['color', 'image', 'material'],
                 'parent'                    => 'model-tshirt',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt'],
@@ -379,6 +390,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors'      => [],
                 'attributes_of_ancestors' => ['description'],
+                'attributes_for_this_level' => ['color', 'image', 'material'],
                 'parent'                    => 'model-tshirt',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt'],
@@ -419,8 +431,9 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         'fr_FR' => 'La famille des tshirts',
                     ],
                 ],
-                'categories_of_ancestors'      => [],
-                'attributes_of_ancestors' => ['description'],
+                'categories_of_ancestors'   => [],
+                'attributes_of_ancestors'   => ['description'],
+                'attributes_for_this_level' => ['color', 'image', 'material'],
                 'parent'                    => 'model-tshirt',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt'],
@@ -457,6 +470,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material'],
+                'attributes_for_this_level' => ['size'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -496,6 +510,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material'],
+                'attributes_for_this_level' => ['size'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -535,6 +550,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material'],
+                'attributes_for_this_level' => ['size'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -581,6 +597,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'color'],
+                'attributes_for_this_level' => ['material'],
                 'parent'                    => 'model-biker-jacket',
                 'ancestors'                 => [
                     'codes' => ['model-biker-jacket'],
@@ -618,6 +635,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'color'],
+                'attributes_for_this_level' => ['material'],
                 'parent'                    => 'model-biker-jacket',
                 'ancestors'                 => [
                     'codes' => ['model-biker-jacket'],
@@ -658,6 +676,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-grey',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-grey'],
@@ -714,6 +733,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-grey',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-grey'],
@@ -770,6 +790,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-grey',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-grey'],
@@ -826,6 +847,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-grey',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-grey'],
@@ -883,6 +905,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-blue',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-blue'],
@@ -939,6 +962,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-blue',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-blue'],
@@ -995,6 +1019,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-blue',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-blue'],
@@ -1051,6 +1076,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-blue',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-blue'],
@@ -1108,6 +1134,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-red',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-red'],
@@ -1164,6 +1191,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-red',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-red'],
@@ -1220,6 +1248,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-red',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-red'],
@@ -1276,6 +1305,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['color', 'image', 'material', 'description'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-red',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt', 'model-tshirt-red'],
@@ -1334,6 +1364,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'color', 'material'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-unique-color',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt-unique-color'],
@@ -1380,6 +1411,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'color', 'material'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-unique-color',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt-unique-color'],
@@ -1426,6 +1458,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'color', 'material'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-unique-color',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt-unique-color'],
@@ -1472,6 +1505,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'color', 'material'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-tshirt-unique-color',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt-unique-color'],
@@ -1520,6 +1554,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => [],
+                'attributes_for_this_level' => ['description', 'color', 'material', 'size'],
                 'parent'                    => null,
                 'ancestors'                 => [
                     'codes' => null,
@@ -1553,6 +1588,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'color', 'material'],
+                'attributes_for_this_level' => ['size', 'weight'],
                 'parent'                    => 'model-hat',
                 'ancestors'                 => [
                     'codes' => ['model-hat'],
@@ -1604,6 +1640,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'color', 'material'],
+                'attributes_for_this_level' => ['size', 'weight'],
                 'parent'                    => 'model-hat',
                 'ancestors'                 => [
                     'codes' => ['model-hat'],
@@ -1658,6 +1695,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'size', 'material'],
+                'attributes_for_this_level' => ['color', 'image'],
                 'parent'                    => 'model-tshirt-unique-size',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt-unique-size'],
@@ -1706,6 +1744,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'size', 'material'],
+                'attributes_for_this_level' => ['color', 'image'],
                 'parent'                    => 'model-tshirt-unique-size',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt-unique-size'],
@@ -1754,6 +1793,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'size', 'material'],
+                'attributes_for_this_level' => ['color', 'image'],
                 'parent'                    => 'model-tshirt-unique-size',
                 'ancestors'                 => [
                     'codes' => ['model-tshirt-unique-size'],
@@ -1796,6 +1836,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes', 'men', 'women'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material', 'size'],
+                'attributes_for_this_level' => ['color'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1839,6 +1880,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes', 'men'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material', 'size'],
+                'attributes_for_this_level' => ['color'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1882,6 +1924,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes', 'women'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material', 'size'],
+                'attributes_for_this_level' => ['color'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1925,6 +1968,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes', 'men', 'women'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material', 'size'],
+                'attributes_for_this_level' => ['color'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -1968,6 +2012,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes', 'men'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material', 'size'],
+                'attributes_for_this_level' => ['color'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -2011,6 +2056,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes', 'women'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material', 'size'],
+                'attributes_for_this_level' => ['color'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -2054,6 +2100,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes', 'men', 'women'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material', 'size'],
+                'attributes_for_this_level' => ['color'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -2097,6 +2144,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes', 'men'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material', 'size'],
+                'attributes_for_this_level' => ['color'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -2140,6 +2188,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 'categories'                => ['shoes', 'women'],
                 'categories_of_ancestors' => ['shoes'],
                 'attributes_of_ancestors' => ['description', 'material', 'size'],
+                'attributes_for_this_level' => ['color'],
                 'family_variant'            => 'shoes_size_color',
                 'family'                    => [
                     'code'   => 'shoes',
@@ -2190,6 +2239,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'material', 'color'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-biker-jacket-leather',
                 'ancestors'                 => [
                     'codes' => ['model-biker-jacket', 'model-biker-jacket-leather'],
@@ -2231,6 +2281,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'material', 'color'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-biker-jacket-leather',
                 'ancestors'                 => [
                     'codes' => ['model-biker-jacket', 'model-biker-jacket-leather'],
@@ -2272,6 +2323,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'material', 'color'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-biker-jacket-leather',
                 'ancestors'                 => [
                     'codes' => ['model-biker-jacket', 'model-biker-jacket-leather'],
@@ -2314,6 +2366,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'material', 'color'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-biker-jacket-polyester',
                 'ancestors'                 => [
                     'codes' => ['model-biker-jacket', 'model-biker-jacket-polyester'],
@@ -2355,6 +2408,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'material', 'color'],
+                'attributes_for_this_level' => ['size'],
                 'parent'                    => 'model-biker-jacket-polyester',
                 'ancestors'                 => [
                     'codes' => ['model-biker-jacket', 'model-biker-jacket-polyester'],
@@ -2396,6 +2450,8 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => ['description', 'material', 'color'],
+                'attributes_for_this_level' => ['size'],
+                'parent'                    => 'model-biker-jacket-polyester',
                 'parent'                    => 'model-biker-jacket-polyester',
                 'ancestors'                 => [
                     'codes' => ['model-biker-jacket', 'model-biker-jacket-polyester'],
@@ -2423,6 +2479,46 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                         ],
                     ],
                 ],
+            ],
+
+            [
+                'id'                      => 'product_40',
+                'identifier'              => 'camera_nikon',
+                'document_type'           => ProductInterface::class,
+                'family'                  => [
+                    'code'   => 'camera',
+                    'labels' => [
+                        'fr_FR' => 'La famille des cameras',
+                    ],
+                ],
+                'categories_of_ancestors' => [],
+                'attributes_of_ancestors' => [],
+                'attributes_for_this_level' => ['brand', 'color'],
+                'parent'                  => null,
+                'values'                  => [
+                    'brand-option'      => [
+                        '<all_channels>' => [
+                            '<all_locales>' => 'nikon',
+                        ],
+                    ],
+                ],
+            ],
+
+            [
+                'id'                      => 'product_39',
+                'identifier'              => 'empty_product',
+                'document_type'           => ProductInterface::class,
+                'family'                  => [
+                    'code'   => 'camera',
+                    'labels' => [
+                        'fr_FR' => 'La famille des cameras',
+                    ],
+                ],
+                'categories_of_ancestors' => [],
+                'attributes_of_ancestors' => [],
+                'attributes_of_family'    => ['brand'],
+                'parent'                  => null,
+                'values'                  => [],
             ],
         ];
 
