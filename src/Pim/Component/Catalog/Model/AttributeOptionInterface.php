@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
+
 /**
  * Attribute options
  *

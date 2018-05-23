@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**

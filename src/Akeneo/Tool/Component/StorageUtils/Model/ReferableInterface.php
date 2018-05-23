@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
+namespace Akeneo\Tool\Component\StorageUtils\Model;
 
 /**
  * Interface for entities with an unique code
