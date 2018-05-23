@@ -3,9 +3,9 @@
 namespace Akeneo\Channel\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
+use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 
 /**
  * Channel interface
