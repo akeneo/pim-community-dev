@@ -120,15 +120,13 @@ stage("Test") {
                 container: "${tag}-ee",
                 script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
             )},
-            "back-acceptance-ce": {queue(
+            "back-acceptance-ce": {testif(
                 condition: launchAcceptanceTests.equals("yes"),
-                verbose: (verboseOutputs == "yes"),
                 container: tag,
                 script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
-            "back-acceptance-ee": {queue(
+            "back-acceptance-ee": {testif(
                 condition: launchAcceptanceTests.equals("yes") && editions.contains("ee"),
-                verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
                 script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
