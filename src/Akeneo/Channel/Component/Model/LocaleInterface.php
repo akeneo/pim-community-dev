@@ -13,7 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface LocaleInterface extends \Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface
+interface LocaleInterface extends ReferableInterface
 {
     /**
      * @return int

@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface CurrencyInterface extends \Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface
+interface CurrencyInterface extends ReferableInterface
 {
     /**
      * @return int
