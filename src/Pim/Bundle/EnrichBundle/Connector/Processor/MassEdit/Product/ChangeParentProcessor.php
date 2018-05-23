@@ -10,6 +10,13 @@ use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Processor for mass edit action to change the parent of a given product
+ *
+ * @author    Julian Prud'homme <julian.prudhomme@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class ChangeParentProcessor extends AbstractProcessor
 {
     /** @var ValidatorInterface */
@@ -36,9 +43,14 @@ class ChangeParentProcessor extends AbstractProcessor
         $this->productModelUpdater = $productModelUpdater;
     }
 
-    public function process($product)
+    /**
+     * @param $product
+     *
+     * @return null|EntityWithFamilyVariantInterface
+     */
+    public function process($product): ?EntityWithFamilyVariantInterface
     {
-        $this->validateProduct($product);
+        $this->validateIsProduct($product);
 
         $newParentCode = $this->getNewParentCode();
         $this->updateEntity($product, $newParentCode);
@@ -50,20 +62,38 @@ class ChangeParentProcessor extends AbstractProcessor
         return $product;
     }
 
-    private function validateProduct($product)
+    /**
+     * Validate the given object is the expected product type
+     *
+     * @param mixed $product
+     */
+    private function validateIsProduct($product): void
     {
         if (! $product instanceof EntityWithFamilyVariantInterface) {
-            throw new \InvalidArgumentException('The product is not correct');
+            throw new \InvalidArgumentException(sprintf('Given entity shoudl be an instance of EntityWithToto. Instance of %s given.', get_class($product)));
         }
     }
 
-    private function getNewParentCode()
+    /**
+     * Get the new parent code from the input value
+     *
+     * @return string
+     */
+    private function getNewParentCode(): string
     {
         $actions = $this->getConfiguredActions();
 
         return $actions[0]['value'];
     }
 
+    /**
+     * Update the product entity with the new parent value
+     *
+     * @param EntityWithFamilyVariantInterface $product
+     * @param string $newParentCode
+     *
+     * @return void
+     */
     private function updateEntity(EntityWithFamilyVariantInterface $product, string $newParentCode): void
     {
         $updater = $this->productUpdater;
@@ -75,6 +105,13 @@ class ChangeParentProcessor extends AbstractProcessor
         $updater->update($product, ['parent' => $newParentCode]);
     }
 
+    /**
+     * Check if the product to update is valid
+     *
+     * @param EntityWithFamilyVariantInterface $product
+     *
+     * @return bool
+     */
     private function isProductValid(EntityWithFamilyVariantInterface $product): bool
     {
         $validator = $this->productValidator;

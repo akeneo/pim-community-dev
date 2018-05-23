@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Behat\Context;
 
-use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Behat\Behat\Context\SnippetAcceptingContext;
@@ -30,28 +31,44 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
     }
 
     /**
+     * @param string $productCodes
+     * @param string $newParentCode
+     *
      * @When /^i massively change the parent of the products (.*) for (.*)$/
      */
-    public function iLaunchProductsMassEditJob(string $productCodes, string $newParentCode)
+    public function iMassivelyChangeTheParentOfTheProducts(string $productCodes, string $newParentCode)
     {
         $productCodes = $this->getMainContext()->listToArray($productCodes);
         $productIds = $this->getProductIdsFromIdentifiers($productCodes);
 
-        $this->launchJob($productIds, 'parent', $newParentCode, self::MASS_CHANGE_PARENT_JOB_NAME);
+        $this->launchJob(self::MASS_CHANGE_PARENT_JOB_NAME, $productIds, 'parent', $newParentCode);
     }
 
     /**
+     * @param string $productModelCodes
+     * @param string $newParentCode
+     *
      * @When /^i massively change the parent of the product models (.*) for (.*)$/
      */
-    public function iLaunchProductModelsMassEditJob(string $productModelCodes, string $newParentCode)
+    public function iMassivelyChangeTheParentOfTheProductModels(string $productModelCodes, string $newParentCode)
     {
         $productModelCodes = $this->getMainContext()->listToArray($productModelCodes);
         $productModelIds = $this->getProductModelIdsFromIdentifiers($productModelCodes);
 
-        $this->launchJob($productModelIds, 'parent', $newParentCode, self::MASS_CHANGE_PARENT_JOB_NAME);
+        $this->launchJob(self::MASS_CHANGE_PARENT_JOB_NAME, $productModelIds, 'parent', $newParentCode);
     }
 
-    private function launchJob(array $productIds, string $fieldName, string $newFieldValue, string $jobName)
+    /**
+     * Launch the given mass edit job for all the products
+     *
+     * @param string $jobName
+     * @param array $productIds
+     * @param string $fieldName
+     * @param string $newFieldValue
+     *
+     * @return void
+     */
+    private function launchJob(string $jobName, array $productIds, string $fieldName, string $newFieldValue): void
     {
         $jobInstance = $this->mainContext->getSubcontext('job')->theFollowingJobConfiguration($jobName, new TableNode([]));
 
@@ -65,6 +82,15 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
         $this->waitForJobToFinish($jobInstance);
     }
 
+    /**
+     * Build the job execution configuration array
+     *
+     * @param array $productIds
+     * @param string $fieldName
+     * @param string $newFieldValue
+     *
+     * @return array
+     */
     private function buildJobExecutionConfiguration(array $productIds, string $fieldName, string $newFieldValue)
     {
         return [
@@ -88,6 +114,13 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
         ];
     }
 
+    /**
+     * Returns an array of products mysql IDs from an array of product codes
+     *
+     * @param array $productCodes
+     *
+     * @return array
+     */
     private function getProductIdsFromIdentifiers(array $productCodes)
     {
         $productIds = [];
@@ -99,6 +132,13 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
         return $productIds;
     }
 
+    /**
+     * Returns an array of product model mysql IDs from an array of product model codes
+     *
+     * @param array $productModelCodes
+     *
+     * @return array
+     */
     private function getProductModelIdsFromIdentifiers(array $productModelCodes)
     {
         $productModelIds = [];
@@ -110,7 +150,10 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
         return $productModelIds;
     }
 
-    private function waitForJobToFinish(JobInstance $jobInstance): JobExecution
+    /**
+     * @param JobInstance $jobInstance
+     */
+    private function waitForJobToFinish(JobInstance $jobInstance)
     {
         $jobInstance->getJobExecutions()->setInitialized(false);
         $this->getFixturesContext()->refresh($jobInstance);

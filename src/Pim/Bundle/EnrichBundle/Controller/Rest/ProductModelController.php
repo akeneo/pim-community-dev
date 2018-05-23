@@ -357,18 +357,25 @@ class ProductModelController
             $page
         );
 
-        $normalizedProductModels = $this->buildNormalizedProductModeldsList($productModels);
+        $normalizedProductModels = $this->buildNormalizedProductModels($productModels);
 
         return new JsonResponse($normalizedProductModels);
     }
 
+    /**
+     * Returns all the product models (sub and root) of a family variant
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
     public function listFamilyVariantProductModels(Request $request)
     {
         $options = $request->query->get('options');
         $familyVariant = $this->getFamilyVariant($options['family_variant']);
 
         $productModels = $this->productModelRepository->findProductModelsForFamilyVariant($familyVariant);
-        $normalizedProductModels = $this->buildNormalizedProductModeldsList($productModels);
+        $normalizedProductModels = $this->buildNormalizedProductModels($productModels);
 
         return new JsonResponse($normalizedProductModels);
     }
@@ -395,6 +402,15 @@ class ProductModelController
         return new JsonResponse();
     }
 
+    /**
+     * Returns the family variant object from a family variant code
+     *
+     * @param string $familyVariantCode
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return FamilyVariantInterface
+     */
     private function getFamilyVariant(string $familyVariantCode): FamilyVariantInterface
     {
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode);
@@ -405,7 +421,14 @@ class ProductModelController
         return $familyVariant;
     }
 
-    private function buildNormalizedProductModeldsList(array $productModels): array
+    /**
+     * Returns an array of normalized product models from an array of product model objects
+     *
+     * @param array $productModels
+     *
+     * @return array
+     */
+    private function buildNormalizedProductModels(array $productModels): array
     {
         $normalizedProductModels = [];
         foreach ($productModels as $productModel) {

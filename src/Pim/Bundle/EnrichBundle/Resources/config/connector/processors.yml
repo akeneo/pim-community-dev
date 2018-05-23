@@ -95,7 +95,7 @@ services:
             - '@security.token_storage'
             - '@pim_connector.processor.bulk_media_fetcher'
 
-    pim_enrich.connector.processor.mass_edit.product.change.parent:
+    pim_enrich.connector.processor.mass_edit.product.change_parent:
         class: Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\ChangeParentProcessor
         arguments:
             - '@pim_catalog.validator.product'

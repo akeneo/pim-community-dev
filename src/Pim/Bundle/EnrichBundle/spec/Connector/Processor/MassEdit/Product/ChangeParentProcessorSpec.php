@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\Batch\Job\JobParameters;
