@@ -86,7 +86,6 @@ Pim\Bundle\UserBundle\Entity\User:
             gedmo:
                 timestampable:
                     on: update
-                    on: create
         productGridFilters:
             type: json_array
             nullable: true

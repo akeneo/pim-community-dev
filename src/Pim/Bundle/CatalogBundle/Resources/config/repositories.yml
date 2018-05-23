@@ -69,6 +69,7 @@ services:
 
     pim_catalog.repository.channel:
         class: '%pim_catalog.repository.channel.class%'
+        public: true # TODO : The service should not need to be public.
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_catalog.entity.channel.class%']
         tags:
