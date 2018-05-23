@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

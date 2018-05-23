@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Bundle\RuleEngineBundle\Normalizer;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\SerializerInterface;

@@ -33,5 +33,5 @@ Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition:
             column: impacted_subject_count
     oneToMany:
         relations:
-            targetEntity: Akeneo\Bundle\RuleEngineBundle\Model\RuleRelationInterface
+            targetEntity: Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface
             mappedBy: rule

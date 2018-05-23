@@ -2,12 +2,12 @@
 
 namespace spec\PimEnterprise\Component\CatalogRule\Runner;
 
-use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
-use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\SelectorInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

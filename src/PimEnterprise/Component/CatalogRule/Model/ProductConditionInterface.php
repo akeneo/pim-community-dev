@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\CatalogRule\Model;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\ConditionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ConditionInterface;
 
 /**
  * Condition interface used in product rules.

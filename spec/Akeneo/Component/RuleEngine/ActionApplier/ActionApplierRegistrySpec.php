@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Component\RuleEngine\ActionApplier;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use PhpSpec\ObjectBehavior;
 

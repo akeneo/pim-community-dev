@@ -1,6 +1,6 @@
 parameters:
-    akeneo_rule_engine.repository.rule_definition.class: Akeneo\Bundle\RuleEngineBundle\Doctrine\ORM\Repository\RuleDefinitionRepository
-    akeneo_rule_engine.repository.rule_relation.class:   Akeneo\Bundle\RuleEngineBundle\Doctrine\ORM\Repository\RuleRelationRepository
+    akeneo_rule_engine.repository.rule_definition.class: Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\ORM\Repository\RuleDefinitionRepository
+    akeneo_rule_engine.repository.rule_relation.class:   Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\ORM\Repository\RuleRelationRepository
 
 services:
     akeneo_rule_engine.repository.rule_definition:

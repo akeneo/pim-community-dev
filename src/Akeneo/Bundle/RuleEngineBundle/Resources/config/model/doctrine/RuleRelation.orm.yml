@@ -22,7 +22,7 @@ Akeneo\Bundle\RuleEngineBundle\Model\RuleRelation:
             length: 24
     manyToOne:
         rule:
-            targetEntity: Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
+            targetEntity: Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
             inversedBy: relations
             joinColumn:
                 name: rule_id

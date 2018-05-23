@@ -2,10 +2,10 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleRelation;
-use Akeneo\Bundle\RuleEngineBundle\Repository\RuleRelationRepositoryInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelation;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleRelationRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;

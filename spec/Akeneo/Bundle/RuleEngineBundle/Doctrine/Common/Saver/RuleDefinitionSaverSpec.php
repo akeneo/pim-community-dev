@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Bundle\RuleEngineBundle\Doctrine\Common\Saver;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;

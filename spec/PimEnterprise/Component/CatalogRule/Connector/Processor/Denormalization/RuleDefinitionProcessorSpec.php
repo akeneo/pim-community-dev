@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\CatalogRule\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;

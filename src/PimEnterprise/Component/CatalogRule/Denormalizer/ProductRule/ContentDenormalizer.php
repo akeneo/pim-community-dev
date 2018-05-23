@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule;
 
-use Akeneo\Bundle\RuleEngineBundle\Denormalizer\ChainedDenormalizerAwareInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Denormalizer\ChainedDenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**

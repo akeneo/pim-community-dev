@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Bundle\RuleEngineBundle\EventSubscriber;
 
-use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
-use Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;

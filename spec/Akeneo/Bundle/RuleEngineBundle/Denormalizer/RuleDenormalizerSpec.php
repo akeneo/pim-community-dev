@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Bundle\RuleEngineBundle\Denormalizer;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\ConditionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ConditionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
