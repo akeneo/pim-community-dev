@@ -15,10 +15,11 @@ cache:
     - $HOME/.cache/yarn
 
 before_install:
+    - node tests/travis/check-changes.js einrich-PIM-7380 src/Akeneo/EnrichedEntity/,.travis.yml,tests/travis/,tests/back/Integration/EnrichedEntity,tests/back/Acceptance,tests/features,tests/front,package.json
     - phpenv config-rm xdebug.ini
     - composer config -g github-oauth.github.com b67ee2fd847a2ba0f2275cbaab068bf543cdf9a2
     - printf "\n" | pecl install apcu
-    - phpenv config-add tests/travis.php.ini
+    - phpenv config-add tests/travis/travis.php.ini
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
 install:
