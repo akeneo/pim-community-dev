@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\Association;
 
 use InvalidArgumentException;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 
 /**
  * For a given association aware entity,
@@ -28,11 +28,11 @@ class AssociationClassResolver
     }
 
     /**
-     * @param AssociationAwareInterface $entity
+     * @param EntityWithAssociationsInterface $entity
      *
      * @return string
      */
-    public function resolveAssociationClass(AssociationAwareInterface $entity): string
+    public function resolveAssociationClass(EntityWithAssociationsInterface $entity): string
     {
         foreach ($this->associationClassMap as $className => $associationClassName) {
             if ($entity instanceof $className) {

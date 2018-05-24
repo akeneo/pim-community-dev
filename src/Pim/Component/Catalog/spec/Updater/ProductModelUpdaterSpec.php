@@ -11,13 +11,10 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Comparator\ComparatorInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Association\ParentAssociationsFilter;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Updater\ProductModelUpdater;
 
 class ProductModelUpdaterSpec extends ObjectBehavior
@@ -26,13 +23,15 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        ParentAssociationsFilter $parentAssociationsFilter
     ) {
         $this->beConstructedWith(
             $propertySetter,
             $valuesUpdater,
             $familyVariantRepository,
             $productModelRepository,
+            $parentAssociationsFilter,
             ['categories'],
             ['code']
         );

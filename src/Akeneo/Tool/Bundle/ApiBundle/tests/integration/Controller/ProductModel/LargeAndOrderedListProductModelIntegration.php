@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product\AbstractProductTestCase;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
@@ -93,6 +92,7 @@ JSON;
     "parent":null,
     "categories":[],
     "values":{},
+    "associations":{},
     "created":"2017-10-04T18:04:10+02:00",
     "updated":"2017-10-04T18:04:10+02:00"
 }

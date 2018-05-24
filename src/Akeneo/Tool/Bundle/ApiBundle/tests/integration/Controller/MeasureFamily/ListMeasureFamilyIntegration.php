@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\MeasureFamily;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -31,16 +30,16 @@ class ListMeasureFamilyIntegration extends ApiTestCase
   "current_page": 1,
   "_embedded": {
     "items": [
-      {$measureFamilies['area']},
-      {$measureFamilies['binary']},
-      {$measureFamilies['decibel']},
-      {$measureFamilies['frequency']},
-      {$measureFamilies['length']},
-      {$measureFamilies['power']},
-      {$measureFamilies['voltage']},
-      {$measureFamilies['intensity']},
-      {$measureFamilies['resistance']},
-      {$measureFamilies['speed']}
+      {$measureFamilies['Area']},
+      {$measureFamilies['Binary']},
+      {$measureFamilies['Decibel']},
+      {$measureFamilies['Frequency']},
+      {$measureFamilies['Length']},
+      {$measureFamilies['Power']},
+      {$measureFamilies['Voltage']},
+      {$measureFamilies['Intensity']},
+      {$measureFamilies['Resistance']},
+      {$measureFamilies['Speed']}
     ]
   }
 }
@@ -108,9 +107,9 @@ JSON;
   "current_page": 2,
   "_embedded": {
     "items": [
-      {$measureFamilies['frequency']},
-      {$measureFamilies['length']},
-      {$measureFamilies['power']}
+      {$measureFamilies['Frequency']},
+      {$measureFamilies['Length']},
+      {$measureFamilies['Power']}
     ]
   }
 }
@@ -146,7 +145,7 @@ JSON;
   "items_count": 18,
   "_embedded": {
     "items": [
-      {$measureFamilies['area']}
+      {$measureFamilies['Area']}
     ]
   }
 }
@@ -181,699 +180,699 @@ JSON;
 
     private function getStandardizedMeasureFamilies()
     {
-        $measureFamilies['area'] = <<<JSON
+        $measureFamilies['Area'] = <<<JSON
 {
-    "_links": {
-        "self": {
-            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/area"
-        }
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Area"
+    }
+  },
+  "code": "Area",
+  "standard": "SQUARE_METER",
+  "units": [
+    {
+      "code": "SQUARE_MILLIMETER",
+      "convert": {
+        "mul": "0.000001"
+      },
+      "symbol": "mm\u00b2"
     },
-    "code": "area",
-    "standard": "SQUARE_METER",
-    "units": [
-      {
-          "code": "SQUARE_MILLIMETER",
-        "convert": {
-          "mul": "0.000001"
-        },
-        "symbol": "mm\u00b2"
+    {
+      "code": "SQUARE_CENTIMETER",
+      "convert": {
+        "mul": "0.0001"
       },
-      {
-          "code": "SQUARE_CENTIMETER",
-        "convert": {
-          "mul": "0.0001"
-        },
-        "symbol": "cm\u00b2"
+      "symbol": "cm\u00b2"
+    },
+    {
+      "code": "SQUARE_DECIMETER",
+      "convert": {
+        "mul": "0.01"
       },
-      {
-          "code": "SQUARE_DECIMETER",
-        "convert": {
-          "mul": "0.01"
-        },
-        "symbol": "dm\u00b2"
+      "symbol": "dm\u00b2"
+    },
+    {
+      "code": "SQUARE_METER",
+      "convert": {
+        "mul": "1"
       },
-      {
-          "code": "SQUARE_METER",
-        "convert": {
-          "mul": "1"
-        },
-        "symbol": "m\u00b2"
+      "symbol": "m\u00b2"
+    },
+    {
+      "code": "CENTIARE",
+      "convert": {
+        "mul": "1"
       },
-      {
-          "code": "CENTIARE",
-        "convert": {
-          "mul": "1"
-        },
-        "symbol": "ca"
+      "symbol": "ca"
+    },
+    {
+      "code": "SQUARE_DEKAMETER",
+      "convert": {
+        "mul": "100"
       },
-      {
-          "code": "SQUARE_DEKAMETER",
-        "convert": {
-          "mul": "100"
-        },
-        "symbol": "dam\u00b2"
+      "symbol": "dam\u00b2"
+    },
+    {
+      "code": "ARE",
+      "convert": {
+        "mul": "100"
       },
-      {
-          "code": "ARE",
-        "convert": {
-          "mul": "100"
-        },
-        "symbol": "a"
+      "symbol": "a"
+    },
+    {
+      "code": "SQUARE_HECTOMETER",
+      "convert": {
+        "mul": "10000"
       },
-      {
-          "code": "SQUARE_HECTOMETER",
-        "convert": {
-          "mul": "10000"
-        },
-        "symbol": "hm\u00b2"
+      "symbol": "hm\u00b2"
+    },
+    {
+      "code": "HECTARE",
+      "convert": {
+        "mul": "10000"
       },
-      {
-          "code": "HECTARE",
-        "convert": {
-          "mul": "10000"
-        },
-        "symbol": "ha"
+      "symbol": "ha"
+    },
+    {
+      "code": "SQUARE_KILOMETER",
+      "convert": {
+        "mul": "1000000"
       },
-      {
-          "code": "SQUARE_KILOMETER",
-        "convert": {
-          "mul": "1000000"
-        },
-        "symbol": "km\u00b2"
+      "symbol": "km\u00b2"
+    },
+    {
+      "code": "SQUARE_MIL",
+      "convert": {
+        "mul": "0.00000000064516"
       },
-      {
-          "code": "SQUARE_MIL",
-        "convert": {
-          "mul": "0.00000000064516"
-        },
-        "symbol": "sq mil"
+      "symbol": "sq mil"
+    },
+    {
+      "code": "SQUARE_INCH",
+      "convert": {
+        "mul": "0.00064516"
       },
-      {
-          "code": "SQUARE_INCH",
-        "convert": {
-          "mul": "0.00064516"
-        },
-        "symbol": "in\u00b2"
+      "symbol": "in\u00b2"
+    },
+    {
+      "code": "SQUARE_FOOT",
+      "convert": {
+        "mul": "0.09290304"
       },
-      {
-          "code": "SQUARE_FOOT",
-        "convert": {
-          "mul": "0.09290304"
-        },
-        "symbol": "ft\u00b2"
+      "symbol": "ft\u00b2"
+    },
+    {
+      "code": "SQUARE_YARD",
+      "convert": {
+        "mul": "0.83612736"
       },
-      {
-          "code": "SQUARE_YARD",
-        "convert": {
-          "mul": "0.83612736"
-        },
-        "symbol": "yd\u00b2"
+      "symbol": "yd\u00b2"
+    },
+    {
+      "code": "ARPENT",
+      "convert": {
+        "mul": "3418.89"
       },
-      {
-          "code": "ARPENT",
-        "convert": {
-          "mul": "3418.89"
-        },
-        "symbol": "arpent"
+      "symbol": "arpent"
+    },
+    {
+      "code": "ACRE",
+      "convert": {
+        "mul": "4046.856422"
       },
-      {
-          "code": "ACRE",
-        "convert": {
-          "mul": "4046.856422"
-        },
-        "symbol": "A"
+      "symbol": "A"
+    },
+    {
+      "code": "SQUARE_FURLONG",
+      "convert": {
+        "mul": "40468.726"
       },
-      {
-          "code": "SQUARE_FURLONG",
-        "convert": {
-          "mul": "40468.726"
-        },
-        "symbol": "fur\u00b2"
+      "symbol": "fur\u00b2"
+    },
+    {
+      "code": "SQUARE_MILE",
+      "convert": {
+        "mul": "2589988.110336"
       },
-      {
-          "code": "SQUARE_MILE",
-        "convert": {
-          "mul": "2589988.110336"
-        },
-        "symbol": "mi\u00b2"
-      }
-    ]
+      "symbol": "mi\u00b2"
+    }
+  ]
 }
 JSON;
 
-        $measureFamilies['binary'] = <<<JSON
+        $measureFamilies['Binary'] = <<<JSON
 {
-    "_links": {
-        "self": {
-            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/binary"
-      }
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Binary"
+    }
+  },
+  "code": "Binary",
+  "standard": "BYTE",
+  "units": [
+    {
+      "code": "BIT",
+      "convert": {
+        "mul": "0.125"
+      },
+      "symbol": "b"
     },
-    "code": "binary",
-    "standard": "BYTE",
-    "units": [
-      {
-          "code": "BIT",
-        "convert": {
-          "mul": "0.125"
-        },
-        "symbol": "b"
+    {
+      "code": "BYTE",
+      "convert": {
+        "mul": "1"
       },
-      {
-          "code": "BYTE",
-        "convert": {
-          "mul": "1"
-        },
-        "symbol": "B"
+      "symbol": "B"
+    },
+    {
+      "code": "KILOBYTE",
+      "convert": {
+        "mul": "1024"
       },
-      {
-          "code": "KILOBYTE",
-        "convert": {
-          "mul": "1024"
-        },
-        "symbol": "kB"
+      "symbol": "kB"
+    },
+    {
+      "code": "MEGABYTE",
+      "convert": {
+        "mul": "1048576"
       },
-      {
-          "code": "MEGABYTE",
-        "convert": {
-          "mul": "1048576"
-        },
-        "symbol": "MB"
+      "symbol": "MB"
+    },
+    {
+      "code": "GIGABYTE",
+      "convert": {
+        "mul": "1073741824"
       },
-      {
-          "code": "GIGABYTE",
-        "convert": {
-          "mul": "1073741824"
-        },
-        "symbol": "GB"
+      "symbol": "GB"
+    },
+    {
+      "code": "TERABYTE",
+      "convert": {
+        "mul": "1099511627776"
       },
-      {
-          "code": "TERABYTE",
-        "convert": {
-          "mul": "1099511627776"
-        },
-        "symbol": "TB"
-      }
-    ]
+      "symbol": "TB"
+    }
+  ]
 }
 JSON;
 
-        $measureFamilies['decibel'] = <<<JSON
+        $measureFamilies['Decibel'] = <<<JSON
 {
-    "_links": {
-        "self": {
-            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/decibel"
-      }
-    },
-    "code": "decibel",
-    "standard": "DECIBEL",
-    "units": [
-      {
-          "code": "DECIBEL",
-        "convert": {
-          "mul": "1"
-        },
-        "symbol": "dB"
-      }
-    ]
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Decibel"
+    }
+  },
+  "code": "Decibel",
+  "standard": "DECIBEL",
+  "units": [
+    {
+      "code": "DECIBEL",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "dB"
+    }
+  ]
 }
 JSON;
 
-        $measureFamilies['frequency'] = <<<JSON
+        $measureFamilies['Frequency'] = <<<JSON
 {
-    "_links": {
-        "self": {
-            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/frequency"
-      }
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Frequency"
+    }
+  },
+  "code": "Frequency",
+  "standard": "HERTZ",
+  "units": [
+    {
+      "code": "HERTZ",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "Hz"
     },
-    "code": "frequency",
-    "standard": "HERTZ",
-    "units": [
-      {
-          "code": "HERTZ",
-        "convert": {
-          "mul": "1"
-        },
-        "symbol": "Hz"
+    {
+      "code": "KILOHERTZ",
+      "convert": {
+        "mul": "1000"
       },
-      {
-          "code": "KILOHERTZ",
-        "convert": {
-          "mul": "1000"
-        },
-        "symbol": "kHz"
+      "symbol": "kHz"
+    },
+    {
+      "code": "MEGAHERTZ",
+      "convert": {
+        "mul": "1000000"
       },
-      {
-          "code": "MEGAHERTZ",
-        "convert": {
-          "mul": "1000000"
-        },
-        "symbol": "MHz"
+      "symbol": "MHz"
+    },
+    {
+      "code": "GIGAHERTZ",
+      "convert": {
+        "mul": "1000000000"
       },
-      {
-          "code": "GIGAHERTZ",
-        "convert": {
-          "mul": "1000000000"
-        },
-        "symbol": "GHz"
+      "symbol": "GHz"
+    },
+    {
+      "code": "TERAHERTZ",
+      "convert": {
+        "mul": "1000000000000"
       },
-      {
-          "code": "TERAHERTZ",
-        "convert": {
-          "mul": "1000000000000"
-        },
-        "symbol": "THz"
-      }
-    ]
+      "symbol": "THz"
+    }
+  ]
 }
 JSON;
-        $measureFamilies['length'] = <<<JSON
+        $measureFamilies['Length'] = <<<JSON
 {
-    "_links": {
-        "self": {
-            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/length"
-        }
-    },
-    "code": "length",
-    "standard": "METER",
-    "units": [
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Length"
+    }
+  },
+  "code": "Length",
+  "standard": "METER",
+  "units": [
     {
       "code": "MILLIMETER",
-    "convert": {
-      "mul": "0.001"
-    },
-    "symbol": "mm"
+      "convert": {
+        "mul": "0.001"
+      },
+      "symbol": "mm"
     },
     {
       "code": "CENTIMETER",
-    "convert": {
-      "mul": "0.01"
-    },
-    "symbol": "cm"
+      "convert": {
+        "mul": "0.01"
+      },
+      "symbol": "cm"
     },
     {
       "code": "DECIMETER",
-    "convert": {
-      "mul": "0.1"
-    },
-    "symbol": "dm"
+      "convert": {
+        "mul": "0.1"
+      },
+      "symbol": "dm"
     },
     {
       "code": "METER",
-    "convert": {
-      "mul": "1"
-    },
-    "symbol": "m"
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "m"
     },
     {
       "code": "DEKAMETER",
-    "convert": {
-      "mul": "10"
-    },
-    "symbol": "dam"
+      "convert": {
+        "mul": "10"
+      },
+      "symbol": "dam"
     },
     {
       "code": "HECTOMETER",
-    "convert": {
-      "mul": "100"
-    },
-    "symbol": "hm"
+      "convert": {
+        "mul": "100"
+      },
+      "symbol": "hm"
     },
     {
       "code": "KILOMETER",
-    "convert": {
-      "mul": "1000"
-    },
-    "symbol": "km"
+      "convert": {
+        "mul": "1000"
+      },
+      "symbol": "km"
     },
     {
       "code": "MIL",
-    "convert": {
-      "mul": "0.0000254"
-    },
-    "symbol": "mil"
+      "convert": {
+        "mul": "0.0000254"
+      },
+      "symbol": "mil"
     },
     {
       "code": "INCH",
-    "convert": {
-      "mul": "0.0254"
-    },
-    "symbol": "in"
+      "convert": {
+        "mul": "0.0254"
+      },
+      "symbol": "in"
     },
     {
       "code": "FEET",
-    "convert": {
-      "mul": "0.3048"
-    },
-    "symbol": "ft"
+      "convert": {
+        "mul": "0.3048"
+      },
+      "symbol": "ft"
     },
     {
       "code": "YARD",
-    "convert": {
-      "mul": "0.9144"
-    },
-    "symbol": "yd"
+      "convert": {
+        "mul": "0.9144"
+      },
+      "symbol": "yd"
     },
     {
       "code": "CHAIN",
-    "convert": {
-      "mul": "20.1168"
-    },
-    "symbol": "ch"
+      "convert": {
+        "mul": "20.1168"
+      },
+      "symbol": "ch"
     },
     {
       "code": "FURLONG",
-    "convert": {
-      "mul": "201.168"
-    },
-    "symbol": "fur"
+      "convert": {
+        "mul": "201.168"
+      },
+      "symbol": "fur"
     },
     {
       "code": "MILE",
-    "convert": {
-      "mul": "1609.344"
-    },
-    "symbol": "mi"
+      "convert": {
+        "mul": "1609.344"
+      },
+      "symbol": "mi"
     }
-    ]
+  ]
 }
 JSON;
-        $measureFamilies['power'] = <<<JSON
+        $measureFamilies['Power'] = <<<JSON
 {
-    "_links": {
-        "self": {
-            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/power"
-      }
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Power"
+    }
+  },
+  "code": "Power",
+  "standard": "WATT",
+  "units": [
+    {
+      "code": "WATT",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "W"
     },
-    "code": "power",
-    "standard": "WATT",
-    "units": [
-      {
-          "code": "WATT",
-        "convert": {
-          "mul": "1"
-        },
-        "symbol": "W"
+    {
+      "code": "KILOWATT",
+      "convert": {
+        "mul": "1000"
       },
-      {
-          "code": "KILOWATT",
-        "convert": {
-          "mul": "1000"
-        },
-        "symbol": "kW"
-      },
-      {
-          "code": "MEGAWATT",
-        "convert": {
-          "mul": "1000000"
-        },
-        "symbol": "MW"
-      },
-      {
-          "code": "GIGAWATT",
-        "convert": {
-          "mul": "1000000000"
-        },
-        "symbol": "GW"
-      },
-      {
-          "code": "TERAWATT",
-        "convert": {
-          "mul": "1000000000000"
-        },
-        "symbol": "TW"
-      }
-    ]
-}
-JSON;
-
-        $measureFamilies['voltage'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/voltage"
-      }
+      "symbol": "kW"
     },
-    "code": "voltage",
-    "standard": "VOLT",
-    "units": [
-      {
-          "code": "MILLIVOLT",
-        "convert": {
-          "mul": "0.001"
-        },
-        "symbol": "mV"
+    {
+      "code": "MEGAWATT",
+      "convert": {
+        "mul": "1000000"
       },
-      {
-          "code": "CENTIVOLT",
-        "convert": {
-          "mul": "0.01"
-        },
-        "symbol": "cV"
+      "symbol": "MW"
+    },
+    {
+      "code": "GIGAWATT",
+      "convert": {
+        "mul": "1000000000"
       },
-      {
-          "code": "DECIVOLT",
-        "convert": {
-          "mul": "0.1"
-        },
-        "symbol": "dV"
+      "symbol": "GW"
+    },
+    {
+      "code": "TERAWATT",
+      "convert": {
+        "mul": "1000000000000"
       },
-      {
-          "code": "VOLT",
-        "convert": {
-          "mul": "1"
-        },
-        "symbol": "V"
-      },
-      {
-          "code": "DEKAVOLT",
-        "convert": {
-          "mul": "10"
-        },
-        "symbol": "daV"
-      },
-      {
-          "code": "HECTOVOLT",
-        "convert": {
-          "mul": "100"
-        },
-        "symbol": "hV"
-      },
-      {
-          "code": "KILOVOLT",
-        "convert": {
-          "mul": "1000"
-        },
-        "symbol": "kV"
-      }
-    ]
+      "symbol": "TW"
+    }
+  ]
 }
 JSON;
 
-        $measureFamilies['intensity'] = <<<JSON
+        $measureFamilies['Voltage'] = <<<JSON
 {
-    "_links": {
-        "self": {
-            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/intensity"
-      }
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Voltage"
+    }
+  },
+  "code": "Voltage",
+  "standard": "VOLT",
+  "units": [
+    {
+      "code": "MILLIVOLT",
+      "convert": {
+        "mul": "0.001"
+      },
+      "symbol": "mV"
     },
-    "code": "intensity",
-    "standard": "AMPERE",
-    "units": [
-      {
-          "code": "MILLIAMPERE",
-        "convert": {
-          "mul": "0.001"
-        },
-        "symbol": "mA"
+    {
+      "code": "CENTIVOLT",
+      "convert": {
+        "mul": "0.01"
       },
-      {
-          "code": "CENTIAMPERE",
-        "convert": {
-          "mul": "0.01"
-        },
-        "symbol": "cA"
+      "symbol": "cV"
+    },
+    {
+      "code": "DECIVOLT",
+      "convert": {
+        "mul": "0.1"
       },
-      {
-          "code": "DECIAMPERE",
-        "convert": {
-          "mul": "0.1"
-        },
-        "symbol": "dA"
+      "symbol": "dV"
+    },
+    {
+      "code": "VOLT",
+      "convert": {
+        "mul": "1"
       },
-      {
-          "code": "AMPERE",
-        "convert": {
-          "mul": "1"
-        },
-        "symbol": "A"
+      "symbol": "V"
+    },
+    {
+      "code": "DEKAVOLT",
+      "convert": {
+        "mul": "10"
       },
-      {
-          "code": "DEKAMPERE",
-        "convert": {
-          "mul": "10"
-        },
-        "symbol": "daA"
+      "symbol": "daV"
+    },
+    {
+      "code": "HECTOVOLT",
+      "convert": {
+        "mul": "100"
       },
-      {
-          "code": "HECTOAMPERE",
-        "convert": {
-          "mul": "100"
-        },
-        "symbol": "hA"
+      "symbol": "hV"
+    },
+    {
+      "code": "KILOVOLT",
+      "convert": {
+        "mul": "1000"
       },
-      {
-          "code": "KILOAMPERE",
-        "convert": {
-          "mul": "1000"
-        },
-        "symbol": "kA"
-      }
-    ]
+      "symbol": "kV"
+    }
+  ]
 }
 JSON;
 
-        $measureFamilies['resistance'] = <<<JSON
+        $measureFamilies['Intensity'] = <<<JSON
 {
-    "_links": {
-        "self": {
-            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/resistance"
-      }
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Intensity"
+    }
+  },
+  "code": "Intensity",
+  "standard": "AMPERE",
+  "units": [
+    {
+      "code": "MILLIAMPERE",
+      "convert": {
+        "mul": "0.001"
+      },
+      "symbol": "mA"
     },
-    "code": "resistance",
-    "standard": "OHM",
-    "units": [
-      {
-          "code": "MILLIOHM",
-        "convert": {
-          "mul": "0.001"
-        },
-        "symbol": "m\u03a9"
+    {
+      "code": "CENTIAMPERE",
+      "convert": {
+        "mul": "0.01"
       },
-      {
-          "code": "CENTIOHM",
-        "convert": {
-          "mul": "0.01"
-        },
-        "symbol": "c\u03a9"
+      "symbol": "cA"
+    },
+    {
+      "code": "DECIAMPERE",
+      "convert": {
+        "mul": "0.1"
       },
-      {
-          "code": "DECIOHM",
-        "convert": {
-          "mul": "0.1"
-        },
-        "symbol": "d\u03a9"
+      "symbol": "dA"
+    },
+    {
+      "code": "AMPERE",
+      "convert": {
+        "mul": "1"
       },
-      {
-          "code": "OHM",
-        "convert": {
-          "mul": "1"
-        },
-        "symbol": "\u03a9"
+      "symbol": "A"
+    },
+    {
+      "code": "DEKAMPERE",
+      "convert": {
+        "mul": "10"
       },
-      {
-          "code": "DEKAOHM",
-        "convert": {
-          "mul": "10"
-        },
-        "symbol": "da\u03a9"
+      "symbol": "daA"
+    },
+    {
+      "code": "HECTOAMPERE",
+      "convert": {
+        "mul": "100"
       },
-      {
-          "code": "HECTOHM",
-        "convert": {
-          "mul": "100"
-        },
-        "symbol": "h\u03a9"
+      "symbol": "hA"
+    },
+    {
+      "code": "KILOAMPERE",
+      "convert": {
+        "mul": "1000"
       },
-      {
-          "code": "KILOHM",
-        "convert": {
-          "mul": "1000"
-        },
-        "symbol": "k\u03a9"
-      },
-      {
-          "code": "MEGOHM",
-        "convert": {
-          "mul": "1000000"
-        },
-        "symbol": "M\u03a9"
-      }
-    ]
+      "symbol": "kA"
+    }
+  ]
 }
 JSON;
 
-        $measureFamilies['speed'] = <<<JSON
+        $measureFamilies['Resistance'] = <<<JSON
 {
-    "_links": {
-        "self": {
-            "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/speed"
-      }
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Resistance"
+    }
+  },
+  "code": "Resistance",
+  "standard": "OHM",
+  "units": [
+    {
+      "code": "MILLIOHM",
+      "convert": {
+        "mul": "0.001"
+      },
+      "symbol": "m\u03a9"
     },
-    "code": "speed",
-    "standard": "METER_PER_SECOND",
-    "units": [
-      {
-          "code": "METER_PER_SECOND",
-        "convert": {
-          "mul": "1"
-        },
-        "symbol": "mdivs"
+    {
+      "code": "CENTIOHM",
+      "convert": {
+        "mul": "0.01"
       },
-      {
-          "code": "METER_PER_MINUTE",
-        "convert": {
-          "div": "60"
-        },
-        "symbol": "mdivm"
+      "symbol": "c\u03a9"
+    },
+    {
+      "code": "DECIOHM",
+      "convert": {
+        "mul": "0.1"
       },
-      {
-          "code": "METER_PER_HOUR",
-        "convert": {
-          "mul": "1",
-          "div": "3600"
-        },
-        "symbol": "mdivh"
+      "symbol": "d\u03a9"
+    },
+    {
+      "code": "OHM",
+      "convert": {
+        "mul": "1"
       },
-      {
-          "code": "KILOMETER_PER_HOUR",
-        "convert": {
-          "mul": "1000",
-          "div": "3600"
-        },
-        "symbol": "kmdivh"
+      "symbol": "\u03a9"
+    },
+    {
+      "code": "DEKAOHM",
+      "convert": {
+        "mul": "10"
       },
-      {
-          "code": "FOOT_PER_SECOND",
-        "convert": {
-          "mul": "0.3048"
-        },
-        "symbol": "ftdivs"
+      "symbol": "da\u03a9"
+    },
+    {
+      "code": "HECTOHM",
+      "convert": {
+        "mul": "100"
       },
-      {
-          "code": "FOOT_PER_HOUR",
-        "convert": {
-          "mul": "0.3048",
-          "div": "3600"
-        },
-        "symbol": "ftdivh"
+      "symbol": "h\u03a9"
+    },
+    {
+      "code": "KILOHM",
+      "convert": {
+        "mul": "1000"
       },
-      {
-          "code": "YARD_PER_HOUR",
-        "convert": {
-          "mul": "0.9144",
-          "div": "3600"
-        },
-        "symbol": "yddivh"
+      "symbol": "k\u03a9"
+    },
+    {
+      "code": "MEGOHM",
+      "convert": {
+        "mul": "1000000"
       },
-      {
-          "code": "MILE_PER_HOUR",
-        "convert": {
-          "mul": "1609.344",
-          "div": "3600"
-        },
-        "symbol": "midivh"
-      }
-    ]
+      "symbol": "M\u03a9"
+    }
+  ]
+}
+JSON;
+
+        $measureFamilies['Speed'] = <<<JSON
+{
+  "_links": {
+    "self": {
+      "href": "http:\/\/localhost\/api\/rest\/v1\/measure-families\/Speed"
+    }
+  },
+  "code": "Speed",
+  "standard": "METER_PER_SECOND",
+  "units": [
+    {
+      "code": "METER_PER_SECOND",
+      "convert": {
+        "mul": "1"
+      },
+      "symbol": "mdivs"
+    },
+    {
+      "code": "METER_PER_MINUTE",
+      "convert": {
+        "div": "60"
+      },
+      "symbol": "mdivm"
+    },
+    {
+      "code": "METER_PER_HOUR",
+      "convert": {
+        "mul": "1",
+        "div": "3600"
+      },
+      "symbol": "mdivh"
+    },
+    {
+      "code": "KILOMETER_PER_HOUR",
+      "convert": {
+        "mul": "1000",
+        "div": "3600"
+      },
+      "symbol": "kmdivh"
+    },
+    {
+      "code": "FOOT_PER_SECOND",
+      "convert": {
+        "mul": "0.3048"
+      },
+      "symbol": "ftdivs"
+    },
+    {
+      "code": "FOOT_PER_HOUR",
+      "convert": {
+        "mul": "0.3048",
+        "div": "3600"
+      },
+      "symbol": "ftdivh"
+    },
+    {
+      "code": "YARD_PER_HOUR",
+      "convert": {
+        "mul": "0.9144",
+        "div": "3600"
+      },
+      "symbol": "yddivh"
+    },
+    {
+      "code": "MILE_PER_HOUR",
+      "convert": {
+        "mul": "1609.344",
+        "div": "3600"
+      },
+      "symbol": "midivh"
+    }
+  ]
 }
 JSON;
 

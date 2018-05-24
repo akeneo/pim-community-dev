@@ -79,7 +79,7 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
     private function getVariantProducts(): CursorInterface
     {
         $pqb = $this->getContainer()
-            ->get('pim_enrich.query.product_and_product_model_query_builder_factory')
+            ->get('pim_catalog.query.product_and_product_model_query_builder_factory')
             ->create();
 
         $pqb->addFilter('parent', Operators::IS_NOT_EMPTY, null);

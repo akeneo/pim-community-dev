@@ -22,6 +22,14 @@ interface CompletenessGeneratorInterface
     public function generateMissingForProduct(ProductInterface $product);
 
     /**
+     * Generate completeness for products given a channel and filters
+     *
+     * @param ChannelInterface $channel
+     * @param array $filters
+     */
+    public function generateMissingForProducts(ChannelInterface $channel, array $filters);
+
+    /**
      * Generate completeness for a channel
      *
      * @param ChannelInterface $channel

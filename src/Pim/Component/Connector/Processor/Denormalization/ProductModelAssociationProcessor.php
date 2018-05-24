@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
@@ -162,13 +162,13 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
     }
 
     /**
-     * @param AssociationAwareInterface $product
+     * @param EntityWithAssociationsInterface $product
      *
      * @throws \InvalidArgumentException
      *
      * @return ConstraintViolationListInterface|null
      */
-    protected function validateAssociations(AssociationAwareInterface $product): ?ConstraintViolationListInterface
+    protected function validateAssociations(EntityWithAssociationsInterface $product): ?ConstraintViolationListInterface
     {
         $associations = $product->getAssociations();
         foreach ($associations as $association) {
@@ -186,9 +186,9 @@ class ProductModelAssociationProcessor extends AbstractProcessor implements
      * want ensure that an updated and invalid product will not be used in the association processor.
      * Also we don't want to keep skipped product models in memory
      *
-     * @param AssociationAwareInterface $productModel
+     * @param EntityWithAssociationsInterface $productModel
      */
-    protected function detach(AssociationAwareInterface $productModel): void
+    protected function detach(EntityWithAssociationsInterface $productModel): void
     {
         $this->detacher->detach($productModel);
     }

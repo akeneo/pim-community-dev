@@ -1,3 +1,9 @@
+# 2.2.x
+
+## Bug fixes
+
+- PIM-7363: fix the pim:catalog:remove-wrong-boolean-values-on-variant-products command
+
 # 2.2.5 (2018-05-16)
 
 ## Bug fixes

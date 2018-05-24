@@ -74,7 +74,7 @@ define(
 
                 this.datagrids = {
                     products: {
-                        name: 'association-product-grid',
+                        name: this.config.datagridName,
                         getInitialParams: function (associationType) {
                             let params = {
                                 product: this.getFormData().meta.id
@@ -104,9 +104,9 @@ define(
                         },
                         paramName: 'associatedIds',
                         getParamValue: function (associationType) {
-                            const associations = this.getFormData().meta.associations;
+                            const associationsMeta = this.getFormData().meta.associations;
 
-                            return associations[associationType] ? associations[associationType].groupIds : [];
+                            return associationsMeta[associationType] ? associationsMeta[associationType].groupIds : [];
                         }.bind(this),
                         getModelIdentifier: function (model) {
                             return model.get('code');
@@ -122,7 +122,7 @@ define(
              */
             configure: function () {
                 this.trigger('tab:register', {
-                    code: this.code,
+                    code: (undefined === this.config.tabCode) ? this.code : this.config.tabCode,
                     isVisible: this.isVisible.bind(this),
                     label: __('pim_enrich.form.product.tab.associations.title')
                 });
@@ -154,7 +154,9 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
+                const code = (undefined === this.config.tabCode) ? this.code : this.config.tabCode;
+
+                if (!this.configured || code !== this.getParent().getCurrentTab()) {
                     return;
                 }
 
@@ -182,7 +184,8 @@ define(
                                 {code: this.getCurrentAssociationType()}
                             ),
                             addAssociationsLabel: __('pim_enrich.form.product.tab.associations.add_associations'),
-                            addAssociationVisible: this.isAddAssociationsVisible()
+                            addAssociationVisible: this.isAddAssociationsVisible(),
+                            datagridName: this.config.datagridName
                         })
                     );
                     this.renderPanes();
@@ -287,8 +290,10 @@ define(
                     const association = associations[assocType.code];
 
                     assocType.productCount = association && association.products ? association.products.length : 0;
+
                     assocType.productModelCount = association && association.product_models ?
                         association.product_models.length : 0;
+
                     assocType.groupCount = association && association.groups ? association.groups.length : 0;
                 });
             },
@@ -614,7 +619,7 @@ define(
              * Opens the panel to select new products to associate
              */
             addAssociations: function () {
-                this.manageProducts().then((productAndProductModelIdentifiers) => {
+                this.launchProductPicker().then((productAndProductModelIdentifiers) => {
                     let productIds = [];
                     let productModelIds = [];
                     productAndProductModelIdentifiers.forEach((item) => {
@@ -652,7 +657,7 @@ define(
              *
              * @return {Promise}
              */
-            manageProducts: function () {
+            launchProductPicker: function () {
                 const deferred = $.Deferred();
 
                 FormBuilder.build('pim-associations-product-picker-form').then((form) => {

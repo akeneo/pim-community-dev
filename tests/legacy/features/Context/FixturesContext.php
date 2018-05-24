@@ -35,6 +35,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelAssociation;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -2084,8 +2085,36 @@ class FixturesContext extends BaseFixturesContext
 
             $association->addProduct($this->getProduct($row['products']));
         }
+        $missingAssociationAdder = $this->getContainer()->get('pim_catalog.association.missing_association_adder');
+        $missingAssociationAdder->addMissingAssociations($owner);
 
         $this->getProductSaver()->save($owner);
+    }
+
+    /**
+     * @Given /^the following associations for the (product model "([^"]+)"):$/
+     */
+    public function theFollowingAssociationsForTheProductModel(ProductModelInterface $owner, $code, TableNode $values)
+    {
+        $rows = $values->getHash();
+
+        foreach ($rows as $row) {
+            $association = $owner->getAssociationForTypeCode($row['type']);
+
+            if (null === $association) {
+                $associationType = $this->getContainer()
+                    ->get('pim_catalog.repository.association_type')
+                    ->findOneBy(['code' => $row['type']]);
+
+                $association = new ProductModelAssociation();
+                $association->setAssociationType($associationType);
+                $owner->addAssociation($association);
+            }
+
+            $association->addProduct($this->getProduct($row['products']));
+        }
+
+        $this->getProductModelSaver()->save($owner);
     }
 
     /**
@@ -2456,6 +2485,14 @@ class FixturesContext extends BaseFixturesContext
     protected function getProductSaver()
     {
         return $this->getContainer()->get('pim_catalog.saver.product');
+    }
+
+    /**
+     * @return SaverInterface
+     */
+    protected function getProductModelSaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.product_model');
     }
 
     /**

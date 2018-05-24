@@ -113,6 +113,7 @@ JSON;
                 ],
                 'created'       => '2016-06-14T13:12:50+02:00',
                 'updated'       => '2016-06-14T13:12:50+02:00',
+                'associations' => [],
             ],
             'sweat' => [
                 'code'           => 'sweat',
@@ -146,6 +147,7 @@ JSON;
                 ],
                 'created' => '2016-06-14T13:12:50+02:00',
                 'updated' => '2016-06-14T13:12:50+02:00',
+                'associations' => [],
             ],
             'sub_sweat_option_b' => [
                 'code'           => 'sub_sweat_option_b',
@@ -186,6 +188,7 @@ JSON;
                 ],
                 'created' => '2016-06-14T13:12:50+02:00',
                 'updated' => '2016-06-14T13:12:50+02:00',
+                'associations' => [],
             ],
             'root_product_model' => [
                 'code'           => 'root_product_model',
@@ -203,6 +206,7 @@ JSON;
                 ],
                 'created' => '2016-06-14T13:12:50+02:00',
                 'updated' => '2016-06-14T13:12:50+02:00',
+                'associations' => [],
             ],
         ];
 

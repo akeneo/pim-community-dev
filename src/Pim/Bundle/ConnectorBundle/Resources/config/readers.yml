@@ -247,6 +247,12 @@ services:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.product_association'
 
+    pim_connector.reader.file.xlsx_product_model_association:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.product_model_association'
+
     pim_connector.reader.file.xlsx_group:
         class: '%pim_connector.reader.file.xlsx.class%'
         arguments:

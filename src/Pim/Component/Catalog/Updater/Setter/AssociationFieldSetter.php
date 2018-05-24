@@ -7,8 +7,8 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
@@ -85,8 +85,8 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /**
      * Clear only concerned associations (remove groups and products from existing associations)
      *
-     * @param AssociationAwareInterface $entity
-     * @param array                     $data
+     * @param EntityWithAssociationsInterface $entity
+     * @param array                           $data
      *
      * Expected data input format:
      * {
@@ -102,7 +102,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *     },
      * }
      */
-    protected function clearAssociations(AssociationAwareInterface $entity, array $data = null)
+    protected function clearAssociations(EntityWithAssociationsInterface $entity, array $data = null)
     {
         if (null === $data) {
             return;
@@ -137,9 +137,9 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /**
      * Add missing associations (if association type has been added after the last processing)
      *
-     * @param AssociationAwareInterface $entity
+     * @param EntityWithAssociationsInterface $entity
      */
-    protected function addMissingAssociations(AssociationAwareInterface $entity)
+    protected function addMissingAssociations(EntityWithAssociationsInterface $entity)
     {
         $this->productBuilder->addMissingAssociations($entity);
     }
@@ -147,11 +147,11 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /**
      * Set products and groups to associations
      *
-     * @param AssociationAwareInterface $entity
+     * @param EntityWithAssociationsInterface $entity
      *
      * @throws InvalidPropertyException
      */
-    protected function setProductsAndGroupsToAssociations(AssociationAwareInterface $entity, $data)
+    protected function setProductsAndGroupsToAssociations(EntityWithAssociationsInterface $entity, $data)
     {
         foreach ($data as $typeCode => $items) {
             $typeCode = (string) $typeCode;

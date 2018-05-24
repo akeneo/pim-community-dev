@@ -1,6 +1,7 @@
 parameters:
     pim_datagrid.datasource.default.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
     pim_datagrid.datasource.product.class: Pim\Bundle\DataGridBundle\Datasource\ProductDatasource
+    pim_datagrid.datasource.associated_product_model.class: Pim\Bundle\DataGridBundle\Datasource\AssociatedProductModelDatasource
     pim_datagrid.datasource.associated_product.class: Pim\Bundle\DataGridBundle\Datasource\AssociatedProductDatasource
     pim_datagrid.datasource.family.class: Pim\Bundle\DataGridBundle\Datasource\FamilyDatasource
     pim_datagrid.datasource.repository.class: Pim\Bundle\DataGridBundle\Datasource\RepositoryDatasource
@@ -144,6 +145,16 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_associated_product }
 
+    pim_datagrid.datasource.associated_product_model:
+            class: '%pim_datagrid.datasource.associated_product_model.class%'
+            arguments:
+                - '@pim_catalog.object_manager.product'
+                - '@pim_enrich.query.product_and_product_model_query_builder_from_size_factory'
+                - '@pim_serializer'
+                - '@pim_datagrid.event_subscriber.filter_entity_with_values_subscriber'
+            tags:
+                - { name: oro_datagrid.datasource, type: pim_datasource_associated_product_model }
+
     pim_datagrid.datasource.group_product:
         class: '%pim_datagrid.datasource.product.class%'
         arguments:
@@ -170,4 +181,5 @@ services:
         calls:
             - [addProductDatasource, ['pim_datasource_product']]
             - [addProductDatasource, ['pim_datasource_associated_product']]
+            - [addProductDatasource, ['pim_datasource_associated_product_model']]
             - [addProductDatasource, ['pim_datasource_group_product']]

@@ -116,24 +116,4 @@ abstract class AbstractAttributeFilter implements AttributeFilterInterface
 
         return 'values.' . $attribute->getCode() . '-' . $attribute->getBackendType() . '.' . $channel . '.' . $locale;
     }
-
-    /**
-     * Escapes particular values prior than doing a search query escaping whitespace or newlines.
-     *
-     * This is useful when using ES 'query_string' clauses in a search query.
-     *
-     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_reserved_characters
-     *
-     * TODO: TIP-706 - This may move somewhere else
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    protected function escapeValue($value)
-    {
-        $regex = '#[-+=|! &(){}\[\]^"~*<>?:/\\\]#';
-
-        return preg_replace($regex, '\\\$0', $value);
-    }
 }
