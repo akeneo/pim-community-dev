@@ -27,7 +27,6 @@ stage("Build") {
                 choice(choices: 'yes\nno', description: 'Run back integration tests', name: 'launchBackIntegrationTests'),
                 choice(choices: 'yes\nno', description: 'Run front acceptance tests', name: 'launchFrontAcceptanceTests'),
                 choice(choices: 'yes\nno', description: 'Run back acceptance tests', name: 'launchBackAcceptanceTests'),
-                choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
                 choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchEndToEndTests'),
                 string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end scenarios to run', name: 'legacyFeatures'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
