@@ -2,22 +2,27 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
+use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\ProductModel\ImageAsLabel;
-use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
+use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
@@ -43,7 +48,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ImageAsLabel $imageAsLabel,
         AscendantCategoriesInterface $ascendantCategories,
         NormalizerInterface $incompleteValuesNormalizer,
-        UserContext $userContext
+        UserContext $userContext,
+        MissingAssociationAdder $missingAssociationAdder,
+        NormalizerInterface $parentAssociationsNormalizer
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -61,7 +68,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $imageAsLabel,
             $ascendantCategories,
             $incompleteValuesNormalizer,
-            $userContext
+            $userContext,
+            $missingAssociationAdder,
+            $parentAssociationsNormalizer
         );
     }
 
@@ -91,7 +100,11 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         ValueInterface $picture,
-        CompleteVariantProducts $completeVariantProducts
+        CompleteVariantProducts $completeVariantProducts,
+        AssociationInterface $association,
+        AssociationTypeInterface $associationType,
+        GroupInterface $group,
+        ArrayCollection $groups
     ) {
         $options = [
             'decimal_separator' => ',',
@@ -195,6 +208,14 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $productModel->getVariationLevel()->willReturn(0);
 
+        $productModel->getAssociations()->willReturn([$association]);
+        $association->getAssociationType()->willReturn($associationType);
+        $associationType->getCode()->willReturn('group');
+        $association->getGroups()->willReturn($groups);
+        $groups->toArray()->willReturn([$group]);
+        $group->getId()->willReturn(12);
+        $association->getGroups()->willReturn($groups);
+
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
                 'code'           => 'tshirt_blue',
@@ -202,6 +223,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'family'         => 'tshirts',
                 'categories'     => ['summer'],
                 'values'         => $valuesConverted,
+                'parent_associations' => null,
                 'meta'           => [
                     'variant_product_completenesses' => [
                         'completenesses' => [],
@@ -223,6 +245,11 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'label'          => [
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',
+                    ],
+                    'associations' => [
+                        'group' => [
+                            'groupIds' => [12]
+                        ]
                     ],
                 ],
             ]
@@ -339,6 +366,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ->willReturn(['kind of completenesses data normalized here']);
 
         $productModel->getVariationLevel()->willReturn(0);
+        $productModel->getAssociations()->willReturn([]);
 
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
@@ -347,6 +375,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'family'         => 'tshirts',
                 'categories'     => ['summer'],
                 'values'         => $valuesConverted,
+                'parent_associations' => null,
                 'meta'           => [
                     'variant_product_completenesses' => [
                         'completenesses' => [],
@@ -369,6 +398,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',
                     ],
+                    'associations' => [],
                 ]
             ]
         );
@@ -497,6 +527,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ->willReturn(['kind of completenesses data normalized here']);
 
         $productModel->getVariationLevel()->willReturn(0);
+        $productModel->getAssociations()->willReturn([]);
 
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
@@ -505,6 +536,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'family'         => 'tshirts',
                 'categories'     => ['summer'],
                 'values'         => $valuesConverted,
+                'parent_associations' => null,
                 'meta'           => [
                     'variant_product_completenesses' => [
                         'completenesses' => [],
@@ -527,6 +559,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',
                     ],
+                    'associations' => [],
                 ]
             ]
         );

@@ -93,6 +93,7 @@ JSON;
     "parent":null,
     "categories":[],
     "values":{},
+    "associations":{},
     "created":"2017-10-04T18:04:10+02:00",
     "updated":"2017-10-04T18:04:10+02:00"
 }

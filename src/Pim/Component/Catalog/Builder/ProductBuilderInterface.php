@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Builder;
 
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -29,11 +29,11 @@ interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
     /**
      * Add empty associations for each association types when they don't exist yet
      *
-     * @param AssociationAwareInterface $entity
+     * @param EntityWithAssociationsInterface $entity
      *
      * @return EntityWithValuesBuilderInterface
      *
      * @deprecated since 2.3 in favor of \Pim\Component\Catalog\Association\MissingAssociationAdder
      */
-    public function addMissingAssociations(AssociationAwareInterface $entity);
+    public function addMissingAssociations(EntityWithAssociationsInterface $entity);
 }

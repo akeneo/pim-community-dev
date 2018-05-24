@@ -14,5 +14,6 @@ services:
             -
                 - 'product-grid'
                 - 'association-product-grid'
+                - 'association-product-model-grid'
                 - 'product-group-grid'
                 - 'association-product-picker-grid'

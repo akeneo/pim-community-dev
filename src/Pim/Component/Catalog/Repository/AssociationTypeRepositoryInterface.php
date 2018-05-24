@@ -4,8 +4,8 @@ namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 
 /**
  * Association repository interface
@@ -19,11 +19,11 @@ interface AssociationTypeRepositoryInterface extends IdentifiableObjectRepositor
     /**
      * Build all association entities not yet linked to a product
      *
-     * @param AssociationAwareInterface $entity
+     * @param EntityWithAssociationsInterface $entity
      *
      * @return AssociationTypeInterface[]
      */
-    public function findMissingAssociationTypes(AssociationAwareInterface $entity);
+    public function findMissingAssociationTypes(EntityWithAssociationsInterface $entity);
 
     /**
      * Return the number of association types

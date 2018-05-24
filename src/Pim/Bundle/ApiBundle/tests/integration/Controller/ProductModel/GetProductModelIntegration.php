@@ -73,7 +73,8 @@ class GetProductModelIntegration extends ApiTestCase
                 ]
             ],
             'created' => '2017-10-02T15:03:55+02:00',
-            'updated' => '2017-10-02T15:03:55+02:00'
+            'updated' => '2017-10-02T15:03:55+02:00',
+            'associations' => [],
         ];
         $client = $this->createAuthenticatedClient();
 

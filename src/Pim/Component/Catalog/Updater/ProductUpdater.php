@@ -10,6 +10,7 @@ use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Association\ParentAssociationsFilter;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -33,15 +34,20 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var array */
     protected $ignoredFields = [];
 
+    /** @var ParentAssociationsFilter */
+    private $parentAssociationsFilter;
+
     /**
-     * @param PropertySetterInterface         $propertySetter
-     * @param ObjectUpdaterInterface          $valuesUpdater
-     * @param array                           $supportedFields
-     * @param array                           $ignoredFields
+     * @param PropertySetterInterface  $propertySetter
+     * @param ObjectUpdaterInterface   $valuesUpdater
+     * @param ParentAssociationsFilter $parentAssociationsFilter
+     * @param array                    $supportedFields
+     * @param array                    $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
+        ParentAssociationsFilter $parentAssociationsFilter,
         array $supportedFields,
         array $ignoredFields
     ) {
@@ -49,6 +55,7 @@ class ProductUpdater implements ObjectUpdaterInterface
         $this->valuesUpdater = $valuesUpdater;
         $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
+        $this->parentAssociationsFilter = $parentAssociationsFilter;
     }
 
     /**
@@ -117,6 +124,12 @@ class ProductUpdater implements ObjectUpdaterInterface
      *              "groups": ["akeneo_tshirt", "oro_tshirt"],
      *              "product": ["AKN_TS", "ORO_TSH"]
      *          }
+     *      },
+     *      "parent_associations": {
+     *          "XSELL": {
+     *              "groups": ["foo_group", "bar_group"],
+     *              "product": ["foo_product", "bar_product"]
+     *          }
      *      }
      * }
      */
@@ -130,10 +143,29 @@ class ProductUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $code => $value) {
-            $this->setData($product, $code, $value, $options);
+            $filteredValue = $this->filterData($code, $value, $data);
+            $this->setData($product, $code, $filteredValue, $options);
         }
 
         return $this;
+    }
+
+    /**
+     * @param                  $field
+     * @param                  $data
+     * @param array            $context
+     * @return array
+     */
+    protected function filterData($field, $data, array $context = [])
+    {
+        switch ($field) {
+            case 'associations':
+                $this->validateAssociationsDataType($data);
+                $data = $this->filterParentAssociations($data, $context['parent_associations']);
+                break;
+        }
+
+        return $data;
     }
 
     /**
@@ -157,7 +189,6 @@ class ProductUpdater implements ObjectUpdaterInterface
                 $this->updateProductFields($product, $field, $data);
                 break;
             case 'associations':
-                $this->validateAssociationsDataType($data);
                 $this->updateProductFields($product, $field, $data);
                 break;
             case 'values':
@@ -203,6 +234,28 @@ class ProductUpdater implements ObjectUpdaterInterface
                 $this->validateScalarArray('associations', $value);
             }
         }
+    }
+
+    /**
+     * Validate association data
+     *
+     * @param array $associations
+     * @param array $parentAssociations
+     *
+     * @return array
+     */
+    protected function filterParentAssociations(array $associations, ?array $parentAssociations): array
+    {
+        if (null === $parentAssociations) {
+            return $associations;
+        }
+
+        $associations = $this->parentAssociationsFilter->filterParentAssociations(
+            $associations,
+            $parentAssociations
+        );
+
+        return $associations;
     }
 
     /**

@@ -559,7 +559,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function addAssociation(AssociationInterface $association): AssociationAwareInterface
+    public function addAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
         if (!$this->associations->contains($association)) {
             $associationType = $association->getAssociationType();
@@ -582,7 +582,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function removeAssociation(AssociationInterface $association): AssociationAwareInterface
+    public function removeAssociation(AssociationInterface $association): EntityWithAssociationsInterface
     {
         $this->associations->removeElement($association);
 
@@ -622,7 +622,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(Collection $associations): AssociationAwareInterface
+    public function setAssociations(Collection $associations): EntityWithAssociationsInterface
     {
         $this->associations = $associations;
 
@@ -707,5 +707,67 @@ class ProductModel implements ProductModelInterface
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllAssociations()
+    {
+        $associations = new ArrayCollection($this->associations->toArray());
+        $allAssociations = $this->getAncestryAssociations($this, $associations);
+
+        return $allAssociations;
+    }
+
+    /**
+     * @param ProductModelInterface $entity
+     * @param Collection            $associationsCollection
+     *
+     * @return Collection
+     */
+    private function getAncestryAssociations(
+        ProductModelInterface $entity,
+        Collection $associationsCollection
+    ): Collection {
+        $parent = $entity->getParent();
+
+        if (null === $parent) {
+            return $associationsCollection;
+        }
+
+        foreach ($parent->getAllAssociations() as $association) {
+            $associationsCollection = $this->mergeAssociation($association, $associationsCollection);
+        }
+
+        return $associationsCollection;
+    }
+
+    private function mergeAssociation(
+        AssociationInterface $association,
+        Collection $associationsCollection
+    ): Collection {
+        $foundInCollection = null;
+        foreach ($associationsCollection as $associationInCollection) {
+            if ($associationInCollection->getAssociationType()->getCode() === $association->getAssociationType()->getCode()) {
+                $foundInCollection = $associationInCollection;
+            }
+        }
+
+        if (null !== $foundInCollection) {
+            foreach ($association->getProducts() as $product) {
+                $foundInCollection->addProduct($product);
+            }
+            foreach ($association->getProductModels() as $productModel) {
+                $foundInCollection->addProductModel($productModel);
+            }
+            foreach ($association->getGroups() as $group) {
+                $foundInCollection->addGroup($group);
+            }
+        } else {
+            $associationsCollection->add($association);
+        }
+
+        return $associationsCollection;
     }
 }

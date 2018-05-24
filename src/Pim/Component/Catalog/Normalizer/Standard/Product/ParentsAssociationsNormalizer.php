@@ -2,40 +2,47 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
+use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Normalize associations into an array
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationsNormalizer implements NormalizerInterface
+class ParentsAssociationsNormalizer implements NormalizerInterface
 {
     /**
      * {@inheritdoc}
-     *
-     * @param EntityWithAssociationsInterface $associationAwareEntity
      */
     public function normalize($associationAwareEntity, $format = null, array $context = [])
     {
+        $parentAssociations = $this->getParentAssociations($associationAwareEntity);
         $data = [];
 
-        foreach ($associationAwareEntity->getAllAssociations() as $association) {
+        foreach ($parentAssociations as $association) {
             $code = $association->getAssociationType()->getCode();
-            $data[$code]['groups'] = [];
+            if (!isset($data[$code]['groups'])) {
+                $data[$code]['groups'] = [];
+            }
             foreach ($association->getGroups() as $group) {
                 $data[$code]['groups'][] = $group->getCode();
             }
 
-            $data[$code]['products'] = [];
+            if (!isset($data[$code]['products'])) {
+                $data[$code]['products'] = [];
+            }
             foreach ($association->getProducts() as $product) {
                 $data[$code]['products'][] = $product->getReference();
             }
 
-            $data[$code]['product_models'] = [];
+            if (!isset($data[$code]['product_models'])) {
+                $data[$code]['product_models'] = [];
+            }
             foreach ($association->getProductModels() as $productModel) {
                 $data[$code]['product_models'][] = $productModel->getCode();
             }
@@ -52,5 +59,26 @@ class AssociationsNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof EntityWithAssociationsInterface && 'standard' === $format;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $product
+     *
+     * @return AssociationInterface[]
+     */
+    private function getParentAssociations(EntityWithFamilyVariantInterface $product): array
+    {
+        $parent = $product->getParent();
+        $parentAssociations = [];
+
+        if (null === $parent) {
+            return $parentAssociations;
+        }
+
+        foreach ($parent->getAllAssociations() as $association) {
+            $parentAssociations[] = $association;
+        }
+
+        return $parentAssociations;
     }
 }

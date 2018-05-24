@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -19,7 +20,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AssociatedProductDatasource extends ProductDatasource
+class AssociatedProductModelDatasource extends ProductDatasource
 {
     /** @var string */
     protected $sortOrder;
@@ -52,8 +53,8 @@ class AssociatedProductDatasource extends ProductDatasource
     public function getResults()
     {
         $sourceProduct = $this->getConfiguration('current_product', false);
-        if (!$sourceProduct instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected($sourceProduct, ProductInterface::class);
+        if (!$sourceProduct instanceof ProductModelInterface) {
+            throw InvalidObjectException::objectExpected($sourceProduct, ProductModelInterface::class);
         }
 
         $association = $this->getAssociation($sourceProduct, $this->getConfiguration('association_type_id'));
@@ -251,11 +252,11 @@ class AssociatedProductDatasource extends ProductDatasource
     }
 
     /**
-     * @param ProductInterface           $sourceProduct
-     * @param mixed                      $associationTypeId
+     * @param EntityWithAssociationsInterface $sourceProduct
+     * @param mixed                           $associationTypeId
      * @return null|AssociationInterface
      */
-    private function getAssociation(ProductInterface $sourceProduct, $associationTypeId): ?AssociationInterface
+    private function getAssociation(EntityWithAssociationsInterface $sourceProduct, $associationTypeId): ?AssociationInterface
     {
         foreach ($sourceProduct->getAllAssociations() as $association) {
             if ($association->getAssociationType()->getId() === (int)$associationTypeId) {
