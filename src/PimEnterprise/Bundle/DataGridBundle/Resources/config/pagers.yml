@@ -7,6 +7,7 @@ services:
             -
                 - 'product-grid'
                 - 'association-product-grid'
+                - 'association-product-model-grid'
                 - 'product-group-grid'
                 - 'published-product-grid'
                 - 'association-product-picker-grid'
