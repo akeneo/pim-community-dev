@@ -4,3 +4,7 @@ akeneo_enriched_entities_enriched_entities_index:
 akeneo_enriched_entities_enriched_entities_index_rest:
     path: '/rest/enriched_entity'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.index:indexAction }
+
+akeneo_enriched_entities_enriched_entities_get_rest:
+    path: '/rest/enriched_entity/{identifier}'
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.get:getAction }

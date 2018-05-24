@@ -14,6 +14,12 @@ services:
             - '@akeneo_enrichedentity.application.enriched_entity.show.enriched_entity_handler'
             - '@akeneo_enrichedentity.infrastructure.normalizer.enriched_entity'
 
+    akeneo_enrichedentity.infrastructure.action.enriched_entity.get:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity\GetAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.show.enriched_entity_handler'
+            - '@akeneo_enrichedentity.infrastructure.normalizer.enriched_entity'
+
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlEnrichedEntityRepository'
         arguments:
