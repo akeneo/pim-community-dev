@@ -371,10 +371,11 @@ class ProductModelController
      */
     public function listFamilyVariantProductModels(Request $request)
     {
+        $search = trim($request->query->get('search'));
         $options = $request->query->get('options');
         $familyVariant = $this->getFamilyVariant($options['family_variant']);
 
-        $productModels = $this->productModelRepository->findProductModelsForFamilyVariant($familyVariant);
+        $productModels = $this->productModelRepository->findProductModelsForFamilyVariant($familyVariant, $search);
         $normalizedProductModels = $this->buildNormalizedProductModels($productModels);
 
         return new JsonResponse($normalizedProductModels);
