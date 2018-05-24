@@ -18,12 +18,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Enriched entity controller
+ * Enriched entity index action
  *
  * @author Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntity
+class IndexAction
 {
     /** @var ShowEnrichedEntityHandler */
     private $showEnrichedEntityHandler;
@@ -44,15 +44,15 @@ class EnrichedEntity
     }
 
     /**
-     * Asset transformation action
+     * Get all enriched entities
      *
      * @return JsonResponse
      */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         $enrichedEntities = $this->showEnrichedEntityHandler->findAll();
         $normalizedEnrichedEntities = array_map(function ($enrichedEntity) {
-            return $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api', []);
+            return $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api');
         }, $enrichedEntities);
 
         return new JsonResponse([

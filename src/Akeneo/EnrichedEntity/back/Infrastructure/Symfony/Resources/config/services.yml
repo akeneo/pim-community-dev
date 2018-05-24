@@ -8,8 +8,8 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    akeneo_enrichedentity.infrastructure.controller.enriched_entity:
-        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity'
+    akeneo_enrichedentity.infrastructure.action.enriched_entity.index:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity\IndexAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.show.enriched_entity_handler'
             - '@akeneo_enrichedentity.infrastructure.normalizer.enriched_entity'
