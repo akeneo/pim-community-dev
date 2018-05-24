@@ -88,9 +88,6 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
-                                [
-                                    'terms' => ['attributes_of_family' => ['description']]
-                                ]
                             ],
                         ],
                     ],
@@ -143,9 +140,6 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
-                                [
-                                    'terms' => ['attributes_of_family' => ['color']]
-                                ]
                             ],
                         ],
                     ],
@@ -192,9 +186,6 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
-                                [
-                                    'terms' => ['attributes_of_family' => ['color']]
-                                ]
                             ],
                         ],
                     ],
@@ -231,9 +222,6 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
-                                [
-                                    'terms' => ['attributes_of_family' => ['color']]
-                                ]
                             ],
                         ],
                     ],
@@ -280,9 +268,6 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
-                                [
-                                    'terms' => ['attributes_of_family' => ['size']]
-                                ]
                             ],
                         ],
                     ],
@@ -330,9 +315,6 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
-                                [
-                                    'terms' => ['attributes_of_family' => ['size']]
-                                ]
                             ],
                         ],
                     ],
@@ -370,11 +352,11 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                 ]
                             ],
                             'filter' => [
-//                                [
-//                                    'terms' => [
-//                                        'attributes_for_this_level' => ['color'],
-//                                    ],
-//                                ],
+                                [
+                                    'terms' => [
+                                        'attributes_for_this_level' => ['color'],
+                                    ],
+                                ],
                                 [
                                     'bool' => [
                                         'must_not' => [
@@ -400,6 +382,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
         $this->assertDocument(
             $productsFound,
             [
+                'camera_nikon'
             ]
         );
     }
@@ -420,6 +403,9 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                             ],
                             'filter' => [
                                 [
+                                    'terms' => ['attributes_for_this_level' => ['brand']]
+                                ],
+                                [
                                     'bool' => [
                                         'must_not' => [
                                             'bool' => [
@@ -432,9 +418,6 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
-                                [
-                                    'terms' => ['attributes_of_family' => ['brand']]
-                                ]
                             ],
                         ],
                     ],
@@ -466,6 +449,9 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                     ],
                                 ],
                                 [
+                                    'terms' => ['attributes_for_this_level' => ['brand']]
+                                ],
+                                [
                                     'bool' => [
                                         'must_not' => [
                                             'bool' => [
@@ -478,9 +464,6 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
                                         ],
                                     ],
                                 ],
-                                [
-                                    'terms' => ['attributes_of_family' => ['brand']]
-                                ]
                             ],
                         ],
                     ],
