@@ -175,6 +175,80 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $this->execute()->shouldReturn($cursor);
     }
 
+    function it_executes_the_query_with_operator_is_empty_on_an_attribute($pqb, CursorInterface $cursor, SearchQueryBuilder $sqb)
+    {
+        $pqb->getRawFilters()->willReturn(
+            [
+                [
+                    'field'    => 'foo',
+                    'operator' => 'EMPTY',
+                    'value'    => null,
+                    'context'  => [],
+                    'type'     => 'attribute',
+                ],
+                [
+                    'field'    => 'foo_currency1',
+                    'operator' => 'EMPTY FOR CURRENCY',
+                    'value'    => null,
+                    'context'  => [],
+                    'type'     => 'attribute',
+                ],
+                [
+                    'field'    => 'foo_currency2',
+                    'operator' => 'EMPTY ON ALL CURRENCIES',
+                    'value'    => null,
+                    'context'  => [],
+                    'type'     => 'attribute',
+                ],
+                [
+                    'field'    => 'bar',
+                    'operator' => 'IN LST',
+                    'value'    => ['toto'],
+                    'context'  => [],
+                    'type'     => 'field',
+                ],
+                [
+                    'field'    => 'categories',
+                    'operator' => 'IN_LIST',
+                    'value'    => ['category_A'],
+                    'context'  => [],
+                    'type'     => 'field',
+                ],
+            ]
+        );
+
+        $pqb->addFilter('parent', Operators::IS_EMPTY, null, [])->shouldNotBeCalled();
+        $pqb->execute()->willReturn($cursor);
+        $pqb->getQueryBuilder()->willReturn($sqb);
+        $sqb->addFilter([
+            'bool' => [
+                'must_not' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'terms' => ['attributes_of_ancestors' => ['foo']],
+                            ],
+                            [
+                                'terms' => ['attributes_of_ancestors' => ['foo_currency1']],
+                            ],
+                            [
+                                'terms' => ['attributes_of_ancestors' => ['foo_currency2']],
+                            ],
+                            [
+                                'terms' => ['categories_of_ancestors' => ['category_A']],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ])->shouldBeCalled();
+        $sqb->addFilter([
+            'terms' => ['attributes_for_this_level' => ['foo', 'foo_currency1', 'foo_currency2']],
+        ])->shouldBeCalled();
+
+        $this->execute()->shouldReturn($cursor);
+    }
+
     function it_does_not_add_a_default_filter_on_parents_when_there_is_a_source_attribute_filter(
         $pqb,
         CursorInterface $cursor,

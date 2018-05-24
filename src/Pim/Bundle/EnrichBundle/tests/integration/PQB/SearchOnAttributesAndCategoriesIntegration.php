@@ -34,7 +34,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  *
  *                       +----+
  *                       |    | model-shoe
- *                       |    | category: "shoes", description: "Superb shoe!"
+ *                       |    | category: "shoes", description: "Superb shoe!", brand: null
  *                       +----+
  *                      X      X
  *                     X        X
@@ -56,6 +56,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  *  red-s          blue-s     red-m         blue-m         another-shoe                       unclassified-product
  *  category:      category:  category:     category:      category: "women,winter-2018"      description: "quantum mechanics"
  *  "women"        "men"      "women"       "men"          description: "Superb other shoe"
+ *                                                         brand: "nyke"
  *
  * Tests of the filter category used in the UI along with some filters with attributes. The search results needs be
  * aggregated towards higher product model level as much as possible.
@@ -197,8 +198,8 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      *      - The product variants having the category and inheriting the root product model values
      *      - Other products stasifying this filter.
      */
-    public function filterAttributeSetOnRootProductModelAndSelectCategoryOnProductVariant()
-    : void {
+    public function filterAttributeSetOnRootProductModelAndSelectCategoryOnProductVariant(): void
+    {
         $result = $this->executeFilter([
             ['categories', Operators::IN_LIST, ['women']],
             ['description', Operators::STARTS_WITH, 'Superb'],
@@ -213,12 +214,31 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     public function showAllUnclassifiedAndFilterOnAttribute(): void
     {
-        sleep(5);
         $result = $this->executeFilter([
             ['categories', Operators::UNCLASSIFIED, []],
             ['description', Operators::EQUALS, 'quantum mechanics']
         ]);
         $this->assert($result, ['unclassified-product']);
+    }
+
+    /**
+     * @test
+     *
+     * Using the IS_EMPTY operator should only show the products and product models which should have the selected
+     * attribute (because it is in their family) and not the others.
+     */
+    public function selectIsEmptyOrNotEmptyOnAnAttribute(): void
+    {
+        sleep(5);
+        $result = $this->executeFilter([
+            ['brand', Operators::IS_EMPTY, '']
+        ]);
+        $this->assert($result, ['model-shoe']);
+
+        $result = $this->executeFilter([
+            ['brand', Operators::IS_NOT_EMPTY, '']
+        ]);
+        $this->assert($result, ['another-shoe']);
     }
 
     /**
@@ -287,6 +307,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
             'values' => [
                 'color'       => [['data' => 'blue', 'locale' => null, 'scope' => null]],
                 'description' => [['data' => 'Superb other shoe!', 'locale' => null, 'scope' => null]],
+                'brand' => [['data' => 'nyke', 'locale' => null, 'scope' => null]],
             ],
         ]);
         $this->createProduct('unclassified-product', [
@@ -341,10 +362,17 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
             'code'      => 'm'
         ]);
 
+        $this->createAttribute([
+            'code'        => 'brand',
+            'type'        => AttributeTypes::TEXT,
+            'localizable' => false,
+            'scopable'    => false,
+        ]);
+
         // Family & Family variant
         $this->createFamily([
             'code'                   => 'shoes',
-            'attributes'             => ['sku', 'color', 'size', 'description'],
+            'attributes'             => ['sku', 'color', 'size', 'description', 'brand'],
             'attribute_requirements' => [],
         ]);
 

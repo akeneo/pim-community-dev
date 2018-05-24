@@ -183,6 +183,15 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
                 ],
             ]);
         }
+
+        $attributeCodesWithIsEmptyOperator = $this->getAttributeCodesWithIsEmptyOperator();
+        if (!empty($attributeCodesWithIsEmptyOperator)) {
+            $this->getQueryBuilder()->addFilter([
+                'terms' => [
+                    'attributes_for_this_level' => $attributeCodesWithIsEmptyOperator,
+                ],
+            ]);
+        }
     }
 
     /**
@@ -222,5 +231,30 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         }
 
         return $categoryCodes;
+    }
+
+    /**
+     * Returns the attribute codes for which there is a filter on with operator IsEmpty
+     *
+     * @return string[]
+     */
+    private function getAttributeCodesWithIsEmptyOperator(): array
+    {
+        $attributeFilters = array_filter(
+            $this->getRawFilters(),
+            function ($filter) {
+                $operator = $filter['operator'];
+
+                return
+                    'attribute' === $filter['type'] &&
+                    (
+                        Operators::IS_EMPTY === $operator ||
+                        Operators::IS_EMPTY_FOR_CURRENCY === $operator ||
+                        Operators::IS_EMPTY_ON_ALL_CURRENCIES === $operator
+                    );
+            }
+        );
+
+        return array_column($attributeFilters, 'field');
     }
 }
