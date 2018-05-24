@@ -56,6 +56,7 @@ legacy:
                     - '@pim_catalog.updater.product_model'
                     - '@pim_catalog.saver.product_model'
                     - '@pim_catalog.validator.product'
+                    - '@pim_versioning.repository.version'
                 - Pim\Behat\Context\Domain\Enrich\VariantProductContext:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
@@ -63,6 +64,7 @@ legacy:
                     - '@pim_catalog.saver.product'
                     - '@pim_catalog.validator.product'
                     - '@doctrine.orm.entity_manager'
+                    - '@pim_versioning.repository.version'
                 - Pim\Behat\Context\Domain\Enrich\VariantNavigationContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Spread\ExportBuilderContext:
@@ -117,6 +119,10 @@ legacy:
                 - Pim\Behat\Context\Storage\AttributeOptionStorage:
                     - '@pim_catalog.repository.attribute_option'
                     - '@doctrine.orm.default_entity_manager'
+                - PimEnterprise\Behat\Context\RevertContext:
+                    - '@pim_catalog.repository.product'
+                    - '@pim_versioning.repository.version'
+                    - '@pimee_versioning.reverter.product'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -14,15 +16,15 @@ namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\Versioning\Model\Version;
+use Akeneo\Component\Versioning\Model\VersionInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Product version reverter that allow to revert a product to a previous snapshot
+ * Product version reverter that allows to revert a product to a previous snapshot.
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
@@ -77,7 +79,7 @@ class ProductReverter
      *
      * @throws RevertException
      */
-    public function revert(Version $version)
+    public function revert(Version $version): void
     {
         $class = $version->getResourceName();
         $resourceId = $version->getResourceId();
@@ -86,7 +88,7 @@ class ProductReverter
 
         $currentObject->getValues()->clear();
 
-        $standardProduct = $this->converter->convert($version->getSnapshot());
+        $standardProduct = $this->getStandardProductFromVersion($version);
         $this->productUpdater->update($currentObject, $standardProduct);
 
         $violationsList = $this->validator->validate($currentObject);
@@ -99,5 +101,30 @@ class ProductReverter
         }
 
         $this->productSaver->save($currentObject);
+    }
+
+    /**
+     * Returns the standard product from a version snapshot.
+     *
+     * If a regular product was changed into a variant product (setting a parent
+     * to it), then reverting this change would be the same than converting this
+     * new variant product into a regular product, which is not allowed for now.
+     *
+     * To prevent that, we remove the parent field from the standard product data
+     * if this field is null or empty.
+     *
+     * @param VersionInterface $version
+     *
+     * @return array
+     */
+    protected function getStandardProductFromVersion(VersionInterface $version): array
+    {
+        $standardProduct =$this->converter->convert($version->getSnapshot());
+
+        if (!isset($standardProduct['parent']) || '' === $standardProduct['parent']) {
+            unset($standardProduct['parent']);
+        }
+
+        return $standardProduct;
     }
 }
