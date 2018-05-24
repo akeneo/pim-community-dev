@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller;
+namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\Show\ShowEnrichedEntityHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
