@@ -89,3 +89,16 @@ Feature: Change the parent of a variant product
       | yellow_paul  | paul   | bags   | yellow |
     When the parent of variant product yellow_james is changed for incorrect paul product model
     Then the parent of the product yellow_james should be james
+
+  Scenario: Changing the parent of a variant product creates a new version of this product
+    Given the following root product models:
+      | code  | family_variant |
+      | james | bags_variant   |
+      | rita  | bags_variant   |
+    And the following products:
+      | sku        | parent | family | color  |
+      | bag_yellow | james  | bags   | yellow |
+    When the parent of variant product bag_yellow is changed for rita product model
+    Then the last version of the variant product bag_yellow should be:
+      | field  | old_value | new_value |
+      | parent | james     | rita      |

@@ -10,10 +10,13 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Behat\Context\PimContext;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>
@@ -40,6 +43,9 @@ class VariantProductContext extends PimContext
     /** @var EntityManagerInterface */
     private $entityManager;
 
+    /** @var VersionRepositoryInterface */
+    private $versionRepository;
+
     /**
      * @param string                                $mainContextClass
      * @param IdentifiableObjectRepositoryInterface $productRepository
@@ -47,6 +53,7 @@ class VariantProductContext extends PimContext
      * @param SaverInterface                        $productSaver
      * @param ValidatorInterface                    $validator
      * @param EntityManagerInterface                $entityManager
+     * @param VersionRepositoryInterface            $versionRepository
      */
     public function __construct(
         string $mainContextClass,
@@ -54,7 +61,8 @@ class VariantProductContext extends PimContext
         ObjectUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
         ValidatorInterface $validator,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        VersionRepositoryInterface $versionRepository
     ) {
         parent::__construct($mainContextClass);
 
@@ -63,6 +71,7 @@ class VariantProductContext extends PimContext
         $this->productSaver = $productSaver;
         $this->validator = $validator;
         $this->entityManager = $entityManager;
+        $this->versionRepository = $versionRepository;
     }
 
     /**
@@ -109,6 +118,35 @@ class VariantProductContext extends PimContext
         $product = $this->findProduct($productIdentifier);
 
         $this->productUpdater->update($product, ['parent' => $productModelCode]);
+    }
+
+    /**
+     * @param string    $identifier
+     * @param TableNode $expectedVersion
+     *
+     * @Then the last version of the variant product :identifier should be:
+     */
+    public function checkVariantProductLastVersion(string $identifier, TableNode $expectedVersion): void
+    {
+        $product = $this->findProduct($identifier);
+        $lastVersion = $this->versionRepository->getNewestLogEntry(
+            ClassUtils::getClass($product),
+            $product->getId()
+        );
+        $actualChangeset = $lastVersion->getChangeset();
+
+        $expectedChangeset = [];
+        foreach ($expectedVersion->getHash() as $expectedVersionField) {
+            $expectedChangeset[$expectedVersionField['field']] = [
+                'old' => $expectedVersionField['old_value'],
+                'new' => $expectedVersionField['new_value'],
+            ];
+        }
+
+        ksort($actualChangeset);
+        ksort($expectedChangeset);
+
+        Assert::same($actualChangeset, $expectedChangeset);
     }
 
     /**

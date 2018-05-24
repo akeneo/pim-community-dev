@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\scalar;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
 /**
@@ -26,6 +27,8 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
     /** @staticvar string */
     private const FIELD_CODE = 'code';
 
+    private const FIELD_PARENT = 'parent';
+
     /** @staticvar string */
     private const ITEM_SEPARATOR = ',';
 
@@ -41,6 +44,7 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
         $results[self::FIELD_FAMILY_VARIANT] = null === $familyVariant ? null : $familyVariant->getCode();
         $results[self::FIELD_CODE] = $object->getCode();
         $results[self::FIELD_CATEGORY] = implode(self::ITEM_SEPARATOR, $object->getCategoryCodes());
+        $results[self::FIELD_PARENT] = $this->normalizeParent($object->getParent());
         $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
         $results = array_replace($results, $this->normalizeValues($object, $format, $context));
 
@@ -53,6 +57,18 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductModelInterface && in_array($format, ['flat']);
+    }
+
+    /**
+     * Normalizes a product parent.
+     *
+     * @param ProductModelInterface $parent
+     *
+     * @return string
+     */
+    private function normalizeParent(ProductModelInterface $parent = null): string
+    {
+        return $parent ? $parent->getCode() : '';
     }
 
     /**
