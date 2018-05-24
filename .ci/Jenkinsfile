@@ -92,11 +92,10 @@ stage("Test") {
             "front-acceptance": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance /var/www/pim/vendor/akeneo/pim-community-dev/tests/features /var/www/pim/tests/features"
+                script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
             )},
-            "back-acceptance": {queue(
+            "back-acceptance": {testif(
                 condition: launchAcceptanceTests.equals("yes"),
-                verbose: (verboseOutputs == "yes"),
                 container: tag,
                 script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
             )},
