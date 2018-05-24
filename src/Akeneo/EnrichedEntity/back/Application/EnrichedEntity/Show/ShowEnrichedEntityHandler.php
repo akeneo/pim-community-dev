@@ -33,9 +33,9 @@ class ShowEnrichedEntityHandler
     /**
      * @param EnrichedEntityIdentifier $identifier
      *
-     * @return EnrichedEntity
+     * @return EnrichedEntity|null
      */
-    public function findByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
+    public function findByIdentifier(EnrichedEntityIdentifier $identifier): ?EnrichedEntity
     {
         return $this->enrichedEntityRepository->findOneByIdentifier($identifier);
     }
