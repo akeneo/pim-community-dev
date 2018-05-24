@@ -113,7 +113,7 @@ stage("Test") {
             "front-acceptance-ce": {testif(
                 condition: launchAcceptanceTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance /var/www/pim/tests/features"
+                script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./tests/features"
             )},
             "front-acceptance-ee": {testif(
                 condition: launchAcceptanceTests.equals("yes") && editions.contains("ee"),
