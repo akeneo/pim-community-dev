@@ -160,6 +160,13 @@ acceptance:
                 - test.channel.context
             filters:
                 tags: '@acceptance-back'
+        enriched-entity:
+            paths:
+                - '%paths.base%/tests/features/enriched-entity'
+            contexts_services:
+                - test.enriched_entity.show_enriched_entity.context
+            filters:
+                tags: '@acceptance-back'
         volume-monitoring:
             paths:
                 - '%paths.base%/tests/features/volume-monitoring'

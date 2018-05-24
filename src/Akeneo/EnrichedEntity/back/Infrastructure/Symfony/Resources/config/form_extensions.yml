@@ -1,0 +1,17 @@
+extensions:
+    pim-menu-enriched-entities:
+        module: pim/menu/tab
+        parent: pim-menu
+        # aclResourceId: pimee_product_asset_index //TODO einrich
+        position: 33
+        targetZone: mainMenu
+        config:
+            title: pim_enriched_entity.enriched_entity.title
+            iconModifier: iconEnrichedEntities
+            to: akeneo_enriched_entities_enriched_entities_index
+
+    pim-enriched-entity-index-user-navigation:
+        module: pim/menu/user-navigation
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout

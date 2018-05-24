@@ -1,0 +1,28 @@
+services:
+    akeneo_enrichedentity.event_subscriber.installer:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Symfony\EventListener\Installer'
+        arguments:
+            - '@filesystem'
+            - '%kernel.project_dir%'
+            - '@doctrine.dbal.default_connection'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    akeneo_enrichedentity.infrastructure.controller.enriched_entity:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.show.enriched_entity_handler'
+            - '@akeneo_enrichedentity.infrastructure.normalizer.enriched_entity'
+
+    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlEnrichedEntityRepository'
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.application.enriched_entity.show.enriched_entity_handler:
+        class: 'Akeneo\EnrichedEntity\back\Application\EnrichedEntity\Show\ShowEnrichedEntityHandler'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+
+    akeneo_enrichedentity.infrastructure.normalizer.enriched_entity:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Normalizer\EnrichedEntity'
