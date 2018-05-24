@@ -2516,7 +2516,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
                 ],
                 'categories_of_ancestors' => [],
                 'attributes_of_ancestors' => [],
-                'attributes_of_family'    => ['brand'],
+                'attributes_for_this_level' => ['brand'],
                 'parent'                  => null,
                 'values'                  => [],
             ],
