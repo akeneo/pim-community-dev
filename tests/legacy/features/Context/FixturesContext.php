@@ -2085,6 +2085,8 @@ class FixturesContext extends BaseFixturesContext
 
             $association->addProduct($this->getProduct($row['products']));
         }
+        $missingAssociationAdder = $this->getContainer()->get('pim_catalog.association.missing_association_adder');
+        $missingAssociationAdder->addMissingAssociations($owner);
 
         $this->getProductSaver()->save($owner);
     }
