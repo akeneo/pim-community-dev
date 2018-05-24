@@ -1485,7 +1485,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 | localizable | boolean        | `true`                       |                                                                                                                  |
 | description | string         | `"desc"`                     |                                                                                                                  |
 | end_of_use  | string         | `"2016-09-01T00:00:00+0200"` | formatted to ISO-8601 (see above)                                                                                |
-| tags        | string[]       | `[]`                         | each element of the array represents the *code* of the *PimEnterprise\Component\ProductAsset\Model\TagInterface* |
+| tags        | string[]       | `[]`                         | each element of the array represents the *code* of the *Akeneo\Asset\Component\Model\TagInterface* |
 | categories  | string[]       | `[]`                         | each element of the array represents the *code* of the *Akeneo\Tool\Component\Classification\Model\CategoryInterface* |
 
 
@@ -1502,7 +1502,7 @@ Regarding the array `variant_attribute_sets`, an attribute present in the `axes`
 | type           | data structure | data example                                                               | notes                                                                                              |
 | -------------- | -------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | code           | string         | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA_variationA.jpg"` | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*       |
-| asset          | string         | `"my_asset"`                                                               | it represents the *code* of the object *PimEnterprise\Component\ProductAsset\Model\AssetInterface* |
+| asset          | string         | `"my_asset"`                                                               | it represents the *code* of the object *Akeneo\Asset\Component\Model\AssetInterface* |
 | locale         | string         | `"fr_FR"`                                                                  | it represents the *code* of the object *Akeneo\Channel\Component\Model\LocaleInterface*               |
 | channel        | string         | `"tablet"`                                                                 | it represents the *code* of the object *Akeneo\Channel\Component\Model\ChannelInterface*              |
 | reference_file | string      	  | `"f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"`            | it represents the *key* of the object *Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface*       |
