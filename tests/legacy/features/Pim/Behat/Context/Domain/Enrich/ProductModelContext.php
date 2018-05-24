@@ -2,9 +2,9 @@
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Context\Spin\SpinCapableTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
