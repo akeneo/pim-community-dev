@@ -2064,9 +2064,12 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param ProductInterface $owner
+     * @param TableNode        $values
+     *
      * @Given /^the following associations for the (product "([^"]+)"):$/
      */
-    public function theFollowingAssociationsForTheProduct(ProductInterface $owner, $id, TableNode $values)
+    public function theFollowingAssociationsForTheProduct(ProductInterface $owner, TableNode $values)
     {
         $rows = $values->getHash();
 
@@ -2092,9 +2095,12 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param ProductModelInterface $owner
+     * @param TableNode             $values
+     *
      * @Given /^the following associations for the (product model "([^"]+)"):$/
      */
-    public function theFollowingAssociationsForTheProductModel(ProductModelInterface $owner, $code, TableNode $values)
+    public function theFollowingAssociationsForTheProductModel(ProductModelInterface $owner, TableNode $values)
     {
         $rows = $values->getHash();
 
@@ -2113,6 +2119,8 @@ class FixturesContext extends BaseFixturesContext
 
             $association->addProduct($this->getProduct($row['products']));
         }
+        $missingAssociationAdder = $this->getContainer()->get('pim_catalog.association.missing_association_adder');
+        $missingAssociationAdder->addMissingAssociations($owner);
 
         $this->getProductModelSaver()->save($owner);
     }
