@@ -21,6 +21,7 @@ class ProductNormalizer implements NormalizerInterface
 {
     private const FIELD_ATTRIBUTES_OF_ANCESTORS = 'attributes_of_ancestors';
     private const FIELD_DOCUMENT_TYPE = 'document_type';
+    private const FIELD_ATTRIBUTES_IN_LEVEL = 'attributes_for_this_level';
 
     /** @var NormalizerInterface */
     private $propertiesNormalizer;
@@ -49,6 +50,7 @@ class ProductNormalizer implements NormalizerInterface
 
         $data[self::FIELD_DOCUMENT_TYPE] = ProductInterface::class;
         $data[self::FIELD_ATTRIBUTES_OF_ANCESTORS] = $this->getAttributeCodesOfAncestors($product);
+        $data[self::FIELD_ATTRIBUTES_IN_LEVEL] = $this->getAttributeCodesForOwnLevel($product);
 
         return $data;
     }
@@ -105,5 +107,35 @@ class ProductNormalizer implements NormalizerInterface
     private function hasParent(EntityWithFamilyVariantInterface $entityWithFamilyVariant): bool
     {
         return null !== $entityWithFamilyVariant->getParent();
+    }
+
+    /**
+     * Get the attribute codes of the family if product is not a variant.
+     * If variant, get attribute codes of the family variant.
+     *
+     * We index all attribute codes to be able to search products on attributes with operators like "is empty".
+     * At the end, we sort to reindex attributes correctly (if index keys are not sorted correctly, ES will throw an exception)
+     *
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    private function getAttributeCodesForOwnLevel(ProductInterface $product): array
+    {
+        $attributeCodes = array_keys($product->getRawValues());
+        $familyAttributesCodes = [];
+        if ($product->isVariant()) {
+            $familyAttributes = $this->attributesProvider->getAttributes($product);
+            $familyAttributesCodes = array_map(function (AttributeInterface $attribute) {
+                return $attribute->getCode();
+            }, $familyAttributes);
+        } elseif (null !== $product->getFamily()) {
+            $familyAttributesCodes = $product->getFamily()->getAttributeCodes();
+        }
+
+        $attributeCodes = array_unique(array_merge($familyAttributesCodes, $attributeCodes));
+        sort($attributeCodes);
+
+        return $attributeCodes;
     }
 }

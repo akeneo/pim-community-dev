@@ -61,7 +61,29 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             ],
             'label'         => [],
             'document_type' => ProductModelInterface::class,
-            'attributes_of_ancestors' => []
+            'attributes_of_ancestors' => [],
+            'attributes_for_this_level' => [
+                'a_date',
+                'a_file',
+                'a_localizable_image',
+                'a_localized_and_scopable_text_area',
+                'a_metric',
+                'a_multi_select',
+                'a_number_float',
+                'a_number_float_negative',
+                'a_number_integer',
+                'a_price',
+                'a_ref_data_multi_select',
+                'a_ref_data_simple_select',
+                'a_scopable_price',
+                'a_simple_select',
+                'a_text',
+                'a_text_area',
+                'a_yes_no',
+                'an_image',
+                'sku',
+            ],
+            'associations'              => null,
         ];
 
         $this->assertProductModelIndexingFormat('qux', $expected);
@@ -76,11 +98,11 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'id'             => 'product_model_151',
-            'identifier'     => 'quux',
-            'created'        => $date->format('c'),
-            'updated'        => $date->format('c'),
-            'family'        => [
+            'id'                      => 'product_model_151',
+            'identifier'              => 'quux',
+            'created'                 => $date->format('c'),
+            'updated'                 => $date->format('c'),
+            'family'                  => [
                 'code'   => 'familyA',
                 'labels' => [
                     'de_DE' => null,
@@ -88,11 +110,11 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     'fr_FR' => 'Une famille A',
                 ],
             ],
-            'family_variant' => 'familyVariantA1',
-            'categories' => ['categoryA', 'categoryA1', 'categoryB'],
+            'family_variant'          => 'familyVariantA1',
+            'categories'              => ['categoryA', 'categoryA1', 'categoryB'],
             'categories_of_ancestors' => ['categoryA'],
-            'parent' => 'qux',
-            'values'         => [
+            'parent'                  => 'qux',
+            'values'                  => [
                 'a_text-text'            => [
                     '<all_channels>' => [
                         '<all_locales>' => 'this is a text',
@@ -104,14 +126,14 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'all_complete' => [],
-            'all_incomplete' => [],
-            'ancestors' => [
-                'ids' => ['product_model_150'],
+            'all_complete'            => [],
+            'all_incomplete'          => [],
+            'ancestors'               => [
+                'ids'   => ['product_model_150'],
                 'codes' => ['qux'],
             ],
-            'label'         => [],
-            'document_type' => ProductModelInterface::class,
+            'label'                   => [],
+            'document_type'           => ProductModelInterface::class,
             'attributes_of_ancestors' => [
                 'a_date',
                 'a_file',
@@ -132,7 +154,9 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 'a_yes_no',
                 'an_image',
                 'sku',
-]
+            ],
+            'attributes_for_this_level' => [],
+            'associations' => null,
         ];
 
         $this->assertProductModelIndexingFormat('quux', $expected);
@@ -182,12 +206,21 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                         '<all_locales>' => true,
                     ],
                 ],
+                'sku-text'       => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'qux',
+                    ],
+                ],
             ],
             'ancestors' => [
                 'ids' => ['product_model_151', 'product_model_150'],
                 'codes' => ['quux', 'qux'],
             ],
-            'label'         => [],
+            'label'         => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'qux',
+                ],
+            ],
             'document_type' => ProductInterface::class,
             'attributes_of_ancestors' => [
                 'a_date',
@@ -209,7 +242,9 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 'a_yes_no',
                 'an_image',
                 'sku',
-            ]
+            ],
+            'attributes_for_this_level' => ['a_yes_no', 'sku'],
+            'associations' => null,
         ];
 
         $this->assertProductIndexingFormat('qux', $expected);
@@ -236,14 +271,21 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             'completeness'              => [],
             'family_variant'            => null,
             'parent'                    => null,
-            'values'                    => [],
+            'values'                    => [
+                'sku-text' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'bar'
+                    ]
+                ]
+            ],
             'ancestors'                 => [
                 'ids'   => [],
                 'codes' => [],
             ],
-            'label'                     => [],
+            'label'                     => [ ],
             'document_type'             => ProductInterface::class,
             'attributes_of_ancestors' => [],
+            'attributes_for_this_level' => ['sku'],
         ];
 
         $this->assertProductIndexingFormat('bar', $expected);
@@ -482,14 +524,50 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                         ],
                     ],
                 ],
+                'sku-text' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'foo'
+                    ]
+                ]
             ],
             'ancestors'               => [
                 'ids'   => [],
                 'codes' => [],
             ],
-            'label'                   => [],
+            'label'                   => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'foo'
+                ]
+            ],
             'document_type'           => ProductInterface::class,
             'attributes_of_ancestors' => [],
+            'attributes_for_this_level' => [
+                'a_date',
+                'a_file',
+                'a_localizable_image',
+                'a_localized_and_scopable_text_area',
+                'a_metric',
+                'a_metric_negative',
+                'a_metric_without_decimal',
+                'a_metric_without_decimal_negative',
+                'a_multi_select',
+                'a_number_float',
+                'a_number_float_negative',
+                'a_number_integer',
+                'a_number_integer_negative',
+                'a_price',
+                'a_price_without_decimal',
+                'a_ref_data_multi_select',
+                'a_ref_data_simple_select',
+                'a_scopable_price',
+                'a_simple_select',
+                'a_text',
+                'a_text_area',
+                'a_yes_no',
+                'an_image',
+                'sku',
+                123,
+            ],
         ];
 
         $this->assertProductIndexingFormat('foo', $expected);

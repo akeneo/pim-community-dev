@@ -2,7 +2,6 @@
 
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Indexing;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
@@ -38,9 +37,16 @@ class ProductIndexingIntegration extends TestCase
             'categories'    => [],
             'groups'        => [],
             'completeness'  => [],
-            'values'        => [],
+            'values'        => [
+                'sku-text' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'bar',
+                    ]
+                ]
+            ],
             'label'         => [],
             'ancestors'     => ['ids' => [], 'codes' => []],
+            'associations' => null
         ];
 
         $this->assertIndexingFormat('bar', $expected);
@@ -64,7 +70,13 @@ class ProductIndexingIntegration extends TestCase
             'categories'    => [],
             'groups'        => [],
             'completeness'  => [],
-            'values'        => [],
+            'values'        => [
+                'sku-text' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'baz',
+                    ]
+                ]
+            ],
             'label'         => [],
             'ancestors'     => ['ids' => [], 'codes' => []],
         ];
@@ -105,6 +117,11 @@ class ProductIndexingIntegration extends TestCase
                 'tablet'    => ['de_DE' => 89, 'en_US' => 100, 'fr_FR' => 100],
             ],
             'values'        => [
+                'sku-text' => [
+                    '<all_channels>' => [
+                        '<all_locales>' => 'foo',
+                    ]
+                ],
                 'a_date-date'                                    => [
                     '<all_channels>' => [
                         '<all_locales>' => '2016-06-13',
@@ -303,8 +320,13 @@ class ProductIndexingIntegration extends TestCase
                     ],
                 ]
             ],
-            'label'         => [],
+            'label'         => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'foo'
+                ]
+            ],
             'ancestors'     => ['ids' => [], 'codes' => []],
+            'associations' => null
         ];
 
         $this->assertIndexingFormat('foo', $expected);
