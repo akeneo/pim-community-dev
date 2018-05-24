@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\Security\Filter;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
@@ -69,7 +69,7 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
      */
     public function filter($entityWithAssociations)
     {
-        if (!$entityWithAssociations instanceof AssociationAwareInterface) {
+        if (!$entityWithAssociations instanceof EntityWithAssociationsInterface) {
             throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($entityWithAssociations),
                 ProductInterface::class

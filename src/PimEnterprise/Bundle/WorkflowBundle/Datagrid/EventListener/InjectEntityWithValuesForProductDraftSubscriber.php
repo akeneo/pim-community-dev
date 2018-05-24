@@ -16,11 +16,11 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 
 /**
- * Inject the product id for product draft datagrid
+ * Inject the entity with values id for product draft datagrid
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class InjectProductForProductDraftSubscriber
+class InjectEntityWithValuesForProductDraftSubscriber
 {
     /** @var RequestParameters $requestParams */
     protected $requestParams;

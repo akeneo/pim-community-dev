@@ -24,7 +24,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ProductDraftApplier implements ProductDraftApplierInterface
+class DraftApplier implements DraftApplierInterface
 {
     /** @var PropertySetterInterface */
     protected $propertySetter;

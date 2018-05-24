@@ -22,7 +22,7 @@ class UpdateProductDraftIntegration extends AbstractProductTestCase
                 ]
             ]
         ]);
-        $this->createProductDraft('mary', $product, [
+        $this->createEntityWithValuesDraft('mary', $product, [
             'values' => [
                 'a_simple_select' => [
                     ['data' => 'optionA', 'locale' => null, 'scope' => null]

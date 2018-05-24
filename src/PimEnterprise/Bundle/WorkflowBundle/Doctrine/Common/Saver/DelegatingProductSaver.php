@@ -23,7 +23,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
-use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
+use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,8 +51,8 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /** @var ProductDraftBuilderInterface */
-    protected $productDraftBuilder;
+    /** @var EntityWithValuesDraftBuilderInterface */
+    protected $entityWithValuesDraftBuilder;
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
@@ -73,24 +73,24 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     private $productRepository;
 
     /**
-     * @param ObjectManager                   $objectManager
-     * @param CompletenessManager             $completenessManager
-     * @param EventDispatcherInterface        $eventDispatcher
-     * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param ProductDraftBuilderInterface    $productDraftBuilder
-     * @param TokenStorageInterface           $tokenStorage
+     * @param ObjectManager                            $objectManager
+     * @param CompletenessManager                      $completenessManager
+     * @param EventDispatcherInterface                 $eventDispatcher
+     * @param AuthorizationCheckerInterface            $authorizationChecker
+     * @param EntityWithValuesDraftBuilderInterface    $entityWithValuesDraftBuilder
+     * @param TokenStorageInterface                    $tokenStorage
      * @param EntityWithValuesDraftRepositoryInterface $productDraftRepo
-     * @param RemoverInterface                $productDraftRemover
-     * @param ProductUniqueDataSynchronizer   $uniqueDataSynchronizer
-     * @param NotGrantedDataMergerInterface   $mergeDataOnProduct
-     * @param ProductRepositoryInterface      $productRepository
+     * @param RemoverInterface                         $productDraftRemover
+     * @param ProductUniqueDataSynchronizer            $uniqueDataSynchronizer
+     * @param NotGrantedDataMergerInterface            $mergeDataOnProduct
+     * @param ProductRepositoryInterface               $productRepository
      */
     public function __construct(
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductDraftBuilderInterface $productDraftBuilder,
+        EntityWithValuesDraftBuilderInterface $entityWithValuesDraftBuilder,
         TokenStorageInterface $tokenStorage,
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         RemoverInterface $productDraftRemover,
@@ -102,7 +102,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $this->completenessManager = $completenessManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->authorizationChecker = $authorizationChecker;
-        $this->productDraftBuilder = $productDraftBuilder;
+        $this->entityWithValuesDraftBuilder = $entityWithValuesDraftBuilder;
         $this->tokenStorage = $tokenStorage;
         $this->productDraftRepo = $productDraftRepo;
         $this->productDraftRemover = $productDraftRemover;
@@ -244,7 +244,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      */
     protected function saveProductDraft(ProductInterface $fullProduct, array $options, $withFlush = true)
     {
-        $productDraft = $this->productDraftBuilder->build($fullProduct, $this->getUsername());
+        $productDraft = $this->entityWithValuesDraftBuilder->build($fullProduct, $this->getUsername());
 
         if (null !== $productDraft) {
             $this->validateObject($productDraft, EntityWithValuesDraftInterface::class);

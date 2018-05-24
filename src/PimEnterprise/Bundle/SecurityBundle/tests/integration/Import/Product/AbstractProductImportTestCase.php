@@ -76,12 +76,12 @@ abstract class AbstractProductImportTestCase extends TestCase
      *
      * @return EntityWithValuesDraftInterface
      */
-    protected function createProductDraft(
+    protected function createEntityWithValuesDraft(
         ProductInterface $product,
         string $username,
         array $draftData
     ): EntityWithValuesDraftInterface {
-        $productDraft = $this->get('pimee_workflow.factory.product_draft')->createProductDraft($product, $username);
+        $productDraft = $this->get('pimee_workflow.factory.product_draft')->createEntityWithValuesDraft($product, $username);
         $productDraft->setChanges($draftData);
 
 

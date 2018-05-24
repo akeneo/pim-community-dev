@@ -122,7 +122,7 @@ CSV;
                 ['data' => 'EN text', 'locale' => 'en_US', 'scope' => 'tablet'],
             ]
         ]]);
-        $this->createProductDraft($productA, 'mary', ['values' => [
+        $this->createEntityWithValuesDraft($productA, 'mary', ['values' => [
             'a_text' => [['data' => 'the simple text', 'locale' => null, 'scope' => null]],
             'a_localized_and_scopable_text_area' => [
                 ['data' => 'French text', 'locale' => 'fr_FR', 'scope' => 'tablet'],

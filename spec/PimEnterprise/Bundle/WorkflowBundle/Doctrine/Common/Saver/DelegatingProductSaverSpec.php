@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
-use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
+use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Prophecy\Argument;
@@ -30,7 +30,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         CompletenessManager $completenessManager,
         EventDispatcherInterface $eventDispatcher,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductDraftBuilderInterface $filteredProductDraftBuilder,
+        EntityWithValuesDraftBuilderInterface $filteredProductDraftBuilder,
         TokenStorageInterface $tokenStorage,
         EntityWithValuesDraftRepositoryInterface $filteredProductDraftRepo,
         RemoverInterface $filteredProductDraftRemover,

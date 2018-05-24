@@ -75,7 +75,7 @@ JSON;
     public function testApprovalAlreadySubmitted()
     {
         $productDraft = $this->createDefaultProductDraft('mary', 'variant_product_with_draft');
-        $this->get('pimee_workflow.manager.product_draft')->markAsReady($productDraft);
+        $this->get('pimee_workflow.manager.entity_with_values_draft')->markAsReady($productDraft);
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
         $client->request('POST', 'api/rest/v1/products/variant_product_with_draft/proposal', [], [], [], '{}');
@@ -185,7 +185,7 @@ JSON;
             ]
         ]);
 
-        return $this->createProductDraft($userName, $product, [
+        return $this->createEntityWithValuesDraft($userName, $product, [
             'values' => [
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'Modified US in draft', 'locale' => 'en_US', 'scope' => 'ecommerce'],

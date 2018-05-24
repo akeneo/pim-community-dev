@@ -22,7 +22,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
@@ -50,7 +50,7 @@ class ProductDraftController
     /** @var EntityWithValuesDraftRepositoryInterface */
     protected $repository;
 
-    /** @var ProductDraftManager */
+    /** @var EntityWithValuesDraftManager */
     protected $manager;
 
     /** @var ProductRepositoryInterface */
@@ -84,23 +84,23 @@ class ProductDraftController
     protected $attributeSearchableRepository;
 
     /**
-     * @param AuthorizationCheckerInterface   $authorizationChecker
+     * @param AuthorizationCheckerInterface            $authorizationChecker
      * @param EntityWithValuesDraftRepositoryInterface $repository
-     * @param ProductDraftManager             $manager
-     * @param ProductRepositoryInterface      $productRepository
-     * @param NormalizerInterface             $normalizer
-     * @param TokenStorageInterface           $tokenStorage
-     * @param AttributeRepositoryInterface    $attributeRepository
-     * @param ChannelRepositoryInterface      $channelRepository
-     * @param LocaleRepositoryInterface       $localeRepository
-     * @param UserContext                     $userContext
-     * @param CollectionFilterInterface       $collectionFilter
-     * @param SearchableRepositoryInterface   $attributeSearchableRepository
+     * @param EntityWithValuesDraftManager             $manager
+     * @param ProductRepositoryInterface               $productRepository
+     * @param NormalizerInterface                      $normalizer
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param AttributeRepositoryInterface             $attributeRepository
+     * @param ChannelRepositoryInterface               $channelRepository
+     * @param LocaleRepositoryInterface                $localeRepository
+     * @param UserContext                              $userContext
+     * @param CollectionFilterInterface                $collectionFilter
+     * @param SearchableRepositoryInterface            $attributeSearchableRepository
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         EntityWithValuesDraftRepositoryInterface $repository,
-        ProductDraftManager $manager,
+        EntityWithValuesDraftManager $manager,
         ProductRepositoryInterface $productRepository,
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,

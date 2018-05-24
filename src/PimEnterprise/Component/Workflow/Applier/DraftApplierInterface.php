@@ -19,7 +19,7 @@ use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-interface ProductDraftApplierInterface
+interface DraftApplierInterface
 {
     /**
      * Apply all changes on the product no matter the review statuses

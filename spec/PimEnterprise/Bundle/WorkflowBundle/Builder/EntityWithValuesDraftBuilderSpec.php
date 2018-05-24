@@ -15,20 +15,20 @@ use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilder;
+use PimEnterprise\Bundle\WorkflowBundle\Builder\EntityWithValuesDraftBuilder;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductDraftBuilderSpec extends ObjectBehavior
+class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
         ProductDraftFactory $factory,
-        EntityWithValuesDraftRepositoryInterface $productDraftRepo,
+        EntityWithValuesDraftRepositoryInterface $entityWithValuesDraftRepository,
         ValueCollectionFactoryInterface $valueCollectionFactory,
         ValueFactory $valueFactory
     ) {
@@ -37,7 +37,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
             $comparatorRegistry,
             $attributeRepository,
             $factory,
-            $productDraftRepo,
+            $entityWithValuesDraftRepository,
             $valueCollectionFactory,
             $valueFactory
         );
@@ -45,7 +45,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductDraftBuilder::class);
+        $this->shouldHaveType(EntityWithValuesDraftBuilder::class);
     }
 
     function it_builds_a_simple_product_draft_when_submitted_data_is_different_from_product_data(
@@ -54,7 +54,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $comparatorRegistry,
         $attributeRepository,
         $valueFactory,
-        $productDraftRepo,
+        $entityWithValuesDraftRepository,
         ProductInterface $product,
         AttributeInterface $textAttribute,
         ValueInterface $textValue,
@@ -105,7 +105,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getScope()->willReturn(null);
         $newTextValue->getLocale()->willReturn(null);
 
-        $productDraftRepo->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
+        $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
         $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
@@ -121,7 +121,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $comparatorRegistry,
         $attributeRepository,
         $valueFactory,
-        $productDraftRepo,
+        $entityWithValuesDraftRepository,
         ProductInterface $product,
         AttributeInterface $textAttribute,
         ValueInterface $textValue,
@@ -162,7 +162,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getScope()->willReturn(null);
         $newTextValue->getLocale()->willReturn(null);
 
-        $productDraftRepo->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
+        $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
         $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
@@ -269,7 +269,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $comparatorRegistry,
         $attributeRepository,
         $valueFactory,
-        $productDraftRepo,
+        $entityWithValuesDraftRepository,
         ProductInterface $variantProduct,
         AttributeInterface $textAttribute,
         ValueInterface $textValue,
@@ -320,7 +320,7 @@ class ProductDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getScope()->willReturn(null);
         $newTextValue->getLocale()->willReturn(null);
 
-        $productDraftRepo->findUserEntityWithValuesDraft($variantProduct, 'mary')->willReturn($productDraft);
+        $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($variantProduct, 'mary')->willReturn($productDraft);
         $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
             'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]

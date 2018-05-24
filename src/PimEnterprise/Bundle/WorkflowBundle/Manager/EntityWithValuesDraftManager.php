@@ -19,10 +19,10 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
-use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
+use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -33,7 +33,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftManager
+class EntityWithValuesDraftManager
 {
     /** @var SaverInterface */
     protected $workingCopySaver;
@@ -41,13 +41,13 @@ class ProductDraftManager
     /** @var UserContext */
     protected $userContext;
 
-    /** @var ProductDraftFactory */
+    /** @var EntityWithValuesDraftFactory */
     protected $factory;
 
     /** @var EntityWithValuesDraftRepositoryInterface */
     protected $repository;
 
-    /** @var ProductDraftApplierInterface */
+    /** @var DraftApplierInterface */
     protected $applier;
 
     /** @var EventDispatcherInterface */
@@ -62,23 +62,12 @@ class ProductDraftManager
     /** @var CollectionFilterInterface */
     protected $valuesFilter;
 
-    /**
-     * @param SaverInterface                  $workingCopySaver
-     * @param UserContext                     $userContext
-     * @param ProductDraftFactory             $factory
-     * @param EntityWithValuesDraftRepositoryInterface $repository
-     * @param ProductDraftApplierInterface    $applier
-     * @param EventDispatcherInterface        $dispatcher
-     * @param SaverInterface                  $productDraftSaver
-     * @param RemoverInterface                $productDraftRemover
-     * @param CollectionFilterInterface       $valuesFilter
-     */
     public function __construct(
         SaverInterface $workingCopySaver,
         UserContext $userContext,
-        ProductDraftFactory $factory,
+        EntityWithValuesDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $repository,
-        ProductDraftApplierInterface $applier,
+        DraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
         SaverInterface $productDraftSaver,
         RemoverInterface $productDraftRemover,
@@ -337,7 +326,7 @@ class ProductDraftManager
         $productDraft = $this->repository->findUserEntityWithValuesDraft($product, $username);
 
         if (null === $productDraft) {
-            $productDraft = $this->factory->createProductDraft($product, $username);
+            $productDraft = $this->factory->createEntityWithValueDraft($product, $username);
         }
 
         return $productDraft;
@@ -372,7 +361,7 @@ class ProductDraftManager
      */
     protected function createDraft(EntityWithValuesDraftInterface $productDraft, array $draftChanges)
     {
-        $partialDraft = $this->factory->createProductDraft($productDraft->getEntityWithValue(), $productDraft->getAuthor());
+        $partialDraft = $this->factory->createEntityWithValueDraft($productDraft->getEntityWithValue(), $productDraft->getAuthor());
         $partialDraft->setChanges([
             'values' => $draftChanges
         ]);

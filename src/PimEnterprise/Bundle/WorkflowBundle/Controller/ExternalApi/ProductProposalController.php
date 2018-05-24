@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
@@ -36,7 +36,7 @@ class ProductProposalController
     /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productDraftRepository;
 
-    /** @var ProductDraftManager */
+    /** @var EntityWithValuesDraftManager */
     protected $productDraftManager;
 
     /** @var TokenStorageInterface */
@@ -46,16 +46,16 @@ class ProductProposalController
     protected $authorizationChecker;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param EntityWithValuesDraftRepositoryInterface       $productDraftRepository
-     * @param ProductDraftManager                   $productDraftManager
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param AuthorizationCheckerInterface         $authorizationChecker
+     * @param IdentifiableObjectRepositoryInterface    $productRepository
+     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
+     * @param EntityWithValuesDraftManager             $productDraftManager
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param AuthorizationCheckerInterface            $authorizationChecker
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
         EntityWithValuesDraftRepositoryInterface $productDraftRepository,
-        ProductDraftManager $productDraftManager,
+        EntityWithValuesDraftManager $productDraftManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {

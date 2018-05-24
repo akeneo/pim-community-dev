@@ -89,10 +89,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $product = $this->getProduct($data['product']);
             $product->setLocale($data['locale']);
 
-            $productDraft = $this->getProductDraftFactory()->createProductDraft(
+            $productDraft = $this->getProductDraftFactory()->createEntityWithValueDraft(
                 $product,
-                $data['author'],
-                []
+                $data['author']
             );
             if (isset($data['createdAt'])) {
                 $productDraft->setCreatedAt(new \DateTime($data['createdAt']));

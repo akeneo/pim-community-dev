@@ -15,7 +15,7 @@ namespace PimEnterprise\Component\Security\Merger;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\AssociationAwareInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
@@ -106,7 +106,7 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
      */
     public function merge($filteredProduct, $fullProduct = null)
     {
-        if (!$filteredProduct instanceof AssociationAwareInterface) {
+        if (!$filteredProduct instanceof EntityWithAssociationsInterface) {
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredProduct), ProductInterface::class);
         }
 
@@ -114,7 +114,7 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
             return $filteredProduct;
         }
 
-        if (!$fullProduct instanceof AssociationAwareInterface) {
+        if (!$fullProduct instanceof EntityWithAssociationsInterface) {
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullProduct), ProductInterface::class);
         }
 

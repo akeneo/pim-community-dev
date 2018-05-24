@@ -13,7 +13,7 @@ services:
         arguments:
             - '@pim_api.repository.product'
             - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.manager.product_draft'
+            - '@pimee_workflow.manager.entity_with_values_draft'
             - '@security.token_storage'
             - '@security.authorization_checker'
 
@@ -22,7 +22,7 @@ services:
         arguments:
             - '@pim_api.repository.product'
             - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.applier.product_draft'
+            - '@pimee_workflow.applier.draft'
             - '@pim_serializer'
             - '@security.token_storage'
             - '@security.authorization_checker'

@@ -132,7 +132,7 @@ JSON;
                 'a_yes_no' => [['data' => false, 'locale' => null, 'scope' => null]]
             ]
         ]);
-        $this->createProductDraft('mary', $product, [
+        $this->createEntityWithValuesDraft('mary', $product, [
             'values' => [
                 'a_text_area' => [['data' => 'a text area', 'locale' => null, 'scope' => null]],
                 'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]

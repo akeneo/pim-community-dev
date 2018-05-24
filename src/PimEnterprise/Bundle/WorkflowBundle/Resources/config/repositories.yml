@@ -74,4 +74,4 @@ services:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.product'
             - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.applier.product_draft'
+            - '@pimee_workflow.applier.draft'

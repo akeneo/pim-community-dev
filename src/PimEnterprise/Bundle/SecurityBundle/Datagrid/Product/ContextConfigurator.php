@@ -12,12 +12,12 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Datagrid\Product;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as BaseContextConfigurator;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use PimEnterprise\Component\Security\Attributes;
@@ -43,7 +43,7 @@ class ContextConfigurator extends BaseContextConfigurator
     protected $userContext;
 
     /**
-     * @param ProductRepositoryInterface     $productRepository
+     * @param ObjectRepository               $productRepository
      * @param AttributeRepositoryInterface   $attributeRepository
      * @param RequestParameters              $requestParams
      * @param UserContext                    $userContext
@@ -53,7 +53,7 @@ class ContextConfigurator extends BaseContextConfigurator
      * @param AttributeGroupAccessRepository $accessRepository
      */
     public function __construct(
-        ProductRepositoryInterface $productRepository,
+        ObjectRepository $productRepository,
         AttributeRepositoryInterface $attributeRepository,
         RequestParameters $requestParams,
         UserContext $userContext,
