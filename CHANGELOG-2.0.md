@@ -1,3 +1,7 @@
+# 2.0.*
+
+- PIM-7362: Fix Completeness computing from family keeping in account batch size to free the memory
+
 # 2.0.25 (2018-05-21)
 
 ## Bug fixes
