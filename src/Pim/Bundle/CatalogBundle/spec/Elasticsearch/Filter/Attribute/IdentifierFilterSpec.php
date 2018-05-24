@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\TextFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Escaper\QueryString;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -93,7 +94,7 @@ class IdentifierFilterSpec extends ObjectBehavior
             [
                 'query_string' => [
                     'default_field' => 'values.sku-identifier.<all_channels>.<all_locales>',
-                    'query'         => 'sku-*',
+                    'query'         => 'sku\-*',
                 ],
             ]
         )->shouldBeCalled();
