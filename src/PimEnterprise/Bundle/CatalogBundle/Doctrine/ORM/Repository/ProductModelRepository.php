@@ -231,9 +231,9 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     /**
      * {@inheritdoc}
      */
-    public function findProductModelsForFamilyVariant(FamilyVariantInterface $familyVariant): array
+    public function findProductModelsForFamilyVariant(FamilyVariantInterface $familyVariant, ?string $search = null): array
     {
-        $productModels = $this->productModelRepository->findProductModelsForFamilyVariant($familyVariant);
+        $productModels = $this->productModelRepository->findProductModelsForFamilyVariant($familyVariant, $search);
 
         return $this->getFilteredProductModels($productModels);
     }
