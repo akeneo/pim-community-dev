@@ -161,11 +161,26 @@ extensions:
             icon: icon-model
             illustration: product-models
 
+    pim-mass-product-edit-configure-change-parent-product-model:
+        module: pim/mass-edit-form/product/update-entity-with-family-variant-parent
+        parent: pim-mass-product-edit
+        aclResourceId: pim_enrich_product_edit_attributes
+        position: 200
+        config:
+            title: pim_enrich.mass_edit.product.title
+            label: pim_enrich.mass_edit.product.operation.change_parent_product_model.label
+            labelCount: pim_enrich.mass_edit.product.operation.change_parent_product_model.label_count
+            description: pim_enrich.mass_edit.product.operation.change_parent_product_model.description
+            code: change_parent_product
+            jobInstanceCode: change_parent_product
+            icon: icon-model
+            illustration: product-models
+
     pim-mass-product-edit-configure-associate:
         module: pim/mass-edit-form/product/associate
         parent: pim-mass-product-edit
         aclResourceId: pim_enrich_associations_edit
-        position: 200
+        position: 210
         config:
             title: pim_enrich.mass_edit.product.title
             label: pim_enrich.mass_edit.product.operation.associate_to_product_and_product_model.label
@@ -176,17 +191,3 @@ extensions:
             icon: icon-association
             illustration: association
 
-    pim-mass-product-edit-configure-change-parent-product-model:
-        module: pim/mass-edit-form/product/update-entity-with-family-variant-parent
-        parent: pim-mass-product-edit
-        aclResourceId: pim_enrich_product_edit_attributes
-        position: 210
-        config:
-            title: pim_enrich.mass_edit.product.title
-            label: pim_enrich.mass_edit.product.operation.change_parent_product_model.label
-            labelCount: pim_enrich.mass_edit.product.operation.change_parent_product_model.label_count
-            description: pim_enrich.mass_edit.product.operation.change_parent_product_model.description
-            code: change_parent_product
-            jobInstanceCode: change_parent_product
-            icon: icon-model
-            illustration: product-models
