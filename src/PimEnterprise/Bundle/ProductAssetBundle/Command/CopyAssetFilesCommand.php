@@ -10,7 +10,7 @@
  */
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;

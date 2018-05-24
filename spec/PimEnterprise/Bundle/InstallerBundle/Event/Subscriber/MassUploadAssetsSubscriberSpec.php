@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\InstallerBundle\Event\Subscriber;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\InstallerBundle\CommandExecutor;
 use Pim\Bundle\InstallerBundle\Event\InstallerEvents;
@@ -9,7 +10,6 @@ use Pim\Bundle\InstallerBundle\FixtureLoader\FixturePathProvider;
 use PimEnterprise\Bundle\InstallerBundle\Event\Subscriber\MassUploadAssetsSubscriber;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\CopyAssetFilesCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\ProcessMassUploadCommand;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
