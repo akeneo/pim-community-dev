@@ -112,7 +112,7 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
         foreach ($productToSave as $product) {
             $productBatch[] = $product;
 
-            if (self::BATCH_SIZE === $productBatch) {
+            if (self::BATCH_SIZE === count($productBatch)) {
                 $this->bulkProductSaver->saveAll($productBatch);
                 $this->bulkObjectDetacher->detachAll($productBatch);
 
