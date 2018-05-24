@@ -70,6 +70,12 @@
 - Remove `PimEnterprise\Bundle\ApiBundle\DependencyInjection\Configuration`
 - Remove `PimEnterprise\Bundle\ApiBundle\DependencyInjection\PimEnterpriseApiExtension`
 - Change the constructor of `PimEnterprise\Bundle\SecurityBundle\User\UserContext` to remove `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
+- Move namespace `Akeneo\Bundle\FileMetadataBundle` to `Akeneo\Tool\Bundle\FileMetadataBundle`
+- Move namespace `Akeneo\Bundle\FileTransformerBundle` to `Akeneo\Tool\Bundle\FileTransformerBundle`
+- Move namespace `Akeneo\Bundle\RuleEngineBundle` to `Akeneo\Bundle\Tool\RuleEngineBundle`
+- Move namespace `Akeneo\Component\FileMetadata` to `Akeneo\Tool\Component\FileMetadata`
+- Move namespace `Akeneo\Component\FileTransformer` to `Akeneo\Tool\Component\FileTransformer`
+- Move namespace `Akeneo\Component\RuleEngine` to `Akeneo\Tool\Component\RuleEngine`
 
 ## Security
 
