@@ -268,7 +268,7 @@ jobs:
     change_parent_product:
         connector: Akeneo Mass Edit Connector
         alias:     change_parent_product
-        label:     Change product parent
+        label:     Change parent product model
         type:      mass_edit
     csv_product_quick_export:
         connector: Akeneo CSV Connector

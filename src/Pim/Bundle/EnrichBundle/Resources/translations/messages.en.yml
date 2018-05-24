@@ -967,6 +967,9 @@ batch_jobs:
             label: Xlsx product grid context quick export
     delete_products_and_product_models:
         delete_products_and_product_models.label: Mass delete products
+    change_parent_product:
+        perform:
+            label: Change parent product model
 
 mass_edit report:
     overview: Mass edit reports

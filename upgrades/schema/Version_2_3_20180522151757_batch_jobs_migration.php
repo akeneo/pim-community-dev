@@ -32,7 +32,7 @@ class Version_2_3_20180522151757_batch_jobs_migration extends AbstractMigration
     private function getNewJobs(): array
     {
         return [
-            'change_parent_product' => '(\'change_parent_product\', \'Change parent product\', \'change_parent_product\', 0, \'Akeneo Mass Edit Connector\', \'a:0:{}\', \'mass_edit\')',
+            'change_parent_product' => '(\'change_parent_product\', \'Change parent product model\', \'change_parent_product\', 0, \'Akeneo Mass Edit Connector\', \'a:0:{}\', \'mass_edit\')',
         ];
     }
 
