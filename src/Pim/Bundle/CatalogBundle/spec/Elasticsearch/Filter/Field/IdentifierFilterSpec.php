@@ -70,7 +70,7 @@ class IdentifierFilterSpec extends ObjectBehavior
             [
                 'query_string' => [
                     'default_field' => 'identifier',
-                    'query'         => 'sku-*',
+                    'query'         => 'sku\-*',
                 ],
             ]
         )->shouldBeCalled();

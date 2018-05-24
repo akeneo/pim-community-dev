@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Query\Escaper\QueryString;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -102,7 +103,7 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
                 $clause = [
                     'query_string' => [
                         'default_field' => $attributePath,
-                        'query'         => $value . '*',
+                        'query'         => QueryString::escapeValue($value) . '*',
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
@@ -112,7 +113,7 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
                 $clause = [
                     'query_string' => [
                         'default_field' => $attributePath,
-                        'query'         => '*' . $value . '*',
+                        'query'         => '*' . QueryString::escapeValue($value) . '*',
                     ],
                 ];
                 $this->searchQueryBuilder->addFilter($clause);
@@ -122,7 +123,7 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
                 $mustNotClause = [
                     'query_string' => [
                         'default_field' => $attributePath,
-                        'query'         => '*' . $value . '*',
+                        'query'         => '*' . QueryString::escapeValue($value) . '*',
                     ],
                 ];
 
