@@ -23,6 +23,16 @@ class Version_2_2_20180523125419 extends AbstractMigration
         $this->addSql('ALTER TABLE pim_catalog_variant_attribute_set_has_attributes ADD CONSTRAINT FK_E9C4264A11D06F0E FOREIGN KEY (variant_attribute_set_id) REFERENCES pim_catalog_family_variant_attribute_set (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE pim_catalog_variant_attribute_set_has_axes DROP FOREIGN KEY FK_6965051E11D06F0E');
         $this->addSql('ALTER TABLE pim_catalog_variant_attribute_set_has_axes ADD CONSTRAINT FK_6965051E11D06F0E FOREIGN KEY (variant_attribute_set_id) REFERENCES pim_catalog_family_variant_attribute_set (id) ON DELETE CASCADE');
+
+        // Delete orphan variant attribute sets
+        $sql = <<<SQL
+DELETE v.* FROM `pim_catalog_family_variant_attribute_set` v
+WHERE v.id NOT IN (
+  SELECT `variant_attribute_sets_id`
+  FROM `pim_catalog_family_variant_has_variant_attribute_sets`
+);
+SQL;
+        $this->addSql($sql);
     }
 
     /**
