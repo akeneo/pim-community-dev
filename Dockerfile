@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.1.16-fpm
 
 ENV COMPOSER_CACHE_DIR=/tmp/composer/cache
 ENV YARN_CACHE_FOLDER=/tmp/yarn
