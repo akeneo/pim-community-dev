@@ -31,10 +31,15 @@ define(
 
             currentKey: 'current_form_tab',
 
+            config: {},
+
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
+            initialize: function (meta) {
+                this.config = _.extend({}, {
+                    centered: false
+                }, meta.config);
                 this.tabs = [];
 
                 BaseForm.prototype.initialize.apply(this, arguments);
@@ -79,7 +84,8 @@ define(
                 this.$el.html(
                     this.template({
                         tabs: tabs,
-                        currentTab: this.getCurrentTab()
+                        currentTab: this.getCurrentTab(),
+                        centered: this.config.centered
                     })
                 );
                 this.delegateEvents();

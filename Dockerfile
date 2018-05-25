@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.1.16-fpm
 
 ENV COMPOSER_CACHE_DIR=/tmp/composer/cache
 ENV YARN_CACHE_FOLDER=/tmp/yarn
@@ -6,7 +6,6 @@ ENV YARN_CACHE_FOLDER=/tmp/yarn
 ENV BUILD_PACKAGES \
   apt-transport-https \
   autoconf \
-  curl \
   g++ \
   git \
   libcurl4-gnutls-dev \
@@ -62,7 +61,6 @@ RUN apt-get update && apt-get install -y apt-transport-https \
   && docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ \
   && docker-php-ext-install \
   bcmath \
-  curl \
   exif \
   gd \
   intl \
@@ -143,7 +141,7 @@ RUN chmod +x /usr/local/bin/dumb-init \
   && groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
   && mkdir -p /home/pptruser/Downloads \
   && chown -R pptruser:pptruser /home/pptruser \
-  && chown -R pptruser:pptruser /node_modules 
+  && chown -R pptruser:pptruser /node_modules
 
 EXPOSE 80 9200 4444 3306
 

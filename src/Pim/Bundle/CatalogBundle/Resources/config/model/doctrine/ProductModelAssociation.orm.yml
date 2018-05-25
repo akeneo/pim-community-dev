@@ -1,0 +1,71 @@
+Pim\Component\Catalog\Model\ProductModelAssociation:
+    type: entity
+    table: pim_catalog_product_model_association
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    uniqueConstraints:
+        locale_foreign_key_idx:
+            columns:
+                - owner_id
+                - association_type_id
+    manyToOne:
+        associationType:
+            targetEntity: Pim\Component\Catalog\Model\AssociationTypeInterface
+            joinColumns:
+                association_type_id:
+                    referencedColumnName: id
+                    nullable: false
+                    onDelete: CASCADE
+        owner:
+            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            inversedBy: associations
+            cascade:
+                - detach
+            joinColumns:
+                owner_id:
+                    referencedColumnName: id
+                    nullable: false
+                    onDelete: CASCADE
+    manyToMany:
+        groups:
+            targetEntity: Pim\Component\Catalog\Model\GroupInterface
+            joinTable:
+                name: pim_catalog_association_product_model_to_group
+                joinColumns:
+                    association_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        products:
+            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            joinTable:
+                name: pim_catalog_association_product_model_to_product
+                joinColumns:
+                    association_id:
+                        onDelete: CASCADE
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+
+        productModels:
+            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            joinTable:
+                name: pim_catalog_association_product_model_to_product_model
+                joinColumns:
+                    association_id:
+                        onDelete: CASCADE
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    product_model_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE

@@ -7,10 +7,7 @@ const integrationConfig = {
   globalTeardown: `${__dirname}/teardown.js`,
   testEnvironment: `${__dirname}/environment.js`,
   testRegex: '(tests/front/integration)(.*)(integration)\.(jsx?|tsx?)$',
-  collectCoverage: false,
-  testPathIgnorePatterns: [
-    'node_modules'
-  ]
+  collectCoverage: false
 };
 
 module.exports = Object.assign({}, baseConfig, integrationConfig);

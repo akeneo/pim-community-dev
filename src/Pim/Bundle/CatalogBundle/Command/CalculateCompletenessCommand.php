@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Command;
 
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,6 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CalculateCompletenessCommand extends ContainerAwareCommand
 {
+    use LockableTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -31,10 +34,19 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!$this->lock()) {
+            $output->writeln(sprintf('The command "%s" is still running in another process.', self::$defaultName));
+
+            return 0;
+        }
+
         $output->writeln("<info>Generating missing completenesses...</info>");
 
         $options = [
-            'filters' => [['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null]]
+            'filters' => [
+                ['field' => 'completeness', 'operator' => Operators::IS_EMPTY, 'value' => null],
+                ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+            ]
         ];
 
         $container = $this->getContainer();

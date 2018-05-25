@@ -60,7 +60,8 @@ parameters:
     # if your volume of data exceeds these limits, it can impact the performance
     average_max_attributes_per_family_limit: 100
     average_max_options_per_attribute_limit: -1
-    average_max_product_values_limit: -1  
+    average_max_product_values_limit: -1
+    average_max_product_model_values_limit: -1
     count_attributes_limit: 500
     count_categories_limit: 5000
     count_category_trees_limit: 3
@@ -74,3 +75,5 @@ parameters:
     count_product_models_limit: -1
     count_variant_products_limit: -1
     count_product_values_limit: -1
+    count_product_model_values_limit: -1
+    count_product_and_product_model_values_limit: -1

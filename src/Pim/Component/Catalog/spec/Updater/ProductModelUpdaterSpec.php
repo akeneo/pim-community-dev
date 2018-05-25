@@ -11,13 +11,10 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Comparator\ComparatorInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Association\ParentAssociationsFilter;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Updater\ProductModelUpdater;
 
 class ProductModelUpdaterSpec extends ObjectBehavior
@@ -26,13 +23,15 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        ParentAssociationsFilter $parentAssociationsFilter
     ) {
         $this->beConstructedWith(
             $propertySetter,
             $valuesUpdater,
             $familyVariantRepository,
             $productModelRepository,
+            $parentAssociationsFilter,
             ['categories'],
             ['code']
         );
@@ -68,6 +67,7 @@ class ProductModelUpdaterSpec extends ObjectBehavior
 
         $familyVariantRepository->findOneByIdentifier('clothing_color_size')->willreturn($familyVariant);
         $productModel->setFamilyVariant($familyVariant)->shouldBeCalled();
+        $parentProductModel->isRootProductModel()->willReturn(true);
 
         $valuesUpdater->update($productModel, [
             'name' => [
@@ -112,6 +112,35 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         ]]);
     }
 
+    function it_throws_an_exception_if_the_new_parent_is_not_a_root_product_model(
+        ProductModelInterface $productModel,
+        ProductModelInterface $currentParent,
+        ProductModelInterface $newParent,
+        $productModelRepository,
+        FamilyVariantInterface $familyVariant,
+        FamilyVariantInterface $familyVariant2
+    )
+    {
+        $productModel->getId()->willReturn(42);
+        $productModel->isRootProductModel()->willReturn(false);
+        $productModel->getParent()->willReturn($currentParent);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+
+        $productModel->getParent()->willReturn($currentParent);
+
+        $currentParent->getCode()->willReturn('parent');
+        $currentParent->getFamilyVariant()->willReturn($familyVariant);
+
+        $newParent->getFamilyVariant()->willReturn($familyVariant2);
+        $newParent->isRootProductModel()->willReturn(false);
+
+        $productModelRepository->findOneByIdentifier('new_parent')->willreturn($newParent);
+
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [$productModel, [
+            'parent' => 'new_parent',
+        ]]);
+    }
+
     function it_throws_an_exception_if_a_non_existing_parent_is_set_to_a_product_model(
         $productModelRepository,
         ProductModelInterface $productModel
@@ -124,17 +153,34 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         ]]);
     }
 
-    function it_throws_an_exception_if_the_parent_is_updated(
+    function it_throws_an_exception_when_giving_a_new_parent_with_a_different_family_variant(
         ProductModelInterface $productModel,
-        ProductModelInterface $parent
+        ProductModelInterface $currentParent,
+        ProductModelInterface $newParent,
+        $productModelRepository,
+        FamilyVariantInterface $familyVariant,
+        FamilyVariantInterface $familyVariant2
     ) {
+
         $productModel->getId()->willReturn(42);
         $productModel->isRootProductModel()->willReturn(false);
-        $productModel->getParent()->willReturn($parent);
-        $parent->getCode()->willReturn('parent');
+        $productModel->getParent()->willReturn($currentParent);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+        $familyVariant->getCode()->willReturn('current_family_variant');
 
-        $this->shouldThrow(ImmutablePropertyException::class)->during('update', [$productModel, [
-            'parent' => 'new_parent'
+        $productModel->getParent()->willReturn($currentParent);
+
+        $currentParent->getCode()->willReturn('parent');
+        $currentParent->getFamilyVariant()->willReturn($familyVariant);
+
+        $newParent->getFamilyVariant()->willReturn($familyVariant2);
+        $familyVariant2->getCode()->willReturn('new_family_variant');
+        $newParent->isRootProductModel()->willReturn(true);
+
+        $productModelRepository->findOneByIdentifier('new_parent')->willreturn($newParent);
+
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [$productModel, [
+            'parent' => 'new_parent',
         ]]);
     }
 

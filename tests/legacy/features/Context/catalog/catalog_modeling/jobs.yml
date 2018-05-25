@@ -34,6 +34,11 @@ jobs:
         alias:     remove_from_category
         label:     Mass remove from categories
         type:      mass_edit
+    add_to_group:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_to_group
+        label:     Mass add product to group
+        type:      mass_edit
     edit_common_attributes:
         connector: Akeneo Mass Edit Connector
         alias:     edit_common_attributes
@@ -286,6 +291,24 @@ jobs:
                         field: collection.code
                         operator: 'IN'
                         value: ['summer_2016']
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - en_US
+    xlsx_summer_2016_models_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_model_export
+        label:     XLSX summer 2016 models for ecommerce
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/product_models.xlsx
+            filters:
+                data:
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value: ['master']
                 structure:
                     scope: ecommerce
                     locales:

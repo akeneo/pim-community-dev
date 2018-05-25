@@ -1,7 +1,6 @@
 {
   "testPathIgnorePatterns": [
-    "node_modules",
-    "vendor"
+    "node_modules"
   ],
   "projects": [
     "<rootDir>/web/bundles"

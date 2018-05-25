@@ -94,7 +94,8 @@ class AbstractProductModelTestCase extends AbstractProductTestCase
         ]
     },
     "created":"2017-10-04T18:04:10+02:00",
-    "updated":"2017-10-04T18:04:10+02:00"
+    "updated":"2017-10-04T18:04:10+02:00",
+    "associations": {}
 }
 JSON;
         }

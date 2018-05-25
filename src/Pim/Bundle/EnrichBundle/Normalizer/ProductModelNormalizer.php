@@ -8,6 +8,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -77,6 +78,12 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var UserContext */
     private $userContext;
 
+    /** @var NormalizerInterface */
+    private $parentAssociationsNormalizer;
+
+    /** @var MissingAssociationAdder */
+    private $missingAssociationAdder;
+
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
@@ -94,6 +101,8 @@ class ProductModelNormalizer implements NormalizerInterface
      * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
      * @param NormalizerInterface                       $incompleteValuesNormalizer
      * @param UserContext                               $userContext
+     * @param MissingAssociationAdder                   $missingAssociationAdder
+     * @param NormalizerInterface                       $parentAssociationsNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -111,7 +120,9 @@ class ProductModelNormalizer implements NormalizerInterface
         ImageAsLabel $imageAsLabel,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
         NormalizerInterface $incompleteValuesNormalizer,
-        UserContext $userContext
+        UserContext $userContext,
+        MissingAssociationAdder $missingAssociationAdder,
+        NormalizerInterface $parentAssociationsNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->versionNormalizer = $versionNormalizer;
@@ -129,13 +140,18 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->ascendantCategoriesQuery = $ascendantCategoriesQuery;
         $this->incompleteValuesNormalizer = $incompleteValuesNormalizer;
         $this->userContext = $userContext;
+        $this->parentAssociationsNormalizer = $parentAssociationsNormalizer;
+        $this->missingAssociationAdder = $missingAssociationAdder;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param ProductModelInterface $productModel
      */
     public function normalize($productModel, $format = null, array $context = []): array
     {
+        $this->missingAssociationAdder->addMissingAssociations($productModel);
         $this->entityValuesFiller->fillMissingValues($productModel);
 
         $normalizedProductModel = $this->normalizer->normalize($productModel, 'standard', $context);
@@ -174,6 +190,9 @@ class ProductModelNormalizer implements NormalizerInterface
             $axesAttributes[] = $attribute->getCode();
         }
 
+        $normalizedProductModel['parent_associations'] = $this->parentAssociationsNormalizer
+            ->normalize($productModel, $format, $context);
+
         $normalizedFamilyVariant = $this->normalizer->normalize($productModel->getFamilyVariant(), 'standard');
 
         $variantProductCompletenesses = $this->variantProductRatioQuery->findComplete($productModel);
@@ -196,7 +215,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
                 'required_missing_attributes' => $this->incompleteValuesNormalizer->normalize($productModel, $format, $context),
                 'level'                     => $productModel->getVariationLevel(),
-            ] + $this->getLabels($productModel, $scopeCode);
+            ] + $this->getLabels($productModel, $scopeCode) + $this->getAssociationMeta($productModel);
 
         return $normalizedProductModel;
     }
@@ -224,6 +243,29 @@ class ProductModelNormalizer implements NormalizerInterface
         }
 
         return ['label' => $labels];
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    protected function getAssociationMeta(ProductModelInterface $productModel)
+    {
+        $meta = [];
+        $associations = $productModel->getAssociations();
+
+        foreach ($associations as $association) {
+            $associationType = $association->getAssociationType();
+            $meta[$associationType->getCode()]['groupIds'] = array_map(
+                function ($group) {
+                    return $group->getId();
+                },
+                $association->getGroups()->toArray()
+            );
+        }
+
+        return ['associations' => $meta];
     }
 
     /**

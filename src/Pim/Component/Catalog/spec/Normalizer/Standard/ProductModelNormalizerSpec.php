@@ -8,18 +8,17 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Normalizer\Standard\ProductModelNormalizer;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 
 class ProductModelNormalizerSpec extends ObjectBehavior
 {
-    function let(
-        CollectionFilterInterface $filter
-    ) {
-        $this->beConstructedWith($filter);
+    function let(CollectionFilterInterface $filter, NormalizerInterface $associationsNormalizer)
+    {
+        $this->beConstructedWith($filter, $associationsNormalizer);
     }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(ProductModelNormalizer::class);
@@ -83,6 +82,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ],
             'created' => '2010-06-23T00:00:00+01:00',
             'updated' => '2010-06-23T23:00:00+01:00',
+            'associations' => null,
         ]);
     }
 
@@ -136,6 +136,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ],
             'created' => '2010-06-23T00:00:00+01:00',
             'updated' => '2010-06-23T23:00:00+01:00',
+            'associations' => null,
         ]);
     }
 

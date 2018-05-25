@@ -2,7 +2,7 @@ legacy:
     suites:
         all:
             paths:
-                - tests/legacy/features/
+                - tests/legacy/features
             filters:
                 tags: "~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated"
             contexts:
@@ -50,6 +50,16 @@ legacy:
                 - Pim\Behat\Context\Domain\Enrich\ProductModelContext:
                     - 'Context\FeatureContext'
                     - '@pim_catalog.repository.product_model'
+                    - '@doctrine.orm.entity_manager'
+                    - '@pim_catalog.updater.product_model'
+                    - '@pim_catalog.saver.product_model'
+                    - '@pim_catalog.validator.product'
+                - Pim\Behat\Context\Domain\Enrich\VariantProductContext:
+                    - 'Context\FeatureContext'
+                    - '@pim_catalog.repository.product'
+                    - '@pim_catalog.updater.product'
+                    - '@pim_catalog.saver.product'
+                    - '@pim_catalog.validator.product'
                     - '@doctrine.orm.entity_manager'
                 - Pim\Behat\Context\Domain\Enrich\VariantNavigationContext:
                     - 'Context\FeatureContext'
@@ -132,18 +142,39 @@ acceptance:
     suites:
         acceptance:
             paths:
-                - tests/features
+                - 'tests/features/pim'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+            filters:
+                tags: '@acceptance-back'
+        volume-monitoring:
+            paths:
+                - 'tests/features/volume-monitoring'
+            contexts_services:
+                - test.catalog_volume_limits.report_context
                 - test.catalog_volume_limits.attribute_per_family_context
+                - test.catalog_volume_limits.product_context
+                - test.catalog_volume_limits.channel_context
+                - test.catalog_volume_limits.locale_context
+                - test.catalog_volume_limits.scopable_attribute_context
+                - test.catalog_volume_limits.localizable_attribute_context
+                - test.catalog_volume_limits.localizable_and_scopable_attribute_context
+                - test.catalog_volume_limits.family_context
+                - test.catalog_volume_limits.attribute_context
+                - test.catalog_volume_limits.option_per_attribute_context
+                - test.catalog_volume_limits.category_context
+                - test.catalog_volume_limits.category_tree_context
+                - test.catalog_volume_limits.variant_product_context
+                - test.catalog_volume_limits.product_model_context
+                - test.catalog_volume_limits.product_value_context
             filters:
                 tags: '@acceptance-back'
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:
-               - "tests/back/Acceptance/Resources/config/behat/services.yml"
-               - "src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
+               - 'tests/back/Acceptance/Resources/config/behat/services.yml'
+               - 'src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml'
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:

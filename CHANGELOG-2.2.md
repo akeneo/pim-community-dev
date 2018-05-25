@@ -2,7 +2,23 @@
 
 ## Bug fixes
 
+- PIM-7363: fix the pim:catalog:remove-wrong-boolean-values-on-variant-products command
+
+# 2.2.5 (2018-05-16)
+
+## Bug fixes
+
+- PIM-7305: Fix memory leak on purge job command
+
+# 2.2.4 (2018-04-26)
+
+## Bug fixes
+
 - PIM-7281: Fix inappropriate calls to the cache clearer
+
+## Improvements
+
+- PIM-7310: Fix completeness filter to have the operators '=', '!=', '<', '>' for the product and product model query builder
 
 # 2.2.3 (2018-04-12)
 

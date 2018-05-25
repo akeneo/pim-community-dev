@@ -12,7 +12,7 @@ use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
@@ -52,12 +52,13 @@ class ProductNormalizerSpec extends ObjectBehavior
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
-        ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         AscendantCategoriesInterface $ascendantCategories,
-        NormalizerInterface $incompleteValuesNormalizer
+        NormalizerInterface $incompleteValuesNormalizer,
+        MissingAssociationAdder $missingAssociationAdder,
+        NormalizerInterface $parentAssociationsNormalizer
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -76,12 +77,13 @@ class ProductNormalizerSpec extends ObjectBehavior
             $completenessCollectionNormalizer,
             $userContext,
             $completenessCalculator,
-            $productBuilder,
             $productValuesFiller,
             $attributesProvider,
             $navigationNormalizer,
             $ascendantCategories,
-            $incompleteValuesNormalizer
+            $incompleteValuesNormalizer,
+            $missingAssociationAdder,
+            $parentAssociationsNormalizer
         );
     }
 
@@ -103,9 +105,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $channelRepository,
         $userContext,
         $collectionFilter,
-        $productBuilder,
         $productValuesFiller,
         $incompleteValuesNormalizer,
+        $missingAssociationAdder,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -194,7 +196,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');
 
-        $productBuilder->addMissingAssociations($mug)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($mug)->shouldBeCalled();
         $productValuesFiller->fillMissingValues($mug)->shouldBeCalled();
 
         $incompleteValuesNormalizer->normalize($mug)->willReturn('INCOMPLETE VALUES');
@@ -205,6 +207,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'categories' => ['kitchen'],
                 'family'     => '',
                 'values'     => $valuesConverted,
+                'parent_associations' => null,
                 'meta'       => [
                     'form'              => 'product-edit-form',
                     'id'                => 12,
@@ -222,8 +225,10 @@ class ProductNormalizerSpec extends ObjectBehavior
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'
                     ],
-                    'associations'      => [
-                        'group' => ['groupIds' => [12]]
+                    'associations' => [
+                        'group' => [
+                            'groupIds' => [12]
+                        ]
                     ],
                     'ascendant_category_ids'    => [],
                     'variant_navigation'        => [],
@@ -250,12 +255,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         $channelRepository,
         $userContext,
         $collectionFilter,
-        $productBuilder,
         $productValuesFiller,
         $navigationNormalizer,
         $attributesProvider,
         $ascendantCategories,
         $incompleteValuesNormalizer,
+        $missingAssociationAdder,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -349,7 +354,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');
 
-        $productBuilder->addMissingAssociations($mug)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($mug)->shouldBeCalled();
         $productValuesFiller->fillMissingValues($mug)->shouldBeCalled();
 
         $navigationNormalizer->normalize($mug, 'internal_api', $options)
@@ -382,6 +387,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'categories' => ['kitchen'],
                 'family'     => '',
                 'values'     => $valuesConverted,
+                'parent_associations' => null,
                 'meta'       => [
                     'form'              => 'product-edit-form',
                     'id'                => 12,
@@ -399,8 +405,10 @@ class ProductNormalizerSpec extends ObjectBehavior
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'
                     ],
-                    'associations'      => [
-                        'group' => ['groupIds' => [12]]
+                    'associations' => [
+                        'group' => [
+                            'groupIds' => [12]
+                        ]
                     ],
                     'ascendant_category_ids'    => [42],
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],

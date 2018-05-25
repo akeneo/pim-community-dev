@@ -39,21 +39,10 @@ class AverageMaxProductValues implements AverageMaxQuery
     public function fetch(): AverageMaxVolumes
     {
         $sql = <<<SQL
-            SELECT CEIL((sp.sum_product_value + COALESCE(spm.sum_product_model_value, 0))
-              / (sp.sum_product + COALESCE(spm.sum_product_model, 0))) AS average,
-              GREATEST(sp.max_product_value, spm.max_product_model_value) as 'max'
-            FROM ( 
-              SELECT SUM(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) AS sum_product_value,
-                COUNT(*) AS sum_product,
-                COALESCE(MAX(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))), 0) as max_product_value
-              FROM pim_catalog_product 
-            ) AS sp
-            JOIN (
-              SELECT SUM(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) AS sum_product_model_value,
-                COUNT(*) AS sum_product_model,
-                COALESCE(MAX(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))), 0) as max_product_model_value
-              FROM pim_catalog_product_model 
-            ) AS spm;
+            SELECT 
+              MAX(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*'))) AS max,
+              CEIL(AVG(JSON_LENGTH(JSON_EXTRACT(raw_values, '$.*.*.*')))) AS average
+            FROM pim_catalog_product;
 SQL;
         $result = $this->connection->query($sql)->fetch();
 

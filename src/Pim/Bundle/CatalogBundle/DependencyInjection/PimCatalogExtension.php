@@ -27,6 +27,7 @@ class PimCatalogExtension extends Extension
         $this->loadLocalizationConfiguration($container, $config);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('associations.yml');
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
         $loader->load('comparators.yml');

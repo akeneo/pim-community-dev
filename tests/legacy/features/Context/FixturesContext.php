@@ -35,6 +35,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelAssociation;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -1542,6 +1543,36 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string    $code
+     * @param TableNode $table
+     *
+     * @Then /^the product model "([^"]*)" should have the following associations?:$/
+     */
+    public function theProductModelShouldHaveTheFollowingAssociations($code, TableNode $table)
+    {
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
+        $filter = $this->getContainer()->get('pim_catalog.comparator.filter.product_association');
+
+        $expected['associations'] = [];
+        foreach ($table->getHash() as $row) {
+            if (isset($row['products'])) {
+                $expected['associations'][$row['type']]['products'] = explode(',', $row['products']);
+            }
+
+            if (isset($row['groups'])) {
+                $expected['associations'][$row['type']]['groups'] = explode(',', $row['groups']);
+            }
+
+            if (isset($row['product_models'])) {
+                $expected['associations'][$row['type']]['product_models'] = explode(',', $row['product_models']);
+            }
+        }
+
+        $filtered = $filter->filter($this->getProductModel($code), $expected);
+        Assert::assertSame([], $filtered);
+    }
+
+    /**
      * @param string $productCode
      * @param string $familyCode
      *
@@ -2054,8 +2085,36 @@ class FixturesContext extends BaseFixturesContext
 
             $association->addProduct($this->getProduct($row['products']));
         }
+        $missingAssociationAdder = $this->getContainer()->get('pim_catalog.association.missing_association_adder');
+        $missingAssociationAdder->addMissingAssociations($owner);
 
         $this->getProductSaver()->save($owner);
+    }
+
+    /**
+     * @Given /^the following associations for the (product model "([^"]+)"):$/
+     */
+    public function theFollowingAssociationsForTheProductModel(ProductModelInterface $owner, $code, TableNode $values)
+    {
+        $rows = $values->getHash();
+
+        foreach ($rows as $row) {
+            $association = $owner->getAssociationForTypeCode($row['type']);
+
+            if (null === $association) {
+                $associationType = $this->getContainer()
+                    ->get('pim_catalog.repository.association_type')
+                    ->findOneBy(['code' => $row['type']]);
+
+                $association = new ProductModelAssociation();
+                $association->setAssociationType($associationType);
+                $owner->addAssociation($association);
+            }
+
+            $association->addProduct($this->getProduct($row['products']));
+        }
+
+        $this->getProductModelSaver()->save($owner);
     }
 
     /**
@@ -2426,6 +2485,14 @@ class FixturesContext extends BaseFixturesContext
     protected function getProductSaver()
     {
         return $this->getContainer()->get('pim_catalog.saver.product');
+    }
+
+    /**
+     * @return SaverInterface
+     */
+    protected function getProductModelSaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.product_model');
     }
 
     /**

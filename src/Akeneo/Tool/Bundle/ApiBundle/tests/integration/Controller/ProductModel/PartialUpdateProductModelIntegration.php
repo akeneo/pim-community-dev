@@ -184,13 +184,12 @@ JSON;
             <<<JSON
 {
     "code": 422,
-    "message": "Validation failed.",
-    "errors": [
-        {
-          "property": "parent",
-          "message": "The product model \"new_sub_sweat\" cannot have the product model \"sub_sweat\" as parent"
+    "message": "Property \"parent\" expects a valid parent code. The new parent of the product model must be a root product model, \"sub_sweat\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#patch_product_models__code_"
         }
-    ]
+    }
 }
 JSON;
 
@@ -354,48 +353,6 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    public function testUpdateSubProductModelWithDifferentParent()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-{
-    "code": "sub_sweat",
-    "parent": "shoes",
-    "values": {
-        "a_text": [
-            {
-                "locale": null,
-                "scope": null,
-                "data": "My awesome text"
-            }
-        ]
-    }
-}
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
-
-        $expectedContent =
-            <<<JSON
-{
-    "code": 422,
-    "message": "Property \"parent\" cannot be modified, \"shoes\" given. Check the expected format on the API documentation.",
-    "_links": {
-        "documentation": {
-          "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
-        }
-    }
-}
-JSON;
-
-        $response = $client->getResponse();
-
-        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
     public function testUpdateRootProductModel()
     {
         $client = $this->createAuthenticatedClient();
@@ -498,6 +455,7 @@ JSON;
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
+            'associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -546,6 +504,7 @@ JSON;
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
+            'associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -595,6 +554,7 @@ JSON;
             ],
             'created' => '2016-06-14T13:12:50+02:00',
             'updated' => '2016-06-14T13:12:50+02:00',
+            'associations' => [],
         ];
 
         $response = $client->getResponse();
@@ -924,7 +884,7 @@ JSON;
     "errors": [
         {
             "property": "attribute",
-            "message": "Cannot set value \"Option B\" for the attribute axis \"a_simple_select\", as another sibling entity already has this value"
+            "message": "Cannot set value \"Option B\" for the attribute axis \"a_simple_select\" on product model \"sub_sweat_bis\", as the product model \"sub_sweat\" already has this value"
         }
     ]
 }
@@ -1020,48 +980,6 @@ JSON;
 
 
         $client->request('PATCH', 'api/rest/v1/product-models/new_root_sweat', [], [], [], $data);
-
-        $response = $client->getResponse();
-
-        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
-    public function testUpdateSubProductModelWithAParent()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-{
-    "code": "sub_sweat",
-    "parent": "hat",
-    "values": {
-        "a_simple_select":[
-            {
-                "locale":null,
-                "scope":null,
-                "data":"optionB"
-            }
-        ]
-    }
-}
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
-
-        $expectedContent =
-            <<<JSON
-{
-    "code": 422,
-    "message": "Property \"parent\" cannot be modified, \"hat\" given. Check the expected format on the API documentation.",
-    "_links": {
-        "documentation": {
-            "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
-        }
-    }
-}
-JSON;
 
         $response = $client->getResponse();
 

@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 
 /**
@@ -74,13 +75,11 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     public function initialize()
     {
         $channel = $this->getConfiguredChannel();
-        if (null !== $channel && $this->generateCompleteness) {
-            $this->completenessManager->generateMissingForChannel($channel);
-        }
-
         $filters = $this->getConfiguredFilters();
-        $this->products = $this->getProductsCursor($filters, $channel);
 
+        $this->generateCompletenessForMissings();
+
+        $this->products = $this->getProductsCursor($filters, $channel);
         $this->firstRead = true;
     }
 
@@ -163,6 +162,22 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     }
 
     /**
+     * Get a filter by field name
+     *
+     * @param $filters
+     * @param $fieldName
+     * @return array
+     */
+    protected function getConfiguredFilter($fieldName)
+    {
+        $filters = $this->getConfiguredFilters();
+
+        return array_values(array_filter($filters, function ($filter) use ($fieldName) {
+            return $filter['field'] === $fieldName;
+        }))[0] ?? null;
+    }
+
+    /**
      * @param array            $filters
      * @param ChannelInterface $channel
      *
@@ -179,5 +194,25 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
         $productQueryBuilder = $this->pqbFactory->create($options);
 
         return $productQueryBuilder->execute();
+    }
+
+    private function generateCompletenessForMissings(): void
+    {
+        $channel = $this->getConfiguredChannel();
+        $filters = $this->getConfiguredFilters();
+
+        $familyFilter = $this->getConfiguredFilter('family');
+        $completenessFilter = $this->getConfiguredFilter('completeness');
+        $calculateCompleteness = !empty($completenessFilter) && $completenessFilter['operator'] !== 'ALL';
+
+        if (null === $familyFilter) {
+            $filters = array_merge($filters, [
+                ['field' => 'family', 'operator' => Operators::IS_NOT_EMPTY, 'value' => null]
+            ]);
+        }
+
+        if (null !== $channel && $this->generateCompleteness && $calculateCompleteness) {
+            $this->completenessManager->generateMissingForProducts($channel, $filters);
+        }
     }
 }

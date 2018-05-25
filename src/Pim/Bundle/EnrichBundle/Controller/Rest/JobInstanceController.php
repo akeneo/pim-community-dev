@@ -366,9 +366,9 @@ class JobInstanceController
      *
      * @param string $code
      *
-     * @return JsonResponse
+     * @return Response
      */
-    protected function deleteAction($code)
+    protected function deleteAction($code): Response
     {
         $jobInstance = $this->getJobInstance($code);
         if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.delete')) {
@@ -390,10 +390,10 @@ class JobInstanceController
      *
      * @return Response
      */
-    protected function launchAction(Request $request, string $code) : JsonResponse
+    protected function launchAction(Request $request, string $code): Response
     {
         if (!$request->isXmlHttpRequest()) {
-            return new Response('/');
+            return new RedirectResponse('/');
         }
 
         $jobInstance = $this->getJobInstance($code);
@@ -478,7 +478,11 @@ class JobInstanceController
     /**
      * Get an array of job names
      *
+     * @param Request $request
+     *
      * @throws NotFoundHttpException
+     *
+     * @return JsonResponse
      */
     public function getJobNamesAction(Request $request)
     {

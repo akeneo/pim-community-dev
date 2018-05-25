@@ -57,7 +57,7 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $productModelAssociated->getCode()->willReturn('product_model_code');
         $association2->getProductModels()->willReturn(new ArrayCollection([$productModelAssociated->getWrappedObject()]));
 
-        $product->getAssociations()->willReturn([$association1, $association2]);
+        $product->getAllAssociations()->willReturn([$association1, $association2]);
 
         $this->normalize($product, 'standard')->shouldReturn(
             [
@@ -77,7 +77,7 @@ class AssociationsNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_product_with_no_associations(ProductInterface $product)
     {
-        $product->getAssociations()->willReturn([]);
+        $product->getAllAssociations()->willReturn([]);
         $this->normalize($product, 'standard')->shouldReturn([]);
     }
 }

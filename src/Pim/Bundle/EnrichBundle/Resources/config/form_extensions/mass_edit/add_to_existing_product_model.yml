@@ -20,7 +20,7 @@ extensions:
             fieldName: family_variant
             label: pim_enrich.form.product_model.family_variant
             required: true
-            loadUrl: pim_datagrid_load
+            loadUrl: pim_enrich_family_variant_rest_index
             placeholder: pim_enrich.entity.product.create_popin.labels.family_variant
 
     pim-mass-product-edit-configure-add-to-existing-product-model-product-model:

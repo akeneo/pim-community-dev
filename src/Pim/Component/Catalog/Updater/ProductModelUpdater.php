@@ -13,6 +13,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Association\ParentAssociationsFilter;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
@@ -40,11 +42,15 @@ class ProductModelUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $productModelRepository;
 
+    /** @var ParentAssociationsFilter */
+    private $parentAssociationsFilter;
+
     /**
      * @param PropertySetterInterface               $propertySetter
      * @param ObjectUpdaterInterface                $valuesUpdater
      * @param IdentifiableObjectRepositoryInterface $familyVariantRepository
      * @param IdentifiableObjectRepositoryInterface $productModelRepository
+     * @param ParentAssociationsFilter              $parentAssociationsFilter
      * @param array                                 $supportedFields
      * @param array                                 $ignoredFields
      */
@@ -53,6 +59,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         ObjectUpdaterInterface $valuesUpdater,
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
+        ParentAssociationsFilter $parentAssociationsFilter,
         array $supportedFields,
         array $ignoredFields
     ) {
@@ -62,6 +69,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         $this->productModelRepository = $productModelRepository;
         $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
+        $this->parentAssociationsFilter = $parentAssociationsFilter;
     }
 
     /**
@@ -82,10 +90,30 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $code => $value) {
-            $this->setData($productModel, $code, $value, $options);
+            $filteredValue = $this->filterData($code, $value, $data);
+            $this->setData($productModel, $code, $filteredValue, $options);
         }
 
         return $this;
+    }
+
+    /**
+     * @param                  $field
+     * @param                  $data
+     * @param array            $context
+     * @return array
+     */
+    protected function filterData($field, $data, array $context = [])
+    {
+        switch ($field) {
+            case 'associations':
+                $this->validateAssociationsDataType($data);
+                if (isset($context['parent_associations'])) {
+                    $data = $this->filterParentAssociations($data, $context['parent_associations']);
+                }
+                break;
+        }
+        return $data;
     }
 
     /**
@@ -112,11 +140,37 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 $this->validateScalarArray($field, $data);
                 $this->propertySetter->setData($productModel, $field, $data);
                 break;
+            case 'associations':
+                $this->validateAssociationsDataType($data);
+                $this->updateProductModelFields($productModel, $field, $data);
+                break;
             default:
                 if (!in_array($field, $this->ignoredFields)) {
                     throw UnknownPropertyException::unknownProperty($field);
                 }
         }
+    }
+
+    /**
+     * Validate association data
+     *
+     * @param array $associations
+     * @param array $parentAssociations
+     *
+     * @return array
+     */
+    protected function filterParentAssociations(array $associations, ?array $parentAssociations): array
+    {
+        if (null === $parentAssociations) {
+            return $associations;
+        }
+
+        $associations = $this->parentAssociationsFilter->filterParentAssociations(
+            $associations,
+            $parentAssociations
+        );
+
+        return $associations;
     }
 
     /**
@@ -200,11 +254,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             return;
         }
 
-        // TODO: To remove in PIM-6350.
-        if (null !== $productModel->getId() && (
-            $productModel->isRootProductModel() ||
-            (null !== $productModel->getParent() && $parentCode !== $productModel->getParent()->getCode())
-        )) {
+        if (null !== $productModel->getId() && $productModel->isRootProductModel()) {
             throw ImmutablePropertyException::immutableProperty(
                 'parent',
                 $parentCode,
@@ -212,7 +262,8 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
-        if (null === $parentProductModel = $this->productModelRepository->findOneByIdentifier($parentCode)) {
+        $newParentModel = $this->productModelRepository->findOneByIdentifier($parentCode);
+        if (null === $newParentModel) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 'parent',
                 'parent code',
@@ -222,7 +273,29 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
-        $productModel->setParent($parentProductModel);
+        if (!$newParentModel->isRootProductModel()) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'parent',
+                'parent code',
+                'The new parent of the product model must be a root product model',
+                static::class,
+                $parentCode
+            );
+        }
+
+        if ($productModel->getFamilyVariant() instanceof FamilyVariantInterface &&
+           $productModel->getFamilyVariant()->getCode() !== $newParentModel->getFamilyVariant()->getCode()
+        ) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'parent',
+                'parent code',
+                'The new parent of the product model must be of the same family variant',
+                static::class,
+                $parentCode
+            );
+        }
+
+        $productModel->setParent($newParentModel);
     }
 
     /**
@@ -273,5 +346,51 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         $productModel->setFamilyVariant($familyVariant);
+    }
+
+    /**
+     * Validate association data
+     *
+     * @param $data
+     *
+     * @throws InvalidPropertyTypeException
+     */
+    protected function validateAssociationsDataType($data): void
+    {
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected(
+                'associations',
+                static::class,
+                $data
+            );
+        }
+
+        foreach ($data as $associationTypeCode => $associationTypeValues) {
+            $this->validateScalar('associations', $associationTypeCode);
+            if (!is_array($associationTypeValues)) {
+                throw InvalidPropertyTypeException::arrayExpected(
+                    'associations',
+                    static::class,
+                    $associationTypeValues
+                );
+            }
+
+            foreach ($associationTypeValues as $property => $value) {
+                $this->validateScalar('associations', $property);
+                $this->validateScalarArray('associations', $value);
+            }
+        }
+    }
+
+    /**
+     * Sets the field
+     *
+     * @param ProductModelInterface $productModel
+     * @param string                $field
+     * @param mixed                 $value
+     */
+    protected function updateProductModelFields(ProductModelInterface $productModel, $field, $value): void
+    {
+        $this->propertySetter->setData($productModel, $field, $value);
     }
 }

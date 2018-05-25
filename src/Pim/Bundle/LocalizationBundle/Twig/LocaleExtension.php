@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\LocalizationBundle\Twig;
 
-use Symfony\Component\Intl\Intl;
-
 /**
  * Twig extension to present locales
  *
@@ -36,6 +34,6 @@ class LocaleExtension extends \Twig_Extension
             return '';
         }
 
-        return Intl::getLocaleBundle()->getLocaleName($code);
+        return \Locale::getDisplayName($code);
     }
 }

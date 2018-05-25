@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\MeasureFamily;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -12,7 +11,7 @@ class GetMeasureFamilyIntegration extends ApiTestCase
     {
         $standardMeasureFamily = <<<JSON
 {
-  "code": "area",
+  "code": "Area",
   "standard": "SQUARE_METER",
   "units": [
     {
@@ -148,11 +147,6 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/measure-families/Area');
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($standardMeasureFamily, $response->getContent());
-
-        $client->request('GET', '/api/rest/v1/measure-families/area');
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($standardMeasureFamily, $response->getContent());

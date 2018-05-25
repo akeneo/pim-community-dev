@@ -63,13 +63,13 @@ class PartialUpdateListVariantProductIntegration extends AbstractProductTestCase
     public function testCreateAndUpdateAListOfProductsVariant()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "apollon_optionb_true", "family": "familyA", "parent": "amor", "values": {"a_yes_no": [{"locale": null, "scope": null, "data": true}]}}
     {"identifier": "apollon_optionb_false", "family": "familyA", "parent": "amor", "values": {"a_yes_no": [{"locale": null, "scope": null, "data": false}]}}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"apollon_optionb_true","status_code":204}
 {"line":2,"identifier":"apollon_optionb_false","status_code":201}
 JSON;
@@ -196,13 +196,13 @@ JSON;
     public function testCreateAndUpdateSameProductVariant()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "apollon_optionb_false", "parent": "amor", "values": {"a_yes_no": [{"locale": null, "scope": null, "data": false}]}}
     {"identifier": "apollon_optionb_false", "parent": "amor", "values": {"a_yes_no": [{"locale": null, "scope": null, "data": false}]}}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"apollon_optionb_false","status_code":201}
 {"line":2,"identifier":"apollon_optionb_false","status_code":204}
 JSON;
@@ -218,13 +218,13 @@ JSON;
     public function testCreateAndUpdateSameProductVariantWithUpdatedAxeValue()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "apollon_optionb_true", "parent": "amor", "values": {"a_yes_no": [{"locale": null, "scope": null, "data": false}]}}
     {"identifier": "apollon_optionb_false", "parent": "amor", "values": {"a_yes_no": [{"locale": null, "scope": null, "data": false}]}}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"apollon_optionb_true","status_code":422,"message":"Validation failed.","errors":[{"property":"attribute","message":"Variant axis \"a_yes_no\" cannot be modified, \"true\" given"}]}
 {"line":2,"identifier":"apollon_optionb_false","status_code":201}
 JSON;
@@ -239,15 +239,15 @@ JSON;
     public function testCreateAndUpdateProductVariantWithUpdatedAxeValue()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"identifier": "apollon_optionb_true", "parent": "amor", "values": {"a_yes_no": [{"locale": null, "scope": null, "data": true}]}}
     {"identifier": "apollon_optionb_new", "parent": "amor", "values": {"a_yes_no": [{"locale": null, "scope": null, "data": true}]}}
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"identifier":"apollon_optionb_true","status_code":204}
-{"line":2,"identifier":"apollon_optionb_new","status_code":422,"message":"Validation failed.","errors":[{"property":"attribute","message":"Cannot set value \"1\" for the attribute axis \"a_yes_no\", as another sibling entity already has this value"}]}
+{"line":2,"identifier":"apollon_optionb_new","status_code":422,"message":"Validation failed.","errors":[{"property":"attribute","message":"Cannot set value \"1\" for the attribute axis \"a_yes_no\" on variant product \"apollon_optionb_new\", as the variant product \"apollon_optionb_true\" already has this value"}]}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
@@ -260,7 +260,7 @@ JSON;
     public function testErrorWhenIdentifierIsMissing()
     {
         $data =
-<<<JSON
+            <<<JSON
     {"code": "my_identifier"}
     {"identifier": null}
     {"identifier": ""}
@@ -269,7 +269,7 @@ JSON;
 JSON;
 
         $expectedContent =
-<<<JSON
+            <<<JSON
 {"line":1,"status_code":422,"message":"Identifier is missing."}
 {"line":2,"status_code":422,"message":"Identifier is missing."}
 {"line":3,"status_code":422,"message":"Identifier is missing."}

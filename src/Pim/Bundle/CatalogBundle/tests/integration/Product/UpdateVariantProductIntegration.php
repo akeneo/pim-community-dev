@@ -15,20 +15,8 @@ use Akeneo\Test\Integration\TestCase;
 class UpdateVariantProductIntegration extends TestCase
 {
     /**
-     * TODO: This will become possible in PIM-6350.
-     *
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException
-     * @expectedExceptionMessage Property "parent" cannot be modified, "amor" given.
-     */
-    public function testTheParentCannotBeChanged(): void
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_blue_xl');
-        $this->get('pim_catalog.updater.product')->update($product, ['parent' => 'amor']);
-    }
-
-    /**
-     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException
-     * @expectedExceptionMessage Property "parent" cannot be modified, "" given.
+     * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Property "parent" expects a valid parent code. The parent product model does not exist, "" given.
      */
     public function testTheParentCannotBeRemoved(): void
     {

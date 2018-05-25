@@ -1,6 +1,7 @@
 parameters:
     ## Searchable repositories
     pim_enrich.repository.family.search.class:           Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository
+    pim_enrich.repository.family_variant.search.class:   Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantSearchableRepository
     pim_enrich.repository.attribute.search.class:        Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
     pim_enrich.repository.attribute_option.search.class: Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeOptionSearchableRepository
 
@@ -29,6 +30,12 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.family.class%'
+
+    pim_enrich.repository.family_variant.search:
+        class: '%pim_enrich.repository.family_variant.search.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family_variant.class%'
 
     pim_enrich.repository.attribute.search:
         class: '%pim_enrich.repository.attribute.search.class%'

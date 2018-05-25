@@ -104,6 +104,8 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         }
 
         $standardProductModel = $this->productModelAttributeFilter->filter($standardProductModel);
+        $standardProductModel = $this->filterItemData($standardProductModel);
+
         $productModel = $this->findOrCreateProductModel($standardProductModel['code']);
 
         $jobParameters = $this->stepExecution->getJobParameters();
@@ -153,5 +155,20 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         }
 
         return $productModel;
+    }
+
+    /**
+     * Filters item data to remove associations which are imported through a dedicated processor because we need to
+     * create any product models before to associate them
+     *
+     * @param array $item
+     *
+     * @return array
+     */
+    protected function filterItemData(array $item): array
+    {
+        unset($item['associations']);
+
+        return $item;
     }
 }

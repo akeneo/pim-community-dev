@@ -62,6 +62,9 @@ class ProductModel implements ProductModelInterface
     /** @var FamilyVariantInterface */
     protected $familyVariant;
 
+    /** @var Collection $associations */
+    protected $associations;
+
     /**
      * Create an instance of ProductModel.
      */
@@ -71,6 +74,7 @@ class ProductModel implements ProductModelInterface
         $this->categories = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->productModels = new ArrayCollection();
+        $this->associations = new ArrayCollection();
     }
 
     /**
@@ -545,6 +549,95 @@ class ProductModel implements ProductModelInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getFamily(): ?FamilyInterface
+    {
+        return null !== $this->getFamilyVariant() ? $this->getFamilyVariant()->getFamily() : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAssociation(AssociationInterface $association): EntityWithAssociationsInterface
+    {
+        if (!$this->associations->contains($association)) {
+            $associationType = $association->getAssociationType();
+            if (null !== $associationType && null !== $this->getAssociationForType($associationType)) {
+                throw new \LogicException(
+                    sprintf(
+                        'Cannot add an association of type %s because the product model already has one',
+                        $associationType->getCode()
+                    )
+                );
+            }
+
+            $this->associations->add($association);
+            $association->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAssociation(AssociationInterface $association): EntityWithAssociationsInterface
+    {
+        $this->associations->removeElement($association);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssociations()
+    {
+        return $this->associations;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssociationForType(AssociationTypeInterface $type): ?AssociationInterface
+    {
+        return $this->getAssociationForTypeCode($type->getCode());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssociationForTypeCode($typeCode): ?AssociationInterface
+    {
+        foreach ($this->associations as $association) {
+            if ($association->getAssociationType()->getCode() === $typeCode) {
+                return $association;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAssociations(Collection $associations): EntityWithAssociationsInterface
+    {
+        $this->associations = $associations;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getLabel();
+    }
+
+    /**
      * @param EntityWithFamilyVariantInterface $entity
      * @param ValueCollectionInterface         $valueCollection
      *
@@ -593,14 +686,6 @@ class ProductModel implements ProductModelInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getFamily(): ?FamilyInterface
-    {
-        return null !== $this->getFamilyVariant() ? $this->getFamilyVariant()->getFamily() : null;
-    }
-
-    /**
      * Does the ancestry of the entity already has the $category?
      *
      * @param CategoryInterface $category
@@ -622,5 +707,67 @@ class ProductModel implements ProductModelInterface
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllAssociations()
+    {
+        $associations = new ArrayCollection($this->associations->toArray());
+        $allAssociations = $this->getAncestryAssociations($this, $associations);
+
+        return $allAssociations;
+    }
+
+    /**
+     * @param ProductModelInterface $entity
+     * @param Collection            $associationsCollection
+     *
+     * @return Collection
+     */
+    private function getAncestryAssociations(
+        ProductModelInterface $entity,
+        Collection $associationsCollection
+    ): Collection {
+        $parent = $entity->getParent();
+
+        if (null === $parent) {
+            return $associationsCollection;
+        }
+
+        foreach ($parent->getAllAssociations() as $association) {
+            $associationsCollection = $this->mergeAssociation($association, $associationsCollection);
+        }
+
+        return $associationsCollection;
+    }
+
+    private function mergeAssociation(
+        AssociationInterface $association,
+        Collection $associationsCollection
+    ): Collection {
+        $foundInCollection = null;
+        foreach ($associationsCollection as $associationInCollection) {
+            if ($associationInCollection->getAssociationType()->getCode() === $association->getAssociationType()->getCode()) {
+                $foundInCollection = $associationInCollection;
+            }
+        }
+
+        if (null !== $foundInCollection) {
+            foreach ($association->getProducts() as $product) {
+                $foundInCollection->addProduct($product);
+            }
+            foreach ($association->getProductModels() as $productModel) {
+                $foundInCollection->addProductModel($productModel);
+            }
+            foreach ($association->getGroups() as $group) {
+                $foundInCollection->addGroup($group);
+            }
+        } else {
+            $associationsCollection->add($association);
+        }
+
+        return $associationsCollection;
     }
 }

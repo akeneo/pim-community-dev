@@ -271,6 +271,7 @@ btn:
     group: groep aanmaken
     association type: associatietype aanmaken
     group type: groepstype aanmaken
+    drag_or_upload: Klik en sleep om te uploaden of klik hier
   edit: bewerken
   save: opslaan
   save and create: opslaan en nieuwe aanmaken

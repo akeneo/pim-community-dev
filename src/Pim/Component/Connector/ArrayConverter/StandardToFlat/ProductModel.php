@@ -31,6 +31,9 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
     protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
         switch ($property) {
+            case 'associations':
+                $convertedItem = $this->convertAssociations($data, $convertedItem);
+                break;
             case 'categories':
                 $convertedItem[$property] = implode(',', $data);
                 break;
@@ -49,6 +52,47 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
                 break;
             default:
                 break;
+        }
+
+        return $convertedItem;
+    }
+
+
+    /**
+     * Convert flat formatted associations to standard ones.
+     *
+     * Given this $data:
+     * [
+     *     'UPSELL' => [
+     *         'groups'   => [],
+     *         'products' => []
+     *     ],
+     *     'X_SELL' => [
+     *         'groups'   => ['akeneo_tshirt', 'oro_tshirt'],
+     *         'products' => ['akn_ts', 'oro_tsh']
+     *     ]
+     * ]
+     *
+     * It will return:
+     * [
+     *     'UPSELL-groups'   => '',
+     *     'UPSELL-products' => '',
+     *     'X_SELL-groups'   => 'akeneo_tshirt,oro_tshirt',
+     *     'X_SELL-products' => 'akn_ts,oro_tsh',
+     * ]
+     *
+     * @param array $data
+     * @param array $convertedItem
+     *
+     * @return array
+     */
+    protected function convertAssociations(array $data, array $convertedItem)
+    {
+        foreach ($data as $assocName => $associations) {
+            foreach ($associations as $assocType => $entities) {
+                $propertyName = sprintf('%s-%s', $assocName, $assocType);
+                $convertedItem[$propertyName] = implode(',', $entities);
+            }
         }
 
         return $convertedItem;

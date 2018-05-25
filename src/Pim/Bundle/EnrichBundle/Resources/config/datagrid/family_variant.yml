@@ -2,6 +2,8 @@ datagrid:
     family-variant-grid:
         options:
             entityHint: family_variant
+            requireJSModules:
+                - oro/datagrid/pagination-input
             locale_parameter: localeCode
             manageFilters: false
         source:
@@ -34,7 +36,6 @@ datagrid:
                 label:        pim_common.edit
                 propertyCode: familyVariantCode
                 fetcher:      family-variant
-                form:         pim-family-variant-edit-form
                 rowAction:    true
             delete:
                 launcherOptions:

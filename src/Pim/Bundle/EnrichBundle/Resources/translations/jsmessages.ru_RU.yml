@@ -435,6 +435,10 @@ pim_enrich:
           required_label: Обязательно
         history:
           title: Журнал
+    family_variant:
+      tab:
+        labels:
+          title: Переводы меток
     attribute_option:
       flash:
         option_created: Элемент в списке атрибута успешно создан
@@ -812,6 +816,8 @@ pim_enrich:
           label: Подтверждение
 pim_enrich.error:
   exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
+  http:
+    403: Forbidden. You are not allowed to access this page
 page_title:
   oro_default: Панель управления
   pim_enrich_attributegroup_index: Группы атрибутов
@@ -1011,3 +1017,11 @@ pim_menu:
 pim_notification:
   mark_all_as_read: Пометить все как прочитанное
   loading: Загрузка...
+catalog_volume:
+  axis:
+    count_products: Продукты
+    count_channels: Каналы
+    count_families: Семейства
+    count_attributes: Атрибуты
+    count_categories: Категории
+    count_category_trees: Деревья категории
