@@ -123,6 +123,10 @@ legacy:
                     - '@pim_catalog.repository.product'
                     - '@pim_versioning.repository.version'
                     - '@pimee_versioning.reverter.product'
+                - Pim\Behat\Context\MassEditJobContext:
+                    - 'Context\EnterpriseFeatureContext'
+                    - '@pim_catalog.repository.product'
+                    - '@pim_catalog.repository.product_model'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
