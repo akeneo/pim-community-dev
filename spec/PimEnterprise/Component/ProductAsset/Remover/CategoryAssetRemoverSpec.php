@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Remover;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\ProductAssetBundle\Event\CategoryAssetEvents;
+use Akeneo\Asset\Bundle\Event\CategoryAssetEvents;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 use Prophecy\Argument;

@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\LocalizableAsset;
+use Akeneo\Asset\Bundle\Validator\Constraints\LocalizableAsset;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use Prophecy\Argument;

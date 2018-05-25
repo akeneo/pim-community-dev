@@ -15,8 +15,8 @@ namespace PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Doctrine\Common\Collections\Collection;
-use PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetReferenceController;
-use PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController;
+use Akeneo\Asset\Bundle\Controller\ExternalApi\AssetReferenceController;
+use Akeneo\Asset\Bundle\Controller\ExternalApi\AssetVariationController;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;

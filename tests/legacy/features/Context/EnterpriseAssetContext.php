@@ -10,8 +10,8 @@ use Context\Page\Asset\Edit;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetVariationSaver;
-use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetRepository;
+use Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetVariationSaver;
+use Akeneo\Asset\Bundle\Doctrine\ORM\Repository\AssetRepository;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 

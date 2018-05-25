@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Form\EventListener;
 
 use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Form\EventListener\UserPreferencesSubscriber;
+use Akeneo\Asset\Bundle\Form\EventListener\UserPreferencesSubscriber;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

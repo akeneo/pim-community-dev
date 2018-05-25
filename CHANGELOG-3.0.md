@@ -19,22 +19,22 @@
 - Move `PimEnterprise\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber` to `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber`
 - Move namespace `PimEnterprise\Bundle\VersioningBundle\Purger` to `PimEnterprise\Bundle\WorkflowBundle\Purger`
 - Move all classes from `PimEnterprise\Bundle\ApiBundle\Normalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi`
-- Move all classes from `PimEnterprise\Bundle\EnrichBundle\Controller\Rest` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest`
-- Move all classes from `PimEnterprise\Bundle\FilterBundle\Filter\Tag` to `PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter`
-- Rename `PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ChannelController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AssetTransformationController`
+- Move all classes from `PimEnterprise\Bundle\EnrichBundle\Controller\Rest` to `Akeneo\Asset\Bundle\Controller\Rest`
+- Move all classes from `PimEnterprise\Bundle\FilterBundle\Filter\Tag` to `Akeneo\Asset\Bundle\Datagrid\Filter`
+- Rename `PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ChannelController` to `Akeneo\Asset\Bundle\Controller\Rest\AssetTransformationController`
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\AssetNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\InternalApi\AssetNormalizer`
-- Move `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\AssetCategoryAccessSubscriber` to `PimEnterprise\Bundle\ProductAssetBundle\Security\AssetCategoryAccessSubscriber`
+- Move `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\AssetCategoryAccessSubscriber` to `Akeneo\Asset\Bundle\Security\AssetCategoryAccessSubscriber`
 - Move `PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat\AssetCategoryNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\Flat\AssetCategoryNormalizer`
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\ProductDraftController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductDraftController`
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\ProductProposalController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductProposalController`
 - Move `PimEnterprise\Bundle\ApiBundle\Router\ProxyProductRouter` to `PimEnterprise\Bundle\WorkflowBundle\Router\ProxyProductRouter`
 - Move `PimEnterprise\Component\Api\Normalizer\ProductNormalizer` to `PimEnterprise\Component\Workflow\Normalizer\ExternalApi\ProductNormalizer`
-- Move `PimEnterprise\Bundle\ApiBundle\Doctrine\ORM\Repository\AssetRepository` to `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ExternalApi\AssetRepository`
-- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetCategoryController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetCategoryController`
-- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetController`
-- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetReferenceController`
-- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetTagController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetTagController`
-- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetVariationController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController`
+- Move `PimEnterprise\Bundle\ApiBundle\Doctrine\ORM\Repository\AssetRepository` to `Akeneo\Asset\Bundle\Doctrine\ORM\Repository\ExternalApi\AssetRepository`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetCategoryController` to `Akeneo\Asset\Bundle\Controller\ExternalApi\AssetCategoryController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetController` to `Akeneo\Asset\Bundle\Controller\ExternalApi\AssetController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController` to `Akeneo\Asset\Bundle\Controller\ExternalApi\AssetReferenceController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetTagController` to `Akeneo\Asset\Bundle\Controller\ExternalApi\AssetTagController`
+- Move `PimEnterprise\Bundle\ApiBundle\Controller\AssetVariationController` to `Akeneo\Asset\Bundle\Controller\ExternalApi\AssetVariationController`
 - Move `PimEnterprise\Bundle\ApiBundle\Normalizer\AssetReferenceNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetReferenceNormalizer`
 - Move `PimEnterprise\Bundle\ApiBundle\Normalizer\AssetVariationNormalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetVariationNormalizer`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductDraft\GridHelper` to `PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\ProductDraft\GridHelper`
@@ -110,7 +110,7 @@
 - Move `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProductGridListener`
 - Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\MassAction\ProductFieldsBuilder`
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator`
-- Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryItemsCounter` to `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter`
+- Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryItemsCounter` to `Akeneo\Asset\Bundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter`
 - Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryProductsCounter` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter`
 - Move `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\ProductCategoryAccessSubscriber` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ProductCategoryAccessSubscriber`
 - Move `PimEnterprise\Bundle\EnrichBundle\EventSubscriber\SavePermissionsSubscriber` to `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\SavePermissionsSubscriber`
@@ -126,8 +126,8 @@
 - Move `PimEnterprise\Bundle\ImportExportBundle\Form\Type\JobProfilePermissionsType` to `PimEnterprise\Bundle\SecurityBundle\Form\Type\JobProfilePermissionsType`
 - Move `PimEnterprise\Bundle\ImportExportBundle\Manager\JobExecutionManager` to `PimEnterprise\Bundle\SecurityBundle\Manager\JobExecutionManager`
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter` to `PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter`
-- Move `PimEnterprise\Bundle\UIBundle\Controller\AjaxOptionController` to `PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AjaxOptionController`
-- Move `PimEnterprise\Bundle\PdfGeneratorBundle\Twig\ImageExtension` to `PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\ImageExtension`
+- Move `PimEnterprise\Bundle\UIBundle\Controller\AjaxOptionController` to `Akeneo\Asset\Bundle\Controller\Rest\AjaxOptionController`
+- Move `PimEnterprise\Bundle\PdfGeneratorBundle\Twig\ImageExtension` to `Akeneo\Asset\Bundle\TwigExtension\ImageExtension`
 - Move `PimEnterprise\Bundle\SecurityBundle\Controller\PermissionRestController` to `PimEnterprise\Bundle\SecurityBundle\Controller\InternalApi\PermissionRestController`
 - Move `PimEnterprise\Bundle\PdfGeneratorBundle\Controller\ProductController` to `PimEnterprise\Bundle\SecurityBundle\Controller\ProductController`
 - Move `PimEnterprise\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer` to `PimEnterprise\Bundle\SecurityBundle\Pdf\ProductPdfRenderer`

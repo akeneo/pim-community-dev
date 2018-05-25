@@ -9,7 +9,7 @@ use Doctrine\DBAL\Driver\Statement;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
-use PimEnterprise\Bundle\ProductAssetBundle\Persistence\Query\Sql\CountAssetCategories;
+use Akeneo\Asset\Bundle\Persistence\Query\Sql\CountAssetCategories;
 use Prophecy\Argument;
 
 class CountAssetCategoriesSpec extends ObjectBehavior

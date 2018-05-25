@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\AssetsCollectionConstraint;
+use Akeneo\Asset\Bundle\Validator\Constraints\AssetsCollectionConstraint;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;

@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\ProductAssetFilterUtility;
+use Akeneo\Asset\Bundle\Datagrid\Filter\ProductAssetFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class TagFilterSpec extends ObjectBehavior

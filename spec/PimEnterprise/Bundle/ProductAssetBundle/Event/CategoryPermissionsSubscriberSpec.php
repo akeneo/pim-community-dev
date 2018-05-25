@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Event;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CategoryPermissionsType;
+use Akeneo\Asset\Bundle\Form\Type\CategoryPermissionsType;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;

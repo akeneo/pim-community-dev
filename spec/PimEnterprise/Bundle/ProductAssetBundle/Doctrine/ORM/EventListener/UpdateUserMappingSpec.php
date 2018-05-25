@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\EventListener\UpdateUserMapping;
+use Akeneo\Asset\Bundle\Doctrine\ORM\EventListener\UpdateUserMapping;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 class UpdateUserMappingSpec extends ObjectBehavior

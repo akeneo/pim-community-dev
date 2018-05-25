@@ -20,7 +20,7 @@ use Akeneo\Tool\Component\FileTransformer\Exception\NotApplicableTransformation\
 use Akeneo\Tool\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
+use Akeneo\Asset\Bundle\Event\AssetEvent;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;

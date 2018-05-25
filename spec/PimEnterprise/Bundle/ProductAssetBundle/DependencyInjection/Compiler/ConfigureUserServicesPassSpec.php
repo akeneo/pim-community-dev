@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler;
 
-use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\ConfigureUserServicesPass;
+use Akeneo\Asset\Bundle\DependencyInjection\Compiler\ConfigureUserServicesPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

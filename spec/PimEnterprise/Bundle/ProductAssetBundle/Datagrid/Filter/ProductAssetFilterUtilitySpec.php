@@ -6,7 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\TagFilterAwareInterface;
+use Akeneo\Asset\Bundle\Datagrid\Filter\TagFilterAwareInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 class ProductAssetFilterUtilitySpec extends ObjectBehavior

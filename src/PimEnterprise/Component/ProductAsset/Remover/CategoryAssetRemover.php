@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use PimEnterprise\Bundle\ProductAssetBundle\Event\CategoryAssetEvents;
+use Akeneo\Asset\Bundle\Event\CategoryAssetEvents;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
