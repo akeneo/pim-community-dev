@@ -45,7 +45,7 @@ extensions:
         targetZone: navigation
         position: 10
         config:
-          title: pim_enrich.entity.product.navigation
+          title: pim_menu.navigation.product
 
     pimee-published-product-view-form-meta:
         module: pim/form/common/meta
@@ -53,7 +53,7 @@ extensions:
         targetZone: bottom
         position: 10
         config:
-            label: pim_enrich.entity.product.infos
+            label: pim_enrich.entity.product.meta.infos
 
     pimee-published-product-view-column-tabs:
         module: pim/form/common/column-tabs
@@ -162,4 +162,4 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.product.title
+            entity: pim_enrich.entity.product.label

@@ -90,7 +90,7 @@ extensions:
         parent: pimee-published-product-index
         targetZone: bottom-panel
         config:
-            label: pim_enrich.entity.product.selected
+            label: pim_datagrid.mass_edit.selected.product
 
     pimee-published-product-index-filters-manage:
         module: oro/datafilter/filters-button

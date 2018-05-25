@@ -41,13 +41,6 @@ pimee_product_asset:
             invalid_locale: The locale is disabled or invalid
             exists: A file with the same name is already imported
             conflicts: File names conflict
-        grid:
-            medias: medias
-            filename: filename
-            filetype: filetype
-            status: status
-            progress: progress
-            actions: actions
         status:
             added: Added
             queued: Queued
