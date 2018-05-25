@@ -1,5 +1,5 @@
 parameters:
-    pim_enrich.mass_edit_action.add_tags.class: PimEnterprise\Bundle\ProductAssetBundle\MassEditAction\Operation\AddTags
+    pim_enrich.mass_edit_action.add_tags.class: Akeneo\Asset\Bundle\MassEditAction\Operation\AddTags
 
 services:
     pimee_product_asset.mass_edit_action.classify.move:

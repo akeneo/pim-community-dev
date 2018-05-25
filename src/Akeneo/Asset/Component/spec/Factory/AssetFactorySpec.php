@@ -10,7 +10,7 @@ use Akeneo\Asset\Component\Model\ReferenceInterface;
 
 class AssetFactorySpec extends ObjectBehavior
 {
-    const ASSET_CLASS = 'PimEnterprise\Component\ProductAsset\Model\Asset';
+    const ASSET_CLASS = 'Akeneo\Asset\Component\Model\Asset';
 
     function let(ReferenceFactory $referenceFactory, LocaleRepositoryInterface $localeRepository)
     {
@@ -19,7 +19,7 @@ class AssetFactorySpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Factory\AssetFactory');
+        $this->shouldHaveType('Akeneo\Asset\Component\Factory\AssetFactory');
     }
 
     function it_creates_a_not_localized_asset($referenceFactory, ReferenceInterface $reference)

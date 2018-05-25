@@ -1,4 +1,4 @@
-PimEnterprise\Component\ProductAsset\Model\Category:
+Akeneo\Asset\Component\Model\Category:
     type: entity
     table: pimee_product_asset_category
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -46,14 +46,14 @@ PimEnterprise\Component\ProductAsset\Model\Category:
                 - treeRight
     oneToMany:
         translations:
-            targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryTranslation
+            targetEntity: Akeneo\Asset\Component\Model\CategoryTranslation
             mappedBy: foreignKey
             cascade:
                 - persist
                 - detach
             orphanRemoval: true
         children:
-            targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryInterface
+            targetEntity: Akeneo\Asset\Component\Model\CategoryInterface
             mappedBy: parent
             cascade:
                 - persist
@@ -61,7 +61,7 @@ PimEnterprise\Component\ProductAsset\Model\Category:
                 left: ASC
     manyToOne:
         parent:
-            targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryInterface
+            targetEntity: Akeneo\Asset\Component\Model\CategoryInterface
             inversedBy: children
             joinColumns:
                 parent_id:

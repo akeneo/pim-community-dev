@@ -13,7 +13,7 @@ class TagUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Updater\TagUpdater');
+        $this->shouldHaveType('Akeneo\Asset\Component\Updater\TagUpdater');
     }
 
     function it_is_a_updater()
@@ -26,7 +26,7 @@ class TagUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'PimEnterprise\Component\ProductAsset\Model\TagInterface'
+                'Akeneo\Asset\Component\Model\TagInterface'
             )
         )->during(
             'update',

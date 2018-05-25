@@ -25,7 +25,7 @@ class AddTagsToAssetsProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset\AddTagsToAssetsProcessor');
+        $this->shouldHaveType('Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset\AddTagsToAssetsProcessor');
     }
 
     function it_is_a_item_processor()

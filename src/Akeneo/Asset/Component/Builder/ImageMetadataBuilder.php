@@ -37,7 +37,7 @@ class ImageMetadataBuilder implements MetadataBuilderInterface
     public function __construct(
         FileMetadataReaderFactoryInterface $metaReaderFactory,
         MetadataBuilderInterface $fileMetaBuidler,
-        $imageMetadataClass = 'PimEnterprise\Component\ProductAsset\Model\ImageMetadata'
+        $imageMetadataClass = 'Akeneo\Asset\Component\Model\ImageMetadata'
     ) {
         $this->metaReaderFactory = $metaReaderFactory;
         $this->fileMetaBuidler = $fileMetaBuidler;

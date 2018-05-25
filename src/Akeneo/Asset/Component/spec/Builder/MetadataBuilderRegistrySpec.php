@@ -29,7 +29,7 @@ class MetadataBuilderRegistrySpec extends ObjectBehavior
         $this->register($imageMetaBuilder, 'pimee_image_meta_builder');
         $this->register($fileMetaBuilder, 'pimee_file_meta_builder');
 
-        $this->shouldThrow('PimEnterprise\Component\ProductAsset\Exception\AlreadyRegisteredMetadataBuilderException')
+        $this->shouldThrow('Akeneo\Asset\Component\Exception\AlreadyRegisteredMetadataBuilderException')
             ->during('register', [$imageMetaBuilder, 'pimee_image_meta_builder']);
     }
 
@@ -45,7 +45,7 @@ class MetadataBuilderRegistrySpec extends ObjectBehavior
     {
         $this->register($imageMetaBuilder, 'pimee_image_meta_builder');
 
-        $this->shouldThrow('PimEnterprise\Component\ProductAsset\Exception\NonRegisteredMetadataBuilderException')
+        $this->shouldThrow('Akeneo\Asset\Component\Exception\NonRegisteredMetadataBuilderException')
             ->during('get', ['pimee_file_meta_builder']);
     }
 

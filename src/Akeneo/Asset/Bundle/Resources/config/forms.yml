@@ -1,13 +1,13 @@
 parameters:
-    pimee_product_asset.form.type.asset.class:                 PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType
-    pimee_product_asset.form.type.create_asset.class:          PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType
-    pimee_product_asset.form.type.asset_reference.class:       PimEnterprise\Bundle\ProductAssetBundle\Form\Type\ReferenceType
-    pimee_product_asset.form.type.asset_variation.class:       PimEnterprise\Bundle\ProductAssetBundle\Form\Type\VariationType
-    pimee_product_asset.form.type.ajax_asset_tag.class:        PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AjaxAssetTagType
-    pimee_product_asset.form.transformer.ajax_asset_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Form\Transformer\AjaxAssetTagTransformer
-    pimee_product_asset.form.type.category.class:              PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CategoryType
-    pimee_product_asset.form.type.category_permissions.class:  PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CategoryPermissionsType
-    pimee_product_asset.form.type.asset_collection.class:      PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetCollectionType
+    pimee_product_asset.form.type.asset.class:                 Akeneo\Asset\Bundle\Form\Type\AssetType
+    pimee_product_asset.form.type.create_asset.class:          Akeneo\Asset\Bundle\Form\Type\CreateAssetType
+    pimee_product_asset.form.type.asset_reference.class:       Akeneo\Asset\Bundle\Form\Type\ReferenceType
+    pimee_product_asset.form.type.asset_variation.class:       Akeneo\Asset\Bundle\Form\Type\VariationType
+    pimee_product_asset.form.type.ajax_asset_tag.class:        Akeneo\Asset\Bundle\Form\Type\AjaxAssetTagType
+    pimee_product_asset.form.transformer.ajax_asset_tag.class: Akeneo\Asset\Bundle\Form\Transformer\AjaxAssetTagTransformer
+    pimee_product_asset.form.type.category.class:              Akeneo\Asset\Bundle\Form\Type\CategoryType
+    pimee_product_asset.form.type.category_permissions.class:  Akeneo\Asset\Bundle\Form\Type\CategoryPermissionsType
+    pimee_product_asset.form.type.asset_collection.class:      Akeneo\Asset\Bundle\Form\Type\AssetCollectionType
 
 services:
     pimee_product_asset.form.type.asset:
@@ -73,6 +73,6 @@ services:
             - { name: form.type, alias: pim_assets_collection }
 
     pimee_product_asset.form_event_listener.user_preference_subscriber:
-        class: 'PimEnterprise\Bundle\ProductAssetBundle\Form\EventListener\UserPreferencesSubscriber'
+        class: 'Akeneo\Asset\Bundle\Form\EventListener\UserPreferencesSubscriber'
         arguments:
             - '@pimee_enrich.repository.asset_category_choices'

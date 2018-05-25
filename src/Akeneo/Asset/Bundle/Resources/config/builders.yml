@@ -1,9 +1,9 @@
 parameters:
-    pimee_product_asset.registry.metadata_builder.class: PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry
-    pimee_product_asset.builder.file_metadata.class: PimEnterprise\Component\ProductAsset\Builder\FileMetadataBuilder
-    pimee_product_asset.builder.image_metadata.class: PimEnterprise\Component\ProductAsset\Builder\ImageMetadataBuilder
-    pimee_product_asset.builder.reference.class: PimEnterprise\Component\ProductAsset\Builder\ReferenceBuilder
-    pimee_product_asset.builder.variation.class: PimEnterprise\Component\ProductAsset\Builder\VariationBuilder
+    pimee_product_asset.registry.metadata_builder.class: Akeneo\Asset\Component\Builder\MetadataBuilderRegistry
+    pimee_product_asset.builder.file_metadata.class: Akeneo\Asset\Component\Builder\FileMetadataBuilder
+    pimee_product_asset.builder.image_metadata.class: Akeneo\Asset\Component\Builder\ImageMetadataBuilder
+    pimee_product_asset.builder.reference.class: Akeneo\Asset\Component\Builder\ReferenceBuilder
+    pimee_product_asset.builder.variation.class: Akeneo\Asset\Component\Builder\VariationBuilder
 
 services:
     #TODO: rename this service to be compliant with our best practices

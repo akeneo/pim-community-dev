@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.completeness.checker.asset_collection.class: PimEnterprise\Component\ProductAsset\Completeness\Checker\AssetCollectionCompleteChecker
+    pimee_product_asset.completeness.checker.asset_collection.class: Akeneo\Asset\Component\Completeness\Checker\AssetCollectionCompleteChecker
 
 services:
     pimee_product_asset.completeness.checker.asset_collection:

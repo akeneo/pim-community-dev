@@ -1,13 +1,13 @@
 parameters:
-    pimee_product_asset.normalizer.standard.asset.class:                 PimEnterprise\Component\ProductAsset\Normalizer\Standard\AssetNormalizer
-    pimee_product_asset.normalizer.standard.variation.class:             PimEnterprise\Component\ProductAsset\Normalizer\Standard\VariationNormalizer
-    pimee_product_asset.normalizer.standard.channel_configuration.class: PimEnterprise\Component\ProductAsset\Normalizer\Standard\ChannelConfigurationNormalizer
-    pimee_product_asset.normalizer.flat.asset.class:                     PimEnterprise\Component\ProductAsset\Normalizer\Flat\AssetNormalizer
-    pimee_product_asset.normalizer.external_api.asset_reference.class: PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetReferenceNormalizer
-    pimee_product_asset.normalizer.external_api.asset_variation.class: PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetVariationNormalizer
-    pimee_product_asset.normalizer.external_api.asset.class: PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi\AssetNormalizer
-    pimee_product_asset.normalizer.internal_api.asset.class: PimEnterprise\Component\ProductAsset\Normalizer\InternalApi\AssetNormalizer
-    pimee_product_asset.normalizer.versioning.asset_category.class:  PimEnterprise\Component\ProductAsset\Normalizer\Flat\AssetCategoryNormalizer
+    pimee_product_asset.normalizer.standard.asset.class:                 Akeneo\Asset\Component\Normalizer\Standard\AssetNormalizer
+    pimee_product_asset.normalizer.standard.variation.class:             Akeneo\Asset\Component\Normalizer\Standard\VariationNormalizer
+    pimee_product_asset.normalizer.standard.channel_configuration.class: Akeneo\Asset\Component\Normalizer\Standard\ChannelConfigurationNormalizer
+    pimee_product_asset.normalizer.flat.asset.class:                     Akeneo\Asset\Component\Normalizer\Flat\AssetNormalizer
+    pimee_product_asset.normalizer.external_api.asset_reference.class: Akeneo\Asset\Component\Normalizer\ExternalApi\AssetReferenceNormalizer
+    pimee_product_asset.normalizer.external_api.asset_variation.class: Akeneo\Asset\Component\Normalizer\ExternalApi\AssetVariationNormalizer
+    pimee_product_asset.normalizer.external_api.asset.class: Akeneo\Asset\Component\Normalizer\ExternalApi\AssetNormalizer
+    pimee_product_asset.normalizer.internal_api.asset.class: Akeneo\Asset\Component\Normalizer\InternalApi\AssetNormalizer
+    pimee_product_asset.normalizer.versioning.asset_category.class:  Akeneo\Asset\Component\Normalizer\Flat\AssetCategoryNormalizer
 
 services:
     # standard

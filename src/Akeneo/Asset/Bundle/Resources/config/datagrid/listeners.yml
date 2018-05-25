@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.event_listener.configure_asset_grid_listener.class: PimEnterprise\Bundle\ProductAssetBundle\Event\ConfigureAssetGridListener
+    pimee_product_asset.event_listener.configure_asset_grid_listener.class: Akeneo\Asset\Bundle\Event\ConfigureAssetGridListener
 
 services:
     pimee_product_asset.event_listener.asset_grid_before_listener:

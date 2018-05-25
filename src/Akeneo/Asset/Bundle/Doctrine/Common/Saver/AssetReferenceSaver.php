@@ -107,7 +107,7 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
         if (!$reference instanceof ReferenceInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "PimEnterprise\Component\ProductAsset\Model\ReferenceInterface", "%s" provided.',
+                    'Expects a "Akeneo\Asset\Component\Model\ReferenceInterface", "%s" provided.',
                     ClassUtils::getClass($reference)
                 )
             );

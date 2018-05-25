@@ -1,6 +1,6 @@
 parameters:
-    pimee_product_asset.product_asset_tag_filter.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\TagFilter
-    pimee_product_asset.product_asset_utility.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\ProductAssetFilterUtility
+    pimee_product_asset.product_asset_tag_filter.class: Akeneo\Asset\Bundle\Datagrid\Filter\TagFilter
+    pimee_product_asset.product_asset_utility.class: Akeneo\Asset\Bundle\Datagrid\Filter\ProductAssetFilterUtility
 
 services:
     pimee_product_asset.filter.asset_category_filter:

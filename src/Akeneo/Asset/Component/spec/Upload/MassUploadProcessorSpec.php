@@ -58,7 +58,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor');
+        $this->shouldHaveType('Akeneo\Asset\Component\Upload\MassUploadProcessor');
     }
 
     function it_creates_an_asset_from_a_non_localizable_file(

@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.reader.database.category.class:  PimEnterprise\Component\ProductAsset\Connector\Reader\Database\AssetCategoryReader
+    pimee_product_asset.reader.database.category.class:  Akeneo\Asset\Component\Connector\Reader\Database\AssetCategoryReader
 
 services:
     pimee_product_asset.reader.database.category:

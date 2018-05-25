@@ -1,9 +1,9 @@
 parameters:
-    pimee_product_asset.upload_context.class:        PimEnterprise\Component\ProductAsset\Upload\UploadContext
-    pimee_product_asset.upload_checker.class:        PimEnterprise\Component\ProductAsset\Upload\UploadChecker
-    pimee_product_asset.upload_importer.class:       PimEnterprise\Component\ProductAsset\Upload\Importer
-    pimee_product_asset.mass_upload_processor.class: PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor
-    pimee_product_asset.mass_upload.tasklet.class:   PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet
+    pimee_product_asset.upload_context.class:        Akeneo\Asset\Component\Upload\UploadContext
+    pimee_product_asset.upload_checker.class:        Akeneo\Asset\Component\Upload\UploadChecker
+    pimee_product_asset.upload_importer.class:       Akeneo\Asset\Component\Upload\Importer
+    pimee_product_asset.mass_upload_processor.class: Akeneo\Asset\Component\Upload\MassUploadProcessor
+    pimee_product_asset.mass_upload.tasklet.class:   Akeneo\Asset\Bundle\MassUpload\MassUploadTasklet
 
 services:
     pimee_product_asset.upload_checker:

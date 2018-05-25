@@ -50,7 +50,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
     protected $enterpriseEntities = [
         'Published'     => 'PimEnterprise\Component\Workflow\Model\PublishedProduct',
-        'AssetCategory' => 'PimEnterprise\Component\ProductAsset\Model\Category',
+        'AssetCategory' => 'Akeneo\Asset\Component\Model\Category',
         'JobProfile'    => 'Akeneo\Tool\Component\Batch\Model\JobInstance',
     ];
 

@@ -147,7 +147,7 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function getTranslationFQCN()
     {
-        return 'PimEnterprise\Component\ProductAsset\Model\CategoryTranslation';
+        return 'Akeneo\Asset\Component\Model\CategoryTranslation';
     }
 
     /**

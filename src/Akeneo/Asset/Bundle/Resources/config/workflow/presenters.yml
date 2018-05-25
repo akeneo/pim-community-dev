@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.workflow.presenter.assets_collection.class: PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter\AssetsCollectionPresenter
+    pimee_product_asset.workflow.presenter.assets_collection.class: Akeneo\Asset\Bundle\Workflow\Presenter\AssetsCollectionPresenter
 
 services:
     pimee_product_asset.workflow.presenter.assets_collection:

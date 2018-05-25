@@ -18,7 +18,7 @@ class AssetVoterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Voter\AssetVoter');
+        $this->shouldHaveType('Akeneo\Asset\Bundle\Voter\AssetVoter');
     }
 
     function let(CategoryAccessRepository $categoryAccessRepository, TokenInterface $token, UserInterface $user)

@@ -70,7 +70,7 @@ class AssetVariationSaverSpec extends ObjectBehavior
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
-                'Expects a "PimEnterprise\Component\ProductAsset\Model\VariationInterface", "%s" provided.',
+                'Expects a "Akeneo\Asset\Component\Model\VariationInterface", "%s" provided.',
                 get_class($anythingElse)
             )
         );

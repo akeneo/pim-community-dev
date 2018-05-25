@@ -15,11 +15,11 @@ class AssetRepositorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface');
+        $this->shouldHaveType('Akeneo\Asset\Component\Repository\AssetRepositoryInterface');
     }
 
     function let(EntityManager $em, Connection $connection) {
-        $classMetadata = new ClassMetadata('PimEnterprise\Component\ProductAsset\Model\Asset');
+        $classMetadata = new ClassMetadata('Akeneo\Asset\Component\Model\Asset');
         $classMetadata->mapField([
             'fieldName' => 'sortOrder',
             'type' => 'integer',
@@ -96,7 +96,7 @@ class AssetRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->willReturn($qb);
 
         $qb->select('asset', null)->willReturn($qb);
-        $qb->from('PimEnterprise\Component\ProductAsset\Model\Asset', 'asset', null)->willReturn($qb);
+        $qb->from('Akeneo\Asset\Component\Model\Asset', 'asset', null)->willReturn($qb);
         $qb->distinct(true)->willReturn($qb);
 
         $this->createAssetDatagridQueryBuilder([]);
@@ -113,7 +113,7 @@ class AssetRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->willReturn($qb);
 
         $qb->select('asset')->willReturn($qb);
-        $qb->from('PimEnterprise\Component\ProductAsset\Model\Asset', 'asset')->willReturn($qb);
+        $qb->from('Akeneo\Asset\Component\Model\Asset', 'asset')->willReturn($qb);
         $qb->where(':endOfUse1 < asset.endOfUseAt')->willReturn($qb);
         $qb->andWhere('asset.endOfUseAt < :endOfUse2')->willReturn($qb);
         $qb->setParameter(':endOfUse1', '2015-08-15 0:00:00')->willReturn($qb);

@@ -1,4 +1,4 @@
-PimEnterprise\Component\ProductAsset\Model\Tag:
+Akeneo\Asset\Component\Model\Tag:
     type: entity
     table: pimee_product_asset_tag
     changeTrackingPolicy: DEFERRED_EXPLICIT

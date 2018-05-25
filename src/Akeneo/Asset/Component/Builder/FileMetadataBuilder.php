@@ -23,7 +23,7 @@ class FileMetadataBuilder implements MetadataBuilderInterface
     /**
      * @param string $metadataClass
      */
-    public function __construct($metadataClass = 'PimEnterprise\Component\ProductAsset\Model\FileMetadata')
+    public function __construct($metadataClass = 'Akeneo\Asset\Component\Model\FileMetadata')
     {
         $this->metadataClass = $metadataClass;
     }

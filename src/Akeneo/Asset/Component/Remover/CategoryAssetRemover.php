@@ -60,7 +60,7 @@ class CategoryAssetRemover implements RemoverInterface
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expects a "%s", "%s" provided.',
-                    'PimEnterprise\Component\ProductAsset\Model\CategoryInterface',
+                    'Akeneo\Asset\Component\Model\CategoryInterface',
                     ClassUtils::getClass($category)
                 )
             );

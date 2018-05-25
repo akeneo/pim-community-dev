@@ -30,7 +30,7 @@ class AssetUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Updater\AssetUpdater');
+        $this->shouldHaveType('Akeneo\Asset\Component\Updater\AssetUpdater');
     }
 
     function it_is_a_updater()
@@ -43,7 +43,7 @@ class AssetUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'PimEnterprise\Component\ProductAsset\Model\AssetInterface'
+                'Akeneo\Asset\Component\Model\AssetInterface'
             )
         )->during(
             'update',
@@ -121,7 +121,7 @@ class AssetUpdaterSpec extends ObjectBehavior
                     'tags',
                     'tag code',
                     'The tag does not exist',
-                    'PimEnterprise\Component\ProductAsset\Updater\AssetUpdater',
+                    'Akeneo\Asset\Component\Updater\AssetUpdater',
                     'dog'
                 )
             )
@@ -163,7 +163,7 @@ class AssetUpdaterSpec extends ObjectBehavior
                     'categories',
                     'category code',
                     'The category does not exist',
-                    'PimEnterprise\Component\ProductAsset\Updater\AssetUpdater',
+                    'Akeneo\Asset\Component\Updater\AssetUpdater',
                     'cat1'
                 )
             )

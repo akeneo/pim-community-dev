@@ -33,7 +33,7 @@ class ReferenceBuilder implements ReferenceBuilderInterface
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
-        $referenceClass = 'PimEnterprise\Component\ProductAsset\Model\Reference'
+        $referenceClass = 'Akeneo\Asset\Component\Model\Reference'
     ) {
         $this->localeRepository = $localeRepository;
         $this->referenceClass = $referenceClass;

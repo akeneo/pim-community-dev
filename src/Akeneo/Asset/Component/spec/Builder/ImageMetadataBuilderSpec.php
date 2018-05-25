@@ -20,7 +20,7 @@ class ImageMetadataBuilderSpec extends ObjectBehavior
 
     function it_is_a_metadata_builder()
     {
-        $this->shouldImplement('PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderInterface');
+        $this->shouldImplement('Akeneo\Asset\Component\Builder\MetadataBuilderInterface');
     }
 
     function it_builds_an_image_metadata(
@@ -61,7 +61,7 @@ class ImageMetadataBuilderSpec extends ObjectBehavior
 
         $imageMetadata = $this->build($file);
 
-        $imageMetadata->shouldImplement('PimEnterprise\Component\ProductAsset\Model\ImageMetadataInterface');
+        $imageMetadata->shouldImplement('Akeneo\Asset\Component\Model\ImageMetadataInterface');
         $imageMetadata->getModificationDatetime()->getTimestamp()->shouldReturn($expectedDateTime->getTimestamp());
         $imageMetadata->getExifDateTimeOriginal()->shouldReturn('2012-05-08 12:20:33');
         $imageMetadata->getExifCameraMake()->shouldReturn('Canon');
@@ -118,7 +118,7 @@ class ImageMetadataBuilderSpec extends ObjectBehavior
 
         $imageMetadata = $this->build($file);
 
-        $imageMetadata->shouldImplement('PimEnterprise\Component\ProductAsset\Model\ImageMetadataInterface');
+        $imageMetadata->shouldImplement('Akeneo\Asset\Component\Model\ImageMetadataInterface');
         $imageMetadata->getModificationDatetime()->getTimestamp()->shouldReturn($expectedDateTime->getTimestamp());
         $imageMetadata->getExifDateTimeOriginal()->shouldReturn('2012-05-08 12:20:33');
         $imageMetadata->getExifCameraMake()->shouldReturn('Canon');

@@ -8,6 +8,6 @@ class VariationSpec extends ObjectBehavior
 {
     function it_is_a_variation_interface()
     {
-        $this->shouldImplement('PimEnterprise\Component\ProductAsset\Model\VariationInterface');
+        $this->shouldImplement('Akeneo\Asset\Component\Model\VariationInterface');
     }
 }

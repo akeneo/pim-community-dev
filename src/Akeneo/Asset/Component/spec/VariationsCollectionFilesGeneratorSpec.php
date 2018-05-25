@@ -18,8 +18,8 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGenerator');
-        $this->shouldImplement('PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface');
+        $this->shouldHaveType('Akeneo\Asset\Component\VariationsCollectionFilesGenerator');
+        $this->shouldImplement('Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface');
     }
 
     function it_generates_the_variation_files_from_a_reference(
@@ -39,7 +39,7 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
         $variationFileGenerator->generate($variation3)->shouldNotBeCalled();
 
         $res = $this->generate([$variation1, $variation2, $variation3]);
-        $res->shouldReturnAnInstanceOf('PimEnterprise\Component\ProductAsset\ProcessedItemList');
+        $res->shouldReturnAnInstanceOf('Akeneo\Asset\Component\ProcessedItemList');
         $res->shouldBeListOfProcessedVariations();
     }
 
@@ -55,7 +55,7 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
         $variationFileGenerator->generate($variation2)->shouldBeCalled();
 
         $res = $this->generate([$variation1, $variation2], true);
-        $res->shouldReturnAnInstanceOf('PimEnterprise\Component\ProductAsset\ProcessedItemList');
+        $res->shouldReturnAnInstanceOf('Akeneo\Asset\Component\ProcessedItemList');
         $res->shouldHaveCount(2);
         $res->shouldBeListOfSuccessfulProcessedVariations();
     }

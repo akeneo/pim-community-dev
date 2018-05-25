@@ -105,7 +105,7 @@ class AssetVariationSaver implements SaverInterface, BulkSaverInterface
         if (!$variation instanceof VariationInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "PimEnterprise\Component\ProductAsset\Model\VariationInterface", "%s" provided.',
+                    'Expects a "Akeneo\Asset\Component\Model\VariationInterface", "%s" provided.',
                     ClassUtils::getClass($variation)
                 )
             );

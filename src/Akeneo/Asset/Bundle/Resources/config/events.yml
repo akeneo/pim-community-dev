@@ -1,7 +1,7 @@
 parameters:
-    pimee_product_asset.subscriber.missing_variations.class: PimEnterprise\Bundle\ProductAssetBundle\Event\MissingVariationsEventSubscriber
-    pimee_product_asset.form.subscriber.category_permissions.class: PimEnterprise\Bundle\ProductAssetBundle\Event\CategoryPermissionsSubscriber
-    pimee_product_asset.event_subscriber.datagrid.asset_category_access.class: PimEnterprise\Bundle\ProductAssetBundle\Security\AssetCategoryAccessSubscriber
+    pimee_product_asset.subscriber.missing_variations.class: Akeneo\Asset\Bundle\Event\MissingVariationsEventSubscriber
+    pimee_product_asset.form.subscriber.category_permissions.class: Akeneo\Asset\Bundle\Event\CategoryPermissionsSubscriber
+    pimee_product_asset.event_subscriber.datagrid.asset_category_access.class: Akeneo\Asset\Bundle\Security\AssetCategoryAccessSubscriber
 
 services:
     pimee_product_asset.subscriber.missing_variations:

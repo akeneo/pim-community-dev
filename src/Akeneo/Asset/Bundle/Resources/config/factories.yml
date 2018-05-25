@@ -1,10 +1,10 @@
 parameters:
-    pimee_product_asset.factory.asset.class:                 PimEnterprise\Component\ProductAsset\Factory\AssetFactory
-    pimee_product_asset.factory.reference.class:             PimEnterprise\Component\ProductAsset\Factory\ReferenceFactory
-    pimee_product_asset.factory.variation.class:             PimEnterprise\Component\ProductAsset\Factory\VariationFactory
-    pimee_product_asset.factory.tag.class:                   PimEnterprise\Component\ProductAsset\Factory\TagFactory
-    pimee_product_asset.factory.channel_configuration.class: PimEnterprise\Component\ProductAsset\Factory\ChannelConfigurationFactory
-    pimee_product_asset.factory.notification.class:          PimEnterprise\Component\ProductAsset\Factory\NotificationFactory
+    pimee_product_asset.factory.asset.class:                 Akeneo\Asset\Component\Factory\AssetFactory
+    pimee_product_asset.factory.reference.class:             Akeneo\Asset\Component\Factory\ReferenceFactory
+    pimee_product_asset.factory.variation.class:             Akeneo\Asset\Component\Factory\VariationFactory
+    pimee_product_asset.factory.tag.class:                   Akeneo\Asset\Component\Factory\TagFactory
+    pimee_product_asset.factory.channel_configuration.class: Akeneo\Asset\Component\Factory\ChannelConfigurationFactory
+    pimee_product_asset.factory.notification.class:          Akeneo\Asset\Component\Factory\NotificationFactory
     pimee_product_asset.factory.product_value.asset_collection.class: Pim\Component\ReferenceData\Factory\Value\ReferenceDataCollectionValueFactory
 
 services:

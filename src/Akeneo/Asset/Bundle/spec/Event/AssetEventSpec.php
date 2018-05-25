@@ -15,7 +15,7 @@ class AssetEventSpec extends ObjectBehavior
 
     public function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent');
+        $this->shouldHaveType('Akeneo\Asset\Bundle\Event\AssetEvent');
     }
 
     public function it_is_a_generic_event()

@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.data_transformer.asset_to_string.class: PimEnterprise\Bundle\ProductAssetBundle\Form\Transformer\AssetCollectionToStringTransformer
+    pimee_product_asset.data_transformer.asset_to_string.class: Akeneo\Asset\Bundle\Form\Transformer\AssetCollectionToStringTransformer
 services:
     pimee_product_asset.data_transformer.asset_to_string:
         class: '%pimee_product_asset.data_transformer.asset_to_string.class%'

@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.analytic.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Analytic\AssetAnalyticProvider
+    pimee_product_asset.analytic.asset.class: Akeneo\Asset\Bundle\Analytic\AssetAnalyticProvider
 
 services:
     pimee_product_asset.analytic.asset:

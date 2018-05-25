@@ -1,7 +1,7 @@
 parameters:
-    pimee_produt_asset.twig_extension.file_exists.class:  PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\RawFileExistsTwigExtension
-    pimee_produt_asset.twig_extension.format_bytes.class: PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\FormatBytesTwigExtension
-    pim_datagrid.twig.image_extension.class: PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\ImageExtension
+    pimee_produt_asset.twig_extension.file_exists.class:  Akeneo\Asset\Bundle\TwigExtension\RawFileExistsTwigExtension
+    pimee_produt_asset.twig_extension.format_bytes.class: Akeneo\Asset\Bundle\TwigExtension\FormatBytesTwigExtension
+    pim_datagrid.twig.image_extension.class: Akeneo\Asset\Bundle\TwigExtension\ImageExtension
 
 services:
     pimee_produt_asset.twig_extension.file_exists:

@@ -1,7 +1,7 @@
 parameters:
-    pimee_product_asset.event_subscriber.catalog.remove_channel.class: PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM\RemoveChannelSubscriber
-    pimee_product_asset.event_subscriber.asset_event.class: PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM\AssetEventSubscriber
-    pimee_product_asset.event_subscriber.asset_updated_at.class: PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\AssetUpdatedAtSubscriber
+    pimee_product_asset.event_subscriber.catalog.remove_channel.class: Akeneo\Asset\Bundle\EventSubscriber\ORM\RemoveChannelSubscriber
+    pimee_product_asset.event_subscriber.asset_event.class: Akeneo\Asset\Bundle\EventSubscriber\ORM\AssetEventSubscriber
+    pimee_product_asset.event_subscriber.asset_updated_at.class: Akeneo\Asset\Bundle\EventSubscriber\AssetUpdatedAtSubscriber
 
 services:
     pimee_product_asset.event_subscriber.catalog.remove_channel:
@@ -30,6 +30,6 @@ services:
             - { name: kernel.event_subscriber }
 
     pimee_product_asset.doctrine.event_subscriber.add_field_to_user:
-        class: 'PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\EventListener\UpdateUserMapping'
+        class: 'Akeneo\Asset\Bundle\Doctrine\ORM\EventListener\UpdateUserMapping'
         tags:
             - { name: doctrine.event_subscriber }

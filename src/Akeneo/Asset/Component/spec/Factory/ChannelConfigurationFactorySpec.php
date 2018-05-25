@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 
 class ChannelConfigurationFactorySpec extends ObjectBehavior
 {
-    const CONFIG_CLASS = 'PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfiguration';
+    const CONFIG_CLASS = 'Akeneo\Asset\Component\Model\ChannelVariationsConfiguration';
 
     function let()
     {
@@ -15,7 +15,7 @@ class ChannelConfigurationFactorySpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Factory\ChannelConfigurationFactory');
+        $this->shouldHaveType('Akeneo\Asset\Component\Factory\ChannelConfigurationFactory');
     }
 
     function it_creates_a_channel_configuration()

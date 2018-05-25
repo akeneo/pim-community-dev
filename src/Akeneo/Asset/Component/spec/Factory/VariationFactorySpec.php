@@ -7,7 +7,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 
 class VariationFactorySpec extends ObjectBehavior
 {
-    const VARIATION_CLASS = 'PimEnterprise\Component\ProductAsset\Model\Variation';
+    const VARIATION_CLASS = 'Akeneo\Asset\Component\Model\Variation';
 
     function let()
     {
@@ -16,7 +16,7 @@ class VariationFactorySpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Factory\VariationFactory');
+        $this->shouldHaveType('Akeneo\Asset\Component\Factory\VariationFactory');
     }
 
     function it_creates_a_new_variation_without_channel()

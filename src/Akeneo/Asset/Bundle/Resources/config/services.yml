@@ -1,7 +1,7 @@
 # TODO: should not be in a services.yml file
 parameters:
-    pimee_product_asset.variation_file_generator.class:              PimEnterprise\Component\ProductAsset\VariationFileGenerator
-    pimee_product_asset.variations_collection_files_generator.class: PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGenerator
+    pimee_product_asset.variation_file_generator.class:              Akeneo\Asset\Component\VariationFileGenerator
+    pimee_product_asset.variations_collection_files_generator.class: Akeneo\Asset\Component\VariationsCollectionFilesGenerator
     pimee_product_asset.command_launcher.class:                      Akeneo\Tool\Component\Console\CommandLauncher
 
 services:

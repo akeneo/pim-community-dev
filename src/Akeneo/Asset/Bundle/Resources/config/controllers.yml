@@ -1,15 +1,15 @@
 parameters:
-    pimee_product_asset.controller.product_asset.class:      PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController
-    pimee_product_asset.controller.rest.mass_upload.class:   PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\MassUploadController
-    pimee_product_asset.controller.rest.product_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\ProductAssetController
-    pimee_product_asset.controller.asset_transformation.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AssetTransformationController
-    pimee_product_asset.controller.rest.asset_category.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AssetCategoryController
-    pimee_product_asset.controller.asset_category.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetCategoryController
-    pimee_product_asset.controller.asset_reference.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetReferenceController
-    pimee_product_asset.controller.asset_variation.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetVariationController
-    pimee_product_asset.controller.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetController
-    pimee_product_asset.controller.asset_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ExternalApi\AssetTagController
-    pimee_product_asset.controller.ajax_option.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\AjaxOptionController
+    pimee_product_asset.controller.product_asset.class:      Akeneo\Asset\Bundle\Controller\ProductAssetController
+    pimee_product_asset.controller.rest.mass_upload.class:   Akeneo\Asset\Bundle\Controller\Rest\MassUploadController
+    pimee_product_asset.controller.rest.product_asset.class: Akeneo\Asset\Bundle\Controller\Rest\ProductAssetController
+    pimee_product_asset.controller.asset_transformation.class: Akeneo\Asset\Bundle\Controller\Rest\AssetTransformationController
+    pimee_product_asset.controller.rest.asset_category.class: Akeneo\Asset\Bundle\Controller\Rest\AssetCategoryController
+    pimee_product_asset.controller.asset_category.class: Akeneo\Asset\Bundle\Controller\ExternalApi\AssetCategoryController
+    pimee_product_asset.controller.asset_reference.class: Akeneo\Asset\Bundle\Controller\ExternalApi\AssetReferenceController
+    pimee_product_asset.controller.asset_variation.class: Akeneo\Asset\Bundle\Controller\ExternalApi\AssetVariationController
+    pimee_product_asset.controller.asset.class: Akeneo\Asset\Bundle\Controller\ExternalApi\AssetController
+    pimee_product_asset.controller.asset_tag.class: Akeneo\Asset\Bundle\Controller\ExternalApi\AssetTagController
+    pimee_product_asset.controller.ajax_option.class: Akeneo\Asset\Bundle\Controller\Rest\AjaxOptionController
 
 services:
     pimee_product_asset.controller.product_asset:

@@ -105,7 +105,7 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
         if (!$asset instanceof AssetInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "PimEnterprise\Component\ProductAsset\Model\AssetInterface", "%s" provided.',
+                    'Expects a "Akeneo\Asset\Component\Model\AssetInterface", "%s" provided.',
                     ClassUtils::getClass($asset)
                 )
             );

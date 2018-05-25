@@ -102,7 +102,7 @@ class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess
         if (!$value instanceof ProcessedItem) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "PimEnterprise\Component\ProductAsset\ProcessedItem", "%s" provided.',
+                    'Expects a "Akeneo\Asset\Component\ProcessedItem", "%s" provided.',
                     ClassUtils::getClass($value)
                 )
             );

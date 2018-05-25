@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.datagrid.configuration.asset.context_configurator.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Configuration\AssetContextConfigurator
+    pimee_product_asset.datagrid.configuration.asset.context_configurator.class: Akeneo\Asset\Bundle\Datagrid\Configuration\AssetContextConfigurator
 
 services:
     pimee_product_asset.datagrid.configuration.asset.context_configurator:

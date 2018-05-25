@@ -43,7 +43,7 @@ class PimEnterpriseProductAssetBundle extends Bundle
             ->addCompilerPass(new ResolveDoctrineTargetModelPass());
 
         $mappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Component\ProductAsset\Model'
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Asset\Component\Model'
         ];
 
         $container->addCompilerPass(new ConfigureUserServicesPass());

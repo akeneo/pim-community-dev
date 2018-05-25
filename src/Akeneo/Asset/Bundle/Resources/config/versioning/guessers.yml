@@ -1,6 +1,6 @@
 parameters:
-    pimee_product_asset.versioning.update_guesser.variation.class: PimEnterprise\Bundle\ProductAssetBundle\Versioning\UpdateGuesser\VariationUpdateGuesser
-    pimee_product_asset.versioning.update_guesser.reference.class: PimEnterprise\Bundle\ProductAssetBundle\Versioning\UpdateGuesser\ReferenceUpdateGuesser
+    pimee_product_asset.versioning.update_guesser.variation.class: Akeneo\Asset\Bundle\Versioning\UpdateGuesser\VariationUpdateGuesser
+    pimee_product_asset.versioning.update_guesser.reference.class: Akeneo\Asset\Bundle\Versioning\UpdateGuesser\ReferenceUpdateGuesser
 
 services:
     pimee_product_asset.versioning.update_guesser.variation:

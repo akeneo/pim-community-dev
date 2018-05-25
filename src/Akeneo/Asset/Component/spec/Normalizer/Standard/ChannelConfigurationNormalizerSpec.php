@@ -10,7 +10,7 @@ class ChannelConfigurationNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Normalizer\Standard\ChannelConfigurationNormalizer');
+        $this->shouldHaveType('Akeneo\Asset\Component\Normalizer\Standard\ChannelConfigurationNormalizer');
     }
 
     function it_is_a_normalizer()

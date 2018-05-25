@@ -1,4 +1,4 @@
-PimEnterprise\Component\ProductAsset\Model\Variation:
+Akeneo\Asset\Component\Model\Variation:
     properties:
         fileInfo:
             - Valid: ~

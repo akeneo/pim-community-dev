@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.voter.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Voter\AssetVoter
+    pimee_product_asset.voter.asset.class: Akeneo\Asset\Bundle\Voter\AssetVoter
 
 services:
     pimee_product_asset.voter.asset:

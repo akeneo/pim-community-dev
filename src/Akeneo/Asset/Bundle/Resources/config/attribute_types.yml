@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.attribute_type.asset_collection.class: PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AssetCollectionType
+    pimee_product_asset.attribute_type.asset_collection.class: Akeneo\Asset\Bundle\AttributeType\AssetCollectionType
 
 services:
     pimee_product_asset.attribute_type.asset_collection:

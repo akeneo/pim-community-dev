@@ -91,7 +91,7 @@ class CategoryAssetRemoverSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a "PimEnterprise\Component\ProductAsset\Model\CategoryInterface", "%s" provided.',
+                        'Expects a "Akeneo\Asset\Component\Model\CategoryInterface", "%s" provided.',
                         get_class($anythingElse)
                     )
                 )

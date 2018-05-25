@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.finder.asset.class: PimEnterprise\Component\ProductAsset\Finder\AssetFinder
+    pimee_product_asset.finder.asset.class: Akeneo\Asset\Component\Finder\AssetFinder
 
 services:
     pimee_product_asset.finder.asset:

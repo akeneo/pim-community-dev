@@ -20,7 +20,7 @@ class UploadContextSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Upload\UploadContext');
+        $this->shouldHaveType('Akeneo\Asset\Component\Upload\UploadContext');
     }
 
     function it_must_be_initialized_with_username()

@@ -31,8 +31,8 @@ class AssetFinderSpec extends ObjectBehavior
 
     public function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Finder\AssetFinder');
-        $this->shouldImplement('PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface');
+        $this->shouldHaveType('Akeneo\Asset\Component\Finder\AssetFinder');
+        $this->shouldImplement('Akeneo\Asset\Component\Finder\AssetFinderInterface');
     }
 
     public function it_retrieves_a_reference(

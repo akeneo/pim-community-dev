@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.doctrine.counter.granted_category_items.class: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter
+    pimee_product_asset.doctrine.counter.granted_category_items.class: Akeneo\Asset\Bundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter
 
 services:
     pimee_product_asset.doctrine.counter.category_asset:

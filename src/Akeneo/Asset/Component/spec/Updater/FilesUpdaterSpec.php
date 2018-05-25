@@ -18,12 +18,12 @@ class FilesUpdaterSpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Updater\FilesUpdater');
+        $this->shouldHaveType('Akeneo\Asset\Component\Updater\FilesUpdater');
     }
 
     function it_can_update_asset_files()
     {
-        $this->shouldImplement('PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface');
+        $this->shouldImplement('Akeneo\Asset\Component\Updater\FilesUpdaterInterface');
     }
 
     function it_can_delete_reference_file(ReferenceInterface $reference, FileInfoInterface $fileInfo)

@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 
 class TagFactorySpec extends ObjectBehavior
 {
-    const TAG_CLASS = 'PimEnterprise\Component\ProductAsset\Model\Tag';
+    const TAG_CLASS = 'Akeneo\Asset\Component\Model\Tag';
 
     function let()
     {
@@ -15,7 +15,7 @@ class TagFactorySpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Factory\TagFactory');
+        $this->shouldHaveType('Akeneo\Asset\Component\Factory\TagFactory');
     }
 
     function it_creates_a_tag()

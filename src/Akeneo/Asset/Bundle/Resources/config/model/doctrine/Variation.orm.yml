@@ -1,4 +1,4 @@
-PimEnterprise\Component\ProductAsset\Model\Variation:
+Akeneo\Asset\Component\Model\Variation:
     type: entity
     table: pimee_product_asset_variation
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -23,7 +23,7 @@ PimEnterprise\Component\ProductAsset\Model\Variation:
                 name: channel_id
                 referencedColumnName: id
         reference:
-            targetEntity: PimEnterprise\Component\ProductAsset\Model\ReferenceInterface
+            targetEntity: Akeneo\Asset\Component\Model\ReferenceInterface
             inversedBy: variations
             join_column:
                 name: reference_id

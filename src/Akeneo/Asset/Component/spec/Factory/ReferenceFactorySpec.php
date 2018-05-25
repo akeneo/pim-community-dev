@@ -11,7 +11,7 @@ use Akeneo\Asset\Component\Model\VariationInterface;
 
 class ReferenceFactorySpec extends ObjectBehavior
 {
-    const REFERENCE_CLASS = 'PimEnterprise\Component\ProductAsset\Model\Reference';
+    const REFERENCE_CLASS = 'Akeneo\Asset\Component\Model\Reference';
 
     function let(ChannelRepositoryInterface $channelRepository, VariationFactory $variationFactory)
     {
@@ -20,7 +20,7 @@ class ReferenceFactorySpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Factory\ReferenceFactory');
+        $this->shouldHaveType('Akeneo\Asset\Component\Factory\ReferenceFactory');
     }
 
     function it_creates_a_not_localized_reference(

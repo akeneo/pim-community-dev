@@ -25,13 +25,13 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'PimEnterprise\Component\ProductAsset\Model\AssetInterface'         => 'pimee_product_asset.model.asset.class',
-            'PimEnterprise\Component\ProductAsset\Model\VariationInterface'     => 'pimee_product_asset.model.variation.class',
-            'PimEnterprise\Component\ProductAsset\Model\ReferenceInterface'     => 'pimee_product_asset.model.reference.class',
-            'PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface'  => 'pimee_product_asset.model.file_metadata.class',
-            'PimEnterprise\Component\ProductAsset\Model\ImageMetadataInterface' => 'pimee_product_asset.model.image_metadata.class',
-            'PimEnterprise\Component\ProductAsset\Model\CategoryInterface'      => 'pimee_product_asset.model.category.class',
-            'PimEnterprise\Component\ProductAsset\Model\TagInterface'           => 'pimee_product_asset.model.tag.class'
+            'Akeneo\Asset\Component\Model\AssetInterface'         => 'pimee_product_asset.model.asset.class',
+            'Akeneo\Asset\Component\Model\VariationInterface'     => 'pimee_product_asset.model.variation.class',
+            'Akeneo\Asset\Component\Model\ReferenceInterface'     => 'pimee_product_asset.model.reference.class',
+            'Akeneo\Asset\Component\Model\FileMetadataInterface'  => 'pimee_product_asset.model.file_metadata.class',
+            'Akeneo\Asset\Component\Model\ImageMetadataInterface' => 'pimee_product_asset.model.image_metadata.class',
+            'Akeneo\Asset\Component\Model\CategoryInterface'      => 'pimee_product_asset.model.category.class',
+            'Akeneo\Asset\Component\Model\TagInterface'           => 'pimee_product_asset.model.tag.class'
         ];
     }
 }

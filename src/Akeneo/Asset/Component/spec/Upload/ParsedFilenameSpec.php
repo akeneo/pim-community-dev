@@ -16,8 +16,8 @@ class ParsedFilenameSpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Upload\ParsedFilename');
-        $this->shouldImplement('PimEnterprise\Component\ProductAsset\Upload\ParsedFilenameInterface');
+        $this->shouldHaveType('Akeneo\Asset\Component\Upload\ParsedFilename');
+        $this->shouldImplement('Akeneo\Asset\Component\Upload\ParsedFilenameInterface');
     }
 
     function it_do_not_parse_invalid_format(LocaleInterface $locale)

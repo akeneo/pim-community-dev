@@ -13,7 +13,7 @@ class FileMetadataBuilderSpec extends ObjectBehavior
 
     function it_is_a_metadata_builder()
     {
-        $this->shouldImplement('PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderInterface');
+        $this->shouldImplement('Akeneo\Asset\Component\Builder\MetadataBuilderInterface');
     }
 
     function it_builds_a_file_metadata(\SplFileInfo $file)
@@ -24,7 +24,7 @@ class FileMetadataBuilderSpec extends ObjectBehavior
 
         $fileMetadata = $this->build($file);
 
-        $fileMetadata->shouldImplement('PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface');
+        $fileMetadata->shouldImplement('Akeneo\Asset\Component\Model\FileMetadataInterface');
         $fileMetadata->getModificationDatetime()->getTimestamp()->shouldReturn($expectedDateTime->getTimestamp());
     }
 }

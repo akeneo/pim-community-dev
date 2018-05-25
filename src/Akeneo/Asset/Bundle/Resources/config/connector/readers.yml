@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.reader.database.mass_edit_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Connector\Reader\MassEdit\FilteredAssetReader
+    pimee_product_asset.reader.database.mass_edit_asset.class: Akeneo\Asset\Bundle\Connector\Reader\MassEdit\FilteredAssetReader
 
 services:
     # CSV readers

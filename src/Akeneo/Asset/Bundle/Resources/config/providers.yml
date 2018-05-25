@@ -1,7 +1,7 @@
 parameters:
-    pimee_product_asset.enrich.provider.field.asset_collection.class: PimEnterprise\Bundle\ProductAssetBundle\Enrich\Provider\Field\AssetCollectionFieldProvider
-    pimee_product_asset.enrich.provider.filter.asset_collection.class: PimEnterprise\Bundle\ProductAssetBundle\Enrich\Provider\Filter\AssetCollectionFilterProvider
-    pimee_product_asset.enrich.provider.empty_value.asset_collection.class: PimEnterprise\Bundle\ProductAssetBundle\Enrich\Provider\EmptyValue\AssetCollectionEmptyValueProvider
+    pimee_product_asset.enrich.provider.field.asset_collection.class: Akeneo\Asset\Bundle\Enrich\Provider\Field\AssetCollectionFieldProvider
+    pimee_product_asset.enrich.provider.filter.asset_collection.class: Akeneo\Asset\Bundle\Enrich\Provider\Filter\AssetCollectionFilterProvider
+    pimee_product_asset.enrich.provider.empty_value.asset_collection.class: Akeneo\Asset\Bundle\Enrich\Provider\EmptyValue\AssetCollectionEmptyValueProvider
 
 services:
     pimee_product_asset.enrich.provider.field.asset_collection:

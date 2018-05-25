@@ -15,7 +15,7 @@ class AssetNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Normalizer\Standard\AssetNormalizer');
+        $this->shouldHaveType('Akeneo\Asset\Component\Normalizer\Standard\AssetNormalizer');
     }
 
     function it_is_a_normalizer()

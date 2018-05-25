@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.datasource.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Datasource\AssetDatasource
+    pimee_product_asset.datasource.asset.class: Akeneo\Asset\Bundle\Datagrid\Datasource\AssetDatasource
 
 services:
     pimee_product_asset.datasource.asset:

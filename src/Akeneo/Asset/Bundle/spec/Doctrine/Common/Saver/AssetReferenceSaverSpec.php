@@ -70,7 +70,7 @@ class AssetReferenceSaverSpec extends ObjectBehavior
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
-                'Expects a "PimEnterprise\Component\ProductAsset\Model\ReferenceInterface", "%s" provided.',
+                'Expects a "Akeneo\Asset\Component\Model\ReferenceInterface", "%s" provided.',
                 get_class($anythingElse)
             )
         );

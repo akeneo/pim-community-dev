@@ -14,7 +14,7 @@ class VariationNormalizerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Normalizer\Standard\VariationNormalizer');
+        $this->shouldHaveType('Akeneo\Asset\Component\Normalizer\Standard\VariationNormalizer');
     }
 
     function it_is_a_normalizer()

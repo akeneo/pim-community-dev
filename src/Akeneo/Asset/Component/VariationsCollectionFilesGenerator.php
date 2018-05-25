@@ -44,7 +44,7 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
             if (!$variation instanceof VariationInterface) {
                 throw new \InvalidArgumentException(
                     'The collection should contains only ' .
-                    '"PimEnterprise\Component\ProductAsset\Model\VariationInterface"'
+                    '"Akeneo\Asset\Component\Model\VariationInterface"'
                 );
             }
 

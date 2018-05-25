@@ -33,7 +33,7 @@ class VariationBuilder implements VariationBuilderInterface
      */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
-        $variationClass = 'PimEnterprise\Component\ProductAsset\Model\Variation'
+        $variationClass = 'Akeneo\Asset\Component\Model\Variation'
     ) {
         $this->channelRepository = $channelRepository;
         $this->variationClass = $variationClass;

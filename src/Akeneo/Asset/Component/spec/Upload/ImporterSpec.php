@@ -39,8 +39,8 @@ class ImporterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Upload\Importer');
-        $this->shouldImplement('PimEnterprise\Component\ProductAsset\Upload\ImporterInterface');
+        $this->shouldHaveType('Akeneo\Asset\Component\Upload\Importer');
+        $this->shouldImplement('Akeneo\Asset\Component\Upload\ImporterInterface');
     }
 
     function it_imports_files_for_processing(UploadContext $uploadContext)

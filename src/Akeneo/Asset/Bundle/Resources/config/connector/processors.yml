@@ -1,7 +1,7 @@
 parameters:
-    pimee_product_asset.processor.denormalization.channel_configuration.class: PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\ChannelConfigurationProcessor
-    pimee_product_asset.processor.classify_assets.class:                       PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset\ClassifyAssetsProcessor
-    pimee_product_asset.processor.add_tags_to_assets.class:                    PimEnterprise\Bundle\ProductAssetBundle\Connector\Processor\MassEdit\Asset\AddTagsToAssetsProcessor
+    pimee_product_asset.processor.denormalization.channel_configuration.class: Akeneo\Asset\Component\Connector\Processor\Denormalization\ChannelConfigurationProcessor
+    pimee_product_asset.processor.classify_assets.class:                       Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset\ClassifyAssetsProcessor
+    pimee_product_asset.processor.add_tags_to_assets.class:                    Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset\AddTagsToAssetsProcessor
 
 services:
     # Denormalization
