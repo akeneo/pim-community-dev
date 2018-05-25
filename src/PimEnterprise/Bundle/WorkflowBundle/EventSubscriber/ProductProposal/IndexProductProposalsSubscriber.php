@@ -13,9 +13,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductProposal;
 
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductProposalIndexer;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -45,7 +44,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             StorageEvents::POST_SAVE => ['indexProductProposal', 300],
             StorageEvents::POST_SAVE_ALL => ['bulkIndexProductProposals', 300],
             StorageEvents::POST_REMOVE => ['deleteProductProposal', 300],
-            ProductDraftEvents::POST_REFUSE => ['deleteProductProposal', 300],
+            EntityWithValuesDraftEvents::POST_REFUSE => ['deleteProductProposal', 300],
         ];
     }
 

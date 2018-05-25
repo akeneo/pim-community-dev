@@ -12,105 +12,105 @@
 namespace PimEnterprise\Component\Workflow\Event;
 
 /**
- * ProductDraft events
+ * EntityWithValuesDraftEvents events
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftEvents
+class EntityWithValuesDraftEvents
 {
     /**
-     * This event is dispatched before product draft is applied a product
+     * This event is dispatched before draft is applied on an entity with values
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const PRE_APPLY = 'pimee_workflow.product_draft.pre_apply';
 
     /**
-     * This event is dispatched after product draft is applied a product
+     * This event is dispatched after draft is applied on an entity with values
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const POST_APPLY = 'pimee_workflow.product_draft.post_apply';
 
     /**
-     * This event is dispatched before product draft is approved
+     * This event is dispatched before draft is approved
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const PRE_APPROVE = 'pimee_workflow.product_draft.pre_approve';
 
     /**
-     * This event is dispatched after product draft is approved
+     * This event is dispatched after draft is approved
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const POST_APPROVE = 'pimee_workflow.product_draft.post_approve';
 
     /**
-     * This event is dispatched before product draft is refused
+     * This event is dispatched before draft is refused
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const PRE_REFUSE = 'pimee_workflow.product_draft.pre_refuse';
 
     /**
-     * This event is dispatched after product draft is refused
+     * This event is dispatched after draft is refused
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const POST_REFUSE = 'pimee_workflow.product_draft.post_refuse';
 
     /**
-     * This event is dispatched before product draft is partially approved
+     * This event is dispatched before draft is partially approved
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const PRE_PARTIAL_APPROVE = 'pimee_workflow.product_draft.pre_partial_approve';
 
     /**
-     * This event is dispatched after product draft is partially approved
+     * This event is dispatched after draft is partially approved
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const POST_PARTIAL_APPROVE = 'pimee_workflow.product_draft.post_partial_approve';
 
     /**
-     * This event is dispatched before product draft is partially refused
+     * This event is dispatched before draft is partially refused
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const PRE_PARTIAL_REFUSE = 'pimee_workflow.product_draft.pre_partial_refuse';
 
     /**
-     * This event is dispatched after product draft is partially refused
+     * This event is dispatched after draft is partially refused
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const POST_PARTIAL_REFUSE = 'pimee_workflow.product_draft.post_partial_refuse';
 
     /**
-     * This event is dispatched before product draft is removed
+     * This event is dispatched before draft is removed
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const PRE_REMOVE = 'pimee_workflow.product_draft.pre_remove';
 
     /**
-     * This event is dispatched after product draft is removed
+     * This event is dispatched after draft is removed
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const POST_REMOVE = 'pimee_workflow.product_draft.post_remove';
 
     /**
-     * This event is dispatched before product draft is marked as ready
+     * This event is dispatched before draft is marked as ready
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */
     const PRE_READY = 'pimee_workflow.product_draft.pre_ready';
 
     /**
-     * This event is dispatched after product draft is marked as ready
+     * This event is dispatched after draft is marked as ready
      *
      * The event listener receives a Symfony\Component\EventDispatcher\GenericEvent instance
      */

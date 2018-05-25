@@ -13,10 +13,10 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvent;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -61,10 +61,10 @@ class ProductDraftChangesApplier
      */
     public function apply(ProductInterface $product, EntityWithValuesDraftInterface $productDraft)
     {
-        if ($this->dispatcher->hasListeners(ProductDraftEvents::PRE_APPLY)) {
+        if ($this->dispatcher->hasListeners(EntityWithValuesDraftEvents::PRE_APPLY)) {
             $event = $this->dispatcher->dispatch(
-                ProductDraftEvents::PRE_APPLY,
-                new ProductDraftEvent($productDraft)
+                EntityWithValuesDraftEvents::PRE_APPLY,
+                new GenericEvent($productDraft)
             );
         }
 
