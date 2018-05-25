@@ -2,37 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\User;
+namespace Akeneo\Test\Acceptance\Catalog\Group;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, UserRepositoryInterface
+class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterface
 {
-    /** @var User[] */
-    private $users;
+    /** @var Group[] */
+    private $groups;
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
-    public function save($user, array $options = [])
+    public function save($group, array $options = [])
     {
-        if(!$user instanceof UserInterface) {
-            throw new \InvalidArgumentException('Only user objects are supported.');
+        if(!$group instanceof GroupInterface) {
+            throw new \InvalidArgumentException('Only group objects are supported.');
         }
-        $this->users->set($user->getUsername(), $user);
+        $this->groups->set($group->getCode(), $group);
     }
 
     /**
@@ -40,7 +39,7 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
      */
     public function getIdentifierProperties()
     {
-        return ['username'];
+        return ['code'];
     }
 
     /**
@@ -48,13 +47,21 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
      */
     public function findOneByIdentifier($identifier)
     {
-        return $this->users->get($identifier);
+        return $this->groups->get($identifier);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function countAll(): int
+    public function createAssociationDatagridQueryBuilder()
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = [])
     {
         throw new NotImplementedException(__METHOD__);
     }
@@ -95,14 +102,6 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
      * {@inheritdoc}
      */
     public function getClassName()
-    {
-        throw new NotImplementedException(__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByGroupIds(array $groupIds)
     {
         throw new NotImplementedException(__METHOD__);
     }

@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Acceptance\Channel;
+namespace Akeneo\Test\Acceptance\Channel\Locale;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\CurrencyInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
-final class InMemoryChannelRepository implements ChannelRepositoryInterface, SaverInterface
+final class InMemoryLocaleRepository implements LocaleRepositoryInterface, SaverInterface
 {
     /** @var Collection */
-    private $channels;
+    private $locales;
 
     public function __construct()
     {
-        $this->channels = new ArrayCollection();
+        $this->locales = new ArrayCollection();
     }
 
     /**
@@ -35,19 +35,19 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
      */
     public function findOneByIdentifier($code)
     {
-        return $this->channels->get($code);
+        return $this->locales->get($code);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function save($channel, array $options = [])
+    public function save($locale, array $options = [])
     {
-        if(!$channel instanceof ChannelInterface) {
-            throw new \InvalidArgumentException('Only channel objects are supported.');
+        if(!$locale instanceof LocaleInterface) {
+            throw new \InvalidArgumentException('Only locale objects are supported.');
         }
 
-        $this->channels->set($channel->getCode(), $channel);
+        $this->locales->set($locale->getCode(), $locale);
     }
 
     /**
@@ -55,28 +55,28 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        $channels = [];
-        foreach ($this->channels as $channel) {
-            $keepThisChannel = true;
+        $locales = [];
+        foreach ($this->locales as $locale) {
+            $keepThisLocale = true;
             foreach ($criteria as $key => $value) {
                 $getter = sprintf('get%s', ucfirst($key));
-                if ($channel->$getter() !== $value) {
-                    $keepThisChannel = false;
+                if ($locale->$getter() !== $value) {
+                    $keepThisLocale = false;
                 }
             }
 
-            if ($keepThisChannel) {
-                $channels[] = $channel;
+            if ($keepThisLocale) {
+                $locales[] = $locale;
             }
         }
 
-        return $channels;
+        return $locales;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function countAll()
+    public function getActivatedLocales()
     {
         throw new NotImplementedException(__METHOD__);
     }
@@ -84,7 +84,7 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
     /**
      * {@inheritdoc}
      */
-    public function getChannelCodes()
+    public function getActivatedLocaleCodes()
     {
         throw new NotImplementedException(__METHOD__);
     }
@@ -92,7 +92,7 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
     /**
      * {@inheritdoc}
      */
-    public function getFullChannels()
+    public function getActivatedLocalesQB()
     {
         throw new NotImplementedException(__METHOD__);
     }
@@ -100,7 +100,7 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
     /**
      * {@inheritdoc}
      */
-    public function getChannelCountUsingCurrency(CurrencyInterface $currency)
+    public function getDeletedLocalesForChannel(ChannelInterface $channel)
     {
         throw new NotImplementedException(__METHOD__);
     }
@@ -108,7 +108,7 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
     /**
      * {@inheritdoc}
      */
-    public function getLabelsIndexedByCode($localeCode)
+    public function countAllActivated()
     {
         throw new NotImplementedException(__METHOD__);
     }

@@ -30,7 +30,7 @@ services:
 
     ### Behat context, don't forget to tag them (fob.context_service)
     test.locale.context:
-        class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
+        class: 'Akeneo\Test\Acceptance\Channel\Locale\LocaleContext'
         arguments:
             - '@__symfony__.pim_catalog.repository.locale'
             - '@test.locale.builder'
