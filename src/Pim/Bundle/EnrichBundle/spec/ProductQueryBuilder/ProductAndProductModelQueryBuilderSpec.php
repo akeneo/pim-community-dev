@@ -117,14 +117,14 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
                 ],
                 [
                     'field'    => 'bar',
-                    'operator' => 'IN LIST',
+                    'operator' => 'IN',
                     'value'    => ['toto'],
                     'context'  => [],
                     'type'     => 'field'
                 ],
                 [
                     'field'    => 'categories',
-                    'operator' => 'IN_LIST',
+                    'operator' => 'IN',
                     'value'    => ['category_A'],
                     'context'  => [],
                     'type'     => 'field'
@@ -175,6 +175,26 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $this->execute()->shouldReturn($cursor);
     }
 
+    function it_executes_the_query_by_adding_a_default_filter_on_parents_when_a_filter_on_category_does_not_trigger_aggregation($pqb, CursorInterface $cursor)
+    {
+        $pqb->getRawFilters()->willReturn(
+            [
+                [
+                    'field'    => 'categories',
+                    'operator' => 'IN OR UNCLASSIFIED',
+                    'value'    => ['toto'],
+                    'context'  => [],
+                    'type'     => 'field'
+                ],
+            ]
+        );
+
+        $pqb->addFilter('parent', Operators::IS_EMPTY, null, [])->shouldBeCalled();
+        $pqb->execute()->willReturn($cursor);
+
+        $this->execute()->shouldReturn($cursor);
+    }
+
     function it_executes_the_query_with_operator_is_empty_on_an_attribute($pqb, CursorInterface $cursor, SearchQueryBuilder $sqb)
     {
         $pqb->getRawFilters()->willReturn(
@@ -202,14 +222,14 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
                 ],
                 [
                     'field'    => 'bar',
-                    'operator' => 'IN LST',
+                    'operator' => 'IN',
                     'value'    => ['toto'],
                     'context'  => [],
                     'type'     => 'field',
                 ],
                 [
                     'field'    => 'categories',
-                    'operator' => 'IN_LIST',
+                    'operator' => 'IN',
                     'value'    => ['category_A'],
                     'context'  => [],
                     'type'     => 'field',
@@ -427,7 +447,7 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $this->execute()->shouldReturn($cursor);
     }
 
-    function it_does_not_add_a_default_filter_on_parents_when_there_is_a_filter_on_category(
+    function it_does_not_add_a_default_filter_on_parents_when_there_is_a_filter_on_category_with_operator_IN(
         $pqb,
         CursorInterface $cursor,
         SearchQueryBuilder $sqb
@@ -436,8 +456,8 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
             [
                 [
                     'field'    => 'categories',
-                    'operator' => 'IN LIST',
-                    'value'    => ['category_A', 'category_'],
+                    'operator' => 'IN',
+                    'value'    => ['category_A', 'category_B'],
                     'context'  => [],
                     'type'     => 'field'
                 ],
@@ -450,7 +470,6 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
 
         $this->execute()->shouldReturn($cursor);
     }
-
     function it_does_not_aggregate_when_there_is_a_filter_on_parent($pqb, CursorInterface $cursor,  SearchQueryBuilder $sqb)
     {
         $pqb->getRawFilters()->willReturn(
@@ -484,6 +503,5 @@ class ProductAndProductModelQueryBuilderSpec extends ObjectBehavior
         $pqb->execute()->willReturn($cursor);
         $pqb->getQueryBuilder()->willReturn($sqb);
         $this->execute()->shouldReturn($cursor);
-
     }
 }

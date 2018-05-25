@@ -122,7 +122,7 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         $hasEntityTypeFilter = $this->hasRawFilter('field', 'entity_type');
         $hasAncestorsIdsFilter = $this->hasRawFilter('field', 'ancestor.id');
         $hasSelfAndAncestorsIdsFilter = $this->hasRawFilter('field', 'self_and_ancestor.id');
-        $hasCategoryFilter = $this->hasRawFilter('field', 'categories');
+        $hasCategoryFilter = $this->hasFilterOnCategoryWhichImplyAggregation();
 
         return !$hasAttributeFilters &&
             !$hasParentFilter &&
@@ -148,6 +148,23 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             $this->getRawFilters(),
             function ($filter) use ($filterProperty, $value) {
                 return $value === $filter[$filterProperty];
+            }
+        ));
+    }
+
+    /**
+     * The PQB should aggregate the results only if the operator used is IS_EMPTY or IS_NOT_EMPTY.
+     *
+     * Only those operators indicate a user selection.
+     */
+    private function hasFilterOnCategoryWhichImplyAggregation(): bool
+    {
+        return !empty(array_filter(
+            $this->getRawFilters(),
+            function (array $filter) {
+                return 'field' === $filter['type'] &&
+                    'categories' === $filter['field'] &&
+                    $filter['operator'] === Operators::IN_LIST;
             }
         ));
     }
@@ -221,7 +238,9 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
         $categoriesFilter = array_filter(
             $this->getRawFilters(),
             function ($filter) {
-                return 'field' === $filter['type'] && 'categories' === $filter['field'];
+                return 'field' === $filter['type'] &&
+                    'categories' === $filter['field'] &&
+                    $filter['operator'] === Operators::IN_LIST;
             }
         );
 
