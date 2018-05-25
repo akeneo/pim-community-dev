@@ -902,10 +902,12 @@ pim_enrich:
                     description: The following attributes requirements will be applied to the selected families
                     label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
 
-pim_enrich.error:
-    exception.title: Oh snap! A {{ status_code }} error occured...
-    http:
-        403: Forbidden. You are not allowed to access this page
+pim_enrich:
+    error:
+        exception:
+            title: Oh snap! A {{ status_code }} error occured...
+        http:
+            403: Forbidden. You are not allowed to access this page
 
 # Page titles
 pim_title:
@@ -975,7 +977,6 @@ pim_menu:
         group: Groups
         group_type: Group types
         product_model: Product Models
-        published_product: Published Products
         export_history: Exports history
         export_profile: Export profiles
         import_history: Imports history
@@ -1009,93 +1010,53 @@ pim_notification:
 
 # Background jobs & steps labels
 batch_jobs:
-    add_product_value:
-        label: Add product value
-        perform.label: Add product value
-    update_product_value:
-        label: Update product value
-        perform.label: Update product value
+    add_association:
+        label: Associate to products
+        perform.label: Associate to products
     add_attribute_value:
         label: Add attributes value
         perform.label: Add attributes value
+    add_product_value:
+        label: Add product value
+        perform.label: Add product value
+    add_to_category:
+        label: Add to category
+        perform.label: Add to category
+    add_to_existing_product_model:
+        label: Add to an existing product model
+        perform.label: Add to an existing product model
+    csv_product_grid_context_quick_export:
+        quick_export.label: Csv product grid context quick export
+        quick_export_product_model.label: CSV product model grid context quick export
+        perform.label: Csv product grid context quick export
+    csv_product_quick_export:
+        quick_export.label: Csv product quick export
+        quick_export_product_model.label: CSV product model quick export
+        perform.label: Csv product quick export
+    delete_products_and_product_models:
+        delete_products_and_product_models.label: Mass delete products
     edit_common_attributes:
         label: Edit attributes
         perform.label: Edit attributes
         clean.label: Clean files for attributes
         cleaner.label: Clean files for attributes
-    add_to_category:
-        label: Add to category
-        perform.label: Add to category
     move_to_category:
         label: Move to category
         perform.label: Move to category
-    remove_from_category:
-        label: Remove from category
-        perform.label: Remove from category
-    add_association:
-        label: Associate to products
-        perform.label: Associate to products
-    add_to_existing_product_model:
-        label: Add to an existing product model
-        perform.label: Add to an existing product model
-    set_attribute_requirements:
-        label: Set attributes requirements
-        perform.label: Set attributes requirements
-    csv_product_quick_export:
-        quick_export.label: Csv product quick export
-        perform.label: Csv product quick export
-    csv_product_grid_context_quick_export:
-        quick_export.label: Csv product grid context quick export
-        perform.label: Csv product grid context quick export
-    xlsx_product_quick_export:
-        quick_export.label: Xlsx product quick export
-        perform.label: Xlsx product quick export
-    xlsx_product_grid_context_quick_export:
-        quick_export.label: Xlsx product grid context quick export
-        perform.label: Xlsx product grid context quick export
-    delete_products_and_product_models:
-        delete_products_and_product_models.label: Mass delete products
-    add_product_value:
-        label: Add product value
-        perform.label: Add product value
     update_product_value:
         label: Update product value
         perform.label: Update product value
-    edit_common_attributes:
-        label: Edit attributes
-        perform.label: Edit attributes
-        cleaner.label: Clean files for attributes
-    add_to_category:
-        label: Add to category
-        perform.label: Add to category
-    move_to_category:
-        label: Move to category
-        perform.label: Move to category
     remove_from_category:
         label: Remove from category
         perform.label: Remove from category
-    add_association:
-        label: Associate to products
-        perform.label: Associate to products
-    add_to_existing_product_model:
-        label: Add to an existing product model
-        perform.label: Add to an existing product model
     set_attribute_requirements:
         label: Set attributes requirements
         perform.label: Set attributes requirements
-    csv_product_quick_export:
-        quick_export.label: CSV product quick export
-        quick_export_product_model.label: CSV product model quick export
-        perform.label: CSV product quick export
-    csv_product_grid_context_quick_export:
-        quick_export.label: CSV product grid context quick export
-        quick_export_product_model.label: CSV product model grid context quick export
-        perform.label: CSV product grid context quick export
-    xlsx_product_quick_export:
-        quick_export.label: XSLX product quick export
-        quick_export_product_model.label: XSLX product model quick export
-        perform.label: XSLX product quick export
     xlsx_product_grid_context_quick_export:
-        quick_export.label: XSLX product grid context quick export
+        quick_export.label: Xlsx product grid context quick export
         quick_export_product_model.label: XSLX product model grid context quick export
-        perform.label: XSLX product grid context quick export
+        perform.label: Xlsx product grid context quick export
+    xlsx_product_quick_export:
+        quick_export.label: Xlsx product quick export
+        quick_export_product_model.label: XSLX product model quick export
+        perform.label: Xlsx product quick export

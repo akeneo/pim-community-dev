@@ -6,16 +6,5 @@ pim_dashboard:
             title: Completeness Over Channels and Locales
         last_operations:
             title: Last operations
-            empty: No operations found
             status: Status
-            date: Date
             type: Type
-            "profile name": Profile name
-            details: Details
-            job_type:
-                import: Import
-                export: Export
-                mass_edit: Mass edit
-                quick_export: Quick export
-                compute_product_models_descendants: Compute product models descendants
-                mass_delete: Mass delete products
