@@ -41,7 +41,7 @@ services:
         arguments:
             - '@pim_api.repository.product'
             - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.manager.entity_with_values_draft'
+            - '@pimee_workflow.manager.product_draft'
             - '@security.token_storage'
             - '@security.authorization_checker'
 

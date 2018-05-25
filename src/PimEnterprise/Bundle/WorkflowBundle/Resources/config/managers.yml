@@ -18,7 +18,7 @@ services:
             - '@pimee_workflow.remover.published_product'
             - '@pimee_workflow.repository.published_product_without_permission'
 
-    pimee_workflow.manager.entity_with_values_draft:
+    pimee_workflow.manager.product_draft:
         class: '%pimee_workflow.manager.entity_with_values_draft.class%'
         arguments:
             - '@pimee_workflow.saver.working_copy_product'
@@ -29,6 +29,19 @@ services:
             - '@event_dispatcher'
             - '@pimee_workflow.saver.product_draft'
             - '@pimee_workflow.remover.product_draft'
+            - '@pim_enrich.filter.product_values_edit_data'
+
+    pimee_workflow.manager.product_model_draft:
+        class: '%pimee_workflow.manager.entity_with_values_draft.class%'
+        arguments:
+            - '@pimee_workflow.saver.working_copy_product_model'
+            - '@pim_user.context.user'
+            - '@pimee_workflow.factory.product_model_draft'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.applier.draft'
+            - '@event_dispatcher'
+            - '@pimee_workflow.saver.product_model_draft'
+            - '@pimee_workflow.remover.product_model_draft'
             - '@pim_enrich.filter.product_values_edit_data'
 
     pimee_workflow.manager.completeness:
