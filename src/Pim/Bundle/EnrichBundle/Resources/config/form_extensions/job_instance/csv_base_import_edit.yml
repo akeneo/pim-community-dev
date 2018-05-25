@@ -158,7 +158,7 @@ extensions:
             trans:
                 title: confirmation.remove.import_profile
                 content: pim_common.confirm_deletion
-                success: flash.job_instance.removed
+                success: pim_enrich.entity.job_instance.flash.delete.success
                 failed: error.removing.job_instance
             redirect: pim_importexport_import_profile_index
 

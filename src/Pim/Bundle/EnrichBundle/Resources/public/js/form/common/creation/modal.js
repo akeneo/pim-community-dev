@@ -173,7 +173,7 @@ define(
                     }
 
                     this.validationErrors = response.responseJSON ?
-                        this.normalize(response.responseJSON) : [{message: __('error.common')}];
+                        this.normalize(response.responseJSON) : [{message: __('pim_enrich.entity.fallback.generic_error')}];
                     this.render();
                 }.bind(this))
                 .always(() => loadingMask.remove());

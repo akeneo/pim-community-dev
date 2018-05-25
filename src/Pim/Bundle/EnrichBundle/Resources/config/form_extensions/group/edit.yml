@@ -52,8 +52,8 @@ extensions:
                 title: confirmation.remove.group
                 subTitle: pim_menu.item.group
                 content: pim_common.confirm_deletion
-                success: flash.group.removed
-                fail: error.removing.group
+                success: pim_enrich.entity.group.flash.delete.success
+                fail: pim_enrich.entity.group.flash.delete.fail
             redirect: pim_enrich_group_index
 
     pim-group-edit-form-save-buttons:

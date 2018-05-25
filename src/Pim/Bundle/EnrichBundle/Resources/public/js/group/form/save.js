@@ -31,8 +31,8 @@ define(
         UserContext
     ) {
         return BaseSave.extend({
-            updateSuccessMessage: __('pim_enrich.entity.group.info.update_successful'),
-            updateFailureMessage: __('pim_enrich.entity.group.info.update_failed'),
+            updateSuccessMessage: __('pim_enrich.entity.group.flash.update.success'),
+            updateFailureMessage: __('pim_enrich.entity.group.flash.update.fail'),
 
             /**
              * {@inheritdoc}
@@ -55,7 +55,7 @@ define(
 
                     messenger.notify(
                         'error',
-                        __('pim_enrich.entity.group.info.field_not_ready', {'fields': fieldLabels.join(', ')})
+                        __('pim_enrich.entity.group.flash.update.fields_not_ready', {'fields': fieldLabels.join(', ')})
                     );
 
                     return;

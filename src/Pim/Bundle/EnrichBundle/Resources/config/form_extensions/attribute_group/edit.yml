@@ -52,8 +52,8 @@ extensions:
                 title: confirmation.remove.attribute_group
                 subTitle: pim_common.attribute_groups
                 content: pim_common.confirm_deletion
-                success: flash.attribute_group.removed
-                fail: error.removing.attribute_group
+                success: pim_enrich.entity.attribute_group.flash.delete.success
+                fail: pim_enrich.entity.attribute_group.flash.delete.fail
             redirect: pim_enrich_attributegroup_index
 
     pim-attribute-group-edit-form-save-buttons:
@@ -68,9 +68,9 @@ extensions:
         targetZone: buttons
         position: 0
         config:
-            updateSuccessMessage: pim_enrich.entity.attribute_group.info.update_successful
-            updateFailureMessage: pim_enrich.entity.attribute_group.info.update_failed
-            notReadyMessage: pim_enrich.entity.attribute_group.info.field_not_ready
+            updateSuccessMessage: pim_enrich.entity.attribute_group.flash.update.success
+            updateFailureMessage: pim_enrich.entity.attribute_group.flash.update.fail
+            notReadyMessage: pim_enrich.entity.attribute_group.flash.update.fields_not_ready
             url: pim_enrich_attributegroup_rest_post
 
     pim-attribute-group-edit-form-state:

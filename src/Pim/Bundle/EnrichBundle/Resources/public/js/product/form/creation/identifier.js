@@ -40,7 +40,7 @@ define([
 
                 return this;
             }.bind(this)).fail(() => {
-                this.$el.html(this.errorTemplate({message: __('error.creating.product')}));
+                this.$el.html(this.errorTemplate({message: __('pim_enrich.entity.product.flash.create.fail')}));
             });
         }
     });

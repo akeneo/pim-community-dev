@@ -7,7 +7,7 @@ extensions:
                subTitle: pim_common.products
                content: pim_enrich.entity.product_model.create_popin.content
            picture: illustrations/Product-model.svg
-           successMessage: pim_enrich.entity.product_model.info.create_successful
+           successMessage: pim_enrich.entity.product_model.flash.create.success
            editRoute: pim_enrich_product_model_edit
            postUrl: pim_enrich_product_model_rest_create
            excludedProperties: [ family ]

@@ -178,7 +178,7 @@ define(
                 } else {
                     Dialog.alert(
                         __('alert.attribute_option.error_occured_during_submission'),
-                        __('error.saving.attribute_option')
+                        __('pim_enrich.entity.attribute_option.flash.update.fail')
                     );
                 }
             },
@@ -413,7 +413,7 @@ define(
                             message = response.responseText;
                         }
 
-                        Dialog.alert(message, __('error.removing.attribute_option'));
+                        Dialog.alert(message, __('pim_enrich.entity.attribute_option.flash.delete.fail'));
                     }.bind(this)
                 });
             },

@@ -100,8 +100,8 @@ extensions:
                 title: confirmation.remove.product_model
                 subTitle: pim_common.products_model
                 content: pim_common.confirm_deletion
-                success: pim_enrich.entity.product_model.info.deletion_successful
-                fail: pim_enrich.entity.product_model.info.deletion_failed
+                success: pim_enrich.entity.product_model.flash.delete.success
+                fail: pim_enrich.entity.product_model.flash.delete.fail
             redirect: pim_enrich_product_index
 
     pim-product-model-edit-form-save-buttons:
@@ -164,7 +164,7 @@ extensions:
             removeAttributeRoute: pim_enrich_product_remove_attribute_rest
             removeAttributeACL: pim_enrich_product_remove_attribute
             tabTitle: pim_common.attributes
-            deletionFailed: pim_enrich.form.product.flash.attribute_deletion_error
+            deletionFailed: pim_enrich.entity.attribute.flash.delete.fail
 
     pim-product-model-edit-form-categories:
         module: pim/product-edit-form/categories

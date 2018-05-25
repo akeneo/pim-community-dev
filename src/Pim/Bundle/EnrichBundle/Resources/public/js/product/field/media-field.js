@@ -58,7 +58,7 @@ define([
             updateModel: function () {
                 if (!this.isReady()) {
                     Dialog.alert(_.__(
-                        'pim_enrich.entity.product.info.already_in_upload',
+                        'pim_enrich.entity.product.flash.update.already_in_upload',
                         {'locale': this.context.locale, 'scope': this.context.scope}
                     ));
                 }
@@ -101,7 +101,7 @@ define([
                 .fail(function (xhr) {
                     var message = xhr.responseJSON && xhr.responseJSON.message ?
                         xhr.responseJSON.message :
-                        _.__('pim_enrich.entity.product.error.upload');
+                        _.__('pim_enrich.entity.product.flash.update.file_upload');
                     messenger.enqueueMessage('error', message);
                 })
                 .always(function () {

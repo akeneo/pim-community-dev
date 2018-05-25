@@ -125,63 +125,7 @@ pim_datagrid:
             hint: There are no associated products
             subHint: 'Click on the button "Add associations" to associate this product'
 
-flash:
-    item:
-        removed: Item successfully removed
-    association_type:
-        removed: Association type successfully removed
-    attribute:
-        removed: Attribute successfully removed
-    attribute_group:
-        removed: Attribute group successfully removed
-    family:
-        removed: Family successfully removed
-    family_variant:
-        removed: Family variant successfully removed
-    product:
-        removed: Product successfully removed
-    product_model:
-        removed: Product model successfully removed
-    channel:
-        removed: Channel successfully removed
-    group:
-        removed: Group successfully removed
-    group_type:
-        removed: Group type successfully removed
-    import profile:
-        removed: Import profile successfully removed
-    export profile:
-        removed: Export profile successfully removed
-    user:
-        removed: User successfully removed
-    role:
-        removed: Role successfully removed
-    job_instance:
-        removed: Job instance successfully removed
-    api_connection:
-        removed: API connection successfully revoked
-
 error:
-    common: An error occured
-    creating:
-        product: No attribute is configured as a product identifier or you don't have the rights to edit it.
-    removing:
-        item:             Cannot delete this item
-        association_type: Cannot delete this association type
-        attribute:        Cannot delete this attribute
-        family:           Cannot delete this family
-        product:          Cannot delete this product
-        channel:          Cannot delete this channel
-        group:            Cannot delete this group
-        group type:       Cannot delete this group type
-        import profile:   Cannot delete this import profile
-        export profile:   Cannot delete this export profile
-        user:             Cannot delete this user
-        role:             Cannot delete this role
-        attribute_option: Error during deletion of the attribute option
-    saving:
-        attribute_option: Cannot save attribute option
-        export_profile: Cannot save export profile. Please check that all filters are well filled
     exception: Oh snap! A {{ status_code }} error occured...
     forbidden: Forbidden. You are not allowed to access this page
 
@@ -194,10 +138,30 @@ alert:
 
 pim_enrich:
     entity:
-        info:
-            update_failed: Update failed
-            update_successful: Successfully updated
+        fallback:
+            flash:
+                generic_error: An error occured
+                update:
+                    fail: Update failed
+                    success: Successfully updated
+                delete:
+                    fail: Cannot delete this item
+                    success: Item successfully removed
+
         product:
+            flash:
+                update:
+                    success: Product successfully updated.
+                    fail: The product could not be updated.
+                    fields_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
+                    already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
+                    file_upload: An error occured during the file upload
+                delete:
+                    success: Product successfully deleted.
+                    fail: The product could not be deleted.
+                create:
+                    success: Product successfully created
+                    fail: No attribute is configured as a product identifier or you don't have the rights to edit it.
             navigation: Product navigation
             infos: Product infos
             index_title: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
@@ -223,19 +187,8 @@ pim_enrich:
                 old_value: Old value
                 new_value: New value
                 actions: Actions
-            info:
-                deletion_successful: Product successfully deleted.
-                deletion_failed: The product could not be deleted.
-                update_successful: Product successfully updated.
-                update_failed: The product could not be updated.
-                field_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
-                already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
-            error:
-                upload: An error occured during the file upload
             meta:
                 updated: Last update
-                family:
-                    title: Family
                 family_variant:
                     title: Variant
                 groups:
@@ -262,23 +215,25 @@ pim_enrich:
                 labels:
                     family: Choose a family
                     family_variant: Choose a family variant
-            message:
-                created: Product successfully created
             completeness: Complete
             sequential_edit:
                 item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
                 empty: Your selection is empty, please change your search criteria
+
         product_model:
+            flash:
+                create:
+                    success: Product model successfully created
+                update:
+                    success: Product model successfully updated. The completeness of its variant products will be recalculated.
+                    fail: The product model could not be updated.
+                    fields_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
+                delete:
+                    success: Product model successfully deleted.
             create_popin:
                 type: Product model
                 title: Create a product model
                 content: A product model gathers variant products and eases the enrichment of their common properties.
-            info:
-                create_successful: Product model successfully created
-                update_successful: Product model successfully updated. The completeness of its variant products will be recalculated.
-                deletion_successful: Product model successfully deleted.
-                update_failed: The product model could not be updated.
-                field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
             read_only_parent_attribute_from_common: This attribute can be updated in the common attributes.
             read_only_parent_attribute_from_model: "This attribute can be updated in the attributes by {{ axes }}"
             variant_axis: Variant axis
@@ -288,47 +243,60 @@ pim_enrich:
                 create_label: "Add a new {{ axes }}"
                 fields:
                     required_label: (variant axis)
+
         association_type:
-            info:
-                deletion_successful: Association type successfully deleted.
-                deletion_failed: Association type could not be deleted.
-                update_successful: Association type successfully updated.
-                update_failed: The association type could not be updated.
-                field_not_ready: "The association type cannot be saved right now. The following fields are not ready: {{ fields }}"
+            flash:
+                update:
+                    success: Association type successfully updated.
+                    fail: The association type could not be updated.
+                    fields_not_ready: "The association type cannot be saved right now. The following fields are not ready: {{ fields }}"
+                create:
+                    success: Association type successfully created
+                delete:
+                    success: Association type successfully removed
+                    fail: Cannot delete this association type
             title: association type
-            message:
-                created: Association type successfully created
+
         group_type:
-            info:
-                deletion_successful: Group type successfully deleted.
-                deletion_failed: Group type could not be deleted.
-                update_successful: Group type successfully updated.
-                update_failed: The group type could not be updated.
-                field_not_ready: "The group type cannot be saved right now. The following fields are not ready: {{ fields }}"
+            flash:
+                update:
+                    success: Group type successfully updated.
+                    fail: The group type could not be updated.
+                    fields_not_ready: "The group type cannot be saved right now. The following fields are not ready: {{ fields }}"
+                create:
+                    success: Group type successfully created
+                delete:
+                    success: Group type successfully removed
+                    fail: Cannot delete this group type
             title: group type
-            message:
-                created: Group type successfully created
+
         channel:
-            info:
-                deletion_successful: Channel successfully deleted.
-                deletion_failed: Channel could not be deleted.
-                update_successful: Channel successfully updated.
-                update_failed: The channel could not be updated.
-                create_successful: Channel successfully created.
-                create_failed: The channel could not be created.
-                field_not_ready: "The channel cannot be saved right now. The following fields are not ready: {{ fields }}"
+            flash:
+                update:
+                    success: Channel successfully updated.
+                    fail: The channel could not be updated.
+                create:
+                    success: Channel successfully created.
+                    fail: The channel could not be created.
+                delete:
+                    success: Channel successfully removed
+                    fail: Cannot delete this channel
         family:
-            title: family
+            flash:
+                update:
+                    success: Family successfully updated.
+                    fail: An error occured during family update.
+                    cant_remove_attribute_as_label: Cannot remove attribute used as label
+                    cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
+                    cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
+                    fields_not_ready: "The family cannot be saved right now. The following fields are not ready: {{ fields }}"
+                create:
+                    success: Family successfully created
+                delete:
+                    success: Family successfully removed
+                    fail: Cannot delete this family
+            title: Family
             selected: selected families
-            info:
-                update_successful: Family successfully updated.
-                update_failed: An error occured during family update.
-                cant_remove_attribute_as_label: Cannot remove attribute used as label
-                cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
-                attribute_edit_permission_is_not_granted: You have no rights to edit family's attributes
-                cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
-            message:
-                created: Family successfully created
             variant:
                 common:
                     title: Common attributes
@@ -346,35 +314,57 @@ pim_enrich:
                 confirm_attribute_removal:
                     title: Confirm remove of attributes
                     message: By removing these attributes you will put them back in the common attributes of the family variant and remove the values from the variant products
+
         family_variant:
-            info:
-                update_successful: Family variant successfully updated. The products with variants will be updated with your changes.
+            flash:
+                update:
+                    success: Family variant successfully updated. The products with variants will be updated with your changes.
+                    fail: The family variant could not be updated.
+                create:
+                    success: Family variant successfully created
+
         attribute_option:
+            flash:
+                create:
+                    success: Attribute option successfully created
+                    fail: An error ocurred when trying to create the attribute option
+                update:
+                    fail: Cannot save attribute option
+                delete:
+                    fail: Error during deletion of the attribute option
             actions: Actions
+
         group:
+            flash:
+                update:
+                    success: Group successfully updated.
+                    fail: The group could not be updated.
+                    fields_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
+                create:
+                    success: Group successfully created
+                delete:
+                    success: Group successfully removed
+                    fail: Cannot delete this group
             title: Group
-            info:
-                deletion_successful: Group successfully deleted.
-                deletion_failed: Group could not be deleted.
-                update_successful: Group successfully updated.
-                update_failed: The group could not be updated.
-                field_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
-            message:
-                created: Group successfully created
+
         job_instance:
+            flash:
+                update:
+                    success: The job profile has been successfully updated.
+                    fail: The job profile could not be updated.
+                delete:
+                    success: Job instance successfully removed
             title: job profile
-            info:
-                update_failed: The job profile could not be updated.
-                update_successful: The job profile has been successfully updated.
+
         attribute:
-            info:
-                deletion_successful: Attribute successfully deleted.
-                deletion_failed: The attribute could not be deleted.
-                update_successful: Attribute successfully updated.
-                update_failed: The attribute could not be updated.
-                create_successful: Attribute successfully created.
-                create_failed: The attribute could not be created.
-                field_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
+            flash:
+                update:
+                    success: Attribute successfully updated.
+                    fail: The attribute could not be updated.
+                    fields_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
+                delete:
+                    success: Attribute successfully removed
+                    fail: Cannot delete this attribute
             scopable: Scopable
             type:
                 pim_catalog_identifier:             Identifier
@@ -396,13 +386,22 @@ pim_enrich:
                 regexp: Regular expression
                 url: URL
             title: attribute
+
         attribute_group:
-            info:
-                update_failed: Attribute group could not be updated
-                update_successful: Attribute group successfully updated
+            flash:
+                update:
+                    success: Attribute group successfully updated
+                    fail: Attribute group could not be updated
+                    fields_not_ready: "The attribute group cannot be saved right now. The following fields are not ready: {{ fields }}"
+                delete:
+                    success: Attribute group successfully removed
+                    fail: Cannot delete this attribute group
+
         api_connection:
-            message:
-                created: API connection successfully created
+            flash:
+                create:
+                    success: API connection successfully created
+
     info:
         entity:
             updated: There are unsaved changes.
@@ -467,8 +466,6 @@ pim_enrich:
                     keep_attributes:  No attributes will be removed.
                     change_family_to: Change the family to
                     empty_selection:  Choose a family
-            flash:
-                attribute_deletion_error: An error occured during the attribute deletion
             mass_edit:
                 select_attributes: Select attributes
                 select: Select
@@ -496,8 +493,6 @@ pim_enrich:
                     required_label: Required
                 variant:
                     title: Variants
-                    flash:
-                        family_variant_created: Family variant successfully created
         family_variant:
             tab:
                 attributes:
@@ -505,9 +500,6 @@ pim_enrich:
                 labels:
                     title: Label translations
         attribute_option:
-            flash:
-                option_created: Attribute option successfully created
-                error_creating_option: An error ocurred when trying to create the attribute option
             add_option_modal:
                 title: Add attribute option
             add_option: Add an option
@@ -835,7 +827,6 @@ pim_enrich:
                     label: Change family
                     label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The family of the selected products will be changed to the chosen family
-                    field: Family
                 add_to_group:
                     label: Add to groups
                     label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"

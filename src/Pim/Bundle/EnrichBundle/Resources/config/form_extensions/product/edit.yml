@@ -106,8 +106,8 @@ extensions:
                 title: confirmation.remove.product
                 subTitle: pim_common.products
                 content: pim_common.confirm_deletion
-                success: pim_enrich.entity.product.info.deletion_successful
-                fail: pim_enrich.entity.product.info.deletion_failed
+                success: pim_enrich.entity.product.flash.delete.success
+                fail: pim_enrich.entity.product.flash.delete.fail
             redirect: pim_enrich_product_index
 
     pim-product-edit-form-download-pdf:
@@ -203,7 +203,7 @@ extensions:
             removeAttributeRoute: pim_enrich_product_remove_attribute_rest
             removeAttributeACL: pim_enrich_product_remove_attribute
             tabTitle: pim_common.attributes
-            deletionFailed: pim_enrich.form.product.flash.attribute_deletion_error
+            deletionFailed: pim_enrich.entity.attribute.flash.delete.fail
 
     pim-product-edit-form-completeness:
         module: pim/product-edit-form/completeness
