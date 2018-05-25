@@ -64,7 +64,7 @@ class ChangeParentProcessor extends AbstractProcessor
             if (! $this->isProductValid($product)) {
                 return null;
             }
-        } catch(PropertyException $e) {
+        } catch (PropertyException $e) {
             $this->stepExecution->addWarning($e->getMessage(), [], new DataInvalidItem($product));
             return null;
         }

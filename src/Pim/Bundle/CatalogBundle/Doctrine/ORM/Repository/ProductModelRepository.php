@@ -190,7 +190,7 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
             ->addOrderBy('pm.level', 'ASC')
         ;
 
-        if(! empty($search)) {
+        if (! empty($search)) {
             $qb->andWhere($qb->expr()->like('pm.code', '?1'))
                ->setParameter(1, '%' . $search . '%');
         }
