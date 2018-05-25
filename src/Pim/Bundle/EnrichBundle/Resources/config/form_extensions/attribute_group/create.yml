@@ -44,7 +44,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.attribute_group.title
+            entity: pim_enrich.entity.attribute_group.label
 
     pim-attribute-group-create-form-properties-tab:
         module: pim/common/tab

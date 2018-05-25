@@ -18,7 +18,7 @@ define(
         'pim/field-manager',
         'pim/i18n',
         'pim/user-context',
-        'pim/mediator'
+        'oro/mediator'
     ],
     function (
         $,

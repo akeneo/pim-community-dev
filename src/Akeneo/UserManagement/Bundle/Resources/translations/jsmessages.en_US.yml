@@ -22,3 +22,16 @@ pim_title:
 
     pim_user_group_create: 'Groups | Create'
     pim_user_group_update: 'Group {{ group }} | Edit'
+
+# TODO Move this
+pim_enrich:
+    entity:
+        user:
+            page_title:
+                index: "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} users"
+        user_role:
+            page_title:
+                index: "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
+        user_group:
+            page_title:
+                index: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"

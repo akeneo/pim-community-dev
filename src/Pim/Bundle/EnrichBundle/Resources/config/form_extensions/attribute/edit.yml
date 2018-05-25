@@ -76,7 +76,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.attribute.title
+            entity: pim_enrich.entity.attribute.label
 
     pim-attribute-edit-form-form-tabs:
         module: pim/form/common/form-tabs

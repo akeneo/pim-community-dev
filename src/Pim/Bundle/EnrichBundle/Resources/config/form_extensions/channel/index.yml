@@ -24,7 +24,7 @@ extensions:
         parent: pim-channel-index
         targetZone: title
         config:
-            title: pim_enrich.index.channel.title
+            title: pim_enrich.entity.channel.page_title.index
 
     pim-channel-index-breadcrumbs:
         module: pim/common/breadcrumbs

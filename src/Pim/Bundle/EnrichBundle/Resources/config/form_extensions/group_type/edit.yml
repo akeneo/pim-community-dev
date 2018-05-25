@@ -79,7 +79,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.group_type.title
+            entity: pim_enrich.entity.group_type.label
 
     pim-group-type-edit-form-properties-tab:
         module: pim/common/tab

@@ -24,7 +24,7 @@ extensions:
         parent: pim-attribute-index
         targetZone: title
         config:
-            title: pim_enrich.index.attribute.title
+            title: pim_enrich.entity.attribute.page_title.index
 
     pim-attribute-index-breadcrumbs:
         module: pim/common/breadcrumbs

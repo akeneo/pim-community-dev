@@ -25,5 +25,5 @@ extensions:
         position: 20
         config:
             fieldName: family
-            label: pim_enrich.entity.family.title
+            label: pim_enrich.entity.family.label
             choiceRoute: pim_enrich_family_rest_index

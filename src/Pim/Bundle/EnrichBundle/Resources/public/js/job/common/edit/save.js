@@ -33,8 +33,8 @@ define(
         router
     ) {
         return BaseSave.extend({
-            updateSuccessMessage: __('pim_enrich.entity.job_instance.flash.update.success'),
-            updateFailureMessage: __('pim_enrich.entity.job_instance.flash.update.fail'),
+            updateSuccessMessage: __('pim_import_export.entity.job_instance.flash.update.success'),
+            updateFailureMessage: __('pim_import_export.entity.job_instance.flash.update.fail'),
 
             /**
              * {@inheritdoc}

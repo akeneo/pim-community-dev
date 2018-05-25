@@ -79,7 +79,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.attribute_group.title
+            entity: pim_enrich.entity.attribute_group.label
 
     pim-attribute-group-edit-form-created:
         module: pim/form/common/meta/created

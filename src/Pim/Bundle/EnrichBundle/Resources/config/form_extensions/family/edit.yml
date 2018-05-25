@@ -74,7 +74,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.family.title
+            entity: pim_enrich.entity.family.label
 
     pim-family-edit-form-properties-tab:
         module: pim/common/tab

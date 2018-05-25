@@ -30,7 +30,7 @@ extensions:
         position: 40
         config:
             fieldName: product_model
-            label: pim_enrich.form.product_model.product_model
+            label: pim_enrich.product_model.uppercase_label
             required: true
             choiceRoute: pim_enrich_product_model_family_variant_leaf
-            placeholder: pim_enrich.form.product_model.choose_product_model
+            placeholder: pim_enrich.entity.product_model.choose

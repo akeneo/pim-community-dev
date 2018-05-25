@@ -136,7 +136,7 @@ extensions:
             trans:
                 title: confirmation.remove.import_profile
                 content: pim_common.confirm_deletion
-                success: pim_enrich.entity.job_instance.flash.delete.success
+                success: pim_import_export.entity.job_instance.flash.delete.success
                 failed: error.removing.job_instance
             redirect: pim_importexport_import_profile_index
 
@@ -160,7 +160,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.job_instance.title
+            entity: pim_import_export.entity.job_instance.title
 
     pim-job-instance-xlsx-base-import-edit-validation:
         module: pim/job/common/edit/validation
