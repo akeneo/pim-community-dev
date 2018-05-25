@@ -2,10 +2,10 @@
 
 namespace Context;
 
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
