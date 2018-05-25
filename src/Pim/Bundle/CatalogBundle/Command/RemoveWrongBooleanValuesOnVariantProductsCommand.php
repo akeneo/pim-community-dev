@@ -8,6 +8,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
