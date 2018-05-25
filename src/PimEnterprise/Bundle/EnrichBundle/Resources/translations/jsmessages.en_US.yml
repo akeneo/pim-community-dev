@@ -38,7 +38,6 @@ pimee_enrich:
         job_instance:
             tab:
                 permission:
-                    title: Permissions
                     added: The group {{ group }} will be allowed to {{ permission }} job profile
                     execute.label: Allowed to execute job profile
                     edit.label: Allowed to edit job profile
@@ -168,7 +167,6 @@ pimee_enrich:
                 height: '%value%px height'
     mass_edit:
         cancel: Cancel
-        confirm: Confirm
         product:
             operation:
                 publish:

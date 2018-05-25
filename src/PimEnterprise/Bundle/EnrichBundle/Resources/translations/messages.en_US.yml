@@ -1,9 +1,6 @@
 pim_title.locale:
     edit: "Locales %locale.code% | Edit"
 
-Permissions: Permissions
-pane.accordion.permissions: Permissions
-
 attribute group.permissions:
     view.label: Allowed to view attributes
     view.help: Allow to view the products in this attribute group
@@ -93,12 +90,6 @@ pimee_enrich:
     product:
         tab:
             proposal.title: Proposals
-    category:
-        tab:
-            permission.title: Permissions
-    locale:
-        tab:
-            permission.title: Permissions
     channel:
         tab:
             asset_transformation.title: Asset transformations
