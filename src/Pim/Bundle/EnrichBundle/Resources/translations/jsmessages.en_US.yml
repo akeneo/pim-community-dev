@@ -34,6 +34,7 @@ pim_common:
     not_available: N/A
     now: Now
     ok: OK
+    permissions: Permissions
     previous: Previous
     properties: Properties
     products: Products
