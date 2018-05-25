@@ -31,22 +31,9 @@ class WrongBooleanValuesOnVariantProductCleaner
 
         $isModified = false;
 
-        foreach ($variantProduct->getFamily()->getAttributes() as $attribute) {
-            if ($this->isProductImpactedForAttribute($variantProduct, $attribute)) {
-                $this->cleanProductForAttribute($variantProduct, $attribute);
-                $isModified = true;
-            }
-        }
-
         $attributes = $variantProduct->getFamily()->getAttributes();
         foreach ($attributes as $attribute) {
-            $familyVariant = $variantProduct->getFamilyVariant();
-            $attributeLevel = $familyVariant->getLevelForAttributeCode($attribute->getCode());
-            $hasAttributeInParentLevel = $attributeLevel !== $familyVariant->getNumberOfLevel();
-            $attributeCodesInLastLevel = $variantProduct->getValuesForVariation()->getAttributesKeys();
-            $hasValueForThisAttributeInLastLevel = in_array($attribute->getCode(), $attributeCodesInLastLevel);
-
-            if ($hasAttributeInParentLevel && $hasValueForThisAttributeInLastLevel) {
+            if ($this->isProductImpactedForAttribute($variantProduct, $attribute)) {
                 $this->cleanProductForAttribute($variantProduct, $attribute);
                 $isModified = true;
             }
@@ -65,13 +52,8 @@ class WrongBooleanValuesOnVariantProductCleaner
      */
     private function isProductImpactedForAttribute(ProductInterface $variantProduct, AttributeInterface $attribute): bool
     {
-        if ($attribute->getType() !== AttributeTypes::BOOLEAN) {
-            return false;
-        }
-
         $familyVariant = $variantProduct->getFamilyVariant();
         $attributeLevel = $familyVariant->getLevelForAttributeCode($attribute->getCode());
-
         $hasAttributeInParentLevel = $attributeLevel !== $familyVariant->getNumberOfLevel();
         $attributeCodesInLastLevel = $variantProduct->getValuesForVariation()->getAttributesKeys();
         $hasValueForThisAttributeInLastLevel = in_array($attribute->getCode(), $attributeCodesInLastLevel);
