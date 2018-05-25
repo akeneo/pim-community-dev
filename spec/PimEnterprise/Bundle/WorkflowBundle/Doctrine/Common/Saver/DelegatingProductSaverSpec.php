@@ -3,6 +3,8 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -55,12 +57,12 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
+        $this->shouldHaveType(SaverInterface::class);
     }
 
     function it_is_a_bulk_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
+        $this->shouldHaveType(BulkSaverInterface::class);
     }
 
     function it_saves_the_product_when_user_is_the_owner(
