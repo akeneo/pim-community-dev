@@ -21,7 +21,6 @@ class PushProductProcessorSpec extends ObjectBehavior
 
     function it_processes_a_product_to_pimai_format(ProductInterface $product)
     {
-        $product->getIdentifier()->willReturn('product_blue');
-        $this->process($product)->shouldReturn(['identifier' => 'product_blue']);
+        $this->process($product)->shouldReturn($product);
     }
 }

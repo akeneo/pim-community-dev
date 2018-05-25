@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\SuggestData\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
- * Normalize a product from object to PIM.ai format.
+ * Do nothing for the moment
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
@@ -15,12 +16,9 @@ class PushProductProcessor implements ItemProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process($item): array
+    public function process($item): ProductInterface
     {
-        $product = [
-            'identifier' => $item->getIdentifier()
-        ];
 
-        return $product;
+        return $item;
     }
 }

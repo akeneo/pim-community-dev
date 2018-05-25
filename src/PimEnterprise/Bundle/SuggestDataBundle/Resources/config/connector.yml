@@ -18,6 +18,7 @@ services:
                 connector: '%pimee_suggest_data.connector_name.suggest_data%'
                 type: '%pim_enrich.job.mass_edit_type%'
 
+    # Could be moved into a Tasklet later if processor is not used.
     pimee_suggest_data.step.suggest_data:
         class: '%pim_connector.step.item_step.class%'
         arguments:
@@ -28,14 +29,18 @@ services:
             - '@pimee_suggest_data.processor.normalization.push_products'
             - '@pimee_suggest_data.writer.push_products'
 
+    # This processor does nothing else but returns what it receives from reader.
     pimee_suggest_data.processor.normalization.push_products:
         class: PimEnterprise\Component\SuggestData\Connector\Processor\Normalization\PushProductProcessor
 
     pimee_suggest_data.writer.push_products:
         class: PimEnterprise\Component\SuggestData\Connector\Writer\PushProductsWriter
+        arguments:
+            - '@pimee_suggest_data.data_provider.factory'
+            - 10
 
     pimee_suggest_data.job.job_parameters.default_values_provider.push_products:
-        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
+        class: '%pim_enrich.connector.job.job_parameters.default_values_provider.product_mass_edit.class%'
         arguments:
             -
                 - '%pimee_suggest_data.job_name.suggest_data%'
@@ -43,7 +48,7 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     pimee_suggest_data.job_parameters.constraints.push_products:
-        class: '%akeneo_batch.job.job_parameters.empty_constraint_collection_provider.class%'
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit.class%'
         arguments:
             -
                 - '%pimee_suggest_data.job_name.suggest_data%'

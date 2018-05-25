@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\Controller\Rest;
 
@@ -6,7 +7,6 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Suggest data REST controller to interact between UI

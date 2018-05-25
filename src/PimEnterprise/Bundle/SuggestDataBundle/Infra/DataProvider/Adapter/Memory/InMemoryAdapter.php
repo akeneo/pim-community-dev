@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\Memory;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\DataProviderAdapterInterface;
 
@@ -14,7 +13,7 @@ use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\DataProvid
  */
 class InMemoryAdapter implements DataProviderAdapterInterface
 {
-    /** @var ArrayCollection */
+    /** @var array */
     private $pushedProducts;
 
     /** @var array */
@@ -25,15 +24,18 @@ class InMemoryAdapter implements DataProviderAdapterInterface
      */
     public function __construct(array $config)
     {
-        $this->pushedProducts = new ArrayCollection();
+        $this->pushedProducts = [];
         $this->configure($config);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function push(ProductInterface $product): string
     {
-        $identifier = $product->getIdentifier();
-        if (!$this->pushedProducts->contains($identifier)) {
-            $this->pushedProducts->add($identifier);
+        $identifier = $product->getIdentifier(); // TODO get with mapping
+        if (!in_array($identifier, $this->pushedProducts)) {
+            $this->pushedProducts[] = $identifier;
         }
 
         $product = $this->getFakeProduct($identifier);
@@ -41,12 +43,21 @@ class InMemoryAdapter implements DataProviderAdapterInterface
         return $this->formatToHal([$product]);
     }
 
-    public function bulkPush(array $products)
+    /**
+     * {@inheritdoc}
+     */
+    public function bulkPush(array $products): string
     {
-        throw new \Exception(
-            sprintf('"%s" is not yet implemented'),
-            __METHOD__
-        );
+        $fakeProducts = [];
+        foreach ($products as $product) {
+            $identifier = $product->getIdentifier(); // TODO get with mapping
+            if (!in_array($identifier, $this->pushedProducts)) {
+                $this->pushedProducts[] = $identifier;
+            }
+            $fakeProducts[] = $this->getFakeProduct($identifier);
+        }
+
+        return $this->formatToHal($fakeProducts);
     }
 
     public function pull(ProductInterface $product)
@@ -81,7 +92,7 @@ class InMemoryAdapter implements DataProviderAdapterInterface
         $this->config = $config;
     }
 
-    private function formatToHal(array $products)
+    private function formatToHal(array $products): string
     {
         $formattedProducts = [
             '_links' => [
@@ -174,7 +185,7 @@ class InMemoryAdapter implements DataProviderAdapterInterface
         $product['codes']['sku'] = $identifier;
         $product['codes']['upc'] = $this->getRandomUPC();
         $product['codes']['asin'] = $this->getRandomASIN();
-        $product['codes']['brand'] = $this->getRandomBrand();
+        $product['codes']['mpn_brand'] = $this->getRandomBrand();
         $product['_links']['self']['href'] .= $id;
 
         return $product;

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter;
 
@@ -9,10 +10,19 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 interface DataProviderAdapterInterface
 {
-
+    /**
+     * @param ProductInterface $product
+     *
+     * @return string
+     */
     public function push(ProductInterface $product): string;
 
-    public function bulkPush(array $products);
+    /**
+     * @param ProductInterface[] $products
+     *
+     * @return string
+     */
+    public function bulkPush(array $products): string;
 
     public function pull(ProductInterface $product);
 
