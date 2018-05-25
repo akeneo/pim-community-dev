@@ -254,7 +254,7 @@
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Import\ImportProposalsSubscriber`. Replace deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` by `Pim\Bundle\NotificationBundle\NotifierInterface` and add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\AbstractProposalStateNotificationSubscriber`. Replace deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` by `Pim\Bundle\NotificationBundle\NotifierInterface` and add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\SendForApprovalSubscriber`. Replace deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager` by `Pim\Bundle\NotificationBundle\NotifierInterface` and add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface`.
-- Change constructor of `Akeneo\Asset\Bundle\MassUpload\MassUploadTasklet`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager`.
+- Change constructor of `PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet`. Remove deprecated `Pim\Bundle\NotificationBundle\Manager\NotificationManager`.
 - Change constructor of `PimEnterprise\Bundle\CatalogRuleBundle\Controller\RuleController`. Add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, `Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface`, `PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository` and `PimEnterprise\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter`.
 - Change constructor of `PimEnterprise\Component\ProductAsset\VariationFileGenerator`. Replace `League\Flysystem\MountManager` by `Akeneo\Component\FileStorage\FilesystemProvider`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\DetachProductPostPublishSubscriber`. Replace `Pim\Bundle\CatalogBundle\Manager\ProductManager` by `Doctrine\Common\Persistence\ObjectManager`.
@@ -294,7 +294,7 @@
 - Move `PimEnterprise\Bundle\SecurityBundle\Model\LocaleAccessInterface` to `PimEnterprise\Component\Security\Model\LocaleAccessInterface`
 - Move `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AccessRepositoryInterface` to `PimEnterprise\Component\Security\Repository\AccessRepositoryInterface`
 - `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository` now implements `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
-- `Akeneo\Asset\Bundle\Doctrine\ORM\Repository\AssetCategoryRepository` now implements `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
+- `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetCategoryRepository` now implements `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 - `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository` now implements `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController` replace argument `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`.
 - Move `PimEnterprise\Bundle\WorkflowBundle\Model` to `PimEnterprise\Component\Workflow\Model`.
@@ -369,7 +369,7 @@
     `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\AbstractProductPublisherTasklet`,
     `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\PublishProductTasklet`,
     `PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\UnpublishProductTasklet`,
-    `Akeneo\Asset\Bundle\MassUpload\MassUploadTasklet`
+    `PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet`
 	`PimEnterprise\Component\CatalogRule\Connector\Tasklet\ImpactedProductCountTasklet`
 	`PimEnterprise\Component\Workflow\Connector\Tasklet\ApproveTasklet`
 	`PimEnterprise\Component\Workflow\Connector\Tasklet\RefuseTasklet` we can access to the JobParameters from the StepExecution

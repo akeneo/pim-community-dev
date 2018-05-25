@@ -282,12 +282,12 @@
 
 - Remove container parameter `pim_catalog_product_storage_driver`
 - Remove repository `PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository`
-- Remove repository `Akeneo\Asset\Bundle\Doctrine\MongoDBODM\Repository\ProductCascadeRemovalRepository`
+- Remove repository `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\MongoDBODM\Repository\ProductCascadeRemovalRepository`
 - Remove repository `PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository\ProductDraftRepository`
 - Remove repository `PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository\PublishedProductRepository`
 - Remove class `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM\ProductDraftHydrator`
 - Remove class `PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM\ProductHistoryHydrator`
-- Remove event subscriber `Akeneo\Asset\Bundle\EventSubscriber\MongoDBODM\AssetEventSubscriber`
+- Remove event subscriber `PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\MongoDBODM\AssetEventSubscriber`
 - Remove event subscriber `PimEnterprise\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber`
 - Remove event subscriber `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\MongoDBODM\ExcludeDeletedAttributeSubscriber`
 - Remove event subscriber `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\MongoDBODM\RemoveOutdatedProductDraftSubscriber`
@@ -315,9 +315,9 @@
 - Remove method `link` from `PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface`.
 - Change the constructor of `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit` to replace `Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` by `Akeneo\Component\StorageUtils\Cache\CacheClearerInterface`.
 - Change the constructor `PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilder`. Remove `Doctrine\Common\Persistence\ObjectManager` and add `Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface` and `Pim\Component\Catalog\Factory\ValueFactory`.
-- Change the constructor of `Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetSaver`. Replace `PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface` by `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface`.
-- Change the constructor of `Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetReferenceSaver`. Replace `PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface` by `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface`.
-- Change the constructor of `Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetVariationSaver`. Replace `PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface` by `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface`.
+- Change the constructor of `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetSaver`. Replace `PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface` by `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface`.
+- Change the constructor of `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetReferenceSaver`. Replace `PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface` by `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface`.
+- Change the constructor of `PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetVariationSaver`. Replace `PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface` by `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface`.
 - Remove method `findProducts` of the interface `PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface`
 - Remove the inferface `PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface` in favor of `PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface`.
 - Remove services `pimee_versioning.denormalizer.product`, `pimee_versioning.denormalizer.family`, `pimee_versioning.denormalizer.category`, `pimee_versioning.denormalizer.group`
@@ -361,7 +361,7 @@
 - Change the constructor of `PimEnterprise\Bundle\EnrichBundle\Controller\ProductController` to add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
 - PIM-6228: remove escape parameter from csv imports.
 - Change the constructor of `PimEnterprise\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer` to add `Pim\Component\Catalog\Repository\ChannelRepositoryInterface` and `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`.
-- PIM-6815: Remove `indexAction` from `Akeneo\Asset\Bundle\Controller\ProductAssetController`
+- PIM-6815: Remove `indexAction` from `PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController`
 - PIM-6815: Remove `src/PimEnterprise/Bundle/ProductAssetBundle/Resources/views/ProductAsset/index.html.twig`
 - Change the constructor of `PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher` to add `Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and remove `rootDirectory`(string), `environment` (string), `logDir` (string).
 

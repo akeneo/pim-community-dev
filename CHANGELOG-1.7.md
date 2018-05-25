@@ -1,7 +1,3 @@
-# 1.7.x
-
-# 1.7.21 (2018-04-23)
-
 # 1.7.20 (2018-04-03)
 
 # Improvements:
@@ -200,10 +196,10 @@
 
 ### Constructors
 
-- Change the constructor of `Akeneo\Asset\Bundle\Datagrid\Filter\ProductAssetFilterUtility` to remove `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter`
+- Change the constructor of `PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\ProductAssetFilterUtility` to remove `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter`
 - Change the constructor of `PimEnterprise\Bundle\CatalogRuleBundle\Twig\RuleExtension` to add `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository`
 - Change the constructor of `PimEnterprise\Bundle\WorkflowBundle\Presenter\FilePresenter` to add `Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface`
-- Change constructor of `Akeneo\Asset\Bundle\Workflow\Presenter\AssetsCollectionPresenter` to add `Symfony\Component\Routing\RouterInterface`.
+- Change constructor of `PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter\AssetsCollectionPresenter` to add `Symfony\Component\Routing\RouterInterface`.
 
 ### Configuration
 
