@@ -5,8 +5,8 @@ namespace spec\PimEnterprise\Component\ProductAsset\Builder;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Prophecy\Argument;
 
 class ReferenceBuilderSpec extends ObjectBehavior

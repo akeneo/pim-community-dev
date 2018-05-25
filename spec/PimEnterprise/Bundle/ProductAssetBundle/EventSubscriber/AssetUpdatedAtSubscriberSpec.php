@@ -6,9 +6,9 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

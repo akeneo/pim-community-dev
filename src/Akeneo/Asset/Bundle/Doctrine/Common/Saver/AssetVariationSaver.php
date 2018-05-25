@@ -17,8 +17,8 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
+use Akeneo\Asset\Component\Completeness\CompletenessRemoverInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

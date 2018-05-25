@@ -6,9 +6,9 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
 
 class VariationNormalizerSpec extends ObjectBehavior
 {

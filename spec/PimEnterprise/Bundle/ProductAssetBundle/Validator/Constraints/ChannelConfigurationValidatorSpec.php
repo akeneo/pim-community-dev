@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\FileTransformer\Transformation\TransformationRegistry;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Asset\Bundle\Validator\Constraints\ChannelConfiguration;
-use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
+use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
 use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraint;

@@ -4,8 +4,8 @@ namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\Asset;
 
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use PimEnterprise\Component\ProductAsset\FileStorage;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Akeneo\Asset\Component\FileStorage;
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

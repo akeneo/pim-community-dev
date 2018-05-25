@@ -14,7 +14,7 @@ namespace Akeneo\Asset\Bundle\Validator\Constraints;
 use Akeneo\Tool\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use Akeneo\Tool\Component\FileTransformer\Exception\NonRegisteredTransformationException;
 use Akeneo\Tool\Component\FileTransformer\Transformation\TransformationRegistry;
-use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
+use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

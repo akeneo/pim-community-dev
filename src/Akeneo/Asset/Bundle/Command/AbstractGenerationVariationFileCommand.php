@@ -13,13 +13,13 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
-use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
+use Akeneo\Asset\Component\Builder\VariationBuilderInterface;
+use Akeneo\Asset\Component\Finder\AssetFinderInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Akeneo\Asset\Component\VariationFileGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**

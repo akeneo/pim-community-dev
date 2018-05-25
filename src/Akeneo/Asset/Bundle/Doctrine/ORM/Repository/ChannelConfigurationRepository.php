@@ -11,7 +11,7 @@
 namespace Akeneo\Asset\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
+use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
 
 /**
  * Channel variations configuration repository

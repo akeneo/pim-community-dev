@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
+use Akeneo\Asset\Component\Upload\UploadContext;
 use Prophecy\Argument;
 
 class UploadContextSpec extends ObjectBehavior

@@ -19,7 +19,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior

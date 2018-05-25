@@ -11,8 +11,8 @@
 
 namespace Akeneo\Asset\Bundle\Event;
 
-use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
-use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
+use Akeneo\Asset\Component\Finder\AssetFinderInterface;
+use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

@@ -12,10 +12,10 @@ namespace spec\PimEnterprise\Component\ProductAsset\Finder;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>

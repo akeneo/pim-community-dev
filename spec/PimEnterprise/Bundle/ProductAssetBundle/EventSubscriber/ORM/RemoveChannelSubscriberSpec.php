@@ -6,10 +6,10 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
+use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
+use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class RemoveChannelSubscriberSpec extends ObjectBehavior

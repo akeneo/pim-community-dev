@@ -11,7 +11,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Prophecy\Argument;
 
 class AssetDatasourceSpec extends ObjectBehavior

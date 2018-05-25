@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Event;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Prophecy\Argument;
 
 class AssetEventSpec extends ObjectBehavior

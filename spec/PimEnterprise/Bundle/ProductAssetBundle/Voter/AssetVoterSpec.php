@@ -7,7 +7,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Asset\Bundle\Voter\AssetVoter;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

@@ -14,7 +14,7 @@ namespace Akeneo\Asset\Bundle\Controller\Rest;
 use Pim\Bundle\UIBundle\Controller\AjaxOptionController as BaseAjaxOptionController;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -4,7 +4,7 @@ namespace Context;
 
 use Behat\ChainedStepsExtension\Step\Then;
 use Context\NavigationContext as BaseNavigationContext;
-use PimEnterprise\Component\ProductAsset\Model\Category;
+use Akeneo\Asset\Component\Model\Category;
 
 /**
  * Navigation context

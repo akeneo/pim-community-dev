@@ -5,8 +5,8 @@ namespace spec\PimEnterprise\Component\ProductAsset\Factory;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Factory\ReferenceFactory;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Factory\ReferenceFactory;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
 
 class AssetFactorySpec extends ObjectBehavior
 {

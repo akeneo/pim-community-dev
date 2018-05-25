@@ -3,10 +3,10 @@
 namespace spec\PimEnterprise\Component\ProductAsset;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Exception\LockedVariationGenerationException;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use PimEnterprise\Component\ProductAsset\ProcessedItem;
-use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
+use Akeneo\Asset\Component\Exception\LockedVariationGenerationException;
+use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Asset\Component\ProcessedItem;
+use Akeneo\Asset\Component\VariationFileGeneratorInterface;
 use Prophecy\Argument;
 
 class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior

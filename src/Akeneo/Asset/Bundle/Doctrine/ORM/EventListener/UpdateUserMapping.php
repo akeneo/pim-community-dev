@@ -16,7 +16,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
-use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
+use Akeneo\Asset\Component\Model\CategoryInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

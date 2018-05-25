@@ -10,9 +10,9 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as AssetAttributeType;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class AssetsCollectionPresenterSpec extends ObjectBehavior

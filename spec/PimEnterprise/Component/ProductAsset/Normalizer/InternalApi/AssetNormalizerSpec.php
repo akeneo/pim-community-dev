@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssetNormalizerSpec extends ObjectBehavior

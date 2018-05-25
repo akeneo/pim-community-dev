@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use AkeneoEnterprise\Test\Acceptance\ProductAsset\Asset\InMemoryAssetRepository;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Model\Asset;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use Akeneo\Asset\Component\Model\Asset;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Prophecy\Argument;
 
 class InMemoryAssetRepositorySpec extends ObjectBehavior
@@ -31,7 +31,7 @@ class InMemoryAssetRepositorySpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf(AssetRepositoryInterface::class);
     }
-    
+
     function it_asserts_the_identifier_property_is_the_code()
     {
         $this->getIdentifierProperties()->shouldReturn(['code']);

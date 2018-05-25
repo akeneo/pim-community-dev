@@ -11,10 +11,10 @@
 namespace Akeneo\Asset\Bundle\Command;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\ProcessedItem;
-use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\ProcessedItem;
+use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
+use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
 
 class ChannelConfigurationNormalizerSpec extends ObjectBehavior
 {

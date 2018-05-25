@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Builder;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderInterface;
+use Akeneo\Asset\Component\Builder\MetadataBuilderInterface;
 
 class MetadataBuilderRegistrySpec extends ObjectBehavior
 {

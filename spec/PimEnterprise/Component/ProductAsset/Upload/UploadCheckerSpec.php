@@ -5,9 +5,9 @@ namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Upload\ParsedFilenameInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Akeneo\Asset\Component\Upload\ParsedFilenameInterface;
 use Prophecy\Argument;
 
 class UploadCheckerSpec extends ObjectBehavior

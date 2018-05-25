@@ -11,8 +11,8 @@
 
 namespace Akeneo\Asset\Bundle\Event;
 
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\ProcessedItemList;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\ProcessedItemList;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**

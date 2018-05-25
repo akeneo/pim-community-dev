@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\FileMetadata\FileMetadataBagInterface;
 use Akeneo\Tool\Component\FileMetadata\FileMetadataReader;
 use Akeneo\Tool\Component\FileMetadata\FileMetadataReaderFactoryInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderInterface;
-use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
+use Akeneo\Asset\Component\Builder\MetadataBuilderInterface;
+use Akeneo\Asset\Component\Model\FileMetadataInterface;
 
 class ImageMetadataBuilderSpec extends ObjectBehavior
 {

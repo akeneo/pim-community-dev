@@ -11,7 +11,7 @@
 
 namespace Akeneo\Asset\Bundle\Controller\Rest;
 
-use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
+use Akeneo\Asset\Component\Repository\AssetCategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

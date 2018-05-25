@@ -12,7 +12,7 @@ use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetVariationSaver;
 use Akeneo\Asset\Bundle\Doctrine\ORM\Repository\AssetRepository;
-use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
+use Akeneo\Asset\Component\Updater\FilesUpdaterInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**

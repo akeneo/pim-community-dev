@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Model\TagInterface;
-use PimEnterprise\Component\ProductAsset\Updater\TagUpdater;
+use Akeneo\Asset\Component\Model\TagInterface;
+use Akeneo\Asset\Component\Updater\TagUpdater;
 
 class TagUpdaterSpec extends ObjectBehavior
 {

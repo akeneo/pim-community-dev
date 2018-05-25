@@ -11,7 +11,7 @@
 namespace Akeneo\Asset\Bundle\Command;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
+use Akeneo\Asset\Component\Upload\UploadContext;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

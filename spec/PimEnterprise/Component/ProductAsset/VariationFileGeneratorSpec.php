@@ -12,13 +12,13 @@ use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderInterface;
-use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
-use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
-use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
+use Akeneo\Asset\Component\Builder\MetadataBuilderInterface;
+use Akeneo\Asset\Component\Builder\MetadataBuilderRegistry;
+use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
+use Akeneo\Asset\Component\Model\FileMetadataInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
 use Prophecy\Argument;
 
 class VariationFileGeneratorSpec extends ObjectBehavior

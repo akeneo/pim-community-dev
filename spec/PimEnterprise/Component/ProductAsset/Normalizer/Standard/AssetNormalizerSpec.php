@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
 
 class AssetNormalizerSpec extends ObjectBehavior
 {

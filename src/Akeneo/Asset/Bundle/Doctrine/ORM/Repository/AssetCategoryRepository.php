@@ -14,8 +14,8 @@ namespace Akeneo\Asset\Bundle\Doctrine\ORM\Repository;
 use Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Repository\AssetCategoryRepositoryInterface;
 
 /**
  * Asset category repository

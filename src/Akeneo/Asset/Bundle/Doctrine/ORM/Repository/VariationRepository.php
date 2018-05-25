@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
+use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
 
 /**
  * Implementation of VariationRepositoryInterface

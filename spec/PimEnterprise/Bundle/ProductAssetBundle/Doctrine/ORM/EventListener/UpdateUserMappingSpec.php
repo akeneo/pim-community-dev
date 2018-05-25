@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Asset\Bundle\Doctrine\ORM\EventListener\UpdateUserMapping;
-use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
+use Akeneo\Asset\Component\Model\CategoryInterface;
 
 class UpdateUserMappingSpec extends ObjectBehavior
 {

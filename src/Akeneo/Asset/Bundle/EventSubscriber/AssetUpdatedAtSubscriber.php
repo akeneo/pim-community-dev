@@ -15,8 +15,8 @@ namespace Akeneo\Asset\Bundle\EventSubscriber;
 
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\ORM\EntityManagerInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

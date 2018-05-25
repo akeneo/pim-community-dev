@@ -13,7 +13,7 @@ namespace Akeneo\Asset\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\MassActionRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 
 /**
  * Repository dedicated to mass edit actions on assets.

@@ -14,7 +14,7 @@ namespace Akeneo\Asset\Bundle\tests\EndToEnd\ExternalApi\Validation;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use PimEnterprise\Component\ProductAsset\Model\Asset;
+use Akeneo\Asset\Component\Model\Asset;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

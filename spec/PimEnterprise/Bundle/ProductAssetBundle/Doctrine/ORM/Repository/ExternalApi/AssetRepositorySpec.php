@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Repository\SearchAfterPageableRepositoryInterface;
 use Akeneo\Asset\Bundle\Doctrine\ORM\Repository\ExternalApi\AssetRepository;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 
 class AssetRepositorySpec extends ObjectBehavior
 {

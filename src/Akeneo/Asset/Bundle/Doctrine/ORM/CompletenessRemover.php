@@ -10,8 +10,8 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as AssetAttributeTypes;
-use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Akeneo\Asset\Component\Completeness\CompletenessRemoverInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
 
 /**
  * Simple ORM version of the completeness remover.

@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
-use PimEnterprise\Component\ProductAsset\Model\CategoryInterface as ProductAssetCategoryInterface;
+use Akeneo\Asset\Component\Model\CategoryInterface as ProductAssetCategoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;

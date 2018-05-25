@@ -15,7 +15,7 @@ namespace Akeneo\Asset\Bundle\tests\EndToEnd\ExternalApi\Asset;
 
 use League\Flysystem\FilesystemInterface;
 use PHPUnit\Framework\Assert;
-use PimEnterprise\Component\ProductAsset\FileStorage;
+use Akeneo\Asset\Component\FileStorage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 

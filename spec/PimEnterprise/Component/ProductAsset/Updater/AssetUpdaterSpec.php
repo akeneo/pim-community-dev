@@ -11,11 +11,11 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
-use PimEnterprise\Component\ProductAsset\Model\TagInterface;
-use PimEnterprise\Component\ProductAsset\Updater\AssetUpdater;
+use Akeneo\Asset\Component\Factory\AssetFactory;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\CategoryInterface;
+use Akeneo\Asset\Component\Model\TagInterface;
+use Akeneo\Asset\Component\Updater\AssetUpdater;
 use Prophecy\Argument;
 
 class AssetUpdaterSpec extends ObjectBehavior

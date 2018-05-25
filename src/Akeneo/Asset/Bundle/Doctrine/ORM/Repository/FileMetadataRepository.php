@@ -11,7 +11,7 @@
 namespace Akeneo\Asset\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
+use Akeneo\Asset\Component\Repository\FileMetadataRepositoryInterface;
 
 /**
  * Doctrine implementation of FileMetadataRepositoryInterface

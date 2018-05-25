@@ -11,9 +11,9 @@
 namespace Akeneo\Asset\Bundle\Command;
 
 use Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetSaver;
-use PimEnterprise\Component\ProductAsset\ProcessedItem;
-use PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor;
-use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
+use Akeneo\Asset\Component\ProcessedItem;
+use Akeneo\Asset\Component\Upload\MassUploadProcessor;
+use Akeneo\Asset\Component\Upload\UploadContext;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

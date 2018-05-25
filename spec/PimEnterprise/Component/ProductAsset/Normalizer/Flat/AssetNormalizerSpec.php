@@ -5,9 +5,9 @@ namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Flat;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssetNormalizerSpec extends ObjectBehavior

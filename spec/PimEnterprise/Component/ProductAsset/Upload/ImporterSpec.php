@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Upload\ParsedFilenameInterface;
-use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
-use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
+use Akeneo\Asset\Component\Upload\ParsedFilenameInterface;
+use Akeneo\Asset\Component\Upload\UploadCheckerInterface;
+use Akeneo\Asset\Component\Upload\UploadContext;
 use Prophecy\Argument;
 
 class ImporterSpec extends ObjectBehavior

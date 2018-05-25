@@ -32,20 +32,20 @@ use Akeneo\Asset\Bundle\Form\Type\AssetType;
 use Akeneo\Asset\Bundle\Form\Type\CreateAssetType;
 use PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
-use PimEnterprise\Component\ProductAsset\FileStorage;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use PimEnterprise\Component\ProductAsset\ProcessedItem;
-use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Repository\ReferenceRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
-use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
+use Akeneo\Asset\Component\Factory\AssetFactory;
+use Akeneo\Asset\Component\FileStorage;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\FileMetadataInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Asset\Component\ProcessedItem;
+use Akeneo\Asset\Component\Repository\AssetCategoryRepositoryInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Akeneo\Asset\Component\Repository\FileMetadataRepositoryInterface;
+use Akeneo\Asset\Component\Repository\ReferenceRepositoryInterface;
+use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
+use Akeneo\Asset\Component\Updater\FilesUpdaterInterface;
+use Akeneo\Asset\Component\VariationFileGeneratorInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -547,7 +547,7 @@ class ProductAssetController extends Controller
     /**
      * Action to render the asset thumbnail depending on a channel (and a locale if the asset is localizable).
      *
-     * @see \PimEnterprise\Component\ProductAsset\Model\AssetInterface::getFileForContext()
+     * @see \Akeneo\Asset\Component\Model\AssetInterface::getFileForContext()
      *
      * @param Request $request
      * @param string  $code

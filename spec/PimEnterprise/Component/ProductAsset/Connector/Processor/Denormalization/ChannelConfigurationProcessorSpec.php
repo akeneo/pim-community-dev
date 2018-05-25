@@ -7,8 +7,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use PimEnterprise\Component\ProductAsset\Factory\ChannelConfigurationFactory;
-use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
+use Akeneo\Asset\Component\Factory\ChannelConfigurationFactory;
+use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;

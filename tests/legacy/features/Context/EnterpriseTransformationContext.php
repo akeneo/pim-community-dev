@@ -3,7 +3,7 @@
 namespace Context;
 
 use Context\TransformationContext as BaseTransformationContext;
-use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
+use Akeneo\Asset\Component\Model\CategoryInterface;
 
 /**
  * Context for data transformations

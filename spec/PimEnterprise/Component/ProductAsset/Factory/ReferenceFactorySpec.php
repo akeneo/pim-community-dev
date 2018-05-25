@@ -6,8 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Factory\VariationFactory;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
+use Akeneo\Asset\Component\Factory\VariationFactory;
+use Akeneo\Asset\Component\Model\VariationInterface;
 
 class ReferenceFactorySpec extends ObjectBehavior
 {

@@ -16,9 +16,9 @@ namespace Akeneo\Asset\Bundle\tests\EndToEnd\ExternalApi\Asset;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use PimEnterprise\Component\ProductAsset\FileStorage;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\TagInterface;
+use Akeneo\Asset\Component\FileStorage;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\TagInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

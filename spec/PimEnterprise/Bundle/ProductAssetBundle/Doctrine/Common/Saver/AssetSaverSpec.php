@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use PimEnterprise\Component\ProductAsset\Completeness\CompletenessRemoverInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Akeneo\Asset\Component\Completeness\CompletenessRemoverInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

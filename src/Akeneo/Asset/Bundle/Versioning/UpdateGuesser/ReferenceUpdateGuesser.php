@@ -13,7 +13,7 @@ namespace Akeneo\Asset\Bundle\Versioning\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use Akeneo\Asset\Component\Model\ReferenceInterface;
 
 /**
  * Reference update guesser

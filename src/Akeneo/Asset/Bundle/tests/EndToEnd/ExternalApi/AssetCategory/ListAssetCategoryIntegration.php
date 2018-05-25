@@ -3,7 +3,7 @@
 namespace Akeneo\Asset\Bundle\tests\EndToEnd\ExternalApi\AssetCategory;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use PimEnterprise\Component\ProductAsset\Model\Category;
+use Akeneo\Asset\Component\Model\Category;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListAssetCategoryIntegration extends ApiTestCase
