@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle;
+namespace Akeneo\Pim\Enrichment\Bundle;
 
 use Akeneo\Channel\Bundle\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AkeneoStructureBundle extends Bundle
+class AkeneoPimEnrichmentBundle extends Bundle
 {
     /**
      * {@inheritdoc}
