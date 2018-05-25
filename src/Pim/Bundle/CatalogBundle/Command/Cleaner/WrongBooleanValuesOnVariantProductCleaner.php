@@ -30,13 +30,24 @@ class WrongBooleanValuesOnVariantProductCleaner
         }
 
         $isModified = false;
-
+        $cleanedAttributes = [];
         $attributes = $variantProduct->getFamily()->getAttributes();
         foreach ($attributes as $attribute) {
             if ($this->isProductImpactedForAttribute($variantProduct, $attribute)) {
                 $this->cleanProductForAttribute($variantProduct, $attribute);
+                $cleanedAttributes[] = $attribute->getCode();
                 $isModified = true;
             }
+        }
+
+        if ($isModified) {
+            file_put_contents('/tmp/cleaned_products.txt', sprintf(
+                "%s;%s;%s;%s\n",
+                $variantProduct->getIdentifier(),
+                $variantProduct->getFamily()->getCode(),
+                $variantProduct->getFamilyVariant()->getCode(),
+                implode($cleanedAttributes, ',')
+            ));
         }
 
         return $isModified;
