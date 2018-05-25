@@ -105,7 +105,7 @@ extensions:
         position: 90
         config:
             label: pim_enrich.entity.product.meta.created
-            labelBy: pim_enrich.entity.product.meta.created_by
+            labelBy: pim_common.by
 
     pimee-product-model-view-form-updated:
         module: pim/product-edit-form/meta/updated
@@ -114,7 +114,7 @@ extensions:
         position: 100
         config:
             label: pim_enrich.entity.product.meta.updated
-            labelBy: pim_enrich.entity.product.meta.updated_by
+            labelBy: pim_common.by
 
     pimee-product-model-view-form-attributes:
         module: pim/product-edit-form/attributes
@@ -126,7 +126,7 @@ extensions:
             removeAttributeRoute: pim_enrich_product_remove_attribute_rest
             removeAttributeACL: pim_enrich_product_remove_attribute
             tabTitle: pim_enrich.form.product.tab.attributes.title
-            deletionFailed: pim_enrich.form.product.flash.attribute_deletion_error
+            deletionFailed: pim_enrich.entity.attribute.flash.delete.fail
 
     pimee-product-model-view-form-categories:
         module: pim/product-edit-form/categories

@@ -94,7 +94,7 @@ extensions:
         position: 90
         config:
             label: pim_enrich.entity.product.meta.created
-            labelBy: pim_enrich.entity.product.meta.created_by
+            labelBy: pim_common.by
 
     pimee-product-view-updated:
         module: pim/product-edit-form/meta/updated
@@ -103,7 +103,7 @@ extensions:
         position: 100
         config:
             label: pim_enrich.entity.product.meta.updated
-            labelBy: pim_enrich.entity.product.meta.updated_by
+            labelBy: pim_common.by
 
     pimee-product-view-form-meta-owner-group:
         module: pimee/product-edit-form/meta/owner-groups
