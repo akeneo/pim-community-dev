@@ -108,6 +108,11 @@ legacy:
                 - Pim\Behat\Context\Storage\AttributeOptionStorage:
                     - '@pim_catalog.repository.attribute_option'
                     - '@doctrine.orm.default_entity_manager'
+                - Pim\Behat\Context\MassEditJobContext:
+                    - 'Context\FeatureContext'
+                    - '@pim_catalog.repository.product'
+                    - '@pim_catalog.repository.product_model'
+
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

@@ -44,23 +44,23 @@ class ProductAndProductModelReader implements
     /** @var CursorInterface */
     private $productsAndProductModels;
 
-    /** @var boolean */
+    /** @var bool */
     private $readChildren;
 
-    /** @var boolean */
+    /** @var bool */
     private $firstRead = true;
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
      * @param CompletenessManager                 $completenessManager
-     * @param boolean                             $readChildren
+     * @param bool                                $readChildren
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
-        $readChildren
+        bool $readChildren
     ) {
         $this->pqbFactory          = $pqbFactory;
         $this->channelRepository   = $channelRepository;

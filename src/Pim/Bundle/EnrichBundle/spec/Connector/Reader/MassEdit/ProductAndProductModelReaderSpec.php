@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\ProductAndProductModelReader;
 use Pim\Component\Catalog\Manager\CompletenessManager;
@@ -15,8 +14,6 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Converter\MetricConverter;
-use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 
 class ProductAndProductModelReaderSpec extends ObjectBehavior
@@ -30,14 +27,13 @@ class ProductAndProductModelReaderSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
-        ObjectDetacherInterface $objectDetacher,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $pqbFactory,
             $channelRepository,
             $completenessManager,
-            $objectDetacher
+            true
         );
 
         $this->setStepExecution($stepExecution);

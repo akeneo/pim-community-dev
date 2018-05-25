@@ -5,12 +5,14 @@
 - PIM-6897: As Julia, I would like to update the family variant labels from the UI
 - PIM-7330: Improve validation message in case of product model or variant product axis values duplication
 - PIM-7326: Create a version when the parent of a variant product or a sub product model is changed.
+- PIM-6250: As Julia, I would like to change the parent of a variant product/sub product model from the UI
 
 ## BC Breaks
 
 - Remove public constant `Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis::DUPLICATE_VALUE_IN_SIBLING`
 - Change the method signature of `Pim\Component\Catalog\Validator\UniqueAxesCombinationSet::addCombination`, this method does not return anything anymore, but can throw `AlreadyExistingAxisValueCombinationException`
 - Add method `generateMissingForProducts` to `Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface`
+- Add a new public method `findProductModelsForFamilyVariant` to `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface`
 
 # 2.3.0-ALPHA1 (2018-04-27)
 
