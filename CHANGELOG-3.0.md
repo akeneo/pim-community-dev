@@ -65,6 +65,7 @@
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to `PimEnterprise\Bundle\WorkflowBundle\Versioning\VersionNormalizer`
 - Remove `PimEnterprise\Bundle\ApiBundle\DependencyInjection\Configuration`
 - Remove `PimEnterprise\Bundle\ApiBundle\DependencyInjection\PimEnterpriseApiExtension`
+- Change the constructor of `PimEnterprise\Bundle\SecurityBundle\User\UserContext` to remove `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
 
 ## Security
 

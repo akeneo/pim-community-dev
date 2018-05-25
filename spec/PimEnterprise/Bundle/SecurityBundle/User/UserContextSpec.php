@@ -4,7 +4,6 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\User;
 
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
@@ -32,7 +31,6 @@ class UserContextSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
         RequestStack $requestStack,
-        ChoicesBuilderInterface $choicesBuilder,
         AuthorizationCheckerInterface $authorizationChecker,
         CategoryAccessRepository $categoryAccessRepo,
         TokenInterface $token,
@@ -50,7 +48,6 @@ class UserContextSpec extends ObjectBehavior
             $channelRepository,
             $categoryRepository,
             $requestStack,
-            $choicesBuilder,
             $authorizationChecker,
             $categoryAccessRepo,
             'en_US',

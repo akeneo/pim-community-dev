@@ -17,7 +17,6 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext as BaseUserContext;
-use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -46,7 +45,6 @@ class UserContext extends BaseUserContext
      * @param ChannelRepositoryInterface    $channelRepository
      * @param CategoryRepositoryInterface   $categoryRepository
      * @param RequestStack                  $requestStack
-     * @param ChoicesBuilderInterface       $choicesBuilder
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param CategoryAccessRepository      $categoryAccessRepo
      * @param string                        $defaultLocale
@@ -58,7 +56,6 @@ class UserContext extends BaseUserContext
         ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
         RequestStack $requestStack,
-        ChoicesBuilderInterface $choicesBuilder,
         AuthorizationCheckerInterface $authorizationChecker,
         CategoryAccessRepository $categoryAccessRepo,
         $defaultLocale,
@@ -70,7 +67,6 @@ class UserContext extends BaseUserContext
             $channelRepository,
             $categoryRepository,
             $requestStack,
-            $choicesBuilder,
             $defaultLocale
         );
 
