@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -53,9 +57,15 @@ class ChangeParentProcessor extends AbstractProcessor
         $this->validateIsProduct($product);
 
         $newParentCode = $this->getNewParentCode();
-        $this->updateEntity($product, $newParentCode);
 
-        if (! $this->isProductValid($product)) {
+        try {
+            $this->updateEntity($product, $newParentCode);
+
+            if (! $this->isProductValid($product)) {
+                return null;
+            }
+        } catch(PropertyException $e) {
+            $this->stepExecution->addWarning($e->getMessage(), [], new DataInvalidItem($product));
             return null;
         }
 
@@ -65,12 +75,14 @@ class ChangeParentProcessor extends AbstractProcessor
     /**
      * Validate the given object is the expected product type
      *
-     * @param mixed $product
+     * @param $product
+     *
+     * @throws InvalidObjectException
      */
     private function validateIsProduct($product): void
     {
         if (! $product instanceof EntityWithFamilyVariantInterface) {
-            throw new \InvalidArgumentException(sprintf('Given entity shoudl be an instance of EntityWithToto. Instance of %s given.', get_class($product)));
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($product), EntityWithFamilyVariantInterface::class);
         }
     }
 
