@@ -84,7 +84,7 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
     public function sendNotificationToOwners(GenericEvent $event)
     {
         $productDraft = $event->getSubject();
-        $product = $productDraft->getProduct();
+        $product = $productDraft->getEntityWithValue();
 
         $groupsToNotify = $this->ownerGroupsProvider->getOwnerGroupIds($product);
         if (empty($groupsToNotify)) {

@@ -2,7 +2,6 @@
 
 namespace spec\PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
-use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -10,11 +9,10 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
-use Prophecy\Argument;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
+use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -24,9 +22,9 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        ProductDraftBuilderInterface $productDraftBuilder,
-        ProductDraftApplierInterface $productDraftApplier,
-        ProductDraftRepositoryInterface $productDraftRepo,
+        EntityWithValuesDraftBuilderInterface $productDraftBuilder,
+        DraftApplierInterface $productDraftApplier,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -54,11 +52,12 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
-        ProductDraft $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         JobExecution $jobExecution,
         JobInstance $jobInstance
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
 
         $values = $this->getValues();
 

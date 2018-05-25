@@ -2,11 +2,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\ProductDraft;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -91,7 +90,7 @@ JSON;
     {
         $productDraft = $this->createDefaultProductDraft('mary', 'product_with_draft');
 
-        $this->updateProduct($productDraft->getProduct(), [
+        $this->updateProduct($productDraft->getEntityWithValue(), [
             'categories' => ['categoryB'],
         ]);
 
@@ -130,7 +129,7 @@ JSON;
     {
         $productDraft = $this->createDefaultProductDraft('mary', 'product_with_draft');
 
-        $this->updateProduct($productDraft->getProduct(), [
+        $this->updateProduct($productDraft->getEntityWithValue(), [
             'categories' => ['categoryA1'],
         ]);
 
@@ -205,13 +204,13 @@ JSON;
      * @param ProductInterface $product
      * @param array            $changes
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
-    protected function createProductDraft($userName, ProductInterface $product, array $changes)
+    protected function createEntityWithValuesDraft($userName, ProductInterface $product, array $changes)
     {
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 
-        $productDraft = $this->get('pimee_workflow.builder.draft')->build($product, $userName);
+        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, $userName);
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
 
@@ -222,7 +221,7 @@ JSON;
      * @param string $userName
      * @param string $productIdentifier
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     private function createDefaultProductDraft($userName, $productIdentifier)
     {
@@ -236,7 +235,7 @@ JSON;
             ]
         ]);
 
-        return $this->createProductDraft($userName, $product, [
+        return $this->createEntityWithValuesDraft($userName, $product, [
             'values' => [
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'Modified US in draft', 'locale' => 'en_US', 'scope' => 'ecommerce'],

@@ -9,8 +9,8 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class ProposalWidgetSpec extends ObjectBehavior
 {
     function let(
-        ProductDraftRepositoryInterface $repository,
+        EntityWithValuesDraftRepositoryInterface $repository,
         AuthorizationCheckerInterface $authorizationChecker,
         UserInterface $user,
         TokenInterface $token,
@@ -56,7 +56,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldBeArray();
     }
 
-    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($authorizationChecker, $user)
+    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($authorizationChecker)
     {
         $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(false);
         $this->getParameters()->shouldReturn(['show' => false]);
@@ -69,8 +69,8 @@ class ProposalWidgetSpec extends ObjectBehavior
         $repository,
         $userManager,
         $presenter,
-        ProductDraftInterface $first,
-        ProductDraftInterface $second,
+        EntityWithValuesDraftInterface $first,
+        EntityWithValuesDraftInterface $second,
         ProductInterface $firstProduct,
         ProductInterface $secondProduct,
         UserInterface $userJulia
@@ -82,8 +82,8 @@ class ProposalWidgetSpec extends ObjectBehavior
         $userJulia->getLastName()->willReturn('Stark');
         $userManager->findUserByUsername('julia')->willReturn($userJulia);
 
-        $first->getProduct()->willReturn($firstProduct);
-        $second->getProduct()->willReturn($secondProduct);
+        $first->getEntityWithValue()->willReturn($firstProduct);
+        $second->getEntityWithValue()->willReturn($secondProduct);
 
         $firstProduct->getId()->willReturn(1);
         $secondProduct->getId()->willReturn(2);
@@ -130,8 +130,8 @@ class ProposalWidgetSpec extends ObjectBehavior
         $repository,
         $userManager,
         $presenter,
-        ProductDraftInterface $first,
-        ProductDraftInterface $second,
+        EntityWithValuesDraftInterface $first,
+        EntityWithValuesDraftInterface $second,
         ProductInterface $firstProduct,
         ProductInterface $secondProduct
     ) {
@@ -140,8 +140,8 @@ class ProposalWidgetSpec extends ObjectBehavior
 
         $userManager->findUserByUsername('jack')->willReturn(null);
 
-        $first->getProduct()->willReturn($firstProduct);
-        $second->getProduct()->willReturn($secondProduct);
+        $first->getEntityWithValue()->willReturn($firstProduct);
+        $second->getEntityWithValue()->willReturn($secondProduct);
 
         $firstProduct->getId()->willReturn(1);
         $secondProduct->getId()->willReturn(2);

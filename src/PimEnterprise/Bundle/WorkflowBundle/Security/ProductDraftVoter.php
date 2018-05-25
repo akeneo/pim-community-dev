@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Security;
 
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -29,7 +29,7 @@ class ProductDraftVoter extends Voter implements VoterInterface
      */
     public function vote(TokenInterface $token, $draft, array $attributes)
     {
-        if (!($draft instanceof ProductDraftInterface)) {
+        if (!($draft instanceof EntityWithValuesDraftInterface)) {
             return self::ACCESS_ABSTAIN;
         }
 
@@ -51,7 +51,7 @@ class ProductDraftVoter extends Voter implements VoterInterface
      */
     protected function supports($attribute, $subject)
     {
-        return SecurityAttributes::OWN === $attribute && $subject instanceof ProductDraftInterface;
+        return SecurityAttributes::OWN === $attribute && $subject instanceof EntityWithValuesDraftInterface;
     }
 
     /**

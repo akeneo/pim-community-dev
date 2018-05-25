@@ -6,8 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Router\ProxyProductRouter;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -20,7 +20,7 @@ class ProxyProductRouterSpec extends ObjectBehavior
     function let(
         UrlGeneratorInterface $router,
         TokenStorageInterface $tokenStorage,
-        ProductDraftRepositoryInterface $productDraftRepository,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         ProductRepositoryInterface $productRepository
     ) {
         $this->beConstructedWith(
@@ -60,7 +60,7 @@ class ProxyProductRouterSpec extends ObjectBehavior
         $user->getUsername()->willReturn('mary');
 
         $productRepository->findOneByIdentifier('my_product')->willReturn($product);
-        $productDraftRepository->findUserProductDraft($product, 'mary')->willReturn(null);
+        $productDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn(null);
 
         $router->generate($name, $parameters, $referenceType)->willReturn('http://localhost/api/products/my_product');
 
@@ -75,7 +75,7 @@ class ProxyProductRouterSpec extends ObjectBehavior
         ProductInterface $product,
         TokenInterface $token,
         UserInterface $user,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
         $name = 'pim_product_get';
         $parameters = ['code' => 'my_product'];
@@ -85,7 +85,7 @@ class ProxyProductRouterSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
         $user->getUsername()->willReturn('mary');
         $productRepository->findOneByIdentifier('my_product')->willReturn($product);
-        $productDraftRepository->findUserProductDraft($product, 'mary')->willReturn($productDraft);
+        $productDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
 
         $router->generate('pimee_product_draft_get', $parameters, $referenceType)->willReturn('http://localhost/api/products/my_product/draft');
 

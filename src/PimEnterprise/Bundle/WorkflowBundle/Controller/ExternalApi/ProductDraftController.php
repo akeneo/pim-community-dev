@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi;
 use Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -30,10 +30,10 @@ class ProductDraftController
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productDraftRepository;
 
-    /** @var ProductDraftApplierInterface */
+    /** @var DraftApplierInterface */
     protected $productDraftApplier;
 
     /** @var NormalizerInterface */
@@ -46,17 +46,17 @@ class ProductDraftController
     protected $authorizationChecker;
 
     /**
-     * @param ProductRepositoryInterface      $productRepository
-     * @param ProductDraftRepositoryInterface $productDraftRepository
-     * @param ProductDraftApplierInterface    $productDraftApplier
-     * @param NormalizerInterface             $normalizer
-     * @param TokenStorageInterface           $tokenStorage
-     * @param AuthorizationCheckerInterface   $authorizationChecker
+     * @param ProductRepositoryInterface               $productRepository
+     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
+     * @param DraftApplierInterface                    $productDraftApplier
+     * @param NormalizerInterface                      $normalizer
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param AuthorizationCheckerInterface            $authorizationChecker
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        ProductDraftRepositoryInterface $productDraftRepository,
-        ProductDraftApplierInterface $productDraftApplier,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
+        DraftApplierInterface $productDraftApplier,
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
@@ -107,7 +107,7 @@ class ProductDraftController
         }
 
         $userToken = $this->tokenStorage->getToken();
-        $productDraft = $this->productDraftRepository->findUserProductDraft($product, $userToken->getUsername());
+        $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $userToken->getUsername());
 
         if (null === $productDraft) {
             throw new NotFoundHttpException(sprintf('There is no draft created for the product "%s".', $code));

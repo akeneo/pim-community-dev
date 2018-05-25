@@ -15,9 +15,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -38,25 +38,25 @@ class DelegatingProductRepository implements IdentifiableObjectRepositoryInterfa
     /** @var IdentifiableObjectRepositoryInterface */
     private $productRepository;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     private $productDraftRepository;
 
-    /** @var ProductDraftApplierInterface */
+    /** @var DraftApplierInterface */
     private $productDraftApplier;
 
     /**
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param AuthorizationCheckerInterface         $authorizationChecker
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param ProductDraftRepositoryInterface       $productDraftRepository
-     * @param ProductDraftApplierInterface          $productDraftApplier
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param AuthorizationCheckerInterface            $authorizationChecker
+     * @param IdentifiableObjectRepositoryInterface    $productRepository
+     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
+     * @param DraftApplierInterface                    $productDraftApplier
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         IdentifiableObjectRepositoryInterface $productRepository,
-        ProductDraftRepositoryInterface $productDraftRepository,
-        ProductDraftApplierInterface $productDraftApplier
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
+        DraftApplierInterface $productDraftApplier
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
@@ -88,7 +88,7 @@ class DelegatingProductRepository implements IdentifiableObjectRepositoryInterfa
 
         if ($canEdit && !$isOwner) {
             $username = $this->tokenStorage->getToken()->getUser()->getUsername();
-            $productDraft = $this->productDraftRepository->findUserProductDraft($product, $username);
+            $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $username);
             if (null !== $productDraft) {
                 $this->productDraftApplier->applyAllChanges($product, $productDraft);
             }

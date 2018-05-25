@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -12,7 +14,7 @@
 namespace PimEnterprise\Component\Workflow\Model;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
@@ -21,13 +23,13 @@ use Pim\Component\Catalog\Model\ValueInterface;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraft implements ProductDraftInterface
+class ProductDraft implements EntityWithValuesDraftInterface
 {
     /** @var int */
     protected $id;
 
-    /** @var ProductInterface */
-    protected $product;
+    /** @var EntityWithValuesInterface */
+    protected $entityWithValues;
 
     /** @var string */
     protected $author;
@@ -53,12 +55,9 @@ class ProductDraft implements ProductDraftInterface
     /** @var string not persisted, used to contextualize the product draft */
     protected $dataLocale = null;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->status = self::IN_PROGRESS;
+        $this->status = EntityWithValuesDraftInterface::IN_PROGRESS;
     }
 
     /**
@@ -80,9 +79,9 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setProduct(ProductInterface $product): ProductDraftInterface
+    public function setEntityWithValue(EntityWithValuesInterface $entityWithValues): EntityWithValuesDraftInterface
     {
-        $this->product = $product;
+        $this->entityWithValues = $entityWithValues;
 
         return $this;
     }
@@ -90,15 +89,15 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getProduct(): ProductInterface
+    public function getEntityWithValue(): EntityWithValuesInterface
     {
-        return $this->product;
+        return $this->entityWithValues;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAuthor($author): ProductDraftInterface
+    public function setAuthor(string $author): EntityWithValuesDraftInterface
     {
         $this->author = $author;
 
@@ -116,7 +115,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(\DateTime $createdAt): ProductDraftInterface
+    public function setCreatedAt(\DateTime $createdAt): EntityWithValuesDraftInterface
     {
         $this->createdAt = $createdAt;
 
@@ -134,7 +133,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setRawValues(array $rawValues): ProductDraftInterface
+    public function setRawValues(array $rawValues): EntityWithValuesDraftInterface
     {
         $this->rawValues = $rawValues;
 
@@ -152,7 +151,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setChanges(array $changes): ProductDraftInterface
+    public function setChanges(array $changes): EntityWithValuesDraftInterface
     {
         $this->changes = $changes;
 
@@ -162,7 +161,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(): array
+    public function getChanges(): ?array
     {
         return $this->changes;
     }
@@ -170,7 +169,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChangesByStatus($status): array
+    public function getChangesByStatus(string $status): array
     {
         $changes = $this->changes;
 
@@ -203,7 +202,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getChange($fieldCode, $localeCode, $channelCode)
+    public function getChange(string $fieldCode, ?string $localeCode, ?string $channelCode)
     {
         if (!isset($this->changes['values'])) {
             return null;
@@ -225,7 +224,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function removeChange($fieldCode, $localeCode, $channelCode)
+    public function removeChange(string $fieldCode, ?string $localeCode, ?string $channelCode)
     {
         if (!isset($this->changes['values'])) {
             return;
@@ -252,7 +251,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getReviewStatusForChange($fieldCode, $localeCode, $channelCode)
+    public function getReviewStatusForChange(?string $fieldCode, ?string $localeCode, ?string $channelCode): ?string
     {
         if (!isset($this->changes['review_statuses'][$fieldCode])) {
             return null;
@@ -272,7 +271,7 @@ class ProductDraft implements ProductDraftInterface
      *
      * @throws \LogicException
      */
-    public function setReviewStatusForChange($status, $fieldCode, $localeCode, $channelCode)
+    public function setReviewStatusForChange(string $status, string $fieldCode, ?string $localeCode, ?string $channelCode): EntityWithValuesDraftInterface
     {
         if (self::CHANGE_DRAFT !== $status && self::CHANGE_TO_REVIEW !== $status) {
             throw new \LogicException(sprintf('"%s" is not a valid review status', $status));
@@ -296,7 +295,7 @@ class ProductDraft implements ProductDraftInterface
      *
      * @throws \LogicException
      */
-    public function setAllReviewStatuses($status)
+    public function setAllReviewStatuses(string $status): EntityWithValuesDraftInterface
     {
         if (self::CHANGE_DRAFT !== $status && self::CHANGE_TO_REVIEW !== $status) {
             throw new \LogicException(sprintf('"%s" is not a valid review status', $status));
@@ -318,7 +317,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function removeReviewStatusForChange($fieldCode, $localeCode, $channelCode)
+    public function removeReviewStatusForChange(string $fieldCode, ?string $localeCode, ?string $channelCode): void
     {
         if (!isset($this->changes['review_statuses'][$fieldCode])) {
             return;
@@ -340,7 +339,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function areAllReviewStatusesTo($status)
+    public function areAllReviewStatusesTo(string $status): bool
     {
         foreach ($this->changes['review_statuses'] as $items) {
             foreach ($items as $item) {
@@ -356,7 +355,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function hasChanges()
+    public function hasChanges(): bool
     {
         return !empty($this->changes) && !empty($this->changes['values']);
     }
@@ -364,7 +363,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function markAsInProgress()
+    public function markAsInProgress(): void
     {
         $this->status = self::IN_PROGRESS;
     }
@@ -372,7 +371,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function markAsReady()
+    public function markAsReady(): void
     {
         $this->status = self::READY;
     }
@@ -380,7 +379,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -388,56 +387,9 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function isInProgress()
+    public function isInProgress(): bool
     {
         return self::IN_PROGRESS === $this->status;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCategoryIds(array $categoryIds)
-    {
-        $this->categoryIds = $categoryIds;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCategoryIds()
-    {
-        return $this->categoryIds;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeCategoryId($categoryId)
-    {
-        if (false === $key = array_search($categoryId, $this->categoryIds)) {
-            return;
-        }
-
-        unset($this->categoryIds[$key]);
-        $this->categoryIds = array_values($this->categoryIds);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDataLocale($dataLocale)
-    {
-        $this->dataLocale = $dataLocale;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataLocale()
-    {
-        return $this->dataLocale;
     }
 
     /**
@@ -459,7 +411,7 @@ class ProductDraft implements ProductDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function setValues(ValueCollectionInterface $values): ProductDraftInterface
+    public function setValues(ValueCollectionInterface $values): EntityWithValuesDraftInterface
     {
         $this->values = $values;
 

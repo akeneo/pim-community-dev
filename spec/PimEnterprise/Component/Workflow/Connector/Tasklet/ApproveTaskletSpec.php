@@ -8,10 +8,10 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -22,8 +22,8 @@ use Symfony\Component\Validator\Exception\ValidatorException;
 class ApproveTaskletSpec extends ObjectBehavior
 {
     function let(
-        ProductDraftRepositoryInterface $productDraftRepository,
-        ProductDraftManager $productDraftManager,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
+        EntityWithValuesDraftManager $productDraftManager,
         UserProviderInterface $userProvider,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
@@ -51,8 +51,8 @@ class ApproveTaskletSpec extends ObjectBehavior
         UserInterface $userJulia,
         $stepExecution,
         JobExecution $jobExecution,
-        ProductDraftInterface $productDraft1,
-        ProductDraftInterface $productDraft2,
+        EntityWithValuesDraftInterface $productDraft1,
+        EntityWithValuesDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2,
         JobParameters $jobParameters
@@ -70,13 +70,13 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
-        $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
-        $productDraft1->getProduct()->willReturn($product1);
+        $productDraft1->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $productDraft1->getEntityWithValue()->willReturn($product1);
         $authorizationChecker->isGranted(SecurityAttributes::OWN, $product1)->willReturn(true);
         $permissionHelper->canEditOneChangeToReview($productDraft1)->willReturn(true);
 
-        $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
-        $productDraft2->getProduct()->willReturn($product2);
+        $productDraft2->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $productDraft2->getEntityWithValue()->willReturn($product2);
         $authorizationChecker->isGranted(SecurityAttributes::OWN, $product2)->willReturn(true);
         $permissionHelper->canEditOneChangeToReview($productDraft2)->willReturn(true);
 
@@ -99,8 +99,8 @@ class ApproveTaskletSpec extends ObjectBehavior
         $stepExecution,
         UserInterface $userJulia,
         JobExecution $jobExecution,
-        ProductDraftInterface $productDraft1,
-        ProductDraftInterface $productDraft2,
+        EntityWithValuesDraftInterface $productDraft1,
+        EntityWithValuesDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2,
         JobParameters $jobParameters
@@ -118,13 +118,13 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
-        $productDraft1->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
-        $productDraft1->getProduct()->willReturn($product1);
+        $productDraft1->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
+        $productDraft1->getEntityWithValue()->willReturn($product1);
         $authorizationChecker->isGranted(SecurityAttributes::OWN, $product1)->willReturn(true);
         $permissionHelper->canEditOneChangeToReview($productDraft1)->willReturn(true);
 
-        $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
-        $productDraft2->getProduct()->willReturn($product2);
+        $productDraft2->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $productDraft2->getEntityWithValue()->willReturn($product2);
         $authorizationChecker->isGranted(SecurityAttributes::OWN, $product2)->willReturn(true);
         $permissionHelper->canEditOneChangeToReview($productDraft2)->willReturn(true);
 
@@ -149,8 +149,8 @@ class ApproveTaskletSpec extends ObjectBehavior
         $stepExecution,
         UserInterface $userJulia,
         JobExecution $jobExecution,
-        ProductDraftInterface $productDraft1,
-        ProductDraftInterface $productDraft2,
+        EntityWithValuesDraftInterface $productDraft1,
+        EntityWithValuesDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2,
         JobParameters $jobParameters
@@ -168,13 +168,13 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
-        $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
-        $productDraft1->getProduct()->willReturn($product1);
+        $productDraft1->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $productDraft1->getEntityWithValue()->willReturn($product1);
         $authorizationChecker->isGranted(SecurityAttributes::OWN, $product1)->willReturn(false);
         $permissionHelper->canEditOneChangeToReview($productDraft1)->willReturn(true);
 
-        $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
-        $productDraft2->getProduct()->willReturn($product2);
+        $productDraft2->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $productDraft2->getEntityWithValue()->willReturn($product2);
         $authorizationChecker->isGranted(SecurityAttributes::OWN, $product2)->willReturn(true);
         $permissionHelper->canEditOneChangeToReview($productDraft2)->willReturn(true);
 
@@ -199,8 +199,8 @@ class ApproveTaskletSpec extends ObjectBehavior
         $stepExecution,
         UserInterface $userJulia,
         JobExecution $jobExecution,
-        ProductDraftInterface $productDraft1,
-        ProductDraftInterface $productDraft2,
+        EntityWithValuesDraftInterface $productDraft1,
+        EntityWithValuesDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2,
         JobParameters $jobParameters
@@ -218,13 +218,13 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
-        $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
-        $productDraft1->getProduct()->willReturn($product1);
+        $productDraft1->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $productDraft1->getEntityWithValue()->willReturn($product1);
         $authorizationChecker->isGranted(SecurityAttributes::OWN, $product1)->willReturn(true);
         $permissionHelper->canEditOneChangeToReview($productDraft1)->willReturn(false);
 
-        $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
-        $productDraft2->getProduct()->willReturn($product2);
+        $productDraft2->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
+        $productDraft2->getEntityWithValue()->willReturn($product2);
         $authorizationChecker->isGranted(SecurityAttributes::OWN, $product2)->willReturn(true);
         $permissionHelper->canEditOneChangeToReview($productDraft2)->willReturn(true);
 

@@ -38,5 +38,6 @@ services:
         arguments:
             -
                 - '@pimee_catalog.security.merger.not_granted_values'
+                - '@pimee_catalog.security.merger.not_granted_associated_product'
                 - '@pimee_catalog.security.merger.not_granted_category'
             - '@pim_catalog.repository.product_model_without_permission'

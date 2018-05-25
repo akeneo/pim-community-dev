@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.repository.product_draft.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\ProductDraftRepository
+    pimee_workflow.repository.entity_with_values_draft.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\EntityWithValuesDraftRepository
     pimee_workflow.repository.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductRepository
     pimee_workflow.repository.published_product_with_permission.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductWithPermissionRepository
     pimee_workflow.repository.published_association.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedAssociationRepository
@@ -44,9 +44,16 @@ services:
             - { name: 'pim_repository' }
 
     pimee_workflow.repository.product_draft:
-        class: '%pimee_workflow.repository.product_draft.class%'
+        class: '%pimee_workflow.repository.entity_with_values_draft.class%'
         factory: 'pimee_workflow.object_manager.product_draft:getRepository'
         arguments: ['%pimee_workflow.model.product_draft.class%']
+        tags:
+            - { name: 'pim_repository' }
+
+    pimee_workflow.repository.product_model_draft:
+        class: '%pimee_workflow.repository.entity_with_values_draft.class%'
+        factory: 'doctrine.orm.default_entity_manager:getRepository'
+        arguments: ['%pimee_workflow.model.product_model_draft.class%']
         tags:
             - { name: 'pim_repository' }
 
@@ -67,4 +74,4 @@ services:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.product'
             - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.applier.product_draft'
+            - '@pimee_workflow.applier.draft'

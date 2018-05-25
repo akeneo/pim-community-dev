@@ -6,6 +6,7 @@ publish_product;All
 unpublish_product;All
 edit_common_attributes;All
 delete_products_and_product_models;All
+add_to_group;All
 add_attribute_value;All
 set_attribute_requirements;All
 approve_product_draft;All

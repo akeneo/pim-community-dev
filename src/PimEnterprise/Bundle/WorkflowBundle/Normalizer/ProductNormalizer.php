@@ -16,10 +16,10 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -39,10 +39,10 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var PublishedProductManager */
     protected $publishedManager;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $draftRepository;
 
-    /** @var ProductDraftApplierInterface */
+    /** @var DraftApplierInterface */
     protected $draftApplier;
 
     /** @var CategoryAccessRepository */
@@ -61,20 +61,20 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     protected $productRepository;
 
     /**
-     * @param NormalizerInterface             $normalizer
-     * @param PublishedProductManager         $publishedManager
-     * @param ProductDraftRepositoryInterface $draftRepository
-     * @param ProductDraftApplierInterface    $draftApplier
-     * @param CategoryAccessRepository        $categoryAccessRepo
-     * @param TokenStorageInterface           $tokenStorage
-     * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param ProductRepositoryInterface      $productRepository
+     * @param NormalizerInterface                      $normalizer
+     * @param PublishedProductManager                  $publishedManager
+     * @param EntityWithValuesDraftRepositoryInterface $draftRepository
+     * @param DraftApplierInterface                    $draftApplier
+     * @param CategoryAccessRepository                 $categoryAccessRepo
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param AuthorizationCheckerInterface            $authorizationChecker
+     * @param ProductRepositoryInterface               $productRepository
      */
     public function __construct(
         NormalizerInterface $normalizer,
         PublishedProductManager $publishedManager,
-        ProductDraftRepositoryInterface $draftRepository,
-        ProductDraftApplierInterface $draftApplier,
+        EntityWithValuesDraftRepositoryInterface $draftRepository,
+        DraftApplierInterface $draftApplier,
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
@@ -153,11 +153,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @param ProductInterface $product
      *
-     * @return ProductDraftInterface|null
+     * @return EntityWithValuesDraftInterface|null
      */
     protected function findDraftForProduct(ProductInterface $product)
     {
-        return $this->draftRepository->findUserProductDraft($product, $this->getUsername());
+        return $this->draftRepository->findUserEntityWithValuesDraft($product, $this->getUsername());
     }
 
     /**

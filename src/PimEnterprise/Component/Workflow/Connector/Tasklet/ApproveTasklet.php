@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\Workflow\Connector\Tasklet;
 
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
 /**
  * Tasklet for product drafts mass approval.
@@ -67,7 +67,7 @@ class ApproveTasklet extends AbstractReviewTasklet
                     self::TASKLET_NAME,
                     self::ERROR_CANNOT_EDIT_ATTR,
                     [],
-                    $productDraft->getProduct()
+                    $productDraft->getEntityWithValue()
                 );
             }
         }
@@ -76,18 +76,18 @@ class ApproveTasklet extends AbstractReviewTasklet
     /**
      * Approve a draft
      *
-     * @param ProductDraftInterface $productDraft
-     * @param array                 $context
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param array                                $context
      *
      * @throws DraftNotReviewableException If draft cannot be approved
      */
-    protected function approveDraft(ProductDraftInterface $productDraft, array $context)
+    protected function approveDraft(EntityWithValuesDraftInterface $productDraft, array $context)
     {
-        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+        if (EntityWithValuesDraftInterface::READY !== $productDraft->getStatus()) {
             throw new DraftNotReviewableException(self::ERROR_DRAFT_NOT_READY);
         }
 
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {
             throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
         }
 

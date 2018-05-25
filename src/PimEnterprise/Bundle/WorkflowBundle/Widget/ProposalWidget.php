@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -30,7 +30,7 @@ class ProposalWidget implements WidgetInterface
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $repository;
 
     /** @var UserManager */
@@ -47,7 +47,7 @@ class ProposalWidget implements WidgetInterface
 
     /**
      * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param ProductDraftRepositoryInterface $ownershipRepository
+     * @param EntityWithValuesDraftRepositoryInterface $ownershipRepository
      * @param UserManager                     $userManager
      * @param TokenStorageInterface           $tokenStorage
      * @param PresenterInterface              $presenter
@@ -55,7 +55,7 @@ class ProposalWidget implements WidgetInterface
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductDraftRepositoryInterface $ownershipRepository,
+        EntityWithValuesDraftRepositoryInterface $ownershipRepository,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         PresenterInterface $presenter,
@@ -111,12 +111,12 @@ class ProposalWidget implements WidgetInterface
 
         foreach ($proposals as $proposal) {
             $result[] = [
-                'productId'        => $proposal->getProduct()->getId(),
-                'productLabel'     => $proposal->getProduct()->getLabel(),
+                'productId'        => $proposal->getEntityWithValue()->getId(),
+                'productLabel'     => $proposal->getEntityWithValue()->getLabel(),
                 'authorFullName'   => $this->getAuthorFullName($proposal->getAuthor()),
                 'productReviewUrl' => $route . $this->getProposalGridParametersAsUrl(
                     $proposal->getAuthor(),
-                    $proposal->getProduct()->getIdentifier()
+                    $proposal->getEntityWithValue()->getIdentifier()
                 ),
                 'createdAt' => $this->presenter->present(
                     $proposal->getCreatedAt(),

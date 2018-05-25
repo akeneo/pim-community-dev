@@ -226,3 +226,9 @@ batch_jobs:
       label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
   add_attribute_value:
     execute_rules.label: Выполнение правил
+  publish_product:
+    perform.label: Опубликовать продукты
+catalog_volume:
+  axis:
+    count_assets: Медиафайлы
+    count_asset_categories: Категории медиафайлов

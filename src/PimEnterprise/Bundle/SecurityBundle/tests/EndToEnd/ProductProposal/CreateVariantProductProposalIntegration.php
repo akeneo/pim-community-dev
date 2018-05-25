@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\ProductProposal;
 
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -29,7 +29,7 @@ class CreateVariantProductProposalIntegration extends AbstractProposalIntegratio
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
 
-        $productDraft = $this->get('pimee_workflow.repository.product_draft')->findUserProductDraft($productDraft->getProduct(), 'mary');
+        $productDraft = $this->get('pimee_workflow.repository.product_draft')->findUserEntityWithValuesDraft($productDraft->getEntityWithValue(), 'mary');
         $this->assertSame(ProductDraft::READY, $productDraft->getStatus());
         $this->assertEquals([
             'a_localized_and_scopable_text_area' => [
@@ -75,7 +75,7 @@ JSON;
     public function testApprovalAlreadySubmitted()
     {
         $productDraft = $this->createDefaultProductDraft('mary', 'variant_product_with_draft');
-        $this->get('pimee_workflow.manager.product_draft')->markAsReady($productDraft);
+        $this->get('pimee_workflow.manager.entity_with_values_draft')->markAsReady($productDraft);
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
         $client->request('POST', 'api/rest/v1/products/variant_product_with_draft/proposal', [], [], [], '{}');
@@ -94,7 +94,7 @@ JSON;
     {
         $productDraft = $this->createDefaultProductDraft('mary', 'variant_product_with_draft');
 
-        $this->updateProduct($productDraft->getProduct(), [
+        $this->updateProduct($productDraft->getEntityWithValue(), [
             'categories' => ['categoryA1'],
         ]);
 
@@ -115,7 +115,7 @@ JSON;
     {
         $productDraft = $this->createDefaultProductDraft('mary', 'variant_product_with_draft');
 
-        $this->updateProduct($productDraft->getProduct(), [
+        $this->updateProduct($productDraft->getEntityWithValue(), [
             'categories' => ['categoryB'],
         ]);
 
@@ -137,7 +137,7 @@ JSON;
     {
         $productDraft = $this->createDefaultProductDraft('mary', 'variant_product_with_draft');
 
-        $this->updateProduct($productDraft->getProduct(), ['categories' => []]);
+        $this->updateProduct($productDraft->getEntityWithValue(), ['categories' => []]);
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
         $client->request('POST', 'api/rest/v1/products/variant_product_with_draft/proposal', [], [], [], '{}');
@@ -157,9 +157,9 @@ JSON;
      * @param string $userName
      * @param string $productIdentifier
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
-    private function createDefaultProductDraft(string $userName, string $productIdentifier): ProductDraftInterface
+    private function createDefaultProductDraft(string $userName, string $productIdentifier): EntityWithValuesDraftInterface
     {
         $productModel = $this->get('pim_catalog.factory.product_model')->create();
         $this->get('pim_catalog.updater.product_model')->update($productModel, [
@@ -185,7 +185,7 @@ JSON;
             ]
         ]);
 
-        return $this->createProductDraft($userName, $product, [
+        return $this->createEntityWithValuesDraft($userName, $product, [
             'values' => [
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'Modified US in draft', 'locale' => 'en_US', 'scope' => 'ecommerce'],

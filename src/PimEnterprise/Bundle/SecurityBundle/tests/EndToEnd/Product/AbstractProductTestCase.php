@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\Product;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractProductTestCase extends ApiTestCase
@@ -85,16 +85,16 @@ abstract class AbstractProductTestCase extends ApiTestCase
      * @param ProductInterface $product
      * @param array            $changes
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
-    protected function createProductDraft(
+    protected function createEntityWithValuesDraft(
         string $userName,
         ProductInterface $product,
         array $changes
-    ) : ProductDraftInterface {
+    ) : EntityWithValuesDraftInterface {
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 
-        $productDraft = $this->get('pimee_workflow.builder.draft')->build($product, $userName);
+        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, $userName);
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
 
         return $productDraft;

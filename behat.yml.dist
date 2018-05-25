@@ -53,6 +53,9 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product_model'
                     - '@doctrine.orm.entity_manager'
+                    - '@pim_catalog.updater.product_model'
+                    - '@pim_catalog.saver.product_model'
+                    - '@pim_catalog.validator.product'
                 - Pim\Behat\Context\Domain\Enrich\VariantProductContext:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
@@ -74,9 +77,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\TreeContext:
                     - 'Context\EnterpriseFeatureContext'
-                - PimEnterprise\Behat\Context\NavigationContext:
+                - Pim\Behat\Context\Storage\FileInfoStorage:
                     - 'Context\EnterpriseFeatureContext'
-                    - 'http://127.0.0.1/'
                 - PimEnterprise\Behat\Context\ViewSelectorContext:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\DashboardContext:
@@ -95,9 +97,7 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
-                    - 'http://akeneo-pim-enterprise-behat.local/'
-                - Pim\Behat\Context\Storage\FileInfoStorage:
-                    - 'Context\EnterpriseFeatureContext'
+                    - 'http://127.0.0.1/'
                 - Pim\Behat\Context\Storage\ProductStorage:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product'
@@ -151,22 +151,48 @@ legacy:
 
 acceptance:
     suites:
-        acceptance:
+        pim:
             paths:
-                - tests/features/'
-                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/'
+                - 'tests/features/pim'
+                - 'vendor/akeneo/pim-community-dev/tests/features/pim'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+            filters:
+                tags: '@acceptance-back'
+        volume-monitoring:
+            paths:
+                - '%paths.base%/tests/features/volume-monitoring'
+                - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/volume-monitoring'
+            contexts_services:
+                - test.catalog_volume_limits.report_context
                 - test.catalog_volume_limits.attribute_per_family_context
+                - test.catalog_volume_limits.product_context
+                - test.catalog_volume_limits.channel_context
+                - test.catalog_volume_limits.locale_context
+                - test.catalog_volume_limits.scopable_attribute_context
+                - test.catalog_volume_limits.localizable_attribute_context
+                - test.catalog_volume_limits.localizable_and_scopable_attribute_context
+                - test.catalog_volume_limits.family_context
+                - test.catalog_volume_limits.attribute_context
+                - test.catalog_volume_limits.option_per_attribute_context
+                - test.catalog_volume_limits.category_context
+                - test.catalog_volume_limits.category_tree_context
+                - test.catalog_volume_limits.variant_product_context
+                - test.catalog_volume_limits.product_model_context
+                - test.catalog_volume_limits.product_value_context
+                - test.product_asset.asset_context
+                - test.product_asset.asset_category_context
+                - test.product_asset.asset_category_tree_context
             filters:
                 tags: '@acceptance-back'
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:
-              - "tests/back/Acceptance/Resources/config/behat/services.yml"
-              - "vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml"
-              - "vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
+               - "tests/back/Acceptance/Resources/config/behat/services.yml"
+               - "vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml"
+               - "vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
+               - "src/PimEnterprise/Bundle/ProductAssetBundle/tests/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:

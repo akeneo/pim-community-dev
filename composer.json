@@ -32,7 +32,11 @@
             "PimEnterprise\\Behat\\": "tests/legacy/features/Pim/Behat/",
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/"
-        }
+        },
+        "exclude-from-classmap": [
+            "vendor/akeneo/pim-community-dev/app/AppKernel.php",
+            "vendor/akeneo/pim-community-dev/app/AppCache.php"
+        ]
     },
     "require": {
         "akeneo/pim-community-dev": "3.0.x-dev@dev",
@@ -105,7 +109,8 @@
                 "database_port": "PIM_DATABASE_PORT",
                 "database_name": "PIM_DATABASE_NAME",
                 "database_user": "PIM_DATABASE_USER",
-                "database_password": "PIM_DATABASE_PASSWORD"
+                "database_password": "PIM_DATABASE_PASSWORD",
+                "index_hosts": "PIM_INDEX_HOSTS"
             }
         },
         "branch-alias": {

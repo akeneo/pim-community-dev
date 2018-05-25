@@ -18,6 +18,8 @@ services:
         class: '%pim_catalog.synchronizer.product_unique_data.class%'
         arguments:
             - '@pimee_workflow.factory.published_product_unique_data'
+            - '@pim_catalog.repository.product_unique_data'
+            - '%pimee_workflow.entity.published_product_unique_data.class%'
 
     # product draft saver
     pimee_workflow.saver.product_draft:
@@ -27,6 +29,13 @@ services:
             - '@event_dispatcher'
             - '%pimee_workflow.model.product_draft.class%'
 
+    pimee_workflow.saver.product_model_draft:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_workflow.model.product_model_draft.class%'
+
     # this product saver delegates to draft or working copy savers depending on user permissions
     pimee_workflow.saver.product_delegating:
         class: '%pimee_workflow.saver.product_delegating.class%'
@@ -35,7 +44,7 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
             - '@security.authorization_checker'
-            - '@pimee_workflow.builder.draft'
+            - '@pimee_workflow.product.builder.draft'
             - '@security.token_storage'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.remover.product_draft'

@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\Warning;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 abstract class AbstractProductImportTestCase extends TestCase
@@ -74,14 +74,14 @@ abstract class AbstractProductImportTestCase extends TestCase
      * @param string           $username
      * @param array            $draftData
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
-    protected function createProductDraft(
+    protected function createEntityWithValuesDraft(
         ProductInterface $product,
         string $username,
         array $draftData
-    ): ProductDraftInterface {
-        $productDraft = $this->get('pimee_workflow.factory.product_draft')->createProductDraft($product, $username);
+    ): EntityWithValuesDraftInterface {
+        $productDraft = $this->get('pimee_workflow.factory.product_draft')->createEntityWithValuesDraft($product, $username);
         $productDraft->setChanges($draftData);
 
 
@@ -99,7 +99,7 @@ abstract class AbstractProductImportTestCase extends TestCase
         }
 
         $productDraft->setValues(new ValueCollection($values));
-        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
 
@@ -120,11 +120,11 @@ abstract class AbstractProductImportTestCase extends TestCase
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
-    protected function getProductDraft(ProductInterface $product, string $username): ProductDraftInterface
+    protected function getProductDraft(ProductInterface $product, string $username): EntityWithValuesDraftInterface
     {
-        return $this->get('pimee_workflow.repository.product_draft')->findUserProductDraft($product, $username);
+        return $this->get('pimee_workflow.repository.product_draft')->findUserEntityWithValuesDraft($product, $username);
     }
 
     /**

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer;
 
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -38,7 +38,7 @@ class ProductProposalNormalizer implements NormalizerInterface, NormalizerAwareI
 
         $data['changes'] = $this->normalizer->normalize($proposalProduct->getValues(), 'standard', $context);
         $data['createdAt'] = $this->normalizer->normalize($proposalProduct->getCreatedAt(), $format, $context);
-        $data['product'] =  $proposalProduct->getProduct();
+        $data['product'] =  $proposalProduct->getEntityWithValue();
         $data['author'] =  $proposalProduct->getAuthor();
         $data['status'] =  $proposalProduct->getStatus();
         $data['proposal_product'] = $proposalProduct;
@@ -53,6 +53,6 @@ class ProductProposalNormalizer implements NormalizerInterface, NormalizerAwareI
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductDraftInterface && 'datagrid' === $format;
+        return $data instanceof EntityWithValuesDraftInterface && 'datagrid' === $format;
     }
 }

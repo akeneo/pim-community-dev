@@ -75,7 +75,7 @@ class CreateMediaFileWithPermissionsIntegration extends AbstractMediaFileTestCas
         $this->assertSame('catalogStorage', $fileInfo->getStorage());
 
         // check if product value has been created
-        $productDraft = $this->testKernel->getContainer()->get('pimee_workflow.repository.product_draft')->findByProduct($product);
+        $productDraft = $this->testKernel->getContainer()->get('pimee_workflow.repository.product_draft')->findByEntityWithValues($product);
         $this->assertContains('akeneo.jpg', $productDraft[0]->getChange('an_image', null, null));
     }
 

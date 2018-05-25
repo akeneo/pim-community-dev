@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 
 /**
  * ProductDraft filter utility
@@ -23,15 +23,15 @@ use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
  */
 class ProductDraftFilterUtility extends BaseFilterUtility
 {
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $repository;
 
     /**
      * Constructor
      *
-     * @param ProductDraftRepositoryInterface $repository
+     * @param EntityWithValuesDraftRepositoryInterface $repository
      */
-    public function __construct(ProductDraftRepositoryInterface $repository)
+    public function __construct(EntityWithValuesDraftRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }

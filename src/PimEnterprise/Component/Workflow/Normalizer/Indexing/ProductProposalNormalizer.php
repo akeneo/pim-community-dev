@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Normalizer\Indexing;
 
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -49,6 +49,6 @@ class ProductProposalNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductDraftInterface && self::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX === $format;
+        return $data instanceof EntityWithValuesDraftInterface && self::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX === $format;
     }
 }

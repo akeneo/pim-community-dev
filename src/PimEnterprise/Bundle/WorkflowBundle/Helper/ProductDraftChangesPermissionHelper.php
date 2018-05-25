@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Helper;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -33,13 +33,13 @@ class ProductDraftChangesPermissionHelper
     /**
      * Return whether the user can edit ALL changes in review of the given $productDraft
      *
-     * @param ProductDraftInterface $productDraft
+     * @param EntityWithValuesDraftInterface $productDraft
      *
      * @return bool
      */
-    public function canEditAllChangesToReview(ProductDraftInterface $productDraft)
+    public function canEditAllChangesToReview(EntityWithValuesDraftInterface $productDraft)
     {
-        $changes = $productDraft->getChangesByStatus(ProductDraftInterface::CHANGE_TO_REVIEW);
+        $changes = $productDraft->getChangesByStatus(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
         $filteredValues = $this->valuesFilter->filterCollection($changes['values'], 'pim.internal_api.attribute.edit');
 
         return $filteredValues == $changes['values'];
@@ -48,13 +48,13 @@ class ProductDraftChangesPermissionHelper
     /**
      * Return whether the user can edit at least one change in review of the given $productDraft
      *
-     * @param ProductDraftInterface $productDraft
+     * @param EntityWithValuesDraftInterface $productDraft
      *
      * @return bool
      */
-    public function canEditOneChangeToReview(ProductDraftInterface $productDraft)
+    public function canEditOneChangeToReview(EntityWithValuesDraftInterface $productDraft)
     {
-        $changes = $productDraft->getChangesByStatus(ProductDraftInterface::CHANGE_TO_REVIEW);
+        $changes = $productDraft->getChangesByStatus(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
         $filteredValues = $this->valuesFilter->filterCollection($changes['values'], 'pim.internal_api.attribute.edit');
 
         return !empty($filteredValues);
@@ -63,13 +63,13 @@ class ProductDraftChangesPermissionHelper
     /**
      * Return whether the user can edit all changes in progress of the given $productDraft
      *
-     * @param ProductDraftInterface $productDraft
+     * @param EntityWithValuesDraftInterface $productDraft
      *
      * @return bool
      */
-    public function canEditAllChangesDraft(ProductDraftInterface $productDraft)
+    public function canEditAllChangesDraft(EntityWithValuesDraftInterface $productDraft)
     {
-        $changes = $productDraft->getChangesByStatus(ProductDraftInterface::CHANGE_DRAFT);
+        $changes = $productDraft->getChangesByStatus(EntityWithValuesDraftInterface::CHANGE_DRAFT);
         $filteredValues = $this->valuesFilter->filterCollection($changes['values'], 'pim.internal_api.attribute.edit');
 
         return $filteredValues == $changes['values'];
@@ -78,13 +78,13 @@ class ProductDraftChangesPermissionHelper
     /**
      * Return whether the user can edit at least one change in progress of the given $productDraft
      *
-     * @param ProductDraftInterface $productDraft
+     * @param EntityWithValuesDraftInterface $productDraft
      *
      * @return bool
      */
-    public function canEditOneChangeDraft(ProductDraftInterface $productDraft)
+    public function canEditOneChangeDraft(EntityWithValuesDraftInterface $productDraft)
     {
-        $changes = $productDraft->getChangesByStatus(ProductDraftInterface::CHANGE_DRAFT);
+        $changes = $productDraft->getChangesByStatus(EntityWithValuesDraftInterface::CHANGE_DRAFT);
         $filteredValues = $this->valuesFilter->filterCollection($changes['values'], 'pim.internal_api.attribute.edit');
 
         return !empty($filteredValues);

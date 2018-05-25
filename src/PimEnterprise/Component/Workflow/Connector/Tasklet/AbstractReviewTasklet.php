@@ -15,8 +15,8 @@ use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -44,10 +44,10 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $draftRepository;
 
-    /** @var ProductDraftManager */
+    /** @var EntityWithValuesDraftManager */
     protected $productDraftManager;
 
     /** @var  UserProviderInterface */
@@ -63,16 +63,16 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     protected $permissionHelper;
 
     /**
-     * @param ProductDraftRepositoryInterface     $draftRepository
-     * @param ProductDraftManager                 $productDraftManager
-     * @param UserProviderInterface               $userProvider
-     * @param AuthorizationCheckerInterface       $authorizationChecker
-     * @param TokenStorageInterface               $tokenStorage
-     * @param ProductDraftChangesPermissionHelper $permissionHelper
+     * @param EntityWithValuesDraftRepositoryInterface $draftRepository
+     * @param EntityWithValuesDraftManager             $productDraftManager
+     * @param UserProviderInterface                    $userProvider
+     * @param AuthorizationCheckerInterface            $authorizationChecker
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param ProductDraftChangesPermissionHelper      $permissionHelper
      */
     public function __construct(
-        ProductDraftRepositoryInterface $draftRepository,
-        ProductDraftManager $productDraftManager,
+        EntityWithValuesDraftRepositoryInterface $draftRepository,
+        EntityWithValuesDraftManager $productDraftManager,
         UserProviderInterface $userProvider,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,

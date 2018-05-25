@@ -12,11 +12,11 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -33,10 +33,10 @@ class ProductProposalController
     /** @var IdentifiableObjectRepositoryInterface */
     protected $productRepository;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productDraftRepository;
 
-    /** @var ProductDraftManager */
+    /** @var EntityWithValuesDraftManager */
     protected $productDraftManager;
 
     /** @var TokenStorageInterface */
@@ -46,16 +46,16 @@ class ProductProposalController
     protected $authorizationChecker;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param ProductDraftRepositoryInterface       $productDraftRepository
-     * @param ProductDraftManager                   $productDraftManager
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param AuthorizationCheckerInterface         $authorizationChecker
+     * @param IdentifiableObjectRepositoryInterface    $productRepository
+     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepository
+     * @param EntityWithValuesDraftManager             $productDraftManager
+     * @param TokenStorageInterface                    $tokenStorage
+     * @param AuthorizationCheckerInterface            $authorizationChecker
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
-        ProductDraftRepositoryInterface $productDraftRepository,
-        ProductDraftManager $productDraftManager,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
+        EntityWithValuesDraftManager $productDraftManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
@@ -109,7 +109,7 @@ class ProductProposalController
         }
 
         $userToken = $this->tokenStorage->getToken();
-        $productDraft = $this->productDraftRepository->findUserProductDraft($product, $userToken->getUsername());
+        $productDraft = $this->productDraftRepository->findUserEntityWithValuesDraft($product, $userToken->getUsername());
 
         if (null === $productDraft) {
             throw new UnprocessableEntityHttpException('You should create a draft before submitting it for approval.');

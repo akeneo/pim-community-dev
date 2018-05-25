@@ -19,12 +19,12 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
-use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
-use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -33,7 +33,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraftManager
+class EntityWithValuesDraftManager
 {
     /** @var SaverInterface */
     protected $workingCopySaver;
@@ -41,13 +41,13 @@ class ProductDraftManager
     /** @var UserContext */
     protected $userContext;
 
-    /** @var ProductDraftFactory */
+    /** @var EntityWithValuesDraftFactory */
     protected $factory;
 
-    /** @var ProductDraftRepositoryInterface */
+    /** @var EntityWithValuesDraftRepositoryInterface */
     protected $repository;
 
-    /** @var ProductDraftApplierInterface */
+    /** @var DraftApplierInterface */
     protected $applier;
 
     /** @var EventDispatcherInterface */
@@ -62,23 +62,12 @@ class ProductDraftManager
     /** @var CollectionFilterInterface */
     protected $valuesFilter;
 
-    /**
-     * @param SaverInterface                  $workingCopySaver
-     * @param UserContext                     $userContext
-     * @param ProductDraftFactory             $factory
-     * @param ProductDraftRepositoryInterface $repository
-     * @param ProductDraftApplierInterface    $applier
-     * @param EventDispatcherInterface        $dispatcher
-     * @param SaverInterface                  $productDraftSaver
-     * @param RemoverInterface                $productDraftRemover
-     * @param CollectionFilterInterface       $valuesFilter
-     */
     public function __construct(
         SaverInterface $workingCopySaver,
         UserContext $userContext,
-        ProductDraftFactory $factory,
-        ProductDraftRepositoryInterface $repository,
-        ProductDraftApplierInterface $applier,
+        EntityWithValuesDraftFactory $factory,
+        EntityWithValuesDraftRepositoryInterface $repository,
+        DraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
         SaverInterface $productDraftSaver,
         RemoverInterface $productDraftRemover,
@@ -102,17 +91,17 @@ class ProductDraftManager
      * To do that we create a temporary draft that contains the change that we want to apply,
      * then we apply this temporary draft and remove this change from the original one.
      *
-     * @param ProductDraftInterface $productDraft
-     * @param AttributeInterface    $attribute
-     * @param LocaleInterface|null  $locale
-     * @param ChannelInterface|null $channel
-     * @param array                 $context      ['comment' => string|null]
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param AttributeInterface                   $attribute
+     * @param LocaleInterface|null                 $locale
+     * @param ChannelInterface|null                $channel
+     * @param array                                $context      ['comment' => string|null]
      *
      * @throws DraftNotReviewableException If the $productDraft is not ready to be reviewed or if no permission
      *                                     to approve the given change.
      */
     public function approveChange(
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         AttributeInterface $attribute,
         LocaleInterface $locale = null,
         ChannelInterface $channel = null,
@@ -120,7 +109,7 @@ class ProductDraftManager
     ) {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_APPROVE, new GenericEvent($productDraft, $context));
 
-        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+        if (EntityWithValuesDraftInterface::READY !== $productDraft->getStatus()) {
             throw new DraftNotReviewableException('A product draft not in ready state can not be partially approved');
         }
 
@@ -156,16 +145,16 @@ class ProductDraftManager
      * This approval is only applied if current user have edit rights on the change, so if
      * not all changes can be approved, a "partial approval" is done instead.
      *
-     * @param ProductDraftInterface $productDraft
-     * @param array                 $context      ['comment' => string|null]
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param array                                $context      ['comment' => string|null]
      *
      * @throws DraftNotReviewableException If the $productDraft is not ready to be reviewed.
      */
-    public function approve(ProductDraftInterface $productDraft, array $context = [])
+    public function approve(EntityWithValuesDraftInterface $productDraft, array $context = [])
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, new GenericEvent($productDraft, $context));
 
-        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+        if (EntityWithValuesDraftInterface::READY !== $productDraft->getStatus()) {
             throw new DraftNotReviewableException('A product draft not in ready state can not be approved');
         }
 
@@ -195,17 +184,17 @@ class ProductDraftManager
      * Refuse a single "ready to review" change of the given $productDraft.
      * This refusal is only applied if current user have edit rights on the change.
      *
-     * @param ProductDraftInterface $productDraft
-     * @param AttributeInterface    $attribute
-     * @param LocaleInterface|null  $locale
-     * @param ChannelInterface|null $channel
-     * @param array                 $context      ['comment' => string|null]
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param AttributeInterface                   $attribute
+     * @param LocaleInterface|null                 $locale
+     * @param ChannelInterface|null                $channel
+     * @param array                                $context      ['comment' => string|null]
      *
      * @throws DraftNotReviewableException If the $productDraft is not ready to be reviewed or if no permission to
      *                                     refuse the given change.
      */
     public function refuseChange(
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         AttributeInterface $attribute,
         LocaleInterface $locale = null,
         ChannelInterface $channel = null,
@@ -213,7 +202,7 @@ class ProductDraftManager
     ) {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_REFUSE, new GenericEvent($productDraft, $context));
 
-        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+        if (EntityWithValuesDraftInterface::READY !== $productDraft->getStatus()) {
             throw new DraftNotReviewableException('A product draft not in ready state can not be partially rejected');
         }
 
@@ -246,16 +235,16 @@ class ProductDraftManager
      * This refusal is only applied if current user have edit rights on the change, so if
      * not all changes can be refused, a "partial refusal" is done instead.
      *
-     * @param ProductDraftInterface $productDraft
-     * @param array                 $context
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param array                                $context
      *
      * @throws DraftNotReviewableException If the $productDraft is not ready to be reviewed.
      */
-    public function refuse(ProductDraftInterface $productDraft, array $context = [])
+    public function refuse(EntityWithValuesDraftInterface $productDraft, array $context = [])
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, new GenericEvent($productDraft, $context));
 
-        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+        if (EntityWithValuesDraftInterface::READY !== $productDraft->getStatus()) {
             throw new DraftNotReviewableException('A product draft not in ready state can not be rejected');
         }
 
@@ -281,20 +270,20 @@ class ProductDraftManager
      * This removal is only applied if current user have edit rights on the change, so if
      * not all changes can be removed, a "partial removal" is done instead.
      *
-     * @param ProductDraftInterface $productDraft
-     * @param array                 $context
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param array                                $context
      *
      * @throws DraftNotReviewableException If the $productDraft is not in progress or if no permission to remove the draft.
      */
-    public function remove(ProductDraftInterface $productDraft, array $context = [])
+    public function remove(EntityWithValuesDraftInterface $productDraft, array $context = [])
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_REMOVE, new GenericEvent($productDraft, $context));
 
-        if (ProductDraftInterface::READY === $productDraft->getStatus()) {
+        if (EntityWithValuesDraftInterface::READY === $productDraft->getStatus()) {
             throw new DraftNotReviewableException('A product draft in ready state can not be removed');
         }
 
-        $productDraftChanges = $productDraft->getChangesByStatus(ProductDraftInterface::CHANGE_DRAFT);
+        $productDraftChanges = $productDraft->getChangesByStatus(EntityWithValuesDraftInterface::CHANGE_DRAFT);
         $filteredValues = $this->valuesFilter->filterCollection(
             $productDraftChanges['values'],
             'pim.internal_api.attribute.edit'
@@ -326,7 +315,7 @@ class ProductDraftManager
      *
      * @throws \LogicException
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
     public function findOrCreate(ProductInterface $product)
     {
@@ -334,10 +323,10 @@ class ProductDraftManager
             throw new \LogicException('Current user cannot be resolved');
         }
         $username = $this->userContext->getUser()->getUsername();
-        $productDraft = $this->repository->findUserProductDraft($product, $username);
+        $productDraft = $this->repository->findUserEntityWithValuesDraft($product, $username);
 
         if (null === $productDraft) {
-            $productDraft = $this->factory->createProductDraft($product, $username);
+            $productDraft = $this->factory->createEntityWithValueDraft($product, $username);
         }
 
         return $productDraft;
@@ -346,14 +335,14 @@ class ProductDraftManager
     /**
      * Mark a product draft as ready
      *
-     * @param ProductDraftInterface $productDraft
-     * @param string                $comment
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param string                               $comment
      */
-    public function markAsReady(ProductDraftInterface $productDraft, $comment = null)
+    public function markAsReady(EntityWithValuesDraftInterface $productDraft, $comment = null)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_READY, new GenericEvent($productDraft));
 
-        $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_TO_REVIEW);
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW);
         $this->productDraftSaver->save($productDraft);
 
         $this->dispatcher->dispatch(
@@ -365,14 +354,14 @@ class ProductDraftManager
     /**
      * Create a draft with the given changes.
      *
-     * @param ProductDraftInterface $productDraft
-     * @param array                 $draftChanges
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param array                                $draftChanges
      *
-     * @return ProductDraftInterface
+     * @return EntityWithValuesDraftInterface
      */
-    protected function createDraft(ProductDraftInterface $productDraft, array $draftChanges)
+    protected function createDraft(EntityWithValuesDraftInterface $productDraft, array $draftChanges)
     {
-        $partialDraft = $this->factory->createProductDraft($productDraft->getProduct(), $productDraft->getAuthor());
+        $partialDraft = $this->factory->createEntityWithValueDraft($productDraft->getEntityWithValue(), $productDraft->getAuthor());
         $partialDraft->setChanges([
             'values' => $draftChanges
         ]);
@@ -383,11 +372,11 @@ class ProductDraftManager
     /**
      * Apply a draft on a product. The product is saved.
      *
-     * @param ProductDraftInterface $productDraft
+     * @param EntityWithValuesDraftInterface $productDraft
      */
-    protected function applyDraftOnProduct(ProductDraftInterface $productDraft)
+    protected function applyDraftOnProduct(EntityWithValuesDraftInterface $productDraft)
     {
-        $product = $productDraft->getProduct();
+        $product = $productDraft->getEntityWithValue();
         $isPartialDraft = null === $productDraft->getId();
 
         if ($isPartialDraft) {
@@ -402,15 +391,15 @@ class ProductDraftManager
     /**
      * Refuse changes from a draft. The draft is saved.
      *
-     * @param ProductDraftInterface $productDraft
-     * @param array                 $refusedChanges
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param array                                $refusedChanges
      */
-    protected function refuseDraftChanges(ProductDraftInterface $productDraft, array $refusedChanges)
+    protected function refuseDraftChanges(EntityWithValuesDraftInterface $productDraft, array $refusedChanges)
     {
         foreach ($refusedChanges as $attributeCode => $values) {
             foreach ($values as $value) {
                 $productDraft->setReviewStatusForChange(
-                    ProductDraftInterface::CHANGE_DRAFT,
+                    EntityWithValuesDraftInterface::CHANGE_DRAFT,
                     $attributeCode,
                     $value['locale'],
                     $value['scope']
@@ -433,10 +422,10 @@ class ProductDraftManager
      * Remove the given changes from a draft and saves it.
      * It the draft has no more changes, it is removed.
      *
-     * @param ProductDraftInterface $productDraft
-     * @param array                 $appliedChanges
+     * @param EntityWithValuesDraftInterface $productDraft
+     * @param array                                $appliedChanges
      */
-    protected function removeDraftChanges(ProductDraftInterface $productDraft, array $appliedChanges)
+    protected function removeDraftChanges(EntityWithValuesDraftInterface $productDraft, array $appliedChanges)
     {
         foreach ($appliedChanges as $attributeCode => $values) {
             foreach ($values as $value) {

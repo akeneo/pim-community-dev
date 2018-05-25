@@ -26,13 +26,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ProcessMassUploadCommand extends ContainerAwareCommand
 {
+    const NAME = 'pim:product-asset:mass-upload';
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
         $this
-            ->setName('pim:product-asset:mass-upload')
+            ->setName(static::NAME)
             ->addOption(
                 'user',
                 null,

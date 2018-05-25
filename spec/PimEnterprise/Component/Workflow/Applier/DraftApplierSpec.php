@@ -7,12 +7,14 @@ use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\Workflow\Applier\DraftApplier;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
-class ProductDraftApplierSpec extends ObjectBehavior
+class DraftApplierSpec extends ObjectBehavior
 {
     function let(
         PropertySetterInterface $propertySetter,
@@ -24,19 +26,19 @@ class ProductDraftApplierSpec extends ObjectBehavior
 
     function it_is_a_applier()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Component\Workflow\Applier\ProductDraftApplierInterface');
+        $this->shouldBeAnInstanceOf(DraftApplier::class);
     }
 
     function it_does_not_apply_a_draft_without_values(
         $propertySetter,
         $dispatcher,
         ProductInterface $product,
-        ProductDraftInterface $productDraft
+        EntityWithValuesDraftInterface $productDraft
     ) {
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::PRE_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
 
@@ -44,9 +46,11 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::POST_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldNotBeCalled();
+
+        $productDraft->getChanges()->willReturn([]);
 
         $this->applyAllChanges($product, $productDraft);
     }
@@ -56,7 +60,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher,
         $repository,
         ProductInterface $product,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         AttributeInterface $fakeAttribute
     ) {
         $productDraft->getChangesToReview()->willReturn([
@@ -72,20 +76,20 @@ class ProductDraftApplierSpec extends ObjectBehavior
             ],
             'review_statuses' => [
                 'name' => [
-                    ['scope' => null, 'locale' => null, 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => null, 'locale' => null, 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
                 ],
                 'description' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'print',     'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_DRAFT]
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'en_US', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => EntityWithValuesDraftInterface::CHANGE_DRAFT]
                 ]
             ]
         ]);
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::PRE_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
 
@@ -108,7 +112,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::POST_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
 
@@ -122,7 +126,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher,
         $repository,
         ProductInterface $product,
-        ProductDraftInterface $productDraft,
+        EntityWithValuesDraftInterface $productDraft,
         AttributeInterface $fakeAttribute
     ) {
         $productDraft->getChanges()->willReturn([
@@ -139,20 +143,20 @@ class ProductDraftApplierSpec extends ObjectBehavior
             ],
             'review_statuses' => [
                 'name' => [
-                    ['scope' => null, 'locale' => null, 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => null, 'locale' => null, 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
                 ],
                 'description' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'print',     'locale' => 'en_US', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_TO_REVIEW],
-                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => ProductDraftInterface::CHANGE_DRAFT]
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'en_US', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'status' => EntityWithValuesDraftInterface::CHANGE_TO_REVIEW],
+                    ['scope' => 'print',     'locale' => 'fr_FR', 'status' => EntityWithValuesDraftInterface::CHANGE_DRAFT]
                 ]
             ]
         ]);
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::PRE_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
 
@@ -175,7 +179,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::POST_APPLY,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+                Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
 
