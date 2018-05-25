@@ -35,7 +35,7 @@ define(
 
                 if (!_.isEmpty(this.extensions)) {
                     this.$el.html(this.template({
-                        titleLabel: __('pim_enrich.navigation.other_actions')
+                        titleLabel: __('pim_datagrid.actions.other')
                     }));
 
                     this.renderExtensions();

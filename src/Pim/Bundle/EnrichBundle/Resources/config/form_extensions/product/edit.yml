@@ -176,7 +176,7 @@ extensions:
         position: 90
         config:
             label: pim_common.created
-            labelBy: pim_enrich.entity.product.meta.created_by
+            labelBy: pim_common.by
 
     pim-product-edit-form-updated:
         module: pim/product-edit-form/meta/updated
@@ -185,7 +185,7 @@ extensions:
         position: 100
         config:
             label: pim_enrich.entity.product.meta.updated
-            labelBy: pim_enrich.entity.product.meta.updated_by
+            labelBy: pim_common.by
 
     pim-product-edit-form-groups:
         module: pim/product-edit-form/meta/groups
@@ -229,7 +229,6 @@ extensions:
         position: 130
         config:
             aclAddAssociations: pim_enrich_associations_edit
-            datagridName: 'association-product-grid'
 
     pim-product-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector

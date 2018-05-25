@@ -8,6 +8,7 @@ pim_common:
     attributes: Attributes
     attribute_groups: Attribute groups
     before: Before
+    by: by
     cancel: Cancel
     categories: Categories
     channel: Channel
@@ -61,24 +62,35 @@ pim_common:
 
 confirmation:
     remove:
-        item:             Are you sure you want to delete this item?
+        title: Delete this {{ itemName }}
+        alternative_title: Confirm removal
+        item: Are you sure you want to delete this item?
+        item_placeholder: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action.
         association_type: Are you sure you want to delete this association type?
-        attribute:        Are you sure you want to delete this attribute?
-        attribute_group:  Are you sure you want to delete this attribute group?
-        family:           Are you sure you want to delete this family?
-        family_variant:   Are you sure you want to delete this family variant ?
-        product:          Are you sure you want to delete this product?
-        product_model:    Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
-        channel:          Are you sure you want to delete this channel?
-        group:            Are you sure you want to delete this group?
-        group_type:       Are you sure you want to delete this group type?
-        import_profile:   Are you sure you want to delete this import profile?
-        export_profile:   Are you sure you want to delete this export profile?
-        user:             Are you sure you want to delete this user?
-        role:             Are you sure you want to delete this role?
-        job_instance:     Are you sure you want to delete this job instance?
-        api_connection:   Are you sure you want to revoke this API connection? All API calls made through this connection will now throw an error.
+        attribute: Are you sure you want to delete this attribute?
+        attribute_from_family: Are you sure you want to delete this attribute from the family?
+        attribute_from_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
+        attribute_from_product: Are you sure you want to delete this attribute from the product?
+        attribute_group: Are you sure you want to delete this attribute group?
+        family: Are you sure you want to delete this family?
+        family_variant: Are you sure you want to delete this family variant?
+        product: Are you sure you want to delete this product?
+        product_model: Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
+        channel: Are you sure you want to delete this channel?
+        group: Are you sure you want to delete this group?
+        group_type: Are you sure you want to delete this group type?
+        import_profile: Are you sure you want to delete this import profile?
+        export_profile: Are you sure you want to delete this export profile?
+        user: Are you sure you want to delete this user?
+        role: Are you sure you want to delete this role?
+        job_instance: Are you sure you want to delete this job instance?
+        api_connection: Are you sure you want to revoke this API connection? All API calls made through this connection will now throw an error.
         products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
+    leave: Are you sure you want to leave this page?
+    discard_changes: You will lose changes to the {{ entity }} if you leave the page.
+    cancel:
+        title: Cancel modification
+        message: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option?
 
 pim_datagrid:
     mass_action_group:
@@ -107,6 +119,7 @@ pim_datagrid:
         delete_product: Delete the product
         change_status: Change status
         toggle_status: Toggle status
+        other: Other actions
     empty_results:
         associated_product:
             hint: There are no associated products
@@ -169,6 +182,8 @@ error:
     saving:
         attribute_option: Cannot save attribute option
         export_profile: Cannot save export profile. Please check that all filters are well filled
+    exception: Oh snap! A {{ status_code }} error occured...
+    forbidden: Forbidden. You are not allowed to access this page
 
 alert:
     attribute_option:
@@ -177,23 +192,7 @@ alert:
     session_storage:
         not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
 
-confirm:
-    attribute_option:
-        cancel_edition_on_new_option_text: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option?
-        cancel_edition_on_new_option_title: Cancel modification
-
 pim_enrich:
-    item:
-        list:
-            delete.error: Error during item deletion
-        delete:
-            confirm.content: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action
-            confirm.title: Delete this {{ itemName }}
-
-    navigation:
-        link:
-            back_to_grid: Back to grid
-        other_actions: Other actions
     entity:
         info:
             update_failed: Update failed
@@ -234,8 +233,6 @@ pim_enrich:
             error:
                 upload: An error occured during the file upload
             meta:
-                created_by: By
-                updated_by: By
                 updated: Last update
                 family:
                     title: Family
@@ -325,7 +322,6 @@ pim_enrich:
             selected: selected families
             info:
                 update_successful: Family successfully updated.
-                create_successful: Channel successfully created.
                 update_failed: An error occured during family update.
                 cant_remove_attribute_as_label: Cannot remove attribute used as label
                 cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
@@ -407,22 +403,9 @@ pim_enrich:
         api_connection:
             message:
                 created: API connection successfully created
-    confirmation:
-        leave:           Are you sure you want to leave this page?
-        discard_changes: You will lose changes to the {{ entity }} if you leave the page.
-        remove_item:     Confirm removal
-        delete:
-            attribute: Are you sure you want to delete this attribute from the product?
-            attribute_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
     info:
-        not_applicable: N/A
         entity:
             updated: There are unsaved changes.
-    error:
-        upload: An error occured during the upload of the file
-    alert:
-        not_allowed: Forbidden. You are not allowed to access this page
-        error_occured: An error occured during the loading of the page
     form:
         required: (required)
         product_model:
@@ -634,9 +617,7 @@ pim_enrich:
             file_path: File path
         attribute:
             meta:
-                created_by: by
                 updated: Last update
-                updated_by: by
             tab:
                 properties:
                     section:
@@ -901,13 +882,6 @@ pim_enrich:
                     label: Set attributes requirements
                     description: The following attributes requirements will be applied to the selected families
                     label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
-
-pim_enrich:
-    error:
-        exception:
-            title: Oh snap! A {{ status_code }} error occured...
-        http:
-            403: Forbidden. You are not allowed to access this page
 
 # Page titles
 pim_title:

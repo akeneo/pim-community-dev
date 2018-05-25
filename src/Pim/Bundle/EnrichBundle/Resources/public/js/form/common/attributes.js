@@ -298,7 +298,7 @@ define(
                 var fields = FieldManager.getFields();
 
                 Dialog.confirm(
-                    __('pim_enrich.confirmation.delete.attribute'),
+                    __('confirmation.remove.attribute_from_product'),
                     __('pim_common.confirm_deletion'),
                     function () {
                         FetcherRegistry.getFetcher('attribute').fetch(attributeCode).then(function (attribute) {

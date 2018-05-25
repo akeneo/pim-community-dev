@@ -109,8 +109,8 @@ define(
                 if (!this.model.id || this.dirty) {
                     if (this.dirty) {
                         Dialog.confirm(
-                            __('confirm.attribute_option.cancel_edition_on_new_option_text'),
-                            __('confirm.attribute_option.cancel_edition_on_new_option_title'),
+                            __('confirmation.cancel.message'),
+                            __('confirmation.cancel.title'),
                             function () {
                                 this.showReadableItem(this);
                                 if (!this.model.id) {
@@ -132,8 +132,8 @@ define(
                 var itemCode = this.el.firstChild.innerText;
 
                 Dialog.confirmDelete(
-                    __('pim_enrich.item.delete.confirm.content', {'itemName': itemCode}),
-                    __('pim_enrich.item.delete.confirm.title', {'itemName': itemCode}),
+                    __('confirmation.remove.item_placeholder', {'itemName': itemCode}),
+                    __('confirmation.remove.title', {'itemName': itemCode}),
                     function () {
                         this.parent.deleteItem(this);
                     }.bind(this),

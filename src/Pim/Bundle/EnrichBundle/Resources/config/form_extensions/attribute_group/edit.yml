@@ -153,9 +153,9 @@ extensions:
             title: pim_common.attributes
             otherGroup: other
             confirmation:
-                title: pim_enrich.confirmation.remove_item
+                title: confirmation.remove.alternative_title
                 subTitle: pim_common.attribute_groups
-                message: pim_enrich.confirmation.delete.attribute_group
+                message: confirmation.remove.attribute_from_group
                 buttonText: pim_common.remove
             removeAttributeACL: pim_enrich_attributegroup_remove_attribute
             addAttributeACL: pim_enrich_attributegroup_add_attribute

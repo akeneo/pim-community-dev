@@ -143,7 +143,7 @@ extensions:
         position: 90
         config:
             label: pim_common.created
-            labelBy: pim_enrich.entity.product.meta.created_by
+            labelBy: pim_common.by
 
     pim-product-model-edit-form-updated:
         module: pim/product-edit-form/meta/updated
@@ -152,7 +152,7 @@ extensions:
         position: 100
         config:
             label: pim_enrich.entity.product.meta.updated
-            labelBy: pim_enrich.entity.product.meta.updated_by
+            labelBy: pim_common.by
 
     pim-product-model-edit-form-attributes:
         module: pim/product-edit-form/attributes
@@ -170,7 +170,7 @@ extensions:
         module: pim/product-edit-form/categories
         parent: pim-product-model-edit-form-column-tabs
         targetZone: container
-        aclResourceId: pim_enrich_product_model_categories_view
+        aclResourceId: pim_enrich_product_categories_view #TODO
         position: 100
         config:
             tabCode: pim-product-edit-form-categories

@@ -208,9 +208,9 @@ extensions:
         config:
             label: pim_common.label
             confirmation:
-                title: pim_enrich.confirmation.remove_item
+                title: confirmation.remove.alternative_title
                 subTitle: pim_common.attributes
-                message: pim_enrich.confirmation.delete.attribute_from_family
+                message: confirmation.remove.attribute_from_family
                 buttonText: pim_common.remove
 
     pim-family-edit-form-variant:

@@ -2,7 +2,7 @@
     <img src="/bundles/pimui/images/illustration-error-<%- statusCode >= 400 && statusCode < 500 ? '404' : '503' %>.svg"/>
     <span class="AknInfoBlock-errorNumber AknInfoBlock-errorNumber--<%- statusCode >= 400 && statusCode < 500 ? '400' : '500' %>"><%- statusCode %></span>
     <h1>
-        <%- _.__('pim_enrich.error.exception.title', {'status_code': statusCode}) %>
+        <%- _.__('error.exception', {'status_code': statusCode}) %>
     </h1>
     <div class="AknMessageBox AknMessageBox--danger AknMessageBox--centered"><%- message %></div>
 </div>
