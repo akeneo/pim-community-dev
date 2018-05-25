@@ -47,7 +47,7 @@ class WrongBooleanValuesOnVariantProductCleaner
                 $variantProduct->getFamily()->getCode(),
                 $variantProduct->getFamilyVariant()->getCode(),
                 implode($cleanedAttributes, ',')
-            ));
+            ), FILE_APPEND);
         }
 
         return $isModified;
