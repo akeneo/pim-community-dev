@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -99,7 +101,7 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function save($filteredProductModel, array $options = [])
+    public function save($filteredProductModel, array $options = []): void
     {
         if (!$filteredProductModel instanceof ProductModelInterface) {
             throw InvalidObjectException::objectExpected($filteredProductModel, ProductModelInterface::class);
@@ -117,7 +119,7 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $filteredProductModels, array $options = [])
+    public function saveAll(array $filteredProductModels, array $options = []): void
     {
         if (empty($filteredProductModels)) {
             return;
@@ -176,7 +178,7 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
      * @param ProductModelInterface $fullProductModel
      * @param array                 $options
      */
-    private function saveProductModelDraft(ProductModelInterface $fullProductModel, array $options)
+    private function saveProductModelDraft(ProductModelInterface $fullProductModel, array $options): void
     {
         $username = $this->tokenStorage->getToken()->getUser()->getUsername();
         $productModelDraft = $this->draftBuilder->build($fullProductModel, $username);
@@ -216,7 +218,7 @@ class DelegatingProductModelSaver implements SaverInterface, BulkSaverInterface
      *
      * @throws \InvalidArgumentException
      */
-    private function validateObject($object, $expectedClass)
+    private function validateObject($object, $expectedClass): void
     {
         if (!$object instanceof $expectedClass) {
             throw new \InvalidArgumentException(
