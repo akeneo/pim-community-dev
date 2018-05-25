@@ -33,6 +33,11 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
         $this
             ->setName('pim:catalog:remove-wrong-boolean-values-on-variant-products')
             ->setAliases(['pim:catalog:remove-wrong-values-on-variant-products'])
+            ->addArgument(
+                'family',
+                InputArgument::REQUIRED,
+                'The family to clean'
+            )
             ->setDescription('Remove boolean values on variant products that should belong to their parents')
         ;
     }
@@ -47,10 +52,11 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
 
         $productBatchSize = $this->getContainer()->getParameter('pim_job_product_batch_size');
         $rootDir = $this->getContainer()->get('kernel')->getRootDir();
+        $family = $input->getArgument('family');
         $env = $input->getOption('env');
         $cacheClearer = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
 
-        $variantProducts = $this->getVariantProducts();
+        $variantProducts = $this->getVariantProducts($family);
 
         $io->progressStart($variantProducts->count());
 
@@ -78,13 +84,14 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
     /**
      * @return CursorInterface
      */
-    private function getVariantProducts(): CursorInterface
+    private function getVariantProducts(string $familyCode): CursorInterface
     {
         $pqb = $this->getContainer()
             ->get('pim_catalog.query.product_and_product_model_query_builder_factory')
             ->create();
 
         $pqb->addFilter('parent', Operators::IS_NOT_EMPTY, null);
+        $pqb->addFilter('family', Operators::IN_LIST, [$familyCode]);
 
         return $pqb->execute();
     }

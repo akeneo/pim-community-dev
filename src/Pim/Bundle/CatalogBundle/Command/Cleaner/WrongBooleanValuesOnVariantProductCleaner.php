@@ -41,7 +41,7 @@ class WrongBooleanValuesOnVariantProductCleaner
         }
 
         if ($isModified) {
-            file_put_contents('/tmp/cleaned_products.txt', sprintf(
+            file_put_contents(sprintf('%s/cleaned_products_%s.txt', getcwd(), $variantProduct->getFamily()->getCode()), sprintf(
                 "%s;%s;%s;%s\n",
                 $variantProduct->getIdentifier(),
                 $variantProduct->getFamily()->getCode(),
