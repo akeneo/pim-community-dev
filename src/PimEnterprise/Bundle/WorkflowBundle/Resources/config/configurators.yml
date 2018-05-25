@@ -1,0 +1,8 @@
+parameters:
+    pimee_workflow.event_listener.configure_proposal_grid_listener.class: PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProposalGridListener
+
+services:
+    pimee_workflow.datagrid.configuration.product.filters_configurator:
+        class: '%pimee_workflow.datagrid.configurator.filters_configurator.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
