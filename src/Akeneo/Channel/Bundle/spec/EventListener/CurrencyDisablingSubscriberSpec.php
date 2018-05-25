@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Channel\Bundle\EventListener;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Exception\LinkedChannelException;
+use Akeneo\Channel\Component\Exception\LinkedChannelException;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

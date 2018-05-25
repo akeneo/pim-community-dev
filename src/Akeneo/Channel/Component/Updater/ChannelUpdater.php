@@ -3,7 +3,6 @@
 namespace Akeneo\Channel\Component\Updater;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -34,9 +33,6 @@ class ChannelUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var MeasureManager */
-    protected $measureManager;
-
     /** @var TranslatableUpdater */
     protected $translatableUpdater;
 
@@ -45,7 +41,6 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param IdentifiableObjectRepositoryInterface $currencyRepository
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
-     * @param MeasureManager                        $measureManager
      * @param TranslatableUpdater                   $translatableUpdater
      */
     public function __construct(
@@ -53,14 +48,12 @@ class ChannelUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $currencyRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        MeasureManager $measureManager,
         TranslatableUpdater $translatableUpdater
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->localeRepository = $localeRepository;
         $this->currencyRepository = $currencyRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->measureManager = $measureManager;
         $this->translatableUpdater = $translatableUpdater;
     }
 

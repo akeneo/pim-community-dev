@@ -3,8 +3,9 @@
 namespace Akeneo\Channel\Component\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -25,8 +26,8 @@ class ChannelNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $localeNormalizer;
 
-    /** @var VersionManager */
-    protected $versionManager;
+    /** @var VersionRepositoryInterface */
+    protected $versionRepository;
 
     /** @var NormalizerInterface */
     protected $versionNormalizer;
@@ -37,20 +38,20 @@ class ChannelNormalizer implements NormalizerInterface
     /**
      * @param NormalizerInterface        $channelNormalizer
      * @param NormalizerInterface        $localeNormalizer
-     * @param VersionManager             $versionManager
+     * @param VersionRepositoryInterface $versionRepository
      * @param NormalizerInterface        $versionNormalizer
      * @param CollectionFilterInterface  $collectionFilter
      */
     public function __construct(
         NormalizerInterface $channelNormalizer,
         NormalizerInterface $localeNormalizer,
-        VersionManager $versionManager,
+        VersionRepositoryInterface $versionRepository,
         NormalizerInterface $versionNormalizer,
         CollectionFilterInterface $collectionFilter
     ) {
         $this->channelNormalizer = $channelNormalizer;
         $this->localeNormalizer  = $localeNormalizer;
-        $this->versionManager    = $versionManager;
+        $this->versionRepository = $versionRepository;
         $this->versionNormalizer = $versionNormalizer;
         $this->collectionFilter  = $collectionFilter;
     }
@@ -64,8 +65,16 @@ class ChannelNormalizer implements NormalizerInterface
 
         $normalizedChannel['locales'] = $this->normalizeLocales($channel->getLocales());
 
-        $firstVersion = $this->versionManager->getOldestLogEntry($channel);
-        $lastVersion = $this->versionManager->getNewestLogEntry($channel);
+        $firstVersion = $this->versionRepository->getOldestLogEntry(
+            ClassUtils::getClass($channel),
+            $channel->getId(),
+            false
+        );
+        $lastVersion = $this->versionRepository->getNewestLogEntry(
+            ClassUtils::getClass($channel),
+            $channel->getId(),
+            false
+        );
 
         $firstVersion = null !== $firstVersion ?
             $this->versionNormalizer->normalize($firstVersion, 'internal_api') :

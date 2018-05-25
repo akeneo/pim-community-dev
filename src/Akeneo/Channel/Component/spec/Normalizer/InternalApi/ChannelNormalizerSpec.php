@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -16,13 +17,13 @@ class ChannelNormalizerSpec extends ObjectBehavior
         NormalizerInterface $channelNormalizer,
         NormalizerInterface $localeNormalizer,
         CollectionFilterInterface $collectionFilter,
-        VersionManager $versionManager,
+        VersionRepositoryInterface $versionRepository,
         NormalizerInterface $versionNormalizer
     ) {
         $this->beConstructedWith(
             $channelNormalizer,
             $localeNormalizer,
-            $versionManager,
+            $versionRepository,
             $versionNormalizer,
             $collectionFilter
         );

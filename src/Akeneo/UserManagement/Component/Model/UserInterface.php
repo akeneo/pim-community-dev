@@ -6,9 +6,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\EntityUploadedImageInterface;
-use DateTime;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
@@ -46,7 +44,7 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     /**
      * Return birthday
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getBirthday();
 
@@ -63,14 +61,14 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     /**
      * Gets the timestamp that the user requested a password reset.
      *
-     * @return null|DateTime
+     * @return null|\DateTime
      */
     public function getPasswordRequestedAt();
 
     /**
      * Gets the last login time.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getLastLogin();
 
@@ -84,14 +82,14 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     /**
      * Get user created date/time
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getCreatedAt();
 
     /**
      * Get user last update date/time
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getUpdatedAt();
 
@@ -191,11 +189,11 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function getFullName();
 
     /**
-     * @param  DateTime $birthday [optional] New birthday value. Null by default.
+     * @param  \DateTime $birthday [optional] New birthday value. Null by default.
      *
      * @return UserInterface
      */
-    public function setBirthday(DateTime $birthday = null);
+    public function setBirthday(\DateTime $birthday = null);
 
     /**
      * @param  string $image [optional] New image file name. Null by default.
@@ -249,18 +247,18 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setConfirmationToken($token);
 
     /**
-     * @param  DateTime $time [optional] New password request time. Null by default.
+     * @param  \DateTime $time [optional] New password request time. Null by default.
      *
      * @return UserInterface
      */
-    public function setPasswordRequestedAt(DateTime $time = null);
+    public function setPasswordRequestedAt(\DateTime $time = null);
 
     /**
-     * @param  DateTime $time New login time
+     * @param  \DateTime $time New login time
      *
      * @return UserInterface
      */
-    public function setLastLogin(DateTime $time);
+    public function setLastLogin(\DateTime $time);
 
     /**
      * @param  int $count New login count value
@@ -270,14 +268,14 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setLoginCount($count);
 
     /**
-     * @param DateTime $createdAt
+     * @param \DateTime $createdAt
      *
      * @return $this
      */
-    public function setCreatedAt(DateTime $createdAt);
+    public function setCreatedAt(\DateTime $createdAt);
 
     /**
-     * @param DateTime $updatedAt
+     * @param \DateTime $updatedAt
      *
      * @return $this
      */
@@ -409,15 +407,11 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
 
     /**
      * Pre persist event listener
-     *
-     * @ORM\PrePersist
      */
     public function beforeSave();
 
     /**
      * Invoked before the entity is updated.
-     *
-     * @ORM\PreUpdate
      */
     public function preUpdate();
 

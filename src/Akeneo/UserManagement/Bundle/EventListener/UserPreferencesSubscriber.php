@@ -4,12 +4,12 @@ namespace Akeneo\UserManagement\Bundle\EventListener;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use Pim\Component\Catalog\Model\CategoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

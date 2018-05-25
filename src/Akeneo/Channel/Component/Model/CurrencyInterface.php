@@ -2,7 +2,7 @@
 
 namespace Akeneo\Channel\Component\Model;
 
-use Pim\Component\Catalog\Model\ReferableInterface;
+use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 
 /**
  * Currency interface
