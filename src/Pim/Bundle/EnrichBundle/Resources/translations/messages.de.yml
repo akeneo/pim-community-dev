@@ -19,6 +19,8 @@ pim_enrich:
       attribute.title: Attribute
       history.title: Historie
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Sie können dieses Attribut nicht entfernen, da es als Achse in der Variante der Produktfamilie verwendet wird
     tab:
       property.title: Eigenschaften
       attribute.title: Attribute
@@ -89,11 +91,13 @@ pim_enrich:
       description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
       empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
       success_flash: Die Statusaktualisierung der Produkte wird derzeit ausgeführt
+      launched_flash: Die Massenaktion "Attribute bearbeiten" wurde gestartet. Sie werden benachrichtigt, wenn sie erledigt ist.
       message:
         warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
         invalid_attribute: Das Attribut mit dem Code "attribute_code" ist kein gemeinsames Attribut der ausgewählten Produkte. Attribut übersprungen.
         no_valid_attribute: Keines der ausgewählten Attribute kann auf dieses Produkt angewendet werden.
     classify-add:
+      label: Zu Kategorien hinzufügen
       description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
       success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
       launched_flash: Die Massenbearbeitung "zu Kategorien hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
@@ -108,6 +112,7 @@ pim_enrich:
       success_flash: Produkt(e) wurden aus den ausgewählten Kategorien entfernt
       launched_flash: Die Massenbearbeitung "aus Kategorien entfernen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     change-family:
+      label: Produktfamilie ändern
       description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
       success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
       launched_flash: Die Massenbearbeitung "Produktfamilie ändern" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
@@ -151,7 +156,11 @@ pim_enrich:
       download: Produkt als PDF herunterladen
       history: Produkthistorie ansehen
     product_model:
+      create: Produktmodell erstellen
       edit_attributes: Attribute eines Produktmodells bearbeiten
+      categories_view: Die Kategorien eines Produktmodells anzeigen
+      history: Produkthistorie ansehen
+      remove: Produktmodell löschen
     category:
       list: Kategorien auflisten
       create: Eine Kategorie anlegen
@@ -325,6 +334,7 @@ confirmation:
     attribute group: Sind Sie sicher, dass Sie die Attributgruppe %name% löschen möchten?
     category: Sind Sie sicher, dass Sie die Kategorie %name% löschen möchten?
     family: Sind Sie sicher, dass Sie die Produktfamilie %name% entfernen möchten?
+    family_variant: Möchten Sie die Variante der Produktfamilie %name% wirklich löschen?
     product: Sind Sie sicher, dass Sie das Produkt %name% löschen möchten?
     group: Sind Sie sicher, dass Sie die Gruppe %name% löschen möchten?
     group type: Sind Sie sicher, dass Sie die Gruppe %name% löschen möchten?
@@ -549,8 +559,10 @@ pim_title.category:
 pim_title.attribute:
   index: "Attribute"
   create: "Attribute | Anlegen"
+  edit: "Attribute %attribute.label% | Bearbeiten"
 pim_title.product:
   index: "Produkte"
+  edit: "Produkte %product.label% | Bearbeiten"
 pim_title.family:
   index: "Produktfamilien"
   edit: "Produktfamilien %family.label% | Bearbeiten"
@@ -637,9 +649,11 @@ pim_enrich.mass_edit_action:
     message.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
     no_attribute.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
   classify:
+    label: Zu Kategorien hinzufügen
     description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
     success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
   change-family:
+    label: Produktfamilie ändern
     description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
     success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
     no_family: Keine Familie
@@ -748,11 +762,13 @@ job_execution.summary:
   skipped_products: Übersprungene Produkte
   skipped_attributes: Übersprungene Attribute
   skipped_families: Übersprungene Produktfamilien
+  deleted_products: Gelöschte Produkte
 pim_mass_edit_execution_show: Ausgeführte Massenbearbeitung | Details
 edit_common_attributes.steps.edit_common_attributes_processor.title: Attribute bearbeiten
 update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
 remove_product_value.steps.update_product_value_processor.title: Produktwert entfernen
 edit_common_attributes: Attribute bearbeiten
+edit_common_attributes_clean: Dateien für gemeinsame Attribute bereinigen
 perform.steps.duplicated.title: Doppelte Achse
 perform.steps.excluded.title: Ausgeschlossene Produkte
 batch_jobs:
@@ -768,6 +784,26 @@ batch_jobs:
     label: Attribute bearbeiten
     perform:
       label: Attribute bearbeiten
+    clean:
+      label: Dateien für gemeinsame Attribute bereinigen
+    cleaner:
+      label: Dateien für gemeinsame Attribute bereinigen
+  add_to_category:
+    label: Zu Kategorie hinzufügen
+    perform:
+      label: Zu Kategorie hinzufügen
+  move_to_category:
+    label: In Kategorie verschieben
+    perform:
+      label: In Kategorie verschieben
+  remove_from_category:
+    label: Aus der Kategorie entfernen
+    perform:
+      label: Aus der Kategorie entfernen
+  add_association:
+    label: Mit Produkten verbinden
+    perform:
+      label: Mit Produkten verbinden
   set_attribute_requirements:
     label: Benötigte Attribute auswählen
     perform:

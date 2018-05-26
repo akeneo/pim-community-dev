@@ -1253,6 +1253,8 @@ batch_jobs:
     label: Ryhmän tuonti CSV-tiedostona
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
+    compute_data_related_to_family_variants.label: Tuotemallien käsittely
+    compute_data_related_to_family_products.label: Tuotteiden käsittely
   csv_family_variant_import:
     label: Varianttiperheen tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -1316,6 +1318,8 @@ batch_jobs:
     label: Perheiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
+    compute_data_related_to_family_variants.label: Tuotemallien käsittely
+    compute_data_related_to_family_products.label: Tuotteiden käsittely
   xlsx_family_variant_import:
     label: Varianttiperheen tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
