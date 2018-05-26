@@ -73,6 +73,7 @@ pim_datagrid:
     apply: Anwenden
     cancel: Abbrechen
     remove_column: Entfernen
+    description: Wählen Sie die Information, die Sie als Spalte anzeigen möchten
     attribute_groups: Attributgruppen
   mass_action:
     delete:
@@ -104,5 +105,11 @@ grid.view_selector:
 grid.view_selector.flash.updated: Tabellenansicht erfolgreich aktualisiert
 grid.display_selector:
   label: Anzeige
+  gallery: Galerie
+  list: Liste
 Client ID: Client-ID
 Secret: Secret
+grid.empty_results:
+  associated_product:
+    hint: Es gibt keine verbundenen Produkte
+    subHint: 'Klicken Sie auf den Button "Verbindung hinzufügen", um dieses Produkt zu verbinden'
