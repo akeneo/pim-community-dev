@@ -24,6 +24,7 @@ pim_datagrid:
   mass_action:
     delete:
       label: Löschen
+      confirm_content: Sind Sie sicher, dass Sie die ausgewählten Produkte löschen möchten?
       success: Ausgewählte Produkte erfolgreich gelöscht.
       error: Es ist ein Fehler beim Löschen der ausgewählten Produkte aufgetreten, bitte versuchen Sie es erneut.
   view_selector:
@@ -152,6 +153,7 @@ pim_enrich:
       create: Anlegen
       subTitle: Produkt anlegen
       filters: Filter
+      common: Allgemein
       btn:
         enabled: Aktiviert
         disabled: Deaktiviert
@@ -224,6 +226,7 @@ pim_enrich:
         created: Produkt erfolgreich erstellt
       completeness: Vollständig
       sequential_edit:
+        item_limit: Nur die ersten 1000 Elemente dieser sequentiellen Bearbeitung werden angezeigt ({{ count }} ausgewählt)
         empty: Ihre Auswahl ist leer, bitte ändern Sie Ihre Suchparameter
     product_model:
       info:
@@ -313,10 +316,12 @@ pim_enrich:
         created: Produktfamilie erfolgreich angelegt
       variant:
         axis.label: Variantenachse(n)
+        add_variant: Variante hinzufügen
         create: Anlegen
         cancel: Abbrechen
         code: Code
         label: Bezeichnung
+        required: erforderlich
     attribute_option:
       code: Code
       label: Bezeichnung
@@ -386,6 +391,7 @@ pim_enrich:
     leave: Möchten Sie diese Seite wirklich verlassen?
     discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
     delete_item: Löschen bestätigen
+    remove_item: Entfernen bestätigen
     remove: Entfernen
     delete:
       attribute: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
@@ -416,6 +422,8 @@ pim_enrich:
             show_groups: Gruppen anzeigen
           association_type_selector: Verbindungstyp
           target: Ziel
+          manage: Füge {{ associationType }} Assoziationen hinzu
+          add_associations: Assoziationen hinzufügen
         attributes:
           title: Attribute
           btn:
@@ -520,6 +528,8 @@ pim_enrich:
             attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
           not_required_label: Nicht erforderlich
           required_label: Erforderlich
+        variant:
+          title: Varianten
         history:
           title: Historie
     attribute_option:
@@ -878,6 +888,7 @@ pim_enrich:
     association_type:
       create_btn: Verbindungstyp anlegen
     import_profiles:
+      title: "] -Inf, 1] {{ count }} Importprofil|] 1, Inf [{{ count }} Importprofile"
       create_btn: Importprofil anlegen
       list: Wählen Sie einen Auftrag
       create_popin:
@@ -887,6 +898,7 @@ pim_enrich:
     import_history:
       title: Importberichte
     group:
+      title: "] -Inf, 1] {{ count }} Gruppe|] 1, Inf [{{ count }} Gruppen"
       create_btn: Gruppe anlegen
     export_profiles:
       create_btn: Exportprofil anlegen
@@ -897,15 +909,24 @@ pim_enrich:
     export_history:
       title: Exportberichte
     family:
+      title: "] -Inf, 1] {{ count }} Familie|] 1, Inf [{{ count }} Familien"
       create_btn: Produktfamilie anlegen
     grouptype:
+      title: "] -Inf, 1] {{ count }} Gruppentyp|] 1, Inf [{{ count }} Gruppentypen"
       create_btn: Gruppentyp anlegen
+    currency:
+      title: "] -Inf, 1] {{ count }} Währung|] 1, Inf [{{ count }} Währungen"
     user:
+      title: "] -Inf, 1] {{ count }} Benutzer|] 1, Inf [{{ count }} Benutzer"
       create_btn: Benutzer anlegen
     user_role:
+      title: "] -Inf, 1] {{ count }} Rolle|] 1, Inf [{{ count }} Rollen"
       create_btn: Rolle anlegen
     user_group:
+      title: "] -Inf, 1] {{ count }} Gruppe|] 1, Inf [{{ count }} Gruppen"
       create_btn: Gruppe anlegen
+    process_tracker:
+      title: "] -Inf, 1] {{ count }} Benutzer|] 1, Inf [{{ count }} Benutzer"
     channel:
       create_btn: Ausgabekanal anlegen
     attribute:
@@ -947,6 +968,8 @@ pim_enrich:
           label: Zu Gruppen hinzufügen
           description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
           field: Gruppen
+        add_to_category:
+          label: Zu Kategorien hinzufügen
         move_to_category:
           label: Zwischen Kategorien verschieben
         remove_from_category:
@@ -1231,6 +1254,8 @@ pim_menu:
     exports: Exporte
     settings: Einstellungen
     system: System
+    help:
+      title: Hilfe
   item:
     association_type: Verbindungstypen
     attribute: Attribute
