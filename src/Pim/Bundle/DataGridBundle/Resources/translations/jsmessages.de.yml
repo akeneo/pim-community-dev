@@ -73,6 +73,7 @@ pim_datagrid:
     apply: Anwenden
     cancel: Abbrechen
     remove_column: Entfernen
+    description: Wählen Sie die Information, die Sie als Spalte anzeigen möchten
     attribute_groups: Attributgruppen
   mass_action:
     delete:
