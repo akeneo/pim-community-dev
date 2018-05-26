@@ -196,6 +196,7 @@ pimee_enrich:
           label: Lisää tunnisteita asseteille
           description: Tunnisteita lisätään assetille.
           field: Tunnisteet
+          empty_selection: Valitse tunnisteet
         add_to_category:
           label: Luokittele assetit kategorioihin
           field: Kategoriat
