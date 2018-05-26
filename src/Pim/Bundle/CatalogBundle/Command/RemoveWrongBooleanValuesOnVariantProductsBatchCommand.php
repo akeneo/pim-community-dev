@@ -88,6 +88,7 @@ class RemoveWrongBooleanValuesOnVariantProductsBatchCommand extends ContainerAwa
             ->get('pim_catalog.query.product_and_product_model_query_builder_factory')
             ->create();
 
+        $pqb->addFilter('parent', Operators::IS_NOT_EMPTY, null);
         $pqb->addFilter('identifier', Operators::IN_LIST, $identifiers);
 
         return $pqb->execute();
