@@ -89,11 +89,13 @@ pim_enrich:
       description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
       empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
       success_flash: Die Statusaktualisierung der Produkte wird derzeit ausgeführt
+      launched_flash: Die Massenaktion "Attribute bearbeiten" wurde gestartet. Sie werden benachrichtigt, wenn sie erledigt ist.
       message:
         warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
         invalid_attribute: Das Attribut mit dem Code "attribute_code" ist kein gemeinsames Attribut der ausgewählten Produkte. Attribut übersprungen.
         no_valid_attribute: Keines der ausgewählten Attribute kann auf dieses Produkt angewendet werden.
     classify-add:
+      label: Zu Kategorien hinzufügen
       description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
       success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
       launched_flash: Die Massenbearbeitung "zu Kategorien hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
@@ -153,6 +155,9 @@ pim_enrich:
       history: Produkthistorie ansehen
     product_model:
       edit_attributes: Attribute eines Produktmodells bearbeiten
+      categories_view: Die Kategorien eines Produktmodells ansehen
+      history: Produkthistorie ansehen
+      remove: Produktmodell löschen
     category:
       list: Kategorien auflisten
       create: Eine Kategorie anlegen
@@ -553,6 +558,7 @@ pim_title.attribute:
   edit: "Attributee %attribute.label% | Bearbeiten"
 pim_title.product:
   index: "Produkte"
+  edit: "Produkte %product.label% | Bearbeiten"
 pim_title.family:
   index: "Produktfamilien"
   edit: "Produktfamilien %family.label% | Bearbeiten"
