@@ -1,3 +1,7 @@
+parameters:
+    env(BEHAT_URL): 'http://127.0.0.1/'
+    behat_url: '%env(BEHAT_URL)%'
+
 imports:
     - { resource: config.yml }
     - { resource: parameters_test.yml }

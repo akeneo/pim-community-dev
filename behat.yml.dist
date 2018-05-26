@@ -8,7 +8,7 @@ legacy:
             contexts:
                 - Context\FeatureContext:
                     -
-                        base_url: 'http://127.0.0.1/'
+                        base_url: '%%behat_url%%'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024

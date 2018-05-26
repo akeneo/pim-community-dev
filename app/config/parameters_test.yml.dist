@@ -12,3 +12,4 @@ parameters:
     product_model_index_name:              akeneo_pim_product_model
     product_and_product_model_index_name:  akeneo_pim_product_and_product_model
     index_hosts:                          'localhost: 9200'
+    behat_url:                            'http://127.0.0.1/'
