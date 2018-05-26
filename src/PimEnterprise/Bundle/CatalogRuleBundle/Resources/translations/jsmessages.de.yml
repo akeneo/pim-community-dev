@@ -4,6 +4,7 @@ pimee_catalog_rule:
   selected: 'Regeln ausgewählt'
   popin:
     execute_rules:
+      confirm_title: Ausführung bestätigen
       confirm_content: Sind Sie sicher, dass Sie alle Regeln anwenden möchten? (Dies kann sehr lange dauern)
   notification:
     fail: Dieser Vorgang konnte nicht ausgeführt werden
@@ -32,6 +33,7 @@ pimee_catalog_rule:
           confirm_content: Sind Sie sicher, dass Sie die Regel anwenden möchten?
           confirm_ok: OK
       mass_edit_action:
+        confirm_title: Kalkulation bestätigen
         confirm_content: Sind Sie sicher, dass Sie die von dieser Regel betroffenen Produkte berechnen möchten?
         confirm_ok: OK
       mass_action:
