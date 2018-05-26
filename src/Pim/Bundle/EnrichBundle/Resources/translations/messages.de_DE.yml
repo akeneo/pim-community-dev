@@ -242,6 +242,7 @@ pim_enrich.mass_edit_action:
     message.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
     no_attribute.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
   classify:
+    label: Zu Kategorien hinzufügen
     description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
     success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
   change-family:
