@@ -1,6 +1,6 @@
 const glob = require('glob');
 const path = require('path');
-const decoratorFiles = glob.sync(path.resolve(__dirname, './tests/front/acceptance/cucumber/decorators/**/*.js'))
+const decoratorFiles = glob.sync(path.resolve(__dirname, './cucumber/decorators/**/*.js'))
 const decorators = {};
 
 decoratorFiles.forEach(file => {
@@ -10,5 +10,5 @@ decoratorFiles.forEach(file => {
 
 module.exports = {
   decorators,
-  tools: require('./tests/front/acceptance/cucumber/tools.js')
+  tools: require(path.resolve(__dirname, './cucumber/tools.js'))
 };
