@@ -2,11 +2,10 @@ module.exports = async function(cucumber) {
     const { Given, Then, When, Before } = cucumber;
     const assert = require('assert');
     const path = require('path');
-
     const {
         decorators: { createElementDecorator, Report },
         tools: { renderView }
-    } = require(path.resolve(process.cwd(), './vendor/akeneo/pim-community-dev/test-helpers.js'));
+    } = require('../../test-helpers.js');
 
     const config = {
         'Catalog volume report':  {
