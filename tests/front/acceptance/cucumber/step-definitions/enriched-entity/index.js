@@ -39,7 +39,7 @@ module.exports = async function (cucumber) {
     await this.page.waitFor('.AknGridContainer');
   });
 
-  Then('the user should get a selection of {int} items out of {int} items in total', async function (count, total) {
+  Then('the user get a selection of {int} items out of {int} items in total', async function (count, total) {
     await this.page.waitForSelector('.AknGrid-bodyRow');
     const rows = await this.page.$$('.AknGrid-bodyRow');
     assert.equal(rows.length, count);
@@ -50,7 +50,7 @@ module.exports = async function (cucumber) {
     assert.equal(title.trim(), `${total} result${total > 1 ? 's' : ''}`);
   });
 
-  Then('I should get an enriched entity {string}', async function (identifier) {
+  Then('I get an enriched entity {string}', async function (identifier) {
     await this.page.waitForSelector(`.AknGrid-bodyRow[data-identifier="${identifier}"]`);
   });
 

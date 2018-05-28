@@ -14,7 +14,7 @@ use Akeneo\EnrichedEntity\back\Domain\Repository\RecordRepository;
  */
 class InMemoryRecordRepository implements RecordRepository
 {
-    protected $records= [];
+    protected $records = [];
 
     public function add(Record $record): void
     {

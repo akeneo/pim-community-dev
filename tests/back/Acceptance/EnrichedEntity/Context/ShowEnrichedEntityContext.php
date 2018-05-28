@@ -17,7 +17,7 @@ use Behat\Gherkin\Node\TableNode;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ShowEnrichedEntityContext implements Context
+final class ShowEnrichedEntityContext implements Context
 {
     /** @var ShowEnrichedEntityHandler */
     private $showEnrichedEntityHandler;
@@ -43,7 +43,7 @@ class ShowEnrichedEntityContext implements Context
     /**
      * @Given /^the following enriched entity:$/
      */
-    public function theFollowingEnrichedEntity(TableNode $table)
+    public function theFollowingEnrichedEntity(TableNode $table): void
     {
         foreach ($table->getHash() as $data) {
             $identifier = $data['identifier'];
@@ -59,9 +59,9 @@ class ShowEnrichedEntityContext implements Context
     }
 
     /**
-     * @Then /^there should be no enriched entity$/
+     * @Then /^there is no enriched entity$/
      */
-    public function thereShouldBeNoEnrichedEntity()
+    public function thereShouldBeNoEnrichedEntity(): void
     {
         $entitiesFoundCount = \count($this->entitiesFound);
         if ($entitiesFoundCount > 0) {
@@ -74,7 +74,7 @@ class ShowEnrichedEntityContext implements Context
     /**
      * @Given /^the following enriched entities:$/
      */
-    public function theFollowingEnrichedEntities(TableNode $table)
+    public function theFollowingEnrichedEntities(TableNode $table): void
     {
         foreach ($table->getHash() as $data) {
             $identifier = $data['identifier'];
@@ -92,13 +92,13 @@ class ShowEnrichedEntityContext implements Context
     /**
      * @When /^the user ask for the enriched entity list$/
      */
-    public function theUserAskForTheEnrichedEntityList()
+    public function theUserAskForTheEnrichedEntityList(): void
     {
         $this->entitiesFound = $this->showEnrichedEntityHandler->findAll();
     }
 
     /**
-     * @Then /^the user should get a selection of (\d+) items out of (\d+) items in total$/
+     * @Then /^the user get a selection of (\d+) items out of (\d+) items in total$/
      */
     public function theUserShouldGetASelectionOfItemsOutOfItemsInTotal(int $numberOfItems, $arg2)
     {
@@ -111,9 +111,9 @@ class ShowEnrichedEntityContext implements Context
     }
 
     /**
-     * @Then /^I should get an enriched entity "([^"]*)"$/
+     * @Then /^I get an enriched entity "([^"]*)"$/
      */
-    public function iShouldGetAnEnrichedEntity(string $enrichedEntityIdentifier)
+    public function iShouldGetAnEnrichedEntity(string $enrichedEntityIdentifier): void
     {
         foreach ($this->entitiesFound as $enrichedEntity) {
             $isFound = $enrichedEntity->getIdentifier()->equals(

@@ -51,7 +51,7 @@ class Installer implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             InstallerEvents::POST_ASSETS_DUMP => ['installAssets'],
@@ -60,7 +60,7 @@ class Installer implements EventSubscriberInterface
         ];
     }
 
-    public function installAssets(GenericEvent $event)
+    public function installAssets(GenericEvent $event): void
     {
         $originDir = __DIR__.'/../../../../front';
         $targetDir = $this->projectDir.'/web/bundles/akeneoenrichedentity';
@@ -91,8 +91,8 @@ CREATE TABLE `akeneo_enriched_entity_record` (
     `data` JSON NOT NULL,
     PRIMARY KEY (`id`),
     UNIQUE `record_identifier_index` (`identifier`),
-    CONSTRAINT enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier) 
-      ON DELETE CASCADE 
+    CONSTRAINT enriched_entity_identifier_foreign_key FOREIGN KEY (`enriched_entity_identifier`) REFERENCES `akeneo_enriched_entity_enriched_entity` (identifier)
+      ON DELETE CASCADE
       ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL;
@@ -103,12 +103,12 @@ SQL;
     public function loadFixtures(): void
     {
         $sql = <<<SQL
-REPLACE INTO `akeneo_enriched_entity_enriched_entity` (`identifier`, `labels`) 
+REPLACE INTO `akeneo_enriched_entity_enriched_entity` (`identifier`, `labels`)
 VALUES
   ('designer', '{"en_US": "Designer", "fr_FR": "Concepteur"}'),
   ('brand', '{}');
 
-REPLACE INTO `akeneo_enriched_entity_record` (`identifier`, `enriched_entity_identifier`, `data`) 
+REPLACE INTO `akeneo_enriched_entity_record` (`identifier`, `enriched_entity_identifier`, `data`)
 VALUES
   ('stark', 'designer', '{"name": "Tony Stark"}'),
   ('bob', 'designer', '{"name": "Bob the Builder"}'),
@@ -127,7 +127,7 @@ SQL;
      * @param string $originDir
      * @param string $targetDir
      */
-    private function relativeSymlinkWithFallback($originDir, $targetDir)
+    private function relativeSymlinkWithFallback(string $originDir, string $targetDir): void
     {
         try {
             $this->symlink($originDir, $targetDir, true);
@@ -144,7 +144,7 @@ SQL;
      * @param string $originDir
      * @param string $targetDir
      */
-    private function absoluteSymlinkWithFallback($originDir, $targetDir)
+    private function absoluteSymlinkWithFallback(string $originDir, string $targetDir): void
     {
         try {
             $this->symlink($originDir, $targetDir);
@@ -163,7 +163,7 @@ SQL;
      *
      * @throws IOException if link can not be created
      */
-    private function symlink($originDir, $targetDir, $relative = false)
+    private function symlink(string $originDir, string $targetDir, bool $relative = false): void
     {
         if ($relative) {
             $this->filesystem->mkdir(dirname($targetDir));
@@ -181,7 +181,7 @@ SQL;
      * @param string $originDir
      * @param string $targetDir
      */
-    private function hardCopy($originDir, $targetDir)
+    private function hardCopy(string $originDir, string $targetDir): void
     {
         $this->filesystem->mkdir($targetDir, 0777);
         // We use a custom iterator to ignore VCS files

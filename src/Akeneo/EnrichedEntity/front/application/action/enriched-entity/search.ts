@@ -24,7 +24,7 @@ const fetchResults = (fetcher: Fetcher<EnrichedEntity>) => async (
 
 const updateResultsWithFetcher = (fetcher: Fetcher<EnrichedEntity>) =>
   ((requestCount: number = 0) => {
-    return (append: boolean = false) => async (dispatch: any, getState: any): Promise<void> => {
+    return (append: boolean = false): any => async (dispatch: any, getState: any): Promise<void> => {
       requestCount++;
       const state = getState() as State;
       const currentRequestCount = requestCount;

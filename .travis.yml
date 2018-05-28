@@ -2,7 +2,6 @@ language: php
 
 branches:
   only:
-    - toto
     - /^einrich-?.*$/
 
 php:
@@ -35,9 +34,9 @@ script:
     - yarn integration
     - yarn acceptance tests/features
     - yarn acceptance vendor/akeneo/pim-community-dev/tests/features
-    - vendor/bin/behat -p acceptance
+    - vendor/bin/behat -p acceptance --no-interaction
     - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
-    - vendor/bin/phpspec run
+    - vendor/bin/phpspec run --no-interaction
 
 notifications:
   email: false

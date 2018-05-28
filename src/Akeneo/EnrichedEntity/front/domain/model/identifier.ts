@@ -1,11 +1,6 @@
-export default interface Identifier {
-  equals: (identifier: Identifier) => boolean;
-  stringValue: () => string;
-};
-
 class InvalidTypeError extends Error {}
 
-export class IdentifierImplementation implements Identifier {
+export default class Identifier {
   private constructor(private identifier: string) {
     if ('string' !== typeof identifier) {
       throw new InvalidTypeError('Identifier expect a string as parameter to be created');
@@ -15,7 +10,7 @@ export class IdentifierImplementation implements Identifier {
   }
 
   public static create(identifier: string): Identifier {
-    return new IdentifierImplementation(identifier);
+    return new Identifier(identifier);
   }
 
   public equals(identifier: Identifier): boolean {
@@ -27,4 +22,4 @@ export class IdentifierImplementation implements Identifier {
   }
 }
 
-export const createIdentifier = IdentifierImplementation.create;
+export const createIdentifier = Identifier.create;

@@ -21,7 +21,7 @@ class Record
     /** @var LabelCollection */
     private $labelCollection;
 
-    /** @var \Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity */
+    /** @var EnrichedEntity */
     private $enrichedEntityIdentifier;
 
     private function __construct(

@@ -17,7 +17,7 @@ class EnrichedEntity implements NormalizerInterface
      *
      * @param EnrichedEntityModel $enrichedEntity
      */
-    public function normalize($enrichedEntity, $format = null, array $context = [])
+    public function normalize($enrichedEntity, $format = null, array $context = []): array
     {
         $normalizedEnrichedEntity = [
             'identifier' => (string) $enrichedEntity->getIdentifier(),
@@ -30,7 +30,7 @@ class EnrichedEntity implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof EnrichedEntityModel && in_array($format, $this->supportedFormats);
     }
@@ -42,7 +42,7 @@ class EnrichedEntity implements NormalizerInterface
      *
      * @return array
      */
-    private function normalizeLabels(EnrichedEntityModel $enrichedEntity)
+    private function normalizeLabels(EnrichedEntityModel $enrichedEntity): array
     {
         $localeCodes = $enrichedEntity->getLabelCodes();
 

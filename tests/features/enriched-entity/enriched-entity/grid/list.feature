@@ -10,11 +10,11 @@ Feature: List enriched entities
       | designer   |
       | sofa       |
     When the user ask for the enriched entity list
-    Then the user should get a selection of 2 items out of 2 items in total
-    And I should get an enriched entity "designer"
-    And I should get an enriched entity "sofa"
+    Then the user get a selection of 2 items out of 2 items in total
+    And I get an enriched entity "designer"
+    And I get an enriched entity "sofa"
 
   @acceptance-back
   Scenario: Do not show the enriched entity if it does not exist
     When the user ask for the enriched entity list
-    Then there should be no enriched entity
+    Then there is no enriched entity

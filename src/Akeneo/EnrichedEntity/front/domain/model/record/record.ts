@@ -1,15 +1,13 @@
-import Identifier, {IdentifierImplementation} from 'akeneoenrichedentity/domain/model/record/identifier';
-import EnrichedEntityIdentifier, {
-  IdentifierImplementation as EnrichedEntityIdentifierImplementation,
-} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection, {LabelCollectionImplementation} from 'akeneoenrichedentity/domain/model/label-collection';
+import Identifier from 'akeneoenrichedentity/domain/model/record/identifier';
+import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import LabelCollection from 'akeneoenrichedentity/domain/model/label-collection';
 
 export default interface Record {
   getIdentifier: () => Identifier;
   getEnrichedEntityIdentifier(): EnrichedEntityIdentifier;
   getLabel: (locale: string) => string;
   equals: (record: Record) => boolean;
-};
+}
 class InvalidArgumentError extends Error {}
 
 class RecordImplementation implements Record {
@@ -18,13 +16,13 @@ class RecordImplementation implements Record {
     private enrichedEntityIdentifier: EnrichedEntityIdentifier,
     private labelCollection: LabelCollection
   ) {
-    if (!(identifier instanceof IdentifierImplementation)) {
+    if (!(identifier instanceof Identifier)) {
       throw new InvalidArgumentError('Record expect a RecordIdentifier as first argument');
     }
-    if (!(enrichedEntityIdentifier instanceof EnrichedEntityIdentifierImplementation)) {
+    if (!(enrichedEntityIdentifier instanceof EnrichedEntityIdentifier)) {
       throw new InvalidArgumentError('Record expect an EnrichedEntityIdentifier as second argument');
     }
-    if (!(labelCollection instanceof LabelCollectionImplementation)) {
+    if (!(labelCollection instanceof LabelCollection)) {
       throw new InvalidArgumentError('Record expect a LabelCollection as third argument');
     }
 

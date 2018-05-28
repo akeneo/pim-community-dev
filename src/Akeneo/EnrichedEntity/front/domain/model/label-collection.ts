@@ -2,11 +2,6 @@ interface RawLabelCollection {
   [locale: string]: string;
 }
 
-export default interface LabelCollection {
-  hasLabel: (locale: string) => boolean;
-  getLabel: (locale: string) => string;
-};
-
 class InvalidTypeError extends Error {}
 class UnknownLocaleError extends Error {}
 
@@ -16,7 +11,7 @@ const ensureString = (value: string) => {
   }
 };
 
-export class LabelCollectionImplementation implements LabelCollection {
+export default class LabelCollection {
   private constructor(private labels: RawLabelCollection) {
     if ('object' !== typeof labels) {
       throw new InvalidTypeError('LabelCollection expect only values as {"en_US": "My label"} to be created');
@@ -29,8 +24,8 @@ export class LabelCollectionImplementation implements LabelCollection {
     Object.freeze(this);
   }
 
-  public static create(labels: RawLabelCollection): LabelCollectionImplementation {
-    return new LabelCollectionImplementation(labels);
+  public static create(labels: RawLabelCollection): LabelCollection {
+    return new LabelCollection(labels);
   }
 
   public hasLabel(locale: string): boolean {
@@ -46,4 +41,4 @@ export class LabelCollectionImplementation implements LabelCollection {
   }
 }
 
-export const createLabelCollection = LabelCollectionImplementation.create;
+export const createLabelCollection = LabelCollection.create;

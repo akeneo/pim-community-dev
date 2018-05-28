@@ -10,54 +10,52 @@ use PhpSpec\ObjectBehavior;
 
 class EnrichedEntitySpec extends ObjectBehavior
 {
-    public function let(EnrichedEntityIdentifier $identifier, LabelCollection $labelCollection)
+    public function let()
     {
+        $identifier = EnrichedEntityIdentifier::fromString('designer');
+        $labelCollection = LabelCollection::fromArray([
+            'en_US' => 'Designer',
+            'fr_FR' => 'Concepteur'
+        ]);
+
         $this->beConstructedThrough('define', [$identifier, $labelCollection]);
     }
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(\Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity::class);
+        $this->shouldHaveType(EnrichedEntity::class);
     }
 
-    public function it_returns_its_identifier($identifier)
+    public function it_returns_its_identifier()
     {
-        $this->getIdentifier()->shouldReturn($identifier);
+        $identifier = EnrichedEntityIdentifier::fromString('designer');
+        $this->getIdentifier()->shouldBeLike($identifier);
     }
 
-    public function it_is_comparable($identifier)
+    public function it_is_comparable_to_another_enriched_entity()
     {
-        $sameIdentifier = EnrichedEntityIdentifier::fromString('same_identifier');
+        $sameIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $sameEnrichedEntity = EnrichedEntity::define(
             $sameIdentifier,
             LabelCollection::fromArray([])
         );
-        $identifier->equals($sameIdentifier)->willReturn(true);
         $this->equals($sameEnrichedEntity)->shouldReturn(true);
 
         $anotherIdentifier = EnrichedEntityIdentifier::fromString('same_identifier');
-        $identifier->equals($anotherIdentifier)->willReturn(false);
-        $sameEnrichedEntity = \Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity::define(
+        $sameEnrichedEntity = EnrichedEntity::define(
             $anotherIdentifier,
             LabelCollection::fromArray([])
         );
         $this->equals($sameEnrichedEntity)->shouldReturn(false);
     }
 
-    public function it_returns_the_translated_label(
-        $labelCollection
-    ) {
-        $labelCollection->getLabel('en_US')->willReturn('Designer');
-        $labelCollection->getLabel('fr_FR')->willReturn('Concepteur');
-        $labelCollection->getLabel('ru_RU')->willReturn(null);
-
+    public function it_returns_the_translated_label() {
         $this->getLabel('fr_FR')->shouldReturn('Concepteur');
         $this->getLabel('en_US')->shouldReturn('Designer');
         $this->getLabel('ru_RU')->shouldReturn(null);
     }
 
     public function it_returns_the_locale_code_from_which_the_enriched_entity_is_translated($labelCollection) {
-        $labelCollection->getLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $this->getLabelCodes()->shouldReturn(['en_US', 'fr_FR']);
     }
 }

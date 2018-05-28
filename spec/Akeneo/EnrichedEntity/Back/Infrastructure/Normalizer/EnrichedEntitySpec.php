@@ -6,18 +6,14 @@ namespace spec\Akeneo\EnrichedEntity\back\Infrastructure\Normalizer;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity as EnrichedEntityModel;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\back\Infrastructure\Normalizer\EnrichedEntity;
 use PhpSpec\ObjectBehavior;
 
 class EnrichedEntitySpec extends ObjectBehavior
 {
-    public function let()
-    {
-        $this->beConstructedWith();
-    }
-
     public function it_is_initializable()
     {
-        $this->shouldHaveType(\Akeneo\EnrichedEntity\back\Infrastructure\Normalizer\EnrichedEntity::class);
+        $this->shouldHaveType(EnrichedEntity::class);
     }
 
     public function it_supports_enriched_entity_on_internal_api_format(EnrichedEntityModel $designer)

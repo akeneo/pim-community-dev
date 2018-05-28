@@ -14,7 +14,7 @@ use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
  */
 class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
 {
-    protected $enrichedEntities = [];
+    private $enrichedEntities = [];
 
     public function add(EnrichedEntity $enrichedEntity): void
     {

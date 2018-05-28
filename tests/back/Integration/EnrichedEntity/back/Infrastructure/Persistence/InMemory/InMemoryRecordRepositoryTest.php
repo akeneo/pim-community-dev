@@ -3,16 +3,17 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\InMemory;
 
+use AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryRecordRepository;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryRecordRepository;
+use Akeneo\EnrichedEntity\back\Domain\Repository\RecordRepository;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryRecordRepositoryTest extends TestCase
 {
-    /** @var \Akeneo\EnrichedEntity\back\Domain\Repository\RecordRepository */
+    /** @var RecordRepository */
     private $recordRepository;
 
     public function setup()
@@ -72,8 +73,8 @@ class InMemoryRecordRepositoryTest extends TestCase
     }
 
     /**
-     * @param Record[]                                                  $records
-     * @param \Akeneo\EnrichedEntity\back\Domain\Model\Record\Record[] $recordsFound
+     * @param Record[] $records
+     * @param Record[] $recordsFound
      */
     private function assertRecordList(array $records, array $recordsFound): void
     {
