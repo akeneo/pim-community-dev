@@ -31,9 +31,16 @@ class MetricNormalizer implements NormalizerInterface
                 ? number_format($amount, static::DECIMAL_PRECISION, '.', '') : (int) $amount;
         }
 
+        if (null == $amount) {
+            return [
+                'amount' => null,
+                'unit'   => null,
+            ];
+        }
+
         return [
             'amount' => $amount,
-            'unit'   => null !== $metric->getUnit() ? $metric->getUnit() : $attribute->getDefaultMetricUnit(),
+            'unit'   => $metric->getUnit() ? $metric->getUnit() : $attribute->getDefaultMetricUnit()
         ];
     }
 

@@ -4,6 +4,7 @@
 
 - PIM-7336: Fix channel update with "do not convert" values for conversion units
 - PIM-7385: Fix memory leak on purge job command
+- PIM-7375: Fix metric unit values on export/import with empty values
 
 # 1.7.21 (2018-04-23)
 
