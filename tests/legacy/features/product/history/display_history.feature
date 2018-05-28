@@ -104,7 +104,7 @@ Feature: Display the product history
       | 4       | Length unit |       | now  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3628
-  Scenario: Update product history when updating product media
+    Scenario: Update product history when updating product media
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the products grid

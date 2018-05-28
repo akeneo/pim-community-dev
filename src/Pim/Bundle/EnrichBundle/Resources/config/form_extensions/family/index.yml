@@ -52,7 +52,7 @@ extensions:
         parent: pim-family-index
         targetZone: bottom-panel
         config:
-            label: pim_datagrid.mass_edit.selected.family
+            label: pim_datagrid.mass_action.selected.family
 
     pim-family-index-actions-panel:
         module: oro/datagrid/actions-panel

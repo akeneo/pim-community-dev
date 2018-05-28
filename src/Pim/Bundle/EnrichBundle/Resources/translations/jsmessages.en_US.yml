@@ -230,6 +230,7 @@ pim_enrich:
                     fields_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
                 delete:
                     success: Product model successfully deleted.
+                    fail: Cannot delete this product model
             choose: Choose a product model
             create_popin:
                 title: Create a product model
@@ -290,6 +291,7 @@ pim_enrich:
 
         family:
             label: family
+            uppercase_label: Family
             flash:
                 update:
                     success: Family successfully updated.
@@ -405,15 +407,21 @@ pim_enrich:
             flash:
                 create:
                     success: API connection successfully created
+                delete:
+                    success: API connection successfully revoked
+                    fail: Cannot revoke this API connection
             page_title:
                 index: "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API connections"
 
         locale:
             label: locale
+            uppercase_label: Locale
             page_title:
                 index: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
+
         category:
             label: category
+            uppercase_label: Category
 
         currency:
             page_title:
@@ -925,9 +933,9 @@ batch_jobs:
         perform.label: Set attributes requirements
     xlsx_product_grid_context_quick_export:
         quick_export.label: XLSX product grid context quick export
-        quick_export_product_model.label: XSLX product model grid context quick export
+        quick_export_product_model.label: XLSX product model grid context quick export
         perform.label: XLSX product grid context quick export
     xlsx_product_quick_export:
         quick_export.label: XLSX product quick export
-        quick_export_product_model.label: XSLX product model quick export
+        quick_export_product_model.label: XLSX product model quick export
         perform.label: XLSX product quick export

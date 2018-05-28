@@ -69,7 +69,7 @@ Feature: Quick export many products from datagrid
       sneakers;bbb;summer_collection;white;;1;sneakers;;;;Sneakers;50;60;;;42;;
       """
 
-  Scenario: Successfully quick export selected products as a XSLX file
+  Scenario: Successfully quick export selected products as a XLSX file
     Given I am on the products grid
     When I select rows boots, sneakers
     And I press "Excel (All attributes)" on the "Quick Export" dropdown button

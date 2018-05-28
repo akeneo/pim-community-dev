@@ -362,7 +362,9 @@ define(
              */
             getDefaultNoDataOptions() {
                 const entityHint = (this.entityHint || __('pim_datagrid.entity_hint')).toLowerCase();
-                let key = 'pim_datagrid.' + (_.isEmpty(this.collection.state.filters) ? 'no_entities' : 'no_results');
+                let key = _.isEmpty(this.collection.state.filters) ?
+                    'pim_datagrid.no_entities' :
+                    'pim_datagrid.no_results';
 
                 if (Translator.has('jsmessages:' + key + '.' + entityHint)) {
                     key += '.' + entityHint;

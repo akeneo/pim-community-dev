@@ -71,7 +71,7 @@ define(
                     .then((familyVariant) => {
                         messenger.notify(
                             'success',
-                            _.__('pim_enrich.form.pim_enrich.entity.family_variant.flash.create.success')
+                            _.__('pim_enrich.entity.family_variant.flash.create.success')
                         );
                         this.getRoot().trigger('pim_enrich.entity.family.family_variant.post_create', familyVariant);
                     });

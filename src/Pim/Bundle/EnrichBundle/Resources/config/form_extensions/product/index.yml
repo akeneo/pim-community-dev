@@ -115,7 +115,7 @@ extensions:
         parent: pim-product-index
         targetZone: bottom-panel
         config:
-            label: pim_datagrid.mass_edit.selected.product
+            label: pim_datagrid.mass_action.selected.product
 
     pim-product-index-grid-filters-manage:
         module: oro/datafilter/filters-button

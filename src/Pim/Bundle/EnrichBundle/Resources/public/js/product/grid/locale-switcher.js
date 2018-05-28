@@ -69,7 +69,7 @@ define(
                 }
 
                 this.$el.empty().append(this.template({
-                    localeLabel: __('pim_enrich.entity.locale.label').toUpperCase(),
+                    localeLabel: __('pim_enrich.entity.locale.uppercase_label'),
                     locales: this.locales,
                     currentLocale,
                     i18n,
