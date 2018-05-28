@@ -14,6 +14,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\ChannelTranslationInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Updater\ChannelUpdater;
@@ -167,8 +168,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
         $currencyRepository->findOneByIdentifier('USD')->willReturn($usd);
         $channel->setCurrencies([$eur, $usd])->shouldBeCalled();
 
-        $channel->setLocale('en_US')->shouldBeCalled();
-        $channel->setLocale('fr_FR')->shouldBeCalled();
         $channel->getTranslation()->willReturn($channelTranslation);
 
         $maximumDiagonalAttribute->getMetricFamily()->willReturn('Length');
