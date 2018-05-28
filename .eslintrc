@@ -12,7 +12,8 @@
     "__moduleConfig": true,
     "__contextPlaceholder": true,
     "__contextPaths": true,
-    "process": true
+    "process": true,
+    "Promise"
   },
   "rules": {
     "space-infix-ops": 2,
