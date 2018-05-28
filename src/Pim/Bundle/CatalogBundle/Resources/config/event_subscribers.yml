@@ -170,3 +170,11 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.attribute_option_removal:
+        class: 'Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption\AttributeOptionRemovalSubscriber'
+        arguments:
+            - '@pim_catalog.doctrine.query.find_family_variants_identifiers_by_attribute_axes'
+            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
+        tags:
+            - { name: kernel.event_subscriber }
