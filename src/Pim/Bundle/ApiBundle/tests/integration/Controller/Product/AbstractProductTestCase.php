@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
+use PHPUnit\Framework\Assert;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -121,7 +122,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
             }
         }
 
-        $this->assertEquals($expected, $result);
+        Assert::assertEquals($expected, $result);
     }
 
     /**
@@ -137,6 +138,6 @@ abstract class AbstractProductTestCase extends ApiTestCase
         NormalizedProductCleaner::clean($expectedProduct);
         NormalizedProductCleaner::clean($standardizedProduct);
 
-        $this->assertSame($expectedProduct, $standardizedProduct);
+        Assert::assertSame($expectedProduct, $standardizedProduct);
     }
 }

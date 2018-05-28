@@ -90,7 +90,7 @@ class GetProductModelIntegration extends ApiTestCase
         $client->request('GET', 'api/rest/v1/product-models/model-biker-jacket-leather');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertResponse($response, $standardProductModel);
     }
 
@@ -101,7 +101,7 @@ class GetProductModelIntegration extends ApiTestCase
         $client->request('GET', 'api/rest/v1/product-models/model-bayqueur-jaquette');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        Assert::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
     protected function addAssociationsToProductModel($productModelCode)
@@ -154,6 +154,6 @@ class GetProductModelIntegration extends ApiTestCase
         NormalizedProductCleaner::clean($expected);
         NormalizedProductCleaner::clean($result);
 
-        $this->assertSame($expected, $result);
+        Assert::assertSame($expected, $result);
     }
 }
