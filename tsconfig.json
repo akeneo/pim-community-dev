@@ -30,7 +30,8 @@
     "node_modules",
     "vendor",
     "src",
-    "tests"
+    "tests",
+    "packages"
   ],
   "types": [
     "typePatches",
