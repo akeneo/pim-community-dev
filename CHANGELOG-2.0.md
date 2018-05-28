@@ -1,3 +1,7 @@
+# 2.0.x
+
+- PIM-7362: Fix Completeness computing from family keeping in account batch size to free the memory
+
 # 2.0.25 (2018-05-21)
 
 ## Bug fixes
@@ -6,6 +10,8 @@
 - PIM-7334: Fix identifier filter with special characters
 - PIM-7337: Fix completeness popup when no label on attribute
 - PIM-7351: Fix boolean values display in product PDF
+- PIM-7348: Prevent completeness calculation for products without a family
+- GITHUB-7619: Fix a bug in measure family converter thats break the API (Cheers [Jan Schneider](https://github.com/yunosh))
 
 # 2.0.24 (2018-05-16)
 
@@ -13,7 +19,6 @@
 
 - PIM-7335: Fix locale rendering on product form completeness panel
 - PIM-7323: Fix unique data synchronizer to handle value removal
-- PIM-7348: Prevent completeness calculation for products without a family
 
 # 2.0.23 (2018-04-30)
 
@@ -21,7 +26,6 @@
 
 - PIM-7325: Fix family grid search filter
 - PIM-7328: Fix a bug that prevents to index very large texts in Elasticsearch
-- GITHUB-7619: Fix a bug in measure family converter thats break the API (Cheers [Jan Schneider](https://github.com/yunosh))
 
 # 2.0.22 (2018-04-25)
 
