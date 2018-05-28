@@ -51,7 +51,7 @@ Feature: Quick export products according to the product grid context
     pump;blue;Pump;;;15;20;41;;;
     """
 
-  Scenario: Successfully quick export products from grid context as a XSLX file
+  Scenario: Successfully quick export products from grid context as a XLSX file
     Given I am on the published products grid
     And I display in the published products grid the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created at, Updated at, Description and Weight
     And I select rows boots, sneakers, pump
