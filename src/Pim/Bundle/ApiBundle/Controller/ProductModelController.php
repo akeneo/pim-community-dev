@@ -579,7 +579,7 @@ class ProductModelController
         ];
 
         $paginatedProductModels = $this->searchAfterPaginator->paginate(
-            $this->normalizer->normalize($productModels, 'standard', $normalizerOptions),
+            $this->normalizer->normalize($productModels, 'external_api', $normalizerOptions),
             $parameters,
             null
         );
