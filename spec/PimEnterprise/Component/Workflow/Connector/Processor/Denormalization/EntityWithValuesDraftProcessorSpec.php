@@ -16,7 +16,7 @@ use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryI
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ProductDraftProcessorSpec extends ObjectBehavior
+class EntityWithValuesDraftProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $repository,
@@ -33,7 +33,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             $validator,
             $productDraftBuilder,
             $productDraftApplier,
-            $productDraftRepo
+            $productDraftRepo,
+            'identifier'
         );
         $this->setStepExecution($stepExecution);
     }
@@ -87,7 +88,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         unset($values['identifier']);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Identifier is expected'))
+            ->shouldThrow(new \InvalidArgumentException('Column "identifier" is expected'))
             ->during(
                 'process',
                 [$values]
