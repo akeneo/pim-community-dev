@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7358: Cascade remove variant attribute sets when removing a family variant
+- PIM-7367: Fix association of a product and product model with the same identifier
 
 ## BC breaks
 
