@@ -152,5 +152,5 @@ extensions:
         config:
             buttonClass: 'AknDropdown-menuLink'
             route: pim_enrich_product_index
-            label: pim_common.products
+            label: pim_enrich.entity.product.plural_label
 
