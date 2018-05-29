@@ -9,6 +9,7 @@ pim_common:
     updated: Updated
     create: Create
     permissions: Permissions
+    properties: Properties
 
 pim_enrich:
     # Attribute

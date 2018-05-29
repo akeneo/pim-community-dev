@@ -16,7 +16,8 @@ define(
              * @return {String}
              */
             getLabel: function () {
-                const prefix = __('pim_import_export.entity.' + this.getFormData().type + '.uppercase_label');
+                // The key is for example 'pim_import_export.entity.import_profile.uppercase_label'
+                const prefix = __('pim_import_export.entity.' + this.getFormData().type + '_profile.uppercase_label');
 
                 return prefix + ' - ' + this.getFormData().label;
             }

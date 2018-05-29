@@ -43,7 +43,7 @@ define(
                 this.$el.html(this.template({
                     readOnly: this.readOnly,
                     value: this.getValue(),
-                    label: __('pim_enrich.entity.family.label')
+                    label: __('pim_enrich.entity.family.uppercase_label')
                 }));
 
                 var options = Select2Configurator.getConfig(this.getValue());

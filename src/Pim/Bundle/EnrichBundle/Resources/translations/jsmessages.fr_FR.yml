@@ -362,6 +362,49 @@ pim_enrich:
         update_failed: Le profil n'a pas pu être mis à jour.
         update_successful: Le profil a été mis à jour avec succès.
     attribute:
+      label: Attribut
+      uppercase_label: Attribut
+      plural_label: Attributs
+      property:
+        allowed_extensions: Extensions autorisées
+        auto_option_sorting: Trier automatiquement les options par ordre alphabétique
+        available_locales: Locales disponibles
+        date_max: Date maxi
+        date_min: Date mini
+        decimals_allowed: Valeurs décimales autorisées
+        default_metric_unit.label: Unité de mesure par défaut
+        group.label: Groupe d'attributs
+        is_locale_specific: Spécifique à une locale
+        localizable: Valeur par locale
+        max_characters: Nombre maximum de caractères
+        max_file_size: Taille de fichier maximale (MB)
+        metric_family.label: Type de mesure
+        minimum_input_length: Longueur minimale pour l’auto-complétion
+        negative_allowed: Valeurs négatives autorisées
+        number_max: Nombre max
+        number_min: Nombre min
+        reference_data_name.label: Type de données de référence
+        scopable: Valeur par canal
+        unique: Valeur unique
+        useable_as_grid_filter: Utilisable sur la grille
+        validation_regexp: Expression régulière
+        validation_rule: Règle de validation
+        wysiwyg_enabled: Éditeur de texte enrichi activé
+        type:
+          pim_catalog_identifier: Identifiant
+          pim_catalog_text: Texte
+          pim_catalog_textarea: Zone de texte
+          pim_catalog_number: Nombre
+          pim_catalog_price_collection: Prix
+          pim_catalog_multiselect: Liste à choix multiples
+          pim_catalog_simpleselect: Liste à choix unique
+          pim_catalog_file: Fichier
+          pim_catalog_image: Image
+          pim_catalog_boolean: "Oui / Non"
+          pim_catalog_date: Date
+          pim_catalog_metric: Unité de mesure
+          pim_reference_data_simpleselect: Liste à choix unique de données référentielles
+          pim_reference_data_multiselect: Liste à choix multiples de données référentielles
       info:
         deletion_successful: Attribut supprimé avec succès.
         deletion_failed: L'attribut n'a pas pu être supprimé.
@@ -371,21 +414,6 @@ pim_enrich:
         create_failed: L'attribut n'a pas pu être créé.
         field_not_ready: "L'attribut ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
       scopable: Décliné par canal
-      type:
-        pim_catalog_identifier: Identifiant
-        pim_catalog_text: Texte
-        pim_catalog_textarea: Zone de texte
-        pim_catalog_number: Nombre
-        pim_catalog_price_collection: Prix
-        pim_catalog_multiselect: Liste à choix multiples
-        pim_catalog_simpleselect: Liste à choix unique
-        pim_catalog_file: Fichier
-        pim_catalog_image: Image
-        pim_catalog_boolean: "Oui / Non"
-        pim_catalog_date: Date
-        pim_catalog_metric: Unité de mesure
-        pim_reference_data_simpleselect: Liste à choix unique de données référentielles
-        pim_reference_data_multiselect: Liste à choix multiples de données référentielles
       validation_rule:
         email: E-mail
         regexp: Expression régulière
