@@ -11,6 +11,7 @@ class PartialUpdateListAssociationTypeIntegration extends ApiTestCase
 {
     public function testCreateAndUpdateAListOfAssociationTypes()
     {
+        Assert::assertTrue(false);
         $data =
 <<<JSON
 {"code": "X_SELL"}
