@@ -10,11 +10,13 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 
 final class InMemoryCurrencyRepository implements
     SaverInterface,
     IdentifiableObjectRepositoryInterface,
-    ObjectRepository
+    ObjectRepository,
+    CurrencyRepositoryInterface
 {
     /** @var Collection */
     private $currencies;
@@ -99,6 +101,22 @@ final class InMemoryCurrencyRepository implements
      * {@inheritdoc}
      */
     public function getClassName()
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActivatedCurrencies()
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActivatedCurrencyCodes()
     {
         throw new NotImplementedException(__METHOD__);
     }

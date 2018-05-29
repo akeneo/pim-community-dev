@@ -54,4 +54,34 @@ class InMemoryGroupRepositorySpec extends ObjectBehavior
         $this->getIdentifierProperties()->shouldReturn(['code']);
     }
 
+    function it_finds_all_groups()
+    {
+        $group = new Group();
+        $group->setCode('group_code');
+        $this->save($group);
+
+        $group2 = new Group();
+        $group2->setCode('group_code_2');
+        $this->save($group2);
+
+        $this->findAll()->shouldReturn(['group_code' => $group, 'group_code_2' => $group2]);
+    }
+
+    function it_finds_attribute_group_by_criteria()
+    {
+        $group = new Group();
+        $group->setCode('group');
+        $this->save($group);
+
+        $this->findBy(['code' => 'group'])->shouldReturn([$group]);
+    }
+
+    function it_returns_an_empty_array_if_criteria_find_nothing()
+    {
+        $group = new Group();
+        $group->setCode('group');
+        $this->save($group);
+
+        $this->findBy(['code' => 'group1'])->shouldReturn([]);
+    }
 }

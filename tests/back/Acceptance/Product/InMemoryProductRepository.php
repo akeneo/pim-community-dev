@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Product;
 
+use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
@@ -12,7 +13,11 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
-class InMemoryProductRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, ProductRepositoryInterface
+class InMemoryProductRepository implements
+    IdentifiableObjectRepositoryInterface,
+    SaverInterface,
+    ProductRepositoryInterface,
+    CursorableRepositoryInterface
 {
     /** @var ArrayCollection */
     private $products;
@@ -92,6 +97,11 @@ class InMemoryProductRepository implements IdentifiableObjectRepositoryInterface
     }
 
     public function searchAfter(?ProductInterface $product, int $limit): array
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    public function getItemsFromIdentifiers(array $identifiers)
     {
         throw new NotImplementedException(__METHOD__);
     }
