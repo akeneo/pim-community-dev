@@ -16,6 +16,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\EntityWithValuesDraftRepository;
@@ -55,13 +56,17 @@ class ProductModelDraftController
     /** @var NormalizerInterface */
     private $normalizer;
 
+    /** @var UserContext */
+    private $userContext;
+
     public function __construct(
         ProductModelRepository $productModelRepository,
         TokenStorageInterface $tokenStorage,
         EntityWithValuesDraftRepository $entityWithValuesDraftRepo,
         AuthorizationCheckerInterface $authorizationChecker,
         EntityWithValuesDraftManager $manager,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        UserContext $userContext
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->tokenStorage = $tokenStorage;
@@ -69,6 +74,7 @@ class ProductModelDraftController
         $this->authorizationChecker = $authorizationChecker;
         $this->manager = $manager;
         $this->normalizer = $normalizer;
+        $this->userContext = $userContext;
     }
 
     public function readyAction(Request $request, $productModelId)

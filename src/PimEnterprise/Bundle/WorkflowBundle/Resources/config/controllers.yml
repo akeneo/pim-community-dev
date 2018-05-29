@@ -79,3 +79,4 @@ services:
             - '@security.authorization_checker'
             - '@pimee_workflow.manager.product_model_draft'
             - '@pim_internal_api_serializer'
+            - '@pim_user.context.user'
