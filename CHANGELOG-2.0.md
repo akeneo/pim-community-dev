@@ -1,6 +1,7 @@
 # 2.0.x
 
 - PIM-7362: Fix Completeness computing from family keeping in account batch size to free the memory
+- PIM-7349: Fix empty family when using quick export of products
 
 # 2.0.25 (2018-05-21)
 
