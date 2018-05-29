@@ -1,0 +1,6 @@
+pim_enriched_entity:
+    enriched_entity:
+        title: Entities
+        index:
+            grid:
+                count: "{{ count }} results"
