@@ -24,7 +24,7 @@ extensions:
         parent: pim-user-role-index
         targetZone: title
         config:
-            title: pim_enrich.entity.user_role.page_title.index
+            title: pim_user_management.entity.role.page_title.index
 
     pim-user-role-index-breadcrumbs:
         module: pim/common/breadcrumbs

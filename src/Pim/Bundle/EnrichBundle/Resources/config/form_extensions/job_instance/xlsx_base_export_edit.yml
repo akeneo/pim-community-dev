@@ -94,8 +94,8 @@ extensions:
         config:
             fieldCode: configuration.filePath
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
+            label: pim_import_export.form.job_instance.tab.properties.file_path.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-xlsx-base-export-edit-properties-lines-per-file:
         module: pim/job/common/edit/field/text
@@ -105,8 +105,8 @@ extensions:
         config:
             fieldCode: configuration.linesPerFile
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.lines_per_file.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.lines_per_file.help
+            label: pim_import_export.form.job_instance.tab.properties.lines_per_file.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.lines_per_file.help
 
     pim-job-instance-xlsx-base-export-edit-properties-with-header:
         module: pim/job/common/edit/field/switch
@@ -116,8 +116,8 @@ extensions:
         config:
             fieldCode: configuration.withHeader
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.with_header.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
+            label: pim_import_export.form.job_instance.tab.properties.with_header.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_header.help
 
     pim-job-instance-xlsx-base-export-edit-label:
         module: pim/job/common/edit/label

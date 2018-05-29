@@ -93,8 +93,8 @@ extensions:
         config:
             fieldCode: configuration.filePath
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
+            label: pim_import_export.form.job_instance.tab.properties.file_path.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-csv-product-model-import-edit-properties-file-upload:
         module: pim/job/common/edit/field/switch
@@ -104,8 +104,8 @@ extensions:
         config:
             fieldCode: configuration.uploadAllowed
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.upload_allowed.help
+            label: pim_import_export.form.job_instance.tab.properties.upload_allowed.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.upload_allowed.help
 
     pim-job-instance-csv-product-model-import-edit-properties-delimiter:
         module: pim/job/common/edit/field/text
@@ -115,8 +115,8 @@ extensions:
         config:
             fieldCode: configuration.delimiter
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.delimiter.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.delimiter.help
+            label: pim_import_export.form.job_instance.tab.properties.delimiter.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.delimiter.help
 
     pim-job-instance-csv-product-model-import-edit-properties-enclosure:
         module: pim/job/common/edit/field/text
@@ -126,8 +126,8 @@ extensions:
         config:
             fieldCode: configuration.enclosure
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.enclosure.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.enclosure.help
+            label: pim_import_export.form.job_instance.tab.properties.enclosure.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.enclosure.help
 
     pim-job-instance-csv-product-model-import-edit-properties-decimal-separator:
         module: pim/job/common/edit/field/decimal-separator
@@ -137,8 +137,8 @@ extensions:
         config:
             fieldCode: configuration.decimalSeparator
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.decimal_separator.help
+            label: pim_import_export.form.job_instance.tab.properties.decimal_separator.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.decimal_separator.help
 
     pim-job-instance-csv-product-model-import-edit-properties-date-format:
         module: pim/job/product/edit/field/date-format
@@ -148,8 +148,8 @@ extensions:
         config:
             fieldCode: configuration.dateFormat
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.date_format.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.date_format.help
+            label: pim_import_export.form.job_instance.tab.properties.date_format.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.date_format.help
 
     pim-job-instance-csv-product-model-import-edit-properties-enabled:
         module: pim/job/common/edit/field/switch
@@ -159,8 +159,8 @@ extensions:
         config:
             fieldCode: configuration.enabled
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.enabled.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.enabled.help
+            label: pim_import_export.form.job_instance.tab.properties.enabled.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.enabled.help
 
     pim-job-instance-csv-product-model-import-edit-properties-categories-column:
         module: pim/job/common/edit/field/text
@@ -170,8 +170,8 @@ extensions:
         config:
             fieldCode: configuration.categoriesColumn
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.categories_column.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.categories_column.help
+            label: pim_import_export.form.job_instance.tab.properties.categories_column.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.categories_column.help
 
     pim-job-instance-csv-product-model-import-edit-properties-family-variant-column:
         module: pim/job/common/edit/field/text
@@ -181,8 +181,8 @@ extensions:
         config:
             fieldCode: configuration.familyVariantColumn
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.family_variant_column.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.family_variant_column.help
+            label: pim_import_export.form.job_instance.tab.properties.family_variant_column.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.family_variant_column.help
 
     pim-job-instance-csv-product-model-import-edit-properties-enabled-comparison:
         module: pim/job/common/edit/field/switch
@@ -192,8 +192,8 @@ extensions:
         config:
             fieldCode: configuration.enabledComparison
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.enabled_comparison.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.enabled_comparison.help
+            label: pim_import_export.form.job_instance.tab.properties.enabled_comparison.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.enabled_comparison.help
 
     pim-job-instance-csv-product-model-import-edit-properties-real-time-versioning:
         module: pim/job/common/edit/field/switch
@@ -203,8 +203,8 @@ extensions:
         config:
             fieldCode: configuration.realTimeVersioning
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.real_time_versioning.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.real_time_versioning.help
+            label: pim_import_export.form.job_instance.tab.properties.real_time_versioning.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.real_time_versioning.help
 
     pim-job-instance-csv-product-model-import-edit-label:
         module: pim/job/common/edit/label

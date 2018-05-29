@@ -1,7 +1,7 @@
 pim_title:
-    pim_user_index:                  Users
-    pim_user_role_index:             Roles
-    pim_user_group_index:            User groups
+    pim_user_index: Users
+    pim_user_role_index: Roles
+    pim_user_group_index: User groups
     oro_config_configuration_system: Configuration
 
     pim_user_view: 'User {{ username }} | View'
@@ -23,15 +23,14 @@ pim_title:
     pim_user_group_create: 'Groups | Create'
     pim_user_group_update: 'Group {{ group }} | Edit'
 
-# TODO Move this
-pim_enrich:
+pim_user_management:
     entity:
         user:
             page_title:
                 index: "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} users"
-        user_role:
+        role:
             page_title:
                 index: "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
-        user_group:
+        group:
             page_title:
                 index: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"

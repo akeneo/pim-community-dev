@@ -94,8 +94,8 @@ extensions:
         config:
             fieldCode: configuration.filePath
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
+            label: pim_import_export.form.job_instance.tab.properties.file_path.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-csv-base-export-edit-properties-delimiter:
         module: pim/job/common/edit/field/text
@@ -105,8 +105,8 @@ extensions:
         config:
             fieldCode: configuration.delimiter
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.delimiter.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.delimiter.help
+            label: pim_import_export.form.job_instance.tab.properties.delimiter.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.delimiter.help
 
     pim-job-instance-csv-base-export-edit-properties-enclosure:
         module: pim/job/common/edit/field/text
@@ -116,8 +116,8 @@ extensions:
         config:
             fieldCode: configuration.enclosure
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.enclosure.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.enclosure.help
+            label: pim_import_export.form.job_instance.tab.properties.enclosure.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.enclosure.help
 
     pim-job-instance-csv-base-export-edit-properties-with-header:
         module: pim/job/common/edit/field/switch
@@ -127,8 +127,8 @@ extensions:
         config:
             fieldCode: configuration.withHeader
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.with_header.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
+            label: pim_import_export.form.job_instance.tab.properties.with_header.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_header.help
 
     pim-job-instance-csv-base-export-edit-label:
         module: pim/job/common/edit/label

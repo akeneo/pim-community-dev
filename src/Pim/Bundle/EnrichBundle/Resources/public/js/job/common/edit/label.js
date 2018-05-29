@@ -17,7 +17,7 @@ define(
              * @return {String}
              */
             getLabel: function () {
-                var prefix = __('pim_enrich.form.job_instance.title.' + this.getFormData().type);
+                var prefix = __('pim_import_export.form.job_instance.title.' + this.getFormData().type);
 
                 return prefix + ' - ' + this.getFormData().label;
             }

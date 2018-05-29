@@ -94,8 +94,8 @@ extensions:
         config:
             fieldCode: configuration.filePath
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
+            label: pim_import_export.form.job_instance.tab.properties.file_path.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-yml-base-export-edit-label:
         module: pim/job/common/edit/label
