@@ -92,6 +92,7 @@ class ProductModelController
      * @param EntityWithValuesFilter            $emptyValuesFilter
      * @param ConverterInterface                $productValueConverter
      * @param ObjectUpdaterInterface            $productModelUpdater
+     * @param RemoverInterface                  $productModelRemover
      * @param ValidatorInterface                $validator
      * @param SaverInterface                    $productModelSaver
      * @param NormalizerInterface               $constraintViolationNormalizer
