@@ -25,7 +25,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Gedmo\Exception\UnexpectedValueException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\Asset\Component\Model\CategoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -236,11 +235,7 @@ class AssetCategoryController
         $this->updateCategory($assetCategory, $data, 'patch_asset_categories__code_');
         $this->validateCategory($assetCategory, $data);
 
-        try {
-            $this->saver->save($assetCategory);
-        } catch (UnexpectedValueException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        }
+        $this->saver->save($assetCategory);
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
         $response = $this->getResponse($assetCategory, $status);

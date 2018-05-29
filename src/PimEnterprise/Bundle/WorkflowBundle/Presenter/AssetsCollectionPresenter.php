@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Asset\Bundle\Workflow\Presenter;
+namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Bundle\Controller\ExternalApi;
 
+use Akeneo\Asset\Component\Model\LocaleCode;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
@@ -24,7 +25,6 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\ApiBundle\Controller\FileRemovalException;
 use Akeneo\Asset\Component\Factory\ReferenceFactory;
 use Akeneo\Asset\Component\Factory\VariationFactory;
 use Akeneo\Asset\Component\FileStorage;
@@ -49,8 +49,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AssetVariationController
 {
-    public const NON_LOCALIZABLE_VARIATION = 'no-locale';
-
     /** @var IdentifiableObjectRepositoryInterface */
     protected $assetRepository;
 
@@ -150,9 +148,10 @@ class AssetVariationController
     public function downloadAction(string $code, string $channelCode, string $localeCode): Response
     {
         $variation = $this->getVariation($code, $channelCode, $localeCode);
+        $localeCode = new LocaleCode($localeCode);
 
         if (null === $variation || null === $variation->getFileInfo()) {
-            $localizableMessage = self::NON_LOCALIZABLE_VARIATION !== $localeCode ? sprintf(' and the locale "%s"', $localeCode) : '';
+            $localizableMessage = $localeCode->hasValidCode() ? sprintf(' and the locale "%s"', $localeCode) : '';
             $notFoundMessage = sprintf(
                 'Variation file for the asset "%s" and the channel "%s"%s does not exist.',
                 $code,
@@ -178,9 +177,7 @@ class AssetVariationController
         } catch (FileTransferException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (FileNotFoundException $e) {
-            $localizableMessage = static::NON_LOCALIZABLE_VARIATION !== $localeCode
-                ? sprintf(' and the locale "%s"', $localeCode)
-                : '';
+            $localizableMessage = $localeCode->hasValidCode() ? sprintf(' and the locale "%s"', $localeCode) : '';
             $notFoundMessage = sprintf(
                 'Variation file for the asset "%s" and the channel "%s"%s does not exist.',
                 $code,
@@ -207,9 +204,10 @@ class AssetVariationController
     public function getAction(string $code, string $channelCode, string $localeCode): Response
     {
         $variation = $this->getVariation($code, $channelCode, $localeCode);
+        $localeCode = new LocaleCode($localeCode);
 
         if (null === $variation || null === $variation->getFileInfo()) {
-            $localizableMessage = self::NON_LOCALIZABLE_VARIATION !== $localeCode ? sprintf(' and the locale "%s"', $localeCode) : '';
+            $localizableMessage = $localeCode->hasValidCode() ? sprintf(' and the locale "%s"', $localeCode) : '';
             $notFoundMessage = sprintf(
                 'Variation file for the asset "%s" and the channel "%s"%s does not exist.',
                 $code,
@@ -301,7 +299,9 @@ class AssetVariationController
      */
     protected function getLocale(string $localeCode): ?LocaleInterface
     {
-        if (static::NON_LOCALIZABLE_VARIATION === $localeCode) {
+        $localeCode = new LocaleCode($localeCode);
+
+        if ($localeCode->hasValidCode()) {
             return null;
         }
 
@@ -337,7 +337,7 @@ class AssetVariationController
             throw new UnprocessableEntityHttpException(sprintf(
                 'The asset "%s" is localizable, you must provide an existing locale code. "%s" is only allowed when the asset is not localizable.',
                 $code,
-                self::NON_LOCALIZABLE_VARIATION
+                (string) new LocaleCode($localeCode)
             ));
         }
 
@@ -345,7 +345,7 @@ class AssetVariationController
             throw new UnprocessableEntityHttpException(sprintf(
                 'The asset "%s" is not localizable, you must provide the string "%s" as a locale.',
                 $asset->getCode(),
-                self::NON_LOCALIZABLE_VARIATION
+                (string) new LocaleCode($localeCode)
             ));
         }
 
@@ -438,7 +438,7 @@ class AssetVariationController
             throw new UnprocessableEntityHttpException(sprintf(
                 'The asset "%s" is localizable, you must provide an existing locale code. "%s" is only allowed when the asset is not localizable.',
                 $code,
-                self::NON_LOCALIZABLE_VARIATION
+                (string) new LocaleCode($localeCode)
             ));
         }
 
@@ -446,7 +446,7 @@ class AssetVariationController
             throw new UnprocessableEntityHttpException(sprintf(
                 'The asset "%s" is not localizable, you must provide the string "%s" as a locale.',
                 $asset->getCode(),
-                self::NON_LOCALIZABLE_VARIATION
+                (string) new LocaleCode($localeCode)
             ));
         }
 

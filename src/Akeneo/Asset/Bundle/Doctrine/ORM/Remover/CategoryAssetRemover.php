@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Asset\Component\Remover;
+namespace Akeneo\Asset\Bundle\Doctrine\ORM\Remover;
 
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;

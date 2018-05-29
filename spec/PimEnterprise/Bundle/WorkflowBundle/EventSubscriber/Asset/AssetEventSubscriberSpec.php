@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Asset\Bundle\EventSubscriber\ORM;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Asset;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Asset\Bundle\EventSubscriber\ORM;
+namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Asset;
 
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Query\Filter\Operators;

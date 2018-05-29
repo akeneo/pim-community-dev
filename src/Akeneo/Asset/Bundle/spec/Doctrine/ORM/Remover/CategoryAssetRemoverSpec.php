@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Asset\Component\Remover;
+namespace spec\Akeneo\Asset\Bundle\Doctrine\Remover;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;

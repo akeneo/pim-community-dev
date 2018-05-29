@@ -11,7 +11,6 @@
 
 namespace Akeneo\Asset\Component\Completeness;
 
-use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface as BaseCompletenessRemoverInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
 
 /**
@@ -24,7 +23,7 @@ use Akeneo\Asset\Component\Model\AssetInterface;
 *
 * @author Julien Janvier (julien.janvier@akeneo.com)
 */
-interface CompletenessRemoverInterface extends BaseCompletenessRemoverInterface
+interface CompletenessRemoverInterface
 {
     /**
      * Remove completenesses for all products linked to an asset

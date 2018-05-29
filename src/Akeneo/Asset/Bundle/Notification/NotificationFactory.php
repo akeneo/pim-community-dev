@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Asset\Component\Factory;
+namespace Akeneo\Asset\Bundle\Notification;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Doctrine\Common\Util\ClassUtils;

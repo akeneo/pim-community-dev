@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.remover.category_asset.class: Akeneo\Asset\Component\Remover\CategoryAssetRemover
+    pimee_product_asset.remover.category_asset.class: Akeneo\Asset\Bundle\Doctrine\ORM\Remover\CategoryAssetRemover
     pimee_product_asset.remover.completeness.class: Akeneo\Asset\Bundle\Doctrine\ORM\CompletenessRemover
 
 services:
