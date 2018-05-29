@@ -75,7 +75,13 @@
 - Move namespace `Akeneo\Bundle\RuleEngineBundle` to `Akeneo\Bundle\Tool\RuleEngineBundle`
 - Move namespace `Akeneo\Component\FileMetadata` to `Akeneo\Tool\Component\FileMetadata`
 - Move namespace `Akeneo\Component\FileTransformer` to `Akeneo\Tool\Component\FileTransformer`
-- Move namespace `Akeneo\Component\RuleEngine` to `Akeneo\Tool\Component\RuleEngine`
+- Move namespace `PimEnterprise\Bundle\ProductAssetBundle` to `Akeneo\Asset\Bundle`
+- Move namespace `PimEnterprise\Component\ProductAsset` to `Akeneo\Asset\Component`
+- Move class `PimEnterprise\Component\ProductAsset\Remover\CategoryAssetRemover` to `Akeneo\Asset\Bundle\Doctrine\ORM\Remover\CategoryAssetRemover`
+- Move class `PimEnterprise\Component\ProductAsset\Factory\NotificationFactory` to `Akeneo\Asset\Bundle\Notification\NotificationFactory`
+- Move class `PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM\AssetEventSubscriber` to `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Asset\AssetEventSubscriber`
+- Move class `PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter\AssetsCollectionPresenter` to `PimEnterprise\Bundle\WorkflowBundle\Presenter\AssetsCollectionPresenter`
+- Remove class `Akeneo\Asset\Bundle\TwigExtension\ImageExtension`
 
 ## Security
 

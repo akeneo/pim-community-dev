@@ -60,4 +60,10 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Bundle\\RuleEngineBundl
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\FileMetadata/Akeneo\\Tool\\Component\\FileMetadata/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\FileTransformer/Akeneo\\Tool\\Component\\FileTransformer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Component\\RuleEngine/Akeneo\\Tool\\Component\\RuleEngine/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\Bundle\ProductAssetBundle/Akeneo\Asset\Bundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\Component\ProductAsset/Akeneo\Asset\Component/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\Component\ProductAsset\Remover\CategoryAssetRemover/Akeneo\Asset\Bundle\Doctrine\ORM\Remover\CategoryAssetRemover/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\Component\ProductAsset\Factory\NotificationFactory/Akeneo\Asset\Bundle\Notification\NotificationFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM\AssetEventSubscriber/PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Asset\AssetEventSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter\AssetsCollectionPresenter/PimEnterprise\Bundle\WorkflowBundle\Presenter\AssetsCollectionPresenter/g'
 ```
