@@ -180,7 +180,7 @@ module.exports = {
                     }
                 ],
                 include: /(web\/bundles)/,
-                exclude: /lib|node_modules|vendor|tests|src/
+                exclude: /lib|node_modules|vendor|tests|src|packages/
             }
         ]
     },

@@ -89,7 +89,7 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
         }
 
         if (is_dir($directory)) {
-            $files = $this->listConfigFilesInDirectory($directory);
+            $files = array_merge($files, $this->listConfigFilesInDirectory($directory));
         }
 
         return $files;
