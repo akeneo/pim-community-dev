@@ -1,3 +1,9 @@
+# 2.0.x 
+
+## Bug fixes
+
+- PIM-7355: Fix imagick launcher options order
+
 # 2.0.25 (2018-05-21)
 
 ## Bug fixes

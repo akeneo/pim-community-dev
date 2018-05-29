@@ -36,20 +36,27 @@ class ImageMagickLauncher
     }
 
     /**
-     * @param string $command
+     * Generally speaking a setting should come before an image filename and an image operator after the image filename.
+     *
+     * @link https://www.imagemagick.org/discourse-server/viewtopic.php?t=6829
+     * @link http://magick.imagemagick.org/script/command-line-processing.php#setting
+     *
+     * @param string $outputOptions
      * @param string $pathName
+     * @param string $inputOptions
      *
      * @throws GenericTransformationException
      */
-    public function convert($command, $pathName)
+    public function convert($outputOptions, $pathName, $inputOptions = '')
     {
         $output = [];
         $status = null;
         $cmd = sprintf(
-            '%s %s %s %s',
+            '%s %s %s %s %s',
             $this->getConvertBinaryPath(),
+            $inputOptions,
             escapeshellarg($pathName),
-            $command,
+            $outputOptions,
             escapeshellarg($pathName)
         );
 

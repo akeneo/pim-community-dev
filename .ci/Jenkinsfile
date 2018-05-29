@@ -1,5 +1,4 @@
 #!groovy
-
 String[] features = ["features", "vendor/akeneo/pim-community-dev/features"]
 String ceBranch = "2.2"
 String ceOwner = "akeneo"
@@ -81,14 +80,16 @@ stage("Test") {
             "integration": {queue(
                 condition: launchIntegrationTests.equals("yes"),
                 container: tag,
+                containers: pimContainers(image: tag, selenium: false),
                 verbose: (verboseOutputs == "yes"),
                 fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/vendor/akeneo/pim-community-dev/src /var/www/pim/vendor/akeneo/pim-community-dev/tests /var/www/pim/src /var/www/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
             )},
             "behat": {queue(
                 condition: launchEndToEndTests.equals("yes"),
                 container: tag,
+                containers: pimContainers(image: tag),
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimBehatFetcher(features: features)}
+                fetcher: {return pimBehatFetcher(hasToInstall: true, script: "cd /var/www/pim/ && vendor/bin/behat -p default --list-scenarios", features: features)}
             )}
         )
     } finally {
