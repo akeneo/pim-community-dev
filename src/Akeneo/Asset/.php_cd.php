@@ -18,6 +18,9 @@ $rules = [
         'Akeneo\Asset',
         'Pim\Component\ReferenceData\ConfigurationRegistryInterface', // Asset are reference data
         'Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface', // Asset need to be versioned
+        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface',
         'Pim\Bundle\NotificationBundle', // TODO: this should be moved in Akeneo\Tool
         'Pim\Component\Connector', // TODO: Generic classes/interfaces should be moved to Akeneo/Tool
         'Pim\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
@@ -28,10 +31,6 @@ $rules = [
         'Pim\Component\Catalog\Model\ProductInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
-        // TODO: we should not repository from the other BC
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        'Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface',
         // TODO: Do we need these dependencies?
         'Symfony\Bundle\FrameworkBundle',
         'Sensio\Bundle\FrameworkExtraBundle',
