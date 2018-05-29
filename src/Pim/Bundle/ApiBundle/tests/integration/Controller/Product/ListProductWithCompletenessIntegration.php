@@ -6,6 +6,7 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
+use PHPUnit\Framework\Assert;
 
 /**
  * @group ce
@@ -157,6 +158,7 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
 }
 JSON;
 
+        Assert::assertTrue(false);
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
