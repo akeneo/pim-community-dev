@@ -3,6 +3,7 @@ String[] editions = ["ce"]
 String[] features = ["features"]
 String launchUnitTests = "yes"
 String launchIntegrationTests = "yes"
+String launchBackAcceptanceTests = "yes"
 String launchEndToEndTests = "yes"
 String verboseOutputs = "yes"
 String slackChannel = ""
@@ -15,6 +16,7 @@ stage("Build") {
             userInput = input(message: 'Launch tests?', parameters: [
                 choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
                 choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
+                choice(choices: 'yes\nno', description: 'Run back acceptance tests', name: 'launchBackAcceptanceTests'),
                 choice(choices: 'yes\nno', description: 'Run end to end tests (Behat)', name: 'launchEndToEndTests'),
                 string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'End to end tests to run', name: 'features'),
                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
@@ -26,6 +28,7 @@ stage("Build") {
             features = userInput['features'].tokenize(',')
             launchUnitTests = userInput['launchUnitTests']
             launchIntegrationTests = userInput['launchIntegrationTests']
+            launchBackAcceptanceTests = userInput['launchBackAcceptanceTests']
             launchEndToEndTests = userInput['launchEndToEndTests']
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
@@ -112,19 +115,24 @@ stage("Test") {
                 containers: pimContainers(image: "${tag}-ee", selenium: false),
                 fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/src /var/www/pim/tests /var/www/pim/vendor/akeneo/pim-community-dev/src /var/www/pim/vendor/akeneo/pim-community-dev/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
             )},
-            "behat-ce": {queue(
+            "back-acceptance-ce": {testif(
+                condition: launchBackAcceptanceTests.equals("yes"),
+                container: tag,
+                script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
+            )},
+            "legacy-end-to-end-behat-ce": {queue(
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
                 containers: pimContainers(image: tag),
-                fetcher: {return pimBehatFetcher(hasToInstall: true, script: "cd /var/www/pim/ && vendor/bin/behat -p default --list-scenarios", features: features)}
+                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: features)}
             )},
-            "behat-ee": {queue(
+            "legacy-end-to-end-behat-ee": {queue(
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
                 containers: pimContainers(image: "${tag}-ee"),
-                fetcher: {return pimBehatFetcher(hasToInstall: true, script: "cd /var/www/pim/ && vendor/bin/behat -p default --list-scenarios", features: features)}
+                fetcher: {return pimBehatFetcher(hasToInstall: true, features: features)}
             )}
         )
     } finally {
