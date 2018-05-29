@@ -373,10 +373,7 @@ class ProductModelController
      */
     private function normalizeProductModel(ProductModelInterface $productModel): array
     {
-        $normalizationContext = $this->userContext->toArray() + [
-                'filter_types'               => ['pim.internal_api.product_value.view'],
-                'disable_grouping_separator' => true
-            ];
+        $normalizationContext = $this->userContext->toArray() + ['filter_types' => []];
 
         return $this->normalizer->normalize(
             $productModel,
