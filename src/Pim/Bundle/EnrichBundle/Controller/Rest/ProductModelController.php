@@ -145,15 +145,7 @@ class ProductModelController
      */
     public function getAction(int $id): JsonResponse
     {
-        $productModel = $this->productModelRepository->find($id);
-        $cantView = $this->objectFilter->filterObject($productModel, 'pim.internal_api.product.view');
-
-        if (null === $productModel || true === $cantView) {
-            throw new NotFoundHttpException(
-                sprintf('Product model with id %s could not be found.', $id)
-            );
-        }
-
+        $productModel = $this->findProductModelOr404($id);
         $normalizedProductModel = $this->normalizeProductModel($productModel);
 
         return new JsonResponse($normalizedProductModel);
@@ -235,15 +227,9 @@ class ProductModelController
         }
 
         $this->productModelSaver->save($productModel);
+        $normalizedProductModel = $this->normalizeProductModel($productModel);
 
-        $normalizationContext = $this->userContext->toArray() + ['disable_grouping_separator' => true];
-        $normalizedProduct = $this->normalizer->normalize(
-            $productModel,
-            'internal_api',
-            $normalizationContext
-        );
-
-        return new JsonResponse($normalizedProduct);
+        return new JsonResponse($normalizedProductModel);
     }
 
     /**
@@ -260,7 +246,7 @@ class ProductModelController
             return new RedirectResponse('/');
         }
 
-        $productModel = $this->productModelRepository->find($id);
+        $productModel = $this->findProductModelOr404($id);
         $data = json_decode($request->getContent(), true);
 
         $this->updateProductModel($productModel, $data);
@@ -270,15 +256,9 @@ class ProductModelController
 
         if (0 === $violations->count()) {
             $this->productModelSaver->save($productModel);
+            $normalizedProductModel = $this->normalizeProductModel($productModel);
 
-            $normalizationContext = $this->userContext->toArray() + ['disable_grouping_separator' => true];
-            $normalizedProduct = $this->normalizer->normalize(
-                $productModel,
-                'internal_api',
-                $normalizationContext
-            );
-
-            return new JsonResponse($normalizedProduct);
+            return new JsonResponse($normalizedProductModel);
         }
 
         $normalizedViolations = [];
@@ -302,12 +282,7 @@ class ProductModelController
      */
     public function childrenAction(Request $request): JsonResponse
     {
-        $parentId = $request->query->get('id');
-        $parent = $this->productModelRepository->find($parentId);
-        if (null === $parent) {
-            throw new NotFoundHttpException(sprintf('ProductModel with id "%s" not found', $parentId));
-        }
-
+        $parent = $this->findProductModelOr404($request->get('id'));
         $children = $this->productModelRepository->findChildrenProductModels($parent);
         if (empty($children)) {
             $children = $this->productModelRepository->findChildrenProducts($parent);
