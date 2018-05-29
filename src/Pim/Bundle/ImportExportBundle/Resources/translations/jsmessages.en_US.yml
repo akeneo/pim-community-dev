@@ -18,19 +18,21 @@ pim_connector:
 pim_import_export:
     entity:
         job_instance:
+            label: job profile
             flash:
                 update:
                     success: The job profile has been successfully updated.
                     fail: The job profile could not be updated.
                 delete:
                     success: Job instance successfully removed
-            title: job profile
 
         import_profile:
+            uppercase_label: Import profile
             page_title:
                 index: "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} import profiles"
 
         export_profile:
+            uppercase_label: Export profile
             page_title:
                 index: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} export profiles"
 
@@ -56,9 +58,6 @@ pim_import_export:
             fail:
                 launch: Failed to launch the job profile. Make sure it is valid and that you have right to launch it.
                 save: Failed to save the job profile. Make sure that you have right to edit it.
-            title:
-                import: Import profile
-                export: Export profile
             button:
                 export.title: Export now
                 import.launch: Import now
@@ -131,7 +130,6 @@ confirmation:
         export_profile: Are you sure you want to delete this export profile?
         job_instance: Are you sure you want to delete this job instance?
 
-# Page titles
 pim_title:
     pim_importexport_export_profile_index:   Export profiles management
     pim_importexport_export_profile_edit:    Export profile {{ job.label }} | Edit

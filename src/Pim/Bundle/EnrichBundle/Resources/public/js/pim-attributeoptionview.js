@@ -137,7 +137,7 @@ define(
                     function () {
                         this.parent.deleteItem(this);
                     }.bind(this),
-                    __('pim_common.attributes')
+                    __('pim_enrich.entity.attribute.plural_label')
                 );
             },
             updateItem: function () {

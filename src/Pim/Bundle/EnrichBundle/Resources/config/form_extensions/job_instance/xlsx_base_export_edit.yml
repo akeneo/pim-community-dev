@@ -172,7 +172,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_import_export.entity.job_instance.title
+            entity: pim_import_export.entity.job_instance.label
 
     pim-job-instance-xlsx-base-export-edit-validation:
         module: pim/job/common/edit/validation

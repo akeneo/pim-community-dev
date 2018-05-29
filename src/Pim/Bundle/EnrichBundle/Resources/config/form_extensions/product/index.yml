@@ -63,7 +63,7 @@ extensions:
             choices:
                 create-product:
                     form: pim-product-create-modal
-                    title: pim_enrich.entity.product.create_popin.type
+                    title: pim_enrich.entity.product.uppercase_label
                     icon: icon-product
                     aclResourceId: pim_enrich_product_create
                 create-product-model:

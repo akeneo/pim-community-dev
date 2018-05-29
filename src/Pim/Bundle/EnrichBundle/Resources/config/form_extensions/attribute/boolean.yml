@@ -11,7 +11,7 @@ extensions:
         position: 70
         config:
             fieldName: useable_as_grid_filter
-            label: pim_enrich.form.attribute.tab.properties.label.useable_as_grid_filter
+            label: pim_enrich.entity.attribute.property.useable_as_grid_filter
 
     pim-attribute-edit-form-boolean-is-locale-specific:
         module: pim/attribute-edit-form/properties/is-locale-specific
@@ -20,7 +20,7 @@ extensions:
         position: 80
         config:
             fieldName: is_locale_specific
-            label: pim_enrich.form.attribute.tab.properties.label.is_locale_specific
+            label: pim_enrich.entity.attribute.property.is_locale_specific
 
     pim-attribute-edit-form-boolean-available-locales:
         module: pim/attribute-edit-form/properties/available-locales
@@ -29,5 +29,5 @@ extensions:
         position: 90
         config:
             fieldName: available_locales
-            label: pim_enrich.form.attribute.tab.properties.label.available_locales
+            label: pim_enrich.entity.attribute.property.available_locales
 

@@ -82,7 +82,7 @@ extensions:
         targetZone: meta
         position: 110
         config:
-            productCountLabel: pim_common.products
+            productCountLabel: pim_enrich.entity.product.plural_label
 
     pim-group-edit-form-properties-tab:
         module: pim/common/tab
@@ -140,5 +140,5 @@ extensions:
         targetZone: container
         position: 80
         config:
-            label: 'pim_common.products'
+            label: 'pim_enrich.entity.product.plural_label'
             gridId: 'product-group-grid'

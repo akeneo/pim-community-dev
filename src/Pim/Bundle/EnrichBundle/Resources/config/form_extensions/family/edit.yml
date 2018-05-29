@@ -155,7 +155,7 @@ extensions:
         targetZone: container
         position: 150
         config:
-            label: 'pim_common.attributes'
+            label: 'pim_enrich.entity.attribute.plural_label'
 
     pim-family-edit-form-attributes-toolbar:
         module: pim/family-edit-form/attributes/toolbar
@@ -209,7 +209,7 @@ extensions:
             label: pim_common.label
             confirmation:
                 title: confirmation.remove.alternative_title
-                subTitle: pim_common.attributes
+                subTitle: pim_enrich.entity.attribute.plural_label
                 message: confirmation.remove.attribute_from_family
                 buttonText: pim_common.remove
 

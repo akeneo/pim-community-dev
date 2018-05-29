@@ -44,7 +44,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.attribute
-                subTitle: pim_common.attributes
+                subTitle: pim_enrich.entity.attribute.plural_label
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.attribute.flash.delete.success
                 failed: pim_enrich.entity.attribute.flash.delete.fail
@@ -107,7 +107,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.form.attribute.tab.properties.section.common
+                sectionTitle: pim_enrich.entity.attribute.tab.properties.section.common
                 dropZone: content
 
     pim-attribute-edit-form-properties-common-code:
@@ -139,7 +139,7 @@ extensions:
         aclResourceId: pim_enrich_attributegroup_add_attribute
         config:
             fieldName: group
-            label: pim_enrich.form.attribute.tab.properties.label.group
+            label: pim_enrich.entity.attribute.property.group.label
             required: true
 
     pim-attribute-edit-form-properties-common-unique:
@@ -149,7 +149,7 @@ extensions:
         position: 120
         config:
             fieldName: unique
-            label: pim_enrich.form.attribute.tab.properties.label.unique
+            label: pim_enrich.entity.attribute.property.unique
             readOnly: true
 
     pim-attribute-edit-form-properties-common-scopable:
@@ -159,7 +159,7 @@ extensions:
         position: 130
         config:
             fieldName: scopable
-            label: pim_enrich.form.attribute.tab.properties.label.scopable
+            label: pim_enrich.entity.attribute.property.scopable
             readOnly: true
 
     pim-attribute-edit-form-properties-common-localizable:
@@ -169,7 +169,7 @@ extensions:
         position: 140
         config:
             fieldName: localizable
-            label: pim_enrich.form.attribute.tab.properties.label.localizable
+            label: pim_enrich.entity.attribute.property.localizable
             readOnly: true
 
     pim-attribute-edit-form-properties-type-specific:
@@ -186,7 +186,7 @@ extensions:
         targetZone: container
         position: 110
         config:
-            label: pim_enrich.form.attribute.tab.choices.title
+            label: pim_enrich.entity.attribute.tab.choices.title
             activeForTypes: [pim_catalog_multiselect, pim_catalog_simpleselect]
 
     pim-attribute-edit-form-choices-auto-sorting:
@@ -196,7 +196,7 @@ extensions:
         position: 100
         config:
             fieldName: auto_option_sorting
-            label: pim_enrich.form.attribute.tab.properties.label.auto_option_sorting
+            label: pim_enrich.entity.attribute.property.auto_option_sorting
             defaultValue: null
 
     pim-attribute-edit-form-choices-options-grid:

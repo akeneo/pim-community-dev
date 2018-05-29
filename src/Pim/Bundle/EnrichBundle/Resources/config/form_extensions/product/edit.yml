@@ -104,7 +104,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.product
-                subTitle: pim_common.products
+                subTitle: pim_enrich.entity.product.plural_label
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.product.flash.delete.success
                 fail: pim_enrich.entity.product.flash.delete.fail
@@ -202,7 +202,7 @@ extensions:
         config:
             removeAttributeRoute: pim_enrich_product_remove_attribute_rest
             removeAttributeACL: pim_enrich_product_remove_attribute
-            tabTitle: pim_common.attributes
+            tabTitle: pim_enrich.entity.attribute.plural_label
             deletionFailed: pim_enrich.entity.attribute.flash.delete.fail
 
     pim-product-edit-form-completeness:

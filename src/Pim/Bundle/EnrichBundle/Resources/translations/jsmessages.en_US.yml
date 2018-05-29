@@ -1,3 +1,29 @@
+#Global structure of translation files
+#
+#pim_bundle_name:
+#    entity:
+#        entity_name:
+#            label: entity
+#            uppercase_label: Entity
+#            plural_label: Entities
+#            flash:
+#                update:
+#                    fail: Update failed
+#                    success: Entity Successfully updated
+#                delete:
+#                    fail: Cannot delete this entity
+#                    success: Entity successfully removed
+#                create:
+#                    fail: Can not create this entity
+#                    success: Entity successfully created
+#            page_title:
+#                index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#            property:
+#                field_name: Field name
+#                complex_field:
+#                    label: Field name
+#                    choose: Choose a field name
+
 pim_common:
     actions: Actions
     add: Add
@@ -6,13 +32,9 @@ pim_common:
     all: All
     and: and
     apply: Apply
-    attributes: Attributes
-    attribute_groups: Attribute groups
     before: Before
     by: by
     cancel: Cancel
-    categories: Categories
-    channel: Channel
     code: Code
     confirm: Confirm
     confirm_deletion: Confirm deletion
@@ -28,7 +50,6 @@ pim_common:
     label_translations: Label translations
     less_than: Less than
     loading: Loading...
-    locales: Locales
     more_than: More than
     next: Next
     "no": "No"
@@ -39,7 +60,6 @@ pim_common:
     permissions: Permissions
     previous: Previous
     properties: Properties
-    products: Products
     save: Save
     status: Status
     to: to
@@ -99,8 +119,8 @@ pim_datagrid:
     mass_action:
         delete:
             confirm_content: Are you sure you want to delete the selected products?
-            success:         Selected products successfully deleted.
-            error:           Error ocurred when trying to delete selected products, please try again.
+            success: Selected products successfully deleted.
+            error: Error ocurred when trying to delete selected products, please try again.
         quick_export:
             csv_all: CSV (All attributes)
             csv_grid_context: CSV (Grid context)
@@ -151,6 +171,8 @@ pim_enrich:
 
         product:
             label: product
+            uppercase_label: Product
+            plural_label: Products
             flash:
                 update:
                     success: Product successfully updated.
@@ -194,7 +216,6 @@ pim_enrich:
                         title: Group {{ group }}
                         view_group: View group
                         more_products: '{{ count }} more products...'
-                locale: Locale
             copy:
                 select: Select
                 all_visible: All visible
@@ -208,7 +229,6 @@ pim_enrich:
             media:
                 upload: Drag and drop to upload or click here
             create_popin:
-                type: Product
                 labels:
                     family: Choose a family
                     family_variant: Choose a family variant
@@ -276,6 +296,7 @@ pim_enrich:
 
         channel:
             label: channel
+            uppercase_label: Channel
             flash:
                 update:
                     success: Channel successfully updated.
@@ -361,6 +382,7 @@ pim_enrich:
 
         attribute:
             label: attribute
+            plural_label: Attributes
             flash:
                 update:
                     success: Attribute successfully updated.
@@ -371,29 +393,73 @@ pim_enrich:
                     fail: Cannot delete this attribute
             page_title:
                 index: "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} attributes"
-            scopable: Scopable
-            type:
-                pim_catalog_identifier:             Identifier
-                pim_catalog_text:                   Text
-                pim_catalog_textarea:               Text Area
-                pim_catalog_number:                 Number
-                pim_catalog_price_collection:       Price
-                pim_catalog_multiselect:            Multi select
-                pim_catalog_simpleselect:           Simple select
-                pim_catalog_file:                   File
-                pim_catalog_image:                  Image
-                pim_catalog_boolean:                "Yes/No"
-                pim_catalog_date:                   Date
-                pim_catalog_metric:                 Metric
-                pim_reference_data_simpleselect:    Reference data simple select
-                pim_reference_data_multiselect:     Reference data multi select
-            validation_rule:
-                email: E-mail
-                regexp: Regular expression
-                url: URL
+            property:
+                allowed_extensions: Allowed extensions
+                auto_option_sorting: Sort automatically options by alphabetical order
+                available_locales: Available locales
+                date_max: Max date
+                date_min: Min date
+                decimals_allowed: Decimal values allowed
+                default_metric_unit:
+                    label: Default metric unit
+                    choose: Choose a unit
+                group:
+                    label: Attribute group
+                    choose: Choose the attribute group
+                is_locale_specific: Locale specific
+                localizable: Value per locale
+                max_characters: Max characters
+                max_file_size: Max file size (MB)
+                metric_family:
+                    label: Metric family
+                    choose: Choose a family
+                minimum_input_length: Minimum length for autocompletion
+                negative_allowed: Negative values allowed
+                number_max: Max number
+                number_min: Min number
+                reference_data_name:
+                    label: Reference data type
+                    choose: Choose the reference data type
+                scopable: Value per channel
+                type:
+                    choose: Choose the attribute type
+                    pim_catalog_identifier: Identifier
+                    pim_catalog_text: Text
+                    pim_catalog_textarea: Text Area
+                    pim_catalog_number: Number
+                    pim_catalog_price_collection: Price
+                    pim_catalog_multiselect: Multi select
+                    pim_catalog_simpleselect: Simple select
+                    pim_catalog_file: File
+                    pim_catalog_image: Image
+                    pim_catalog_boolean: "Yes/No"
+                    pim_catalog_date: Date
+                    pim_catalog_metric: Metric
+                    pim_reference_data_simpleselect: Reference data simple select
+                    pim_reference_data_multiselect: Reference data multi select
+                unique: Unique value
+                useable_as_grid_filter: Usable in grid
+                validation_regexp: Regular expression
+                validation_rule:
+                    label: Validation rule
+                    email: E-mail
+                    regexp: Regular expression
+                    url: URL
+                wysiwyg_enabled: Rich text editor enabled
+            tab:
+                properties:
+                    section:
+                        common: General parameters
+                        type_specific: Type specific parameters
+                        validation: Validation parameters
+                choices:
+                    title: Options
+            create:
+                create_btn: Create attribute
 
         attribute_group:
             label: attribute group
+            plural_label: Attribute groups
             flash:
                 update:
                     success: Attribute group successfully updated
@@ -416,12 +482,14 @@ pim_enrich:
         locale:
             label: locale
             uppercase_label: Locale
+            plural_label: Locales
             page_title:
                 index: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
 
         category:
             label: category
             uppercase_label: Category
+            plural_label: Categories
 
         currency:
             page_title:
@@ -543,47 +611,6 @@ pim_enrich:
                     info:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
-        attribute:
-            meta:
-                updated: Last update
-            tab:
-                properties:
-                    section:
-                        common: General parameters
-                        type_specific: Type specific parameters
-                        validation: Validation parameters
-                    label:
-                        allowed_extensions: Allowed extensions
-                        auto_option_sorting: Sort automatically options by alphabetical order
-                        available_locales: Available locales
-                        date_max: Max date
-                        date_min: Min date
-                        decimals_allowed: Decimal values allowed
-                        default_metric_unit: Default metric unit
-                        group: Attribute group
-                        is_locale_specific: Locale specific
-                        localizable: Value per locale
-                        max_characters: Max characters
-                        max_file_size: Max file size (MB)
-                        metric_family: Metric family
-                        minimum_input_length: Minimum length for autocompletion
-                        negative_allowed: Negative values allowed
-                        number_max: Max number
-                        number_min: Min number
-                        reference_data_name: Reference data type
-                        scopable: Value per channel
-                        unique: Unique value
-                        useable_as_grid_filter: Usable in grid
-                        validation_regexp: Regular expression
-                        validation_rule: Validation rule
-                        wysiwyg_enabled: Rich text editor enabled
-                    default_label:
-                        default_metric_unit: Choose a unit
-                        group: Choose the attribute group
-                        metric_family: Choose a family
-                        reference_data_name: Choose the reference data type
-                choices:
-                    title: Options
         mass_edit:
             family:
                 attributes:
@@ -701,9 +728,6 @@ pim_enrich:
             create_btn: Create group
         channel:
             create_btn: Create channel
-        attribute:
-            create_btn:  Create attribute
-            modal_title: Choose the attribute type
     mass_edit:
         product:
             title: Products bulk action

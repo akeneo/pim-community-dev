@@ -10,14 +10,13 @@ define(
     ['pim/form/common/label', 'oro/translator'],
     function (BaseLabel, __) {
         return BaseLabel.extend({
-
             /**
              * Provide the object label
              *
              * @return {String}
              */
             getLabel: function () {
-                var prefix = __('pim_import_export.form.job_instance.title.' + this.getFormData().type);
+                const prefix = __('pim_import_export.entity.' + this.getFormData().type + '.uppercase_label');
 
                 return prefix + ' - ' + this.getFormData().label;
             }

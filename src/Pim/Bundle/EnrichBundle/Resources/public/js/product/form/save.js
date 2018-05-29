@@ -63,7 +63,9 @@ define(
 
                     messenger.notify(
                         'error',
-                        __('pim_enrich.entity.product.flash.update.fields_not_ready', {'fields': fieldLabels.join(', ')})
+                        __('pim_enrich.entity.product.flash.update.fields_not_ready', {
+                            'fields': fieldLabels.join(', ')
+                        })
                     );
 
                     return;

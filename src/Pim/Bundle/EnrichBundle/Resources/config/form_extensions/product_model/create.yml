@@ -4,7 +4,7 @@ extensions:
        config:
            labels:
                title: pim_enrich.entity.product_model.create_popin.title
-               subTitle: pim_common.products
+               subTitle: pim_enrich.entity.product.plural_label
                content: pim_enrich.entity.product_model.create_popin.content
            picture: illustrations/Product-model.svg
            successMessage: pim_enrich.entity.product_model.flash.create.success

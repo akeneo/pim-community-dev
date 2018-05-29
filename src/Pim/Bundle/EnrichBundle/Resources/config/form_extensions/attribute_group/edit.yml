@@ -50,7 +50,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.attribute_group
-                subTitle: pim_common.attribute_groups
+                subTitle: pim_enrich.entity.attribute_group.plural_label
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.attribute_group.flash.delete.success
                 fail: pim_enrich.entity.attribute_group.flash.delete.fail
@@ -150,11 +150,11 @@ extensions:
         targetZone: container
         position: 120
         config:
-            title: pim_common.attributes
+            title: pim_enrich.entity.attribute.plural_label
             otherGroup: other
             confirmation:
                 title: confirmation.remove.alternative_title
-                subTitle: pim_common.attribute_groups
+                subTitle: pim_enrich.entity.attribute_group.plural_label
                 message: confirmation.remove.attribute_from_group
                 buttonText: pim_common.remove
             removeAttributeACL: pim_enrich_attributegroup_remove_attribute

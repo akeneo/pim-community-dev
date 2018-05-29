@@ -9,7 +9,7 @@ extensions:
         parent: pim-attribute-group-index
         targetZone: title
         config:
-            title: pim_common.attribute_groups
+            title: pim_enrich.entity.attribute_group.plural_label
             countable: false
 
     pim-attribute-group-index-user-navigation:

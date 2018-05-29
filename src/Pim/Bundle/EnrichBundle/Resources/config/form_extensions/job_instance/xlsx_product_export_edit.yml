@@ -221,7 +221,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_import_export.entity.job_instance.title
+            entity: pim_import_export.entity.job_instance.label
 
     pim-job-instance-xlsx-product-export-edit-content-structure-scope:
         module: pim/job/product/edit/content/structure/scope
