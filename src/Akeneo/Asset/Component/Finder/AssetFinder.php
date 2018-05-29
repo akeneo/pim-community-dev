@@ -11,11 +11,11 @@
 
 namespace Akeneo\Asset\Component\Finder;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 
 /**
  * Finder for assets

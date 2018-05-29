@@ -2,6 +2,9 @@
 
 namespace Akeneo\Asset\Bundle\Doctrine\ORM;
 
+use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as AssetAttributeTypes;
+use Akeneo\Asset\Component\Completeness\CompletenessRemoverInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRemover as BaseCompletenessRemover;
@@ -9,9 +12,6 @@ use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as AssetAttributeTypes;
-use Akeneo\Asset\Component\Completeness\CompletenessRemoverInterface;
-use Akeneo\Asset\Component\Model\AssetInterface;
 
 /**
  * Simple ORM version of the completeness remover.

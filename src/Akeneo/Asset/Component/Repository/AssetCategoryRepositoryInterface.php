@@ -10,9 +10,9 @@
  */
 namespace Akeneo\Asset\Component\Repository;
 
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\CategoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * Asset category repository interface

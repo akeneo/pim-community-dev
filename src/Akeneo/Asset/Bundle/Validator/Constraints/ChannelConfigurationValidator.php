@@ -11,10 +11,10 @@
 
 namespace Akeneo\Asset\Bundle\Validator\Constraints;
 
+use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
 use Akeneo\Tool\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use Akeneo\Tool\Component\FileTransformer\Exception\NonRegisteredTransformationException;
 use Akeneo\Tool\Component\FileTransformer\Transformation\TransformationRegistry;
-use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

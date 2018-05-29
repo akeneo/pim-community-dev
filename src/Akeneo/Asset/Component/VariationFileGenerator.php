@@ -11,6 +11,10 @@
 
 namespace Akeneo\Asset\Component;
 
+use Akeneo\Asset\Component\Builder\MetadataBuilderRegistry;
+use Akeneo\Asset\Component\Model\FileMetadataInterface;
+use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
@@ -19,10 +23,6 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Asset\Component\Builder\MetadataBuilderRegistry;
-use Akeneo\Asset\Component\Model\FileMetadataInterface;
-use Akeneo\Asset\Component\Model\VariationInterface;
-use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**

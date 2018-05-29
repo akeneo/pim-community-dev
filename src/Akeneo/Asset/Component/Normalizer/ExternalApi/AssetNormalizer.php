@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Component\Normalizer\ExternalApi;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\LocaleCode;
+use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Tool\Component\Api\Hal\Link;
 use Doctrine\Common\Collections\Collection;
-use Akeneo\Asset\Component\Model\AssetInterface;
-use Akeneo\Asset\Component\Model\VariationInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -117,7 +117,7 @@ class AssetNormalizer implements NormalizerInterface
                     [
                         'code' => $variation->getAsset()->getCode(),
                         'channelCode' => $normalizedVariation['scope'],
-                        'localeCode' => (string) new LocaleCode($normalizedVariation['locale']),
+                        'localeCode' => (string) new LocaleCode($normalizedVariation['locale'] ?? ''),
                     ],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 );
@@ -169,7 +169,7 @@ class AssetNormalizer implements NormalizerInterface
                     'pimee_api_asset_reference_get',
                     [
                         'code'       => $reference->getAsset()->getCode(),
-                        'localeCode' => (string) new LocaleCode($normalizedReference['locale']),
+                        'localeCode' => (string) new LocaleCode($normalizedReference['locale'] ?? ''),
                     ],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 );

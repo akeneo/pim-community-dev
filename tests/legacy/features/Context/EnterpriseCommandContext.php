@@ -2,13 +2,13 @@
 
 namespace Context;
 
+use Akeneo\Asset\Bundle\Command\GenerateMissingVariationFilesCommand;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Akeneo\Asset\Bundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\ApproveProposalCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\CreateDraftCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;

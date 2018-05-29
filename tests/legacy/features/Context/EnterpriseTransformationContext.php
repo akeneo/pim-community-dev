@@ -2,8 +2,8 @@
 
 namespace Context;
 
-use Context\TransformationContext as BaseTransformationContext;
 use Akeneo\Asset\Component\Model\CategoryInterface;
+use Context\TransformationContext as BaseTransformationContext;
 
 /**
  * Context for data transformations

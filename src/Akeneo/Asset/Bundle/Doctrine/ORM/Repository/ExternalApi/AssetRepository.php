@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Bundle\Doctrine\ORM\Repository\ExternalApi;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Tool\Component\Api\Repository\PageableRepositoryInterface;
 use Akeneo\Tool\Component\Api\Repository\SearchAfterPageableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnexpectedResultException;
-use Akeneo\Asset\Component\Model\AssetInterface;
-use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

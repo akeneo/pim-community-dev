@@ -11,6 +11,14 @@
 
 namespace Akeneo\Asset\Component\Upload;
 
+use Akeneo\Asset\Bundle\Event\AssetEvent;
+use Akeneo\Asset\Component\Factory\AssetFactory;
+use Akeneo\Asset\Component\FileStorage;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\ProcessedItem;
+use Akeneo\Asset\Component\ProcessedItemList;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Akeneo\Asset\Component\Updater\FilesUpdaterInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
@@ -20,14 +28,6 @@ use Akeneo\Tool\Component\FileTransformer\Exception\NotApplicableTransformation\
 use Akeneo\Tool\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Asset\Bundle\Event\AssetEvent;
-use Akeneo\Asset\Component\Factory\AssetFactory;
-use Akeneo\Asset\Component\FileStorage;
-use Akeneo\Asset\Component\Model\AssetInterface;
-use Akeneo\Asset\Component\ProcessedItem;
-use Akeneo\Asset\Component\ProcessedItemList;
-use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
-use Akeneo\Asset\Component\Updater\FilesUpdaterInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 

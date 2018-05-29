@@ -11,11 +11,11 @@
 
 namespace Akeneo\Asset\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Repository\AssetCategoryRepositoryInterface;
 use Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Asset\Component\Model\AssetInterface;
-use Akeneo\Asset\Component\Repository\AssetCategoryRepositoryInterface;
 
 /**
  * Asset category repository

@@ -10,9 +10,9 @@
  */
 namespace Akeneo\Asset\Component\Builder;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Asset\Component\Model\AssetInterface;
 
 /**
  * Builds references related to an asset

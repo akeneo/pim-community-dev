@@ -2,6 +2,13 @@
 
 namespace Context;
 
+use Akeneo\Asset\Bundle\Command\GenerateMissingVariationFilesCommand;
+use Akeneo\Asset\Component\Model\Asset;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\CategoryInterface;
+use Akeneo\Asset\Component\Model\Tag;
+use Akeneo\Asset\Component\Model\TagInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
@@ -18,16 +25,9 @@ use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Akeneo\Asset\Bundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use Akeneo\Asset\Component\Model\Asset;
-use Akeneo\Asset\Component\Model\AssetInterface;
-use Akeneo\Asset\Component\Model\CategoryInterface;
-use Akeneo\Asset\Component\Model\Tag;
-use Akeneo\Asset\Component\Model\TagInterface;
-use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;

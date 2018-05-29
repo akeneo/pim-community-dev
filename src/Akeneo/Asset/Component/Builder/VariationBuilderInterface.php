@@ -11,9 +11,9 @@
 
 namespace Akeneo\Asset\Component\Builder;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 
 /**
  * Builds variations related to an asset reference

@@ -11,9 +11,9 @@
 
 namespace Akeneo\Asset\Component\Factory;
 
+use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Asset\Component\Model\ReferenceInterface;
 
 /**
  * Reference factory

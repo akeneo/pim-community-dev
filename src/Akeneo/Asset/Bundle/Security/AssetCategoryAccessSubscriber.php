@@ -11,11 +11,11 @@
 
 namespace Akeneo\Asset\Bundle\Security;
 
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

@@ -10,9 +10,9 @@
  */
 namespace Akeneo\Asset\Component\Builder;
 
+use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Asset\Component\Model\ReferenceInterface;
 
 /**
  * Builds variations related to an asset reference

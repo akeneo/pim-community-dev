@@ -11,13 +11,13 @@
 
 namespace Akeneo\Asset\Bundle\Doctrine\ORM\Remover;
 
+use Akeneo\Asset\Bundle\Event\CategoryAssetEvents;
+use Akeneo\Asset\Component\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Asset\Bundle\Event\CategoryAssetEvents;
-use Akeneo\Asset\Component\Model\CategoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

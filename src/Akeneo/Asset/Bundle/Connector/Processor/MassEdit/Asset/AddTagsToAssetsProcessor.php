@@ -11,11 +11,11 @@
 
 namespace Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\TagInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Classification\Repository\TagRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Akeneo\Asset\Component\Model\AssetInterface;
-use Akeneo\Asset\Component\Model\TagInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

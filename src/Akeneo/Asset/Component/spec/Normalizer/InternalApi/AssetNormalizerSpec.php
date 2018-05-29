@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Asset\Component\Normalizer\ExternalApi;
+namespace spec\Akeneo\Asset\Component\Normalizer\InternalApi;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;

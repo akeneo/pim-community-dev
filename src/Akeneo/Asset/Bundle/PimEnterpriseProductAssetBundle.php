@@ -11,7 +11,6 @@
 
 namespace Akeneo\Asset\Bundle;
 
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Akeneo\Asset\Bundle\Command\CopyAssetFilesCommand;
 use Akeneo\Asset\Bundle\Command\GenerateMissingVariationFilesCommand;
 use Akeneo\Asset\Bundle\Command\GenerateVariationFileCommand;
@@ -21,6 +20,7 @@ use Akeneo\Asset\Bundle\Command\SendAlertNotificationsCommand;
 use Akeneo\Asset\Bundle\DependencyInjection\Compiler\ConfigureUserServicesPass;
 use Akeneo\Asset\Bundle\DependencyInjection\Compiler\RegisterMetadataBuildersPass;
 use Akeneo\Asset\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

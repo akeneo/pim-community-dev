@@ -11,9 +11,9 @@
 
 namespace Akeneo\Asset\Component\Builder;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 
 /**
  * Builds references related to an asset

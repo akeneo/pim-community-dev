@@ -11,12 +11,12 @@
 
 namespace Akeneo\Asset\Component\Repository;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
-use Akeneo\Asset\Component\Model\AssetInterface;
 
 /**
  * Product asset repository interface

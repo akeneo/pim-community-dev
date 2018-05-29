@@ -11,9 +11,9 @@
 
 namespace Akeneo\Asset\Bundle\Controller\Rest;
 
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

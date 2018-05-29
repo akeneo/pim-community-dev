@@ -11,13 +11,13 @@
 
 namespace Akeneo\Asset\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Asset\Component\Factory\ChannelConfigurationFactory;
+use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
-use Akeneo\Asset\Component\Factory\ChannelConfigurationFactory;
-use Akeneo\Asset\Component\Model\ChannelVariationsConfigurationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

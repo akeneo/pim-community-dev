@@ -11,9 +11,9 @@
 
 namespace Akeneo\Asset\Component\Repository;
 
+use Akeneo\Asset\Component\Model\VariationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Akeneo\Asset\Component\Model\VariationInterface;
 
 /**
  * Product asset variation repository interface

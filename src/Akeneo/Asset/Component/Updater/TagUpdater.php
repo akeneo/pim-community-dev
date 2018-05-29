@@ -11,12 +11,12 @@
 
 namespace Akeneo\Asset\Component\Updater;
 
+use Akeneo\Asset\Component\Model\TagInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Asset\Component\Model\TagInterface;
 
 /**
  * Updates and validates a tag

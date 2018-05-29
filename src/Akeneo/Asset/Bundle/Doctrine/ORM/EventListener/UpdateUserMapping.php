@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Bundle\Doctrine\ORM\EventListener;
 
+use Akeneo\Asset\Component\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
-use Akeneo\Asset\Component\Model\CategoryInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

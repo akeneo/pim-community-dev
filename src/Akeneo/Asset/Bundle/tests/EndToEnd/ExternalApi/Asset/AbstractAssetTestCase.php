@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Bundle\tests\EndToEnd\ExternalApi\Asset;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
-use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Asset\Component\FileStorage;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\TagInterface;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

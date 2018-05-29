@@ -10,11 +10,11 @@
  */
 namespace Akeneo\Asset\Bundle\Command;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Asset\Component\ProcessedItem;
 use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -18,6 +18,12 @@ class LocaleCodeSpec extends ObjectBehavior
         $this->shouldHaveType(LocaleCode::class);
     }
 
+    function it_can_constructed_with_an_empty_sting()
+    {
+        $this->beConstructedWith('');
+        $this->hasValidCode()->shouldReturn(true);
+    }
+
     function it_has_a_default_value_because_an_asset_cannot_be_localizable()
     {
         $this->beConstructedWith('no-locale');

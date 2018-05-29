@@ -10,8 +10,8 @@
  */
 namespace Akeneo\Asset\Bundle\Command;
 
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Asset\Component\Upload\UploadContext;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

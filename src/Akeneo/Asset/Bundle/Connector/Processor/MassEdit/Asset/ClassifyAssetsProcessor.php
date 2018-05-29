@@ -11,9 +11,9 @@
 
 namespace Akeneo\Asset\Bundle\Connector\Processor\MassEdit\Asset;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Akeneo\Asset\Component\Model\AssetInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

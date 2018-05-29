@@ -11,11 +11,11 @@
 
 namespace Akeneo\Asset\Bundle\EventSubscriber\ORM;
 
+use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
+use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
-use Akeneo\Asset\Component\Repository\VariationRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

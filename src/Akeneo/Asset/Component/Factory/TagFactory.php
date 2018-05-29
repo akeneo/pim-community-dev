@@ -11,8 +11,8 @@
 
 namespace Akeneo\Asset\Component\Factory;
 
-use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Asset\Component\Model\TagInterface;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 
 /**
  * Tag factory

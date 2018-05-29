@@ -11,8 +11,8 @@
 
 namespace Akeneo\Asset\Component\Factory;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
 
 /**
  * Variation factory

@@ -11,8 +11,8 @@
 
 namespace Akeneo\Asset\Component\Normalizer\Flat;
 
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Akeneo\Asset\Component\Model\CategoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

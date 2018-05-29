@@ -2,9 +2,9 @@
 
 namespace Context;
 
+use Akeneo\Asset\Component\Model\Category;
 use Behat\ChainedStepsExtension\Step\Then;
 use Context\NavigationContext as BaseNavigationContext;
-use Akeneo\Asset\Component\Model\Category;
 
 /**
  * Navigation context

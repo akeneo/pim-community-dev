@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Context;
 
+use Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetVariationSaver;
+use Akeneo\Asset\Bundle\Doctrine\ORM\Repository\AssetRepository;
+use Akeneo\Asset\Component\Updater\FilesUpdaterInterface;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Asset\Edit;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetVariationSaver;
-use Akeneo\Asset\Bundle\Doctrine\ORM\Repository\AssetRepository;
-use Akeneo\Asset\Component\Updater\FilesUpdaterInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**

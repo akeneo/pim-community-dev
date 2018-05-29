@@ -9,10 +9,6 @@
 
 namespace Akeneo\Asset\Bundle\Command;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Asset\Component\Builder\VariationBuilderInterface;
 use Akeneo\Asset\Component\Finder\AssetFinderInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
@@ -20,6 +16,10 @@ use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Asset\Component\VariationFileGeneratorInterface;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**

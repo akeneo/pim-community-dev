@@ -11,9 +11,9 @@
 
 namespace Akeneo\Asset\Component\Factory;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Asset\Component\Model\AssetInterface;
 
 /**
  * Asset factory

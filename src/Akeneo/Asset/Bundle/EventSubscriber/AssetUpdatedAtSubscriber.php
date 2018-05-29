@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Bundle\EventSubscriber;
 
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\ORM\EntityManagerInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

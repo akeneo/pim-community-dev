@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Component\Normalizer\ExternalApi;
 
-use Akeneo\Tool\Component\Api\Hal\Link;
 use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Tool\Component\Api\Hal\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

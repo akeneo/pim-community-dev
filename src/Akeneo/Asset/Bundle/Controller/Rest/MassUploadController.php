@@ -11,14 +11,14 @@
 
 namespace Akeneo\Asset\Bundle\Controller\Rest;
 
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Asset\Component\Upload\Exception\UploadException;
 use Akeneo\Asset\Component\Upload\ImporterInterface;
 use Akeneo\Asset\Component\Upload\UploadCheckerInterface;
 use Akeneo\Asset\Component\Upload\UploadContext;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;

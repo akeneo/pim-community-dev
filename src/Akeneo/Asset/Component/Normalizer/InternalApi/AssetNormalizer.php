@@ -11,9 +11,9 @@
 
 namespace Akeneo\Asset\Component\Normalizer\InternalApi;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\Collection;
-use Akeneo\Asset\Component\Model\AssetInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

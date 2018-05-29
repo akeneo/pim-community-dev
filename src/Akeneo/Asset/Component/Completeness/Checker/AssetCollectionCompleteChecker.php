@@ -11,12 +11,12 @@
 
 namespace Akeneo\Asset\Component\Completeness\Checker;
 
+use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
-use Akeneo\Asset\Component\Model\AssetInterface;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>

@@ -11,10 +11,10 @@
 
 namespace Akeneo\Asset\Bundle\Command;
 
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
 use Akeneo\Asset\Component\ProcessedItem;
 use Akeneo\Asset\Component\VariationsCollectionFilesGeneratorInterface;
+use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

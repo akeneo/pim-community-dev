@@ -10,8 +10,8 @@
  */
 namespace Akeneo\Asset\Bundle\Doctrine\ORM\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Channel variations configuration repository

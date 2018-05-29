@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Asset\Component\Updater\ExternalApi;
 
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Asset\Component\Model\AssetInterface;
 
 /**
  * @author Alexandre Hocquard <alexandre.hocquard@akeneo.com>

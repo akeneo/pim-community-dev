@@ -11,11 +11,11 @@
 
 namespace Akeneo\Asset\Component\Updater;
 
-use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Asset\Component\FileStorage;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Asset\Component\Model\VariationInterface;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>

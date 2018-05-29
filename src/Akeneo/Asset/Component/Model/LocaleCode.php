@@ -26,7 +26,7 @@ final class LocaleCode
      */
     public function __construct(string $code)
     {
-        $this->code = $code;
+        $this->code = '' === $code ? self::DEFAULT_VALUE : $code;
     }
 
     /**
