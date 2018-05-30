@@ -16,6 +16,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductProposalIndexer;
 use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -57,7 +58,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
     public function indexProductProposal(GenericEvent $event)
     {
         $productProposal = $event->getSubject();
-        if (!$productProposal instanceof EntityWithValuesDraftInterface) {
+        if (!$productProposal instanceof ProductDraft) {
             return;
         }
 
@@ -65,7 +66,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($productProposal instanceof EntityWithValuesDraftInterface) {
+        if ($productProposal instanceof ProductDraft) {
             $changesToReview = $productProposal->getChangesToReview();
             if (!empty($changesToReview['values'])) {
                 $productProposal->setChanges($changesToReview);
@@ -88,7 +89,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!current($productProposals) instanceof EntityWithValuesDraftInterface) {
+        if (!current($productProposals) instanceof ProductDraft) {
             return;
         }
 
@@ -121,7 +122,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
     public function deleteProductProposal(GenericEvent $event)
     {
         $productProposal = $event->getSubject();
-        if (!$productProposal instanceof EntityWithValuesDraftInterface ||
+        if (!$productProposal instanceof ProductDraft ||
             $productProposal->getStatus() === EntityWithValuesDraftInterface::IN_PROGRESS) {
             return;
         }
