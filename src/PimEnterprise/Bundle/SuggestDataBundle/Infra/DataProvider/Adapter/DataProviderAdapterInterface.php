@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter;
 
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataCollectionInterface;
+use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -13,16 +15,16 @@ interface DataProviderAdapterInterface
     /**
      * @param ProductInterface $product
      *
-     * @return string
+     * @return SuggestedDataInterface
      */
-    public function push(ProductInterface $product): string;
+    public function push(ProductInterface $product): SuggestedDataInterface;
 
     /**
      * @param ProductInterface[] $products
      *
-     * @return string
+     * @return SuggestedDataCollectionInterface
      */
-    public function bulkPush(array $products): string;
+    public function bulkPush(array $products): SuggestedDataCollectionInterface;
 
     public function pull(ProductInterface $product);
 

@@ -7,6 +7,8 @@ use Akeneo\Component\Batch\Item\FlushableInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\DataProviderAdapterInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory;
+use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataCollection;
+use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataCollectionInterface;
 
 /**
  * Writer to push products to PIM.ai.
@@ -19,13 +21,13 @@ class PushProductsWriter implements ItemWriterInterface, FlushableInterface
     protected $dataProvider;
 
     /** @var int */
-    protected $batchSize;
+    private $batchSize;
 
     /** @var array */
-    protected $productsToPush;
+    private $productsToPush;
 
-    /** @var array */
-    protected $providedData;
+    /** @var SuggestedDataCollection */
+    private $providedData;
 
     /**
      * @param DataProviderFactory $factory
@@ -36,7 +38,7 @@ class PushProductsWriter implements ItemWriterInterface, FlushableInterface
         $this->dataProvider = $factory->create();
         $this->batchSize = $batchSize;
         $this->productsToPush = [];
-        $this->providedData = [];
+        $this->providedData = new SuggestedDataCollection();
     }
 
     /**
@@ -47,10 +49,9 @@ class PushProductsWriter implements ItemWriterInterface, FlushableInterface
         foreach ($items as $item) {
             $this->productsToPush[] = $item;
             if (0 === count($this->productsToPush) % $this->batchSize) {
-                $rawProvidedData = $this->dataProvider->bulkPush($this->productsToPush);
+                $suggestedDataCollection = $this->dataProvider->bulkPush($this->productsToPush);
 
-                $providedData = $this->decodeProvidedData($rawProvidedData);
-                $this->save($providedData);
+                $this->save($suggestedDataCollection);
                 $this->productsToPush = [];
             }
         }
@@ -62,35 +63,20 @@ class PushProductsWriter implements ItemWriterInterface, FlushableInterface
     public function flush(): void
     {
         if (!empty($this->productsToPush)) {
-            $rawProvidedData = $this->dataProvider->bulkPush($this->productsToPush);
+            $suggestedDataCollection = $this->dataProvider->bulkPush($this->productsToPush);
 
-            $providedData = $this->decodeProvidedData($rawProvidedData);
-            $this->save($providedData);
+            $this->save($suggestedDataCollection);
             $this->productsToPush = [];
         }
 
         var_dump($this->providedData);
     }
 
-    private function decodeProvidedData(string $providedData): array
+
+    private function save(SuggestedDataCollectionInterface $suggestedDataCollection): void
     {
-        $data = json_decode($providedData, true);
-
-        $products = [];
-        foreach ($data['_embedded']['product'] as $rawProduct) {
-            $product = [];
-            $product['id'] = $rawProduct['id'];
-            $product['codes'] = $rawProduct['codes'];
-            $product['attributes'] = $rawProduct['attributes'];
-
-            $products[] = $product;
+        foreach ($suggestedDataCollection as $suggestedData) {
+            $this->providedData->add($suggestedData);
         }
-
-        return $products;
-    }
-
-    private function save(array $products): void
-    {
-        $this->providedData = array_merge($this->providedData, $products);
     }
 }

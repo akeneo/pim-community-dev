@@ -1,3 +1,13 @@
 services:
     pimee_suggest_data.data_provider.factory:
-        class: 'PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory'
+        class: PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory
+        arguments:
+            - '@pimee_suggest_data.deserialize_suggested_data_collection'
+
+    pimee_suggest_data.deserialize_suggested_data_collection:
+        class: PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DeserializeSuggestedDataCollection
+        arguments:
+            - '@pimee_suggest_data.suggested_data_factory'
+
+    pimee_suggest_data.suggested_data_factory:
+        class: PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataFactory

@@ -15,6 +15,17 @@ use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\Memory\InM
  */
 class DataProviderFactory
 {
+    /** @var DeserializeSuggestedDataCollection */
+    protected $deserializer;
+
+    /**
+     * @param DeserializeSuggestedDataCollection $deserializer
+     */
+    public function __construct(DeserializeSuggestedDataCollection $deserializer)
+    {
+        $this->deserializer = $deserializer;
+    }
+
     /**
      * @return DataProviderAdapterInterface
      */
@@ -33,6 +44,6 @@ class DataProviderFactory
         // TODO: Remove hardcoded configuration
         $config = ['url' => 'pim.ai.host', 'token' => 'my_personal_token'];
         
-        return new InMemoryAdapter($config);
+        return new InMemoryAdapter($this->deserializer, $config);
     }
 }

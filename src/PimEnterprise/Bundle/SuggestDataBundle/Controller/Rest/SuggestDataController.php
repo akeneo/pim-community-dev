@@ -52,8 +52,8 @@ class SuggestDataController
         }
 
         $dataProvider = $this->dataProviderFactory->create();
-        $dataProviderResponse = $dataProvider->push($product);
+        $suggestedData = $dataProvider->push($product);
 
-        return $jsonResponse->setJson($dataProviderResponse);
+        return $jsonResponse;
     }
 }
