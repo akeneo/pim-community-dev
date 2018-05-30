@@ -1,5 +1,5 @@
 #!groovy
-
+@Library("k8s-utils@fixup-integration")
 String[] editions = ["ce"]
 String[] legacyFeatures = ["tests/legacy/features"]
 String launchUnitTests = "yes"
