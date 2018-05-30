@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * A context for initializing catalog configuration
@@ -54,13 +55,43 @@ class CatalogConfigurationContext extends PimContext
      */
     public function aCatalogConfiguration($catalog)
     {
+        if (file_exists(sprintf('%s/%s.sql', getcwd(), $catalog))) {
+            $dbName = $this->getContainer()->getParameter('database_name');
+            $dbUser = $this->getContainer()->getParameter('database_user');
+            $dbPassword = $this->getContainer()->getParameter('database_password');
+            exec(sprintf('mysql -u%s -p%s %s < %s/%s.sql', $dbUser, $dbPassword, $dbName, getcwd(), $catalog));
+            $user = $this->getContainer()->get('pim_user.repository.user')
+                ->findOneBy(['username' => 'admin']);
+            $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+            $this->getContainer()->get('security.token_storage')->setToken($token);
+
+            $this->getElasticsearchProductClient()->refreshIndex();
+        } else {
+            $this->initializeReferenceRepository();
+            $this->loadCatalog($this->getConfigurationFiles($catalog));
+        }
+
+        $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
+    /**
+     * @param string $catalog
+     *
+     * @Given /^I generate a "([^"]*)" catalog dump$/
+     */
+    public function aCatalogDump($catalog)
+    {
         $this->initializeReferenceRepository();
 
         $this->loadCatalog($this->getConfigurationFiles($catalog));
 
         $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
+        $dbName = $this->getContainer()->getParameter('database_name');
+        $dbUser = $this->getContainer()->getParameter('database_user');
+        $dbPassword = $this->getContainer()->getParameter('database_password');
+        echo sprintf('mysqldump -u%s -p%s %s > %s/%s.sql', $dbUser, $dbPassword, $dbName, getcwd(), $catalog);
+        exec(sprintf('mysqldump -u%s -p%s %s > %s/%s.sql', $dbUser, $dbPassword, $dbName, getcwd(), $catalog));
     }
-
 
     /**
      * @param string $entity
