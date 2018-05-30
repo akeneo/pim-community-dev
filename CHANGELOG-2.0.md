@@ -10,6 +10,7 @@
 - PIM-6846: Fix bug on click in Display Attributes button on Product edit form
 - PIM-7389: Refactor the 'add to group' mass edit screen to allow big set of groups
 - PIM-7311: Fix the product grid filters list when a sort order is a huge number
+- PIM-7391: Fix offset pagination when listing product models with the API
 
 # 2.0.25 (2018-05-21)
 
