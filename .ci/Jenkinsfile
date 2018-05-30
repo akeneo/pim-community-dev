@@ -89,7 +89,7 @@ stage("Test") {
                 container: tag,
                 containers: pimContainers(image: tag),
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimBehatFetcher(hasToInstall: true, script: "cd /var/www/pim/ && vendor/bin/behat -p default --list-scenarios", features: features)}
+                fetcher: {return pimBehatFetcher(hasToInstall: true, features: features)}
             )}
         )
     } finally {
