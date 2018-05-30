@@ -166,13 +166,13 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && ./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
                 junit: "junit_output.xml"
-            )}/*,
+            )},/*,
             "grunt": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
                 script: "cd /var/www/pim && grunt",
                 junit: "junit_output.xml"
-            )}*/,
+            )},*/
             "phpunit-integration": {queue(
                 condition: launchIntegrationTests.equals("yes"),
                 verbose: (verboseOutputs == "yes"),
