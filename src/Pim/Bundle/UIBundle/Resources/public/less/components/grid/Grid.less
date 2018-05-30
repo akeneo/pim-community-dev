@@ -9,6 +9,10 @@
 
   &-bodyRow {
     transition: background 0.2s ease-in;
+
+    &--wordBreakable {
+      word-wrap: break-word;
+    }
   }
 
   &-bodyRow + &-bodyRow:not(&-bodyRow--withoutTopBorder) &-bodyCell {
