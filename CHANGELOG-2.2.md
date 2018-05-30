@@ -4,6 +4,7 @@
 
 - PIM-7358: Cascade remove variant attribute sets when removing a family variant
 - PIM-7367: Fix association of a product and product model with the same identifier
+- PIM-7315: Fix 500 on "IS EMPTY" operator for the SKU filter
 
 ## BC breaks
 
