@@ -176,22 +176,6 @@ class AssociatedProductDatasource extends ProductDatasource
     }
 
     /**
-     * Generates a unique identifier for a product or a product model.
-     *
-     * @param $productOrProductModel ProductInterface
-     *
-     * @return string
-     */
-    protected function getProductOrProductModelIdentifier(ProductInterface $productOrProductModel): string
-    {
-        return sprintf(
-            '%s-%s',
-            $productOrProductModel instanceof ProductModelInterface ? 'product-model' : 'product',
-            $productOrProductModel->getId()
-        );
-    }
-
-    /**
      * @param CursorInterface $products
      * @param string          $locale
      * @param string          $scope
@@ -217,7 +201,11 @@ class AssociatedProductDatasource extends ProductDatasource
             $normalized = array_merge(
                 $this->normalizer->normalize($product, 'datagrid', $context),
                 [
-                    'id'         => $this->getProductOrProductModelIdentifier($product),
+                    'id'         => sprintf(
+                        '%s-%s',
+                        $product instanceof ProductModelInterface ? 'product-model' : 'product',
+                        $product->getId()
+                    ),
                     'dataLocale' => $dataLocale,
                     'is_associated' => true,
                 ]
