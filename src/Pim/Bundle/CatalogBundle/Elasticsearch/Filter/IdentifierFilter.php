@@ -201,6 +201,14 @@ class IdentifierFilter extends AbstractFieldFilter implements FieldFilterInterfa
                 $this->searchQueryBuilder->addMustNot($clause);
                 break;
 
+            case Operators::IS_EMPTY:
+                $clause = [
+                    'exists' => ['field' => static::IDENTIFIER_KEY],
+                ];
+
+                $this->searchQueryBuilder->addMustNot($clause);
+                break;
+
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }
