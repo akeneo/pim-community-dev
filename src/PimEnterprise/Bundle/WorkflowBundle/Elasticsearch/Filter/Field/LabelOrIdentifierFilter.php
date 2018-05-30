@@ -49,7 +49,7 @@ class LabelOrIdentifierFilter extends AbstractFieldFilter
 
         $clauses[] = [
             'wildcard' => [
-                'product_identifier' => sprintf('*%s*', $this->escapeValue($value)),
+                'entity_with_values_identifier' => sprintf('*%s*', $this->escapeValue($value)),
             ]
         ];
 

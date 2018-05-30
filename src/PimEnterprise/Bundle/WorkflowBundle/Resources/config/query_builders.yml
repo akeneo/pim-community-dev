@@ -176,7 +176,7 @@ services:
     pimee_workflow.query.elasticsearch.filter.field.identifier_field:
         class: '%pim_catalog.query.elasticsearch.filter.identifier_field.class%'
         arguments:
-            - ['product_identifier']
+            - ['entity_with_values_identifier']
             - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN']
         tags:
             - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
