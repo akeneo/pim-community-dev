@@ -201,7 +201,11 @@ class AssociatedProductDatasource extends ProductDatasource
             $normalized = array_merge(
                 $this->normalizer->normalize($product, 'datagrid', $context),
                 [
-                    'id'         => $product->getId(),
+                    'id'         => sprintf(
+                        '%s-%s',
+                        $product instanceof ProductModelInterface ? 'product-model' : 'product',
+                        $product->getId()
+                    ),
                     'dataLocale' => $dataLocale,
                     'is_associated' => true,
                 ]
