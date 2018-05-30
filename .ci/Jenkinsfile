@@ -56,6 +56,7 @@ stage("Build") {
                         sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
                         sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
 
+                        sh "gcloud config set gcloudignore/enabled false"
                         sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
                     }
                 })
@@ -100,6 +101,7 @@ stage("Build") {
                         sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
                         sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
 
+                        sh "gcloud config set gcloudignore/enabled false"
                         sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
                     }
                 })
@@ -132,6 +134,7 @@ stage("Build") {
                         sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://127.0.0.1:27017'@g\" app/config/pim_parameters.yml"
                         sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
 
+                        sh "gcloud config set gcloudignore/enabled false"
                         sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ceodm ."
                     }
                 })
@@ -176,6 +179,7 @@ stage("Build") {
                         sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
                         sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
 
+                        sh "gcloud config set gcloudignore/enabled false"
                         sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm ."
                     }
                 })
@@ -261,7 +265,6 @@ stage("Test") {
                             message.put("commands",commands)
                             messages.add(message)
                         }
-
                         return messages
                     }, 10, "ce", verboseOutputs, dotsPerLine)
                 } else {
@@ -405,7 +408,7 @@ stage("Test") {
                 } else {
                     echo "Skipping behat test"
                 }
-	          },
+	        },
             "behat-ee-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("eeodm")) {
                     queue({
@@ -457,7 +460,7 @@ stage("Test") {
         clearTemplateNames()
         def uuid = UUID.randomUUID().toString()
         podTemplate(label: "cleanup-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
         ]) {
             node("cleanup-" + uuid) {
                 container("docker") {
@@ -484,7 +487,7 @@ def withBuildNode(body) {
     def uuid = UUID.randomUUID().toString()
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
         podTemplate(label: "build-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
             containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
             containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8.9", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
         ]) {
@@ -500,12 +503,28 @@ def withBuildNode(body) {
 def withPhp(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
-    podTemplate(label: "php-" + uuid, containers: [
-        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/apache-php:php-5.6", resourceRequestCpu: '500m',
-                        resourceRequestMemory: '1000Mi', alwaysPullImage: true, workingDir: '/home/jenkins')
-    ], annotations: [
-        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
-    ]) {
+    podTemplate(label: "php-" + uuid, yaml: """
+apiVersion: v1
+kind: Pod
+metadata:
+  name: with-php-${uuid}
+spec:
+  containers:
+  - name: php
+    image: akeneo/apache-php:php-5.6
+    command: ['cat']
+    tty: true
+    resources:
+      requests: {cpu: "100m", memory: "200Mi"}
+  initContainers:
+  - name: init-php
+    image: eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce
+    command: ['sh', '-c','cp -Rp /pim /home/jenkins']
+    volumeMounts:
+      - name: workspace-volume
+        mountPath: /home/jenkins
+"""
+    ) {
         node("php-" + uuid) {
             container("php") {
                 body()
@@ -517,11 +536,27 @@ def withPhp(body) {
 def withGrunt(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
-    podTemplate(label: "grunt-" + uuid, containers: [
-        containerTemplate(name: "grunt", ttyEnabled: true, command: 'cat', image: "digitallyseamless/nodejs-bower-grunt", resourceRequestCpu: '750m', resourceRequestMemory: '2048Mi')
-    ], annotations: [
-        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
-    ]) {
+    podTemplate(label: "grunt-" + uuid,yaml: """
+apiVersion: v1
+kind: Pod
+metadata:
+  name: grunt-${uuid}
+spec:
+  containers:
+  - name: grunt
+    image: digitallyseamless/nodejs-bower-grunt
+    command: ['cat']
+    tty: true
+    resources:
+      requests: {cpu: "750m", memory: "2048Mi"} 
+  initContainers:
+  - name: init-php
+    image: eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce
+    command: ['sh', '-c','cp -Rp /pim /home/jenkins']
+    volumeMounts:
+    - name: workspace-volume
+      mountPath: /home/jenkins
+""") {
         node("grunt-" + uuid) {
             container("grunt") {
                 body()
@@ -535,12 +570,36 @@ def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
     def linesize = (dotsPerLine.isNumber())? dotsPerLine :"50"
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
-    podTemplate(label: "pubsub-" + uuid, containers: [
-        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/apache-php:php-5.6", resourceRequestCpu: '100m', alwaysPullImage: true, resourceRequestMemory: '200Mi'),
-        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0", alwaysPullImage: true, resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
-    ], annotations: [
-        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
-    ]) {
+    podTemplate(label: "pubsub-" + uuid, yaml: """
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pubsub-${uuid}
+spec:
+  containers:
+  - name: php
+    image: akeneo/apache-php:php-5.6
+    command: ['cat']
+    tty: true
+    resources:
+      requests: {cpu: "100m", memory: "200Mi"} 
+  - name: gcloud
+    image: eu.gcr.io/akeneo-ci/gcloud:1.1
+    command: ['cat']
+    tty: true
+    env:
+      - name: "PUBSUB_PROJECT_ID"
+        value: "akeneo-ci"
+    resources:
+      requests: {cpu: "100m", memory: "200Mi"} 
+  initContainers:
+  - name: init-php
+    image: eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce
+    command: ['sh', '-c','cp -Rp /pim /home/jenkins']
+    volumeMounts:
+      - name: workspace-volume
+        mountPath: /home/jenkins
+""") {
         node("pubsub-" + uuid) {
             def messages = []
 
