@@ -12,7 +12,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash - && \
     apt-get clean && \
     apt-get --yes --quiet autoremove --purge && \
     rm -rf  /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    npm install -g grunt-cli time-grunt jshint-stylish jscs-stylish grunt-template-jasmine-requirejs grunt-contrib-jshint grunt-contrib-jasmine grunt-recess grunt-jscs && \
+    #npm install -g grunt-cli time-grunt jshint-stylish jscs-stylish grunt-template-jasmine-requirejs grunt-contrib-jshint grunt-contrib-jasmine grunt-recess grunt-jscs && \
     a2enmod rewrite && \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
     curl -sSL https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \

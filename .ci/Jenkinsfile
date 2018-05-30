@@ -1,5 +1,5 @@
 #!groovy
-@Library("k8s-utils@1.4")
+@Library("k8s-utils@1.7")
 
 String[] editions = ["ce", "ceodm"]
 String[] features = ["features"]
@@ -172,7 +172,14 @@ stage("Test") {
                 container: tag,
                 script: "cd /var/www/pim && grunt",
                 junit: "junit_output.xml"
-            )},
+            )}*/,
+            "phpunit-integration": {queue(
+                condition: launchIntegrationTests.equals("yes"),
+                verbose: (verboseOutputs == "yes"),
+                container: tag,
+                containers: pimContainers(image: tag, selenium: false),
+                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/src /var/www/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+            )}/*,
             "phpunit-integration": {
                 if (launchIntegrationTests.equals("yes")) {
                     queue({
@@ -202,7 +209,7 @@ stage("Test") {
                 } else {
                     echo "Skipping integration test"
                 }
-            }/*,
+            },
             "behat-ce": {
                 if (launchBehatTests.equals("yes") && editions.contains("ce")) {
                     queue({
