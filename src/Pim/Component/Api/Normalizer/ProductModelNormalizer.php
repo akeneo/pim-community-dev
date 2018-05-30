@@ -14,7 +14,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * @author    Elodie Raposo <elodie.raposo@akeneo.com>
+ * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -47,28 +47,22 @@ class ProductModelNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($productModel, $format = null, array $context = [])
+    public function normalize($productModel, $format = null, array $context = []): array
     {
         $productModelStandard = $this->productModelNormalizer->normalize($productModel, 'standard', $context);
-        $identifier = $this->attributeRepository->getIdentifierCode();
 
-        if (isset($productModelStandard['values'][$identifier])) {
-            unset($productModelStandard['values'][$identifier]);
-        }
-
+        $mediaAttributeCodes = $this->attributeRepository->getMediaAttributeCodes();
         foreach ($productModelStandard['values'] as $attributeCode => $values) {
             // if $context['attributes'] is defined, returns only these attributes
             if (isset($context['attributes']) && !in_array($attributeCode, $context['attributes'])) {
                 unset($productModelStandard['values'][$attributeCode]);
+            } elseif (in_array($attributeCode, $mediaAttributeCodes)) {
+                $productModelStandard['values'][$attributeCode] = $this->addDownloadLink($values);
             }
         }
 
         if (empty($productModelStandard['values'])) {
             $productModelStandard['values'] = (object) $productModelStandard['values'];
-        }
-
-        if (empty($productModelStandard['associations'])) {
-            $productModelStandard['associations'] = (object) $productModelStandard['associations'];
         }
 
         return $productModelStandard;
@@ -77,8 +71,30 @@ class ProductModelNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductModelInterface && 'external_api' === $format;
+    }
+
+    /**
+     * @param array $values
+     *
+     * @return array
+     */
+    protected function addDownloadLink(array $values): array
+    {
+        foreach ($values as $index => $value) {
+            if (null !== $value['data']) {
+                $route = $this->router->generate(
+                    'pim_api_media_file_download',
+                    ['code' => $value['data']],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                );
+                $download = new Link('download', $route);
+                $values[$index]['_links'] = $download->toArray();
+            }
+        }
+
+        return $values;
     }
 }

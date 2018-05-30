@@ -321,14 +321,14 @@ class ProductModelController
             $locales = explode(',', $request->query->get('locales'));
             $this->queryParametersChecker->checkLocalesParameters($locales, $channel);
 
-            $normalizerOptions['locales'] = explode(',', $request->query->get('locales'));
+            $normalizerOptions['locales'] = $locales;
         }
 
         if ($request->query->has('attributes')) {
             $attributes = explode(',', $request->query->get('attributes'));
             $this->queryParametersChecker->checkAttributesParameters($attributes);
 
-            $normalizerOptions['attributes'] = explode(',', $request->query->get('attributes'));
+            $normalizerOptions['attributes'] = $attributes;
         }
 
         return $normalizerOptions;
@@ -351,8 +351,7 @@ class ProductModelController
         ?ChannelInterface $channel,
         array $queryParameters,
         array $normalizerOptions
-    )
-    {
+    ) {
         $from = isset($queryParameters['page']) ? ($queryParameters['page'] - 1) * $queryParameters['limit'] : 0;
 
         $pqb = $this->pqbFromSizeFactory->create(['limit' => (int) $queryParameters['limit'], 'from' => (int) $from]);
@@ -383,7 +382,7 @@ class ProductModelController
         try {
             $count = 'true' === $queryParameters['with_count'] ? $productModels->count() : null;
             $paginatedProductModels = $this->offsetPaginator->paginate(
-                $this->normalizer->normalize($productModels, 'external_api'),
+                $this->normalizer->normalize($productModels, 'external_api', $normalizerOptions),
                 $paginationParameters,
                 $count
             );
@@ -528,8 +527,7 @@ class ProductModelController
         ?ChannelInterface $channel,
         array $queryParameters,
         array $normalizerOptions
-    )
-    {
+    ) {
         $pqbOptions = ['limit' => (int) $queryParameters['limit']];
         $searchParameterCrypted = null;
         if (isset($queryParameters['search_after'])) {

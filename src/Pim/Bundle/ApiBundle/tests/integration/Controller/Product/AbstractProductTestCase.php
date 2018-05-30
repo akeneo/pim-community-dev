@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
+use PHPUnit\Framework\Assert;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
@@ -110,7 +112,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $expected = json_decode($expected, true);
 
         if (!isset($result['_embedded'])) {
-            \PHPUnit_Framework_Assert::fail($response->getContent());
+            Assert::fail($response->getContent());
         }
 
         foreach ($result['_embedded']['items'] as $index => $product) {

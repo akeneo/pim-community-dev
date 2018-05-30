@@ -132,7 +132,7 @@ services:
             - '@pim_serializer'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
-            - '@pim_api.checker.query_parameters'
+            - '@pim_api.checker.query_parameters_locale'
             - '%pim_api.configuration%'
 
     pim_api.controller.token:
@@ -146,7 +146,7 @@ services:
             - '@pim_catalog.query.product_query_builder_search_after_size_factory'
             - '@pim_serializer'
             - '@pim_api.repository.channel'
-            - '@pim_api.checker.query_parameters'
+            - '@pim_api.checker.query_parameters_product'
             - '@pim_api.repository.attribute'
             - '@pim_api.repository.product'
             - '@pim_api.pagination.offset_hal_paginator'
@@ -175,7 +175,7 @@ services:
             - '@pim_catalog.query.product_model_query_builder_search_after_size_factory'
             - '@pim_serializer'
             - '@pim_api.repository.channel'
-            - '@pim_api.checker.query_parameters'
+            - '@pim_api.checker.query_parameters_product_model'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.search_after_hal_paginator'
