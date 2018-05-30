@@ -111,3 +111,10 @@ spec:
         - { name: mysql, emptyDir: {medium: Memory}}
         - { name: mongo-data, emptyDir: {medium: Memory}}
       restartPolicy: Never
+      nodeSelector:
+        dedicated: 'consumer'
+      tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: 'consumer'
+          effect: "NoSchedule"
