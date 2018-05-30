@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Workflow\Normalizer\Indexing;
 
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalizes a product proposal to the "indexing_product_and_product_model_proposal" format.
+ * Normalizes a product model proposal to the "indexing_product_model_proposal" format.
  *
- * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author Philippe Mossière <philippe.mossiere@akeneo.com>
  */
-class ProductProposalNormalizer implements NormalizerInterface
+class ProductModelProposalNormalizer implements NormalizerInterface
 {
-    public const INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX = 'indexing_product_and_product_model_proposal';
+    public const INDEXING_FORMAT_PRODUCT_MODEL_PROPOSAL_INDEX = 'indexing_product_and_product_model_proposal';
     private const FIELD_DOCUMENT_TYPE = 'document_type';
 
     /** @var NormalizerInterface */
@@ -41,7 +41,7 @@ class ProductProposalNormalizer implements NormalizerInterface
     {
         $data = $this->propertiesNormalizer->normalize($productProposal, $format, $context);
 
-        $data[self::FIELD_DOCUMENT_TYPE] = ProductDraft::class;
+        $data[self::FIELD_DOCUMENT_TYPE] = ProductModelDraft::class;
 
         return $data;
     }
@@ -51,6 +51,6 @@ class ProductProposalNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ProductDraft && self::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX === $format;
+        return $data instanceof ProductModelDraft && self::INDEXING_FORMAT_PRODUCT_MODEL_PROPOSAL_INDEX === $format;
     }
 }

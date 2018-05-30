@@ -252,7 +252,9 @@ mappings:
             identifier:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
-            product_identifier:
+            document_type:
+                type: 'keyword'
+            entity_with_values_identifier:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
         dynamic_templates:
