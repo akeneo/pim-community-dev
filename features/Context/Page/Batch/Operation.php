@@ -22,7 +22,6 @@ class Operation extends Wizard
         'Add to groups'                    => 'Batch AddToGroups',
         'Set attributes requirements'      => 'Batch SetAttributeRequirements',
         'Add to categories'                => 'Batch Classify',
-        'Ajouter à des catégories'         => 'Batch Classify',
         'Move between categories'          => 'Batch Classify',
         'Remove from categories'           => 'Batch Classify',
         'Add to an existing product model' => 'Batch AddToExistingProductModel',
