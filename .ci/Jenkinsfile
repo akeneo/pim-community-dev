@@ -381,7 +381,7 @@ spec:
     command: ['cat']
     tty: true
   - name: gcloud
-    image: eu.gcr.io/akeneo-ci/gcloud:1.0
+    image: eu.gcr.io/akeneo-ci/gcloud:1.1
     command: ['cat']
     tty: true
     env:
