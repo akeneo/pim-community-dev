@@ -7,7 +7,7 @@ extensions:
         targetZone: mainMenu
         config:
             title: pim_enriched_entity.enriched_entity.title
-            iconModifier: iconEnrichedEntities
+            iconModifier: iconEnrichedEntity
             to: akeneo_enriched_entities_enriched_entities_index
 
     pim-enriched-entity-index-user-navigation:

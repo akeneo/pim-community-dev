@@ -1,6 +1,9 @@
 akeneo_enriched_entities_enriched_entities_index:
     path: '/enriched_entity'
 
+akeneo_enriched_entities_enriched_entities_edit:
+    path: '/enriched_entity/{identifier}'
+
 akeneo_enriched_entities_enriched_entities_index_rest:
     path: '/rest/enriched_entity'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.index:indexAction }

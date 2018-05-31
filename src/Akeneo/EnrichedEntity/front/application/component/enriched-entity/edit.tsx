@@ -1,30 +1,20 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import __ from 'akeneoenrichedentity/tools/translator';
-import Table from 'akeneoenrichedentity/application/component/enriched-entity/index/table';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
-import {redirectToEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/router';
-import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/index'
+import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit'
 
 interface StateProps {
+  enrichedEntity: EnrichedEntity|null;
   context: {
     locale: string;
   };
-
-  grid: {
-    enrichedEntities: EnrichedEntity[];
-    total: number;
-  };
 };
 
-interface DispatchProps {
-  events: {
-    onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void
-  }
-}
+interface DispatchProps {}
 
-const enrichedEntityListView = ({ grid, context, events }: StateProps & DispatchProps) => (
+const enrichedEntityEditView = ({context, enrichedEntity}: StateProps & DispatchProps) => (
   <div className="AknDefault-contentWithColumn">
     <div className="AknDefault-thirdColumnContainer">
       <div className="AknDefault-thirdColumn"></div>
@@ -50,7 +40,7 @@ const enrichedEntityListView = ({ grid, context, events }: StateProps & Dispatch
               </div>
               <div className="AknTitleContainer-line">
                 <div className="AknTitleContainer-title">
-                  {__('pim_enriched_entity.enriched_entity.index.grid.count', {count: grid.enrichedEntities.length})}
+                  {null !== enrichedEntity ? enrichedEntity.getLabel(context.locale) : ''}
                 </div>
                 <div className="AknTitleContainer-state"></div>
               </div>
@@ -67,18 +57,9 @@ const enrichedEntityListView = ({ grid, context, events }: StateProps & Dispatch
           <div className="AknTitleContainer-line">
             <div className="AknTitleContainer-navigation"></div>
           </div>
-          <div className="AknTitleContainer-line">
-            <div className="AknTitleContainer-search"></div>
-          </div>
         </header>
-        <div className="AknGrid--gallery">
-          <div className="AknGridContainer AknGridContainer--withCheckbox">
-            <Table
-              onRedirectToEnrichedEntity={events.onRedirectToEnrichedEntity}
-              locale={context.locale}
-              enrichedEntities={grid.enrichedEntities}
-            />
-          </div>
+        <div className="">
+
         </div>
       </div>
     </div>
@@ -86,25 +67,15 @@ const enrichedEntityListView = ({ grid, context, events }: StateProps & Dispatch
 );
 
 export default connect((state: State): StateProps => {
+  const enrichedEntity = undefined === state.enrichedEntity ? null : state.enrichedEntity;
   const locale = undefined === state.user || undefined === state.user.uiLocale ? '' : state.user.uiLocale;
-  const enrichedEntities = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
-  const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;
 
   return {
+    enrichedEntity,
     context: {
       locale
-    },
-    grid: {
-      enrichedEntities,
-      total
     }
   }
-}, (dispatch: any): DispatchProps => {
-  return {
-    events: {
-      onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => {
-        dispatch(redirectToEnrichedEntity(enrichedEntity));
-      }
-    }
-  }
-})(enrichedEntityListView);
+}, (): DispatchProps => {
+  return {}
+})(enrichedEntityEditView);

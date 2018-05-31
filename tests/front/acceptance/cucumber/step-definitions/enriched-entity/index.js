@@ -20,7 +20,7 @@ module.exports = async function (cucumber) {
     });
 
     this.page.on('request', request => {
-      if (request.url().includes('/rest/enriched_entity')) {
+      if ('http://pim.com//rest/enriched_entity' === request.url()) {
         debugger;
         answerJson(request, { items: enrichedEntityResponse, total: 1000 });
       }
@@ -30,7 +30,7 @@ module.exports = async function (cucumber) {
   When('the user ask for the enriched entity list', async function () {
     await this.page.evaluate(async () => {
       debugger;
-      const Controller = require('pim/controller/enriched-entity');
+      const Controller = require('pim/controller/enriched-entity/list');
       const controller = new Controller();
       controller.renderRoute()
       await document.getElementById('app').appendChild(controller.el);
@@ -52,6 +52,11 @@ module.exports = async function (cucumber) {
 
   Then('I get an enriched entity {string}', async function (identifier) {
     await this.page.waitForSelector(`.AknGrid-bodyRow[data-identifier="${identifier}"]`);
+  });
+
+  Then('there is no enriched entity', async function () {
+    const rows = await this.page.$$('.AknGrid-bodyRow');
+    assert.equal(rows.length, 0);
   });
 
   Then('the user ask for the next enriched entities', async function () {
