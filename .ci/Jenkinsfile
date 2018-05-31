@@ -60,6 +60,7 @@ stage("Build") {
                     sh "cp .ci/parameters.ci.yml app/config/parameters_test.yml"
                     sh "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "
 
+                    sh "gcloud config set gcloudignore/enabled false"
                     sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-orm ."
                 }
             })
@@ -88,6 +89,7 @@ stage("Build") {
                         sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://127.0.0.1:27017'@g\" app/config/pim_parameters.yml"
                         sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
 
+                        sh "gcloud config set gcloudignore/enabled false"
                         sh "gcloud container builds submit --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-odm ."
                     }
                 })
@@ -266,7 +268,7 @@ stage("Test") {
         clearTemplateNames()
         def uuid = UUID.randomUUID().toString()
         podTemplate(label: "cleanup-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
         ]) {
             node("cleanup-" + uuid) {
                 container("docker") {
@@ -285,7 +287,7 @@ def withBuildNode(body) {
     def uuid = UUID.randomUUID().toString()
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
         podTemplate(label: "build-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:v1.13", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
             containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6", envVars: [envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi'),
             containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8.9", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi')
         ]) {
@@ -312,9 +314,11 @@ spec:
     image: akeneo/apache-php:php-5.6
     command: ['cat']
     tty: true
+    resources:
+      requests: {cpu: "100m", memory: "200Mi"}
   initContainers:
   - name: init-php
-    image: eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce
+    image: eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-orm
     command: ['sh', '-c','cp -Rp /pim /home/jenkins']
     volumeMounts:
       - name: workspace-volume
@@ -335,20 +339,22 @@ def withGrunt(body) {
 apiVersion: v1
 kind: Pod
 metadata:
-  name: with-grunt-${uuid}
+  name: grunt-${uuid}
 spec:
   containers:
   - name: grunt
     image: digitallyseamless/nodejs-bower-grunt
     command: ['cat']
     tty: true
+    resources:
+      requests: {cpu: "750m", memory: "2048Mi"} 
   initContainers:
   - name: init-php
-    image: eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce
+    image: eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-orm
     command: ['sh', '-c','cp -Rp /pim /home/jenkins']
     volumeMounts:
-      - name: workspace-volume
-        mountPath: /home/jenkins
+    - name: workspace-volume
+      mountPath: /home/jenkins
 """ ) {
         node("grunt-" + uuid) {
             container("grunt") {
@@ -383,7 +389,7 @@ spec:
         value: "akeneo-ci"
   initContainers:
   - name: init-php
-    image: eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce
+    image: eu.gcr.io/akeneo-ci/pim-enterprise-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-orm
     command: ['sh', '-c','cp -Rp /pim /home/jenkins']
     volumeMounts:
       - name: workspace-volume
