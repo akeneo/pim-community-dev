@@ -13,12 +13,11 @@ class EnrichedEntitySpec extends ObjectBehavior
     public function let()
     {
         $identifier = EnrichedEntityIdentifier::fromString('designer');
-        $labelCollection = LabelCollection::fromArray([
+        $labelCollection = [
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur'
-        ]);
-
-        $this->beConstructedThrough('define', [$identifier, $labelCollection]);
+        ];
+        $this->beConstructedThrough('create', [$identifier, $labelCollection]);
     }
 
     public function it_is_initializable()
@@ -35,16 +34,16 @@ class EnrichedEntitySpec extends ObjectBehavior
     public function it_is_comparable_to_another_enriched_entity()
     {
         $sameIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $sameEnrichedEntity = EnrichedEntity::define(
+        $sameEnrichedEntity = EnrichedEntity::create(
             $sameIdentifier,
-            LabelCollection::fromArray([])
+            []
         );
         $this->equals($sameEnrichedEntity)->shouldReturn(true);
 
         $anotherIdentifier = EnrichedEntityIdentifier::fromString('same_identifier');
-        $sameEnrichedEntity = EnrichedEntity::define(
+        $sameEnrichedEntity = EnrichedEntity::create(
             $anotherIdentifier,
-            LabelCollection::fromArray([])
+            []
         );
         $this->equals($sameEnrichedEntity)->shouldReturn(false);
     }

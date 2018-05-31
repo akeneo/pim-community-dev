@@ -21,6 +21,11 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
         $this->enrichedEntities[(string) $enrichedEntity->getIdentifier()] = $enrichedEntity;
     }
 
+    public function update(EnrichedEntity $enrichedEntity): void
+    {
+        $this->enrichedEntities[(string) $enrichedEntity->getIdentifier()] = $enrichedEntity;
+    }
+
     public function findOneByIdentifier(EnrichedEntityIdentifier $identifier): ?EnrichedEntity
     {
         return $this->enrichedEntities[(string) $identifier] ?? null;

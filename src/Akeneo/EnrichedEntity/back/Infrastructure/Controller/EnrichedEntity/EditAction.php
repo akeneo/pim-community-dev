@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\Edit\EditEnrichedEntityHandler;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\back\Infrastructure\Validation\EnrichedEntity\RawDataValidator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -70,7 +70,7 @@ class EditAction
         $handler = $this->editEnrichedEntityHandler;
         $handler($identifier, $data);
 
-//        $enrichedEntity = EnrichedEntity::define(
+//        $enrichedEntity = EnrichedEntity::create(
 //            EnrichedEntityIdentifier::fromString(),
 //            LabelCollection::fromArray([])
 //        );

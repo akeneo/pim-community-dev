@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\Show\ShowEnrichedEntityHandler;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\ListEnrichedEntityHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -25,21 +25,21 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class IndexAction
 {
-    /** @var ShowEnrichedEntityHandler */
-    private $showEnrichedEntityHandler;
+    /** @var ListEnrichedEntityHandler */
+    private $listEnrichedEntityHandler;
 
     /** @var NormalizerInterface */
     private $enrichedEntityNormalizer;
 
     /**
-     * @param ShowEnrichedEntityHandler $showEnrichedEntityHandler
+     * @param ListEnrichedEntityHandler $listEnrichedEntityHandler
      * @param NormalizerInterface       $enrichedEntityNormalizer
      */
     public function __construct(
-        ShowEnrichedEntityHandler $showEnrichedEntityHandler,
+        ListEnrichedEntityHandler $listEnrichedEntityHandler,
         NormalizerInterface $enrichedEntityNormalizer
     ) {
-        $this->showEnrichedEntityHandler = $showEnrichedEntityHandler;
+        $this->listEnrichedEntityHandler = $listEnrichedEntityHandler;
         $this->enrichedEntityNormalizer  = $enrichedEntityNormalizer;
     }
 
@@ -50,7 +50,8 @@ class IndexAction
      */
     public function indexAction(): JsonResponse
     {
-        $enrichedEntities = $this->showEnrichedEntityHandler->findAll();
+        $handler = $this->listEnrichedEntityHandler;
+        $enrichedEntities = $handler();
         $normalizedEnrichedEntities = array_map(function ($enrichedEntity) {
             return $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api');
         }, $enrichedEntities);

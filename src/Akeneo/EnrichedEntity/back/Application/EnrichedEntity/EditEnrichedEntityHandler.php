@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Application\EnrichedEntity\Edit;
+namespace Akeneo\EnrichedEntity\back\Application\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
@@ -33,7 +33,11 @@ class EditEnrichedEntityHandler
         $this->enrichedEntityRepository = $enrichedEntityRepository;
     }
 
-    public function __invoke(string $rawIdentifier, array $data)
+    /**
+     * @param string $rawIdentifier
+     * @param array  $data
+     */
+    public function __invoke(string $rawIdentifier, array $data): void
     {
         $identifier = EnrichedEntityIdentifier::fromString($rawIdentifier);
         $enrichedEntityToEdit = $this->enrichedEntityRepository->findOneByIdentifier($identifier);

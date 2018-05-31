@@ -116,11 +116,11 @@ SQL;
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
 
-        $enrichedEntity = EnrichedEntity::define(
+        $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString(
                 $identifier
             ),
-            LabelCollection::fromArray($labels)
+            $labels
         );
 
         return $enrichedEntity;

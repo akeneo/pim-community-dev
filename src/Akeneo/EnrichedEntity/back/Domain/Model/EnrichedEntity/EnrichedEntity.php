@@ -20,8 +20,10 @@ class EnrichedEntity
         $this->labelCollection = $labelCollection;
     }
 
-    public static function define(EnrichedEntityIdentifier $identifier, LabelCollection $labelCollection): self
+    public static function create(EnrichedEntityIdentifier $identifier, array $rawLabelCollection): self
     {
+        $labelCollection = LabelCollection::fromArray($rawLabelCollection);
+
         return new self($identifier, $labelCollection);
     }
 
@@ -47,6 +49,6 @@ class EnrichedEntity
 
     public function updateLabels(LabelCollection $labels): EnrichedEntity
     {
-        return static::define($this->identifier, $labels);
+        return static::create($this->identifier, $labels);
     }
 }
