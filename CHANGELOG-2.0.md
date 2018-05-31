@@ -9,6 +9,7 @@
 - PIM-7364: category tree must use the catalog locale for mass edit, not the UI locale
 - PIM-6846: Fix bug on click in Display Attributes button on Product edit form
 - PIM-7389: Refactor the 'add to group' mass edit screen to allow big set of groups
+- PIM-7311: Fix the product grid filters list when a sort order is a huge number
 
 # 2.0.25 (2018-05-21)
 

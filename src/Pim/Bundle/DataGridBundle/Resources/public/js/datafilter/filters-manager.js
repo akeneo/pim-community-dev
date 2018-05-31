@@ -300,12 +300,13 @@ define(
             if (_.isEmpty(this.filters)) {
                 this.$el.hide();
             } else {
+                this._fillEmptyGroupFilters();
                 this.$el.append(fragment);
                 if (this.displayManageFilters()) {
                     this.$el.append(this.addButtonTemplate(
                         {
                             filters: this.filters,
-                            systemFilterGroup: __('system_filter_group')
+                            groups: this._getSortedGroups(),
                         }
                     ));
                 }
@@ -313,6 +314,52 @@ define(
             }
 
             return this;
+        },
+
+        /**
+         * Returns the groups belonging to the set of filters.
+         * It returns an array beginning with the system one (containing filters without group), then the groups
+         * having an sort order, and finally the groups without any sort order.
+         */
+        _getSortedGroups: function () {
+            let groups = [];
+            let unsortedGroups = [];
+            Object.values(this.filters).forEach((filter) => {
+                if (filter.group !== __('system_filter_group')) {
+                    if (filter.groupOrder !== null) {
+                        if (groups.filter((group) => {
+                            return group.label === filter.group;
+                        }).length === 0) {
+                            groups.push({label: filter.group, order: filter.groupOrder});
+                        }
+                    } else {
+                        if (unsortedGroups.indexOf(filter.group) <= -1) {
+                            unsortedGroups.push(filter.group);
+                        }
+                    }
+                }
+            });
+
+            return [__('system_filter_group')].concat(groups.sort((group1, group2) => {
+                return group1.order - group2.order
+            }).map((group) => {
+                return group.label;
+            })).concat(unsortedGroups);
+        },
+
+        /**
+         * Fills the filters having no group to put it into the "System" one.
+         * This method is just for display, it's not registered in database, as the "system" group does not exist.
+         */
+        _fillEmptyGroupFilters: function () {
+            Object.keys(this.filters).forEach((filterKey) => {
+                if (this.filters[filterKey].group === '' ||
+                    this.filters[filterKey].group === null ||
+                    this.filters[filterKey].group === undefined
+                ) {
+                    this.filters[filterKey].group = __('system_filter_group');
+                }
+            });
         },
 
         /**
