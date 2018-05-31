@@ -94,7 +94,7 @@ define(
                         cache: true,
                         data: this.select2Data.bind(this),
                         results: this.select2Results.bind(this),
-                        type: this.choiceVerb,
+                        type: this.choiceVerb
                     },
                     initSelection: this.select2InitSelection.bind(this),
                     placeholder: undefined !== this.config.placeholder ? __(this.config.placeholder) : ' '

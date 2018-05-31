@@ -48,6 +48,8 @@ define(
                 this.$el.html(this.template());
                 this.renderExtensions();
 
+                this.$el.find('input[name=group]').attr('disabled', this.readOnly ? 'disabled' : null);
+
                 return this;
             },
 

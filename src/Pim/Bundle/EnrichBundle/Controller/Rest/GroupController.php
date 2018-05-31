@@ -119,7 +119,7 @@ class GroupController
      *
      * @return JsonResponse
      */
-    public function searchAction(Request $request)
+    public function searchAction(Request $request): JsonResponse
     {
         $groups = $this->groupRepository->getOptions(
             $dataLocale = $this->userContext->getUiLocaleCode(),
@@ -130,7 +130,7 @@ class GroupController
 
         return new JsonResponse($groups);
     }
-    
+
     /**
      * @param string $identifier
      *
@@ -277,9 +277,9 @@ class GroupController
     /**
      * @param Request $request
      *
-     * @return Array
+     * @return array
      */
-    private function parseOptions(Request $request)
+    private function parseOptions(Request $request): array
     {
         $options = $request->get('options', []);
         $options['type'] = 'code';

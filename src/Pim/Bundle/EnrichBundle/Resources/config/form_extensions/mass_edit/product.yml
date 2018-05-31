@@ -83,7 +83,6 @@ extensions:
             fieldName: group
             label: pim_enrich.mass_edit.product.operation.add_to_group.field
             choiceRoute: pim_enrich_group_rest_search
-            choiceVerb: POST
 
     pim-mass-product-edit-configure-add-to-category:
         module: pim/mass-edit-form/product/category

@@ -7,10 +7,12 @@
 
 define(
     [
-        'pim/form/common/fields/simple-select-async',
+        'jquery',
+        'pim/form/common/fields/simple-select-async'
     ],
     function (
-        SimpleSelectAsync,
+        $,
+        SimpleSelectAsync
     ) {
         return SimpleSelectAsync.extend({
             /**
@@ -18,7 +20,7 @@ define(
              */
             getSelect2Options() {
                 const parent = SimpleSelectAsync.prototype.getSelect2Options.apply(this, arguments);
-                parent['multiple'] = true;
+                parent.multiple = true;
 
                 return parent;
             },
@@ -51,6 +53,6 @@ define(
                         callback(selecteds);
                     });
                 }
-            },
+            }
         });
     });
