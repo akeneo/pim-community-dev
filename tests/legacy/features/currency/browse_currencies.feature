@@ -9,21 +9,25 @@ Feature: Browse currencies
     And I am logged in as "Peter"
     And I am on the currencies grid
 
+  @transform-to-acceptance-front
   Scenario: Successfully view and sort currencies
     Then I should see the columns Code and Activated
     And the rows should be sorted ascending by Code
 
+  @transform-to-acceptance-front
   Scenario: Successfully filter currencies
     When I show the filter "activated"
     And I filter by "activated" with operator "" and value "yes"
     Then the grid should contain 2 elements
     Then I should see entity USD and EUR
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully search on code
     When I search "EU"
     Then the grid should contain 2 elements
     And I should see entities EUR and XEU
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully activate a currency
     Given I search "GBP"
     Then the grid should contain 1 element
@@ -33,6 +37,7 @@ Feature: Browse currencies
     Then the grid should contain 3 elements
     Then I should see currencies GBP, USD and EUR
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully deactivate a currency
     Given I activate the AED currency
     Given I filter by "activated" with operator "equals" and value "yes"
@@ -42,7 +47,7 @@ Feature: Browse currencies
     Then the grid should contain 2 element
     And I should see currency USD and EUR
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4488
+  @transform-to-acceptance-back @transform-to-acceptance-front @jira https://akeneo.atlassian.net/browse/PIM-4488
   Scenario: Cannot deactivate a currency linked to a channel
     Given I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 2 elements

@@ -8,6 +8,7 @@ Feature: Edit a category
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully edit a category
     Given I edit the "Sandals" category
     Then I should see the Code field
@@ -19,13 +20,14 @@ Feature: Edit a category
     And I should be on the category "sandals" edit page
     And I should see the text "My sandals"
 
+  @transform-to-acceptance-front
   Scenario: Go to category edit page from the category tree
     Given I am on the categories page
     And I select the "2014 collection" tree
     And I click on the "summer_collection" category
     Then I should be on the category "summer_collection" edit page
 
-  @skip-nav
+  @useless @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I edit the "winter_boots" category
     When I fill in the following information:
@@ -33,7 +35,7 @@ Feature: Edit a category
     And I click on the Akeneo logo
     Then I should see "You will lose changes to the category if you leave the page." in popup
 
-  @skip
+  @transform-to-acceptance-front @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I edit the "winter_boots" category
     When I fill in the following information:

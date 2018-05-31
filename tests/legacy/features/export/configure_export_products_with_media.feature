@@ -16,6 +16,7 @@ Feature: Configure export of products media
       | gothic_boot_3 | Gothic Boot C | 29.99     | 35   | black | %fixtures%/akeneo.jpg | boots  | winter_collection |
       | gothic_boot_4 | Gothic Boot D | 49.99     | 35   | black | %fixtures%/akeneo.jpg | boots  | winter_collection |
 
+  @job-through-ui-involved
   Scenario: Successfully export products in csv with media
     Given the following job "csv_footwear_product_export" configuration:
       | filePath   | %tmp%/product_export/product_export.csv |
@@ -33,6 +34,7 @@ Feature: Configure export of products media
       | files/gothic_boot_3/side_view/akeneo.jpg |
       | files/gothic_boot_4/side_view/akeneo.jpg |
 
+  @job-through-ui-involved
   Scenario: Successfully export products in csv without media
     Given the following job "csv_footwear_product_export" configuration:
       | filePath   | %tmp%/product_export/product_export.csv |
@@ -50,6 +52,7 @@ Feature: Configure export of products media
       | files/gothic_boot_3/side_view/akeneo.jpg |
       | files/gothic_boot_4/side_view/akeneo.jpg |
 
+  @job-through-ui-involved
   Scenario: Successfully export products in xlsx with media
     Given the following job "xlsx_product_export" configuration:
       | filePath   | %tmp%/product_export/product_export.xlsx                         |
@@ -68,6 +71,7 @@ Feature: Configure export of products media
       | files/gothic_boot_3/side_view/akeneo.jpg |
       | files/gothic_boot_4/side_view/akeneo.jpg |
 
+  @job-through-ui-involved
   Scenario: Successfully export products in xlsx without media
     Given the following job "xlsx_product_export" configuration:
       | filePath   | %tmp%/product_export/product_export.xlsx                         |

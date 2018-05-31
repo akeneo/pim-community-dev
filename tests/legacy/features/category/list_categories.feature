@@ -4,6 +4,7 @@ Feature: List categories
   As a product manager
   I need to be able to list existing categories
 
+  @transform-to-acceptance-front
   Scenario: Successfully display categories
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -13,6 +14,7 @@ Feature: List categories
     And I should see the text "Winter collection"
     And I should see the text "Please select a category on the left or Create a new category"
 
+  @dev-needed
   Scenario: Click on a category without the right permissions do nothing
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"

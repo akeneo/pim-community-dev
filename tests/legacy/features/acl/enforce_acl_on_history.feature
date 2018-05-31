@@ -1,4 +1,4 @@
-@javascript
+@javascript @dev-needed
 Feature: Enforce ACL on history
   In order to control who can view the history of different entities
   As an administrator

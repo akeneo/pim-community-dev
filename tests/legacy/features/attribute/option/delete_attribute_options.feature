@@ -28,6 +28,7 @@ Feature: Delete attribute options
       | bag_atelle_white | bag_atelle | bags   | default    | white |
       | lonely_bag       |            | bags   | default    | red   |
 
+  @transform-to-acceptance-back
   Scenario: Successfully delete attribute options if it is not used as variant axis
     Given I am logged in as "Julia"
     And I am on the "color" attribute page
@@ -37,6 +38,7 @@ Feature: Delete attribute options
     Then I should not see the text "Error during deletion of the attribute option"
     Then I should not see the text "red"
 
+  @transform-to-acceptance-back
   Scenario: Fail to remove an attribute option if it is used as variant axis
     Given I am logged in as "Julia"
     And I am on the "color" attribute page

@@ -1,4 +1,4 @@
-@javascript
+@javascript @dev-needed
 Feature: Define user rights
   In order to assign or remove some rights to a group of users
   As an administrator

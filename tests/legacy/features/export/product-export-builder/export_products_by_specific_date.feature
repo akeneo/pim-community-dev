@@ -4,6 +4,7 @@ Feature: Export products according to a date
   As a product manager
   I need to be able to export the products according to a date
 
+  @job-through-ui-involved
   Scenario: Export only the products updated by the UI since the last export
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_product_export" configuration:
@@ -37,6 +38,7 @@ Feature: Export products according to a date
 
       """
 
+  @job-through-ui-involved @transform-to-acceptance-back
   Scenario: Update the updated time condition field
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -50,7 +52,7 @@ Feature: Export products according to a date
     And I should see the text "There are unsaved changes"
     And I press "Save"
 
-  @skip
+  @skip @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Error management when the updated time condition field is updated
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -73,7 +75,7 @@ Feature: Export products according to a date
     Then I should be on the "csv_footwear_product_export" export job edit page
     And I should see a validation error "This value should be 0 or more."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6038
+  @job-through-ui-involved @jira https://akeneo.atlassian.net/browse/PIM-6038
   Scenario: Export only the products updated by an import since the last export
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_product_export" configuration:

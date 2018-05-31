@@ -4,6 +4,7 @@ Feature: Export locales
   As an administrator
   I need to be able to export locales in xlsx format
 
+  @job-through-ui-involved
   Scenario: Successfully export locales in xlsx with headers:
     Given an "footwear" catalog configuration
     And the following job "xlsx_footwear_locale_export" configuration:
@@ -225,6 +226,7 @@ Feature: Export locales
       | zh_TW       | 0         |
       | zu_ZA       | 0         |
 
+  @job-through-ui-involved
   Scenario: Successfully export locales in xlsx without headers:
     Given an "footwear" catalog configuration
     And the following job "xlsx_footwear_locale_export" configuration:

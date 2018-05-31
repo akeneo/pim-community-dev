@@ -8,6 +8,7 @@ Feature: Export families in XLSX
     Given an "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Successfully export families
     Given the following family:
       | code     | label-en_US | requirements-tablet | requirements-mobile |
@@ -28,6 +29,7 @@ Feature: Export families in XLSX
       | led_tvs  | LED TVs     | color,description,manufacturer,name,price,rating,side_view,size,sku                                        | name               | color,name,price,size,sku                       | color,description,name,price,rating,side_view,size,sku                    |                    |
       | tractors |             | sku                                                                                                        | sku                | sku                                             | sku                                                                       |                    |
 
+  @job-through-ui-involved
   Scenario: Successfully export families into several files
     Given the following job "xlsx_footwear_family_export" configuration:
       | filePath     | %tmp%/xlsx_footwear_family_export/xlsx_footwear_family_export.xlsx |

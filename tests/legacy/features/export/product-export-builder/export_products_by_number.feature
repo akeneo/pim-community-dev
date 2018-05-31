@@ -19,6 +19,7 @@ Feature: Export product by attribute number
       | CD-AEROSMITH     | 1       | CD     | 2014_collection | 10000           | 6            | 16           |
       | CD-BLACK-SABBATH | 1       | CD     | 2014_collection |                 | 1001         | 10           |
 
+  @job-through-ui-involved
   Scenario: Successfully export products filtered with empty, greater than and not empty filters on pim_catalog_number attribute
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |

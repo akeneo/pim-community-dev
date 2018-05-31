@@ -10,6 +10,7 @@ Feature: Create an attribute
     And I am on the attributes page
     And I create a "Text" attribute
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully create and validate a text attribute
     Given I fill in the following information:
       | Code            | short_description |
@@ -17,19 +18,21 @@ Feature: Create an attribute
     And I save the attribute
     Then I should see the flash message "Attribute successfully created"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Fail to create a text attribute with an invalid code
     Given I change the Code to an invalid value
     And I change the "Attribute group" to "Other"
     And I save the attribute
     Then I should see validation error "Attribute code may contain only letters, numbers and underscores"
-    
-  @info Codes 'id', associationTypes', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'associations', 'products', 'scope', 'treeId', 'values', 'entity_type' '*_groups' and '*_products' are reserved for grid filters and import/export column names
+
+  @transform-to-acceptance-back @info Codes 'id', associationTypes', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'associations', 'products', 'scope', 'treeId', 'values', 'entity_type' '*_groups' and '*_products' are reserved for grid filters and import/export column names
   Scenario: Fail to create a text attribute with a reserved code
     Given I change the "Code" to "categories"
     And I change the "Attribute group" to "Other"
     And I save the attribute
     Then I should see validation error "This code is not available"
 
+  @transform-to-acceptance-back
   Scenario: Fail to create a text attribute with an invalid validation regex
     Given I fill in the following information:
      | Code               | short_description  |
@@ -39,13 +42,14 @@ Feature: Create an attribute
     And I save the attribute
     Then I should see validation error "This regular expression is not valid."
 
+  @transform-to-acceptance-back
   Scenario: Fail to create a text attribute when the group is missing
     Given I fill in the following information:
       | Code | short_description |
     And I save the attribute
     Then I should see validation error "This value should not be blank."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6324
+  @transform-to-acceptance-front @jira https://akeneo.atlassian.net/browse/PIM-6324
   Scenario: Successfully switch to tab with an invalid field
     Given I visit the "Label translations" tab
     And I save the attribute

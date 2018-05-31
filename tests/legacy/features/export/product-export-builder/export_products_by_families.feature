@@ -8,7 +8,7 @@ Feature: Export products according to their families
     Given an "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5952
+  @transform-to-acceptance-front @jira https://akeneo.atlassian.net/browse/PIM-5952
   Scenario: Display default messages when no family are selected
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -16,7 +16,7 @@ Feature: Export products according to their families
     And I visit the "Content" tab
     Then the export content field "family" should contain "No condition on families"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6162
+  @transform-to-acceptance-front @jira https://akeneo.atlassian.net/browse/PIM-6162
   Scenario: View families already selected
     Given I am on the "csv_footwear_product_export" export job edit page
     When I visit the "Content" tab

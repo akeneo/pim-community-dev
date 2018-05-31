@@ -8,6 +8,7 @@ Feature: Export options in XSLX
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Successfully export options in XLSX
     Given the following job "xlsx_footwear_option_export" configuration:
       | filePath | %tmp%/option_export/option_export.xlsx |
@@ -55,6 +56,7 @@ Feature: Export options in XSLX
       | lace_color         | laces_brown | 2          | Brown       |
       | lace_color         | laces_white | 3          | White       |
 
+  @job-through-ui-involved
   Scenario: Successfully export groups in XLSX into several files
     Given the following job "xlsx_footwear_option_export" configuration:
       | filePath     | %tmp%/xlsx_footwear_option_export/xlsx_footwear_option_export.xlsx |

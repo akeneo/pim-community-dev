@@ -8,6 +8,7 @@ Feature: Export categories in XLSX
     Given an "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Successfully export categories
     Given the following job "xlsx_footwear_category_export" configuration:
       | filePath | %tmp%/category_export/category_export.xlsx |
@@ -22,6 +23,7 @@ Feature: Export categories in XLSX
       | winter_collection |
       | winter_boots      |
 
+  @job-through-ui-involved
   Scenario: Successfully export a hundred categories with a correct written number at the end of the export
     Given the following category:
       | code    | label-en_US | parent            |
@@ -133,6 +135,7 @@ Feature: Export categories in XLSX
     Then I should see the text "read 105"
     Then I should see the text "written 105"
 
+  @job-through-ui-involved
   Scenario: Successfully export categories into several files
     Given the following categories:
       | code          | label-en_US   | parent       |

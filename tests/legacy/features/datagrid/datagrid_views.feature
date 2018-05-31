@@ -13,10 +13,12 @@ Feature: Datagrid views
       | black-boots     | boots    | Black boots     |              |
     And I am logged in as "Mary"
 
+  @transform-to-acceptance-front
   Scenario: Successfully display the default view
     Given I am on the products grid
     Then I should see the text "Default view"
 
+  @transform-to-acceptance-front
   Scenario: Successfully create a new view
     Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Sneakers"
@@ -28,6 +30,7 @@ Feature: Datagrid views
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
+  @transform-to-acceptance-front
   Scenario: Successfully apply a view
     Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
@@ -37,6 +40,7 @@ Feature: Datagrid views
     Then I should be on the products page
     And I should see products black-boots, purple-sneakers and black-sneakers
 
+  @transform-to-acceptance-front @transform-to-integration
   Scenario: Successfully update a view
     Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
@@ -57,6 +61,7 @@ Feature: Datagrid views
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
+  @transform-to-acceptance-front
   Scenario: Successfully update columns of a view
     Given I am on the products grid
     When I filter by "family" with operator "in list" and value "Sneakers"
@@ -74,6 +79,7 @@ Feature: Datagrid views
     And I should see products purple-sneakers and black-sneakers
     And I should see the text "Nike"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully delete a view
     Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
@@ -92,6 +98,7 @@ Feature: Datagrid views
     But I should not see "Boots only"
     And I should see products black-boots, purple-sneakers and black-sneakers
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Can not delete nor save a view that is not mine
     Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
@@ -111,6 +118,7 @@ Feature: Datagrid views
     When I filter by "family" with operator "in list" and value "Sneakers"
     Then I should not be able to save the view
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully choose my default view
     Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Sneakers"
@@ -150,6 +158,7 @@ Feature: Datagrid views
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
+  @transform-to-acceptance-back
   Scenario: Successfully remove my default view
     Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Sneakers"
@@ -175,6 +184,7 @@ Feature: Datagrid views
     And I should see the text "Default view"
     And I should not see the text "Sneakers only"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully display values in grid when using a custom default view
     Given I am on the products grid
     And I display the columns SKU, Name, Family and Manufacturer
@@ -209,6 +219,7 @@ Feature: Datagrid views
       | Name   | Black boots |
       | Family | Boots       |
 
+  @transform-to-acceptance-front
   Scenario: Successfully change grid channel
     Given I am on the products grid
     Then I should see the text "Tablet"
@@ -220,6 +231,7 @@ Feature: Datagrid views
     And I should see the text "Mobile only"
     And I should see the text "Mobile"
 
+  @transform-to-acceptance-front
   Scenario: Successfully display the default view if my custom default view has been deleted
     Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
@@ -253,11 +265,12 @@ Feature: Datagrid views
     And I should see the text "Default view"
     But I should not see the text "Boots only"
 
-  @ce
+  @transform-to-acceptance-front @ce
   Scenario: Don't display view type switcher if there is only one view type
     Given I am on the products page
     Then I should not see the text "Views"
 
+  @transform-to-acceptance-front
   Scenario: Successfully display filter values when refreshing a saved view
     Given I am on the products page
     And I filter by "family" with operator "is empty" and value ""

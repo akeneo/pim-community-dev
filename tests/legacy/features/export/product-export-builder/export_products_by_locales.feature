@@ -11,7 +11,7 @@ Feature: Export products according to a locale policy
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
     And I am logged in as "Julia"
 
-  @ce
+  @ce @transform-to-acceptance-front
   Scenario: Selecting a channel from the export profile updates the locale choices
     Given the following job "csv_product_export" configuration:
       | filters | {"structure": {"locales": ["fr_FR"], "scope": "mobile"},"data":[{"field":"completeness","operator":"=","value":"100"}]} |

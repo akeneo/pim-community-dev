@@ -19,6 +19,7 @@ Feature: Export product by attribute date
       | CD-AEROSMITH     | 1       | CD     | 2014_collection | 2015-01-09      |  2013-06-15   |               |
       | CD-BLACK-SABBATH | 1       | CD     | 2014_collection | 2016-08-13      |  2030-07-12   | 2010-03-18    |
 
+  @job-through-ui-involved
   Scenario: Successfully export products filtered with empty, greater than and between filters on date attributes
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |

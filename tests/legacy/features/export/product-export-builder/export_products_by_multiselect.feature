@@ -18,6 +18,7 @@ Feature: Export products according to multi select values
     And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/footwear_product_export.csv |
 
+  @job-through-ui-involved
   Scenario: Export only the product values with selected options
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
@@ -37,6 +38,7 @@ Feature: Export products according to multi select values
       BOOT-6;;;;1;boots;;;;"The boot 6";;;;;;;cold
       """
 
+  @job-through-ui-involved
   Scenario: Export all the product values when no option is provided with operator IN LIST
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
@@ -60,6 +62,7 @@ Feature: Export products according to multi select values
       BOOT-7;;;;1;boots;;;;"The boot 7";;;;;;;
       """
 
+  @transform-to-acceptance-front
   Scenario: Successfully remove multi select filter
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page

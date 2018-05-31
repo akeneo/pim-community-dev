@@ -8,6 +8,7 @@ Feature: Edit an attribute group
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully edit an attribute group
     Given I am on the "sizes" attribute group page
     Then I should see the Code field
@@ -17,7 +18,7 @@ Feature: Edit an attribute group
     And I press the "Save" button
     Then I should see the text "My sizes"
 
-  @skip-nav
+  @useless @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "media" attribute group page
     When I fill in the following information:
@@ -25,14 +26,14 @@ Feature: Edit an attribute group
     And I click on the Akeneo logo
     Then I should see "You will lose changes to the attribute group if you leave this page." in popup
 
-  @skip
+  @transform-to-acceptance-front @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "media" attribute group page
     When I fill in the following information:
       | English (United States) | My media |
     Then I should see the text "There are unsaved changes."
 
-  @skip-pef @javascript @jira https://akeneo.atlassian.net/browse/PIM-6434
+  @transform-to-acceptance-front @skip-pef @javascript @jira https://akeneo.atlassian.net/browse/PIM-6434
   Scenario: Successfully display attribute groups in the right order
     Given the following CSV file to import:
       """

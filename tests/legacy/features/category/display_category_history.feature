@@ -4,7 +4,7 @@ Feature: Display the category history
   As a product manager
   I need to have access to a category history
 
-  @skip-doc @ce
+  @skip-doc @ce @dev-needed @transform-to-acceptance-back @transform-to-acceptance-front @info We are not sure about its doabilty
   Scenario: Display category updates
     Given the "default" catalog configuration
     And I am logged in as "Julia"
@@ -33,7 +33,7 @@ Feature: Display the category history
       | 1       | label-en_US | Book category    | now  |
       | 2       | label-en_US | My book category | now  |
 
-  @ce @jira https://akeneo.atlassian.net/browse/PIM-7279
+  @essential @ce @jira https://akeneo.atlassian.net/browse/PIM-7279
   Scenario: Prevent javascript execution from history tab while updating category label translations
     Given a "default" catalog configuration
     And I am logged in as "Julia"

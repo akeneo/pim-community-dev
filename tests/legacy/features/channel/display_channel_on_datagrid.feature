@@ -7,7 +7,7 @@ Feature: Display channels on the datagrid
   Background:
     Given a "footwear" catalog configuration
 
-  @ce
+  @ce @transform-to-acceptance-front
   Scenario: Display code of channel if no translation is available for the UI language
     Given I am logged in as "Julia"
     When I am on the products grid

@@ -17,6 +17,7 @@ Feature: Export products according to image media attribute
       | SNKRS-1S   | 1       | rangers | 2014_collection |                           | %fixtures%/akeneo2.txt |
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Successfully export products which contains partial image value
     Given the following job "ecommerce_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |

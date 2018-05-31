@@ -15,18 +15,21 @@ Feature: Attribute group creation
       | red  | colors | pim_catalog_text |
     And I am logged in as "Julia"
 
+  @transform-to-acceptance-front @transform-to-acceptance-back
   Scenario: Successfully delete an attribute group
     Given I am on the "sizes" attribute group page
     When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should see the flash message "Attribute group successfully removed"
 
+  @transform-to-acceptance-front @transform-to-acceptance-back
   Scenario: Fail to delete an attribute group that contains attributes
     Given I am on the "colors" attribute group page
     When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should see the flash message "Attribute group containing attributes cannot be removed. Please remove its attributes prior to delete it."
 
+  @transform-to-acceptance-back
   Scenario: Fail to delete the attribute "other"
     Given I am on the "other" attribute group page
     When I press the secondary action "Delete"

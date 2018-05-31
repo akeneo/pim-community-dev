@@ -10,6 +10,7 @@ Feature: Export products with media
       | filePath | %tmp%/product_export/product_export.csv |
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Successfully export products with media
     Given the following products:
       | sku      | family   | categories        | price          | size | color    | name-en_US |
@@ -37,7 +38,7 @@ Feature: Export products with media
       | files/SNKRS-1C/side_view/SNKRS-1C-s.png |
       | files/SNKRS-1C/top_view/SNKRS-1C-t.png  |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3785
+  @job-through-ui-involved @jira https://akeneo.atlassian.net/browse/PIM-3785
   Scenario: Successfully export products with nullable media
     Given the following attributes:
       | code    | label-en_US | type              | allowed_extensions | group |
@@ -81,7 +82,7 @@ Feature: Export products with media
     And export directory of "csv_footwear_product_export" should contain the following media:
       | files/FLIPFLOP-1R/picture/akeneo.jpg |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5844
+  @job-through-ui-involved @jira https://akeneo.atlassian.net/browse/PIM-5844
   Scenario: Successfully export products with media with identifier containing slash
     Given the following products:
       | sku       | family   | categories        | price          | size | color | name-en_US |

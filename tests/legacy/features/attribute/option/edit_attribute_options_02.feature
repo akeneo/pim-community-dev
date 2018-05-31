@@ -16,6 +16,7 @@ Feature: Edit attribute options
     And I visit the "Options" tab
     Then I should see the flash message "Attribute successfully created"
 
+  @transform-to-acceptance-front
   Scenario: Successfully cancel while editing some attribute options
     Given I check the "Sort automatically options by alphabetical order" switch
     And I create the following attribute options:
@@ -31,7 +32,7 @@ Feature: Edit attribute options
     Then I should see the text "green"
     But I should not see "yellow"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6002
+  @transform-to-acceptance-back @jira https://akeneo.atlassian.net/browse/PIM-6002
   Scenario: Successfully edit an attribute option value containing a quote
     Given I check the "Sort automatically options by alphabetical order" switch
     And I create the following attribute options:
@@ -44,6 +45,7 @@ Feature: Edit attribute options
     And I edit the attribute option "red" to turn it to "red" and cancel
     Then I should not see the text "r\"ed"
 
+  @transform-to-acceptance-back
   Scenario: Edit an option value of an attribute of type "Multi select" is successfully impacted to the products
     Given the following attribute:
       | code   | label-en_US | type                    | allowed_extensions | group | localizable | available_locales |

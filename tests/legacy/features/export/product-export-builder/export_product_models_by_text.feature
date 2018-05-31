@@ -8,6 +8,7 @@ Feature: Export product models according to text attribute filter
     Given a "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Export product models in csv using the export builder
     When I am on the "csv_product_model_export" export job edit page
     And I visit the "Content" tab

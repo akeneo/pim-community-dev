@@ -12,6 +12,7 @@ Feature: Remove a category
       | caterpillar_2 | winter_boots,2014_collection      |
     And I am logged in as "Julia"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Remove a simple category
     Given I am on the "sandals" category page
     When I press the secondary action "Delete"
@@ -20,7 +21,7 @@ Feature: Remove a category
     And I should see the flash message "Category successfully removed"
     And I should not see the "Sandals" category under the "summer_collection" category
 
-  @skip
+  @skip @transform-to-acceptance-back @essential
   Scenario: Remove a category with sub-categories
     Given I am on the "winter_collection" category page
     When I press the secondary action "Delete"
@@ -29,7 +30,7 @@ Feature: Remove a category
     And I should see the flash message "Category successfully removed"
     And I should not see "Winter collection"
 
-  @unstable
+  @unstable @dev-needed @transform-to-acceptance-back @info We are not sure about its doabilty
   Scenario: Remove a category with products linked
     Given I am on the "winter_boots" category page
     When I press the secondary action "Delete"
@@ -45,7 +46,7 @@ Feature: Remove a category
       | version | property   | value           |
       | 2       | categories | 2014_collection |
 
-  @skip
+  @skip @transform-to-acceptance-back @essential
   Scenario: Remove a category with sub-categories and products linked
     Given I am on the "winter_collection" category page
     When I press the secondary action "Delete"
@@ -55,6 +56,7 @@ Feature: Remove a category
     Then I should not see "Winter collection"
     And I should not see "Winter boots"
 
+  @transform-to-acceptance-back
   Scenario: Remove a category tree
     Given the following category:
       | code            | parent | label-en_US     |
@@ -66,13 +68,14 @@ Feature: Remove a category
     Then I should be redirected on the category tree creation page
     And I should see the flash message "Tree successfully removed"
 
+  @transform-to-acceptance-front
   Scenario: Cancel the removal of a category
     Given I am on the "sandals" category page
     When I press the secondary action "Delete"
     And I cancel the deletion
     Then I should see the "sandals" category under the "summer_collection" category
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4227
+  @transform-to-acceptance-back @jira https://akeneo.atlassian.net/browse/PIM-4227
   Scenario: Remove a category with linked products limit exceeded
     Given the following products:
       | sku            | categories        |
@@ -103,6 +106,7 @@ Feature: Remove a category
       | title   | Delete confirmation                                                                        |
       | content | This category contains more products than allowed for this operation (20 products maximum) |
 
+  @transform-to-acceptance-back
   Scenario: Remove a category with linked products limit exceeded including sub-categories
     Given the following products:
       | sku            | categories   |

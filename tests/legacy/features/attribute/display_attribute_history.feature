@@ -8,6 +8,7 @@ Feature: Display the attribute history
     Given the "default" catalog configuration
     And I am logged in as "Julia"
 
+  @dev-needed @transform-to-acceptance-back @transform-to-acceptance-front @info We are not sure about its doabilty
   Scenario: Successfully edit a attribute and see the history
     Given I am on the attributes page
     And I create a "Simple select" attribute
@@ -35,7 +36,7 @@ Feature: Display the attribute history
     When I visit the "History" tab
     Then there should be 3 updates
 
-  @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
+  @essential @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
   Scenario: Prevent javascript execution from history tab while updating attribute label translations
     Given the following attribute:
       | label-en_US | type             | useable_as_grid_filter | localizable | group | code |

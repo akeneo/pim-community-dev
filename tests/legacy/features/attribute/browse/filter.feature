@@ -9,6 +9,7 @@ Feature: Filter attributes
     And I am logged in as "Julia"
     And I am on the attributes grid
 
+  @transform-to-integration @transform-to-acceptance-front
   Scenario Outline: Successfully filter attributes
     When I show the filter "<filter>"
     And I filter by "<filter>" with operator "<operator>" and value "<value>"
@@ -24,6 +25,7 @@ Feature: Filter attributes
       | localizable   |          | no     | Comment, Volume, SKU, Manufacturer, Weather conditions, Price, Rating, Side view, Top view, Size, Color, Lace color, Length and Number in stock, Destocking date, Handmade, Heel color, Sole color, Sole fabric, Rate of sale, Weight and Attribute 123    | 22    |
       | group         | in list  | Colors | Color and Lace color                                                                                                                                                                                                                                       | 2     |
 
+  @transform-to-integration
   Scenario: Successfully search on label
     When I search "m"
     Then the grid should contain 6 elements

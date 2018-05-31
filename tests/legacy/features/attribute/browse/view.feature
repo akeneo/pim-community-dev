@@ -9,14 +9,14 @@ Feature: View attributes
     And I am logged in as "Julia"
     And I am on the attributes page
 
-  @ce
+  @ce @transform-to-acceptance-back
   Scenario: Successfully view attributes
     Then the grid should contain 25 elements
     And I should see the columns Label, Type, Group, Scopable, Localizable
     And I should see attributes SKU, Name, Manufacturer, Volume, Description, Price, Rating, Side view, Top view, Size, Color, Lace color, Length, Number in stock, Heel color, Sole color, Sole fabric, Lace fabric, Cap color, Rate of sale, Rear view and Attribute 123
     And the rows should be sorted ascending by Label
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6923
+  @transform-to-integration @jira https://akeneo.atlassian.net/browse/PIM-6923
   Scenario: Successfully search attributes and empty field
     Then the grid should contain 25 elements
     When I search "me"

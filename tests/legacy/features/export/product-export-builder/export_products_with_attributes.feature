@@ -19,6 +19,7 @@ Feature: Export products with only selected attributes
       | BOOT-2 | boots  | The boot 2 | dry                | 2014_collection |
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Export products by selecting multiple attribute in a specific order
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -53,6 +54,7 @@ Feature: Export products with only selected attributes
     BOOT-2;;1;boots;;dry;
     """
 
+  @job-through-ui-involved
   Scenario: Export products by selecting no attributes
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
@@ -72,7 +74,7 @@ Feature: Export products with only selected attributes
     BOOT-2;;;;1;boots;;;;"The boot 2";;;;;;;dry
     """
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5994
+  @job-through-ui-involved @jira https://akeneo.atlassian.net/browse/PIM-5994
   Scenario: Export products by selecting multiple attribute with similar code using the UI in a specific order
     Given the following products:
       | sku    | family | name-en_US | weather_conditions | categories      | size |

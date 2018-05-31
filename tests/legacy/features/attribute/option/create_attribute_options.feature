@@ -8,6 +8,7 @@ Feature: Create attribute options
     Given the "default" catalog configuration
     And I am logged in as "Julia"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully create some attribute options
     Given I am on the attributes page
     And I create a "Simple select" attribute
@@ -28,7 +29,7 @@ Feature: Create attribute options
     Then I should see the flash message "Attribute successfully updated"
     And I should see the text "green"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6033
+  @essential @dev-needed @jira https://akeneo.atlassian.net/browse/PIM-6033
   Scenario: Successfully create several empty attribute options but save only filled options
     Given the following attributes:
       | code | type                     | localizable | scopable | group |
@@ -48,7 +49,7 @@ Feature: Create attribute options
     And I save the attribute
     Then the Options section should contain 4 options
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6322
+  @transform-to-acceptance-front @transform-to-acceptance-back @jira https://akeneo.atlassian.net/browse/PIM-6322
   Scenario: Successfully display validation message for empty attribute option code
     Given the following attributes:
       | code | type                     | localizable | scopable | group |

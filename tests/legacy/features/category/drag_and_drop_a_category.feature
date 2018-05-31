@@ -8,6 +8,7 @@ Feature: Drag and drop a category
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Move category to a different parent in the tree
     Given I am on the categories page
     And I select the "2014 collection" tree

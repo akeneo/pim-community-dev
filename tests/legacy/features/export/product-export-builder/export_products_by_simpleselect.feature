@@ -14,6 +14,7 @@ Feature: Export products according to simple select values
     And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/footwear_product_export.csv |
 
+  @job-through-ui-involved
   Scenario: Export only the product values with selected option
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
@@ -32,6 +33,7 @@ Feature: Export products according to simple select values
       BOOT-2;;;;1;boots;;;Converse;"The boot 2";;;;;;;
       """
 
+  @job-through-ui-involved
   Scenario: Export all the product values when no option is provided with operator IN LIST
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
@@ -51,6 +53,7 @@ Feature: Export products according to simple select values
      BOOT-3;;;;1;boots;;;;"The boot 3";;;;;;;
      """
 
+  @job-through-ui-involved
   Scenario: Don't raise error if an option isn't available anymore on the product export builder
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
@@ -76,6 +79,7 @@ Feature: Export products according to simple select values
       BOOT-2;;;;1;boots;;;Converse;"The boot 2";;;;;;;
       """
 
+  @job-through-ui-involved
   Scenario: Successfully remove simple select filter
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page

@@ -18,6 +18,7 @@ Feature: Export products according to simple select reference data values
     And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/footwear_product_export.csv |
 
+  @job-through-ui-involved
   Scenario: Export only the product values with selected reference data values
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
@@ -36,6 +37,7 @@ Feature: Export products according to simple select reference data values
       HEEL-2;;;;1;heels;;green;;"The heel 2";;;;;;;
       """
 
+  @job-through-ui-involved
   Scenario: Export all the product values when no reference data is provided
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page

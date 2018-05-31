@@ -11,6 +11,7 @@ Feature: Import attribute options
       | fruit | pim_catalog_simpleselect | 0           | 0        | other |
     And I am logged in as "Julia"
 
+  @job-through-ui-involved @essential
   Scenario: Successfully show default translation when blank text
     Given the following CSV file to import:
       """
@@ -34,7 +35,7 @@ Feature: Import attribute options
     And I change the "Manufacturer" to "[Converse]"
     Then I should see the text "[Converse]"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-7237
+  @transform-to-acceptance-back @jira https://akeneo.atlassian.net/browse/PIM-7237
   Scenario: Successfully create new attribute options with duplicate options codes for the same attribute
     Given the following CSV file to import:
       """

@@ -11,6 +11,7 @@ Feature: Display the attribute group history
       | label-en_US | group | type             | code        |
       | Description | other | pim_catalog_text | description |
 
+  @dev-needed @transform-to-acceptance-back @transform-to-acceptance-front @info We are not sure about its doabilty
   Scenario: Successfully edit a group and see the history
     Given I am on the attribute group creation page
     And I change the Code to "Technical"
@@ -59,7 +60,7 @@ Feature: Display the attribute group history
       | 3       | attributes  | sku,description    | now  |
       | 4       | attributes  | sku                | now  |
 
-  @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
+  @essential @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
   Scenario: Prevent javascript execution from history tab while updating attribute group label translations
     Given I am on the "other" attribute group page
     And I fill in the following information:

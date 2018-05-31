@@ -4,6 +4,7 @@ Feature: Display the channel history
   As an administrator
   I need to have access to a channel history
 
+  @dev-needed @transform-to-acceptance-back @transform-to-acceptance-front @info We are not sure about its doabilty
   Scenario: Successfully edit a channel and see the history
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
@@ -26,7 +27,7 @@ Feature: Display the channel history
       | 1       | currencies  | EUR             | now  |
       | 1       | locales     | fr_FR           | now  |
 
-  @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
+  @essential @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
   Scenario: Prevent javascript execution from history tab while updating channel label translations
     Given a "default" catalog configuration
     And I am logged in as "Peter"

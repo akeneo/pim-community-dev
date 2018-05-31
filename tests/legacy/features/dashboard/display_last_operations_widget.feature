@@ -10,6 +10,7 @@ Feature: Display last operations widget
       | filePath | %tmp%/category_export/category_export.csv |
     And I am logged in as "Mary"
 
+  @transform-to-acceptance-front
   Scenario: Display last operations widget
     When I am on the dashboard page
     Then I should see the text "Last operations"
@@ -21,6 +22,7 @@ Feature: Display last operations widget
     Then I should see the text "Last operations"
     Then I should see the text "CSV footwear category export"
 
+  @transform-to-acceptance-front
   Scenario: Show last operations list
     When I am on the "csv_footwear_category_export" export job page
     And I launch the export job
@@ -30,6 +32,7 @@ Feature: Display last operations widget
     When I am on the job tracker page
     And I should see the columns Job, Type, Started at, Status and Warnings
 
+  @transform-to-acceptance-front
   Scenario: Show job tracker
     And I am on the "csv_footwear_category_export" export job page
     And I launch the export job

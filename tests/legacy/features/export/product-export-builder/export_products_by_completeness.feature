@@ -26,6 +26,7 @@ Feature: Export products according to a completeness policy
       | filters  | {"structure": {"locales": ["fr_FR", "en_US"], "scope": "ecommerce"},"data":[]} |
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Export products with operator ALL on completeness
     Given I am on the "csv_product_export" export job edit page
     And I visit the "Content" tab

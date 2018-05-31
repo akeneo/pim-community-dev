@@ -4,6 +4,7 @@ Feature: Export attribute groups
   As an administrator
   I need to be able to export attribute groups in xlsx format
 
+  @job-through-ui-involved
   Scenario: Successfully export attribute groups in xlsx with headers:
     Given an "footwear" catalog configuration
     And the following job "xlsx_footwear_attribute_group_export" configuration:
@@ -21,6 +22,7 @@ Feature: Export attribute groups
       | media     | 5           | side_view,top_view,rear_view                                                                                 | Media               |
       | other     | 100         | comment,number_in_stock,destocking_date,handmade,heel_color,sole_color,cap_color,sole_fabric,lace_fabric,123 | Other               |
 
+  @job-through-ui-involved
   Scenario: Successfully export attribute groups in xlsx without headers:
     Given an "footwear" catalog configuration
     And the following job "xlsx_footwear_attribute_group_export" configuration:

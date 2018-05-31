@@ -4,6 +4,7 @@ Feature: Create a channel
   As an administrator
   I need to be able to create a channel
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully create a channel
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
@@ -20,7 +21,7 @@ Feature: Create a channel
     Then I should not see the text "There are unsaved changes."
     And I should see the text "Bar Bar"
 
-  @skip 
+  @transform-to-acceptance-back @transform-to-acceptance-front @skip
   Scenario: Successfully display validation error when code is not set
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
@@ -33,7 +34,7 @@ Feature: Create a channel
     And I press the "Save" button
     Then I should see the text "This value should not be blank."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6381
+  @transform-to-acceptance-front @jira https://akeneo.atlassian.net/browse/PIM-6381
   Scenario: Do not show delete button when creating channel
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"

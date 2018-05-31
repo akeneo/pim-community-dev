@@ -4,6 +4,7 @@ Feature: Show localized date in export builder
   As a product manager
   I need to be able to show localized dates in the export builder
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Show localized date for an attribute date
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_product_export" configuration:
@@ -27,7 +28,7 @@ Feature: Show localized date in export builder
     Then I should see the text "Inférieur à"
     And the field filter-value-start should contain "13/08/2016"
 
-  @skip-nav
+  @skip-nav @transform-to-acceptance-back
   Scenario: Show localized date for updated since field
     Given a "footwear" catalog configuration
     And the following job "csv_footwear_product_export" configuration:

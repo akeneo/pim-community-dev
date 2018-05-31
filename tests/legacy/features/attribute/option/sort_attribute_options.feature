@@ -4,6 +4,7 @@ Feature: Sort attribute options
   As a product manager
   I need to sort options for attributes of type "Multi select" and "Simple select"
 
+  @transform-to-acceptance-front
   Scenario: Auto sorting disable reorder
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -17,6 +18,7 @@ Feature: Sort attribute options
     Then I should see reorder handles
     And the attribute options order should be white, black, blue, maroon, saddle, greem, red, charcoal
 
+  @transform-to-acceptance-front
   Scenario: Display attribute options ordered in PEF
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -36,6 +38,7 @@ Feature: Sort attribute options
     When I visit the "Colors" group
     Then I should see the ordered choices Black, Blue, Charcoal, Greem, Maroon, Red, Saddle, White in Color
 
+  @transform-to-acceptance-front
   Scenario: Display attribute options ordered in PEF when there are options without label
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -59,6 +62,7 @@ Feature: Sort attribute options
     When I visit the "Colors" group
     Then I should see the ordered choices [pink], [yellow], Black, Blue, Charcoal, Greem, Maroon, Red, Saddle, White in Color
 
+  @transform-to-acceptance-front
   Scenario: Display attribute options ordered in a product variant creation (even twice)
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Julia"

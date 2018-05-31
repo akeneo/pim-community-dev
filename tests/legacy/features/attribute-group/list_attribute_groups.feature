@@ -4,6 +4,7 @@ Feature: List attribute groups
   As a product manager
   I need to be able to list existing attribute groups
 
+  @useless
   Scenario: Successfully display attribute groups
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -11,6 +12,7 @@ Feature: List attribute groups
     Then I should see the text "Product information"
     Then I should see the text "Marketing"
 
+  @transform-to-acceptance-front
   Scenario: Order attribute group choices on the attribute creation page
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -42,7 +44,7 @@ Feature: List attribute groups
       Sizes,Marketing,Product information,Colors,Other,Media
       """
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6436
+  @transform-to-acceptance-front @jira https://akeneo.atlassian.net/browse/PIM-6436
   Scenario: Sucessfully display the attribute groups in the PEF without limit
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -104,7 +106,7 @@ Feature: List attribute groups
     And I should see the text "[attribute_group_22]"
     And the order of groups should be "[attribute_group_1], [attribute_group_2], [attribute_group_4], [attribute_group_5], [attribute_group_6], [attribute_group_7], [attribute_group_8], [attribute_group_9], [attribute_group_10], [attribute_group_11], [attribute_group_12], [attribute_group_14], [attribute_group_15], [attribute_group_16], [attribute_group_17], [attribute_group_18], [attribute_group_19], [attribute_group_21], [attribute_group_22], [attribute_group_3], [attribute_group_20], [attribute_group_13]"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-7338
+  @transform-to-acceptance-front @jira https://akeneo.atlassian.net/browse/PIM-7338
   Scenario: Successfully display attribute group labels translated from the catalog locale
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"

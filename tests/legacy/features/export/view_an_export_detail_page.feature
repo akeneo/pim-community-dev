@@ -8,6 +8,7 @@ Feature: View an export detail page
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @transform-to-acceptance-front
   Scenario: Successfully display the export information
     Given I am on the exports grid
     When I click on the "CSV footwear product export" row

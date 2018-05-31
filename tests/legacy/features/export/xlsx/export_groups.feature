@@ -8,6 +8,7 @@ Feature: Export groups in XLSX
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Successfully export groups in xlsx with headers
     Given the following job "xlsx_group_export" configuration:
       | filePath | %tmp%/xlsx_group_export/xlsx_group_export.xlsx |
@@ -22,6 +23,7 @@ Feature: Export groups in XLSX
       | upsell     | upsell     | Upsell      | Upsell      | Vente incitative | Upsell        |
       | substitute | substitute | Substitute  | Substitute  | Substitut        | Ersatz        |
 
+  @job-through-ui-involved
   Scenario: Successfully export groups in xlsx without headers
     Given the following job "xlsx_group_export" configuration:
       | filePath   | %tmp%/xlsx_group_export/xlsx_group_export.xlsx |
@@ -36,6 +38,7 @@ Feature: Export groups in XLSX
       | upsell     | upsell     | Upsell     | Upsell     | Vente incitative | Upsell        |
       | substitute | substitute | Substitute | Substitute | Substitut        | Ersatz        |
 
+  @job-through-ui-involved
   Scenario: Successfully export groups in XLSX into several files
     Given the following job "xlsx_group_export" configuration:
       | filePath     | %tmp%/xlsx_group_export/xlsx_group_export.xlsx |

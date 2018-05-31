@@ -7,6 +7,7 @@ Feature: Show tooltips and validation errors on export builder
   Background:
     Given a "footwear" catalog configuration
 
+  @transform-to-acceptance-front
   Scenario: Successfully show tooltips on export builder
     Given I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job edit page
@@ -28,6 +29,7 @@ Feature: Show tooltips and validation errors on export builder
     And I should see the tooltip "Use the product categories in the tree (defined by the channel above) to select the products to export"
     And I should see the tooltip "Use the product identifiers to export separated by commas, spaces or line breaks"
 
+  @transform-to-acceptance-front @transform-to-acceptance-back
   Scenario: Successfully show error messages on export builderCompleteness
     Given I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job edit page

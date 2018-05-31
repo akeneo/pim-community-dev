@@ -8,6 +8,7 @@ Feature: Export variant products through XLSX export
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Export variant products through XLSX
     Given the following associations for the product "1111111173":
       | type   | products    |

@@ -9,5 +9,6 @@ Feature: Sort attribute
     And I am logged in as "Julia"
     And I am on the attributes page
 
+  @useless
   Scenario: Successfully sort attributes
     Then I should be able to sort the rows by Label, Scopable, Localizable and Group

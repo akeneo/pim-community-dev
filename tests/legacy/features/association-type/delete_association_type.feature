@@ -8,6 +8,7 @@ Feature: Delete an association type
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully delete an association type from the grid
     Given I am on the association types page
     Then I should see association type Cross sell
@@ -15,6 +16,7 @@ Feature: Delete an association type
     And I confirm the deletion
     Then I should not see association type Cross sell
 
+  @transform-to-acceptance-front
   Scenario: Successfully delete a association type from the edit page
     Given I edit the "Pack" association type
     When I press the secondary action "Delete"

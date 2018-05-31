@@ -4,6 +4,7 @@ Feature: Display the association type history
   As a product manager
   I need to have access to an association history
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully edit an association type and see the history
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -21,7 +22,7 @@ Feature: Display the association type history
       | version | property | value       | date |
       | 1       | code     | REPLACEMENT | now  |
 
-  @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
+  @essential @javascript @jira https://akeneo.atlassian.net/browse/PIM-7279
   Scenario: Prevent javascript execution from history tab while updating association type label translations
     Given a "default" catalog configuration
     And I am logged in as "Julia"

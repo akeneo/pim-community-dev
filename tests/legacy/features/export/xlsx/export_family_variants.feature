@@ -4,6 +4,7 @@ Feature: Export family variants in XLSX
   As a product manager
   I need to be able to export family variants in XLSX
 
+  @job-through-ui-involved
   Scenario: Successfully export catalog family variants
     Given a "catalog_modeling" catalog configuration
     And the following job "xlsx_catalog_modeling_family_variant_export" configuration:
@@ -25,6 +26,7 @@ Feature: Export family variants in XLSX
       | shoes_size_color       | shoes       | Schuhe nach Größe und Farbe   | Shoes by size and color       | Chaussures par taille et couleur | size           | color          | weight,variation_name,size,eu_shoes_size                      | sku,image,variation_image,composition,color,ean |
       | clothing_material_size | clothing    | Clothing by material and size | Clothing by material and size | Vêtements par matière et taille  | material       | size           | variation_name,variation_image,composition,color,material     | sku,weight,size,ean                             |
 
+  @job-through-ui-involved
   Scenario: I successfully create and use a family variant export in XLSX
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Peter"

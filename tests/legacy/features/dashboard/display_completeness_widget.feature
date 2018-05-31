@@ -4,6 +4,7 @@ Feature: Display completeness widget
   As a regular user
   I need to be able to see on the dashboard a completeness widget that present channels and locales completenesses
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Display completeness widget
     Given a "apparel" catalog configuration
     And the following products:

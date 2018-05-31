@@ -45,6 +45,7 @@ Feature: Export products from any given categories
       | filters  | {"structure":{"locales":["en_US"],"scope":"ecommerce"},"data":[]} |
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Export the products from a tree
     When I am on the "csv_product_export" export job edit page
     And I visit the "Content" tab

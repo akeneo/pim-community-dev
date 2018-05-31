@@ -15,6 +15,7 @@ Feature: Export products according to their statuses
       | SNKRS-1R | 0       | rangers | summer_collection | Black rangers |
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Export products with operator ALL on statuses
     Given I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab

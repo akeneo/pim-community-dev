@@ -4,6 +4,7 @@ Feature: Export group types
   As an administrator
   I need to be able to export group types in xlsx format
 
+  @job-through-ui-involved
   Scenario: Successfully export group types in xlsx with headers:
     Given an "footwear" catalog configuration
     And the following job "xlsx_footwear_group_type_export" configuration:
@@ -17,6 +18,7 @@ Feature: Export group types
      | RELATED | [RELATED]   |
      | XSELL   | [XSELL]     |
 
+  @job-through-ui-involved
   Scenario: Successfully export group types in xlsx without headers:
     Given an "footwear" catalog configuration
     And the following job "xlsx_footwear_group_type_export" configuration:

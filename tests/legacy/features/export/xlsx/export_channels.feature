@@ -4,6 +4,7 @@ Feature: Export channels
   As an administrator
   I need to be able to export channels in xlsx format
 
+  @job-through-ui-involved
   Scenario: Successfully export channels in xlsx with headers:
     Given an "footwear" catalog configuration
     And the following job "xlsx_footwear_channel_export" configuration:
@@ -17,6 +18,7 @@ Feature: Export channels
       | mobile | Mobile |                  | Mobile      | Mobile      | Mobile      | EUR        | en_US,fr_FR | 2014_collection |
       | tablet | Tablet |                  | Tablette    | Tablet      | Tablet      | USD,EUR    | en_US       | 2014_collection |
 
+  @job-through-ui-involved
   Scenario: Successfully export channels in xlsx without headers:
     Given an "footwear" catalog configuration
     And the following job "xlsx_footwear_channel_export" configuration:

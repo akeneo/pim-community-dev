@@ -8,6 +8,7 @@ Feature: Edit an association type
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @transform-to-acceptance-back
   Scenario: Successfully edit an association type
     Given I am on the "SUBSTITUTION" association type page
     Then I should see the Code field
@@ -17,7 +18,7 @@ Feature: Edit an association type
     And I press the "Save" button
     Then I should see the text "My substitution"
 
-  @skip-nav
+  @skip-nav @transform-to-acceptance-front
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "PACK" association type page
     When I fill in the following information:
@@ -25,7 +26,7 @@ Feature: Edit an association type
     And I click on the Akeneo logo
     And I should see "You will lose changes to the association type if you leave this page." in popup
 
-  @skip
+  @skip @transform-to-acceptance-front
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "PACK" association type page
     When I fill in the following information:

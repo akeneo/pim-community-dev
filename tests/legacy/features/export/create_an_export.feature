@@ -9,6 +9,7 @@ Feature: Create an export
     And I am logged in as "Peter"
     And I am on the exports grid
 
+  @essential @transform-to-acceptance-front @transform-to-acceptance-back
   Scenario: Successfully create an export
     Given I create a new export
     And I should see the Code, Label and Job fields
@@ -22,7 +23,7 @@ Feature: Create an export
     And the grid should contain 1 element
     And I should see export profile Products export
 
-  @skip
+  @skip @transform-to-acceptance-front @transform-to-acceptance-back
   Scenario: Fail to create a job export without code
     Given I create a new export
     When I fill in the following information in the popin:
@@ -30,7 +31,7 @@ Feature: Create an export
     And I press the "Save" button
     Then I should see validation error "This value should not be blank."
 
-  @skip
+  @skip @transform-to-acceptance-back
   Scenario: Fail to create a job export without job
     Given I create a new export
     When I fill in the following information in the popin:

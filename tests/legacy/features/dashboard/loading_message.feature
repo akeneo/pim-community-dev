@@ -4,6 +4,7 @@ Feature: Does not display an happy message during loading screen
   As a regular user
   I would not like to see a nice message by default
 
+  @transform-to-acceptance-front
   Scenario: Does not display loading message by default
     Given a "default" catalog configuration
     When I am logged in as "Mary"

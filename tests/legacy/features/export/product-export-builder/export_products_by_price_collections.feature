@@ -19,6 +19,7 @@ Feature: Export products according to price attribute filter
       | SNKRS-1N | 1       | rangers | summer_collection |                | 20 EUR         |
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Successfully export products by their price values
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |

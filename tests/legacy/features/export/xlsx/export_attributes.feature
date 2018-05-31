@@ -8,6 +8,7 @@ Feature: Export attributes in XLSX
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Successfully export attributes in XLSX
     Given the following job "xlsx_footwear_attribute_export" configuration:
       | filePath | %tmp%/attribute_export/attribute_export.xlsx |
@@ -44,6 +45,7 @@ Feature: Export attributes in XLSX
       | pim_catalog_text                | 123                | Attribute 123      |                    | other     | 0      | 1                      |                    |                     |               |                     |                     |                   | 255            |                 |                   |                 |            |            |                  |                  |          |          |               | 0                    | 0           | 0        | 0          | 0            |
       | pim_catalog_image               | rear_view          | Rear view          |                    |           |        |                        |                    |                     |               |                     |                     |                   |                |                 |                   |                 |            |            |                  |                  |          |          |               |                      | 0           | 0        | 0          | 0            |
 
+  @job-through-ui-involved
   Scenario: Successfully export all label locales even if no value were set in XLSX
     Given the following job "xlsx_footwear_attribute_export" configuration:
       | filePath | %tmp%/attribute_export/attribute_export.xlsx |
@@ -81,7 +83,7 @@ Feature: Export attributes in XLSX
       | pim_catalog_text                | 123                | Attribute 123      |                    |             | other     | 0      | 1                      |                    |                     |               |                     |                     |                   | 255            |                 |                   |                 |            |            |                  |                  |          |          |               | 0                    | 0           | 0        | 0          | 0            |
       | pim_catalog_image               | rear_view          | Rear view          |                    |             |           |        |                        |                    |                     |               |                     |                     |                   |                |                 |                   |                 |            |            |                  |                  |          |          |               |                      | 0           | 0        | 0          | 0            |
 
-  @ce
+  @ce @job-through-ui-involved
   Scenario: Export attributes with a predefine order
     Given the following job "xlsx_footwear_attribute_export" configuration:
       | filePath | %tmp%/attribute_export/attribute_export.xlsx |
@@ -91,7 +93,7 @@ Feature: Export attributes in XLSX
     Then exported xlsx file of "xlsx_footwear_attribute_export" should contains the following headers:
       | code | label-en_US | label-fr_FR | allowed_extensions | auto_option_sorting | available_locales | date_max | date_min | decimals_allowed | default_metric_unit | group | localizable | max_characters | max_file_size | metric_family | minimum_input_length | negative_allowed | number_max | number_min | reference_data_name | scopable | sort_order | type | unique | useable_as_grid_filter | validation_regexp | validation_rule | wysiwyg_enabled |
 
-  @ce
+  @ce @job-through-ui-involved
   Scenario: Successfully export associations into several files
     Given the following job "xlsx_footwear_attribute_export" configuration:
       | filePath     | %tmp%/xlsx_footwear_attribute_export/xlsx_footwear_attribute_export.xlsx |

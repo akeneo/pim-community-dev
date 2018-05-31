@@ -4,7 +4,7 @@ Feature: Delete an attribute
   As a product manager
   I need to delete a text attribute
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5347
+  @transform-to-acceptance-back @jira https://akeneo.atlassian.net/browse/PIM-5347
   Scenario: Successfully delete and recreate a text attribute used in a product and filter on it
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -37,7 +37,7 @@ Feature: Delete an attribute
       | filter | operator | value          | result |
       | name   | contains | My caterpillar |        |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-7199
+  @transform-to-acceptance-back @jira https://akeneo.atlassian.net/browse/PIM-7199
   Scenario: An identifier attribute cannot be deleted
     Given the "default" catalog configuration
     And I am logged in as "Julia"

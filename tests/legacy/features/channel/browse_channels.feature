@@ -11,11 +11,13 @@ Feature: Browse channels
     Then the grid should contain 3 elements
     And I should see the columns Label and Category tree
 
+  @useless
   Scenario: Successfully view, sort channels
     And I should see channels Ecommerce, Tablet and Print
     And the rows should be sorted ascending by Label
     And I should be able to sort the rows by Label and Category tree
 
+  @transform-to-integration
   Scenario Outline: Successfully filter channels
     When I show the filter "<filter>"
     And I filter by "<filter>" with operator "<operator>" and value "<value>"
@@ -26,6 +28,7 @@ Feature: Browse channels
       | filter   | operator | value           | result | count |
       | category |          | 2015 collection | Print  | 1     |
 
+  @transform-to-integration
   Scenario: Successfully search on label
     When I search "e"
     Then the grid should contain 2 elements

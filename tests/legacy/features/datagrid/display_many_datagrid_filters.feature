@@ -4,6 +4,7 @@ Feature: Display many datagrid filters
   As a regular user
   I need to be able to use the datagrid with many filters
 
+  @transform-to-acceptance-front
   Scenario: Successfully display the datagrid with 500 filters
     Given the "default" catalog configuration
     And 500 filterable simple select attributes with 5 options per attribute
@@ -13,7 +14,7 @@ Feature: Display many datagrid filters
     And I filter by "attribute_499" with operator "in list" and value "Option 1 for attribute 499"
     Then I should be on the products page
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5869
+  @transform-to-acceptance-front @jira https://akeneo.atlassian.net/browse/PIM-5869
   Scenario: Check that a non metric attribute named "length" do not break the grid
     Given the "default" catalog configuration
     And the following families:
@@ -29,7 +30,7 @@ Feature: Display many datagrid filters
     And I am on the products grid
     Then I should see product les-paul
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5536
+  @transform-to-acceptance-front @jira https://akeneo.atlassian.net/browse/PIM-5536
   Scenario: Successfully search an attribute from its code
     Given the "apparel" catalog configuration
     And I am logged in as "Mary"
@@ -37,7 +38,7 @@ Feature: Display many datagrid filters
     When I type "number_in_stock" in the manage filter input
     And I could see "Number in stock" in the manage filters list
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6064
+  @transform-to-acceptance-front @jira https://akeneo.atlassian.net/browse/PIM-6064
   Scenario: Check that a metric attribute named "ID" do not break the grid
     Given the "default" catalog configuration
     And the following families:

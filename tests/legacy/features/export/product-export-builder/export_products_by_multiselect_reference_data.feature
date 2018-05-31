@@ -25,6 +25,7 @@ Feature: Export products according to multi select reference data values
     And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/footwear_product_export.csv |
 
+  @job-through-ui-involved
   Scenario: Export only the product values with multiple selected reference data values
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
@@ -46,6 +47,7 @@ Feature: Export products according to multi select reference data values
       HEEL-7;;;;1;heels;;;;"The heel 7";;;;;;silk;
       """
 
+  @job-through-ui-involved
   Scenario: Export all the product values when no reference data is provided with operator IN LIST
     Given I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page

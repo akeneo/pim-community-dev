@@ -12,6 +12,7 @@ Feature: Revoke an API connection
       | label             |
       | Magento Connector |
 
+  @transform-to-acceptance-back
   Scenario: Successfully delete an API connection from the grid
     When I click on the "Revoke" action of the row which contains "Magento Connector"
     And I confirm the deletion

@@ -8,6 +8,7 @@ Feature: Delete a channel
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully delete a channel from the grid
     Given I am on the channels page
     And I should see channels Tablet and Mobile
@@ -17,6 +18,7 @@ Feature: Delete a channel
     And the grid should contain 1 element
     And I should not see channel Tablet
 
+  @transform-to-acceptance-back
   Scenario: Successfully delete a channel
     Given I am on the "mobile" channel page
     When I press the secondary action "Delete"

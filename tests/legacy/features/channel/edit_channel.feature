@@ -7,6 +7,7 @@ Feature: Edit a channel
   Background:
     Given a "footwear" catalog configuration
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully edit a channel
     Given I am logged in as "Peter"
     And I am on the "tablet" channel page
@@ -17,7 +18,7 @@ Feature: Edit a channel
     And I press the "Save" button
     Then I should see the text "My tablet"
 
-  @skip-nav
+  @skip-nav @transform-to-acceptance-front
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am logged in as "Peter"
     When  I am on the "mobile" channel page
@@ -26,6 +27,7 @@ Feature: Edit a channel
     And I click on the Akeneo logo
     Then I should see "You will lose changes to the channel if you leave this page." in popup
 
+  @transform-to-acceptance-front
   Scenario: Successfully display a message when there are unsaved changes
     Given I am logged in as "Peter"
     When  I am on the "mobile" channel page
@@ -33,6 +35,7 @@ Feature: Edit a channel
       | English (United States) | My mobile |
     Then I should see the text "There are unsaved changes."
 
+  @transform-to-acceptance-back @info split this test, there are 2 use cases
   Scenario: Successfully edit a channel to enable a locale and disable unused locales when deleting a channel
     Given I am logged in as "Peter"
     When  I am on the "tablet" channel page
@@ -50,6 +53,7 @@ Feature: Edit a channel
     Then the grid should contain 2 element
     And I should see locale "en_US" and "fr_FR"
 
+  @transform-to-acceptance-front
   Scenario: Successfully display the translation of the unit of metrics
     Given I am logged in as "Julien"
     And  I am on the "tablet" channel page
@@ -58,7 +62,7 @@ Feature: Edit a channel
       | Longueur | Kilomètre |
       | Poids    | Once      |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6025
+  @transform-to-acceptance-back @jira https://akeneo.atlassian.net/browse/PIM-6025
   Scenario: Successfully replace a channel locale by another one when there is only one channel
     Given I am logged in as "Peter"
     And I am on the channels page
@@ -73,6 +77,7 @@ Feature: Edit a channel
     Then the grid should contain 1 elements
     And I should see locales "de_DE"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully display validation message when the required currencies field is empty
     Given I am logged in as "Peter"
     And I am on the "tablet" channel page
@@ -86,6 +91,7 @@ Feature: Edit a channel
     And I should not see the text "There are unsaved changes."
     Then I should not see the text "This collection should contain 1 element or more."
 
+  @transform-to-acceptance-back
   Scenario: Successfully display validation message when the required locales field is empty
     Given I am logged in as "Peter"
     And I am on the "tablet" channel page
@@ -94,6 +100,7 @@ Feature: Edit a channel
     And I press the "Save" button
     Then I should see the text "This collection should contain 1 element or more."
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully updates a channel conversion units
     Given I am logged in as "Peter"
     And I am on the "tablet" channel page
@@ -115,6 +122,7 @@ Feature: Edit a channel
     And the field Length should contain "Millimeter"
     And the field Volume should contain "Do not convert"
 
+  @dev-needed @transform-to-acceptance-back @transform-to-acceptance-front @info We are not sure about its doabilty
   Scenario: Successfully updates a channel and its history
     Given I am logged in as "Peter"
     And I am on the "tablet" channel page

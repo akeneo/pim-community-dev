@@ -10,12 +10,14 @@ Feature: Export of metric values
       | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
     And I am logged in as "Julia"
 
+  @useless ? @transform-to-acceptance-front
   Scenario: Successfully display metric conversion configuration for a channel
     Given I am on the "tablet" channel page
     Then I should see "Pick a conversion unit for each metric attribute that will be used during product export" fields:
       | Washing temperature |
       | Weight              |
 
+  @job-through-ui-involved
   Scenario: Successfully convert metric values
     Given the following channel "ecommerce" conversion options:
       | weight | GRAM |
@@ -52,6 +54,7 @@ Feature: Export of metric values
     tshirt-black;;men_2014;white;;;;;;;;;;"Ein elegantes schwarz T-Shirt";"An elegant black t-shirt";"A stylish black t-shirt";"Un T-shirt noir élégant";1;tshirts;;0;;;;;;american_apparel;cotton;"Schwarz T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt Black";;10.00;9.00;15.00;;size_M;;0;CELSIUS;5000;GRAM
     """
 
+  @job-through-ui-involved
   Scenario: Do not convert null metric values
     Given the following channel "ecommerce" conversion options:
       | weight | GRAM |

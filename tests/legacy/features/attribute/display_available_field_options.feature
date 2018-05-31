@@ -9,6 +9,7 @@ Feature: Display available field options
     And I am logged in as "Julia"
     And I am on the attributes page
 
+  @transform-to-acceptance-front
   Scenario Outline: Successfully display available parameter fields for attribute types
     Given I am on the attributes page
     When I create a "<type>" attribute
@@ -26,6 +27,7 @@ Feature: Display available field options
       | Text Area  | Max characters, Rich text editor enabled                                               |
       | Text       | Max characters, Validation rule                                                        |
 
+  @transform-to-acceptance-front
   Scenario Outline: Successfully display available values fields for attribute types
     Given I create a "<type>" attribute
     And I fill in the following information:

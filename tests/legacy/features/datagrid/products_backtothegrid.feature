@@ -11,6 +11,7 @@ Feature: Products back to the grid
     And I am logged in as "Mary"
     And I am on the products grid
 
+  @transform-to-acceptance-front
   Scenario: Successfully restore filters without hashnav
     Given I filter by "sku" with operator "contains" and value "boots_1"
     And the grid should contain 1 element
@@ -20,6 +21,7 @@ Feature: Products back to the grid
     And I should see product boots_1
     And I should not see product sneakers_1
 
+  @transform-to-acceptance-front
   Scenario: Successfully restore filters with hashnav
     Given I filter by "sku" with operator "contains" and value "sneakers_1"
     And the grid should contain 1 element
@@ -33,7 +35,7 @@ Feature: Products back to the grid
 
   # These next scenarios do not fail on master but does not check the right things.
   # We choose to skip it because we did not find an easy & quick solution to solve it
-  @skip
+  @skip @transform-to-acceptance-front
   Scenario: Successfully restore page number with hashnav
     Given the following products:
       | sku        |
@@ -53,7 +55,7 @@ Feature: Products back to the grid
     And I am on the products grid
     Then the page number should be 2
 
-  @skip
+  @skip @transform-to-acceptance-front
   Scenario: Successfully restore the scope dropdown
     And I should see the text "Ecommerce"
     And I should not see the text "Mobile"

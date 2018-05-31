@@ -10,6 +10,7 @@ Feature: Association type creation
     And I am on the association types page
     And I create a new association type
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully create an association type
     Then I should see the Code field
     When I fill in the following information in the popin:
@@ -19,6 +20,7 @@ Feature: Association type creation
     And I should be on the "up_sell" association type page
     And I should see "up_sell"
 
+  @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Fail to create an association type with an empty or invalid code
     Given I press the "Save" button
     Then I should see validation error "This value should not be blank."
@@ -27,6 +29,7 @@ Feature: Association type creation
     And I press the "Save" button
     Then I should see validation error "Association type code may contain only letters, numbers and underscores"
 
+  @transform-to-acceptance-back
   Scenario: Fail to create an association type with an already used code
     Given the following association type:
       | code       |

@@ -19,6 +19,7 @@ Feature: Export products according to metric attribute filter
       | SNKRS-1N | 1       | rangers | summer_collection |               |               |
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Export products by their metric values
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |

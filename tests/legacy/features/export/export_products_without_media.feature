@@ -11,7 +11,7 @@ Feature: Export products without media
       | with_media | no                                      |
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5928
+  @job-through-ui-involved @jira https://akeneo.atlassian.net/browse/PIM-5928
   Scenario: Successfully export products without media
     Given the following products:
       | sku      | family   | categories        | price          | size | color    | name-en_US |

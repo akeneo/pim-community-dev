@@ -8,12 +8,14 @@ Feature: Edit an identifier attribute
     Given the "default" catalog configuration
     And I am logged in as "Julia"
 
+  @transform-to-acceptance-front
   Scenario: Successfully display the identifier related fields
     Given I am on the "SKU" attribute page
     Then I should see the secondary action "Delete"
     Then I should see the Max characters and Validation rule fields
     And the fields Unique, Value per channel and Usable in grid should be disabled
 
+  @transform-to-acceptance-back
   Scenario: Fail to create a second identifier attribute
     Given I am on the attributes page
     When I create an "Identifier" attribute
@@ -23,6 +25,7 @@ Feature: Edit an identifier attribute
     And I press the "Save" button
     Then I should see the text "An identifier attribute already exists."
 
+  @dev-needed @transform-to-acceptance-back @transform-to-acceptance-front @info We are not sure about its doabilty
   Scenario: Successfully edit an identifier attribute
     Given I am on the "SKU" attribute page
     When I fill in the following information:
@@ -34,13 +37,14 @@ Feature: Edit an identifier attribute
       | version | property       | value |
       | 2       | max_characters | 199   |
 
-  @skip-nav
+  @useless @skip-nav
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "SKU" attribute page
     And I change the "Validation rule" to "Regular expression"
     And I click on the Akeneo logo
     Then I should see "You will lose changes to the attribute if you leave this page." in popup
 
+  @useless
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "SKU" attribute page
     And I change the "Validation rule" to "Regular expression"

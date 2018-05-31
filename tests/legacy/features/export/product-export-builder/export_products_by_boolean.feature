@@ -15,6 +15,7 @@ Feature: Export products according to boolean attribute filter
       | SNKRS-1R | 1       | rangers | summer_collection | 1        |
     And I am logged in as "Julia"
 
+  @job-through-ui-involved
   Scenario: Export products by boolean values
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
