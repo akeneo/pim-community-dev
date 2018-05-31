@@ -26,6 +26,10 @@ class LabelCollection
                 throw new \InvalidArgumentException(sprintf('Expecting locale code to be a string, %s given.', $code));
             }
 
+            if ('' === $code) {
+                throw new \InvalidArgumentException('Locale code cannot be empty.');
+            }
+
             if (!is_string($label)) {
                 throw new \InvalidArgumentException(sprintf('Expecting label to be a string, %s given.', $label));
             }

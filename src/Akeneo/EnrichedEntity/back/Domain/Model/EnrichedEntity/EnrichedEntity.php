@@ -44,4 +44,9 @@ class EnrichedEntity
     {
         return $this->labelCollection->getLocaleCodes();
     }
+
+    public function updateLabels(LabelCollection $labels): EnrichedEntity
+    {
+        return static::define($this->identifier, $labels);
+    }
 }

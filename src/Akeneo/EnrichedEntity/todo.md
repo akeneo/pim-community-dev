@@ -6,3 +6,4 @@
 - create a read model for the read cases
 - Move the InMemory repository in the business code
 - Create builders for entities in the backend
+- Don't create LabelCollection from outside the domain object EnrichedEntity

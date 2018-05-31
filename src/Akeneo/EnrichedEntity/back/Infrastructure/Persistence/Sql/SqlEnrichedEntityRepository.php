@@ -53,6 +53,12 @@ SQL;
         }
     }
 
+
+    public function update(EnrichedEntity $enrichedEntity): void
+    {
+        // TODO: Implement update() method.
+    }
+
     /**
      * @param EnrichedEntityIdentifier $identifier
      *

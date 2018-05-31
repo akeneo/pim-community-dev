@@ -31,6 +31,12 @@ class LabelCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
+    public function it_cannot_create_a_label_collection_if_keys_are_empty()
+    {
+        $this->beConstructedThrough('fromArray', [['' => 'Book']]);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
     public function it_is_constructed_from_an_array_of_labels_and_returns_the_translated_label()
     {
         $this->getLabel('en_US')->shouldReturn('A US label');
