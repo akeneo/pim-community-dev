@@ -46,25 +46,28 @@ final class EntityBuilder
      *
      * @throws \InvalidArgumentException
      */
-    public function build(array $data)
+    public function build(array $data, $dataValidation = true)
     {
         $entity = $this->resourceFactory->create();
         $this->resourceUpdater->update($entity, $data);
-        $errors = $this->validator->validate($entity);
 
-        if (0 !== $errors->count()) {
-            $errorMessages = [];
-            foreach ($errors as $error) {
-                $errorMessages[] = sprintf(
-                    "\n- property path: %s\n- message: %s",
-                    $error->getPropertyPath(),
-                    $error->getMessage()
+        if ($dataValidation) {
+            $errors = $this->validator->validate($entity);
+
+            if (0 !== $errors->count()) {
+                $errorMessages = [];
+                foreach ($errors as $error) {
+                    $errorMessages[] = sprintf(
+                        "\n- property path: %s\n- message: %s",
+                        $error->getPropertyPath(),
+                        $error->getMessage()
+                    );
+                }
+
+                throw new \InvalidArgumentException(
+                    "An error occurred on resource creation:".implode("\n", $errorMessages)
                 );
             }
-
-            throw new \InvalidArgumentException(
-                "An error occurred on resource creation:".implode("\n", $errorMessages)
-            );
         }
 
         return $entity;

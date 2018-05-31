@@ -149,6 +149,7 @@ acceptance:
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+                - test.association_type_validation.context
             filters:
                 tags: '@acceptance-back'
         volume-monitoring:

@@ -29,21 +29,21 @@ services:
             - '@__symfony__.validator'
 
     test.attribute.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.attribute'
             - '@__symfony__.pim_catalog.updater.attribute'
             - '@__symfony__.validator'
 
     test.attribute_group.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.attribute_group'
             - '@__symfony__.pim_catalog.updater.attribute_group'
             - '@__symfony__.validator'
 
     test.family.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.family'
             - '@__symfony__.pim_catalog.updater.family'
@@ -55,6 +55,13 @@ services:
         arguments:
             - '@__symfony__.pim_catalog.builder.product'
             - '@__symfony__.pim_catalog.updater.product'
+            - '@__symfony__.validator'
+
+    test.association_type.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@__symfony__.pim_catalog.factory.association_type'
+            - '@__symfony__.pim_catalog.updater.association_type'
             - '@__symfony__.validator'
 
     ### Behat context, don't forget to tag them (fob.context_service)
@@ -102,6 +109,15 @@ services:
         class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductValidation'
         arguments:
             - '@test.catalog.product.builder'
+            - '@__symfony__.validator'
+        tags:
+            - { name: fob.context_service }
+
+    test.association_type_validation.context:
+        class: 'Akeneo\Test\Acceptance\AssociationType\Context\AssociationTypeValidation'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.association_type'
+            - '@test.association_type.builder'
             - '@__symfony__.validator'
         tags:
             - { name: fob.context_service }
