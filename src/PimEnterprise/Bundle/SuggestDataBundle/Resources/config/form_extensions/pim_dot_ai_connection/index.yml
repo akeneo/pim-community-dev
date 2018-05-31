@@ -4,10 +4,49 @@ extensions:
         config:
             template: pim/template/common/default-template
 
-    pim-pim-dot-ai-connection-index-breadcrumbs:
+    pimee-pim-dot-ai-connection-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-pim-dot-ai-connection-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pimee-pim-dot-ai-connection-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-pim-dot-ai-connection-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pimee-pim-dot-ai-connection-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-pim-dot-ai-connection-index
+        targetZone: title
+        config:
+            countable: false
+            title: pim_ee_suggest_data.pim_dot_ai.title
+
+    pimee-pim-dot-ai-connection-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-pim-dot-ai-connection-index
         targetZone: breadcrumbs
         config:
             tab: pim-menu-system
             item: pim-ee-suggest-data-connection
+
+    pimee-pim-dot-ai-connection-edit:
+        module: pimee/pim-dot-ai-connection/edit
+        parent: pim-pim-dot-ai-connection-index
+        template: pimee/template/pim-dot-ai-connection/edit
+        targetZone: content
+        position: 10
+        config:
+            token_label_title: pim_ee_suggest_data.pim_dot_ai.token.label.title
+            token_label_content: pim_ee_suggest_data.pim_dot_ai.token.label.content
+            token_field_title: pim_ee_suggest_data.pim_dot_ai.token.field.title
+            token_field_placeholder: pim_ee_suggest_data.pim_dot_ai.token.field.placeholder
+            token_save_pre_activation_title: pim_ee_suggest_data.pim_dot_ai.token.save.to_activate
+            token_save_post_activation_title:  pim_ee_suggest_data.pim_dot_ai.token.save.activated
+            activation_url: pimee_suggest_data_pim_dot_ai_connection_save
+            code: pim-dot-ai-connection

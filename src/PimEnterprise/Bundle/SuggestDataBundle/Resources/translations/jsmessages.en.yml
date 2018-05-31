@@ -12,9 +12,19 @@ pimee_suggest_data:
                 description: We will suggest data for the products
                 warning: The {{ itemsCount }} selected products will be send.
 
-pim_ee_suggest_data:
-    pim_dot_ai:
-        connection: PIM.AI connection
-
 page_title:
     pimee_suggest_data_pim_dot_ai_connection_index: PIM.AI connection
+
+pim_ee_suggest_data:
+    pim_dot_ai:
+        title: PIM.AI connection
+        token:
+            label:
+                content: PIM.AI connector
+                title: Label
+            field:
+                title: Activation code
+                placeholder: Paste Activation Code
+            save:
+                activated: Activated
+                to_activate: Activate

@@ -5,4 +5,4 @@ pimee_suggest_data_product_index:
 
 pim_ee_suggest_data_connection:
     type: action
-    label: pim_ee_suggest_data.acl.pim_dot_ai.connection
+    label: pim_ee_suggest_data.acl.pim_dot_ai.title
