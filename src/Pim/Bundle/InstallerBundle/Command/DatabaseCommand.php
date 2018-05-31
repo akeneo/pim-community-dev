@@ -49,6 +49,20 @@ class DatabaseCommand extends ContainerAwareCommand
                 InputOption::VALUE_REQUIRED,
                 'Determines fixtures to load (can be just OroPlatform or all)',
                 self::LOAD_ALL
+            )
+            ->addOption(
+                'withoutIndexes',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Should the command setup the elastic search indexes',
+                false
+            )
+            ->addOption(
+                'withoutFixtures',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Should the command install any fixtures',
+                false
             );
     }
 
@@ -96,7 +110,9 @@ class DatabaseCommand extends ContainerAwareCommand
                 ['--force' => true, '--no-interaction' => true]
             );
 
-        $this->resetElasticsearchIndex($output);
+        if (false === $input->getOption('withoutIndexes')) {
+            $this->resetElasticsearchIndex($output);
+        }
 
         $entityManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         $entityManager->clear();
@@ -107,7 +123,10 @@ class DatabaseCommand extends ContainerAwareCommand
         $this->createNotMappedTables($output);
 
         $this->getEventDispatcher()->dispatch(InstallerEvents::PRE_LOAD_FIXTURES);
-        $this->loadFixturesStep($input, $output);
+
+        if (false === $input->getOption('withoutFixtures')) {
+            $this->loadFixturesStep($input, $output);
+        }
         $this->getEventDispatcher()->dispatch(InstallerEvents::POST_LOAD_FIXTURES);
 
         // TODO: Should be in an event subscriber
