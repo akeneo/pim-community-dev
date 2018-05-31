@@ -31,7 +31,7 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueProductModelEntity) {
             throw new UnexpectedTypeException($constraint, UniqueProductEntity::class);

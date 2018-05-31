@@ -54,7 +54,7 @@ final class ProductValidation implements Context
      *
      * @throws \Exception
      */
-    public function anErrorShouldBeRaisedBecauseOf(string $errorMessage): void
+    public function theErrorIsRaised(string $errorMessage): void
     {
         $violations = $this->productValidator->validate($this->updatedProduct);
 

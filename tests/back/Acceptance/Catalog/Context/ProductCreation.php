@@ -34,19 +34,14 @@ final class ProductCreation implements Context
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
-    /** @var Attribute\Builder */
-    private $attributeBuilder;
-
     public function __construct(
         SaverInterface $attributeSaver,
         Builder\Product $productBuilder,
-        InMemoryProductRepository $productRepository,
-        Attribute\Builder $attributeBuilder
+        InMemoryProductRepository $productRepository
     ) {
         $this->attributeSaver = $attributeSaver;
         $this->productBuilder = $productBuilder;
         $this->productRepository = $productRepository;
-        $this->attributeBuilder = $attributeBuilder;
     }
 
     /**
@@ -54,7 +49,7 @@ final class ProductCreation implements Context
      */
     public function aProductWithAnIdentifier(string $identifier): void
     {
-        $attribute = $this->attributeBuilder->aIdentifier()
+        $attribute = (new Attribute\Builder())->aIdentifier()
             ->withCode(self::IDENTIFIER_ATTRIBUTE)
             ->build();
 

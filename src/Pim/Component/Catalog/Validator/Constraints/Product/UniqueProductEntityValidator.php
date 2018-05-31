@@ -42,7 +42,7 @@ class UniqueProductEntityValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueProductEntity) {
             throw new UnexpectedTypeException($constraint, UniqueProductEntity::class);
@@ -56,7 +56,7 @@ class UniqueProductEntityValidator extends ConstraintValidator
          * We need to check if the product has already been processed during the import. When we apply validation
          * the product may not be saved in the database.
          */
-        $identifierValue = $entity->getValues()->filter(function (ValueInterface $value) {
+        $identifierValue = $entity->getValues()->filter(function (ValueInterface $value): bool {
             return $value->getAttribute()->getType() === AttributeTypes::IDENTIFIER;
         })->first();
 
