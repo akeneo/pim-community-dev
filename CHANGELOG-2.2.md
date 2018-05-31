@@ -1,6 +1,7 @@
 # 2.2.x
 
 - PIM-7316: Fix overlap of boolean fields on product edit form
+- PIM-7319: Fix association display on product edit form when managing the association type permissions
 
 # 2.2.7 (2018-05-31)
 
