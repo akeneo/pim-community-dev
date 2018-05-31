@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install -y apt-transport-https \
     yarn \
     zlib1g-dev \
     zlib1g-dev \
+    mysql-client \
   && docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ \
   && docker-php-ext-install -j$(nproc) \
       bcmath \
