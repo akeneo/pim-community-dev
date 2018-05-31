@@ -916,6 +916,7 @@ config:
         pim/form/common/fields/date:                    pimenrich/js/form/common/fields/date
         pim/form/common/fields/select:                  pimenrich/js/form/common/fields/select
         pim/form/common/fields/simple-select-async:     pimenrich/js/form/common/fields/simple-select-async
+        pim/form/common/fields/multi-select-async:      pimenrich/js/form/common/fields/multi-select-async
         pim/form/common/fields/text:                    pimenrich/js/form/common/fields/text
         pim/form/common/fields/textarea:                pimenrich/js/form/common/fields/textarea
         pim/form/common/fields/metric:                  pimenrich/js/form/common/fields/metric
