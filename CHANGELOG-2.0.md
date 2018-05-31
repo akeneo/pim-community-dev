@@ -7,6 +7,7 @@
 - PIM-7040: Fix bad display of history grids on large strings
 - PIM-7014: Fix attribute creation page with large strings
 - PIM-7364: category tree must use the catalog locale for mass edit, not the UI locale
+- PIM-6846: Fix bug on click in Display Attributes button on Product edit form
 
 # 2.0.25 (2018-05-21)
 
