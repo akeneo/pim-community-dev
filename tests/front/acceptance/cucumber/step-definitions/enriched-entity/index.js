@@ -21,7 +21,6 @@ module.exports = async function (cucumber) {
 
     this.page.on('request', request => {
       if ('http://pim.com//rest/enriched_entity' === request.url()) {
-        debugger;
         answerJson(request, { items: enrichedEntityResponse, total: 1000 });
       }
     });
@@ -29,7 +28,6 @@ module.exports = async function (cucumber) {
 
   When('the user ask for the enriched entity list', async function () {
     await this.page.evaluate(async () => {
-      debugger;
       const Controller = require('pim/controller/enriched-entity/list');
       const controller = new Controller();
       controller.renderRoute()

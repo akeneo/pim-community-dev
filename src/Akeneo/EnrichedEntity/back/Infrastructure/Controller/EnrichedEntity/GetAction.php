@@ -54,7 +54,6 @@ class GetAction
     {
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($identifier);
         $enrichedEntity = $this->showEnrichedEntityHandler->findByIdentifier($enrichedEntityIdentifier);
-
         if (null === $enrichedEntity) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
