@@ -75,6 +75,15 @@ extensions:
             icon: icon-groups
             illustration: group
 
+    pim-mass-product-edit-configure-add-to-group-field:
+        module: pim/form/common/fields/multi-select-async
+        parent: pim-mass-product-edit-configure-add-to-group
+        targetZone: inputContainer
+        config:
+            fieldName: group
+            label: pim_enrich.mass_edit.product.operation.add_to_group.field
+            choiceRoute: pim_enrich_group_rest_search
+
     pim-mass-product-edit-configure-add-to-category:
         module: pim/mass-edit-form/product/category
         parent: pim-mass-product-edit

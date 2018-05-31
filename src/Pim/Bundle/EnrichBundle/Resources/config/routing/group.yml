@@ -11,6 +11,11 @@ pim_enrich_group_rest_index:
     defaults: { _controller: pim_enrich.controller.rest.group:indexAction }
     methods: [GET]
 
+pim_enrich_group_rest_search:
+    path: /rest/search
+    defaults: { _controller: pim_enrich.controller.rest.group:searchAction }
+    methods: [GET]
+
 pim_enrich_group_rest_get:
     path: /rest/{identifier}
     defaults: { _controller: pim_enrich.controller.rest.group:getAction }
