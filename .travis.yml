@@ -1,21 +1,36 @@
 language: php
 
+php:
+    - 7.1
+
+# Only build branches starting by "einrich-""
 branches:
   only:
     - /^einrich-?.*$/
 
-php:
-    - 7.1
+# Extra dependencies
+services:
+  - mysql
+
+# For mysql 5.7 instead of 5.6
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
 
 sudo: false
 
+# Speed up a bit the process
 cache:
   directories:
     - $HOME/.composer/cache/files
     - $HOME/.cache/yarn
 
 before_install:
-    - node tests/travis/check-changes.js einrich-PIM-7380 src/Akeneo/EnrichedEntity/,.travis.yml,tests/travis/,tests/back/Integration/EnrichedEntity,tests/back/Acceptance,tests/features,tests/front,package.json
+    - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+    - node tests/travis/check-changes.js $BRANCH src/Akeneo/EnrichedEntity/,.travis.yml,tests/travis/,tests/back/Integration/EnrichedEntity,tests/back/Acceptance,tests/features,tests/front,package.json,composer.json,spec/Akeneo/EnrichedEntity/
     - phpenv config-rm xdebug.ini
     - composer config -g github-oauth.github.com b67ee2fd847a2ba0f2275cbaab068bf543cdf9a2
     - printf "\n" | pecl install apcu
@@ -24,9 +39,9 @@ before_install:
 
 install:
     - composer install --prefer-dist --no-interaction
-    - ./bin/console pim:installer:dump-extensions --env=prod
-    - ./bin/console pim:install:ass --env=prod
-    - cp app/config/parameters_test.yml.dist app/config/parameters_test.yml
+    - cp tests/travis/parameters_test.yml app/config/parameters_test.yml
+    - ./bin/console pim:install:assets --env=behat
+    - ./bin/console pim:install:db --withoutIndexes --withoutFixtures --env=behat
     - yarn install
     - yarn webpack-test --env=prod
 
@@ -36,6 +51,7 @@ script:
     - yarn acceptance tests/features
     - yarn acceptance vendor/akeneo/pim-community-dev/tests/features
     - vendor/bin/behat -p acceptance --no-interaction
+    - vendor/bin/phpunit -c app tests/back/
     - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
     - vendor/bin/phpspec run --no-interaction
 
