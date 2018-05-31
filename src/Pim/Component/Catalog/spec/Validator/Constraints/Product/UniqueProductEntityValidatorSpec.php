@@ -37,7 +37,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
     function it_adds_violation_to_the_context_if_a_product_already_exists_in_the_database(
         $context,
         $objectRepository,
-        UniqueValuesSet $uniqueValueSet,
+        $uniqueValuesSet,
         ProductInterface $product,
         ProductInterface $productInDatabase,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
@@ -49,7 +49,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $product->getValues()->willReturn($values);
         $values->filter(Argument::any())->willReturn($values);
         $values->first()->willReturn($identifierValue);
-        $uniqueValueSet->addValue($identifierValue, $product)->willReturn(true);
+        $uniqueValuesSet->addValue($identifierValue, $product)->willReturn(true);
 
         $product->getIdentifier()->willReturn('identifier');
         $objectRepository->findOneByIdentifier('identifier')->willReturn($productInDatabase);
@@ -60,7 +60,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $context->buildViolation('The same identifier is already set on another product')
             ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('identifier')->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->ShouldBeCalled();
+        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($product, $constraint)->shouldReturn(null);
     }
@@ -68,7 +68,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
     function it_adds_violation_to_the_context_if_a_product_has_already_been_processed_in_the_batch(
         $context,
         $objectRepository,
-        UniqueValuesSet $uniqueValueSet,
+        $uniqueValuesSet,
         ProductInterface $product,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         ValueCollectionInterface $values,
@@ -79,7 +79,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $product->getValues()->willReturn($values);
         $values->filter(Argument::any())->willReturn($values);
         $values->first()->willReturn($identifierValue);
-        $uniqueValueSet->addValue($identifierValue, $product)->willReturn(false);
+        $uniqueValuesSet->addValue($identifierValue, $product)->willReturn(false);
 
         $product->getIdentifier()->willReturn('identifier');
         $objectRepository->findOneByIdentifier('identifier')->willReturn(null);
@@ -87,7 +87,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $context->buildViolation('The same identifier is already set on another product')
             ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('identifier')->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->ShouldBeCalled();
+        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($product, $constraint)->shouldReturn(null);
     }
@@ -95,7 +95,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
     function it_does_nothing_if_the_product_does_not_exist_in_database(
         $context,
         $objectRepository,
-        UniqueValuesSet $uniqueValueSet,
+        UniqueValuesSet $uniqueValuesSet,
         ProductInterface $product,
         ValueCollectionInterface $values,
         ValueInterface $identifierValue
@@ -105,7 +105,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $product->getValues()->willReturn($values);
         $values->filter(Argument::any())->willReturn($values);
         $values->first()->willReturn($identifierValue);
-        $uniqueValueSet->addValue($identifierValue, $product)->willReturn(true);
+        $uniqueValuesSet->addValue($identifierValue, $product)->willReturn(true);
 
         $product->getIdentifier()->willReturn('identifier');
         $objectRepository->findOneByIdentifier('identifier')->willReturn(null);

@@ -24,15 +24,12 @@ class UniqueProductEntityValidator extends ConstraintValidator
     /** @var IdentifiableObjectRepositoryInterface */
     private $productRepository;
 
-    /** @var ProductUniqueDataRepositoryInterface */
-    private $productUniqueDataRepository;
-
     /** @var UniqueValuesSet */
     private $uniqueValuesSet;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param ProductUniqueDataRepositoryInterface  $productUniqueDataRepository
+     * @param UniqueValuesSet                       $uniqueValuesSet
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,
@@ -55,6 +52,10 @@ class UniqueProductEntityValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ProductInterface::class);
         }
 
+        /**
+         * We need to check if the product has already been processed during the import. When we apply validation
+         * the product may not be saved in the database.
+         */
         $identifierValue = $entity->getValues()->filter(function (ValueInterface $value) {
             return $value->getAttribute()->getType() === AttributeTypes::IDENTIFIER;
         })->first();
@@ -65,11 +66,17 @@ class UniqueProductEntityValidator extends ConstraintValidator
                 ->addViolation();
         }
 
+        /**
+         * Then you check if it has not already been saved in the database
+         */
         if (null === $entityInDatabase = $this->productRepository->findOneByIdentifier($entity->getIdentifier())) {
             return;
         }
 
-        // You don't add violation if it is a product update
+        /**
+         * We don't want to validate a product identifier if we update a product because we have already validated the
+         * product identifier during the creation
+         */
         if ($entity->getId() !== $entityInDatabase->getId()) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('identifier')

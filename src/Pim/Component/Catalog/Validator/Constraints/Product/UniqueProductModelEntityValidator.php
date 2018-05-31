@@ -41,11 +41,17 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ProductModelInterface::class);
         }
 
+        /**
+         * Then you check if it has not already been saved in the database
+         */
         if (null === $entityInDatabase = $this->productModelRepository->findOneByIdentifier($entity->getCode())) {
             return;
         }
 
-        // You don't add violation if it is a product model update
+        /**
+         * We don't want to validate a product code if we update a product model because we have already validated the
+         * product code during the creation
+         */
         if ($entity->getId() !== $entityInDatabase->getId()) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('code')
