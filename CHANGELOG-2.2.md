@@ -1,3 +1,7 @@
+# 2.2.x
+
+- PIM-7316: Fix overlap of boolean fields on product edit form
+
 # 2.2.7 (2018-05-31)
 
 ## Bug fixes
