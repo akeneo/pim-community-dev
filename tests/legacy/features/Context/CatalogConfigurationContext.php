@@ -66,6 +66,8 @@ class CatalogConfigurationContext extends PimContext
             $this->getContainer()->get('security.token_storage')->setToken($token);
 
             $this->getElasticsearchProductClient()->refreshIndex();
+            $this->getElasticsearchProductModelClient()->refreshIndex();
+            $this->getElasticsearchProductAndProductModelClient()->refreshIndex();
         } else {
             $this->initializeReferenceRepository();
             $this->loadCatalog($this->getConfigurationFiles($catalog));
@@ -208,6 +210,22 @@ class CatalogConfigurationContext extends PimContext
     protected function getElasticsearchProductClient()
     {
         return $this->getContainer()->get('akeneo_elasticsearch.client.product');
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getElasticsearchProductModelClient()
+    {
+        return $this->getContainer()->get('akeneo_elasticsearch.client.product_model');
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getElasticsearchProductAndProductModelClient()
+    {
+        return $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model');
     }
 
     /**
