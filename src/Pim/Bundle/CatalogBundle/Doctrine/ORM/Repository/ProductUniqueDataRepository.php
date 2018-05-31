@@ -44,4 +44,32 @@ class ProductUniqueDataRepository extends EntityRepository implements ProductUni
 
         return 0 !== $count;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function uniqueDataExists(string $identifier, ProductInterface $product): bool
+    {
+        $queryBuilder = $this->createQueryBuilder('ud')
+            ->select('COUNT(ud)')
+            ->where('ud.attribute = :attribute')
+            ->andWhere('ud.rawData = :data')
+        ;
+
+        $parameters = [
+            'attribute' => $identifier,
+            'data' => $identifier->__toString(),
+        ];
+
+        if (null !== $product->getId()) {
+            $queryBuilder->andWhere('ud.product != :product');
+            $parameters['product'] = $product;
+        }
+
+        $queryBuilder->setParameters($parameters);
+
+        $count = (int) $queryBuilder->getQuery()->getSingleScalarResult();
+
+        return 0 !== $count;
+    }
 }

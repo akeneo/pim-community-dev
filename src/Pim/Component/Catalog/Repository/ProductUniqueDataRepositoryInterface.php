@@ -26,4 +26,6 @@ interface ProductUniqueDataRepositoryInterface extends ObjectRepository
      * @return bool
      */
     public function uniqueDataExistsInAnotherProduct(ValueInterface $value, ProductInterface $product);
+
+    public function uniqueDataExists(string $identifier, ProductInterface $product): bool;
 }

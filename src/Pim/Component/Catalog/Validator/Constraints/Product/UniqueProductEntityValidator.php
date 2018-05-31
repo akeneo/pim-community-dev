@@ -3,7 +3,11 @@
 namespace Pim\Component\Catalog\Validator\Constraints\Product;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;
+use Pim\Component\Catalog\Validator\UniqueValuesSet;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -20,12 +24,22 @@ class UniqueProductEntityValidator extends ConstraintValidator
     /** @var IdentifiableObjectRepositoryInterface */
     private $productRepository;
 
+    /** @var ProductUniqueDataRepositoryInterface */
+    private $productUniqueDataRepository;
+
+    /** @var UniqueValuesSet */
+    private $uniqueValuesSet;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param ProductUniqueDataRepositoryInterface  $productUniqueDataRepository
      */
-    public function __construct(IdentifiableObjectRepositoryInterface $productRepository)
-    {
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $productRepository,
+        UniqueValuesSet $uniqueValuesSet
+    ) {
         $this->productRepository = $productRepository;
+        $this->uniqueValuesSet = $uniqueValuesSet;
     }
 
     /**
@@ -39,6 +53,16 @@ class UniqueProductEntityValidator extends ConstraintValidator
 
         if (!$entity instanceof ProductInterface) {
             throw new UnexpectedTypeException($constraint, ProductInterface::class);
+        }
+
+        $identifierValue = $entity->getValues()->filter(function (ValueInterface $value) {
+            return $value->getAttribute()->getType() === AttributeTypes::IDENTIFIER;
+        })->first();
+
+        if (false === $this->uniqueValuesSet->addValue($identifierValue, $entity)) {
+            $this->context->buildViolation($constraint->message)
+                ->atPath('identifier')
+                ->addViolation();
         }
 
         if (null === $entityInDatabase = $this->productRepository->findOneByIdentifier($entity->getIdentifier())) {

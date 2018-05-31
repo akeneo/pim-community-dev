@@ -423,6 +423,7 @@ services:
         class: '\Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductEntityValidator'
         arguments:
             - '@pim_catalog.repository.product'
+            - '@pim_catalog.validator.unique_value_set'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_product_validator_entity }
 
