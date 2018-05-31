@@ -67,7 +67,7 @@ class ProductCategoryAccessSubscriberSpec extends ObjectBehavior
         $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([2, 3]);
         $datasource->getProductQueryBuilder()->willReturn($pqb);
 
-        $pqb->addFilter('categories.id', 'IN OR UNCLASSIFIED', [2, 3])->shouldBeCalled();
+        $pqb->addFilter('categories.id', 'IN OR UNCLASSIFIED', [2, 3], ['type_checking' => false])->shouldBeCalled();
 
         $this->filter($event);
     }

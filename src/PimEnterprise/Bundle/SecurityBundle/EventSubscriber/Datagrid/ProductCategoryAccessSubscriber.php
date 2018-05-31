@@ -90,7 +90,8 @@ class ProductCategoryAccessSubscriber implements EventSubscriberInterface
         $dataSource->getProductQueryBuilder()->addFilter(
             'categories.id',
             Operators::IN_LIST_OR_UNCLASSIFIED,
-            $grantedCategories
+            $grantedCategories,
+            ['type_checking' => false]
         );
     }
 }

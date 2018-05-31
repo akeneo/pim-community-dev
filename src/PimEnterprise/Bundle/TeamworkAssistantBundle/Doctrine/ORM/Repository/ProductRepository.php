@@ -65,7 +65,7 @@ class ProductRepository implements ProductRepositoryInterface
             Attributes::VIEW_ITEMS
         );
 
-        $productQueryBuilder->addFilter('categories.id', 'IN OR UNCLASSIFIED', $categoriesIds);
+        $productQueryBuilder->addFilter('categories.id', 'IN OR UNCLASSIFIED', $categoriesIds, ['type_checking' => false]);
         $productQueryBuilder->addFilter('family.id', 'NOT EMPTY', null);
 
         return $productQueryBuilder->execute();

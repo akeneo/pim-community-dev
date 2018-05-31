@@ -231,24 +231,23 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     public function getGrantedCategoryIds(UserInterface $user, $accessLevel)
     {
         $categoryAccessTable = $this->getTableName('pimee_security.entity.product_category_access.class');
-
-        $groupIds = [];
-        foreach ($user->getGroups() as $group) {
-            $groupIds[] = $group->getId();
-        }
+        $userGroupsTable = $this->getTableName('pim_user.entity.user.class', 'groups');
 
         $pdo = $this->_em->getConnection()->getWrappedConnection();
         $stmt = $pdo->prepare(
             sprintf(
-                "SELECT ca.id
+                "SELECT ca.category_id
                     FROM %s ca
-                    WHERE ca.user_group_id IN (%s)
+                    JOIN %s ug
+                        ON ug.group_id = ca.user_group_id
+                    WHERE ug.user_id = :user_id
                       AND ca.%s = 1",
                 $categoryAccessTable,
-                implode(',', $groupIds),
+                $userGroupsTable,
                 $this->getAccessColumn($accessLevel)
             )
         );
+        $stmt->bindParam(':user_id', $user->getId());
         $stmt->execute();
 
         $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN, 'ca.id');
