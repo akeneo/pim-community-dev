@@ -230,9 +230,30 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      */
     public function getGrantedCategoryIds(UserInterface $user, $accessLevel)
     {
-        $qb = $this->getGrantedCategoryQB($user, $accessLevel);
+        $categoryAccessTable = $this->getTableName('pimee_security.entity.product_category_access.class');
 
-        return $this->hydrateAsIds($qb);
+        $groupIds = [];
+        foreach ($user->getGroups() as $group) {
+            $groupIds[] = $group->getId();
+        }
+
+        $pdo = $this->_em->getConnection()->getWrappedConnection();
+        $stmt = $pdo->prepare(
+            sprintf(
+                "SELECT ca.id
+                    FROM %s ca
+                    WHERE ca.user_group_id IN (%s)
+                      AND ca.%s = 1",
+                $categoryAccessTable,
+                implode(',', $groupIds),
+                $this->getAccessColumn($accessLevel)
+            )
+        );
+        $stmt->execute();
+
+        $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN, 'ca.id');
+
+        return $ids;
     }
 
     /**
@@ -400,6 +421,29 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
             Attributes::OWN_PRODUCTS  => 'ownItems',
             Attributes::EDIT_ITEMS    => 'editItems',
             Attributes::VIEW_ITEMS    => 'viewItems',
+        ];
+        if (!isset($mapping[$accessLevel])) {
+            throw new \LogicException(sprintf('"%s" access level does not exist', $accessLevel));
+        }
+
+        return $mapping[$accessLevel];
+    }
+
+    /**
+     * Get the column field depending of access level sent
+     *
+     * @param string $accessLevel
+     *
+     * @throws \LogicException
+     *
+     * @return string
+     */
+    protected function getAccessColumn($accessLevel)
+    {
+        $mapping = [
+            Attributes::OWN_PRODUCTS  => 'own_items',
+            Attributes::EDIT_ITEMS    => 'edit_items',
+            Attributes::VIEW_ITEMS    => 'view_items',
         ];
         if (!isset($mapping[$accessLevel])) {
             throw new \LogicException(sprintf('"%s" access level does not exist', $accessLevel));
