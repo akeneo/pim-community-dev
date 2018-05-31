@@ -3,7 +3,8 @@
 - PIM-7362: Fix Completeness computing from family keeping in account batch size to free the memory
 - PIM-7349: Fix empty family when using quick export of products
 - PIM-7040: Fix bad display of history grids on large strings
-
+- PIM-7014: Fix attribute creation page with large strings
+ 
 # 2.0.25 (2018-05-21)
 
 ## Bug fixes
