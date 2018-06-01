@@ -47,7 +47,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_7']);
+        $this->assertDocument($productsFound, ['product_7', 'product_8']);
     }
 
     public function testIsNotEmptyOperatorWithOptionValue()
@@ -79,18 +79,13 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
                             'values.color-option.<all_channels>.<all_locales>' => ['black', 'blue'],
                         ],
                     ],
-                    'filter' => [
-                        'exists' => [
-                            'field' => 'values.color-option.<all_channels>.<all_locales>',
-                        ],
-                    ]
                 ],
             ],
         ];
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['product_2', 'product_6']);
+        $this->assertDocument($productsFound, ['product_2', 'product_6', 'product_7', 'product_8']);
     }
 
     public function testSortAscending()
@@ -113,7 +108,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
 
         $this->assertSame(
             $productsFound,
-            ['product_3', 'product_1', 'product_4', 'product_5', 'product_2', 'product_6', 'product_7']
+            ['product_3', 'product_1', 'product_4', 'product_5', 'product_2', 'product_6', 'product_7', 'product_8']
         );
     }
 
@@ -137,7 +132,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
 
         $this->assertSame(
             $productsFound,
-            ['product_2', 'product_6', 'product_4', 'product_5', 'product_3', 'product_1', 'product_7']
+            ['product_2', 'product_6', 'product_4', 'product_5', 'product_3', 'product_1', 'product_7', 'product_8']
         );
     }
 
@@ -210,6 +205,16 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
             [
                 'identifier' => 'product_7',
                 'values'     => [],
+            ],
+            [
+                'identifier' => 'product_8',
+                'values'     => [
+                    'color-option' => [
+                        '<all_channels>' => [
+                            '<all_locales>' => null,
+                        ],
+                    ],
+                ],
             ],
         ];
 
