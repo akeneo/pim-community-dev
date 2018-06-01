@@ -79,7 +79,7 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->groups->toArray();
     }
 
     /**
@@ -87,7 +87,22 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        throw new NotImplementedException(__METHOD__);
+        $groups = [];
+        foreach ($this->groups as $group) {
+            $keepThisGroup = true;
+            foreach ($criteria as $key => $value) {
+                $getter = sprintf('get%s', ucfirst($key));
+                if ($group->$getter() !== $value) {
+                    $keepThisGroup = false;
+                }
+            }
+
+            if ($keepThisGroup) {
+                $groups[] = $group;
+            }
+        }
+
+        return $groups;
     }
 
     /**

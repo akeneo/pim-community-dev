@@ -32,6 +32,7 @@ class NavigationContext extends PimContext implements PageObjectAware
     protected $pageMapping = [
         'association types'        => 'AssociationType index',
         'attributes'               => 'Attribute index',
+        'attribute edit'           => 'Attribute edit',
         'categories'               => 'Category tree index',
         'channels'                 => 'Channel index',
         'currencies'               => 'Currency index',

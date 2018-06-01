@@ -29,3 +29,8 @@ services:
         class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountProductsWithFamily'
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.find_family_variants_identifiers_by_attribute_axes:
+        class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes'
+        arguments:
+            - '@doctrine.orm.entity_manager'

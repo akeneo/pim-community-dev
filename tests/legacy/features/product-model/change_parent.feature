@@ -60,3 +60,16 @@ Feature: Change the parent of a product model
       | white_round_neck | round_neck | tshirts_variant_2 | white |
       | white_v_neck     | v_neck     | tshirts_variant_2 | white |
     Then the parent of product model white_v_neck cannot be changed for invalid root product model round_neck
+
+  Scenario: Changing the parent of a product model creates a new version of this product model
+    Given the following root product models:
+      | code       | family_variant    |
+      | round_neck | tshirts_variant_2 |
+      | v_neck     | tshirts_variant_2 |
+    And the following sub product model:
+      | code             | parent     | family_variant    | color |
+      | white_round_neck | round_neck | tshirts_variant_2 | white |
+    When the parent of product model white_round_neck is changed for root product model v_neck
+    Then the last version of the product model white_round_neck should be:
+      | field  | old_value  | new_value |
+      | parent | round_neck | v_neck    |

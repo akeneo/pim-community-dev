@@ -2,7 +2,7 @@
     <div class="AknCatalogVolume-icon AknCatalogVolume-icon--<%- icon %> <%- (true === has_warning) ? 'AknCatalogVolume-icon--warning': '' %>"></div>
     <div class="AknCatalogVolume-title">
         <%- title %>
-        <div class="AknCatalogVolume-value">
+        <div class="AknCatalogVolume-value" data-field="<%- name %>">
             <%- value.toLocaleString('en', { useGrouping: true }) %>
         </div>
         <% if (true === has_warning) { %>

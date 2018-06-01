@@ -252,6 +252,17 @@ services:
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
+    pim_catalog.query.elasticsearch.filter.family_variant:
+        class: 'Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\FamilyVariantFilter'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - ['family_variant']
+            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
+
     pim_catalog.query.elasticsearch.filter.group:
         class: '%pim_catalog.query.elasticsearch.filter.group.class%'
         arguments:
