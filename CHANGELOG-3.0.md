@@ -119,3 +119,4 @@
 - Change the constructor of `Akeneo\UserManagement\Bundle\Context\UserContext` to remove `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
 - Remove class `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilder` 
 - Remove class `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface` 
+- Remove class `Pim\Bundle\PdfGeneratorBundle\Twig\ImageExtension` 
