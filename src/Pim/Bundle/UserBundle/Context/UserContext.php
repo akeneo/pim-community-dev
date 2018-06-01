@@ -281,7 +281,7 @@ class UserContext
      */
     public function toArray()
     {
-        $channels = array_keys($this->getChannelChoicesWithUserChannel());
+        $channels = array_values($this->getChannelChoicesWithUserChannel());
         $locales = $this->getUserLocaleCodes();
 
         return [

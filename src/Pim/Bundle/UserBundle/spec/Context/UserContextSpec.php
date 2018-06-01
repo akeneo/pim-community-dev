@@ -205,8 +205,8 @@ class UserContextSpec extends ObjectBehavior
 
         $channelRepository->findAll()->willReturn([$ecommerce]);
         $choicesBuilder->buildChoices([$ecommerce])->willReturn([
-            'mobile' => $userChannel,
-            'ecommerce' => $ecommerce
+            'Mobile' =>  'mobile',
+            'Default' => 'ecommerce',
         ]);
 
         $fr->getCode()->willReturn('fr_FR');
