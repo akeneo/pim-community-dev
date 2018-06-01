@@ -183,7 +183,6 @@ Feature: Execute a job
     Then I should see the text "Status: FAILED"
     And I should see the text "The fields \"unknownfield1, unknownfield2\" do not exist"
 
-
   @jira https://akeneo.atlassian.net/browse/PIM-3369
   Scenario: Skip import with an unset locale on a localizable attribute
     Given the following CSV file to import:

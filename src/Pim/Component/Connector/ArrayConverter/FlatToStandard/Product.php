@@ -314,25 +314,8 @@ class Product implements ArrayConverterInterface
             }
         }
 
-        $nonLocalizableOrScopableFields = [];
-        if (count($unknownFields) > 0) {
-            $attributes = $this->attributeRepository->findBy(['code' => $unknownFields]);
-            for ($i = 0; $i < count($unknownFields); $i++) {
-                $found = false;
-                foreach ($attributes as $attribute) {
-                    if ($attribute->getCode() === $unknownFields[$i] &&
-                        ($attribute->isLocalizable() || $attribute->isScopable())
-                    ) {
-                        $found = true;
-                    }
-                }
-                if ($found === true) {
-                    $nonLocalizableOrScopableFields[] = $unknownFields[$i];
-                    array_splice($unknownFields, $i, 1);
-                    $i--;
-                }
-            }
-        }
+        $nonLocalizableOrScopableFields = $this->filterNonLocalizableOrScopableFields($unknownFields);
+        $unknownFields = array_diff($unknownFields, $nonLocalizableOrScopableFields);
 
         $messages = [];
         if (0 < count($unknownFields)) {
@@ -384,5 +367,37 @@ class Product implements ArrayConverterInterface
         }
 
         return $this->optionalAssocFields;
+    }
+
+    /**
+     * This method filters a list of fields (attribute codes) to return only the existing attributes
+     * that are scopable or localizable.
+     *
+     * @param string[]  $attributeCodes
+     * @return string[]
+     */
+    private function filterNonLocalizableOrScopableFields(array $attributeCodes): array
+    {
+        $result = [];
+        if (count($attributeCodes) === 0) {
+            return $result;
+        }
+
+        $attributes = $this->attributeRepository->findBy(['code' => $attributeCodes]);
+        foreach ($attributeCodes as $attributeCode) {
+            $found = false;
+            foreach ($attributes as $attribute) {
+                if ($attribute->getCode() === $attributeCode &&
+                    ($attribute->isLocalizable() || $attribute->isScopable())
+                ) {
+                    $found = true;
+                }
+            }
+            if ($found === true) {
+                $result[] = $attributeCode;
+            }
+        }
+
+        return $result;
     }
 }
