@@ -43,13 +43,11 @@ class EditEnrichedEntityHandler
     public function __invoke(string $rawIdentifier, array $data): EnrichedEntity
     {
         $identifier = EnrichedEntityIdentifier::fromString($rawIdentifier);
-        $enrichedEntityToEdit = $this->enrichedEntityRepository->findOneByIdentifier($identifier);
+        $enrichedEntity = $this->enrichedEntityRepository->findOneByIdentifier($identifier);
+        $enrichedEntity->updateLabels($data['labels']);
 
-        $labels = LabelCollection::fromArray($data['labels']);
-        $editedEnrichedEntity = $enrichedEntityToEdit->updateLabels($labels);
+        $this->enrichedEntityRepository->update($enrichedEntity);
 
-        $this->enrichedEntityRepository->update($editedEnrichedEntity);
-
-        return $editedEnrichedEntity;
+        return $enrichedEntity;
     }
 }

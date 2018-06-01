@@ -57,4 +57,14 @@ class EnrichedEntitySpec extends ObjectBehavior
     public function it_returns_the_locale_code_from_which_the_enriched_entity_is_translated($labelCollection) {
         $this->getLabelCodes()->shouldReturn(['en_US', 'fr_FR']);
     }
+
+    public function it_updates_labels()
+    {
+        $labels = [
+            'de_DE' => 'Designer',
+        ];
+
+        $this->updateLabels($labels);
+        $this->getLabel('de_DE')->shouldBe('Designer');
+    }
 }
