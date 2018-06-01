@@ -167,7 +167,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "Status: FAILED"
-    And I should see the text " The field \"description-fr_FR-print\" does not exist"
+    And I should see the text "The field \"description-fr_FR-print\" does not exist"
 
   Scenario: Skip import with many not existing fields
     Given the following CSV file to import:
@@ -181,4 +181,20 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "Status: FAILED"
-    And I should see the text " The fields \"unknownfield1, unknownfield2\" do not exist"
+    And I should see the text "The fields \"unknownfield1, unknownfield2\" do not exist"
+
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3369
+  Scenario: Skip import with an unset locale on a localizable attribute
+    Given the following CSV file to import:
+      """
+      sku;description
+      SKU-001;"my name"
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then I should see the text "Status: FAILED"
+    And I should see the text "The field \"description\" needs an additional locale and/or a channel information"

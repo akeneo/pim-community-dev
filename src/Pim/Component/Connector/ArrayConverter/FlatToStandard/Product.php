@@ -314,10 +314,43 @@ class Product implements ArrayConverterInterface
             }
         }
 
-        if (0 < count($unknownFields)) {
-            $message = count($unknownFields) > 1 ? 'The fields "%s" do not exist' : 'The field "%s" does not exist';
+        $nonLocalizableOrScopableFields = [];
+        if (count($unknownFields) > 0) {
+            $attributes = $this->attributeRepository->findBy(['code' => $unknownFields]);
+            for ($i = 0; $i < count($unknownFields); $i++) {
+                $found = false;
+                foreach ($attributes as $attribute) {
+                    if ($attribute->getCode() === $unknownFields[$i] &&
+                        ($attribute->isLocalizable() || $attribute->isScopable())
+                    ) {
+                        $found = true;
+                    }
+                }
+                if ($found === true) {
+                    $nonLocalizableOrScopableFields[] = $unknownFields[$i];
+                    array_splice($unknownFields, $i, 1);
+                    $i--;
+                }
+            }
+        }
 
-            throw new StructureArrayConversionException(sprintf($message, implode(', ', $unknownFields)));
+        $messages = [];
+        if (0 < count($unknownFields)) {
+            $messages[] = count($unknownFields) > 1 ?
+                sprintf('The fields "%s" do not exist.', implode(', ', $unknownFields)) :
+                sprintf('The field "%s" does not exist.', $unknownFields[0]);
+        }
+        foreach ($nonLocalizableOrScopableFields as $nonLocalizableOrScopableField) {
+            $messages[] = sprintf('The field "%s" needs an additional locale and/or a channel information; '.
+                'in order to do that, please set the code as follow: '.
+                '\'%s-[locale_code]-[channel_code]\'.',
+                $nonLocalizableOrScopableField,
+                $nonLocalizableOrScopableField
+            );
+        }
+
+        if (count($messages) > 0) {
+            throw new StructureArrayConversionException(join(' ', $messages));
         }
     }
 

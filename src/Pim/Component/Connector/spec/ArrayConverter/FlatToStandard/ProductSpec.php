@@ -367,6 +367,7 @@ class ProductSpec extends ObjectBehavior
         $assocColumnsResolver,
         $fieldConverter,
         $columnsMerger,
+        $attributeRepository,
         AttributeInterface $attribute
     ) {
         $item = ['sku' => '1069978', 'enabled' => true, 'unknown_field' => 'foo', 'other_unknown_field' => 'bar'];
@@ -381,8 +382,10 @@ class ProductSpec extends ObjectBehavior
         $attribute->getType()->willReturn('sku');
         $fieldConverter->supportsColumn('sku')->willReturn(false);
 
+        $attributeRepository->findBy(['code' => ['unknown_field', 'other_unknown_field']])->willReturn([]);
+
         $this->shouldThrow(
-            new StructureArrayConversionException('The fields "unknown_field, other_unknown_field" do not exist')
+            new StructureArrayConversionException('The fields "unknown_field, other_unknown_field" do not exist.')
         )->during(
             'convert',
             [$item],
@@ -395,6 +398,7 @@ class ProductSpec extends ObjectBehavior
         $assocColumnsResolver,
         $fieldConverter,
         $columnsMerger,
+        $attributeRepository,
         AttributeInterface $attribute
     ) {
         $item = ['sku' => '1069978', 'enabled' => true, 'unknown-products' => ['sku2'], 'unknown-groups' => 'groupcode'];
@@ -410,8 +414,49 @@ class ProductSpec extends ObjectBehavior
 
         $fieldConverter->supportsColumn('sku')->willReturn(true);
 
+        $attributeRepository->findBy(['code' => ['unknown-products', 'unknown-groups']])->willReturn([]);
+
         $this->shouldThrow(
-            new StructureArrayConversionException('The fields "unknown-products, unknown-groups" do not exist')
+            new StructureArrayConversionException('The fields "unknown-products, unknown-groups" do not exist.')
+        )->during(
+            'convert',
+            [$item],
+            ['with_associations' => true]
+        );
+    }
+
+    function it_throws_an_exception_when_association_field_is_not_localized(
+        $attrColumnsResolver,
+        $assocColumnsResolver,
+        $fieldConverter,
+        $columnsMerger,
+        $attributeRepository,
+        AttributeInterface $attributeSku,
+        AttributeInterface $attributeNonLocalized
+    ) {
+        $item = ['sku' => '1069978', 'enabled' => true, 'nonlocalized' => 'foo'];
+
+        $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku', 'nonlocalized-fr_FR']);
+        $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
+
+        $columnsMerger->merge($item)->willReturn($item);
+
+        $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
+
+        $attributeSku->getType()->willReturn('sku');
+
+        $fieldConverter->supportsColumn('sku')->willReturn(true);
+
+        $attributeRepository->findBy(['code' => ['nonlocalized']])->willReturn([$attributeNonLocalized]);
+
+        $attributeNonLocalized->getCode()->willReturn('nonlocalized');
+        $attributeNonLocalized->isLocalizable()->willReturn(true);
+        $attributeNonLocalized->isScopable()->willReturn(false);
+
+        $this->shouldThrow(
+            new StructureArrayConversionException(
+                'The field "nonlocalized" needs an additional locale and/or a channel information; '.
+                'in order to do that, please set the code as follow: \'nonlocalized-[locale_code]-[channel_code]\'.')
         )->during(
             'convert',
             [$item],
