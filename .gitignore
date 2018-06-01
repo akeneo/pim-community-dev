@@ -30,6 +30,7 @@ vendor
 !/bin/docker/pim-initialize.sh
 !/bin/console
 behat.yml
+.php_cs.cache
 .phpspec/*.tpl
 composer.phar
 composer.lock

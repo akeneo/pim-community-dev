@@ -82,7 +82,7 @@ class ProductModelNormalizer implements NormalizerInterface, SerializerAwareInte
 
         if (!$isOwner && $canEdit) {
             $username = $this->tokenStorage->getToken()->getUsername();
-            $draft = $this->draftRepository->findUserProductModelDraft($productModel, $username);
+            $draft = $this->draftRepository->findUserEntityWithValuesDraft($productModel, $username);
             if (null !== $draft) {
                 $draftStatus = $draft->getStatus();
                 $this->draftApplier->applyAllChanges($productModel, $draft);
