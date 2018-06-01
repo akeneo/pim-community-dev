@@ -14,7 +14,7 @@ Feature: List enriched entities
     And I get an enriched entity "designer"
     And I get an enriched entity "sofa"
 
-  @acceptance-back
+  @acceptance-front @acceptance-back
   Scenario: Do not show the enriched entity if it does not exist
     When the user ask for the enriched entity list
     Then there is no enriched entity

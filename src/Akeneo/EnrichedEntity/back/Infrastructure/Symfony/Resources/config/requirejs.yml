@@ -3,6 +3,9 @@ config:
         pim/controller-registry:
             controllers:
                 akeneo_enriched_entities_enriched_entities_index:
-                    module: pim/controller/enriched-entity
+                    module: pim/controller/enriched-entity/list
+                akeneo_enriched_entities_enriched_entities_edit:
+                    module: pim/controller/enriched-entity/edit
     paths:
-        pim/controller/enriched-entity: akeneoenrichedentity/infrastructure/controller/enriched-entity.tsx
+        pim/controller/enriched-entity/list: akeneoenrichedentity/infrastructure/controller/enriched-entity/list.tsx
+        pim/controller/enriched-entity/edit: akeneoenrichedentity/infrastructure/controller/enriched-entity/edit.tsx

@@ -14,7 +14,6 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\ShowEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use PHPUnit\Util\Json;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -52,9 +51,8 @@ class GetAction
      */
     public function getAction(string $identifier): JsonResponse
     {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($identifier);
         $handler = $this->showEnrichedEntityHandler;
-        $enrichedEntity = $handler($enrichedEntityIdentifier);
+        $enrichedEntity = $handler($identifier);
 
         if (null === $enrichedEntity) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);

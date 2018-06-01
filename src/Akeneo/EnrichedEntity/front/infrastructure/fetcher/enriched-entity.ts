@@ -2,6 +2,7 @@ import Fetcher from 'akeneoenrichedentity/application/fetcher/fetcher';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import hidrator from 'akeneoenrichedentity/application/hidrator/enriched-entity';
 import hidrateAll from 'akeneoenrichedentity/application/hidrator/hidrator';
+import {getJSON} from 'akeneoenrichedentity/tools/fetch';
 
 const routing = require('routing');
 
@@ -13,13 +14,15 @@ export class EnrichedEntityFetcherImplementation implements EnrichedEntityFetche
   }
 
   async fetch(identifier: string): Promise<EnrichedEntity> {
-    console.log(identifier);
+    const backendEnrichedEntity = await getJSON(
+      routing.generate('akeneo_enriched_entities_enriched_entities_get_rest', {identifier})
+    );
 
-    return (await this.fetchAll())[0];
+    return this.hidrator(backendEnrichedEntity);
   }
 
   async fetchAll(): Promise<EnrichedEntity[]> {
-    const backendEnrichedEntities = await fetch(
+    const backendEnrichedEntities = await getJSON(
       routing.generate('akeneo_enriched_entities_enriched_entities_index_rest')
     );
 
@@ -27,10 +30,9 @@ export class EnrichedEntityFetcherImplementation implements EnrichedEntityFetche
   }
 
   async search(): Promise<{items: EnrichedEntity[]; total: number}> {
-    const response = await fetch(routing.generate('akeneo_enriched_entities_enriched_entities_index_rest'), {
-      credentials: 'same-origin',
-    });
-    const backendEnrichedEntities = await response.json();
+    const backendEnrichedEntities = await getJSON(
+      routing.generate('akeneo_enriched_entities_enriched_entities_index_rest')
+    );
 
     const items = hidrateAll<EnrichedEntity>(this.hidrator)(backendEnrichedEntities.items);
 
