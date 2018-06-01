@@ -8,7 +8,7 @@ Feature: Show system information
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Peter"
 
-  @acceptance-back
+  @transform-to-acceptance-back
   Scenario: Successfully display product model information
     Given I am on the System info page
     Then I should see the text "Product models 80"

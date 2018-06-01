@@ -7,7 +7,7 @@ Feature: Edit a channel
   Background:
     Given a "footwear" catalog configuration
 
-  @transform-to-acceptance-back @transform-to-acceptance-front
+  @essential @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Successfully edit a channel
     Given I am logged in as "Peter"
     And I am on the "tablet" channel page

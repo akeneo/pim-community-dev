@@ -12,7 +12,7 @@ Feature: Remove a category
       | caterpillar_2 | winter_boots,2014_collection      |
     And I am logged in as "Julia"
 
-  @transform-to-acceptance-back @transform-to-acceptance-front
+  @essential @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Remove a simple category
     Given I am on the "sandals" category page
     When I press the secondary action "Delete"
@@ -30,7 +30,7 @@ Feature: Remove a category
     And I should see the flash message "Category successfully removed"
     And I should not see "Winter collection"
 
-  @unstable @dev-needed @transform-to-acceptance-back @info We are not sure about its doabilty
+  @unstable @essential @dev-needed @transform-to-acceptance-back @info We are not sure about its doabilty
   Scenario: Remove a category with products linked
     Given I am on the "winter_boots" category page
     When I press the secondary action "Delete"

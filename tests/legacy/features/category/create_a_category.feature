@@ -8,7 +8,7 @@ Feature: Create a category
     Given the "default" catalog configuration
     And I am logged in as "Julia"
 
-  @transform-to-acceptance-back @transform-to-acceptance-front @essential
+  @essential @transform-to-acceptance-back @transform-to-acceptance-front @essential
   Scenario: Create a category tree
     Given I am on the category tree creation page
     When I fill in the following information:
@@ -18,7 +18,7 @@ Feature: Create a category
     And I should be on the category "shoe" edit page
     And The tree "[shoe]" should be open
 
-  @transform-to-acceptance-back @transform-to-acceptance-front
+  @essential @transform-to-acceptance-back @transform-to-acceptance-front
   Scenario: Create a category node
     Given the following category:
       | code | label-en_US |
