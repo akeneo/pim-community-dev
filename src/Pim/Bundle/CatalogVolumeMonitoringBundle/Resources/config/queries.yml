@@ -1,6 +1,6 @@
 services:
     pim_volume_monitoring.persistence.query.average_max_attributes_per_family:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxAttributesPerFamily'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxAttributesPerFamily
         arguments:
             - '@database_connection'
             - '%average_max_attributes_per_family_limit%'
@@ -8,7 +8,7 @@ services:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
     pim_volume_monitoring.persistence.query.average_max_options_per_attribute:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxOptionsPerAttribute'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxOptionsPerAttribute
         arguments:
             - '@database_connection'
             - '%average_max_options_per_attribute_limit%'
@@ -24,7 +24,7 @@ services:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
     pim_volume_monitoring.persistence.query.average_max_product_values:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductValues'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxProductValues
         arguments:
             - '@database_connection'
             - '%average_max_product_values_limit%'
@@ -47,8 +47,20 @@ services:
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
 
+    pim_volume_monitoring.persistence.query.average_max_categories_in_one_category:
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxCategoriesInOneCategory
+        arguments:
+            - '@database_connection'
+            - '%average_max_categories_in_one_category_limit%'
+
+    pim_volume_monitoring.persistence.query.average_max_category_levels:
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\AverageMaxCategoryLevels
+        arguments:
+            - '@database_connection'
+            - '%average_max_category_levels_limit%'
+
     pim_volume_monitoring.persistence.query.count_attributes:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountAttributes'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountAttributes
         arguments:
             - '@database_connection'
             - '%count_attributes_limit%'
@@ -56,7 +68,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pim_volume_monitoring.persistence.query.count_categories:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountCategories'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountCategories
         arguments:
             - '@database_connection'
             - '%count_categories_limit%'
@@ -64,7 +76,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pim_volume_monitoring.persistence.query.count_category_trees:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountCategoryTrees'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountCategoryTrees
         arguments:
             - '@database_connection'
             - '%count_category_trees_limit%'
@@ -72,7 +84,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pim_volume_monitoring.persistence.query.count_channels:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountChannels'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountChannels
         arguments:
             - '@database_connection'
             - '%count_channels_limit%'
@@ -80,7 +92,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pim_volume_monitoring.persistence.query.count_families:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountFamilies'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountFamilies
         arguments:
             - '@database_connection'
             - '%count_families_limit%'
@@ -88,7 +100,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pim_volume_monitoring.persistence.query.count_locales:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocales'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocales
         arguments:
             - '@database_connection'
             - '%count_locales_limit%'
@@ -96,7 +108,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pim_volume_monitoring.persistence.query.count_localizable_and_scopable_attributes:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocalizableAndScopableAttributes'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocalizableAndScopableAttributes
         arguments:
             - '@database_connection'
             - '%count_localizable_and_scopable_attributes_limit%'
@@ -104,7 +116,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pim_volume_monitoring.persistence.query.count_localizable_attributes:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocalizableAttributes'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountLocalizableAttributes
         arguments:
             - '@database_connection'
             - '%count_localizable_attributes_limit%'
@@ -112,7 +124,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pim_volume_monitoring.persistence.query.count_scopable_attributes:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountScopableAttributes'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountScopableAttributes
         arguments:
             - '@database_connection'
             - '%count_scopable_attributes_limit%'
@@ -120,7 +132,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pim_volume_monitoring.persistence.query.count_products:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProducts'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProducts
         arguments:
             - '@database_connection'
             - '%count_products_limit%'
@@ -129,7 +141,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
 
     pim_volume_monitoring.persistence.query.count_product_models:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductModels'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductModels
         arguments:
             - '@database_connection'
             - '%count_product_models_limit%'
@@ -138,7 +150,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query_to_aggregate }
 
     pim_volume_monitoring.persistence.query.count_variant_products:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountVariantProducts'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountVariantProducts
         arguments:
             - '@database_connection'
             - '%count_variant_products_limit%'
@@ -146,7 +158,7 @@ services:
             - { name: pim_volume_monitoring.persistence.count_query }
 
     pim_volume_monitoring.persistence.query.count_product_values:
-        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductValues'
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountProductValues
         arguments:
             - '@database_connection'
             - '%count_product_values_limit%'
@@ -168,4 +180,10 @@ services:
             - '%count_product_and_product_model_values_limit%'
         tags:
             - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.count_users:
+        class: Pim\Bundle\CatalogVolumeMonitoringBundle\Persistence\Query\Sql\CountUsers
+        arguments:
+            - '@database_connection'
+            - '%count_users_limit%'
 

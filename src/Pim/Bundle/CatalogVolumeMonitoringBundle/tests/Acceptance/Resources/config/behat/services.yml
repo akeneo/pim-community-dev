@@ -1,4 +1,11 @@
 services:
+    test.catalog_volume_limits.system_info_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\SystemInfoContext'
+        arguments:
+            - '@__symfony__.pim_analytics.data_collector.database'
+        tags:
+            - { name: fob.context_service }
+
     test.catalog_volume_limits.report_context:
         class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ReportContext'
         arguments:
@@ -124,5 +131,29 @@ services:
             - '@test.catalog_volume_limits.report_context'
             - '@__symfony__.pim_volume_monitoring.persistence.query.aggregated_count_product_and_product_model_values'
             - '@__symfony__.pim_volume_monitoring.persistence.query.aggregated_average_max_product_and_product_model_values'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.user_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\UserContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.count_users'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.category_in_one_category_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\CategoryInOneCategoryContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_categories_in_one_category'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog_volume_limits.category_level_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\CategoryLevelContext'
+        arguments:
+            - '@test.catalog_volume_limits.report_context'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.average_max_category_levels'
         tags:
             - { name: fob.context_service }

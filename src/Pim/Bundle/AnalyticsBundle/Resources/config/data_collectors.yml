@@ -41,14 +41,19 @@ services:
     pim_analytics.data_collector.database:
         class: '%pim_analytics.data_collector.database.class%'
         arguments:
-            - '@pim_analytics.repository.channel'
-            - '@pim_analytics.repository.product'
-            - '@pim_catalog.repository.locale'
-            - '@pim_analytics.repository.family'
-            - '@pim_analytics.repository.user'
-            - '@pim_analytics.repository.product_model'
-            - '@pim_analytics.query.count_variant_product'
-            - '@pim_analytics.repository.family_variant'
+            - '@pim_volume_monitoring.persistence.query.count_channels'
+            - '@pim_volume_monitoring.persistence.query.count_products'
+            - '@pim_volume_monitoring.persistence.query.count_locales'
+            - '@pim_volume_monitoring.persistence.query.count_families'
+            - '@pim_volume_monitoring.persistence.query.count_users'
+            - '@pim_volume_monitoring.persistence.query.count_product_models'
+            - '@pim_volume_monitoring.persistence.query.count_variant_products'
+            - '@pim_volume_monitoring.persistence.query.count_categories'
+            - '@pim_volume_monitoring.persistence.query.count_category_trees'
+            - '@pim_volume_monitoring.persistence.query.average_max_categories_in_one_category'
+            - '@pim_volume_monitoring.persistence.query.average_max_category_levels'
+            - '@pim_volume_monitoring.persistence.query.aggregated_count_product_and_product_model_values'
+            - '@pim_volume_monitoring.persistence.query.aggregated_average_max_product_and_product_model_values'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }
@@ -56,10 +61,10 @@ services:
     pim_analytics.data_collector.attribute:
         class: '%pim_analytics.data_collector.attribute.class%'
         arguments:
-            - '@pim_analytics.repository.attribute'
-            - '@pim_analytics.query.count_localizable_attribute'
-            - '@pim_analytics.query.count_scopable_attribute'
-            - '@pim_analytics.query.count_localizable_scopable_attribute'
+            - '@pim_volume_monitoring.persistence.query.count_attributes'
+            - '@pim_volume_monitoring.persistence.query.count_localizable_attributes'
+            - '@pim_volume_monitoring.persistence.query.count_scopable_attributes'
+            - '@pim_volume_monitoring.persistence.query.count_localizable_and_scopable_attributes'
         tags:
             - { name: pim_analytics.data_collector, type: system_info_report }
 

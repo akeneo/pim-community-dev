@@ -110,3 +110,24 @@ services:
             - 'average_max_product_and_product_model_values'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.count_users:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery'
+        arguments:
+            - 'count_users'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pim_volume_monitoring.persistence.query.average_max_categories_in_one_category:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_categories_in_one_category'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.average_max_category_levels:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery'
+        arguments:
+            - 'average_max_category_levels'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }

@@ -143,6 +143,35 @@ class QueryTestCase extends TestCase
     }
 
     /**
+     * @param int $numberOfLevels
+     * @return CategoryInterface
+     */
+    protected function createCategoryWithLevel(int $numberOfLevels) : CategoryInterface
+    {
+        $rootCategory = $this->createCategory([
+            'code' => 'new_category_' . rand()
+        ]);
+        $this->get('validator')->validate($rootCategory);
+        $this->get('pim_catalog.saver.category')->save($rootCategory);
+        $previousLevelCode = $rootCategory->getCode();
+
+        $i = 0;
+        while ($i < $numberOfLevels) {
+            $subCategory = $this->createCategory([
+                'code' => 'new_category_' . rand(),
+                'parent' => $previousLevelCode
+            ]);
+            $i++;
+            $this->get('validator')->validate($subCategory);
+            $this->get('pim_catalog.saver.category')->save($subCategory);
+            $previousLevelCode = $subCategory->getCode();
+        }
+
+        return $rootCategory;
+    }
+
+
+    /**
      * @param array $data
      *
      * @return AttributeOptionInterface
@@ -189,7 +218,6 @@ class QueryTestCase extends TestCase
 
         return $family;
     }
-
 
     /**
      * @param int $numberOfAttributes
