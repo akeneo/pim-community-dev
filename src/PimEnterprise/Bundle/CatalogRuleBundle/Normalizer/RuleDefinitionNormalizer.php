@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Normalizer;
 
-use Akeneo\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer as AkeneoRuleDefinitionNormalizer;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Normalizer\RuleDefinitionNormalizer as AkeneoRuleDefinitionNormalizer;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\CatalogRule\Connector\Processor\Denormalization;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\CatalogRule\Connector\Executor;
 
-use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
-use Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

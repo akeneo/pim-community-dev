@@ -29,7 +29,7 @@ define(
                     is_creatable: false,
                     ajax: {
                         url: Routing.generate('pim_ui_ajaxentity_list', {
-                            class: 'PimEnterprise\\Component\\ProductAsset\\Model\\Tag',
+                            class: 'Akeneo\\Asset\\Component\\Model\\Tag',
                             dataLocale: UserContext.get('uiLocale'),
                             isCreatable: false
                         }),

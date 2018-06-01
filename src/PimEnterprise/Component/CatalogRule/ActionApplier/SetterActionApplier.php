@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\CatalogRule\ActionApplier;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
-use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
+use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;

@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\Rule;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;

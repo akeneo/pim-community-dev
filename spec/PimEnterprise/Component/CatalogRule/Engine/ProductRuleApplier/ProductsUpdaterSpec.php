@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
-use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
+use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

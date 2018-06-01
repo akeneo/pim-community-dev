@@ -1,0 +1,24 @@
+services:
+    pimee_volume_monitoring.persistence.query.count_assets:
+        class: 'Akeneo\Asset\Bundle\Persistence\Query\Sql\CountAssets'
+        arguments:
+            - '@database_connection'
+            - '%count_assets_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pimee_volume_monitoring.persistence.query.count_asset_categories:
+        class: 'Akeneo\Asset\Bundle\Persistence\Query\Sql\CountAssetCategories'
+        arguments:
+            - '@database_connection'
+            - '%count_asset_categories_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }
+
+    pimee_volume_monitoring.persistence.query.count_asset_category_trees:
+        class: 'Akeneo\Asset\Bundle\Persistence\Query\Sql\CountAssetCategoryTrees'
+        arguments:
+            - '@database_connection'
+            - '%count_asset_category_trees_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }

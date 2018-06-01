@@ -11,7 +11,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Normalizer;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;

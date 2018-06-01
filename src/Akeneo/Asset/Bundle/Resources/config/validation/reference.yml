@@ -1,0 +1,6 @@
+Akeneo\Asset\Component\Model\Reference:
+    properties:
+        fileInfo:
+            - Valid: ~
+        variations:
+            - Valid: ~

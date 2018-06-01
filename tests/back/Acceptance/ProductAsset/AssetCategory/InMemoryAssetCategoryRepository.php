@@ -8,8 +8,8 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Repository\AssetCategoryRepositoryInterface;
 
 class InMemoryAssetCategoryRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, AssetCategoryRepositoryInterface
 {

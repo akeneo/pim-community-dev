@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Component\CatalogRule\Engine;
 
-use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
-use Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Exception\BuilderException;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -23,7 +23,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
             $ruleContentDenormalizer,
             $eventDispatcher,
             $validator,
-            'Akeneo\Bundle\RuleEngineBundle\Model\Rule'
+            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule'
         );
     }
 
@@ -34,7 +34,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
 
     function it_is_a_rule_builder()
     {
-        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface');
+        $this->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface');
     }
 
     function it_builds_a_rule($eventDispatcher, $validator, $ruleContentDenormalizer, RuleDefinitionInterface $definition)
@@ -48,7 +48,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $eventDispatcher->dispatch(RuleEvents::POST_BUILD, Argument::any())->shouldBeCalled();
         $validator->validate(Argument::any())->shouldBeCalled()->willReturn([]);
 
-        $this->build($definition)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface');
+        $this->build($definition)->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface');
     }
 
     function it_does_not_build_a_rule_with_bad_content(
@@ -89,7 +89,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $validator->validate(Argument::any())->willReturn($violations);
 
         $this
-            ->shouldThrow('Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException')
+            ->shouldThrow('Akeneo\Tool\Bundle\RuleEngineBundle\Exception\BuilderException')
             ->during('build', [$definition])
         ;
     }

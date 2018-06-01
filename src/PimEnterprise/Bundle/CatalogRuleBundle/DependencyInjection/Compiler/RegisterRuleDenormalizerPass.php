@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\DependencyInjection\Compiler;
 
-use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\AbstractOrderedPass;
+use Akeneo\Tool\Bundle\RuleEngineBundle\DependencyInjection\Compiler\AbstractOrderedPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**

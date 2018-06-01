@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Akeneo\Component\FileTransformer\Transformation\TransformationInterface;
+use Akeneo\Tool\Component\FileTransformer\Transformation\TransformationInterface;
 use Behat\Gherkin\Node\TableNode;
 use Pim\Behat\Context\PimContext;
 use Symfony\Component\Process\ExecutableFinder;

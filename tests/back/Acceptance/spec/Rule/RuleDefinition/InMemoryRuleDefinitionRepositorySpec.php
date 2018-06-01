@@ -2,8 +2,8 @@
 
 namespace spec\AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use AkeneoEnterprise\Test\Acceptance\Rule\RuleDefinition\InMemoryRuleDefinitionRepository;
