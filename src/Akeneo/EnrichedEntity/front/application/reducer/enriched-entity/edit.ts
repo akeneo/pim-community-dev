@@ -16,6 +16,9 @@ export default {
       case 'ENRICHED_ENTITY_RECEIVED':
         state = action.enrichedEntity;
         break;
+      case 'ENRICHED_ENTITY_UPDATED':
+        state = action.enrichedEntity;
+        break;
       default:
         break;
     }

@@ -41,6 +41,15 @@ export class EnrichedEntityFetcherImplementation implements EnrichedEntityFetche
       total: backendEnrichedEntities.total,
     };
   }
+
+  async save(enrichedEntity: EnrichedEntity): Promise<EnrichedEntity> {
+    console.log('save enrich entity : ', enrichedEntity);
+    // const backendEnrichedEntity = await getJSON(
+    //   routing.generate('akeneo_enriched_entities_enriched_entities_get_rest', {enrichedEntity.getIdentifier().stringValue()})
+    // );
+    //
+    return enrichedEntity;
+  }
 }
 
 export default new EnrichedEntityFetcherImplementation(hidrator);
