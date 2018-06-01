@@ -68,15 +68,22 @@ class AssociatedProductDatasource extends ProductDatasource
 
         $this->pqb->addFilter('identifier', Operators::NOT_EQUAL, $currentProduct->getIdentifier());
         $productCursor = $this->pqb->execute();
-        $rows = ['totalRecords' => $productCursor->count()];
+        $totalCount = $productCursor->count();
+        $rows = ['totalRecords' => $totalCount];
 
+        /**
+         * @warning
+         * This code is only valid for 2.0.x. In the next versions, it was completely dropped in the next versions.
+         * During the pull-up, prefer the 2.1.x version (not the same behavior) instead of this one to avoid conflicts.
+         */
         if (Directions::ASCENDING === $this->sortOrder) {
             $rows['data'] = $this->getProductsSortedByIsAssociatedAsc(
                 $associatedProductsIdentifiers,
                 $limit,
                 $from,
                 $locale,
-                $scope
+                $scope,
+                $totalCount
             );
         } elseif (Directions::DESCENDING === $this->sortOrder) {
             $rows['data'] = $this->getProductsSortedByIsAssociatedDesc(
@@ -142,14 +149,11 @@ class AssociatedProductDatasource extends ProductDatasource
         );
 
         $nonAssociatedProducts = [];
-        $nbAssociated = count($associatedProducts);
-        if ($limit > $nbAssociated) {
-            $limit -= $nbAssociated;
-
+        if ($limit - count($associatedProducts) > 0) {
             $nonAssociatedProducts = $this->getNonAssociatedProducts(
                 $associatedProductsIdentifiers,
-                $limit,
-                0,
+                $limit - count($associatedProducts),
+                max($from - count($associatedProductsIdentifiers), 0),
                 $locale,
                 $scope
             );
@@ -167,6 +171,7 @@ class AssociatedProductDatasource extends ProductDatasource
      * @param int    $from
      * @param string $locale
      * @param string $scope
+     * @param int    $totalCount
      *
      * @return array
      */
@@ -175,7 +180,8 @@ class AssociatedProductDatasource extends ProductDatasource
         $limit,
         $from,
         $locale,
-        $scope
+        $scope,
+        $totalCount
     ) {
         $nonAssociatedProducts = $this->getNonAssociatedProducts(
             $associatedProductsIdentifiers,
@@ -186,14 +192,11 @@ class AssociatedProductDatasource extends ProductDatasource
         );
 
         $associatedProducts = [];
-        $nbNonAssociated = count($nonAssociatedProducts);
-        if ($limit > $nbNonAssociated) {
-            $limit -= $nbNonAssociated;
-
+        if ($limit - count($nonAssociatedProducts) > 0) {
             $associatedProducts = $this->getAssociatedProducts(
                 $associatedProductsIdentifiers,
-                $limit,
-                0,
+                $limit - count($nonAssociatedProducts),
+                max($from - ($totalCount - count($associatedProductsIdentifiers)), 0),
                 $locale,
                 $scope
             );
