@@ -21,6 +21,10 @@ class EnrichedEntityIdentifier
 
     public static function fromString(string $identifier): self
     {
+        if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $identifier)) {
+            throw new \InvalidArgumentException('Enriched Entity identifier may contain only letters, numbers and underscores');
+        }
+
         return new self($identifier);
     }
 
