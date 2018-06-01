@@ -6,6 +6,18 @@ suites:
     PimEnterprise:
         namespace: PimEnterprise
 
+    ## Asset
+    AssetBundle:
+        namespace: Akeneo\Asset\Bundle
+        psr4_prefix: Akeneo\Asset\Bundle
+        spec_path: src/Akeneo/Asset/Bundle
+        src_path: src/Akeneo/Asset/Bundle
+    AssetComponent:
+        namespace: Akeneo\Asset\Component
+        psr4_prefix: Akeneo\Asset\Component
+        spec_path: src/Akeneo/Asset/Component
+        src_path: src/Akeneo/Asset/Component
+
     ## Tool
     FileMetadata:
         namespace: Akeneo\Tool\Component\FileMetadata

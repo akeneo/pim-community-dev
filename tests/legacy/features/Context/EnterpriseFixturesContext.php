@@ -2,6 +2,13 @@
 
 namespace Context;
 
+use Akeneo\Asset\Bundle\Command\GenerateMissingVariationFilesCommand;
+use Akeneo\Asset\Component\Model\Asset;
+use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\CategoryInterface;
+use Akeneo\Asset\Component\Model\Tag;
+use Akeneo\Asset\Component\Model\TagInterface;
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
@@ -18,16 +25,9 @@ use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Component\ProductAsset\Model\Asset;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
-use PimEnterprise\Component\ProductAsset\Model\Tag;
-use PimEnterprise\Component\ProductAsset\Model\TagInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
@@ -50,7 +50,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
     protected $enterpriseEntities = [
         'Published'     => 'PimEnterprise\Component\Workflow\Model\PublishedProduct',
-        'AssetCategory' => 'PimEnterprise\Component\ProductAsset\Model\Category',
+        'AssetCategory' => 'Akeneo\Asset\Component\Model\Category',
         'JobProfile'    => 'Akeneo\Tool\Component\Batch\Model\JobInstance',
     ];
 

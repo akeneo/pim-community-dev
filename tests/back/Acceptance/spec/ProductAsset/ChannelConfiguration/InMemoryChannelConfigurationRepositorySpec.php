@@ -7,8 +7,8 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use AkeneoEnterprise\Test\Acceptance\ProductAsset\ChannelConfiguration\InMemoryChannelConfigurationRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Channel;
-use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfiguration;
-use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
+use Akeneo\Asset\Component\Model\ChannelVariationsConfiguration;
+use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
 use Prophecy\Argument;
 
 class InMemoryChannelConfigurationRepositorySpec extends ObjectBehavior

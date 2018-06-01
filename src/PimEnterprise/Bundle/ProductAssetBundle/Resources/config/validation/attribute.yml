@@ -1,5 +1,0 @@
-Pim\Bundle\CatalogBundle\Entity\Attribute:
-    constraints:
-        - PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\AssetsCollectionConstraint:
-            groups:
-                - pim_assets_collection
