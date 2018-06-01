@@ -91,3 +91,13 @@ Feature: Edit a product model
     And I press the "Save" button
     And I visit the "All" group
     Then the Care instructions, Collection, Model picture fields should be highlighted
+
+  @jira https://akeneo.atlassian.net/browse/PIM-7382
+  Scenario: Successfully display a product model's scopable value after editing it 
+    Given I am logged in as "Mary"
+    And I am on the "bacchus" product model page
+    And I fill in the following information:
+      | Model description | Another great description |
+    And I press the "Save" button
+    Then I should not see the text "There are unsaved changes."
+    And the field Model description should contain "Another great description"
