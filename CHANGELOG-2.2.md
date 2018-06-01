@@ -4,6 +4,7 @@
 
 - PIM-7316: Fix overlap of boolean fields on product edit form
 - PIM-7319: Fix association display on product edit form when managing the association type permissions
+- PIM-7393: Improve error message when importing fields without locale or scope specification
 - PIM-7382: Fix scopable attributes disappearing from edit form after editing a product model 
 - PIM-7386: Fix 'NOT IN' operator not taking empty values into account for select fields
 
