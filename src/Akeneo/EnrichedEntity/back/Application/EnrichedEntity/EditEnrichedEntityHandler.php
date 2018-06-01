@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Application\EnrichedEntity;
 
+use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
@@ -36,8 +37,10 @@ class EditEnrichedEntityHandler
     /**
      * @param string $rawIdentifier
      * @param array  $data
+     *
+     * @return EnrichedEntity
      */
-    public function __invoke(string $rawIdentifier, array $data): void
+    public function __invoke(string $rawIdentifier, array $data): EnrichedEntity
     {
         $identifier = EnrichedEntityIdentifier::fromString($rawIdentifier);
         $enrichedEntityToEdit = $this->enrichedEntityRepository->findOneByIdentifier($identifier);
@@ -45,6 +48,8 @@ class EditEnrichedEntityHandler
         $labels = LabelCollection::fromArray($data['labels']);
         $editedEnrichedEntity = $enrichedEntityToEdit->updateLabels($labels);
 
-//        $this->enrichedEntityRepository->
+        $this->enrichedEntityRepository->update($editedEnrichedEntity);
+
+        return $editedEnrichedEntity;
     }
 }

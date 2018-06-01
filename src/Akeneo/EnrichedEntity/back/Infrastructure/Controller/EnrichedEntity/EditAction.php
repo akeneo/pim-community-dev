@@ -68,21 +68,10 @@ class EditAction
         }
 
         $handler = $this->editEnrichedEntityHandler;
-        $handler($identifier, $data);
+        $enrichedEntity = $handler($identifier, $data);
 
-//        $enrichedEntity = EnrichedEntity::create(
-//            EnrichedEntityIdentifier::fromString(),
-//            LabelCollection::fromArray([])
-//        );
-
-//        $enrichedEntities = $this->showEnrichedEntityHandler->findAll();
-//        $normalizedEnrichedEntities = array_map(function ($enrichedEntity) {
-//            return $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api');
-//        }, $enrichedEntities);
-
-//        return new JsonResponse([
-//            'items' => $normalizedEnrichedEntities,
-//            'total' => count($normalizedEnrichedEntities)
-//        ]);
+        return new JsonResponse(
+            $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api')
+        );
     }
 }

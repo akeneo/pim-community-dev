@@ -5,8 +5,10 @@ namespace spec\Akeneo\EnrichedEntity\back\Application\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class EditEnrichedEntityHandlerSpec extends ObjectBehavior
 {
@@ -20,12 +22,28 @@ class EditEnrichedEntityHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(EditEnrichedEntityHandler::class);
     }
 
-    function it_edits_an_enriched_entity() {
-    }
+    function it_edits_an_enriched_entity(
+        EnrichedEntityRepository $repository,
+        EnrichedEntity $enrichedEntity,
+        EnrichedEntity $updatedEnrichedEntity
+    ) {
+        $identifier = 'designer';
+        $data = [
+            'labels' => [
+                'fr_FR' => 'Designer',
+                'en_US' => 'Designer',
+            ]
+        ];
 
-    function it_throw_an_exception_if_the_identifier_is_malformed() {
-    }
+        $repository->findOneByIdentifier(Argument::type(EnrichedEntityIdentifier::class))
+            ->willReturn($enrichedEntity);
 
-    function it_throw_an_exception_if_the_labels_are_malformed() {
+        $enrichedEntity->updateLabels(Argument::type(LabelCollection::class))
+            ->willReturn($updatedEnrichedEntity);
+
+        $repository->update($updatedEnrichedEntity)->shouldBeCalled();
+
+        $enrichedEntity = $this->__invoke($identifier, $data);
+        $enrichedEntity->shouldHaveType(EnrichedEntity::class);
     }
 }

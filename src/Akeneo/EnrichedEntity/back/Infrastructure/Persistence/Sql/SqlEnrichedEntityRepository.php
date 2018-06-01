@@ -6,7 +6,6 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -53,10 +52,30 @@ SQL;
         }
     }
 
-
+    /**
+     * @param EnrichedEntity $enrichedEntity
+     */
     public function update(EnrichedEntity $enrichedEntity): void
     {
-        // TODO: Implement update() method.
+        $serializedLabels = $this->getSerializedLabels($enrichedEntity);
+        $update = <<<SQL
+        UPDATE akeneo_enriched_entity_enriched_entity 
+        SET labels = :labels
+        WHERE identifier = :identifier;
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $update,
+            [
+                'identifier' => (string) $enrichedEntity->getIdentifier(),
+                'labels' => $serializedLabels
+            ]
+        );
+
+        if ($statement->rowCount() !== 1) {
+            throw new \LogicException(
+                sprintf('Expected to update one enriched entity. "%d" updated', $statement->rowCount())
+            );
+        }
     }
 
     /**
@@ -106,6 +125,7 @@ SQL;
 
     /**
      * @param string $identifier
+     * @param string $normalizedLabels
      *
      * @return EnrichedEntity
      */
@@ -129,7 +149,7 @@ SQL;
     /**
      * @param EnrichedEntity $enrichedEntity
      *
-     * @return array
+     * @return string
      */
     private function getSerializedLabels(EnrichedEntity $enrichedEntity): string
     {
