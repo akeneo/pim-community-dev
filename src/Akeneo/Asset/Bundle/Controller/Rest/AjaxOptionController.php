@@ -12,6 +12,7 @@
 namespace Akeneo\Asset\Bundle\Controller\Rest;
 
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
+use Pim\Bundle\UIBundle\Controller\AjaxOptionController as BaseAjaxOptionController;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -23,16 +24,10 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class AjaxOptionController
+class AjaxOptionController extends BaseAjaxOptionController
 {
     /** @var UserContext */
     protected $userContext;
-
-    /** @var RegistryInterface */
-    protected $doctrine;
-
-    /** @var ConfigurationRegistryInterface */
-    protected $registry;
 
     /**
      * @param RegistryInterface              $doctrine
