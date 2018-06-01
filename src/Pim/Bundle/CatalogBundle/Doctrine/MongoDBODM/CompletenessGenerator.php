@@ -40,6 +40,18 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
+    /** @var array All whole Families requirements indexed by ids */
+    protected $allFamilyRequirements;
+
+    /** @var array Families requirements by family ids */
+    protected $familyRequirements;
+
+    /** @var array Families requirements by channels and family ids */
+    protected $allPartialFamilyRequirements;
+
+    /** @var array Families requirements indexed by channels and ids */
+    protected $partialFamilyRequirements;
+
     /**
      * Constructor
      *
@@ -58,6 +70,10 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $this->productClass = $productClass;
         $this->channelRepository = $channelRepository;
         $this->familyRepository = $familyRepository;
+
+        $this->familyRequirements = [];
+        $this->allPartialFamilyRequirements = [];
+        $this->partialFamilyRequirements = [];
     }
 
     /**
@@ -254,6 +270,91 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
+     * Return family requirements information to be used to
+     * calculate completenesses. Compute them if not already done
+     *
+     * @param ProductInterface $product
+     * @param ChannelInterface $channel
+     *
+     * @return array
+     */
+    protected function getFamilyRequirements(ProductInterface $product = null, ChannelInterface $channel = null)
+    {
+        if (null === $channel) {
+            return $this->getWholeFamilyRequirements($product);
+        } else {
+            return $this->getPartialFamilyRequirements($product, $channel);
+        }
+    }
+
+    /**
+     * Return whole family requirements, including all channels
+     *
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function getWholeFamilyRequirements(ProductInterface $product = null)
+    {
+        if (null === $product || null === $product->getFamily()) {
+            if (null === $this->allFamilyRequirements) {
+                $this->allFamilyRequirements = $this->computeFamilyRequirements();
+            }
+
+            return $this->allFamilyRequirements;
+        } else {
+            $familyId = $product->getFamily()->getId();
+
+            if (isset($this->allFamilyRequirements[$familyId])) {
+                $this->familyRequirements[$familyId] = $this->allFamilyRequirements[$familyId];
+            }
+
+            if (!isset($this->familyRequirements[$familyId])) {
+                $familyRequirements = $this->computeFamilyRequirements($product);
+
+                $this->familyRequirements[$familyId] = $familyRequirements[$familyId];
+            }
+
+            return $this->familyRequirements;
+        }
+    }
+
+    /**
+     * Return partial family requirements, only for the provided channel
+     *
+     * @param ProductInterface $product
+     * @param ChannelInterface $product
+     *
+     * @return array
+     */
+    protected function getPartialFamilyRequirements(ProductInterface $product = null, ChannelInterface $channel)
+    {
+        $channelId = $channel->getId();
+
+        if (null === $product || null === $product->getFamily()) {
+            if (!isset($this->allPartialFamilyRequirements[$channelId])) {
+                $this->allPartialFamilyRequirements[$channelId] = $this->computeFamilyRequirements(null, $channel);
+            }
+
+            return $this->allPartialFamilyRequirements[$channelId];
+        } else {
+            $familyId = $product->getFamily()->getId();
+
+            if (isset($this->allPartialFamilyRequirements[$channelId][$familyId])) {
+                $this->partialFamilyRequirements[$channelId][$familyId] = $this->allFamilyRequirements[$channelId][$familyId];
+            }
+
+            if (!isset($this->partialFamilyRequirements[$familyId])) {
+                $partialFamilyRequirements = $this->computeFamilyRequirements($product, $channel);
+
+                $this->partialFamilyRequirements[$channelId][$familyId] = $partialFamilyRequirements[$familyId];
+            }
+
+            return $this->partialFamilyRequirements[$channelId];
+        }
+    }
+
+    /**
      * Generate family requirements information to be used to
      * calculate completenesses.
      *
@@ -262,7 +363,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @return array
      */
-    protected function getFamilyRequirements(ProductInterface $product = null, ChannelInterface $channel = null)
+    protected function computeFamilyRequirements(ProductInterface $product = null, ChannelInterface $channel = null)
     {
         $selectFamily = null;
 
