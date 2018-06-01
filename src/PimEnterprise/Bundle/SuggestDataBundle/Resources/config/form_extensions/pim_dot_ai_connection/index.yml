@@ -20,12 +20,17 @@ extensions:
             logout: pim_menu.user.logout
 
     pimee-pim-dot-ai-connection-index-grid-title:
-        module: pim/common/grid-title
+        module: pimee/pim-dot-ai-connection/title
         parent: pim-pim-dot-ai-connection-index
         targetZone: title
         config:
-            countable: false
-            title: pim_ee_suggest_data.pim_dot_ai.title
+            main_title: pim_ee_suggest_data.pim_dot_ai.title.main_title
+            sub_title: pim_ee_suggest_data.pim_dot_ai.title.sub_title
+            illustration: bundles/pimui/images/illustrations/helpcenter-settings.svg
+            description:
+                - pim_ee_suggest_data.pim_dot_ai.title.description.first_step
+                - pim_ee_suggest_data.pim_dot_ai.title.description.second_step
+            identifiers_mapping_url: pimee_suggest_data_pim_dot_ai_connection_map_identifiers
 
     pimee-pim-dot-ai-connection-index-breadcrumbs:
         module: pim/common/breadcrumbs

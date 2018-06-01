@@ -12,3 +12,10 @@ pimee_suggest_data_pim_dot_ai_connection_save:
     requirements:
         code: '[0-9a-f]+'
     methods: [POST]
+
+pimee_suggest_data_pim_dot_ai_connection_map_identifiers:
+    path: /suggest-data/connection/mapping
+    defaults: { _controller: '' }
+    requirements:
+        code: '[0-9a-f]+'
+    methods: [POST]

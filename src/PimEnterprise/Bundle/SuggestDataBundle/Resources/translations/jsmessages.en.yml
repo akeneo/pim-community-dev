@@ -13,18 +13,23 @@ pimee_suggest_data:
                 warning: The {{ itemsCount }} selected products will be send.
 
 page_title:
-    pimee_suggest_data_pim_dot_ai_connection_index: PIM.AI connection
+    pimee_suggest_data_pim_dot_ai_connection_index: 'PIM.AI connection'
 
 pim_ee_suggest_data:
     pim_dot_ai:
-        title: PIM.AI connection
+        title:
+            main_title: 'PIM.AI connection'
+            sub_title: 'Welcome to the <span class="AknSubTitleContainer-subTitle--main">Product Information AI assistant!</span>'
+            description:
+                first_step: 'The first step in the connection of the assistant is to configure the API token.'
+                second_step: 'The next step in the connection process is to match your <a href="#">catalog product identifiers</a> to the assistant&#8217;s identifiers.'
         token:
             label:
-                content: PIM.AI connector
-                title: Label
+                content: 'PIM.AI connector'
+                title: 'Label'
             field:
-                title: Activation code
-                placeholder: Paste Activation Code
+                title: 'Activation code'
+                placeholder: 'Paste Activation Code'
             save:
-                activated: Activated
-                to_activate: Activate
+                activated: 'Activated'
+                to_activate: 'Activate'

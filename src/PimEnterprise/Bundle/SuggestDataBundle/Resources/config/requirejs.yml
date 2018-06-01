@@ -4,11 +4,13 @@ config:
         pimee/product-edit-form/suggest-data-push: pimenterprisesuggestdata/js/product/edit/suggest-data-push
         pimee/mass-edit-form/product/suggest-data: pimenterprisesuggestdata/js/product/mass-edit/suggest-data-operation
         pimee/pim-dot-ai-connection/edit: pimenterprisesuggestdata/js/pim-dot-ai/form/edit.ts
+        pimee/pim-dot-ai-connection/title: pimenterprisesuggestdata/js/pim-dot-ai/form/title.ts
 
         # Templates
         pimee/template/product/suggest-data-push:  pimenterprisesuggestdata/templates/product/edit/suggest-data-push.html
         pimee/template/product/mass-edit/suggest-data: pimenterprisesuggestdata/templates/product/mass-edit/suggest-data.html
         pimee/template/pim-dot-ai-connection/edit: pimenterprisesuggestdata/templates/pim-dot-ai/form/edit.html
+        pimee/template/pim-dot-ai-connection/title: pimenterprisesuggestdata/templates/pim-dot-ai/form/title.html
 
     config:
         pim/controller-registry:
