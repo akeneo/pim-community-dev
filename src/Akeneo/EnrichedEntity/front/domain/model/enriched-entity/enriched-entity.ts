@@ -5,7 +5,7 @@ export default interface EnrichedEntity {
   getIdentifier: () => Identifier;
   getLabel: (locale: string) => string;
   equals: (enrichedEntity: EnrichedEntity) => boolean;
-}
+};
 class InvalidArgumentError extends Error {}
 
 class EnrichedEntityImplementation implements EnrichedEntity {

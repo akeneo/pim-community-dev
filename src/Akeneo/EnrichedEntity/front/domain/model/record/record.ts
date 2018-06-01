@@ -7,7 +7,7 @@ export default interface Record {
   getEnrichedEntityIdentifier(): EnrichedEntityIdentifier;
   getLabel: (locale: string) => string;
   equals: (record: Record) => boolean;
-}
+};
 class InvalidArgumentError extends Error {}
 
 class RecordImplementation implements Record {

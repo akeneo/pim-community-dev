@@ -19,4 +19,4 @@ export default interface Fetcher<Entity> {
   fetchAll: () => Promise<Entity[]>;
   save: (enrichedEntity: EnrichedEntity) => Promise<EnrichedEntity>;
   search: (query: Query) => Promise<{items: Entity[]; total: number}>;
-}
+};
