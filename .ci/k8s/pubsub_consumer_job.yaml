@@ -5,6 +5,7 @@ metadata:
 spec:
   completions: JOB_COMPLETIONS
   parallelism: JOB_SCALE
+  backoffLimit: 300
   template:
     spec:
       initContainers:
