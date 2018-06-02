@@ -397,6 +397,10 @@ pim_enrich:
           required_label: Obligatorisk
         variant:
           title: Varianter
+    family_variant:
+      tab:
+        labels:
+          title: Etikettsöversättningar
     attribute_option:
       flash:
         option_created: Attributalternativ har skapats

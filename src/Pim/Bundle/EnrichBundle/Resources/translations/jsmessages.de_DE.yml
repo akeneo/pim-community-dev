@@ -79,6 +79,7 @@ pim_datagrid:
       label: Schnell-Export
   mass_action:
     delete:
+      confirm_content: Sind Sie sicher, dass Sie die ausgewählten Produkte löschen möchten?
       success: Ausgewählte Produkte erfolgreich gelöscht.
       error: Es ist ein Fehler beim Löschen der ausgewählten Produkte aufgetreten, bitte versuchen Sie es erneut.
     quick_export:
@@ -178,6 +179,7 @@ pim_enrich:
       category: Kategorie
       subTitle: Produkt anlegen
       filters: Filter
+      common: Allgemein
       btn:
         enabled: Aktiviert
         disabled: Deaktiviert
@@ -236,6 +238,7 @@ pim_enrich:
         created: Produkt erfolgreich erstellt
       completeness: Vollständig
       sequential_edit:
+        item_limit: Nur die ersten 1000 Elemente dieser sequentiellen Bearbeitung werden angezeigt ({{ count }} ausgewählt)
         empty: Ihre Auswahl ist leer, bitte ändern Sie Ihre Suchparameter
     product_model:
       info:
@@ -285,6 +288,8 @@ pim_enrich:
         created: Produktfamilie erfolgreich angelegt
       variant:
         axis.label: Variantenachse(n)
+        add_variant: Variante hinzufügen
+        required: erforderlich
     attribute_option:
       actions: Aktionen
     group:
@@ -338,6 +343,7 @@ pim_enrich:
   confirmation:
     leave: Möchten Sie diese Seite wirklich verlassen?
     discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
+    remove_item: Entfernen bestätigen
     delete:
       attribute: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
       attribute_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
@@ -426,6 +432,14 @@ pim_enrich:
             attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
           not_required_label: Nicht erforderlich
           required_label: Erforderlich
+        variant:
+          title: Varianten
+    family_variant:
+      tab:
+        attributes:
+          title: Variantenattribute
+        labels:
+          title: Feldbezeichner-Übersetzungen
     attribute_option:
       flash:
         option_created: Attributoption erfolgreich erstellt
@@ -690,7 +704,10 @@ pim_enrich:
     user_role:
       create_btn: Rolle anlegen
     user_group:
+      title: "] -Inf, 1] {{ count }} Gruppe|] 1, Inf [{{ count }} Gruppen"
       create_btn: Gruppe anlegen
+    process_tracker:
+      title: "] -Inf, 1] {{ count }} Benutzer|] 1, Inf [{{ count }} Benutzer"
     channel:
       create_btn: Ausgabekanal anlegen
     attribute:
@@ -723,6 +740,8 @@ pim_enrich:
           label: Zu Gruppen hinzufügen
           description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
           field: Gruppen
+        add_to_category:
+          label: Zu Kategorien hinzufügen
         move_to_category:
           label: Zwischen Kategorien verschieben
         remove_from_category:
@@ -789,6 +808,8 @@ pim_menu:
     exports: Exporte
     settings: Einstellungen
     system: System
+    help:
+      title: Hilfe
   item:
     association_type: Verbindungstypen
     attribute_group: Attributgruppen

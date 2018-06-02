@@ -482,6 +482,12 @@ pim_enrich:
           title: Varianter
           flash:
             family_variant_created: Familie variant blev oprettet
+    family_variant:
+      tab:
+        attributes:
+          title: Variant attributter
+        labels:
+          title: Etiket oversættelser
     attribute_option:
       flash:
         option_created: Attribut tilvalg oprettet

@@ -487,6 +487,10 @@ pim_enrich:
           title: Variantes
           flash:
             family_variant_created: Variante familiar creada con éxito
+    family_variant:
+      tab:
+        labels:
+          title: Traducciones de etiqueta
     attribute_option:
       flash:
         option_created: Opción del atributo creada con éxito
