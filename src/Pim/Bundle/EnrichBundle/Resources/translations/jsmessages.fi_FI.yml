@@ -73,6 +73,7 @@ confirmation:
     role: Oletko varma, että haluat poistaa tämän roolin?
     job_instance: Oletko varma, että haluat poistaa tämän tehtävän?
     api_connection: Oletko varma, että haluat kumota tämän API -yhteyden? Kaikki rajapintakutsut tämän yhteyden kautta johtavat jatkossa virheeseen.
+    products_and_product_models: Oletko varma, että haluat poistaa valitut tuotteet ja tuotemallit? Kaikki tuotemallin variantit poistetaan myös.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -493,6 +494,10 @@ pim_enrich:
           title: Variantit
           flash:
             family_variant_created: Varianttiperhe onnistuneesti luotu
+    family_variant:
+      tab:
+        labels:
+          title: Nimikkeiden käännökset
     attribute_option:
       flash:
         option_created: Määritteen asetuksen luominen onnistui
@@ -811,7 +816,13 @@ pim_enrich:
           description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
           field: Ottaa käyttöön
         edit_common:
+          label: Muokkaa attribuuttien arvoja
+          label_count: "{1}Muokkaa <span class=\"AknFullPage-title--highlight\">1 tuotteen</span> attribuutteja|] 1, Inf [Muokkaa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen</span> attribuutteja"
           description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla ({{ locale }} / {{ scope }}).
+        add_attribute_value:
+          label: Lisää attribuutin arvoja
+          label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuotteelle</span> attribuutin arvoja|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteelle</span> attribuutin arvoja"
+          description: Vain moniarvoiset tuotteen perheeseen kuuluvat attribuutit muokataan seuraavilla arvoilla lokaatiolle {{ locale }} ja kanavalle {{ scope }}. Uudet attribuuttien arvot lisätään ja nykyiset arvot säilytetään.
         change_family:
           label: Muuta perhe
           label_count: "{1}Muuta <span class=\"AknFullPage-title--highlight\">1 tuotteen perhe</span>|] 1, Inf [Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen perhe</span>"

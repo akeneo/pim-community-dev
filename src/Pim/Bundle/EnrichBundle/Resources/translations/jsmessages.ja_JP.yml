@@ -478,6 +478,10 @@ pim_enrich:
           title: 種類
           flash:
             family_variant_created: ファミリーバリアントを作成しました
+    family_variant:
+      tab:
+        labels:
+          title: ラベルの翻訳
     attribute_option:
       flash:
         option_created: 属性オプションを作成しました

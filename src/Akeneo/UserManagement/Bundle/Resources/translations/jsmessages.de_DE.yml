@@ -3,5 +3,6 @@ pim_title:
   pim_user_role_index: Rollen
   pim_user_group_index: Benutzergruppen
   oro_config_configuration_system: Konfiguration
+  pim_user_profile_view: '{{ username }}'
   pim_user_security_login: Anmelden
   pim_user_reset_request: Passwort vergessen

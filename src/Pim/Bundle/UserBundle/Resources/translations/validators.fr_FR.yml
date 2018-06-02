@@ -1,0 +1,3 @@
+pim_user:
+  min_role: "Vous devez sélectionner au moins {{ limit }} rôle. |Vous devez sélectionner au moins {{ limit }} rôles."
+  password_match: "Les mots de passe doivent correspondre."
