@@ -523,12 +523,17 @@ config:
 
         # Controllers
         pim/controller-registry:               pimenrich/js/controller/registry
+
+        # Move to tools/controller
         pim/controller/base:                   pimenrich/js/controller/base
         pim/controller/front:                  pimenrich/js/controller/front
         pim/controller/template:               pimenrich/js/controller/template
         pim/controller/form:                   pimenrich/js/controller/form
-        pim/controller/product:                pimenrich/js/controller/product
+
+        # useless
+        # pim/controller/product:                pimenrich/js/controller/product
         pim/controller/product/index:          pimenrich/js/controller/product/index
+
         pim/controller/entity-with-family-variant: pimenrich/js/controller/entity-with-family-variant
         pim/controller/family:                 pimenrich/js/controller/family
         pim/controller/catalog-volume:         pimenrich/js/controller/catalog-volume
