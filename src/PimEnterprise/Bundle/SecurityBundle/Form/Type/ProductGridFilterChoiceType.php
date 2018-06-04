@@ -29,7 +29,7 @@ class ProductGridFilterChoiceType extends BaseProductGridFilterChoiceType
         $filters = parent::getSystemFilters();
 
         $filters['System'] = $filters['System'] + [
-            'pimee_workflow.product.permission.label' => 'permissions',
+            'pim_common.permissions' => 'permissions',
         ];
 
         return $filters;

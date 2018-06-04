@@ -8,7 +8,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -19,7 +19,7 @@ extensions:
         aclResourceId: pimee_importexport_import_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -30,7 +30,7 @@ extensions:
         aclResourceId: pimee_importexport_import_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -41,7 +41,7 @@ extensions:
         aclResourceId: pimee_importexport_import_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -52,7 +52,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -63,7 +63,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -74,7 +74,7 @@ extensions:
         aclResourceId: pimee_importexport_import_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -85,7 +85,7 @@ extensions:
         aclResourceId: pimee_importexport_import_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -96,7 +96,7 @@ extensions:
         aclResourceId: pimee_importexport_import_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -107,7 +107,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -118,7 +118,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -129,7 +129,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -140,7 +140,7 @@ extensions:
         aclResourceId: pimee_importexport_export_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 
@@ -151,7 +151,7 @@ extensions:
         aclResourceId: pimee_importexport_import_profile_edit_permissions
         position: 115
         config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
+            title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
 

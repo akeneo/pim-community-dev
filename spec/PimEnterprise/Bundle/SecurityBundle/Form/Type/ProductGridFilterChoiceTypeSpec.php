@@ -50,7 +50,7 @@ class ProductGridFilterChoiceTypeSpec extends ObjectBehavior
             'choices' => [
                 'System' => [
                     'My family' => 'family',
-                    'pimee_workflow.product.permission.label' => 'permissions',
+                    'pim_common.permissions' => 'permissions',
                 ],
                 'Other' => ['sku' => 'SKU'],
             ],

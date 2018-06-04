@@ -60,7 +60,6 @@ pimee_workflow:
         index: Manage published products
     product:
         permission:
-            label: Permissions
             own: Review / publish
             edit: Edit
             view: View

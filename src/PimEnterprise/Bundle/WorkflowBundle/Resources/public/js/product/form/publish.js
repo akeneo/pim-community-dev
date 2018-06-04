@@ -55,7 +55,7 @@ define(
                     __('pimee_enrich.entity.product.confirmation.publish.content'),
                     __('pimee_enrich.entity.product.confirmation.publish.title'),
                     this.doPublish.bind(this),
-                    __('pim_common.products')
+                    __('pim_enrich.entity.product.plural_label')
                 );
             },
             unpublish: function () {
