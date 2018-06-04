@@ -12,6 +12,7 @@
 - PIM-7311: Fix the product grid filters list when a sort order is a huge number
 - PIM-7391: Fix offset pagination when listing product models with the API
 - PIM-7009: Fix bug with pagination on associated products page on product edit form
+- PIM-7383: Fix 'in list' product filters with large amount of items
 
 # 2.0.25 (2018-05-21)
 
