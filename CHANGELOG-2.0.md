@@ -1170,7 +1170,7 @@ IMPORTANT: In order for your PIM to work properly, you will need to run the foll
 
 ### Methods
 
-- Change `Akeneo\Pim\Structure\Component\Model\FamilyInterface` to add `setAttributeAsImage` and `getAttributeAsImage`
+- Change `Pim\Component\Catalog\Model\FamilyInterface` to add `setAttributeAsImage` and `getAttributeAsImage`
 - Remove method `addMissingProductValues` of `Pim\Component\Catalog\Builder\ProductBuilderInterface` (this method is now handled by `Pim\Component\Catalog\ValuesFiller\ProductValuesFiller::fillMissingValues`)
 - Remove method `getFamily` of `Pim\Component\Catalog\Model\ProductInterface`
 - PIM-6732: Remove `AddProductToVariantGroupProcessor` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
