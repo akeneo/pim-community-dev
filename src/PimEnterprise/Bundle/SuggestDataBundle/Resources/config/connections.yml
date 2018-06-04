@@ -1,0 +1,8 @@
+services:
+    pimee_suggest_data.application.connection:
+        class: 'PimEnterprise\Component\SuggestData\Application\SuggestDataConnection'
+        arguments:
+            - '@pimee_suggest_data.handler.save_configuration'
+
+    pimee_suggest_data.connection.is_valid.pim_dot_ai:
+        class: 'PimEnterprise\Bundle\SuggestDataBundle\Infra\Fake\PimDotAiConnection'

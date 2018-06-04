@@ -1,5 +1,4 @@
 services:
-
     test.enriched_entity.enriched_entity_grid.context:
         class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context\EnrichedEntityGridContext
         arguments:
@@ -23,3 +22,12 @@ services:
             - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
         tags:
             - { name: fob.context_service }
+
+    test.suggest_data.pim_ai:
+        class: 'AkeneoEnterprise\Test\Acceptance\SuggestData\Context\PimDotAi'
+        arguments:
+            - '@__symfony__.pimee_suggest_data.application.connection'
+            - '@__symfony__.pimee_suggest_data.repository.configuration'
+            - '@__symfony__.pimee_suggest_data.query.get_normalized_configuration'
+        tags:
+            - { name: 'fob.context_service' }
