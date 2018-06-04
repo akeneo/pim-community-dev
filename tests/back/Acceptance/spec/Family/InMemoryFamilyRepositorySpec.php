@@ -8,7 +8,7 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;

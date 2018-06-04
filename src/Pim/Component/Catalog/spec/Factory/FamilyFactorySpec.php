@@ -22,7 +22,7 @@ class FamilyFactorySpec extends ObjectBehavior
             $channelRepository,
             $factory,
             $attributeRepository,
-            'Pim\Bundle\CatalogBundle\Entity\Family'
+            'Akeneo\Pim\Structure\Component\Model\Family'
         );
     }
 
