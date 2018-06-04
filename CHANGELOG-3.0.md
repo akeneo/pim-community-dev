@@ -125,3 +125,5 @@
 - Move `Pim\Component\Catalog\Model\AttributeInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeInterface`
 - Move `Pim\Component\Catalog\Model\AttributeOptionInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeInterface`
 - Move `Pim\Bundle\CatalogBundle\Entity\AttributeOption` to `Akeneo\Pim\Structure\Component\Model\AttributeOption`
+- Move `Pim\Component\Catalog\Model\FamilyInterface` to `Akeneo\Pim\Structure\Component\Model\FamilyInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\Family` to `Akeneo\Pim\Structure\Component\Model\Family`

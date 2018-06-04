@@ -103,3 +103,5 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AttributeInterface/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\AttributeOption/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeOption/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AttributeOptionInterface/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeOptionInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\FamilyInterface/Akeneo\\Pim\\Structure\\Component\\Model\\FamilyInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\Family/Akeneo\\Pim\\Structure\\Component\\Model\\Family/g'
