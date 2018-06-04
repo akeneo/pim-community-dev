@@ -39,7 +39,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "3.0.x-dev@dev",
+        "akeneo/pim-community-dev": "dev-suggest-data",
         "phpspec/php-diff": "1.0.2",
         "akeneo/pim-ai-api-php-client": "dev-master"
     },
@@ -100,7 +100,7 @@
             "@symfony-scripts"
         ]
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "extra": {
         "symfony-app-dir": "app",
         "symfony-bin-dir": "bin",
