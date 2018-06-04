@@ -51,7 +51,7 @@ class EditAction
      *
      * @return Response
      */
-    public function saveAction(Request $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');

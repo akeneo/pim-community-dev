@@ -48,7 +48,7 @@ class IndexAction
      *
      * @return JsonResponse
      */
-    public function indexAction(): JsonResponse
+    public function __invoke(): JsonResponse
     {
         $enrichedEntities = ($this->listEnrichedEntityHandler)();
         $normalizedEnrichedEntities = array_map(function ($enrichedEntity) {

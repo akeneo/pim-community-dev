@@ -49,7 +49,7 @@ class GetAction
      *
      * @return JsonResponse
      */
-    public function getAction(string $identifier): JsonResponse
+    public function __invoke(string $identifier): JsonResponse
     {
         $enrichedEntity = ($this->showEnrichedEntityHandler)($identifier);
 
