@@ -68,7 +68,7 @@ class EditAction
         }
 
         $handler = $this->editEnrichedEntityHandler;
-        $enrichedEntity = $handler($identifier, $data);
+        $enrichedEntity = $handler($identifier, $data['labels']);
 
         return new JsonResponse(
             $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api')

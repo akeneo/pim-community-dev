@@ -36,15 +36,15 @@ class EditEnrichedEntityHandler
 
     /**
      * @param string $rawIdentifier
-     * @param array  $data
+     * @param array  $labels
      *
      * @return EnrichedEntity
      */
-    public function __invoke(string $rawIdentifier, array $data): EnrichedEntity
+    public function __invoke(string $rawIdentifier, array $labels): EnrichedEntity
     {
         $identifier = EnrichedEntityIdentifier::fromString($rawIdentifier);
         $enrichedEntity = $this->enrichedEntityRepository->findOneByIdentifier($identifier);
-        $enrichedEntity->updateLabels($data['labels']);
+        $enrichedEntity->updateLabels($labels);
 
         $this->enrichedEntityRepository->update($enrichedEntity);
 
