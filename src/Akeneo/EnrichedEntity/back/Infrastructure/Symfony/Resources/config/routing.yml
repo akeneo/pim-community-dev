@@ -11,3 +11,8 @@ akeneo_enriched_entities_enriched_entities_index_rest:
 akeneo_enriched_entities_enriched_entities_get_rest:
     path: '/rest/enriched_entity/{identifier}'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.get }
+
+akeneo_enriched_entities_enriched_entities_edit_rest:
+    path: '/rest/enriched_entity/{identifier}'
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.edit }
+    methods: [POST]
