@@ -175,7 +175,7 @@ class ProposalWidget implements WidgetInterface
                         $authorUsername,
                     ],
                 ],
-                'sku'    => [
+                'identifier'    => [
                     'value' => $productIdentifier,
                     'type' => 1,
                 ],

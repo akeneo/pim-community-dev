@@ -1,7 +1,16 @@
 parameters:
     pimee_workflow.datagrid.event_listener.inject_entity_with_values_for_product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectEntityWithValuesForProductDraftSubscriber
+    pimee_workflow.datagrid.configurator.filters_configurator.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configurator\FiltersConfigurator
 
 services:
+    pimee_workflow.event_listener.proposal_grid_before_listener:
+        class: '%pimee_workflow.event_listener.configure_proposal_grid_listener.class%'
+        arguments:
+            - '@pimee_datagrid.datagrid.configuration.proposal.context_configurator'
+            - '@pimee_workflow.datagrid.configuration.product.filters_configurator'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.proposal-grid, method: buildBefore }
+
     pimee_workflow.event_listener.product_drafts_grid_listener:
         class: '%pim_datagrid.event_listener.add_parameters_to_grid.class%'
         arguments:
@@ -61,3 +70,4 @@ services:
           - '@request_stack'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.proposal-grid, method: onBuildAfter }
+

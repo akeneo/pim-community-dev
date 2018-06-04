@@ -101,6 +101,15 @@ datagrid:
                     type: label_or_identifier
                     label: Label or identifier
                     data_name: label_or_identifier
+                identifier:
+                    label:         Identifier
+                    data_name:     product_identifier
+                    type:          product_value_string
+                    ftype:         string
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true
         sorters:
             columns:
                 author:

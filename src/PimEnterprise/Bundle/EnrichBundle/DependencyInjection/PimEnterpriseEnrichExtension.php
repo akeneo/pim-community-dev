@@ -33,7 +33,6 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('connector/processors.yml');
         $loader->load('connector/writers.yml');
         $loader->load('controllers.yml');
-        $loader->load('datagrid_listeners.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('filters.yml');
         $loader->load('form_types.yml');

@@ -106,7 +106,7 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
                         $author->getUsername(),
                     ],
                 ],
-                'sku'    => [
+                'identifier'    => [
                     'value' => $product->getIdentifier(),
                     'type' => 1,
                 ],
