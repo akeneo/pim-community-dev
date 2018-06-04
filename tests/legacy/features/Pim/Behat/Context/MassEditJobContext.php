@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Behat\Context;
 
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
