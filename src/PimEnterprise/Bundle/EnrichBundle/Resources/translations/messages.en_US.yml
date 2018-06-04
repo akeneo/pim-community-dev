@@ -96,6 +96,10 @@ pimee_enrich:
     acl.product_ownership.title: Ownership
     attributes:
         empty: none
+    category:
+        tab:
+            permission:
+                title: Permissions
     groups:
         label: owner groups
         empty: none

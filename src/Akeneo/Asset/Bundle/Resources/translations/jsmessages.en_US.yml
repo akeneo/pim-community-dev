@@ -56,6 +56,13 @@ pimee_product_asset:
                 error: Error ocurred when trying to delete selected assets, please try again.
                 empty_selection: No asset selected
 
+pim_enrich:
+    entity:
+        attribute:
+            property:
+                type:
+                    pim_assets_collection: Assets collection
+
 pim_dashboard:
     widget:
         last_operations:
