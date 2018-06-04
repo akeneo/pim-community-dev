@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * @author    Julien Janvier <jjanvier@akeneo.com>
@@ -14,7 +14,7 @@ interface ValueConverterInterface
     /**
      * Does the converter supports the attribute
      *
-     * @param AttributeInterface $attribute
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
      *
      * @return bool
      */

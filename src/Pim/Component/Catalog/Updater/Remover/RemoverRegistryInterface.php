@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Registry of removers
@@ -43,7 +43,7 @@ interface RemoverRegistryInterface
     /**
      * Get the attribute remover
      *
-     * @param AttributeInterface $attribute
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
      *
      * @return AttributeRemoverInterface|null
      */

@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -269,9 +269,9 @@ class AttributeController
     /**
      * Update an attribute. It throws an error 422 if a problem occurred during the update.
      *
-     * @param AttributeInterface $attribute
-     * @param array              $data
-     * @param string             $anchor
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param array                                                    $data
+     * @param string                                                   $anchor
      *
      * @throws DocumentedHttpException
      */

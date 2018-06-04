@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Object code resolver

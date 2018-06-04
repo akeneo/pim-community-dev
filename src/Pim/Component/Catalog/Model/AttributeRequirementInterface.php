@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * The attribute requirement for a channel and a family

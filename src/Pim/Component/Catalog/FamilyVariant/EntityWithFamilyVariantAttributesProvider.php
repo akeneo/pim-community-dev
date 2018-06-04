@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\FamilyVariant;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 
 /**

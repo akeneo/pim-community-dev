@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;

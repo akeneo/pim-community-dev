@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**

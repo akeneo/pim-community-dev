@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
@@ -17,10 +17,10 @@ interface AttributeRemoverInterface extends RemoverInterface
     /**
      * Remove attribute data
      *
-     * @param EntityWithValuesInterface $entityWithValues The entity to modify
-     * @param AttributeInterface        $attribute        The attribute of the entity to modify
-     * @param mixed                     $data             The data to remove
-     * @param array                     $options          Options passed to the remover
+     * @param EntityWithValuesInterface                                $entityWithValues The entity to modify
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute        The attribute of the entity to modify
+     * @param mixed                                                    $data             The data to remove
+     * @param array                                                    $options          Options passed to the remover
      *
      * @return
      */

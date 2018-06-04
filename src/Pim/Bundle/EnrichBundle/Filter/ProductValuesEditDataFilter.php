@@ -8,7 +8,7 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
@@ -32,7 +32,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var AttributeInterface[] */
+    /** @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface[] */
     protected $attributes = [];
 
     /** @var LocaleInterface[] */
@@ -90,9 +90,9 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /**
      * Generate filtered values for the given attribute
      *
-     * @param AttributeInterface $attribute
-     * @param array              $values
-     * @param array              $options
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param array                                                    $values
+     * @param array                                                    $options
      *
      * @return array
      */
@@ -112,8 +112,8 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /**
      * Test if a value is accepted or not
      *
-     * @param AttributeInterface $attribute
-     * @param array              $value
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param array                                                    $value
      *
      * @return boolean
      */
@@ -161,7 +161,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /**
      * @param string $code
      *
-     * @return AttributeInterface
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface
      */
     protected function getAttribute($code)
     {

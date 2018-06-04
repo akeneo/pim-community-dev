@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Copier;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -63,9 +63,9 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     /**
      * Check locale and scope are valid
      *
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     * @param string             $scope
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param string                                                   $locale
+     * @param string                                                   $scope
      *
      * @throws InvalidPropertyException
      */

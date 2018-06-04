@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSet;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
@@ -40,8 +40,8 @@ class FamilyVariantSpec extends ObjectBehavior
         FamilyInterface $family,
         Collection $familyAttributes,
         AttributeInterface $name,
-        AttributeInterface $color,
-        AttributeInterface $size,
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $color,
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $size,
         Collection $axes1,
         Collection $axes2,
         Collection $attribute1,
@@ -90,8 +90,8 @@ class FamilyVariantSpec extends ObjectBehavior
         VariantAttributeSetInterface $variantAttributeSet2,
         ArrayCollection $axes1,
         ArrayCollection $axes2,
-        AttributeInterface $color,
-        AttributeInterface $size
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $color,
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $size
     ) {
         $this->addVariantAttributeSet($variantAttributeSet1);
         $this->addVariantAttributeSet($variantAttributeSet2);
@@ -114,9 +114,9 @@ class FamilyVariantSpec extends ObjectBehavior
         ArrayCollection $commonAttributes,
         ArrayCollection $attributes1,
         ArrayCollection $attributes2,
-        AttributeInterface $name,
-        AttributeInterface $color,
-        AttributeInterface $size
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $name,
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $color,
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $size
     ) {
         $this->addVariantAttributeSet($variantAttributeSet1);
         $this->addVariantAttributeSet($variantAttributeSet2);

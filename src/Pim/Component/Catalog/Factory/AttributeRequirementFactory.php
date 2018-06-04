@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 
 /**
@@ -30,9 +30,9 @@ class AttributeRequirementFactory
      * This method creates an attribute requirement instance.
      * Attribute, channel and requirement are set after instantiation.
      *
-     * @param AttributeInterface $attribute
-     * @param ChannelInterface   $channel
-     * @param bool               $required
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param ChannelInterface                                         $channel
+     * @param bool                                                     $required
      *
      * @return AttributeRequirementInterface
      */

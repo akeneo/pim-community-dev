@@ -9,7 +9,7 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
@@ -25,7 +25,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     private $attributes;
 
     /**
-     * @param AttributeInterface[] $attributes
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface[] $attributes
      */
     public function __construct(array $attributes = [])
     {

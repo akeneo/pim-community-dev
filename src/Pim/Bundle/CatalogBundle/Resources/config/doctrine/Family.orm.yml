@@ -25,7 +25,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                     on: update
     manyToMany:
         attributes:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
             inversedBy: families
             joinTable:
                 name: pim_catalog_family_attribute
@@ -60,13 +60,13 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                 - refresh
     manyToOne:
         attributeAsLabel:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
             joinColumns:
                 label_attribute_id:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
         attributeAsImage:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
             joinColumns:
                 image_attribute_id:
                     referencedColumnName: id

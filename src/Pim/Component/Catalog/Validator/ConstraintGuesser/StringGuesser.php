@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Validator\ConstraintGuesser;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Pim\Component\Catalog\Validator\Constraints\IsString;
 

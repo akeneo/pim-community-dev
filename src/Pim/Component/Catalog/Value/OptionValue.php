@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Value;
 
 use Pim\Component\Catalog\Model\AbstractValue;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

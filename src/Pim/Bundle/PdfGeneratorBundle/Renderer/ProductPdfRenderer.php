@@ -7,7 +7,7 @@ use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -135,7 +135,7 @@ class ProductPdfRenderer implements RendererInterface
      * @param ProductInterface $product
      * @param string           $locale
      *
-     * @return AttributeInterface[]
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface[]
      */
     protected function getGroupedAttributes(ProductInterface $product, $locale)
     {

@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -31,8 +31,8 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
     /**
      * Don't allow creating an identifier attribute if one already exists
      *
-     * @param AttributeInterface $attribute
-     * @param Constraint         $constraint
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param Constraint                                               $constraint
      */
     public function validate($attribute, Constraint $constraint)
     {

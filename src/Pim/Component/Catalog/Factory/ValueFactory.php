@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Factory;
 
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -42,10 +42,10 @@ class ValueFactory
      * This method effectively creates a product value and set its data, while
      * checking the provided localeCode and ChannelCode exists.
      *
-     * @param AttributeInterface $attribute
-     * @param string             $channelCode
-     * @param string             $localeCode
-     * @param mixed              $data
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param string                                                   $channelCode
+     * @param string                                                   $localeCode
+     * @param mixed                                                    $data
      *
      * @throws \LogicException
      *

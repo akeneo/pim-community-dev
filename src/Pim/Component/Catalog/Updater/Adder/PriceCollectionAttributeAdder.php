@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Adder;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -74,11 +74,11 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
     /**
      * Add prices into the value
      *
-     * @param EntityWithValuesInterface $entityWithValues
-     * @param AttributeInterface        $attribute
-     * @param mixed                     $data
-     * @param string                    $locale
-     * @param string                    $scope
+     * @param EntityWithValuesInterface                                $entityWithValues
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param mixed                                                    $data
+     * @param string                                                   $locale
+     * @param string                                                   $scope
      */
     protected function addPrices(
         EntityWithValuesInterface $entityWithValues,

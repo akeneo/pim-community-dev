@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Validator;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * AttributeValidatorHelper
@@ -101,8 +101,8 @@ class AttributeValidatorHelper
     /**
      * Check if metric family of attribute are the same
      *
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $fromAttribute
+     * @param AttributeInterface                                       $toAttribute
      */
     public function validateUnitFamilies(
         AttributeInterface $fromAttribute,

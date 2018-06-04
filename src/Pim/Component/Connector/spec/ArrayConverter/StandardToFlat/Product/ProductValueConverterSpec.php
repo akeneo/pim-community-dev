@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat\Product;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter;
 use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\ValueConverterRegistry;
 

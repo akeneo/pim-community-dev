@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
@@ -93,7 +93,7 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInfamily($attribute)->shouldReturn(false);
     }
 
-    function it_has_not_attribute_in_family(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
+    function it_has_not_attribute_in_family(\Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
     {
         $attributes->contains($attribute)->willReturn(false);
         $family->getId()->willReturn(42);
@@ -116,7 +116,8 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeEditable($attribute)->shouldReturn(false);
     }
 
-    function it_is_attribute_editable_with_family_containing_attribute(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
+    function it_is_attribute_editable_with_family_containing_attribute(
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
     {
         $familyAttributes->contains($attribute)->willReturn(true);
         $family->getId()->willReturn(42);
@@ -133,7 +134,8 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeRemovable($attribute)->shouldReturn(false);
     }
 
-    function it_is_not_attribute_removable_with_family_containing_attribute(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
+    function it_is_not_attribute_removable_with_family_containing_attribute(
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
     {
         $familyAttributes->contains($attribute)->willReturn(true);
         $family->getId()->willReturn(42);
@@ -143,14 +145,14 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeRemovable($attribute)->shouldReturn(false);
     }
 
-    function it_is_attribute_removable(AttributeInterface $attribute)
+    function it_is_attribute_removable(\Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute)
     {
         $this->isAttributeRemovable($attribute)->shouldReturn(true);
     }
 
     function it_gets_the_label_of_the_product_without_specified_scope(
         FamilyInterface $family,
-        AttributeInterface $attributeAsLabel,
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attributeAsLabel,
         ValueCollectionInterface $values,
         ValueInterface $nameValue,
         ValueInterface $identifier
@@ -179,7 +181,7 @@ class ProductSpec extends ObjectBehavior
 
     function it_gets_the_label_regardless_of_the_specified_scope_if_the_attribute_as_label_is_not_scopable(
         FamilyInterface $family,
-        AttributeInterface $attributeAsLabel,
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attributeAsLabel,
         ValueCollectionInterface $values,
         ValueInterface $nameValue,
         ValueInterface $identifier
@@ -208,7 +210,7 @@ class ProductSpec extends ObjectBehavior
 
     function it_gets_the_label_if_the_scope_is_specified_and_the_attribute_as_label_is_scopable(
         FamilyInterface $family,
-        AttributeInterface $attributeAsLabel,
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attributeAsLabel,
         ValueCollectionInterface $values,
         ValueInterface $nameValue,
         ValueInterface $identifier
@@ -256,7 +258,7 @@ class ProductSpec extends ObjectBehavior
 
     function it_gets_the_identifier_as_label_if_there_is_no_attribute_as_label(
         FamilyInterface $family,
-        AttributeInterface $attributeAsLabel,
+        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attributeAsLabel,
         ValueCollectionInterface $values,
         ValueInterface $identifier
     ) {

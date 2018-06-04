@@ -9,7 +9,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\FamilyFactory;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;

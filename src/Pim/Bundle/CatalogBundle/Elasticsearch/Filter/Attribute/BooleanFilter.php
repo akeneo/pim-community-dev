@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -99,8 +99,8 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
     /**
      * Check if the value is valid
      *
-     * @param AttributeInterface $attribute
-     * @param mixed              $value
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param mixed                                                    $value
      */
     protected function checkValue(AttributeInterface $attribute, $value)
     {

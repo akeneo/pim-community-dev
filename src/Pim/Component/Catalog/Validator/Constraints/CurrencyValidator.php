@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -37,8 +37,8 @@ class CurrencyValidator extends ConstraintValidator
     /**
      * Validate currency of a price
      *
-     * @param AttributeInterface|MetricInterface|ValueInterface $object
-     * @param Constraint                                        $constraint
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface|MetricInterface|ValueInterface $object
+     * @param Constraint                                                                              $constraint
      */
     public function validate($object, Constraint $constraint)
     {

@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence
 
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -114,7 +114,7 @@ class QueryTestCase extends TestCase
     /**
      * @param array $data
      *
-     * @return AttributeInterface
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface
      */
     protected function createAttribute(array $data = []) : AttributeInterface
     {

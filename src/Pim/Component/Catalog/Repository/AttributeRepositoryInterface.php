@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
@@ -25,7 +25,7 @@ interface AttributeRepositoryInterface extends
      *
      * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.8
      *
-     * @return AttributeInterface[]
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface[]
      */
     public function findAllInDefaultGroup();
 
@@ -79,7 +79,7 @@ interface AttributeRepositoryInterface extends
      * Get the identifier attribute
      * Only one identifier attribute can exists
      *
-     * @return AttributeInterface
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface
      */
     public function getIdentifier();
 
@@ -122,7 +122,7 @@ interface AttributeRepositoryInterface extends
      *
      * @param FamilyInterface $family
      *
-     * @return AttributeInterface[]
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface[]
      */
     public function findAttributesByFamily(FamilyInterface $family);
 

@@ -6,7 +6,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Product;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\Integration\Configuration;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

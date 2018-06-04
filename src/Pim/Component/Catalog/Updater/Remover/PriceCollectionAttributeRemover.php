@@ -6,7 +6,7 @@ use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
@@ -75,11 +75,11 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
     /**
      * Remove prices from the given $entityWithValues
      *
-     * @param EntityWithValuesInterface $entityWithValues
-     * @param AttributeInterface        $attribute
-     * @param mixed                     $data
-     * @param string                    $locale
-     * @param string                    $scope
+     * @param EntityWithValuesInterface                                $entityWithValues
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param mixed                                                    $data
+     * @param string                                                   $locale
+     * @param string                                                   $scope
      */
     protected function removePrices(
         EntityWithValuesInterface $entityWithValues,
@@ -111,8 +111,8 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * Check if data are valid
      * "data": doesn't need value
      *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param mixed                                                    $data
      *
      * @throws InvalidPropertyTypeException
      * @throws InvalidPropertyException

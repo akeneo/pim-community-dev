@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
@@ -25,7 +25,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * Overrided to change target entity name
      *
-     * @var \Pim\Component\Catalog\Model\AttributeInterface
+     * @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface
      */
     protected $attribute;
 

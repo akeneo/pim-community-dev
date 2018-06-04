@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
@@ -17,11 +17,11 @@ interface AttributeCopierInterface extends CopierInterface
     /**
      * Copy a data from a source attribute to a destination attribute
      *
-     * @param EntityWithValuesInterface $fromEntityWithValues
-     * @param EntityWithValuesInterface $toEntityWithValues
-     * @param AttributeInterface        $fromAttribute
-     * @param AttributeInterface        $toAttribute
-     * @param array                     $options
+     * @param EntityWithValuesInterface                                $fromEntityWithValues
+     * @param EntityWithValuesInterface                                $toEntityWithValues
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $fromAttribute
+     * @param AttributeInterface                                       $toAttribute
+     * @param array                                                    $options
      */
     public function copyAttributeData(
         EntityWithValuesInterface $fromEntityWithValues,
@@ -35,8 +35,8 @@ interface AttributeCopierInterface extends CopierInterface
      * Supports the source and destination attributes, and ensure both attributes
      * are of the same type.
      *
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
+     * @param AttributeInterface                                       $fromAttribute
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $toAttribute
      *
      * @return bool
      */

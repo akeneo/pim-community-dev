@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
@@ -139,8 +139,8 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /**
      * Checks that the value is a number.
      *
-     * @param AttributeInterface $attribute
-     * @param mixed              $value
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param mixed                                                    $value
      */
     protected function checkValue(AttributeInterface $attribute, $value)
     {

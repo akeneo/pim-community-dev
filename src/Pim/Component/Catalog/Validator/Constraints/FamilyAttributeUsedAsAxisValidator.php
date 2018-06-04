@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\Validator\Constraint;
@@ -66,9 +66,9 @@ class FamilyAttributeUsedAsAxisValidator extends ConstraintValidator
     }
 
     /**
-     * @param Constraint             $constraint
-     * @param FamilyVariantInterface $familyVariant
-     * @param AttributeInterface[]   $missingAttributeCodesUsedAsAxis
+     * @param Constraint                                                 $constraint
+     * @param FamilyVariantInterface                                     $familyVariant
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface[] $missingAttributeCodesUsedAsAxis
      */
     private function buildViolationsForMissingAttributesUsedAsAxis(
         Constraint $constraint,

@@ -22,7 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
             column: sort_order
     manyToOne:
         attribute:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
             inversedBy: options
             joinColumns:
                 attribute_id:

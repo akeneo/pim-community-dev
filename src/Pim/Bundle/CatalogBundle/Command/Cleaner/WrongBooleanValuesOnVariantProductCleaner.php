@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\Command\Cleaner;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -42,8 +42,8 @@ class WrongBooleanValuesOnVariantProductCleaner
     }
 
     /**
-     * @param ProductInterface   $variantProduct
-     * @param AttributeInterface $attribute
+     * @param ProductInterface                                         $variantProduct
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
      *
      * @return bool
      */

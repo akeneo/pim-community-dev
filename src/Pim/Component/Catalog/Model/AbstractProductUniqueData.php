@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

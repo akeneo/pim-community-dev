@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\DataGridBundle\EventSubscriber;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
@@ -13,15 +13,15 @@ use Pim\Component\Catalog\Model\AttributeInterface;
  */
 class FilterEntityWithValuesSubscriberConfiguration
 {
-    /** @var AttributeInterface[] */
+    /** @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface[] */
     protected $attributeCodes = [];
 
     /** @var boolean */
     protected $filterEntityWithValues;
 
     /**
-     * @param AttributeInterface[] $attributeCodes
-     * @param bool                 $filterEntityWithValues
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface[] $attributeCodes
+     * @param bool                                                       $filterEntityWithValues
      */
     private function __construct(array $attributeCodes, bool $filterEntityWithValues)
     {

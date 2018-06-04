@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Value;
 
 use Pim\Component\Catalog\Model\AbstractValue;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
 
 /**
@@ -19,10 +19,10 @@ class PriceCollectionValue extends AbstractValue implements PriceCollectionValue
     protected $data;
 
     /**
-     * @param AttributeInterface            $attribute
-     * @param string                        $channel
-     * @param string                        $locale
-     * @param PriceCollectionInterface|null $data
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param string                                                   $channel
+     * @param string                                                   $locale
+     * @param PriceCollectionInterface|null                            $data
      */
     public function __construct(
         AttributeInterface $attribute,

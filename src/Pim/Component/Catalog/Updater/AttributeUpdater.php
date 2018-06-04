@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\AttributeTypeRegistry;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -146,9 +146,9 @@ class AttributeUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param string             $field
-     * @param mixed              $data
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param string                                                   $field
+     * @param mixed                                                    $data
      *
      * @throws InvalidPropertyException
      * @throws UnknownPropertyException
@@ -218,9 +218,9 @@ class AttributeUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param string             $field
-     * @param array              $availableLocaleCodes
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param string                                                   $field
+     * @param array                                                    $availableLocaleCodes
      *
      * @throws UnknownPropertyException
      * @throws InvalidPropertyException

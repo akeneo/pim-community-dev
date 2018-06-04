@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Query\Filter;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Filter interface
@@ -16,12 +16,12 @@ interface AttributeFilterInterface extends FilterInterface
     /**
      * Add an attribute to filter
      *
-     * @param AttributeInterface $attribute the attribute
-     * @param string             $operator  the used operator
-     * @param string|array       $value     the value(s) to filter
-     * @param string             $locale    the locale
-     * @param string             $channel   the channel
-     * @param array              $options   the filter options
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute the attribute
+     * @param string                                                   $operator  the used operator
+     * @param string|array                                             $value     the value(s) to filter
+     * @param string                                                   $locale    the locale
+     * @param string                                                   $channel   the channel
+     * @param array                                                    $options   the filter options
      *
      * @return AttributeFilterInterface
      */

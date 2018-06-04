@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Component\Catalog\Factory\Value;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
@@ -19,10 +19,10 @@ interface ValueFactoryInterface
      * This method effectively creates a product value and directly set the data.
      * Channel and locale codes validity MUST HAVE BEEN checked BEFORE.
      *
-     * @param AttributeInterface $attribute
-     * @param string             $channelCode
-     * @param string             $localeCode
-     * @param mixed              $data
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param string                                                   $channelCode
+     * @param string                                                   $localeCode
+     * @param mixed                                                    $data
      *
      * @return ValueInterface
      */

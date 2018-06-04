@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -127,7 +127,7 @@ class IncompleteValuesNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
      *
      * @return bool
      */
@@ -179,8 +179,8 @@ class IncompleteValuesNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param LocaleInterface[]  $locales
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param LocaleInterface[]                                        $locales
      *
      * @return array
      */

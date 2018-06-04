@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Value;
 
 use Pim\Component\Catalog\Model\AbstractValue;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Product value for "pim_catalog_date" attribute types
@@ -18,10 +18,10 @@ class DateValue extends AbstractValue implements DateValueInterface
     protected $data;
 
     /**
-     * @param AttributeInterface $attribute
-     * @param string             $channel
-     * @param string             $locale
-     * @param \DateTime|null     $data
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param string                                                   $channel
+     * @param string                                                   $locale
+     * @param \DateTime|null                                           $data
      */
     public function __construct(AttributeInterface $attribute, $channel, $locale, \DateTime $data = null)
     {

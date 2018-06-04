@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\FamilyVariant;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 
@@ -44,7 +44,7 @@ class AddUniqueAttributes
     /**
      * @param FamilyInterface $family
      *
-     * @return AttributeInterface[]
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface[]
      */
     private function getFamilyUniqueAttributes(FamilyInterface $family): array
     {

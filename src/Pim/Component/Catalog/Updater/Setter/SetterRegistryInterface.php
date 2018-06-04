@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Registry of setters
@@ -43,7 +43,7 @@ interface SetterRegistryInterface
     /**
      * Get the attribute setter
      *
-     * @param AttributeInterface $attribute
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
      *
      * @return AttributeSetterInterface|null
      */

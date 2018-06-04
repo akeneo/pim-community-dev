@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
@@ -111,7 +111,7 @@ class ProductModelStorage extends RawMinkContext
         }
         foreach ($attributesCodes as $propertyName) {
             $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($propertyName);
-            /** @var AttributeInterface $attribute */
+            /** @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute */
             $attribute = $infos['attribute'];
             $productValue = $productModel->getValuesForVariation()->getByCodes(
                 $attribute->getCode(),

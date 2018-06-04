@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Validator\Mapping;
 
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraint;

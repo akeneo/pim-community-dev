@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 
@@ -222,7 +222,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
      * @param string[] $attributeCodes
      * @param int      $level
      *
-     * @return AttributeInterface[]
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface[]
      */
     private function getAttributes(array $attributeCodes, int $level): array
     {

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Provider\EmptyValue;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * EmptyValue provider for attributes

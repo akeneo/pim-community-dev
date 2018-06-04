@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Registry of removers
@@ -92,7 +92,7 @@ class RemoverRegistry implements RemoverRegistryInterface
     /**
      * @param string $code
      *
-     * @return AttributeInterface|null
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface|null
      */
     protected function getAttribute($code)
     {

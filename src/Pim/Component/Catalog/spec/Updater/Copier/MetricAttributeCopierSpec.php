@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;

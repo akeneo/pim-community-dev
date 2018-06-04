@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Registry of copiers
@@ -93,7 +93,7 @@ class CopierRegistry implements CopierRegistryInterface
     /**
      * @param string $code
      *
-     * @return AttributeInterface|null
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface|null
      */
     protected function getAttribute($code)
     {

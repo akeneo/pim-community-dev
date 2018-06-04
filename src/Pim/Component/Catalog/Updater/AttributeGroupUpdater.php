@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 
 /**
@@ -137,7 +137,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
     /**
      * @param $attributeCode
      *
-     * @return AttributeInterface|null
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface|null
      */
     protected function findAttribute($attributeCode)
     {

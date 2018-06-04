@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Updater\Adder\AdderRegistryInterface;
 use Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface;
@@ -68,7 +68,7 @@ class PropertyAdder implements PropertyAdderInterface
     /**
      * @param string $code
      *
-     * @return AttributeInterface|null
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface|null
      */
     protected function getAttribute($code)
     {

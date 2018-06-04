@@ -22,7 +22,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'Pim\Component\Catalog\Model\ProductAssociationInterface'        => 'pim_catalog.entity.association.class',
             'Pim\Component\Catalog\Model\ProductModelAssociationInterface'   => 'pim_catalog.entity.product_model_association.class',
             'Pim\Component\Catalog\Model\AssociationTypeInterface'           => 'pim_catalog.entity.association_type.class',
-            'Pim\Component\Catalog\Model\AttributeInterface'                 => 'pim_catalog.entity.attribute.class',
+            'Akeneo\Pim\Structure\Component\Model\AttributeInterface' => 'pim_catalog.entity.attribute.class',
             'Pim\Component\Catalog\Model\AttributeOptionInterface'           => 'pim_catalog.entity.attribute_option.class',
             'Pim\Component\Catalog\Model\AttributeOptionValueInterface'      => 'pim_catalog.entity.attribute_option_value.class',
             'Pim\Component\Catalog\Model\AttributeGroupInterface'            => 'pim_catalog.entity.attribute_group.class',

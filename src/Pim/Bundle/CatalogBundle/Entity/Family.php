@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 
@@ -39,10 +39,10 @@ class Family implements FamilyInterface
     /** @var Collection */
     protected $translations;
 
-    /** @var AttributeInterface */
+    /** @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface */
     protected $attributeAsLabel;
 
-    /** @var AttributeInterface */
+    /** @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface */
     protected $attributeAsImage;
 
     /** @var Collection */

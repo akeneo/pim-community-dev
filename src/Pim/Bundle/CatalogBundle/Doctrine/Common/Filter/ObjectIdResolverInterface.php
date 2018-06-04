@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Object id resolver interface
@@ -19,9 +19,9 @@ interface ObjectIdResolverInterface
     /**
      * Get ids for the given codes
      *
-     * @param string                  $field
-     * @param array                   $codes
-     * @param AttributeInterface|null $attribute
+     * @param string                                                        $field
+     * @param array                                                         $codes
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface|null $attribute
      *
      * @return int[]
      */

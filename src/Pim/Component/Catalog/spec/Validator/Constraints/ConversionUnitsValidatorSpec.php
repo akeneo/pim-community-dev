@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Form\Type\AttributeType;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\Constraints\ConversionUnits;
 use Pim\Component\Catalog\Validator\Constraints\ConversionUnitsValidator;
 use Prophecy\Argument;

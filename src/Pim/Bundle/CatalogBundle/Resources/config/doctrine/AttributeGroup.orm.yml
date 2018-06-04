@@ -28,7 +28,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
                     on: update
     oneToMany:
         attributes:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
             mappedBy: group
             cascade:
                 - persist

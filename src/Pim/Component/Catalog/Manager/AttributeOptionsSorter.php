@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Manager;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Sort attribute options and save them.
@@ -30,8 +30,8 @@ class AttributeOptionsSorter
     /**
      * Update attribute option sorting
      *
-     * @param AttributeInterface $attribute
-     * @param array              $sorting
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param array                                                    $sorting
      */
     public function updateSorting(AttributeInterface $attribute, array $sorting = [])
     {

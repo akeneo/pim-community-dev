@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Adder;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
@@ -54,11 +54,11 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
     /**
      * Adds options into the value
      *
-     * @param EntityWithValuesInterface $entityWithValues
-     * @param AttributeInterface        $attribute
-     * @param array                     $optionCodes
-     * @param string                    $locale
-     * @param string                    $scope
+     * @param EntityWithValuesInterface                                $entityWithValues
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param array                                                    $optionCodes
+     * @param string                                                   $locale
+     * @param string                                                   $scope
      */
     protected function addOptions(
         EntityWithValuesInterface $entityWithValues,

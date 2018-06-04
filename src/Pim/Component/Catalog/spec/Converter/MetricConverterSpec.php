@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Converter;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

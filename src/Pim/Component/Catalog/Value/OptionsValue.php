@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Value;
 
 use Pim\Component\Catalog\Model\AbstractValue;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**
@@ -19,10 +19,10 @@ class OptionsValue extends AbstractValue implements OptionsValueInterface
     protected $data;
 
     /**
-     * @param AttributeInterface         $attribute
-     * @param string                     $channel
-     * @param string                     $locale
-     * @param AttributeOptionInterface[] $data
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param string                                                   $channel
+     * @param string                                                   $locale
+     * @param AttributeOptionInterface[]                               $data
      */
     public function __construct(AttributeInterface $attribute, $channel, $locale, array $data = [])
     {

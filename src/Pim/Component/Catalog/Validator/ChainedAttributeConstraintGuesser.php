@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Constraint

@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Query;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
@@ -219,11 +219,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * Add a filter condition on an attribute
      *
-     * @param AttributeFilterInterface $filter    the filter
-     * @param AttributeInterface       $attribute the attribute
-     * @param string                   $operator  the operator
-     * @param mixed                    $value     the value to filter
-     * @param array                    $context   the filter context
+     * @param AttributeFilterInterface                                 $filter    the filter
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute the attribute
+     * @param string                                                   $operator  the operator
+     * @param mixed                                                    $value     the value to filter
+     * @param array                                                    $context   the filter context
      *
      * @return ProductQueryBuilderInterface
      */

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Registry of adders
@@ -39,7 +39,7 @@ interface AdderRegistryInterface
     public function getFieldAdder($field);
 
     /**
-     * @param AttributeInterface $attribute
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
      *
      * @return AttributeAdderInterface
      */

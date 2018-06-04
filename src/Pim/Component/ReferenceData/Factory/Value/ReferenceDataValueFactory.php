@@ -5,7 +5,7 @@ namespace Pim\Component\ReferenceData\Factory\Value;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
@@ -73,8 +73,8 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
     /**
      * Check if data is valid
      *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param mixed                                                    $data
      *
      * @throws InvalidPropertyTypeException
      */

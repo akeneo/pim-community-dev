@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ValueConverter;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\FieldSplitter;
 
 /**

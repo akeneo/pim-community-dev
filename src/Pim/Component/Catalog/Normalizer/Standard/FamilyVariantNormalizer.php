@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Normalizer\Standard;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

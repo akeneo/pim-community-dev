@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -76,14 +76,14 @@ class AttributeCopier extends AbstractAttributeCopier
     /**
      * Copies single value.
      *
-     * @param EntityWithValuesInterface $fromEntityWithValues
-     * @param EntityWithValuesInterface $toEntityWithValues
-     * @param AttributeInterface        $fromAttribute
-     * @param AttributeInterface        $toAttribute
-     * @param string                    $fromLocale
-     * @param string                    $toLocale
-     * @param string                    $fromScope
-     * @param string                    $toScope
+     * @param EntityWithValuesInterface                                $fromEntityWithValues
+     * @param EntityWithValuesInterface                                $toEntityWithValues
+     * @param AttributeInterface                                       $fromAttribute
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $toAttribute
+     * @param string                                                   $fromLocale
+     * @param string                                                   $toLocale
+     * @param string                                                   $fromScope
+     * @param string                                                   $toScope
      */
     protected function copySingleValue(
         EntityWithValuesInterface $fromEntityWithValues,

@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Exception\InvalidOptionsException;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**
@@ -76,8 +76,8 @@ class OptionsValueFactory implements ValueFactoryInterface
     /**
      * Checks if data is valid.
      *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param mixed                                                    $data
      *
      * @throws InvalidPropertyTypeException
      */
@@ -110,8 +110,8 @@ class OptionsValueFactory implements ValueFactoryInterface
     /**
      * Returns an array of attribute options.
      *
-     * @param AttributeInterface $attribute
-     * @param string[]           $data
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param string[]                                                 $data
      *
      * @throws InvalidOptionsException
      * @return array

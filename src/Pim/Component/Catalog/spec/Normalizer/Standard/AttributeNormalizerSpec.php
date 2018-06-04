@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer;
 use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
 use Prophecy\Argument;

@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 
 class AttributeRequirementFactorySpec extends ObjectBehavior

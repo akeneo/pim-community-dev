@@ -7,7 +7,7 @@ use Doctrine\ORM\Events;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
 use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriberConfiguration;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
