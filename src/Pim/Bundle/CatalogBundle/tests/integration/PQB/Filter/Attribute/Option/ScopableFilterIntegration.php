@@ -84,7 +84,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testOperatorNotIn()
     {
         $result = $this->executeFilter([['a_select_scopable_simple_select', Operators::NOT_IN_LIST, ['black'], ['scope' => 'ecommerce']]]);
-        $this->assert($result, ['product_one']);
+        $this->assert($result, ['empty_product','product_one']);
     }
 
     /**

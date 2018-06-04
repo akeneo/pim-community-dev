@@ -353,6 +353,7 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
                 'running-shoes-xxs-crimson-red',
                 'biker-jacket-leather-xxs',
                 'biker-jacket-polyester-xxs',
+                'model-running-shoes-xxs',
             ]
         );
     }
@@ -375,6 +376,8 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
                 'tshirt-divided-navy-blue-xxxl',
                 'biker-jacket-polyester-m',
                 'biker-jacket-polyester-xxxl',
+                'model-biker-jacket-polyester',
+                'model-tshirt-divided-navy-blue',
             ]
         );
     }
