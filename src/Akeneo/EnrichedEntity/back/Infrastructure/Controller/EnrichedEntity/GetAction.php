@@ -51,8 +51,7 @@ class GetAction
      */
     public function getAction(string $identifier): JsonResponse
     {
-        $handler = $this->showEnrichedEntityHandler;
-        $enrichedEntity = $handler($identifier);
+        $enrichedEntity = ($this->showEnrichedEntityHandler)($identifier);
 
         if (null === $enrichedEntity) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);

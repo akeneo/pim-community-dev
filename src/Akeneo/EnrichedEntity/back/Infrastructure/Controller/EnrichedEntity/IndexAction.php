@@ -50,8 +50,7 @@ class IndexAction
      */
     public function indexAction(): JsonResponse
     {
-        $handler = $this->listEnrichedEntityHandler;
-        $enrichedEntities = $handler();
+        $enrichedEntities = ($this->listEnrichedEntityHandler)();
         $normalizedEnrichedEntities = array_map(function ($enrichedEntity) {
             return $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api');
         }, $enrichedEntities);

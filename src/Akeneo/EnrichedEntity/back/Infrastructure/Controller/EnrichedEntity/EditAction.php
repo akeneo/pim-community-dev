@@ -67,8 +67,7 @@ class EditAction
             return new JsonResponse(['errors' => json_encode($violations)], Response::HTTP_BAD_REQUEST);
         }
 
-        $handler = $this->editEnrichedEntityHandler;
-        $enrichedEntity = $handler($identifier, $data['labels']);
+        $enrichedEntity = ($this->editEnrichedEntityHandler)($identifier, $data['labels']);
 
         return new JsonResponse(
             $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api')
