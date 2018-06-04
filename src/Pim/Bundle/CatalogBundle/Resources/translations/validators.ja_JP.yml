@@ -33,7 +33,6 @@ product_model.family_variant.not_blank.message: 製品モデルのファミリ�
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'このエンティティの軸として定義されている属性「%attribute%」は空にすることはできません。'
-    can_have_family_variant_duplicate_axis_value: '別の兄弟エンティティが既にこの"%values%"を持っているため、これを属性軸"%attributes%"にセットすることができません。'
     can_have_family_variant_unexpected_attribute: '属性セットにないため、このエンティティに"%attribute%"プロパティをセットできません'
     cannot_have_product_model_as_parent: '"%product_model%"は製品モデル"%parent_product_model%"を親に設定できません'
     cannot_have_parent: '製品モデル「%product_model%」は、親をを持つことはできません'

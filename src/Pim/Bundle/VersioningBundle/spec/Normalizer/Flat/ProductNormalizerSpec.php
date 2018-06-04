@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -49,12 +51,13 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_variant_product(
         $filter,
+        $serializer,
         ProductInterface $product,
         AttributeInterface $skuAttribute,
         ValueInterface $sku,
         ValueCollectionInterface $values,
         FamilyInterface $family,
-        $serializer
+        ProductModelInterface $parent
     ) {
         $family->getCode()->willReturn('shoes');
         $skuAttribute->getCode()->willReturn('sku');
@@ -72,6 +75,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $product->getAssociations()->willReturn([]);
         $product->getValuesForVariation()->willReturn($values);
+        $product->getParent()->willReturn($parent);
+        $parent->getCode()->willReturn('parent_code');
+
         $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$sku]);
 
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
@@ -81,6 +87,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'family'     => 'shoes',
                 'groups'     => 'group1,group2,group_3',
                 'categories' => 'nice shoes,converse',
+                'parent'     => 'parent_code',
                 'sku'        => 'sku-001',
                 'enabled'    => 1,
             ]
@@ -112,6 +119,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn($values);
+        $product->getParent()->willReturn(null);
         $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$sku]);
 
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
@@ -121,6 +129,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'family'     => 'shoes',
                 'groups'     => 'group1,group2,group_3',
                 'categories' => 'nice shoes,converse',
+                'parent'     => '',
                 'sku'        => 'sku-001',
                 'enabled'    => 1,
             ]
@@ -140,8 +149,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         GroupInterface $associatedGroup2,
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
-        ProductModelInterface $associatedProductModel1,
-        ProductModelInterface $associatedProductModel2,
         ValueInterface $skuAssocProduct1,
         ValueInterface $skuAssocProduct2,
         ValueCollectionInterface $values,
@@ -193,6 +200,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $product->getAssociations()->willReturn([$myCrossSell, $myUpSell]);
         $product->getValues()->willReturn($values);
+        $product->getParent()->willReturn(null);
         $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$sku]);
 
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
@@ -202,6 +210,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'family' => 'shoes',
                 'groups' => 'group1,group2,group_3',
                 'categories' => 'nice shoes,converse',
+                'parent'     => '',
                 'cross_sell-groups' => '',
                 'cross_sell-products' => '',
                 'cross_sell-product_models' => '',
@@ -249,6 +258,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn([]);
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn($values);
+        $product->getParent()->willReturn(null);
         $filter
             ->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())
             ->willReturn([$sku, $colors]);
@@ -261,6 +271,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'family'     => 'shoes',
                 'groups'     => '',
                 'categories' => '',
+                'parent'     => '',
                 'colors'     => 'red, blue',
                 'sku'        => 'sku-001',
                 'enabled'    => 1,
@@ -302,6 +313,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getGroupCodes()->willReturn(['group1', 'group2', 'group_3']);
         $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $product->getAssociations()->willReturn([]);
+        $product->getParent()->willReturn(null);
 
         $values->add($price);
 
@@ -317,6 +329,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'family'     => 'shoes',
                 'groups'     => 'group1,group2,group_3',
                 'categories' => 'nice shoes,converse',
+                'parent'     => '',
                 'price-EUR'  => '356.00',
                 'enabled'    => 1,
             ]

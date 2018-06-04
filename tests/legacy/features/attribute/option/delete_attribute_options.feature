@@ -6,24 +6,44 @@ Feature: Delete attribute options
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "Julia"
-    And I am on the attributes page
-    And I create a "Simple select" attribute
-    And I fill in the following information:
-      | Code            | size  |
-      | Attribute group | Other |
-    And I save the attribute
-    When I visit the "Options" tab
-    Then I should see the flash message "Attribute successfully created"
-    And I check the "Sort automatically options by alphabetical order" switch
+    And the following attributes:
+      | code        | label-en_US | type                         | localizable | scopable | group | decimals_allowed |
+      | color       | Color       | pim_catalog_simpleselect     | 0           | 0        | other |                  |
+      | description | Description | pim_catalog_textarea         | 1           | 1        | other |                  |
+      | name        | Name        | pim_catalog_text             | 1           | 0        | other |                  |
+      | size        | Size        | pim_catalog_simpleselect     | 0           | 0        | other |                  |
+    And the following "color" attribute options: red, yellow, black and white
+    And the following "size" attribute options: s, m, l, xl
+    And the following family:
+      | code | requirements-ecommerce | requirements-mobile | attributes                      |
+      | bags | sku                    | sku                 | color,description,name,size,sku |
+    And the following family variants:
+      | code        | family | variant-axes_1 | variant-attributes_1       |
+      | bag_colored | bags   | color          | size,color,description,sku |
+    And the following root product models:
+      | code       | categories | family_variant | name-en_US  |
+      | bag_atelle | default    | bag_colored    | Bag atelle  |
+    And the following products:
+      | sku              | parent     | family | categories | color |
+      | bag_atelle_white | bag_atelle | bags   | default    | white |
+      | lonely_bag       |            | bags   | default    | red   |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-2166
-  Scenario: Successfully delete some attribute options
-    Given I create the following attribute options:
-      | Code        |
-      | small_size  |
-      | medium_size |
-      | large_size  |
-    When I remove the "small_size" option
+  Scenario: Successfully delete attribute options if it is not used as variant axis
+    Given I am logged in as "Julia"
+    And I am on the "color" attribute page
+    And I visit the "Options" tab
+    When I remove the "red" option
     And I confirm the deletion
-    Then I should not see the text "small_size"
+    Then I should not see the text "Error during deletion of the attribute option"
+    Then I should not see the text "red"
+
+  Scenario: Fail to remove an attribute option if it is used as variant axis
+    Given I am logged in as "Julia"
+    And I am on the "color" attribute page
+    And I visit the "Options" tab
+    When I remove the "white" option
+    And I confirm the deletion
+    Then I should see the text "Error during deletion of the attribute option"
+    And I should see the text "Attribute option \"white\" could not be removed as it is used as variant axis value."
+    When I press "OK"
+    Then I should see the text "white"

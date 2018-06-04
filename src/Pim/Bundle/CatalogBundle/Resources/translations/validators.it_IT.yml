@@ -33,7 +33,6 @@ product_model.family_variant.not_blank.message: La famiglia variante del modello
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'L''attributo "%attribute%" non può essere vuoto, in quanto è definito come asse per questa entità'
-    can_have_family_variant_duplicate_axis_value: 'Non è possibile impostare il valore "%values%" per l''attributo asse "%attributes%", dal momento che un''altra entità sorella ha già questo valore'
     can_have_family_variant_unexpected_attribute: 'Non è possibile importare la proprietà "%attribute%" per questa entità dal momento che non è nel set di attributi'
     cannot_have_product_model_as_parent: 'Il modello di prodotto "%product_model%" non può avere come genitore il modello di prodotto "%parent_product_model%"'
     cannot_have_parent: 'Il modello di prodotto "%product_model%" non può avere un genitore'
