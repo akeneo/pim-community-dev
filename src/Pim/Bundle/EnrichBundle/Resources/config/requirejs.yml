@@ -883,6 +883,7 @@ config:
         pim/common/simple-view:            pimenrich/js/form/common/simple-view
         pim/common/grid-title:             pimenrich/js/form/common/grid-title
         pim/common/item-picker:            pimenrich/js/common/item-picker
+        pim/common/title-with-subtitle:    pimenrich/js/common/title-with-subtitle.ts
 
         # Root
         pim/form/common/edit-form: pimenrich/js/form/common/edit-form
@@ -1001,6 +1002,7 @@ config:
         pim/template/common/grid:                                 pimenrich/templates/common/grid.html
         pim/template/common/item-picker:                          pimenrich/templates/common/item-picker.html
         pim/template/common/item-picker-basket:                   pimenrich/templates/common/item-picker-basket.html
+        pim/template/common/title-with-subtitle:                  pimenrich/templates/common/title-with-subtitle.html
 
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html
