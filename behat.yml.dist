@@ -122,7 +122,7 @@ legacy:
                 - PimEnterprise\Behat\Context\RevertContext:
                     - '@pim_catalog.repository.product'
                     - '@pim_versioning.repository.version'
-                    - '@pimee_versioning.reverter.product'
+                    - '@pimee_revert.reverter.product'
                 - Pim\Behat\Context\MassEditJobContext:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
