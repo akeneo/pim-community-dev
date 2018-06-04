@@ -7,6 +7,7 @@
 - PIM-7330: Improve validation message in case of product model or variant product axis values duplication
 - PIM-7326: Create a version when the parent of a variant product or a sub product model is changed.
 - PIM-6250: As Julia, I would like to change the parent of a variant product/sub product model from the UI
+- PIM-6784: Improve the product grid search with categories
 
 ## Technical improvements
 
