@@ -2,7 +2,7 @@
 
 namespace  Akeneo\Asset\Bundle\tests\Integration\Normalizer\Standard;
 
-use PimEnterprise\Component\ProductAsset\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
+use Akeneo\Asset\Component\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
 
 class AssetIntegration extends AbstractStandardNormalizerTestCase
 {
