@@ -114,7 +114,7 @@ class HookContext extends PimContext
             $driver = $this->getSession()->getDriver();
 
             if ($driver instanceof Selenium2Driver) {
-                $dir = getenv('BEHAT_SCREENSHOT_PATH') ?? '/tmp/behat/screenshots';
+                $dir = !empty(getenv('BEHAT_SCREENSHOT_PATH')) ? getenv('BEHAT_SCREENSHOT_PATH') : '/tmp/behat/screenshots';
 
                 $lineNum  = $event->getStep()->getLine();
                 $filename = strstr($event->getFeature()->getFile(), 'features/');

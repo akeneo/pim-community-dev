@@ -27,6 +27,3 @@ Feature: Edit sequentially some products
     When I press the "Sequential edit" button
     Then I should see the text "Divided crimson red"
     And I should see the text "Save and next"
-    And I press the "Save and next" button
-    And I should see the text "Model-tshirt-unique-color-kurt"
-    And I should see the text "Save and finish"

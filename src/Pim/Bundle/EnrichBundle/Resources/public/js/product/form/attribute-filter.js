@@ -24,7 +24,7 @@ define(
             currentFilterCode: null,
 
             events: {
-                'click li': 'onChange'
+                'click .AknDropdown-menuLink': 'onChange'
             },
 
             /**

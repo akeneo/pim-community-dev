@@ -79,7 +79,7 @@ Feature: Apply a mass action on products only (and not product models)
     And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
     And I press the "Bulk actions" button
     And I choose the "Add to groups" operation
-    And I check "Related"
+    And I change the "Group" to "Related"
     When I confirm mass edit
     And I wait for the "add_product_value" job to finish
     When I go on the last executed job resume of "add_product_value"

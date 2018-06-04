@@ -87,6 +87,8 @@ class FilteredProductAndProductModelReader implements
      */
     public function initialize(): void
     {
+        $this->firstRead = true;
+
         $channel = $this->getConfiguredChannel();
         if (null !== $channel && $this->generateCompleteness) {
             $this->completenessManager->generateMissingForChannel($channel);
@@ -207,6 +209,8 @@ class FilteredProductAndProductModelReader implements
             if (!$this->firstRead) {
                 $this->productsAndProductModels->next();
             }
+
+            $this->firstRead = false;
             $entity = $this->productsAndProductModels->current();
             if (false === $entity) {
                 return null;
@@ -234,7 +238,6 @@ class FilteredProductAndProductModelReader implements
 
             break;
         }
-        $this->firstRead = false;
 
         return $entity;
     }
