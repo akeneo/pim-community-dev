@@ -16,7 +16,7 @@ Feature: Add products to many groups at once via a form
     Given I select rows kickers, hiking_shoes and moon_boots
     And I press the "Bulk actions" button
     And I choose the "Add to groups" operation
-    And I check "Similar boots"
+    And I change the "Group" to "Similar boots"
     When I confirm mass edit
     And I wait for the "add_product_value" job to finish
     Then "similar_boots" group should contain "kickers, hiking_shoes and moon_boots"

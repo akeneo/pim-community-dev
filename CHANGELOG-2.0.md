@@ -1,6 +1,17 @@
 # 2.0.x
 
+## Bug fixes
+
 - PIM-7362: Fix Completeness computing from family keeping in account batch size to free the memory
+- PIM-7349: Fix empty family when using quick export of products
+- PIM-7040: Fix bad display of history grids on large strings
+- PIM-7014: Fix attribute creation page with large strings
+- PIM-7364: category tree must use the catalog locale for mass edit, not the UI locale
+- PIM-6846: Fix bug on click in Display Attributes button on Product edit form
+- PIM-7389: Refactor the 'add to group' mass edit screen to allow big set of groups
+- PIM-7311: Fix the product grid filters list when a sort order is a huge number
+- PIM-7391: Fix offset pagination when listing product models with the API
+- PIM-7009: Fix bug with pagination on associated products page on product edit form
 
 # 2.0.25 (2018-05-21)
 

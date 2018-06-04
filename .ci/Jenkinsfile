@@ -106,14 +106,16 @@ stage("Test") {
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
                 containers: pimContainers(image: tag, selenium: false),
-                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/src /var/www/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+                fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/tests"])},
+                parallelism: 50
             )},
             "integration-ee": {queue(
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
                 containers: pimContainers(image: "${tag}-ee", selenium: false),
-                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/src /var/www/pim/tests /var/www/pim/vendor/akeneo/pim-community-dev/src /var/www/pim/vendor/akeneo/pim-community-dev/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+                fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/vendor/akeneo/pim-community-dev/src", "/var/www/pim/vendor/akeneo/pim-community-dev/tests"])},
+                parallelism: 50
             )},
             "back-acceptance-ce": {testif(
                 condition: launchBackAcceptanceTests.equals("yes"),
