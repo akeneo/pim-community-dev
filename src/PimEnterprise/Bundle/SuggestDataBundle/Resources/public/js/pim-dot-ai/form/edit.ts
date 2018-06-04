@@ -5,7 +5,7 @@ import BaseView = require('pimenrich/js/view/base');
 const __ = require('oro/translator');
 const template = require('pimee/template/pim-dot-ai-connection/edit');
 
-interface SectionConfig {
+interface EditConfig {
   token_label_title: string;
   token_label_content: string;
   token_field_title: string;
@@ -25,7 +25,7 @@ interface SectionConfig {
  */
 class EditView extends BaseView {
   readonly template = _.template(template);
-  readonly config: SectionConfig = {
+  readonly config: EditConfig = {
     token_label_title: '',
     token_label_content: '',
     token_field_title: '',
@@ -39,7 +39,7 @@ class EditView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  constructor(options: {config: SectionConfig}) {
+  constructor(options: {config: EditConfig}) {
     super(options);
 
     this.config = {...this.config, ...options.config};
