@@ -19,10 +19,12 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -53,6 +55,9 @@ class EntityWithValuesDraftProcessor extends AbstractProcessor implements
     /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productDraftRepo;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /** @var string */
     protected $identifier;
 
@@ -71,6 +76,7 @@ class EntityWithValuesDraftProcessor extends AbstractProcessor implements
         EntityWithValuesDraftBuilderInterface $productDraftBuilder,
         DraftApplierInterface $productDraftApplier,
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
+        TokenStorageInterface $tokenStorage,
         string $identifier
     ) {
         parent::__construct($repository);
@@ -80,6 +86,7 @@ class EntityWithValuesDraftProcessor extends AbstractProcessor implements
         $this->productDraftBuilder = $productDraftBuilder;
         $this->productDraftApplier = $productDraftApplier;
         $this->productDraftRepo = $productDraftRepo;
+        $this->tokenStorage = $tokenStorage;
         $this->identifier = $identifier;
     }
 
@@ -99,7 +106,7 @@ class EntityWithValuesDraftProcessor extends AbstractProcessor implements
 
         try {
             $this->updater->update($entityWithValues, $item);
-        } catch (PropertyException $exception) {
+        } catch (PropertyException | ResourceAccessDeniedException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
@@ -136,7 +143,7 @@ class EntityWithValuesDraftProcessor extends AbstractProcessor implements
      */
     protected function getProductDraft(EntityWithValuesInterface $entityWithValues): ?EntityWithValuesInterface
     {
-        return $this->productDraftRepo->findUserEntityWithValuesDraft($entityWithValues, $this->getCodeInstance());
+        return $this->productDraftRepo->findUserEntityWithValuesDraft($entityWithValues, $this->getUsername());
     }
 
     /**
@@ -170,7 +177,7 @@ class EntityWithValuesDraftProcessor extends AbstractProcessor implements
      */
     protected function buildDraft(EntityWithValuesInterface $entityWithValues): ?EntityWithValuesDraftInterface
     {
-        $productDraft = $this->productDraftBuilder->build($entityWithValues, $this->getCodeInstance());
+        $productDraft = $this->productDraftBuilder->build($entityWithValues, $this->getUsername());
 
         // no draft has been created because there is no diff between proposal and product
         if (null === $productDraft) {
@@ -194,8 +201,8 @@ class EntityWithValuesDraftProcessor extends AbstractProcessor implements
     /**
      * @return string
      */
-    protected function getCodeInstance(): string
+    protected function getUsername(): string
     {
-        return $this->stepExecution->getJobExecution()->getJobInstance()->getCode();
+        return $this->tokenStorage->getToken()->getUsername();
     }
 }

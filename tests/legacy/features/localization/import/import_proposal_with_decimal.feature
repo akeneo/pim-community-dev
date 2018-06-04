@@ -37,10 +37,10 @@ Feature: Import proposals with decimals
     When I am on the proposals page
     Then the grid should contain 3 element
     And I should see the following proposals:
-      | product | author                               | attribute | original | new    |
-      | SKU-001 | csv_clothing_product_proposal_import | price     |          | €10.25 |
-      | SKU-002 | csv_clothing_product_proposal_import | price     |          | €10.00 |
-      | SKU-003 | csv_clothing_product_proposal_import | price     |          | €10.00 |
+      | product | author | attribute | original | new    |
+      | SKU-001 | Julia  | price     |          | €10.25 |
+      | SKU-002 | Julia  | price     |          | €10.00 |
+      | SKU-003 | Julia  | price     |          | €10.00 |
 
   Scenario: Successfully import a csv file (with decimal separator as a comma) with a metric attribute splitting the data and unit
     Given the following CSV file to import:
@@ -59,10 +59,10 @@ Feature: Import proposals with decimals
     When I am on the proposals page
     Then the grid should contain 3 element
     And I should see the following proposals:
-      | product | author                               | attribute      | original | new        |
-      | SKU-001 | csv_clothing_product_proposal_import | decimal_length |          | 0.25 Meter |
-      | SKU-002 | csv_clothing_product_proposal_import | decimal_length |          | 2 Meter    |
-      | SKU-003 | csv_clothing_product_proposal_import | decimal_length |          | 5 Meter    |
+      | product | author | attribute      | original | new        |
+      | SKU-001 | Julia  | decimal_length |          | 0.25 Meter |
+      | SKU-002 | Julia  | decimal_length |          | 2 Meter    |
+      | SKU-003 | Julia  | decimal_length |          | 5 Meter    |
 
   Scenario: Successfully import a csv file (with decimal separator as a comma) with a metric attribute
     Given the following CSV file to import:
@@ -81,10 +81,10 @@ Feature: Import proposals with decimals
     When I am on the proposals page
     Then the grid should contain 3 element
     And I should see the following proposals:
-      | product | author                               | attribute      | original | new        |
-      | SKU-001 | csv_clothing_product_proposal_import | decimal_length |          | 0.25 Meter |
-      | SKU-002 | csv_clothing_product_proposal_import | decimal_length |          | 2 Meter    |
-      | SKU-003 | csv_clothing_product_proposal_import | decimal_length |          | 5 Meter    |
+      | product | author | attribute      | original | new        |
+      | SKU-001 | Julia  | decimal_length |          | 0.25 Meter |
+      | SKU-002 | Julia  | decimal_length |          | 2 Meter    |
+      | SKU-003 | Julia  | decimal_length |          | 5 Meter    |
 
   Scenario: Successfully import a csv file (with decimal separator as a comma) with a price attribute splitting the data and currency
     Given the following CSV file to import:
@@ -107,18 +107,18 @@ Feature: Import proposals with decimals
     When I am on the proposals page
     Then the grid should contain 7 element
     And I should see the following proposals:
-      | product | author                               | attribute | locale | original | new             |
-      | SKU-001 | csv_clothing_product_proposal_import | name      | en_US  |          | sku 001         |
-      | SKU-001 | csv_clothing_product_proposal_import | price     |        |          | €125.25,$199.00 |
-      | SKU-002 | csv_clothing_product_proposal_import | name      | en_US  |          | sku 002         |
-      | SKU-002 | csv_clothing_product_proposal_import | price     |        |          | €125.00,$199.25 |
-      | SKU-003 | csv_clothing_product_proposal_import | name      | en_US  |          | sku 003         |
-      | SKU-003 | csv_clothing_product_proposal_import | price     |        |          | €125.00,$199.00 |
-      | SKU-004 | csv_clothing_product_proposal_import | name      | en_US  |          | sku 004         |
-      | SKU-004 | csv_clothing_product_proposal_import | price     |        |          | €125.00,$199.00 |
-      | SKU-005 | csv_clothing_product_proposal_import | name      | en_US  |          | sku 005         |
-      | SKU-006 | csv_clothing_product_proposal_import | name      | en_US  |          | sku 006         |
-      | SKU-007 | csv_clothing_product_proposal_import | name      | en_US  |          | sku 007         |
+      | product | author | attribute | locale | original | new             |
+      | SKU-001 | Julia  | name      | en_US  |          | sku 001         |
+      | SKU-001 | Julia  | price     |        |          | €125.25,$199.00 |
+      | SKU-002 | Julia  | name      | en_US  |          | sku 002         |
+      | SKU-002 | Julia  | price     |        |          | €125.00,$199.25 |
+      | SKU-003 | Julia  | name      | en_US  |          | sku 003         |
+      | SKU-003 | Julia  | price     |        |          | €125.00,$199.00 |
+      | SKU-004 | Julia  | name      | en_US  |          | sku 004         |
+      | SKU-004 | Julia  | price     |        |          | €125.00,$199.00 |
+      | SKU-005 | Julia  | name      | en_US  |          | sku 005         |
+      | SKU-006 | Julia  | name      | en_US  |          | sku 006         |
+      | SKU-007 | Julia  | name      | en_US  |          | sku 007         |
 
   Scenario: Successfully import a csv file (with decimal separator as a comma) with a price attribute splitting the data and currency
     Given the following CSV file to import:
@@ -138,14 +138,14 @@ Feature: Import proposals with decimals
     When I am on the proposals page
     Then the grid should contain 4 element
     And I should see the following proposals:
-      | product | author                               | attribute | locale | original | new             |
-      | SKU-001 | csv_clothing_product_proposal_import | name      | en_US  |          | sku 001         |
-      | SKU-001 | csv_clothing_product_proposal_import | price     |        |          | €125.25,$199.00 |
-      | SKU-002 | csv_clothing_product_proposal_import | name      | en_US  |          | sku 002         |
-      | SKU-002 | csv_clothing_product_proposal_import | price     |        |          | €125.00,$199.25 |
-      | SKU-003 | csv_clothing_product_proposal_import | name      | en_US  |          | sku 003         |
-      | SKU-003 | csv_clothing_product_proposal_import | price     |        |          | €125.00,$199.00 |
-      | SKU-004 | csv_clothing_product_proposal_import | name      | en_US  |          | sku 004         |
+      | product | author | attribute | locale | original | new             |
+      | SKU-001 | Julia  | name      | en_US  |          | sku 001         |
+      | SKU-001 | Julia  | price     |        |          | €125.25,$199.00 |
+      | SKU-002 | Julia  | name      | en_US  |          | sku 002         |
+      | SKU-002 | Julia  | price     |        |          | €125.00,$199.25 |
+      | SKU-003 | Julia  | name      | en_US  |          | sku 003         |
+      | SKU-003 | Julia  | price     |        |          | €125.00,$199.00 |
+      | SKU-004 | Julia  | name      | en_US  |          | sku 004         |
 
   Scenario: Skip product with a decimal separator different from configuration
     Given the following CSV file to import:

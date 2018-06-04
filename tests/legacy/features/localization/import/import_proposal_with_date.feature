@@ -30,9 +30,9 @@ Feature: Import proposals with a date
     When I am on the proposals page
     Then the grid should contain 1 element
     And I should see the following proposals:
-      | product | author                               | attribute    | locale | scope  | original | new        |
-      | SKU-001 | csv_clothing_product_proposal_import | name         | en_US  |        |          | x-wing     |
-      | SKU-001 | csv_clothing_product_proposal_import | release_date |        | mobile |          | 08/19/1977 |
+      | product | author | attribute    | locale | scope  | original | new        |
+      | SKU-001 | Julia  | name         | en_US  |        |          | x-wing     |
+      | SKU-001 | Julia  | release_date |        | mobile |          | 08/19/1977 |
 
   Scenario: Skip product with a date format different from configuration
     Given the following CSV file to import:
@@ -57,7 +57,7 @@ Feature: Import proposals with a date
     When I am on the proposals page
     Then the grid should contain 2 element
     And I should see the following proposals:
-      | product | author                               | attribute    | locale | scope  | original | new              |
-      | SKU-004 | csv_clothing_product_proposal_import | name         | en_US  |        |          | Tie Fighter      |
-      | SKU-004 | csv_clothing_product_proposal_import | release_date |        | mobile |          | 08/19/1977       |
-      | SKU-005 | csv_clothing_product_proposal_import | name         | en_US  |        |          | Millenium Falcon |
+      | product | author | attribute    | locale | scope  | original | new              |
+      | SKU-004 | Julia  | name         | en_US  |        |          | Tie Fighter      |
+      | SKU-004 | Julia  | release_date |        | mobile |          | 08/19/1977       |
+      | SKU-005 | Julia  | name         | en_US  |        |          | Millenium Falcon |

@@ -13,6 +13,8 @@ use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -25,7 +27,8 @@ class EntityWithValuesDraftProcessorSpec extends ObjectBehavior
         EntityWithValuesDraftBuilderInterface $productDraftBuilder,
         DraftApplierInterface $productDraftApplier,
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->beConstructedWith(
             $repository,
@@ -34,6 +37,7 @@ class EntityWithValuesDraftProcessorSpec extends ObjectBehavior
             $productDraftBuilder,
             $productDraftApplier,
             $productDraftRepo,
+            $tokenStorage,
             'identifier'
         );
         $this->setStepExecution($stepExecution);
@@ -51,11 +55,13 @@ class EntityWithValuesDraftProcessorSpec extends ObjectBehavior
         $validator,
         $productDraftBuilder,
         $stepExecution,
+        $tokenStorage,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        TokenInterface $token
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
@@ -70,9 +76,11 @@ class EntityWithValuesDraftProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
-        $productDraftBuilder->build($product, 'csv_product_proposal_import')->willReturn($productDraft);
+        $productDraftBuilder->build($product, 'mary')->willReturn($productDraft);
 
-        $jobInstance->getCode()->willReturn('csv_product_proposal_import');
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUsername()->willReturn('mary');
+
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
@@ -122,10 +130,12 @@ class EntityWithValuesDraftProcessorSpec extends ObjectBehavior
         $validator,
         $productDraftBuilder,
         $stepExecution,
+        $tokenStorage,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        TokenInterface $token
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
@@ -139,10 +149,11 @@ class EntityWithValuesDraftProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
-        $productDraftBuilder->build($product, 'csv_product_proposal_import')->willReturn(null);
+        $productDraftBuilder->build($product, 'mary')->willReturn(null);
 
-        $jobInstance->getCode()->willReturn('csv_product_proposal_import');
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUsername()->willReturn('mary');
+
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo('proposal_skipped')->shouldBeCalled();
 

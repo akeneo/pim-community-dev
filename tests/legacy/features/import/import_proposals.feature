@@ -29,11 +29,11 @@ Feature: Import proposals
     When I am on the proposals page
     Then the grid should contain 1 element
     And I should see the following proposals:
-      | product   | author                               | attribute   | locale | scope  | original | new            |
-      | my-jacket | csv_clothing_product_proposal_import | name        | en_US  |        |          | My jacket      |
-      | my-jacket | csv_clothing_product_proposal_import | description | en_US  | mobile |          | My desc        |
-      | my-jacket | csv_clothing_product_proposal_import | description | en_US  | tablet |          | My description |
-      | my-jacket | csv_clothing_product_proposal_import | comment     |        |        |          | First comment  |
+      | product   | author | attribute   | locale | scope  | original | new            |
+      | my-jacket | Mary   | name        | en_US  |        |          | My jacket      |
+      | my-jacket | Mary   | description | en_US  | mobile |          | My desc        |
+      | my-jacket | Mary   | description | en_US  | tablet |          | My description |
+      | my-jacket | Mary   | comment     |        |        |          | First comment  |
 
   Scenario: Create a new proposals and be notified
     Given Mary proposed the following change to "my-jacket3":
@@ -61,9 +61,9 @@ Feature: Import proposals
     Then I should be on the proposals index page
     And the grid should contain 1 element
     And I should see the following proposal:
-      | product   | author                               | attribute   | original | new         |
-      | my-jacket | csv_clothing_product_proposal_import | name        |          | Jacket      |
-      | my-jacket | csv_clothing_product_proposal_import | description |          | Description |
+      | product   | author | attribute   | original | new         |
+      | my-jacket | Mary   | name        |          | Jacket      |
+      | my-jacket | Mary   | description |          | Description |
 
   Scenario: Import proposal with media
     Given I am logged in as "Mary"
@@ -76,8 +76,8 @@ Feature: Import proposals
     And I am logged in as "Julia"
     And I am on the proposals page
     Then I should see the following proposals:
-      | product   | author                               | attribute | original | new          |
-      | my-jacket | csv_clothing_product_proposal_import | side_view |          | jack_003.png |
+      | product   | author | attribute | original | new          |
+      | my-jacket | Mary   | side_view |          | jack_003.png |
     And I should see entity my-jacket2
     And I should see entity my-jacket3
 
@@ -108,18 +108,18 @@ Feature: Import proposals
     When I am on the proposals page
     Then the grid should contain 1 element
     Then I should see the following proposals:
-      | product   | author                               | attribute   | locale | scope  | original | new            |
-      | my-jacket | csv_clothing_product_proposal_import | name        | en_US  |        |          | My jacket      |
-      | my-jacket | csv_clothing_product_proposal_import | description | en_US  | mobile |          | My desc        |
-      | my-jacket | csv_clothing_product_proposal_import | description | en_US  | tablet |          | My description |
-      | my-jacket | csv_clothing_product_proposal_import | comment     |        |        |          | First comment  |
+      | product   | author | attribute   | locale | scope  | original | new            |
+      | my-jacket | Mary   | name        | en_US  |        |          | My jacket      |
+      | my-jacket | Mary   | description | en_US  | mobile |          | My desc        |
+      | my-jacket | Mary   | description | en_US  | tablet |          | My description |
+      | my-jacket | Mary   | comment     |        |        |          | First comment  |
 
   Scenario: Update a proposal to add a new attribute
     Given I am logged in as "Mary"
     And the following product drafts:
-      | product    | status | author                               | result                                                                                                                                        |
-      | my-jacket  | ready  | csv_clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket"}],"description":[{"locale":"en_US","scope":"mobile","data":"My desc"}]}} |
-      | my-jacket3 | ready  | csv_clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":null}]}}                                                                             |
+      | product    | status | author | result                                                                                                                                        |
+      | my-jacket  | ready  | Mary   | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket"}],"description":[{"locale":"en_US","scope":"mobile","data":"My desc"}]}} |
+      | my-jacket3 | ready  | Mary   | {"values":{"name":[{"locale":"en_US","scope":null,"data":null}]}}                                                                             |
     And the following CSV file to import:
     """
     sku;description-en_US-tablet;name-en_US
@@ -137,12 +137,12 @@ Feature: Import proposals
     When I am on the proposals page
     Then the grid should contain 3 elements
     And I should see the following proposals:
-      | product    | author                               | attribute   | locale | scope  | original | new              |
-      | my-jacket  | csv_clothing_product_proposal_import | name        | en_US  |        |          | My jacket v2     |
-      | my-jacket  | csv_clothing_product_proposal_import | description | en_US  | mobile |          | My desc          |
-      | my-jacket  | csv_clothing_product_proposal_import | description | en_US  | tablet |          | My description   |
-      | my-jacket2 | csv_clothing_product_proposal_import | name        | en_US  |        |          | My new jacket    |
-      | my-jacket3 | csv_clothing_product_proposal_import | name        | en_US  |        |          | My summer jacket |
+      | product    | author | attribute   | locale | scope  | original | new              |
+      | my-jacket  | Mary   | name        | en_US  |        |          | My jacket v2     |
+      | my-jacket  | Mary   | description | en_US  | mobile |          | My desc          |
+      | my-jacket  | Mary   | description | en_US  | tablet |          | My description   |
+      | my-jacket2 | Mary   | name        | en_US  |        |          | My new jacket    |
+      | my-jacket3 | Mary   | name        | en_US  |        |          | My summer jacket |
 
   Scenario: Update a proposal to update old attributes and add new
     Given I am logged in as "Mary"
@@ -171,12 +171,12 @@ Feature: Import proposals
     When I am on the proposals page
     Then the grid should contain 1 element
     And I should see the following proposals:
-      | product   | author                               | attribute   | locale | scope  | original | new            |
-      | my-jacket | csv_clothing_product_proposal_import | name        | en_US  |        |          | My jacket v2   |
-      | my-jacket | csv_clothing_product_proposal_import | description | en_US  | mobile |          | Desc           |
-      | my-jacket | csv_clothing_product_proposal_import | description | en_US  | tablet |          | My description |
-      | my-jacket | csv_clothing_product_proposal_import | description | fr_FR  | mobile |          | Ma desc        |
-      | my-jacket | csv_clothing_product_proposal_import | description | fr_FR  | tablet |          | Ma description |
+      | product   | author | attribute   | locale | scope  | original | new            |
+      | my-jacket | Mary   | name        | en_US  |        |          | My jacket v2   |
+      | my-jacket | Mary   | description | en_US  | mobile |          | Desc           |
+      | my-jacket | Mary   | description | en_US  | tablet |          | My description |
+      | my-jacket | Mary   | description | fr_FR  | mobile |          | Ma desc        |
+      | my-jacket | Mary   | description | fr_FR  | tablet |          | Ma description |
 
   Scenario: Redactor create two different proposals via import and CLI
     Given I am logged in as "Mary"
@@ -198,8 +198,8 @@ Feature: Import proposals
     When I am on the proposals page
     Then the grid should contain 1 element
     And I should see the following proposals:
-      | product   | author                               | attribute | locale | original | new       |
-      | my-jacket | csv_clothing_product_proposal_import | name      | en_US  |          | My jacket |
+      | product   | author | attribute | locale | original | new       |
+      | my-jacket | Mary   | name      | en_US  |          | My jacket |
 
   Scenario: Remove an optional attribute to a proposal
     Given I am logged in as "Mary"
@@ -221,14 +221,14 @@ Feature: Import proposals
     When I am on the proposals page
     Then the grid should contain 1 element
     And I should see the following proposals:
-      | product   | author                               | attribute | locale | original | new       |
-      | my-jacket | csv_clothing_product_proposal_import | name      | en_US  |          | My jacket |
+      | product   | author | attribute | locale | original | new       |
+      | my-jacket | Mary   | name      | en_US  |          | My jacket |
 
   Scenario: Remove a proposal if there is no diff
     Given I am logged in as "Mary"
     And the following product drafts:
-      | product   | status | author                               | result                                                          |
-      | my-jacket | ready  | csv_clothing_product_proposal_import | {"values":{"handmade":[{"locale":null,"scope":null,"data":0}]}} |
+      | product   | status | author | result                                                          |
+      | my-jacket | ready  | Mary   | {"values":{"handmade":[{"locale":null,"scope":null,"data":0}]}} |
     And the following CSV file to import:
     """
     sku;handmade
@@ -269,8 +269,8 @@ Feature: Import proposals
     When I am on the proposals page
     Then the grid should contain 1 element
     And I should see the following proposals:
-      | product   | author                               | attribute   | locale | scope  | original | new            |
-      | my-jacket | csv_clothing_product_proposal_import | name        | en_US  |        |          | My jacket      |
-      | my-jacket | csv_clothing_product_proposal_import | description | en_US  | mobile |          | My desc        |
-      | my-jacket | csv_clothing_product_proposal_import | description | en_US  | tablet |          | My description |
-      | my-jacket | csv_clothing_product_proposal_import | comment     |        |        |          | First comment  |
+      | product   | author | attribute   | locale | scope  | original | new            |
+      | my-jacket | Mary   | name        | en_US  |        |          | My jacket      |
+      | my-jacket | Mary   | description | en_US  | mobile |          | My desc        |
+      | my-jacket | Mary   | description | en_US  | tablet |          | My description |
+      | my-jacket | Mary   | comment     |        |        |          | First comment  |

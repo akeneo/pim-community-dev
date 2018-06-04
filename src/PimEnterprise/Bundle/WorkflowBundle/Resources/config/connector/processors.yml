@@ -11,6 +11,7 @@ services:
             - '@pimee_workflow.product.builder.draft'
             - '@pimee_workflow.applier.draft'
             - '@pimee_workflow.repository.product_draft'
+            - '@security.token_storage'
             - 'identifier'
 
     pimee_workflow.processor.denormalization.product_model_draft:
@@ -22,6 +23,7 @@ services:
             - '@pimee_workflow.product_model.builder.draft'
             - '@pimee_workflow.applier.draft'
             - '@pimee_workflow.repository.product_model_draft'
+            - '@security.token_storage'
             - 'code'
 
     pimee_workflow.processor.normalization.published_product:
