@@ -59,7 +59,7 @@ function (
                 i18n: i18n,
                 locale: UserContext.get('catalogLocale'),
                 labels: {
-                    defaultLabel: __('pim_enrich.form.attribute.tab.properties.default_label.group')
+                    defaultLabel: __('pim_enrich.entity.attribute.property.group.choose')
                 }
             }));
         },

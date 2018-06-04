@@ -18,7 +18,7 @@ define(
              */
             getLabel: function () {
                 var jobInstance = this.getFormData().jobInstance;
-                var prefix = __('pim_enrich.form.job_execution.title.details');
+                var prefix = __('pim_import_export.form.job_execution.title.details');
 
                 return prefix + ' - ' + jobInstance.label + ' [' + jobInstance.code + ']';
             }

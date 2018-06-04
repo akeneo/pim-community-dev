@@ -19,7 +19,7 @@ define(
              */
             renderForm: function (route) {
                 if (undefined === route.params.code) {
-                    var label = 'pim_enrich.entity.channel.title.create';
+                    var label = 'pim_enrich.entity.channel.label.create';
 
                     return createForm.call(
                         this,

@@ -49,7 +49,7 @@ Feature: Quick export many products with media from datagrid
       | files/boots/side_view/akeneo.jpg     |
       | files/sneakers/side_view/akeneo2.jpg |
 
-  Scenario: Successfully quick export products and media as a XSLX file
+  Scenario: Successfully quick export products and media as a XLSX file
     Given I am on the products grid
     When I select rows boots, sneakers
     And I press "Excel (All attributes)" on the "Quick Export" dropdown button

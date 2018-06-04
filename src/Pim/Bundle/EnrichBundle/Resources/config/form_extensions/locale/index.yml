@@ -24,7 +24,7 @@ extensions:
         parent: pim-locale-index
         targetZone: title
         config:
-            title: pim_enrich.index.locale.title
+            title: pim_enrich.entity.locale.page_title.index
 
     pim-locale-index-breadcrumbs:
         module: pim/common/breadcrumbs

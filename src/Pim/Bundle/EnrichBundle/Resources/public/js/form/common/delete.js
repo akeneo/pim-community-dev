@@ -56,8 +56,8 @@ define(
                     trans: {
                         title: 'confirmation.remove.item',
                         content: 'pim_common.confirm_deletion',
-                        success: 'flash.item.removed',
-                        fail: 'error.removing.item',
+                        success: 'pim_enrich.entity.fallback.flash.delete.success',
+                        fail: 'pim_enrich.entity.fallback.flash.delete.error',
                         subTitle: '',
                         buttonText: 'pim_common.delete'
                     },

@@ -52,8 +52,8 @@ extensions:
                 title: confirmation.remove.group
                 subTitle: pim_menu.item.group
                 content: pim_common.confirm_deletion
-                success: flash.group.removed
-                fail: error.removing.group
+                success: pim_enrich.entity.group.flash.delete.success
+                fail: pim_enrich.entity.group.flash.delete.fail
             redirect: pim_enrich_group_index
 
     pim-group-edit-form-save-buttons:
@@ -74,7 +74,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.group.title
+            entity: pim_enrich.entity.group.label
 
     pim-group-edit-form-product-count:
         module: pim/group-edit-form/meta/product-count
@@ -82,7 +82,7 @@ extensions:
         targetZone: meta
         position: 110
         config:
-            productCountLabel: pim_common.products
+            productCountLabel: pim_enrich.entity.product.plural_label
 
     pim-group-edit-form-properties-tab:
         module: pim/common/tab
@@ -140,5 +140,5 @@ extensions:
         targetZone: container
         position: 80
         config:
-            label: 'pim_common.products'
+            label: 'pim_enrich.entity.product.plural_label'
             gridId: 'product-group-grid'

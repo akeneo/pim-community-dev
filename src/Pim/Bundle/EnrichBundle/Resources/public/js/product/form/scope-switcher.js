@@ -88,7 +88,7 @@ define(
                                 i18n: i18n,
                                 displayInline: this.displayInline,
                                 displayLabel: this.displayLabel,
-                                label: __('pim_common.channel')
+                                label: __('pim_enrich.entity.channel.uppercase_label')
                             })
                         );
 

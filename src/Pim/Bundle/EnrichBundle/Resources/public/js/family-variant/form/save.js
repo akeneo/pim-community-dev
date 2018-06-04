@@ -33,8 +33,8 @@ define(
         mediator
     ) {
         return BaseSave.extend({
-            updateSuccessMessage: __('pim_enrich.entity.family_variant.info.update_successful'),
-            updateFailureMessage: __('pim_enrich.entity.family_variant.info.update_failed'),
+            updateSuccessMessage: __('pim_enrich.entity.family_variant.flash.update.success'),
+            updateFailureMessage: __('pim_enrich.entity.family_variant.flash.update.fail'),
 
             /**
              * {@inheritdoc}

@@ -57,7 +57,7 @@ define([
                     this.$el.html(this.template({
                         currentLocales: this.getFormData().locales,
                         locales: locales,
-                        label: __('pim_common.locales'),
+                        label: __('pim_enrich.entity.locale.plural_label'),
                         requiredLabel: __('pim_enrich.form.required'),
                         errors: this.getParent().getValidationErrorsForField('locales')
                     }));

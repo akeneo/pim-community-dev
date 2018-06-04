@@ -60,7 +60,7 @@ function (
                 choices: this.formatChoices(this.refData),
                 multiple: false,
                 labels: {
-                    defaultLabel: __('pim_enrich.form.attribute.tab.properties.default_label.reference_data_name')
+                    defaultLabel: __('pim_enrich.entity.attribute.property.reference_data_name.choose')
                 }
             }));
         },

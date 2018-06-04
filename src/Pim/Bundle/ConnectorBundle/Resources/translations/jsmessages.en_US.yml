@@ -103,7 +103,7 @@ batch_jobs:
         label: Product import in XLSX
         import.label: Product import
     xlsx_product_model_import:
-        label: Product model import in XSLX
+        label: Product model import in XLSX
         import_product_model_descendants.label: Compute product model descendants
     xlsx_group_export:
         label: Group export in XLSX

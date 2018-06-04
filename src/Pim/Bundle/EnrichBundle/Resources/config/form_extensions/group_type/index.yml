@@ -24,7 +24,7 @@ extensions:
         parent: pim-group-type-index
         targetZone: title
         config:
-            title: pim_enrich.index.grouptype.title
+            title: pim_enrich.entity.group_type.page_title.index
 
     pim-group-type-index-breadcrumbs:
         module: pim/common/breadcrumbs

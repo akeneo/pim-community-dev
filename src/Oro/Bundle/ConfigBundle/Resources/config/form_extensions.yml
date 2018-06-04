@@ -56,4 +56,4 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.product.title
+            entity: pim_enrich.entity.product.label

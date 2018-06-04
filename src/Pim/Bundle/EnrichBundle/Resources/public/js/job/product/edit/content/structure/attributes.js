@@ -63,7 +63,7 @@ define(
                     this.template({
                         __: __,
                         isEditable: this.isEditable(),
-                        titleEdit: __('pim_common.attributes'),
+                        titleEdit: __('pim_enrich.entity.attribute.plural_label'),
                         labelEdit: __('pim_common.edit'),
                         labelInfo: __(
                             'pim_enrich.export.product.filter.attributes.label',

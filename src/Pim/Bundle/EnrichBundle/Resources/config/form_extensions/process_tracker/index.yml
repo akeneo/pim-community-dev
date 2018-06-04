@@ -24,7 +24,7 @@ extensions:
         parent: pim-process-index
         targetZone: title
         config:
-            title: pim_enrich.index.process_tracker.title
+            title: pim_enrich.entity.job_execution.page_title.index
 
     pim-process-index-breadcrumbs:
         module: pim/common/breadcrumbs
