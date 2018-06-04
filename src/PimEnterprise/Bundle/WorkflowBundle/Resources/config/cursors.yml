@@ -43,3 +43,13 @@ services:
             - '%akeneo_elasticsearch.cursor.from_size_cursor.class%'
             - '%pim_job_product_batch_size%'
             - 'pimee_workflow_product_proposal'
+
+    pimee_workflow.factory.product_and_product_model_proposal_from_size_cursor:
+        public: false
+        class: '%pim_enrich.elasticsearch.from_size_cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_proposal'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '%pim_job_product_batch_size%'
+            - 'pimee_workflow_product_proposal'

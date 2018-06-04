@@ -50,7 +50,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
 
         $productModel = $productModelProposal->getEntityWithValue();
         $data[self::FIELD_ENTITY_WITH_VALUES_IDENTIFIER] = $productModel->getCode();
-        $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = $productModelProposal->getId();
+        $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = (string) $productModelProposal->getId();
         $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
             $productModelProposal->getCreatedAt(),
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX

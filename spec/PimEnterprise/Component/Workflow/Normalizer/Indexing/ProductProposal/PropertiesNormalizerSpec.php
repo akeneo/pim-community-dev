@@ -27,7 +27,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(PropertiesNormalizer::class);
     }
 
-    function it_supports_product_proposal(EntityWithValuesDraftInterface $productProposal)
+    function it_supports_product_proposal(ProductInterface $productProposal)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)->shouldReturn(false);
@@ -74,8 +74,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($productProposal, ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)->shouldReturn(
             [
-                'id' => '1',
-                'product_identifier' => '1',
+                'id' => 'product_draft_1',
+                'entity_with_values_identifier' => '1',
                 'identifier' => '1',
                 'created' => $now->format('c'),
                 'family' => ['code' => 'family'],
