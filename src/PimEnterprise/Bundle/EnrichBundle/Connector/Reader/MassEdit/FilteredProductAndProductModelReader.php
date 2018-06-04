@@ -53,6 +53,9 @@ class FilteredProductAndProductModelReader implements
     /** @var CursorInterface */
     private $productsAndProductModels;
 
+    /** @var bool */
+    private $firstRead = true;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
@@ -86,6 +89,8 @@ class FilteredProductAndProductModelReader implements
 
         $filters = $this->getConfiguredFilters();
         $this->productsAndProductModels = $this->getProductsCursor($filters, $channel);
+
+        $this->firstRead = true;
     }
 
     /**
@@ -185,9 +190,15 @@ class FilteredProductAndProductModelReader implements
         $entity = null;
 
         while ($this->productsAndProductModels->valid()) {
-            $entity = $this->productsAndProductModels->current();
+            if (!$this->firstRead) {
+                $this->productsAndProductModels->next();
+            }
 
-            $this->productsAndProductModels->next();
+            $this->firstRead = false;
+            $entity = $this->productsAndProductModels->current();
+            if (false === $entity) {
+                return null;
+            }
 
             if ($entity instanceof ProductModelInterface) {
                 if ($this->stepExecution) {

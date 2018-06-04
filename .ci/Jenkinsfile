@@ -82,7 +82,8 @@ stage("Test") {
                 container: tag,
                 containers: pimContainers(image: tag, selenium: false),
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/vendor/akeneo/pim-community-dev/src /var/www/pim/vendor/akeneo/pim-community-dev/tests /var/www/pim/src /var/www/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+                fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/vendor/akeneo/pim-community-dev/src", "/var/www/pim/vendor/akeneo/pim-community-dev/tests"])},
+                parallelism: 50
             )},
             "behat": {queue(
                 condition: launchEndToEndTests.equals("yes"),
