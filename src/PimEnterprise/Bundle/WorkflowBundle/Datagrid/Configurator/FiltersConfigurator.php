@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configurator;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
@@ -36,7 +38,7 @@ class FiltersConfigurator implements ConfiguratorInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(DatagridConfiguration $configuration)
+    public function configure(DatagridConfiguration $configuration): void
     {
         $attributes = $configuration->offsetGet(self::SOURCE_KEY)[self::USEABLE_ATTRIBUTES_KEY];
         $attributes = ($attributes === null) ? [] : $attributes;
@@ -92,7 +94,7 @@ class FiltersConfigurator implements ConfiguratorInterface
      *
      * @param array &$filters
      */
-    protected function sortFilters(&$filters)
+    protected function sortFilters(&$filters): void
     {
         uasort(
             $filters,
