@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\EntityWithFamilyVariant;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AbstractAttribute;
+use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
