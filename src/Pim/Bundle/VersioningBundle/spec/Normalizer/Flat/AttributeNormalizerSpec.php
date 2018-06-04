@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

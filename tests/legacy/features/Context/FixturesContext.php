@@ -23,7 +23,7 @@ use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;

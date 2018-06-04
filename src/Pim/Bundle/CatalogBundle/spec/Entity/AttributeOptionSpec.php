@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Prophecy\Argument;
