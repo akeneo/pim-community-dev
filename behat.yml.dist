@@ -56,6 +56,7 @@ legacy:
                     - '@pim_catalog.updater.product_model'
                     - '@pim_catalog.saver.product_model'
                     - '@pim_catalog.validator.product'
+                    - '@pim_versioning.repository.version'
                 - Pim\Behat\Context\Domain\Enrich\VariantProductContext:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
@@ -63,6 +64,7 @@ legacy:
                     - '@pim_catalog.saver.product'
                     - '@pim_catalog.validator.product'
                     - '@doctrine.orm.entity_manager'
+                    - '@pim_versioning.repository.version'
                 - Pim\Behat\Context\Domain\Enrich\VariantNavigationContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Spread\ExportBuilderContext:
@@ -117,6 +119,14 @@ legacy:
                 - Pim\Behat\Context\Storage\AttributeOptionStorage:
                     - '@pim_catalog.repository.attribute_option'
                     - '@doctrine.orm.default_entity_manager'
+                - PimEnterprise\Behat\Context\RevertContext:
+                    - '@pim_catalog.repository.product'
+                    - '@pim_versioning.repository.version'
+                    - '@pimee_revert.reverter.product'
+                - Pim\Behat\Context\MassEditJobContext:
+                    - 'Context\EnterpriseFeatureContext'
+                    - '@pim_catalog.repository.product'
+                    - '@pim_catalog.repository.product_model'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
@@ -199,7 +209,7 @@ acceptance:
                - "tests/back/Acceptance/Resources/config/behat/services.yml"
                - "vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml"
                - "vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
-               - "src/PimEnterprise/Bundle/ProductAssetBundle/tests/Acceptance/Resources/config/behat/services.yml"
+               - "src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:

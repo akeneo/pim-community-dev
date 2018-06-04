@@ -4,13 +4,12 @@ namespace PimEnterprise\Bundle\RevertBundle\tests\integration\Reverter;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\RevertBundle\Reverter\ProductReverter;
-use PimEnterprise\Component\ActivityManager\Repository\ProductRepositoryInterface;
 
 /**
  * Integration tests that ensure that a product is revertable to a prior version.
@@ -36,12 +35,16 @@ class ProductReverterIntegration extends TestCase
         $this->getProductUpdater()->update($product, $updates);
         $this->getProductSaver()->save($product);
 
-        $productVersions = $this->getVersionRepository()->getLogEntries(ClassUtils::getClass($product),
-            $product->getId());
+        $productVersions = $this->getVersionRepository()->getLogEntries(
+            ClassUtils::getClass($product),
+            $product->getId()
+        );
         $this->getProductReverter()->revert(end($productVersions));
 
-        $productVersions = $this->getVersionRepository()->getLogEntries(ClassUtils::getClass($product),
-            $product->getId());
+        $productVersions = $this->getVersionRepository()->getLogEntries(
+            ClassUtils::getClass($product),
+            $product->getId()
+        );
         $this->assertCount(3, $productVersions);
 
         $product = $this->getProductRepository()->findOneByIdentifier('versioned-product');
@@ -64,8 +67,10 @@ class ProductReverterIntegration extends TestCase
         $this->getProductUpdater()->update($product, $updates);
         $this->getProductSaver()->save($product);
 
-        $productVersions = $this->getVersionRepository()->getLogEntries(ClassUtils::getClass($product),
-            $product->getId());
+        $productVersions = $this->getVersionRepository()->getLogEntries(
+            ClassUtils::getClass($product),
+            $product->getId()
+        );
         $this->getProductReverter()->revert(end($productVersions));
 
         $product = $this->getProductRepository()->findOneByIdentifier('versioned-product');
@@ -87,14 +92,18 @@ class ProductReverterIntegration extends TestCase
         $this->getProductUpdater()->update($product, $updates);
         $this->getProductSaver()->save($product);
 
-        $productVersions = $this->getVersionRepository()->getLogEntries(ClassUtils::getClass($product),
-            $product->getId());
+        $productVersions = $this->getVersionRepository()->getLogEntries(
+            ClassUtils::getClass($product),
+            $product->getId()
+        );
         $this->assertCount(2, $productVersions);
 
         $this->getProductReverter()->revert(end($productVersions));
 
-        $productVersions = $this->getVersionRepository()->getLogEntries(ClassUtils::getClass($product),
-            $product->getId());
+        $productVersions = $this->getVersionRepository()->getLogEntries(
+            ClassUtils::getClass($product),
+            $product->getId()
+        );
         $this->assertCount(3, $productVersions);
     }
 
@@ -143,7 +152,7 @@ class ProductReverterIntegration extends TestCase
      */
     protected function getProductReverter()
     {
-        return $this->get('pimee_revert.reverter.product');
+        return $this->get('pimee_versioning.reverter.product');
     }
 
     /**

@@ -10,6 +10,9 @@ services:
     pimee_workflow.object_manager.product_draft:
         alias: doctrine.orm.entity_manager
 
+    pimee_workflow.object_manager.product_model_draft:
+        alias: doctrine.orm.entity_manager
+
     pimee_workflow.repository.published_product:
         class: '%pimee_workflow.repository.published_product.class%'
         factory: 'pim_catalog.object_manager.product:getRepository'
