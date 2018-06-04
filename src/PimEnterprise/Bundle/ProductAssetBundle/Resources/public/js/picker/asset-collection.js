@@ -13,6 +13,7 @@ define(
         'oro/translator',
         'backbone',
         'pimee/template/picker/asset-collection',
+        'pimee/template/picker/asset-collection-preview',
         'pim/fetcher-registry',
         'pim/form-builder',
         'routing',
@@ -23,6 +24,7 @@ define(
         __,
         Backbone,
         template,
+        templateModal,
         FetcherRegistry,
         FormBuilder,
         Routing
@@ -33,8 +35,10 @@ define(
             context: {},
             template: _.template(template),
             events: {
-                'click .add-asset': 'updateAssets'
+                'click .add-asset': 'updateAssets',
+                'click .asset-thumbnail': 'openModal'
             },
+            modalTemplate: _.template(templateModal),
 
             /**
              * {@inheritdoc}
@@ -161,6 +165,27 @@ define(
                 });
 
                 return deferred.promise();
+            },
+
+            openModal() {
+                console.log(this);
+                console.log(this.data);
+                let modal = new Backbone.BootstrapModal({
+                    className: 'modal modal--fullPage modal--topButton',
+                    modalOptions: {
+                        backdrop: 'static',
+                        keyboard: false
+                    },
+                    allowCancel: true,
+                    okCloses: false,
+                    template: this.modalTemplate,
+                    assets: this.data,
+                    locale: this.context.locale,
+                    scope: this.context.scope,
+                    content: '',
+                    thumbnailFilter: 'thumbnail'
+                });
+                modal.open();
             }
         });
     }
