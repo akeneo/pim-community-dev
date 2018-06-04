@@ -6,7 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
@@ -151,7 +151,7 @@ abstract class AbstractExportTestCase extends TestCase
     /**
      * @param array $data
      *
-     * @return AttributeOptionInterface
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
      */
     protected function createAttributeOption(array $data = []) : AttributeOptionInterface
     {

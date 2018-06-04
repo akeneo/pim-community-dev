@@ -13,7 +13,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType;
 use Pim\Component\Catalog\Manager\AttributeOptionsSorter;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -225,8 +225,8 @@ class AttributeOptionController
     /**
      * Manage form submission of an attribute option
      *
-     * @param AttributeOptionInterface $attributeOption
-     * @param array                    $data
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface $attributeOption
+     * @param array                                                          $data
      *
      * @return FormInterface
      */
@@ -294,7 +294,7 @@ class AttributeOptionController
      *
      * @throws NotFoundHttpException
      *
-     * @return AttributeOptionInterface
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
      */
     protected function findAttributeOptionOr404($id)
     {

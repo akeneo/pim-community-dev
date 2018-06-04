@@ -17,7 +17,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -357,9 +357,9 @@ class AttributeOptionController
     /**
      * Update an attribute option. It throws an error 422 if a problem occurred during the update.
      *
-     * @param AttributeOptionInterface $attributeOption
-     * @param array                    $data
-     * @param string                   $anchor
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface $attributeOption
+     * @param array                                                          $data
+     * @param string                                                         $anchor
      *
      * @throws DocumentedHttpException
      */
@@ -380,7 +380,7 @@ class AttributeOptionController
      * Validate an attribute option. It throws an error 422 with every violated constraints if
      * the validation failed.
      *
-     * @param AttributeOptionInterface $attributeOption
+     * @param \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface $attributeOption
      *
      * @throws ViolationHttpException
      */

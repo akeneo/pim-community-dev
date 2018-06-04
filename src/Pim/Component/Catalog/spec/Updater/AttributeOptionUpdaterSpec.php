@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
@@ -34,7 +34,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Pim\Component\Catalog\Model\AttributeOptionInterface'
+                'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface'
             )
         )->during(
             'update',

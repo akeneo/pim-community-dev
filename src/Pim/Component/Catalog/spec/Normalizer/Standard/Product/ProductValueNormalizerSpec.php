@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Component\Catalog\Value\OptionsValueInterface;
 use Symfony\Component\Serializer\SerializerInterface;

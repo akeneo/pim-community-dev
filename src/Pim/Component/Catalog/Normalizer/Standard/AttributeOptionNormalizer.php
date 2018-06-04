@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard;
 
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Exception\InvalidOptionsException;
 use Pim\Component\Catalog\Factory\Value\OptionsValueFactory;
 use Pim\Component\Catalog\Factory\Value\OptionValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Prophecy\Argument;

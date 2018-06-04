@@ -133,7 +133,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             type: datetime
     oneToMany:
         options:
-            targetEntity: Pim\Component\Catalog\Model\AttributeOptionInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
             mappedBy: attribute
             cascade:
                 - persist

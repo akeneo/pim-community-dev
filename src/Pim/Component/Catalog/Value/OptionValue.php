@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Value;
 
 use Pim\Component\Catalog\Model\AbstractValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 
 /**
  * Product value for "pim_catalog_simpleselect" attribute type
@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\AttributeOptionInterface;
  */
 class OptionValue extends AbstractValue implements OptionValueInterface
 {
-    /** @var AttributeOptionInterface */
+    /** @var \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface */
     protected $data;
 
     /**

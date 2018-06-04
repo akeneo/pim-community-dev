@@ -10,7 +10,7 @@ use Behat\Gherkin\Node\TableNode;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 
 class AttributeOptionStorage implements Context
 {
