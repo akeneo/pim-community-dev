@@ -17,6 +17,6 @@ config:
             controllers:
                 pimee_suggest_data_pim_dot_ai_connection_index:
                     module: pim/controller/common/index
-                    aclResourceId: pim_ee_suggest_data_connection
+                    aclResourceId: pimee_suggest_data_connection
                     config:
                         entity: pim-dot-ai-connection

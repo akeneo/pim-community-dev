@@ -24,12 +24,12 @@ extensions:
         parent: pim-pim-dot-ai-connection-index
         targetZone: title
         config:
-            main_title: pim_ee_suggest_data.pim_dot_ai.title.main_title
-            sub_title: pim_ee_suggest_data.pim_dot_ai.title.sub_title
-            illustration: bundles/pimui/images/illustrations/helpcenter-settings.svg
+            main_title: pimee_suggest_data.pim_dot_ai.title.main_title
+            sub_title: pimee_suggest_data.pim_dot_ai.title.sub_title
+            illustration: bundles/pimui/images/illustrations/Helpcenter-settings.svg
             description:
-                - pim_ee_suggest_data.pim_dot_ai.title.description.first_step
-                - pim_ee_suggest_data.pim_dot_ai.title.description.second_step
+                - pimee_suggest_data.pim_dot_ai.title.description.first_step
+                - pimee_suggest_data.pim_dot_ai.title.description.second_step
             identifiers_mapping_url: pimee_suggest_data_pim_dot_ai_connection_map_identifiers
 
     pimee-pim-dot-ai-connection-index-breadcrumbs:
@@ -47,11 +47,11 @@ extensions:
         targetZone: content
         position: 10
         config:
-            token_label_title: pim_ee_suggest_data.pim_dot_ai.token.label.title
-            token_label_content: pim_ee_suggest_data.pim_dot_ai.token.label.content
-            token_field_title: pim_ee_suggest_data.pim_dot_ai.token.field.title
-            token_field_placeholder: pim_ee_suggest_data.pim_dot_ai.token.field.placeholder
-            token_save_pre_activation_title: pim_ee_suggest_data.pim_dot_ai.token.save.to_activate
-            token_save_post_activation_title:  pim_ee_suggest_data.pim_dot_ai.token.save.activated
+            token_label_title: pimee_suggest_data.pim_dot_ai.token.label.title
+            token_label_content: pimee_suggest_data.pim_dot_ai.token.label.content
+            token_field_title: pimee_suggest_data.pim_dot_ai.token.field.title
+            token_field_placeholder: pimee_suggest_data.pim_dot_ai.token.field.placeholder
+            token_save_pre_activation_title: pimee_suggest_data.pim_dot_ai.token.save.to_activate
+            token_save_post_activation_title:  pimee_suggest_data.pim_dot_ai.token.save.activated
             activation_url: pimee_suggest_data_pim_dot_ai_connection_save
             code: pim-dot-ai-connection

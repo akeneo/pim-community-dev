@@ -1,6 +1,8 @@
 batch_jobs.suggest_data_push_products.perform.label: Suggest data
-pimee_suggest_data.acl.suggest_data.index: Suggest data
-pim_ee_suggest_data:
+
+pimee_suggest_data:
     acl:
+        suggest_data:
+            index: Suggest data
         pim_dot_ai:
             connection: Manage connection to PIM.AI
