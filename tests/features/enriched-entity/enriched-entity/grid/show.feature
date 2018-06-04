@@ -3,7 +3,7 @@ Feature: Show enriched entity
   As a user
   I want see the details of an enriched entity
 
-  @acceptance-front
+  # @acceptance-front
   Scenario: Getting a single entity
     Given the following enriched entities:
       | identifier | labels                                   |
