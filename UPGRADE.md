@@ -98,3 +98,6 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\Arra
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\StandardToFlat\\Currency/Akeneo\\Channel\\Component\\ArrayConverter\\StandardToFlat\\Currency/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Exception\\LinkedChannelException/Akeneo\\Channel\\Component\\Exception\\LinkedChannelException/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ReferableInterface/Akeneo\\Tool\\Component\\StorageUtils\\Model\\ReferableInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\Attribute/Akeneo\\Pim\\Structure\\Component\\Model\\Attribute/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\AbstractAttribute/Akeneo\\Pim\\Structure\\Component\\Model\\AbstractAttribute/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\Entity\AttributeInterface/Pim\\Bundle\\CatalogBundle\\Entity\\AttributeInterface/g'

@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;

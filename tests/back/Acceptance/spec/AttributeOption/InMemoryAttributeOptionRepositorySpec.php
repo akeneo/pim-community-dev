@@ -6,7 +6,7 @@ namespace spec\Akeneo\Test\Acceptance\AttributeOption;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;

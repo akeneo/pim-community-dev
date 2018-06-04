@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

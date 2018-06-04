@@ -120,3 +120,6 @@
 - Remove class `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilder` 
 - Remove class `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface` 
 - Remove class `Pim\Bundle\PdfGeneratorBundle\Twig\ImageExtension` 
+- Move `Pim\Bundle\CatalogBundle\Entity\Attribute` to `Akeneo\Pim\Structure\Component\Model\Attribute`
+- Move `Pim\Bundle\CatalogBundle\Entity\AbstractAttribute` to `Akeneo\Pim\Structure\Component\Model\AbstractAttribute`
+- Move `Pim\Bundle\CatalogBundle\Entity\AttributeInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeInterface`

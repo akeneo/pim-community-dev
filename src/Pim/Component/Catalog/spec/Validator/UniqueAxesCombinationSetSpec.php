@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Validator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
 use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Model\Product;
