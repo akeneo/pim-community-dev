@@ -67,7 +67,7 @@ class FamilyFactorySpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $family = $this->create();
-        $family->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\FamilyInterface');
+        $family->shouldBeAnInstanceOf('Akeneo\Pim\Structure\Component\Model\FamilyInterface');
         $family->getAttributes()->shouldHaveCount(1);
         $family->getAttributes()->first()->shouldBeEqualTo($identifierAttribute);
         $family->getAttributeRequirements()->shouldHaveCount(2);

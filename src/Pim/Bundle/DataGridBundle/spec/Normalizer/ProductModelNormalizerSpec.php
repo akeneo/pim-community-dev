@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Normalizer\ProductModelNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyTranslationInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;

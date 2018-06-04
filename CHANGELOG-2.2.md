@@ -192,4 +192,4 @@ IMPORTANT: In order for your PIM to work properly, you will need to run the foll
 ### Interfaces
 
 - Add method `Akeneo\Component\Batch\Job\JobRepositoryInterface::addWarning`
-- PIM-7165: Add method `Pim\Component\Catalog\Model\FamilyInterface::getLevelForAttributeCode`
+- PIM-7165: Add method `Akeneo\Pim\Structure\Component\Model\FamilyInterface::getLevelForAttributeCode`

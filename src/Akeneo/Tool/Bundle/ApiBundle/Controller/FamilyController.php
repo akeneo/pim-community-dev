@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -272,8 +272,8 @@ class FamilyController
      * Update a family. It throws an error 422 if a problem occurred during the update.
      *
      * @param FamilyInterface $family family to update
-     * @param array           $data   data of the request already decoded, it should be the standard format
-     * @param string          $anchor
+     * @param array                                                 $data   data of the request already decoded, it should be the standard format
+     * @param string                                                $anchor
      *
      * @throws DocumentedHttpException
      */

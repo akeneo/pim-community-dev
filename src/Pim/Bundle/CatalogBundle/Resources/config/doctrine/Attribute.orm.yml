@@ -170,5 +170,5 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                         referencedColumnName: id
                         onDelete: CASCADE
         families:
-            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
             mappedBy: attributes

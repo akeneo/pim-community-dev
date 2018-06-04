@@ -42,7 +42,7 @@ Pim\Component\Catalog\Model\FamilyVariant:
 
     manyToOne:
         family:
-            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
             inversedBy: familyVariants
             joinColumn:
               name: family_id

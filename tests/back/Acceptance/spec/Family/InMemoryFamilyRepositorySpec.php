@@ -9,7 +9,7 @@ use Akeneo\Test\Acceptance\Family\InMemoryFamilyRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
 

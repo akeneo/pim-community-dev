@@ -6,7 +6,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -118,8 +118,8 @@ class FamilyNormalizer implements NormalizerInterface
      * Fetches attributes by code and normalizes them
      *
      * @param FamilyInterface $family
-     * @param boolean         $fullAttributes
-     * @param array           $context
+     * @param boolean                                               $fullAttributes
+     * @param array                                                 $context
      *
      * @return array
      */
