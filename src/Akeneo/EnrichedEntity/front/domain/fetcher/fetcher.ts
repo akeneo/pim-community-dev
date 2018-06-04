@@ -1,5 +1,3 @@
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-
 interface QueryFilter {
   field: string;
   operator: string;
@@ -17,6 +15,5 @@ export interface Query {
 export default interface Fetcher<Entity> {
   fetch: (identifier: string) => Promise<Entity>;
   fetchAll: () => Promise<Entity[]>;
-  save: (enrichedEntity: EnrichedEntity) => Promise<EnrichedEntity>;
   search: (query: Query) => Promise<{items: Entity[]; total: number}>;
 };

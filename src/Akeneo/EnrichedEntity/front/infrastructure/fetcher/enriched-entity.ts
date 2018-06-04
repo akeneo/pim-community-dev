@@ -1,4 +1,4 @@
-import Fetcher from 'akeneoenrichedentity/application/fetcher/fetcher';
+import Fetcher from 'akeneoenrichedentity/domain/fetcher/fetcher';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import hidrator from 'akeneoenrichedentity/application/hidrator/enriched-entity';
 import hidrateAll from 'akeneoenrichedentity/application/hidrator/hidrator';
@@ -40,15 +40,6 @@ export class EnrichedEntityFetcherImplementation implements EnrichedEntityFetche
       items,
       total: backendEnrichedEntities.total,
     };
-  }
-
-  async save(enrichedEntity: EnrichedEntity): Promise<EnrichedEntity> {
-    console.log('save enrich entity : ', enrichedEntity);
-    // const backendEnrichedEntity = await getJSON(
-    //   routing.generate('akeneo_enriched_entities_enriched_entities_get_rest', {enrichedEntity.getIdentifier().stringValue()})
-    // );
-    //
-    return enrichedEntity;
   }
 }
 

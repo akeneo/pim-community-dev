@@ -1,7 +1,7 @@
 import {startLoading, stopLoading, goNextPage, goFirstPage} from 'akeneoenrichedentity/application/event/search';
 import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import Fetcher, {Query} from 'akeneoenrichedentity/application/fetcher/fetcher';
+import Fetcher, {Query} from 'akeneoenrichedentity/domain/fetcher/fetcher';
 import {dataReceived} from 'akeneoenrichedentity/domain/event/search';
 import EnrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
 
