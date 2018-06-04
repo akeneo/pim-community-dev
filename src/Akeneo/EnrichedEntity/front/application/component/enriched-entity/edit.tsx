@@ -6,6 +6,7 @@ import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import {saveEditForm} from 'akeneoenrichedentity/application/action/enriched-entity/form';
 import Form from 'akeneoenrichedentity/application/component/enriched-entity/edit/form';
+import { getImageShowUrl } from 'akeneoenrichedentity/tools/media-url-generator';
 
 interface EditState {
   enrichedEntity: EnrichedEntity|null;
@@ -16,7 +17,7 @@ interface EditState {
 
 interface EditDispatch {
   events: {
-    onSaveEditForm: (enrichedEntity: EnrichedEntity|null) => void
+    onSaveEditForm: (enrichedEntity: EnrichedEntity) => void
   }
 }
 
@@ -42,7 +43,9 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
   };
 
   saveEditFormHandler = () => {
-    this.props.events.onSaveEditForm(this.state.enrichedEntity);
+    if (null !== this.state.enrichedEntity) {
+      this.props.events.onSaveEditForm(this.state.enrichedEntity);
+    }
   };
 
   render(): JSX.Element | JSX.Element[] {
@@ -53,35 +56,39 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
         </div>
         <div className="AknDefault-contentWithBottom">
           <div className="AknDefault-mainContent">
-            <header className="AknTitleContainer">
+            <header className="AknTitleContainer navigation">
               <div className="AknTitleContainer-line">
+                <div className="AknTitleContainer-imageContainer">
+                  <img className="AknTitleContainer-image" src={getImageShowUrl(null, 'thumbnail')} />
+                </div>
                 <div className="AknTitleContainer-mainContainer">
-                  <div className="AknTitleContainer-line">
-                    <div className="AknTitleContainer-breadcrumbs">
-                      <div className="AknBreadcrumb">
-                        <a href="#" className="AknBreadcrumb-item AknBreadcrumb-item--routable breadcrumb-tab" data-code="pim-menu-entities">
-                          {__('pim_enriched_entity.enriched_entity.title')}
-                        </a>
+                  <div>
+                    <div className="AknTitleContainer-line">
+                      <div className="AknTitleContainer-breadcrumbs">
+                        <div className="AknBreadcrumb">
+                          <a href="#" className="AknBreadcrumb-item AknBreadcrumb-item--routable breadcrumb-tab" data-code="pim-menu-entities">
+                            {__('pim_enriched_entity.enriched_entity.title')}
+                          </a>
+                        </div>
                       </div>
-                    </div>
-                    <div className="AknTitleContainer-buttonsContainer">
-                      <div className="AknTitleContainer-userMenu">
-                        <PimView viewName="pim-enriched-entity-index-user-navigation"/>
-                      </div>
-                      <div className="AknButtonList" >
-                        <div className="AknTitleContainer-rightButton">
-                          <button className="AknButton AknButton--apply save" onClick={this.saveEditFormHandler}>
-                            Save
-                          </button>
+                      <div className="AknTitleContainer-buttonsContainer">
+                        <div className="user-menu">
+                          <PimView className="AknTitleContainer-userMenu" viewName="pim-enriched-entity-index-user-navigation"/>
+                        </div>
+                        <div className="AknButtonList" >
+                          <div className="AknTitleContainer-rightButton">
+                            <button className="AknButton AknButton--apply save" onClick={this.saveEditFormHandler}>
+                              Save
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="AknTitleContainer-line">
-                    <div className="AknTitleContainer-title">
-                      {null !== this.props.enrichedEntity ? this.props.enrichedEntity.getLabel(this.props.context.locale) : ''}
+                    <div className="AknTitleContainer-line">
+                      <div className="AknTitleContainer-title">
+                        {null !== this.props.enrichedEntity ? this.props.enrichedEntity.getLabel(this.props.context.locale) : ''}
+                      </div>
                     </div>
-                    <div className="AknTitleContainer-state"></div>
                   </div>
                 </div>
                 <div>
@@ -98,14 +105,25 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
               </div>
             </header>
             <div className="content">
-              <Form
-                updateEditForm={this.updateEditFormHandler}
-                locale={this.props.context.locale}
-                enrichedEntity={this.props.enrichedEntity}
-              />
+              <div>
+                <div className="tab-container tab-content">
+                  <div className="tabbable object-attributes">
+                    <div className="tab-content">
+                      <div className="tab-pane active object-values">
+                        <Form
+                          updateEditForm={this.updateEditFormHandler}
+                          locale={this.props.context.locale}
+                          enrichedEntity={this.props.enrichedEntity}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <PimView className="AknColumn" viewName="pim-enriched-entities-edit-form-left-column"/>
       </div>
     );
   }
@@ -126,7 +144,7 @@ export default connect((state: State): EditState => {
   return {
     events: {
       onSaveEditForm: (enrichedEntity: EnrichedEntity) => {
-        dispatch(saveEditForm(enrichedEntity))
+          dispatch(saveEditForm(enrichedEntity))
       }
     }
   }

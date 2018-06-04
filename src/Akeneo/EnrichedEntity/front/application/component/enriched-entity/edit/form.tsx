@@ -1,4 +1,5 @@
 import * as React from 'react';
+import __ from 'akeneoenrichedentity/tools/translator';
 import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
@@ -47,16 +48,39 @@ export default class EditForm extends React.Component<FormProps> {
 
   render(): JSX.Element | JSX.Element[] {
     return (
-      <form>
-          <label>
-            Code :
-            <input type="text" name="code" value={this.state.code} onChange={this.handleChange} />
-          </label>
-          <label>
-            Label :
-            <input type="text" name="label" value={this.state.label} onChange={this.handleChange} />
-          </label>
-      </form>
+      <div className="AknSubsection">
+        <header className="AknSubsection-title">
+            <span className="group-label">{__('pim_enriched_entity.enriched_entity.properties_title')}</span>
+        </header>
+        <div>
+          <div className="AknComparableFields field-container">
+            <div className="akeneo-text-field AknComparableFields-item AknFieldContainer original-field edit">
+              <div className="AknFieldContainer-header">
+                <label className="AknFieldContainer-label">
+                  <span className="badge-elements-container"></span>
+                  {__('pim_enriched_entity.enriched_entity.code')}
+                  <span className="label-elements-container"></span>
+                </label>
+              </div>
+              <div className="AknFieldContainer-inputContainer field-input">
+                <input type="text" name="code" className="AknTextField" value={this.state.code} onChange={this.handleChange} />
+              </div>
+            </div>
+          </div>
+          <div className="AknComparableFields field-container">
+            <div className="akeneo-text-field AknComparableFields-item AknFieldContainer original-field edit">
+              <div className="AknFieldContainer-header">
+                <label className="AknFieldContainer-label">
+                  {__('pim_enriched_entity.enriched_entity.label')}
+                </label>
+              </div>
+              <div className="AknFieldContainer-inputContainer field-input">
+                <input type="text" name="label" className="AknTextField" value={this.state.label} onChange={this.handleChange} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }

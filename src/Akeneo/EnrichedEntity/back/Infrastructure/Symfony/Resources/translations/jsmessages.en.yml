@@ -1,6 +1,11 @@
 pim_enriched_entity:
     enriched_entity:
         title: Entities
+        navigation: Entities
+        properties_tab: Properties
+        properties_title: Entity properties
+        code: Code
+        label: Label
         index:
             grid:
                 count: "{{ count }} results"

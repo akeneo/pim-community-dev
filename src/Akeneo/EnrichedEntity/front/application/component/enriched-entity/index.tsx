@@ -44,7 +44,7 @@ const enrichedEntityListView = ({ grid, context, events }: StateProps & Dispatch
                 </div>
                 <div className="AknTitleContainer-buttonsContainer">
                   <div className="AknTitleContainer-userMenu">
-                    <PimView viewName="pim-enriched-entity-index-user-navigation"/>
+                    <PimView className="AknTitleContainer-userMenu" viewName="pim-enriched-entity-index-user-navigation"/>
                   </div>
                 </div>
               </div>
