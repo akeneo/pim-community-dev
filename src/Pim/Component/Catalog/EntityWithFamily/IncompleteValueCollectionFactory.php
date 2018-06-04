@@ -75,7 +75,12 @@ class IncompleteValueCollectionFactory
         LocaleInterface $locale,
         EntityWithValuesInterface $entityWithValues
     ) {
-        $actualValue = $entityWithValues->getValues()->getByKey($value->getValueKey());
+        $actualValue = $value->valueFromEntity()(
+            $entityWithValues,
+            $value->getAttribute(),
+            $value->getScope(),
+            $value->getLocale()
+        );
 
         if (null === $actualValue) {
             return true;

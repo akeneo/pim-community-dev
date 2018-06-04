@@ -25,30 +25,30 @@ use Pim\Component\Catalog\Model\ValueInterface;
  */
 class RequiredValue extends AbstractValue implements ValueInterface
 {
-    /** @var string */
-    private $valueKey;
+    /** @var \Closure  */
+    private $valueGetter;
 
     /**
      * @param AttributeInterface $attribute
      * @param string             $channel
      * @param string             $locale
-     * @param string             $valueKey
+     * @param string             $valueGetter
      */
     public function __construct(
         AttributeInterface $attribute,
         string $channel = null,
         string $locale = null,
-        string $valueKey = null
+        \Closure $valueGetter = null
     ) {
         $this->setAttribute($attribute);
         $this->setScope($channel);
         $this->setLocale($locale);
-        $this->valueKey = $valueKey;
+        $this->valueGetter = $valueGetter;
     }
 
-    public function getValueKey(): string
+    public function valueFromEntity(): \Closure
     {
-        return $this->valueKey;
+        return $this->valueGetter;
     }
 
     /**

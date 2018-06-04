@@ -182,7 +182,7 @@ class ValueCollection implements ValueCollectionInterface
      */
     public function getSame(ValueInterface $value)
     {
-        $key = self::generateKey($value->getAttribute()->getCode(), $value->getScope(), $value->getLocale());
+        $key = $this->generateKey($value->getAttribute()->getCode(), $value->getScope(), $value->getLocale());
 
         return $this->getByKey($key);
     }
@@ -200,7 +200,7 @@ class ValueCollection implements ValueCollectionInterface
      */
     public function getByCodes($attributeCode, $channelCode = null, $localeCode = null)
     {
-        $key = self::generateKey($attributeCode, $channelCode, $localeCode);
+        $key = $this->generateKey($attributeCode, $channelCode, $localeCode);
 
         return $this->getByKey($key);
     }
@@ -235,7 +235,7 @@ class ValueCollection implements ValueCollectionInterface
     public function add(ValueInterface $value)
     {
         $attribute = $value->getAttribute();
-        $key = self::generateKey($value->getAttribute()->getCode(), $value->getScope(), $value->getLocale());
+        $key = $this->generateKey($value->getAttribute()->getCode(), $value->getScope(), $value->getLocale());
 
         if (isset($this->values[$key])) {
             return false;
@@ -322,7 +322,7 @@ class ValueCollection implements ValueCollectionInterface
      *
      * @return string
      */
-    public static function generateKey(string $attributeCode, ?string $channelCode, ?string $localeCode): string
+    private function generateKey(string $attributeCode, ?string $channelCode, ?string $localeCode): string
     {
         $channelCode = null !== $channelCode ? $channelCode : '<all_channels>';
         $localeCode = null !== $localeCode ? $localeCode : '<all_locales>';

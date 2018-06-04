@@ -6,9 +6,11 @@ namespace Pim\Component\Catalog\EntityWithFamily;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\ValueCollection;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * Simple factory of a "required value" collection.
@@ -41,7 +43,7 @@ class RequiredValueCollectionFactory
                     $attribute = $attributeRequirement->getAttribute();
                     $channelCode = $attribute->isScopable() ? $channel->getCode() : null;
                     $localeCode = $attribute->isLocalizable() ? $locale->getCode() : null;
-                    $valueKey = ValueCollection::generateKey($attribute->getCode(), $channelCode, $localeCode);
+                    $getter = $this->simpleValueGetter();
 
                     if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
                         continue;
@@ -49,10 +51,10 @@ class RequiredValueCollectionFactory
 
                     if (!$attribute->isLocalizable() && $attribute->isLocaleSpecific() && $attribute->hasLocaleSpecific($locale)) {
                         $localeCode = $locale->getCode();
-                        $valueKey = ValueCollection::generateKey($attribute->getCode(), $channelCode, null);
+                        $getter = $this->localeSpecficGetter();
                     }
 
-                    $requiredValues[] = new RequiredValue($attribute, $channelCode, $localeCode, $valueKey);
+                    $requiredValues[] = new RequiredValue($attribute, $channelCode, $localeCode, $getter);
                 }
             }
         }
@@ -78,5 +80,33 @@ class RequiredValueCollectionFactory
         }
 
         return $requirements;
+    }
+
+    protected function simpleValueGetter(): \Closure
+    {
+        return function (
+            EntityWithValuesInterface $entityWithValues,
+            AttributeInterface $attribute,
+            $channelCode,
+            $localeCode
+        ) {
+            $requiredValue = new RequiredValue($attribute, $channelCode, $localeCode);
+
+            return $entityWithValues->getValues()->getSame($requiredValue);
+        };
+    }
+
+    protected function localeSpecficGetter(): \Closure
+    {
+        return function (
+            EntityWithValuesInterface $entityWithValues,
+            AttributeInterface $attribute,
+            $channelCode,
+            $localeCode
+        ) {
+            $requiredValue = new RequiredValue($attribute, $channelCode, null);
+
+            return $entityWithValues->getValues()->getSame($requiredValue);
+        };
     }
 }
