@@ -76,14 +76,14 @@ class MetricAttributeCopier extends AbstractAttributeCopier
     /**
      * Copy single value
      *
-     * @param EntityWithValuesInterface                                $fromEntityWithValues
-     * @param EntityWithValuesInterface                                $toEntityWithValues
-     * @param AttributeInterface                                       $fromAttribute
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $toAttribute
-     * @param string                                                   $fromLocale
-     * @param string                                                   $toLocale
-     * @param string                                                   $fromScope
-     * @param string                                                   $toScope
+     * @param EntityWithValuesInterface $fromEntityWithValues
+     * @param EntityWithValuesInterface $toEntityWithValues
+     * @param AttributeInterface        $fromAttribute
+     * @param AttributeInterface        $toAttribute
+     * @param string                    $fromLocale
+     * @param string                    $toLocale
+     * @param string                    $fromScope
+     * @param string                    $toScope
      */
     protected function copySingleValue(
         EntityWithValuesInterface $fromEntityWithValues,

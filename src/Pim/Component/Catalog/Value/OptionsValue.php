@@ -19,10 +19,10 @@ class OptionsValue extends AbstractValue implements OptionsValueInterface
     protected $data;
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param string                                                   $channel
-     * @param string                                                   $locale
-     * @param AttributeOptionInterface[]                               $data
+     * @param AttributeInterface         $attribute
+     * @param string                     $channel
+     * @param string                     $locale
+     * @param AttributeOptionInterface[] $data
      */
     public function __construct(AttributeInterface $attribute, $channel, $locale, array $data = [])
     {

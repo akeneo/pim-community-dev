@@ -13,15 +13,15 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class FilterEntityWithValuesSubscriberConfiguration
 {
-    /** @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface[] */
+    /** @var AttributeInterface[] */
     protected $attributeCodes = [];
 
     /** @var boolean */
     protected $filterEntityWithValues;
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface[] $attributeCodes
-     * @param bool                                                       $filterEntityWithValues
+     * @param AttributeInterface[] $attributeCodes
+     * @param bool                 $filterEntityWithValues
      */
     private function __construct(array $attributeCodes, bool $filterEntityWithValues)
     {

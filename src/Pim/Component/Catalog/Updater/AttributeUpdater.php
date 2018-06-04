@@ -146,9 +146,9 @@ class AttributeUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param string                                                   $field
-     * @param mixed                                                    $data
+     * @param AttributeInterface $attribute
+     * @param string             $field
+     * @param mixed              $data
      *
      * @throws InvalidPropertyException
      * @throws UnknownPropertyException
@@ -218,7 +218,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param string                                                   $field
      * @param array                                                    $availableLocaleCodes
      *

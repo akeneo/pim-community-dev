@@ -99,8 +99,8 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
     /**
      * Check if the value is valid
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param mixed                                                    $value
+     * @param AttributeInterface $attribute
+     * @param mixed              $value
      */
     protected function checkValue(AttributeInterface $attribute, $value)
     {

@@ -139,8 +139,8 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /**
      * Checks that the value is a number.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param mixed                                                    $value
+     * @param AttributeInterface $attribute
+     * @param mixed              $value
      */
     protected function checkValue(AttributeInterface $attribute, $value)
     {

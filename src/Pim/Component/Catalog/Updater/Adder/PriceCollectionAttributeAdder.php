@@ -74,11 +74,11 @@ class PriceCollectionAttributeAdder extends AbstractAttributeAdder
     /**
      * Add prices into the value
      *
-     * @param EntityWithValuesInterface                                $entityWithValues
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param mixed                                                    $data
-     * @param string                                                   $locale
-     * @param string                                                   $scope
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute
+     * @param mixed                     $data
+     * @param string                    $locale
+     * @param string                    $scope
      */
     protected function addPrices(
         EntityWithValuesInterface $entityWithValues,

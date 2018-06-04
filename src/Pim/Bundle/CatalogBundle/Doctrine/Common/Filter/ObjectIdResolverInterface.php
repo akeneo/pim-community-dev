@@ -19,9 +19,9 @@ interface ObjectIdResolverInterface
     /**
      * Get ids for the given codes
      *
-     * @param string                                                        $field
-     * @param array                                                         $codes
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface|null $attribute
+     * @param string                  $field
+     * @param array                   $codes
+     * @param AttributeInterface|null $attribute
      *
      * @return int[]
      */

@@ -243,8 +243,8 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param mixed                                                    $data
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
      *
      * @throws InvalidPropertyTypeException
      * @throws InvalidPropertyException

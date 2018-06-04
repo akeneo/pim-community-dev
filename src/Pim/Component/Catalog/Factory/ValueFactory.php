@@ -42,10 +42,10 @@ class ValueFactory
      * This method effectively creates a product value and set its data, while
      * checking the provided localeCode and ChannelCode exists.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param string                                                   $channelCode
-     * @param string                                                   $localeCode
-     * @param mixed                                                    $data
+     * @param AttributeInterface $attribute
+     * @param string             $channelCode
+     * @param string             $localeCode
+     * @param mixed              $data
      *
      * @throws \LogicException
      *

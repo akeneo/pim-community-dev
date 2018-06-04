@@ -44,7 +44,7 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param $attribute \Akeneo\Pim\Structure\Component\Model\AttributeInterface
+     * @param $attribute AttributeInterface
      *
      * @return array
      */
@@ -80,7 +80,7 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $object
+     * @param AttributeInterface $object
      *
      * @return array
      */

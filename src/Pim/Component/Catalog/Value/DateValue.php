@@ -18,10 +18,10 @@ class DateValue extends AbstractValue implements DateValueInterface
     protected $data;
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param string                                                   $channel
-     * @param string                                                   $locale
-     * @param \DateTime|null                                           $data
+     * @param AttributeInterface $attribute
+     * @param string             $channel
+     * @param string             $locale
+     * @param \DateTime|null     $data
      */
     public function __construct(AttributeInterface $attribute, $channel, $locale, \DateTime $data = null)
     {

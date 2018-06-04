@@ -44,7 +44,7 @@ class AddUniqueAttributes
     /**
      * @param FamilyInterface $family
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface[]
+     * @return AttributeInterface[]
      */
     private function getFamilyUniqueAttributes(FamilyInterface $family): array
     {

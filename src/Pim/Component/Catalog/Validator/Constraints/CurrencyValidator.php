@@ -37,7 +37,7 @@ class CurrencyValidator extends ConstraintValidator
     /**
      * Validate currency of a price
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface|MetricInterface|ValueInterface $object
+     * @param AttributeInterface|MetricInterface|ValueInterface $object
      * @param Constraint                                                                              $constraint
      */
     public function validate($object, Constraint $constraint)

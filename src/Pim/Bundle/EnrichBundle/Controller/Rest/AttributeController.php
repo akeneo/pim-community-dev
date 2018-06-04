@@ -362,7 +362,7 @@ class AttributeController
      *
      * @throws NotFoundHttpException
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface
+     * @return AttributeInterface
      */
     protected function getAttributeOr404($identifier)
     {
@@ -409,7 +409,7 @@ class AttributeController
     }
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array                                                    $data
      */
     protected function updateAttribute(AttributeInterface $attribute, array $data)

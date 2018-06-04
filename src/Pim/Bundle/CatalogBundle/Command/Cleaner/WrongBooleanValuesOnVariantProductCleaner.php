@@ -42,8 +42,8 @@ class WrongBooleanValuesOnVariantProductCleaner
     }
 
     /**
-     * @param ProductInterface                                         $variantProduct
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param ProductInterface   $variantProduct
+     * @param AttributeInterface $attribute
      *
      * @return bool
      */

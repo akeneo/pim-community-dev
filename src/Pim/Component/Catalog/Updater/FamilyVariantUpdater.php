@@ -222,7 +222,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
      * @param string[] $attributeCodes
      * @param int      $level
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface[]
+     * @return AttributeInterface[]
      */
     private function getAttributes(array $attributeCodes, int $level): array
     {

@@ -43,7 +43,7 @@ interface SetterRegistryInterface
     /**
      * Get the attribute setter
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return AttributeSetterInterface|null
      */

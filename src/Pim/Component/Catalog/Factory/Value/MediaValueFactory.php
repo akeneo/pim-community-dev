@@ -70,8 +70,8 @@ class MediaValueFactory implements ValueFactoryInterface
     /**
      * Checks that data is a valid file path.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param string                                                   $data
+     * @param AttributeInterface $attribute
+     * @param string             $data
      *
      * @throws InvalidPropertyException
      */
@@ -91,7 +91,7 @@ class MediaValueFactory implements ValueFactoryInterface
     }
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param string                                                   $data
      *
      * @throws InvalidPropertyException

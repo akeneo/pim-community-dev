@@ -13,10 +13,10 @@ use Pim\Component\Catalog\Model\ValueInterface;
 class ValueCollectionSpec extends ObjectBehavior
 {
     function let(
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $length,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $price,
+        AttributeInterface $length,
+        AttributeInterface $price,
         AttributeInterface $description,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $releaseDate,
+        AttributeInterface $releaseDate,
         ChannelInterface $ecommerce,
         ChannelInterface $print,
         LocaleInterface $en_US,
@@ -76,7 +76,7 @@ class ValueCollectionSpec extends ObjectBehavior
     function it_creates_a_collection_from_another(
         ValueCollectionInterface $collection,
         ValueInterface $value,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('weight');
         $attribute->isUnique()->willReturn(false);
@@ -356,7 +356,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $value4,
         $value5,
         $value6,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $anotherAttribute
+        AttributeInterface $anotherAttribute
     ) {
         $this->removeByAttribute($anotherAttribute)->shouldReturn(false);
 
@@ -433,7 +433,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $value5,
         $value6,
         ValueInterface $newValue,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->isUnique()->willReturn(false);
 
@@ -469,7 +469,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $value5,
         $value6,
         ValueInterface $newValue,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->isUnique()->willReturn(true);
 
@@ -511,7 +511,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $value5,
         $value6,
         ValueInterface $newValue,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+        AttributeInterface $attribute
     ) {
         $attribute->isUnique()->willReturn(true);
 

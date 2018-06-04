@@ -269,9 +269,9 @@ class AttributeController
     /**
      * Update an attribute. It throws an error 422 if a problem occurred during the update.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param array                                                    $data
-     * @param string                                                   $anchor
+     * @param AttributeInterface $attribute
+     * @param array              $data
+     * @param string             $anchor
      *
      * @throws DocumentedHttpException
      */

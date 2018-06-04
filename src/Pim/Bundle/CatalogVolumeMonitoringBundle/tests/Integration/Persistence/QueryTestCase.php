@@ -114,7 +114,7 @@ class QueryTestCase extends TestCase
     /**
      * @param array $data
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface
+     * @return AttributeInterface
      */
     protected function createAttribute(array $data = []) : AttributeInterface
     {

@@ -68,7 +68,7 @@ class PropertyAdder implements PropertyAdderInterface
     /**
      * @param string $code
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface|null
+     * @return AttributeInterface|null
      */
     protected function getAttribute($code)
     {

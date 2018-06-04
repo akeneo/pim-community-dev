@@ -127,7 +127,7 @@ class IncompleteValuesNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return bool
      */
@@ -179,7 +179,7 @@ class IncompleteValuesNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param LocaleInterface[]                                        $locales
      *
      * @return array

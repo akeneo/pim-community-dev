@@ -308,9 +308,9 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface                                          $family
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param ChannelInterface                                         $channel
+     * @param FamilyInterface    $family
+     * @param AttributeInterface $attribute
+     * @param ChannelInterface   $channel
      *
      * @throws InvalidPropertyException
      *

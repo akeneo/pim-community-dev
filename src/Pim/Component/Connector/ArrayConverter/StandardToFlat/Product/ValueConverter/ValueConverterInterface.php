@@ -14,7 +14,7 @@ interface ValueConverterInterface
     /**
      * Does the converter supports the attribute
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return bool
      */

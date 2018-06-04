@@ -92,7 +92,7 @@ class RemoverRegistry implements RemoverRegistryInterface
     /**
      * @param string $code
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface|null
+     * @return AttributeInterface|null
      */
     protected function getAttribute($code)
     {

@@ -32,7 +32,7 @@ interface SorterRegistryInterface
     /**
      * Get the attribute sorter
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return SorterInterface|null
      */

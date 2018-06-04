@@ -18,10 +18,10 @@ interface AttributeSetterInterface extends SetterInterface
     /**
      * Set attribute data
      *
-     * @param EntityWithValuesInterface                                $entityWithValues
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute The attribute of the product to modify
-     * @param mixed                                                    $data      The data to set
-     * @param array                                                    $options   Options passed to the setter
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute The attribute of the product to modify
+     * @param mixed                     $data      The data to set
+     * @param array                     $options   Options passed to the setter
      *
      * @throws PropertyException
      */

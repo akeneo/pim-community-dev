@@ -25,7 +25,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * Overrided to change target entity name
      *
-     * @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface
+     * @var AttributeInterface
      */
     protected $attribute;
 

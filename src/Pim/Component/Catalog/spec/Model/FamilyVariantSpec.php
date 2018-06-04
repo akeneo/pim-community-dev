@@ -40,8 +40,8 @@ class FamilyVariantSpec extends ObjectBehavior
         FamilyInterface $family,
         Collection $familyAttributes,
         AttributeInterface $name,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $color,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $size,
+        AttributeInterface $color,
+        AttributeInterface $size,
         Collection $axes1,
         Collection $axes2,
         Collection $attribute1,
@@ -90,8 +90,8 @@ class FamilyVariantSpec extends ObjectBehavior
         VariantAttributeSetInterface $variantAttributeSet2,
         ArrayCollection $axes1,
         ArrayCollection $axes2,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $color,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $size
+        AttributeInterface $color,
+        AttributeInterface $size
     ) {
         $this->addVariantAttributeSet($variantAttributeSet1);
         $this->addVariantAttributeSet($variantAttributeSet2);
@@ -114,9 +114,9 @@ class FamilyVariantSpec extends ObjectBehavior
         ArrayCollection $commonAttributes,
         ArrayCollection $attributes1,
         ArrayCollection $attributes2,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $name,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $color,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $size
+        AttributeInterface $name,
+        AttributeInterface $color,
+        AttributeInterface $size
     ) {
         $this->addVariantAttributeSet($variantAttributeSet1);
         $this->addVariantAttributeSet($variantAttributeSet2);

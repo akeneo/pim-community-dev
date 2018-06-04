@@ -75,11 +75,11 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
     /**
      * Remove prices from the given $entityWithValues
      *
-     * @param EntityWithValuesInterface                                $entityWithValues
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param mixed                                                    $data
-     * @param string                                                   $locale
-     * @param string                                                   $scope
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute
+     * @param mixed                     $data
+     * @param string                    $locale
+     * @param string                    $scope
      */
     protected function removePrices(
         EntityWithValuesInterface $entityWithValues,
@@ -111,7 +111,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * Check if data are valid
      * "data": doesn't need value
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param mixed                                                    $data
      *
      * @throws InvalidPropertyTypeException

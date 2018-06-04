@@ -30,8 +30,8 @@ class AttributeOptionsSorter
     /**
      * Update attribute option sorting
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param array                                                    $sorting
+     * @param AttributeInterface $attribute
+     * @param array              $sorting
      */
     public function updateSorting(AttributeInterface $attribute, array $sorting = [])
     {

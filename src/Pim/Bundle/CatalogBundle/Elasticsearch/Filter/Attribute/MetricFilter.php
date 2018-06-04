@@ -231,8 +231,8 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
     /**
      * Converts the given value to the base_unit configured in the family.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param array                                                    $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      *
      * @return float
      */

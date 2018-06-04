@@ -63,9 +63,9 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     /**
      * Check locale and scope are valid
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param string                                                   $locale
-     * @param string                                                   $scope
+     * @param AttributeInterface $attribute
+     * @param string             $locale
+     * @param string             $scope
      *
      * @throws InvalidPropertyException
      */

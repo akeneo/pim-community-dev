@@ -88,8 +88,8 @@ class MultiSelectAttributeRemover extends AbstractAttributeRemover
     /**
      * Check if data is valid
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param mixed                                                    $data
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
      *
      * @throws InvalidPropertyTypeException
      */

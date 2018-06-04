@@ -43,7 +43,7 @@ interface RemoverRegistryInterface
     /**
      * Get the attribute remover
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return AttributeRemoverInterface|null
      */

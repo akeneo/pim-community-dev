@@ -101,8 +101,8 @@ class AttributeValidatorHelper
     /**
      * Check if metric family of attribute are the same
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $fromAttribute
-     * @param AttributeInterface                                       $toAttribute
+     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface $toAttribute
      */
     public function validateUnitFamilies(
         AttributeInterface $fromAttribute,

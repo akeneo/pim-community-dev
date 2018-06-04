@@ -219,11 +219,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * Add a filter condition on an attribute
      *
-     * @param AttributeFilterInterface                                 $filter    the filter
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute the attribute
-     * @param string                                                   $operator  the operator
-     * @param mixed                                                    $value     the value to filter
-     * @param array                                                    $context   the filter context
+     * @param AttributeFilterInterface $filter    the filter
+     * @param AttributeInterface       $attribute the attribute
+     * @param string                   $operator  the operator
+     * @param mixed                    $value     the value to filter
+     * @param array                    $context   the filter context
      *
      * @return ProductQueryBuilderInterface
      */

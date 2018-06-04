@@ -77,8 +77,8 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
     /**
      * Checks if data is valid.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param mixed                                                    $data
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
      *
      * @throws InvalidPropertyTypeException
      */
@@ -140,7 +140,7 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
      *       one reference data, when the others in the collection could be valid. So the value will not
      *       be loaded at all, when what we want is the value to be loaded minus the wrong reference data.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param ReferenceDataRepositoryInterface                         $repository
      * @param string                                                   $referenceDataCode
      *

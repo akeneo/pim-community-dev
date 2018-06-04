@@ -111,7 +111,7 @@ class ProductModelStorage extends RawMinkContext
         }
         foreach ($attributesCodes as $propertyName) {
             $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($propertyName);
-            /** @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute */
+            /** @var AttributeInterface $attribute */
             $attribute = $infos['attribute'];
             $productValue = $productModel->getValuesForVariation()->getByCodes(
                 $attribute->getCode(),

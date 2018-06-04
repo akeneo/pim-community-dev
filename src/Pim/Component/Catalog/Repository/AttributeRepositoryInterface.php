@@ -25,7 +25,7 @@ interface AttributeRepositoryInterface extends
      *
      * @deprecated avoid the hydration of attributes as objects (perf), use from controller, will be removed in 1.8
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface[]
+     * @return AttributeInterface[]
      */
     public function findAllInDefaultGroup();
 
@@ -79,7 +79,7 @@ interface AttributeRepositoryInterface extends
      * Get the identifier attribute
      * Only one identifier attribute can exists
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface
+     * @return AttributeInterface
      */
     public function getIdentifier();
 
@@ -122,7 +122,7 @@ interface AttributeRepositoryInterface extends
      *
      * @param FamilyInterface $family
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface[]
+     * @return AttributeInterface[]
      */
     public function findAttributesByFamily(FamilyInterface $family);
 

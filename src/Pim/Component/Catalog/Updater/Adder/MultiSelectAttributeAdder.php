@@ -54,11 +54,11 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
     /**
      * Adds options into the value
      *
-     * @param EntityWithValuesInterface                                $entityWithValues
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param array                                                    $optionCodes
-     * @param string                                                   $locale
-     * @param string                                                   $scope
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute
+     * @param array                     $optionCodes
+     * @param string                    $locale
+     * @param string                    $scope
      */
     protected function addOptions(
         EntityWithValuesInterface $entityWithValues,

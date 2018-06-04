@@ -170,7 +170,7 @@ class FilterLocaleValueSubscriberTest extends TestCase
     /**
      * @param bool $localizable
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface
+     * @return AttributeInterface
      */
     private function getAttributeMock($localizable = true)
     {

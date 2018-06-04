@@ -23,11 +23,11 @@ interface EntityWithValuesBuilderInterface
     /**
      * Add or replace a value to an entity
      *
-     * @param EntityWithValuesInterface                                $entityWithValues
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param string                                                   $locale
-     * @param string                                                   $scope
-     * @param mixed                                                    $data
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute
+     * @param string                    $locale
+     * @param string                    $scope
+     * @param mixed                     $data
      *
      * @return EntityWithValuesInterface
      */

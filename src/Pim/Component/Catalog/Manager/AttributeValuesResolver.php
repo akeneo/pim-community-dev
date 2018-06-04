@@ -47,9 +47,9 @@ class AttributeValuesResolver implements AttributeValuesResolverInterface
      * Resolves an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'attribute', 'type', 'scope' and 'locale' keys
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface[] $attributes Attributes to resolve
-     * @param ChannelInterface[]                                         $channels   Context channels (all channels by default)
-     * @param LocaleInterface[]                                          $locales    Context locales (all locales by default)
+     * @param AttributeInterface[] $attributes Attributes to resolve
+     * @param ChannelInterface[]   $channels   Context channels (all channels by default)
+     * @param LocaleInterface[]    $locales    Context locales (all locales by default)
      *
      * @return array:array
      */
@@ -87,7 +87,7 @@ class AttributeValuesResolver implements AttributeValuesResolverInterface
     /**
      * Filter expected values based on the locales available for the provided attribute
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array                                                    $values
      *
      * @return array

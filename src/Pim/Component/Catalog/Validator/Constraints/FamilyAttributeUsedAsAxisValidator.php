@@ -66,9 +66,9 @@ class FamilyAttributeUsedAsAxisValidator extends ConstraintValidator
     }
 
     /**
-     * @param Constraint                                                 $constraint
-     * @param FamilyVariantInterface                                     $familyVariant
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface[] $missingAttributeCodesUsedAsAxis
+     * @param Constraint             $constraint
+     * @param FamilyVariantInterface $familyVariant
+     * @param AttributeInterface[]   $missingAttributeCodesUsedAsAxis
      */
     private function buildViolationsForMissingAttributesUsedAsAxis(
         Constraint $constraint,

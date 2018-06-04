@@ -47,7 +47,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_adds_a_value(
         ValueCollectionInterface $values,
         ValueInterface $value,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+        AttributeInterface $attribute
     ) {
         $this->setValues($values);
 
@@ -90,7 +90,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_gets_the_label_regardless_of_the_specified_scope_if_the_attribute_as_label_is_not_scopable(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attributeAsLabel,
+        AttributeInterface $attributeAsLabel,
         ValueCollectionInterface $values,
         ValueInterface $nameValue
     ) {
@@ -170,7 +170,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_gets_the_code_as_label_if_the_label_value_is_null(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attributeAsLabel,
+        AttributeInterface $attributeAsLabel,
         ValueCollectionInterface $values
     ) {
         $familyVariant->getFamily()->willReturn($family);
@@ -191,7 +191,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_gets_the_code_as_label_if_the_label_value_data_is_empty(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attributeAsLabel,
+        AttributeInterface $attributeAsLabel,
         ValueCollectionInterface $values,
         ValueInterface $nameValue
     ) {
@@ -256,7 +256,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_gets_the_label_if_no_locale_is_specified(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attributeAsLabel,
+        AttributeInterface $attributeAsLabel,
         ValueCollectionInterface $values,
         ValueInterface $nameValue
     ) {
@@ -284,7 +284,7 @@ class ProductModelSpec extends ObjectBehavior
     function it_gets_the_image_of_the_product_model(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attributeAsImage,
+        AttributeInterface $attributeAsImage,
         ValueCollectionInterface $values,
         ValueInterface $pictureValue
     ) {

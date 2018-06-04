@@ -17,10 +17,10 @@ interface AttributeAdderInterface extends AdderInterface
     /**
      * Add attribute data
      *
-     * @param EntityWithValuesInterface                                $entityWithValues
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute The attribute of the product to update
-     * @param mixed                                                    $data      The data to add
-     * @param array                                                    $options   Options passed to the adder
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param AttributeInterface        $attribute The attribute of the product to update
+     * @param mixed                     $data      The data to add
+     * @param array                     $options   Options passed to the adder
      *
      * @return
      * @internal param ProductInterface $product The product to update

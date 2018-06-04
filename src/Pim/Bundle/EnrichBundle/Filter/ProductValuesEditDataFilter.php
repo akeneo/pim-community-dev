@@ -32,7 +32,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface[] */
+    /** @var AttributeInterface[] */
     protected $attributes = [];
 
     /** @var LocaleInterface[] */
@@ -90,7 +90,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /**
      * Generate filtered values for the given attribute
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array                                                    $values
      * @param array                                                    $options
      *
@@ -112,7 +112,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /**
      * Test if a value is accepted or not
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array                                                    $value
      *
      * @return boolean
@@ -161,7 +161,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
     /**
      * @param string $code
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface
+     * @return AttributeInterface
      */
     protected function getAttribute($code)
     {

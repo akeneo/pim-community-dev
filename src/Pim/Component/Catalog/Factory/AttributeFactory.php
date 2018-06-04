@@ -52,7 +52,7 @@ class AttributeFactory implements SimpleFactoryInterface
      *
      * @param string|null $type
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface
+     * @return AttributeInterface
      */
     public function createAttribute($type = null)
     {

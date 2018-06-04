@@ -16,10 +16,10 @@ interface AttributeSorterInterface extends SorterInterface
     /**
      * Sort by attribute value
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute the attribute to sort on
-     * @param string                                                   $direction the direction to use
-     * @param string                                                   $locale    the locale
-     * @param string                                                   $channel   the channel
+     * @param AttributeInterface $attribute the attribute to sort on
+     * @param string             $direction the direction to use
+     * @param string             $locale    the locale
+     * @param string             $channel   the channel
      *
      * @return AttributeSorterInterface
      */
@@ -28,7 +28,7 @@ interface AttributeSorterInterface extends SorterInterface
     /**
      * This filter supports the attribute
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return bool
      */

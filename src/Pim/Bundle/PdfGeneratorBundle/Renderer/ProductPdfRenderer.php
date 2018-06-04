@@ -135,7 +135,7 @@ class ProductPdfRenderer implements RendererInterface
      * @param ProductInterface $product
      * @param string           $locale
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface[]
+     * @return AttributeInterface[]
      */
     protected function getGroupedAttributes(ProductInterface $product, $locale)
     {

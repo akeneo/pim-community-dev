@@ -30,9 +30,9 @@ class AttributeRequirementFactory
      * This method creates an attribute requirement instance.
      * Attribute, channel and requirement are set after instantiation.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param ChannelInterface                                         $channel
-     * @param bool                                                     $required
+     * @param AttributeInterface $attribute
+     * @param ChannelInterface   $channel
+     * @param bool               $required
      *
      * @return AttributeRequirementInterface
      */

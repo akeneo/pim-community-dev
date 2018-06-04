@@ -60,7 +60,7 @@ class PropertySetter implements PropertySetterInterface
     /**
      * @param string $code
      *
-     * @return null|\Akeneo\Pim\Structure\Component\Model\AttributeInterface
+     * @return null|AttributeInterface
      * @throws ResourceNotFoundException
      */
     protected function getAttribute($code)

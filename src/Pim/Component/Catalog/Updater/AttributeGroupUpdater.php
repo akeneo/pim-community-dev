@@ -137,7 +137,7 @@ class AttributeGroupUpdater implements ObjectUpdaterInterface
     /**
      * @param $attributeCode
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface|null
+     * @return AttributeInterface|null
      */
     protected function findAttribute($attributeCode)
     {

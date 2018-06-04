@@ -39,7 +39,7 @@ interface AdderRegistryInterface
     public function getFieldAdder($field);
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return AttributeAdderInterface
      */

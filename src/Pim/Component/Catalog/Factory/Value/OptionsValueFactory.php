@@ -76,8 +76,8 @@ class OptionsValueFactory implements ValueFactoryInterface
     /**
      * Checks if data is valid.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param mixed                                                    $data
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
      *
      * @throws InvalidPropertyTypeException
      */
@@ -110,7 +110,7 @@ class OptionsValueFactory implements ValueFactoryInterface
     /**
      * Returns an array of attribute options.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param string[]                                                 $data
      *
      * @throws InvalidOptionsException

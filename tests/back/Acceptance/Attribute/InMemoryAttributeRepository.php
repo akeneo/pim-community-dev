@@ -25,7 +25,7 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
     private $attributes;
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface[] $attributes
+     * @param AttributeInterface[] $attributes
      */
     public function __construct(array $attributes = [])
     {

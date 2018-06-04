@@ -31,8 +31,8 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
     /**
      * Don't allow creating an identifier attribute if one already exists
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param Constraint                                               $constraint
+     * @param AttributeInterface $attribute
+     * @param Constraint         $constraint
      */
     public function validate($attribute, Constraint $constraint)
     {

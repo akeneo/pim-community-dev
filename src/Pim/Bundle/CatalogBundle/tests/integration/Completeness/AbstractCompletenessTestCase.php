@@ -70,7 +70,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      * @param bool   $scopable
      * @param array  $localesSpecific
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeInterface
+     * @return AttributeInterface
      */
     protected function createAttribute(
         $code,

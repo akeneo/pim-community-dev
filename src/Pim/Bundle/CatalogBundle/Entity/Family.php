@@ -39,10 +39,10 @@ class Family implements FamilyInterface
     /** @var Collection */
     protected $translations;
 
-    /** @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface */
+    /** @var AttributeInterface */
     protected $attributeAsLabel;
 
-    /** @var \Akeneo\Pim\Structure\Component\Model\AttributeInterface */
+    /** @var AttributeInterface */
     protected $attributeAsImage;
 
     /** @var Collection */

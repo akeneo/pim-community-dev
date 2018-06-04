@@ -19,10 +19,10 @@ class PriceCollectionValue extends AbstractValue implements PriceCollectionValue
     protected $data;
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param string                                                   $channel
-     * @param string                                                   $locale
-     * @param PriceCollectionInterface|null                            $data
+     * @param AttributeInterface            $attribute
+     * @param string                        $channel
+     * @param string                        $locale
+     * @param PriceCollectionInterface|null $data
      */
     public function __construct(
         AttributeInterface $attribute,

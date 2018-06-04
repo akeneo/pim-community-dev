@@ -26,9 +26,9 @@ use Pim\Component\Catalog\Model\ValueInterface;
 class RequiredValue extends AbstractValue implements ValueInterface
 {
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
-     * @param string                                                   $channel
-     * @param string                                                   $locale
+     * @param AttributeInterface $attribute
+     * @param string             $channel
+     * @param string             $locale
      */
     public function __construct(AttributeInterface $attribute, string $channel = null, string $locale = null)
     {

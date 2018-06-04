@@ -21,10 +21,10 @@ class VariantAttributeSetSpec extends ObjectBehavior
     }
 
     function it_keeps_axes_when_setting_attributes(
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute1,
+        AttributeInterface $attribute1,
         AttributeInterface $attribute2,
         AttributeInterface $axis1,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $axis2
+        AttributeInterface $axis2
     ) {
         $attribute1->getCode()->willReturn('attribute_1');
         $attribute2->getCode()->willReturn('attribute_2');
@@ -48,10 +48,10 @@ class VariantAttributeSetSpec extends ObjectBehavior
     }
 
     function it_keeps_attributes_when_setting_axes(
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute1,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute2,
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2,
         AttributeInterface $axis1,
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $axis2
+        AttributeInterface $axis2
     ) {
         $attribute1->getCode()->willReturn('attribute_1');
         $attribute2->getCode()->willReturn('attribute_2');
@@ -64,7 +64,7 @@ class VariantAttributeSetSpec extends ObjectBehavior
     }
 
     function it_removes_axes_in_attributes_when_updating_axes(
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute1,
+        AttributeInterface $attribute1,
         AttributeInterface $attribute2,
         AttributeInterface $axis1,
         AttributeInterface $axis2,
@@ -92,7 +92,7 @@ class VariantAttributeSetSpec extends ObjectBehavior
     }
 
     function it_does_not_add_attribute_when_adding_axis_with_same_code(
-        \Akeneo\Pim\Structure\Component\Model\AttributeInterface $axis1,
+        AttributeInterface $axis1,
         AttributeInterface $attribute1
     ) {
         $axis1->getCode()->willReturn('axis_1');

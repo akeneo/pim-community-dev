@@ -432,7 +432,7 @@ abstract class AbstractAttributeTestCase extends TestCase
     }
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      * @param array                                                    $data
      */
     protected function updateAttribute(AttributeInterface $attribute, array $data)
@@ -441,7 +441,7 @@ abstract class AbstractAttributeTestCase extends TestCase
     }
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return ConstraintViolationListInterface
      */
