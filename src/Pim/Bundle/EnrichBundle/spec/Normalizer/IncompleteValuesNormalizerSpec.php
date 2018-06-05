@@ -11,7 +11,7 @@ use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
-use Pim\Component\Catalog\Model\AttributeTranslationInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\ChannelTranslationInterface;

@@ -139,3 +139,7 @@
 - Move `Pim\Component\Catalog\Model\AttributeGroupInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface`
 - Move `Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation` to `Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation`
 - Move `Pim\Component\Catalog\Model\AttributeGroupTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AttributeTranslation` to `Akeneo\Pim\Structure\Component\Model\AttributeTranslation`
+- Move `Pim\Component\Catalog\Model\AttributeTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface`
+- Move `Pim\Component\Catalog\Model\VariantAttributeSet` to `Akeneo\Pim\Structure\Component\Model\VariantAttributeSet`
+- Move `Pim\Component\Catalog\Model\VariantAttributeSetInterface` to `Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface`

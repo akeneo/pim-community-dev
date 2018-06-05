@@ -38,13 +38,13 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'Pim\Component\Catalog\Model\CategoryTranslationInterface'       => 'pim_catalog.entity.category_translation.class',
             'Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface' => 'pim_catalog.entity.family_translation.class',
             'Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface' => 'pim_catalog.entity.attribute_group_translation.class',
-            'Pim\Component\Catalog\Model\AttributeTranslationInterface'      => 'pim_catalog.entity.attribute_translation.class',
+            'Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface' => 'pim_catalog.entity.attribute_translation.class',
             'Pim\Component\Catalog\Model\AssociationTypeTranslationInterface'=> 'pim_catalog.entity.association_type_translation.class',
             'Pim\Component\Catalog\Model\GroupTranslationInterface'          => 'pim_catalog.entity.group_translation.class',
             'Pim\Component\Catalog\Model\GroupTypeTranslationInterface'      => 'pim_catalog.entity.group_type_translation.class',
             'Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface' => 'pim_catalog.entity.family_variant.class',
             'Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslationInterface' => 'pim_catalog.entity.family_variant_translation.class',
-            'Pim\Component\Catalog\Model\VariantAttributeSetInterface'       => 'pim_catalog.entity.variant_attribute_set.class',
+            'Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface' => 'pim_catalog.entity.variant_attribute_set.class',
         ];
     }
 }
