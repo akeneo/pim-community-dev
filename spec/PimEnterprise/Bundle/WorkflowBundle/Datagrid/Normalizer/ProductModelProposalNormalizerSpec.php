@@ -4,13 +4,13 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductProposalNormalizerSpec extends ObjectBehavior
+class ProductModelProposalNormalizerSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $normalizer)
     {
@@ -24,17 +24,17 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerAwareInterface::class);
     }
 
-    function it_supports_product_proposal_normalization(ProductDraft $productProposal)
+    function it_supports_product_proposal_normalization(ProductModelDraft $productModelProposal)
     {
-        $this->supportsNormalization($productProposal, 'datagrid')->shouldReturn(true);
+        $this->supportsNormalization($productModelProposal, 'datagrid')->shouldReturn(true);
     }
 
     function it_normalizes(
         $normalizer,
         CollectionFilterInterface $filter,
-        ProductDraft $productProposal,
+        ProductModelDraft $productModelProposal,
         ValueCollectionInterface $valueCollection,
-        ProductInterface $product
+        ProductModelInterface $productModel
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
@@ -59,15 +59,15 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         );
         $normalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01');
 
-        $productProposal->getId()->willReturn(1);
-        $productProposal->getAuthor()->willReturn('Mary');
-        $productProposal->getStatus()->willReturn(1);
-        $productProposal->getEntityWithValue()->willReturn($product);
-        $productProposal->getCreatedAt()->willReturn($created);
-        $productProposal->getValues()->willReturn($valueCollection);
-        $product->getIdentifier()->willReturn(2);
+        $productModelProposal->getId()->willReturn(1);
+        $productModelProposal->getAuthor()->willReturn('Mary');
+        $productModelProposal->getStatus()->willReturn(1);
+        $productModelProposal->getEntityWithValue()->willReturn($productModel);
+        $productModelProposal->getCreatedAt()->willReturn($created);
+        $productModelProposal->getValues()->willReturn($valueCollection);
+        $productModel->getCode()->willReturn('fake-spec-model');
 
-        $this->normalize($productProposal, 'datagrid', $context)->shouldReturn(
+        $this->normalize($productModelProposal, 'datagrid', $context)->shouldReturn(
             [
                 'changes' => [
                     'text' => [
@@ -79,13 +79,13 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'createdAt' => '2017-01-01',
-                'product' => $product,
+                'product' => $productModel,
                 'author' => 'Mary',
                 'status' => 1,
-                'proposal_product' => $productProposal,
-                'search_id' => 2,
+                'proposal_product' => $productModelProposal,
+                'search_id' => 'fake-spec-model',
                 'id' => 1,
-                'document_type' => 'product_draft',
+                'document_type' => 'product_model_draft',
             ]
         );
     }

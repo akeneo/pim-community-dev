@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer;
 
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Proposal product normalizer for datagrid
+ * Proposal product model normalizer for datagrid
  *
- * @author Marie Bochu <marie.bochu@akeneo.com>
+ * @author Philippe Mossière <philippe.mossiere@akeneo.com>
  */
-class ProductProposalNormalizer implements NormalizerInterface, NormalizerAwareInterface
+class ProductModelProposalNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
     use NormalizerAwareTrait;
 
@@ -44,9 +44,9 @@ class ProductProposalNormalizer implements NormalizerInterface, NormalizerAwareI
         $data['author'] = $proposalProduct->getAuthor();
         $data['status'] = $proposalProduct->getStatus();
         $data['proposal_product'] = $proposalProduct;
-        $data['search_id'] = $proposalProduct->getEntityWithValue()->getIdentifier();
+        $data['search_id'] = $proposalProduct->getEntityWithValue()->getCode();
         $data['id'] = $proposalProduct->getId();
-        $data['document_type'] = 'product_draft';
+        $data['document_type'] = 'product_model_draft';
 
         return $data;
     }
@@ -56,6 +56,6 @@ class ProductProposalNormalizer implements NormalizerInterface, NormalizerAwareI
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ProductDraft && 'datagrid' === $format;
+        return $data instanceof ProductModelDraft && 'datagrid' === $format;
     }
 }
