@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Akeneo\Component\StorageUtils\Cache\CacheClearerInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
 use Pim\Component\Catalog\Model\ProductModel;
@@ -45,7 +45,7 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
         $io = new SymfonyStyle($input, $output);
 
         $cacheClearer = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
-        $pqbFactory = $this->getContainer()->get('pim_enrich.query.product_and_product_model_query_builder_factory');
+        $pqbFactory = $this->getContainer()->get('pim_catalog.query.product_and_product_model_query_builder_factory');
         $rootDir = $this->getContainer()->get('kernel')->getRootDir();
         $env = $input->getOption('env');
 
@@ -93,18 +93,18 @@ class CleanRemovedAttributesFromProductAndProductModelCommand extends ContainerA
     /**
      * Iterate over given products to launch clean commands
      *
-     * @param  CursorInterface       $products
-     * @param  ProgressBar           $progressBar
-     * @param  int                   $productBatchSize
-     * @param  CacheClearerInterface $cacheClearer
-     * @param  string                $env
-     * @param  string                $rootDir
+     * @param  CursorInterface               $products
+     * @param  ProgressBar                   $progressBar
+     * @param  int                           $productBatchSize
+     * @param  EntityManagerClearerInterface $cacheClearer
+     * @param  string                        $env
+     * @param  string                        $rootDir
      */
     private function cleanProducts(
         CursorInterface $products,
         ProgressBar $progressBar,
         int $productBatchSize,
-        CacheClearerInterface $cacheClearer,
+        EntityManagerClearerInterface $cacheClearer,
         string $env,
         string $rootDir
     ): void {

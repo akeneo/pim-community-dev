@@ -263,6 +263,9 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $results['data']->shouldBeArray();
         $results['data']->shouldHaveCount(3);
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
+        $results['data'][0]->getValue('id')->shouldReturn('product-2');
+        $results['data'][1]->getValue('id')->shouldReturn('product-3');
+        $results['data'][2]->getValue('id')->shouldReturn('product-model-2');
     }
 
     public function getMatchers()

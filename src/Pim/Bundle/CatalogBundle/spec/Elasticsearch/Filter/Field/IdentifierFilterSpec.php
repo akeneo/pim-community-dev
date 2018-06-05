@@ -25,7 +25,8 @@ class IdentifierFilterSpec extends ObjectBehavior
                 '=',
                 '!=',
                 'IN LIST',
-                'NOT IN LIST'
+                'NOT IN LIST',
+                'EMPTY'
             ]
         );
     }
@@ -50,12 +51,13 @@ class IdentifierFilterSpec extends ObjectBehavior
                 '=',
                 '!=',
                 'IN LIST',
-                'NOT IN LIST'
+                'NOT IN LIST',
+                'EMPTY'
             ]
 
         );
         $this->supportsOperator('DOES NOT CONTAIN')->shouldReturn(true);
-        $this->supportsOperator('EMPTY')->shouldReturn(false);
+        $this->supportsOperator('IN CHILDREN')->shouldReturn(false);
     }
 
     function it_supports_identifier_field()

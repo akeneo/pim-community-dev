@@ -32,13 +32,16 @@ Pim\Component\Catalog\Model\FamilyVariant:
                 joinColumns:
                     family_variant_id:
                         referencedColumnName: id
+                        onDelete: CASCADE
                 inverseJoinColumns:
                     variant_attribute_sets_id:
                         referencedColumnName: id
                         unique: true
+                        onDelete: CASCADE
             cascade:
                 - persist
                 - detach
+                - remove
 
     manyToOne:
         family:

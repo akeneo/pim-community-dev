@@ -14,6 +14,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\ChannelTranslationInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Updater\ChannelUpdater;
@@ -121,6 +122,63 @@ class ChannelUpdaterSpec extends ObjectBehavior
             'maximum_diagonal' => 'INCHES',
             'weight'           => 'KILOGRAM',
         ])->shouldBeCalled();
+
+        $this->update($channel, $values, []);
+    }
+
+
+    function it_updates_a_channel_with_conversion_units_empty(
+        $categoryRepository,
+        $localeRepository,
+        $currencyRepository,
+        $attributeRepository,
+        $measureManager,
+        ChannelInterface $channel,
+        CategoryInterface $tree,
+        LocaleInterface $enUS,
+        LocaleInterface $frFR,
+        CurrencyInterface $usd,
+        CurrencyInterface $eur,
+        ChannelTranslationInterface $channelTranslation,
+        AttributeInterface $maximumDiagonalAttribute,
+        AttributeInterface $weightAttribute
+    ) {
+        $values = [
+            'code'             => 'ecommerce',
+            'labels'           => [
+                'fr_FR' => 'Tablette',
+                'en_US' => 'Tablet',
+            ],
+            'locales'          => ['en_US', 'fr_FR'],
+            'currencies'       => ['EUR', 'USD'],
+            'category_tree'    => 'master_catalog',
+            'conversion_units' => [],
+        ];
+
+        $channel->setCode('ecommerce')->shouldBeCalled();
+
+        $categoryRepository->findOneByIdentifier('master_catalog')->willReturn($tree);
+        $channel->setCategory($tree)->shouldBeCalled();
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enUS);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
+        $channel->setLocales([$enUS, $frFR])->shouldBeCalled();
+
+        $currencyRepository->findOneByIdentifier('EUR')->willReturn($eur);
+        $currencyRepository->findOneByIdentifier('USD')->willReturn($usd);
+        $channel->setCurrencies([$eur, $usd])->shouldBeCalled();
+
+        $channel->getTranslation()->willReturn($channelTranslation);
+
+        $maximumDiagonalAttribute->getMetricFamily()->willReturn('Length');
+        $weightAttribute->getMetricFamily()->willReturn('Weight');
+
+        $attributeRepository->findOneByIdentifier('maximum_diagonal')->willReturn($maximumDiagonalAttribute);
+        $attributeRepository->findOneByIdentifier('weight')->willReturn($weightAttribute);
+
+        $channelTranslation->setLabel('Tablet');
+        $channelTranslation->setLabel('Tablette');
+        $channel->setConversionUnits([])->shouldBeCalled();
 
         $this->update($channel, $values, []);
     }
