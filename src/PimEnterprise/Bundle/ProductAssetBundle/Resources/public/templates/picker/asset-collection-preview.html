@@ -9,7 +9,7 @@
             </div>
             <div class="AknAssetPreview-right browse-right"></div>
         </div>
-        <div class="AknAssetPreview-buttons">
+        <div class="buttons AknAssetPreview-buttons">
             <ul class="AknAssetCollectionField-list AknAssetCollectionField-list--unwrapped">
                 <% assets.forEach((asset) => { %>
                 <li class="asset-thumbnail-item AknAssetCollectionField-listItem AknAssetCollectionField-listItem--transparent" data-url="<%- Routing.generate('pimee_product_asset_original', {
@@ -31,6 +31,7 @@
     </div>
 </div>
 <div class="AknButtonList AknButtonList--right modal-footer">
-    <a href="#" title="" class="AknButtonList-item AknButton AknButton--greyLight cancel icons-holder-text"></a>
-    <a href="#" title="" class="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"></a>
+    <a href="#" title="" class="AknButtonList-item AknButton AknButton--greyLight cancel"></a>
+    <a href="#" title="" class="AknButtonList-item AknButton AknButton--important remove"><%- removeLabel %></a>
+    <a href="#" title="" class="AknButtonList-item AknButton AknButton--apply download"><%- downloadLabel %></a>
 </div>

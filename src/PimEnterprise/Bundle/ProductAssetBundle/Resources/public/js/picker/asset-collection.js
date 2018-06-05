@@ -188,20 +188,22 @@ define(
                         scope: this.context.scope,
                         content: '',
                         thumbnailFilter: 'thumbnail',
-                        assetCollectionPreviewTitle: __('pimee_product_asset.form.product.asset.preview_title')
+                        assetCollectionPreviewTitle: __('pimee_product_asset.form.product.asset.preview_title'),
+                        downloadLabel: __('pimee_product_asset.form.product.asset.download'),
+                        removeLabel: __('pimee_product_asset.form.product.asset.remove')
                     });
                     modal.open();
 
                     const switchModalItem = function (item) {
-                        modal.$('.AknAssetCollectionField-listItem')
-                            .addClass('AknAssetCollectionField-listItem--transparent');
+                        modal.$('.asset-thumbnail-item').addClass('AknAssetCollectionField-listItem--transparent');
                         item.removeClass('AknAssetCollectionField-listItem--transparent');
                         $('.main-preview').attr('src', item.data('url'));
-                        $('.AknAssetPreview-buttons').stop(true, true).animate({
+                        $('.buttons').stop(true, true).animate({
                             scrollLeft: item.position().left
-                            - ($('.AknAssetPreview-buttons').width() - 140) / 2
+                            - ($('.buttons').width() - 140) / 2
                         }, 400);
                         modal.$('.description').html(item.data('description'));
+                        modal.$('.download').attr('href', item.data('url'));
                     };
 
                     const switchWithGap = function (gap) {
