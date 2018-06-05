@@ -39,7 +39,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
                     referencedColumnName: id
                     onDelete: CASCADE
         familyVariant:
-            targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
             joinColumn:
                 name: family_variant_id
                 referencedColumnName: id
