@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Entity;
+namespace spec\Akeneo\Pim\Structure\Component\Model;
 
 use PhpSpec\ObjectBehavior;
 

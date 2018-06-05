@@ -15,6 +15,18 @@ suites:
         spec_path: src/Akeneo/Channel/Bundle
         src_path: src/Akeneo/Channel/Bundle
 
+    ## Structure context
+    Structure:
+        namespace: Akeneo\Pim\Structure\Component
+        psr4_prefix: Akeneo\Pim\Structure\Component
+        spec_path: src/Akeneo/Pim/Structure/Component
+        src_path: src/Akeneo/Pim/Structure/Component
+    StructureBundle:
+        namespace: Akeneo\Pim\Structure\Bundle
+        psr4_prefix: Akeneo\Pim\Structure\Bundle
+        spec_path: src/Akeneo/Pim/Structure/Bundle
+        src_path: src/Akeneo/Pim/Structure/Bundle
+
     ## Akeneo Components
     Analytics:
         namespace: Akeneo\Tool\Component\Analytics
