@@ -22,7 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Component\Catalog\Model\AttributeGroupInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

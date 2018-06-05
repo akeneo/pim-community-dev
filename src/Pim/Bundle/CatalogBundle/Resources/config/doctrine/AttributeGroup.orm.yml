@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
+Akeneo\Pim\Structure\Component\Model\AttributeGroup:
     type: entity
     table: pim_catalog_attribute_group
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -36,7 +36,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
             orderBy:
                 sortOrder: ASC
         translations:
-            targetEntity: Pim\Component\Catalog\Model\AttributeGroupTranslationInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist
