@@ -1,29 +1,36 @@
 <div class="modal-body">
     <div class="AknFullPage-title AknColumnConfigurator-title">Title</div>
     <div class="AknFullPage-description AknColumnConfigurator-subTitle">Description</div>
-    <% assets.forEach((asset) => { %>
-    <img src="<%- Routing.generate('pimee_product_asset_original', {
-            code: asset,
-            channelCode: scope,
-            localeCode: locale
-         }) %>"/>
-    </img>
-    <% }); %>
-    <ul class="AknAssetCollectionField-list">
-        <% assets.forEach((asset) => { %>
-        <li class="AknAssetCollectionField-listItem" data-asset="akene">
-            <div class="AknAssetCollectionField-assetThumbnail asset-thumbnail" style="background-image: url('<%- Routing.generate('pimee_product_asset_thumbnail', {
+    <div class="AknAssetPreview">
+        <div class="AknAssetPreview-main">
+            <div class="AknAssetPreview-left browse-left"></div>
+            <div class="AknAssetPreview-imageContainer">
+                <img src="" class="AknAssetPreview-image main-preview"/>
+            </div>
+            <div class="AknAssetPreview-right browse-right"></div>
+        </div>
+        <div class="AknAssetPreview-buttons">
+            <ul class="AknAssetCollectionField-list AknAssetCollectionField-list--unwrapped">
+                <% assets.forEach((asset) => { %>
+                <li class="asset-thumbnail-item AknAssetCollectionField-listItem AknAssetCollectionField-listItem--transparent" data-url="<%- Routing.generate('pimee_product_asset_original', {
                     code: asset,
-                    filter: thumbnailFilter,
                     channelCode: scope,
                     localeCode: locale
-                 }) %>')">
-            </div>
-        </li>
-        <% }); %>
-    </ul>
+                 }) %>" data-asset="<%- asset %>">
+                    <div class="AknAssetCollectionField-assetThumbnail asset-thumbnail" style="background-image: url('<%- Routing.generate('pimee_product_asset_thumbnail', {
+                            code: asset,
+                            filter: thumbnailFilter,
+                            channelCode: scope,
+                            localeCode: locale
+                         }) %>')">
+                    </div>
+                </li>
+                <% }); %>
+            </ul>
+        </div>
+    </div>
 </div>
 <div class="AknButtonList AknButtonList--right modal-footer">
-    <a href="#" title="prout" class="AknButtonList-item AknButton AknButton--greyLight cancel icons-holder-text"></a>
+    <a href="#" title="" class="AknButtonList-item AknButton AknButton--greyLight cancel icons-holder-text"></a>
     <a href="#" title="" class="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"></a>
 </div>

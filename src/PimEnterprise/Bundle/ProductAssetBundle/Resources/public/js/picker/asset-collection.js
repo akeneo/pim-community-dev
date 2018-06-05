@@ -167,10 +167,8 @@ define(
                 return deferred.promise();
             },
 
-            openModal() {
-                console.log(this);
-                console.log(this.data);
-                let modal = new Backbone.BootstrapModal({
+            openModal(clickEvent) {
+                const modal = new Backbone.BootstrapModal({
                     className: 'modal modal--fullPage modal--topButton',
                     modalOptions: {
                         backdrop: 'static',
@@ -186,6 +184,43 @@ define(
                     thumbnailFilter: 'thumbnail'
                 });
                 modal.open();
+
+                const switchModalItem = function (item) {
+                    modal.$('.AknAssetCollectionField-listItem')
+                        .addClass('AknAssetCollectionField-listItem--transparent');
+                    item.removeClass('AknAssetCollectionField-listItem--transparent');
+                    $('.main-preview').attr('src', item.data('url'));
+                    $('.AknAssetPreview-buttons').stop(true, true).animate({
+                        scrollLeft: item.position().left
+                        - ($('.AknAssetPreview-buttons').width() - 140) / 2
+                    }, 400);
+                };
+
+                const switchWithGap = function (gap) {
+                    const thumbnails = modal.$('.asset-thumbnail-item');
+                    let clickedIndex = null;
+                    thumbnails.each(function (i, thumbnail) {
+                        if (!($(thumbnail).hasClass('AknAssetCollectionField-listItem--transparent'))) {
+                            clickedIndex = i;
+                        }
+                    });
+                    switchModalItem($(thumbnails[(clickedIndex + gap + thumbnails.length) % thumbnails.length]));
+                };
+
+                modal.$('.AknAssetCollectionField-listItem').click(function () {
+                    switchModalItem($(this));
+                });
+
+                modal.$('.browse-left').click(function () {
+                    switchWithGap(-1);
+                });
+
+                modal.$('.browse-right').click(function () {
+                    switchWithGap(1);
+                });
+
+                const clickedAsset = $(clickEvent.currentTarget).closest('.asset-thumbnail-item').data('asset');
+                switchModalItem(modal.$('.asset-thumbnail-item[data-asset="' + clickedAsset + '"]'));
             }
         });
     }
