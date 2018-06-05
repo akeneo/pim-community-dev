@@ -158,7 +158,7 @@ class FamilyVariantSpec extends ObjectBehavior
         $name = new Attribute();
         $name->setCode('name');
 
-        $variantAttributeSet = new \Akeneo\Pim\Structure\Component\Model\VariantAttributeSet();
+        $variantAttributeSet = new VariantAttributeSet();
         $variantAttributeSet->addAttribute($name);
         $variantAttributeSet->setLevel(1);
 
@@ -195,7 +195,7 @@ class FamilyVariantSpec extends ObjectBehavior
         $name = new Attribute();
         $name->setCode('name');
 
-        $variantAttributeSet = new \Akeneo\Pim\Structure\Component\Model\VariantAttributeSet();
+        $variantAttributeSet = new VariantAttributeSet();
         $variantAttributeSet->setAxes([$color]);
         $variantAttributeSet->setLevel(1);
 

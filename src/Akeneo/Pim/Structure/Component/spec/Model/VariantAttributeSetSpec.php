@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 
 class VariantAttributeSetSpec extends ObjectBehavior
 {
-    function it_is_initializale()
+    function it_is_initializable()
     {
         $this->shouldHaveType(VariantAttributeSet::class);
     }
