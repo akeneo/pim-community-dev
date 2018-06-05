@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Prophecy\Argument;

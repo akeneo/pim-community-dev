@@ -16,11 +16,11 @@ parameters:
     pim_catalog.entity.group_type_translation.class:       Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation
     pim_catalog.entity.attribute.class:                    Akeneo\Pim\Structure\Component\Model\Attribute
     pim_catalog.entity.attribute_translation.class:        Pim\Bundle\CatalogBundle\Entity\AttributeTranslation
-    pim_catalog.entity.attribute_group.class:              Pim\Bundle\CatalogBundle\Entity\AttributeGroup
-    pim_catalog.entity.attribute_group_translation.class:  Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation
+    pim_catalog.entity.attribute_group.class:              Akeneo\Pim\Structure\Component\Model\AttributeGroup
+    pim_catalog.entity.attribute_group_translation.class:  Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation
     pim_catalog.entity.attribute_option.class:             Akeneo\Pim\Structure\Component\Model\AttributeOption
     pim_catalog.entity.attribute_option_value.class:       Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
-    pim_catalog.entity.attribute_requirement.class:        Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+    pim_catalog.entity.attribute_requirement.class:        Akeneo\Pim\Structure\Component\Model\AttributeRequirement
     pim_catalog.entity.family.class:                       Akeneo\Pim\Structure\Component\Model\Family
     pim_catalog.entity.family_translation.class:           Akeneo\Pim\Structure\Component\Model\FamilyTranslation
     pim_catalog.entity.metric.class:                       Pim\Component\Catalog\Model\Metric

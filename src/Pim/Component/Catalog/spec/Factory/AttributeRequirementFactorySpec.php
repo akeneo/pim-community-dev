@@ -10,7 +10,7 @@ class AttributeRequirementFactorySpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');
+        $this->beConstructedWith('Akeneo\Pim\Structure\Component\Model\AttributeRequirement');
     }
 
     function it_is_initializable()
@@ -23,7 +23,7 @@ class AttributeRequirementFactorySpec extends ObjectBehavior
         ChannelInterface $channel
     ) {
         $attributeRequirement = $this->createAttributeRequirement($attribute, $channel, true);
-        $attributeRequirement->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');
+        $attributeRequirement->shouldBeAnInstanceOf('Akeneo\Pim\Structure\Component\Model\AttributeRequirement');
         $attributeRequirement->getAttribute()->shouldBeEqualTo($attribute);
         $attributeRequirement->getChannel()->shouldBeEqualTo($channel);
         $attributeRequirement->isRequired()->shouldReturn(true);
@@ -34,7 +34,7 @@ class AttributeRequirementFactorySpec extends ObjectBehavior
         ChannelInterface $channel
     ) {
         $attributeRequirement = $this->createAttributeRequirement($attribute, $channel, false);
-        $attributeRequirement->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');
+        $attributeRequirement->shouldBeAnInstanceOf('Akeneo\Pim\Structure\Component\Model\AttributeRequirement');
         $attributeRequirement->getAttribute()->shouldBeEqualTo($attribute);
         $attributeRequirement->getChannel()->shouldBeEqualTo($channel);
         $attributeRequirement->isRequired()->shouldReturn(false);
