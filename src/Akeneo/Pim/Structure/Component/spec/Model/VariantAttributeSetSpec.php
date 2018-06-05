@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Model;
+namespace spec\Akeneo\Pim\Structure\Component\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 
 class VariantAttributeSetSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    function it_is_initializale()
     {
         $this->shouldHaveType(VariantAttributeSet::class);
     }
