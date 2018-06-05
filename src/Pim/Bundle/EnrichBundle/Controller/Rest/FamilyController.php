@@ -13,7 +13,7 @@ use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\FamilyFactory;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
-use Pim\Component\Catalog\Updater\FamilyUpdater;
+use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,16 +79,16 @@ class FamilyController
     protected $constraintViolationNormalizer;
 
     /**
-     * @param FamilyRepositoryInterface  $familyRepository
-     * @param NormalizerInterface        $normalizer
-     * @param FamilySearchableRepository $familySearchableRepo
-     * @param FamilyUpdater              $updater
-     * @param SaverInterface             $saver
-     * @param RemoverInterface           $remover
-     * @param ValidatorInterface         $validator
-     * @param SecurityFacade             $securityFacade
-     * @param FamilyFactory              $familyFactory
-     * @param NormalizerInterface          $constraintViolationNormalizer
+     * @param FamilyRepositoryInterface                             $familyRepository
+     * @param NormalizerInterface                                   $normalizer
+     * @param FamilySearchableRepository                            $familySearchableRepo
+     * @param \Akeneo\Pim\Structure\Component\Updater\FamilyUpdater $updater
+     * @param SaverInterface                                        $saver
+     * @param RemoverInterface                                      $remover
+     * @param ValidatorInterface                                    $validator
+     * @param SecurityFacade                                        $securityFacade
+     * @param FamilyFactory                                         $familyFactory
+     * @param NormalizerInterface                                   $constraintViolationNormalizer
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,

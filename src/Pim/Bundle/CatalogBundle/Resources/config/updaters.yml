@@ -10,7 +10,7 @@ parameters:
     pim_catalog.updater.attribute.class:                      Pim\Component\Catalog\Updater\AttributeUpdater
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
     pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater
-    pim_catalog.updater.family.class:                         Pim\Component\Catalog\Updater\FamilyUpdater
+    pim_catalog.updater.family.class:                         Akeneo\Pim\Structure\Component\Updater\FamilyUpdater
     pim_catalog.updater.family_variant.class:                 Pim\Component\Catalog\Updater\FamilyVariantUpdater
     pim_catalog.updater.attribute_group.class:                Pim\Component\Catalog\Updater\AttributeGroupUpdater
     pim_catalog.updater.group_type.class:                     Pim\Component\Catalog\Updater\GroupTypeUpdater

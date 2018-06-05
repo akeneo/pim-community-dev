@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -44,7 +44,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\FamilyUpdater');
+        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Updater\FamilyUpdater');
     }
 
     function it_is_a_updater()
@@ -365,7 +365,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attributes',
                 'code',
                 'The attribute does not exist',
-                'Pim\Component\Catalog\Updater\FamilyUpdater',
+                'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                 'sku'
             )
         )->during('update', [$family, $data]);
@@ -399,7 +399,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attribute_requirements',
                 'code',
                 'The attribute does not exist',
-                'Pim\Component\Catalog\Updater\FamilyUpdater',
+                'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                 'sku'
             )
         )->during('update', [$family, $data]);
@@ -430,7 +430,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attribute_as_label',
                 'code',
                 'The attribute does not exist',
-                'Pim\Component\Catalog\Updater\FamilyUpdater',
+                'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                 'unknown'
             )
         )->during('update', [$family, $data]);
@@ -466,7 +466,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 'attribute_requirements',
                 'code',
                 'The channel does not exist',
-                'Pim\Component\Catalog\Updater\FamilyUpdater',
+                'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                 'ecommerce'
             )
         )->during('update', [$family, $data]);
@@ -496,7 +496,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::scalarExpected(
                     'code',
-                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                     []
                 )
             )
@@ -513,7 +513,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::scalarExpected(
                     'attribute_as_label',
-                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                     []
                 )
             )
@@ -530,7 +530,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::arrayExpected(
                     'attributes',
-                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                     'foo'
                 )
             )
@@ -548,7 +548,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'attributes',
                     'one of the attributes is not a scalar',
-                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                     ['foo', []]
                 )
             )
@@ -565,7 +565,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::arrayExpected(
                     'labels',
-                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                     'foo'
                 )
             )
@@ -586,7 +586,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'labels',
                     'one of the labels is not a scalar',
-                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                     ['en_US' => 'us_Label', 'fr_FR' => []]
                 )
             )
@@ -620,7 +620,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'attribute_requirements',
                     'the channel "tablet" is not an array',
-                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                     ['ecommerce' => ['sku'], 'tablet' => 'foo']
                 )
             )
@@ -641,7 +641,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
                 InvalidPropertyTypeException::validArrayStructureExpected(
                     'attribute_requirements',
                     'one of the attributes in the channel "tablet" is not a scalar',
-                    'Pim\Component\Catalog\Updater\FamilyUpdater',
+                    'Akeneo\Pim\Structure\Component\Updater\FamilyUpdater',
                     ['ecommerce' => ['sku'], 'tablet' => ['foo', []]]
                 )
             )
