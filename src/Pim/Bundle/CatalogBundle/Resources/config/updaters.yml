@@ -6,7 +6,7 @@ parameters:
     pim_catalog.updater.property_adder.class:                 Pim\Component\Catalog\Updater\PropertyAdder
     pim_catalog.updater.property_copier.class:                Pim\Component\Catalog\Updater\PropertyCopier
     pim_catalog.updater.property_remover.class:               Pim\Component\Catalog\Updater\PropertyRemover
-    pim_catalog.updater.attribute_option.class:               Pim\Component\Catalog\Updater\AttributeOptionUpdater
+    pim_catalog.updater.attribute_option.class:               Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater
     pim_catalog.updater.attribute.class:                      Pim\Component\Catalog\Updater\AttributeUpdater
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
     pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater

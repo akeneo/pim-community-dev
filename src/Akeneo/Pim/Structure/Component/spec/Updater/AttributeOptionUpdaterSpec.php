@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -21,7 +21,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\AttributeOptionUpdater');
+        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater');
     }
 
     function it_is_a_updater()
@@ -125,7 +125,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
                 'attribute',
                 'attribute code',
                 'The attribute does not exist',
-                'Pim\Component\Catalog\Updater\AttributeOptionUpdater',
+                'Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater',
                 'myattribute'
             )
         )->during(
@@ -154,7 +154,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::scalarExpected(
                     'code',
-                    'Pim\Component\Catalog\Updater\AttributeOptionUpdater',
+                    'Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater',
                     []
                 )
             )
@@ -171,7 +171,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
             ->shouldThrow(
                 InvalidPropertyTypeException::arrayExpected(
                     'labels',
-                    'Pim\Component\Catalog\Updater\AttributeOptionUpdater',
+                    'Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater',
                     'not_an_array'
                 )
             )
