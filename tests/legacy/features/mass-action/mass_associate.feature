@@ -82,12 +82,15 @@ Feature: Associate many products at once
     And I should see the text "Sunglasses"
     And I validate mass edit
     And I wait for the "add_association" job to finish
-    Then the product "1111111113" should have the following associations:
+    And the product "1111111113" should have the following associations:
       | type   | products              |
       | X_SELL | 1111111292,1111111304 |
-    Then the product "1111111112" should have the following associations:
+    And the product "1111111112" should have the following associations:
       | type   | products              |
       | X_SELL | 1111111292,1111111304 |
-    Then the product "1111111111" should have the following associations:
+    And the product "1111111111" should have the following associations:
+      | type   | products              |
+      | X_SELL | 1111111292,1111111304 |
+    Then the product model "amor" should have the following associations:
       | type   | products              |
       | X_SELL | 1111111292,1111111304 |
