@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Event;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
