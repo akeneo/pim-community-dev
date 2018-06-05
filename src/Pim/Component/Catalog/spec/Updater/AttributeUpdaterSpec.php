@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Component\Catalog\AttributeTypeInterface;
 use Pim\Component\Catalog\AttributeTypeRegistry;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;

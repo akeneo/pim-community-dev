@@ -10,7 +10,7 @@ use PHPUnit\Framework\Assert;
 use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 
 class CountProductModelsIntegration extends QueryTestCase
 {

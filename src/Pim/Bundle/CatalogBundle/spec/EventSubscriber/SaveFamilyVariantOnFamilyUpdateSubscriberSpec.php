@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;

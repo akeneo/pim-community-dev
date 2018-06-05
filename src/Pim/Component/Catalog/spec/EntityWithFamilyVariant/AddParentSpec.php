@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\EntityWithFamilyVariant;
 
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;

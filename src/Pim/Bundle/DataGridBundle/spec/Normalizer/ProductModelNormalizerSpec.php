@@ -9,7 +9,7 @@ use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;

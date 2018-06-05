@@ -23,7 +23,7 @@ Pim\Component\Catalog\Model\FamilyVariantTranslation:
 
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

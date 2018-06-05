@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\EventSubscriber\AddUniqueAttributesToVariantProduct
 use Pim\Component\Catalog\FamilyVariant\AddUniqueAttributes;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

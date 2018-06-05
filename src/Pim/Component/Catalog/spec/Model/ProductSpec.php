@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;

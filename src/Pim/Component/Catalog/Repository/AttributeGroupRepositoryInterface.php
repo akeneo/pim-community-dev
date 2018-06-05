@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
 /**
  * Attribute group repository interface

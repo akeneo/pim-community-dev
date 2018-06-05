@@ -22,7 +22,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     public function getFullRequirementsQB(FamilyInterface $family, $localeCode)
     {
         $qb = $this->getEntityManager()
-            ->getRepository('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement')
+            ->getRepository('Akeneo\Pim\Structure\Component\Model\AttributeRequirement')
             ->createQueryBuilder('r')
             ->select('r, a, t')
             ->leftJoin('r.attribute', 'a');

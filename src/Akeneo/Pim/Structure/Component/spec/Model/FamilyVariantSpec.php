@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Model;
+namespace spec\Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,8 +12,8 @@ use Pim\Component\Catalog\Model\VariantAttributeSet;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariant;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

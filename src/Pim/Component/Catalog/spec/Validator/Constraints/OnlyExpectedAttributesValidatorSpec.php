@@ -8,7 +8,7 @@ use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvide
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributes;
 use Prophecy\Argument;

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\Api\Normalizer;
 
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

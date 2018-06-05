@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;

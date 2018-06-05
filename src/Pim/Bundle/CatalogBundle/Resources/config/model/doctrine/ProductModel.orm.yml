@@ -83,7 +83,7 @@ Pim\Component\Catalog\Model\ProductModel:
             gedmo:
                 - treeParent
         familyVariant:
-            targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
             joinColumn:
                 name: family_variant_id
                 referencedColumnName: id
