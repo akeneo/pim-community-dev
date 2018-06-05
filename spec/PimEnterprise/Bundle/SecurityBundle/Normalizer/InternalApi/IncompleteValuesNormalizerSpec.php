@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
+use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollection;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
