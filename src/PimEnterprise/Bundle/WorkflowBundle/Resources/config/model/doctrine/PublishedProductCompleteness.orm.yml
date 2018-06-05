@@ -51,7 +51,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProductCompleteness:
                     nullable: false
     manyToMany:
         missingAttributes:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
             joinTable:
                 name: pimee_workflow_published_product_completeness_missing_attribute
                 joinColumns:

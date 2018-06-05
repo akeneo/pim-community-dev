@@ -13,7 +13,7 @@ namespace Akeneo\Asset\Bundle\Enrich\Provider\EmptyValue;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * EmptyValue provider for asset collections

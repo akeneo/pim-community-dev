@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use PimEnterprise\Bundle\EnrichBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Filter\AttributeViewRightFilter;

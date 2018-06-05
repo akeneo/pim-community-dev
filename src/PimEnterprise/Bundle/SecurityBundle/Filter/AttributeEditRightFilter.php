@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**
