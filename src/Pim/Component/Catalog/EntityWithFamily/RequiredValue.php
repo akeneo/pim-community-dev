@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * A required value is the translation of the attribute requirements
- * {@see Pim\Component\Catalog\Model\AttributeRequirementInterface} in terms of values.
+ * {@see Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface} in terms of values.
  *
  * Therefore a required value contains no data. It simply expresses the fact that for instance:
  *  - a "sku" is required on all channels and all locales

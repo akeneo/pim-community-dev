@@ -50,7 +50,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                 - remove
             orphanRemoval: true
         requirements:
-            targetEntity: Pim\Component\Catalog\Model\AttributeRequirementInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface
             mappedBy: family
             orphanRemoval: true
             cascade:

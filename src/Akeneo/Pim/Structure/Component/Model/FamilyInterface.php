@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 
 /**
  * Family interface
