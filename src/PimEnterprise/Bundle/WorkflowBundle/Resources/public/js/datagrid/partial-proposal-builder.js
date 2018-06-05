@@ -31,7 +31,8 @@ define(
                 gridElement.on('click', '.partial-approve-link, .partial-reject-link', function () {
                     var $this  = $(this);
                     var action = $this.data('action');
-                    var route  = 'pimee_workflow_product_draft_rest_partial_' + action;
+                    var documentType = $this.data('document-type');
+                    var route = 'pimee_workflow_' + documentType + '_rest_partial_' + action;
                     var title  = _.__('pimee_workflow.proposal.partial_' + action + '.modal.title');
 
                     var modal = new FormModal(
@@ -51,7 +52,7 @@ define(
                         .then(function (myFormData) {
 
                             $.post(Routing.generate(route, {
-                                id: $this.data('product-draft'),
+                                id: $this.data('draft'),
                                 code: $this.data('attribute'),
                                 scope: _.isEmpty($this.data('scope')) ? null : $this.data('scope'),
                                 locale: _.isEmpty($this.data('locale')) ? null : $this.data('locale'),

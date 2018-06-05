@@ -2,6 +2,10 @@ product_draft_rest:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/product_draft_rest.yml'
     prefix: /product_draft
 
+product_model_draft_rest:
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/product_model_draft_rest.yml'
+    prefix: /product_model_draft
+
 completeness_rest:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/completeness_rest.yml'
     prefix: /workflow/rest/completeness

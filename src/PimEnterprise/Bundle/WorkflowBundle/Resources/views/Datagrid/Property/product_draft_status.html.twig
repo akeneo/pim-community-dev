@@ -1,7 +1,6 @@
-{% set status = get_draft_status_grid(record.getValue('proposal_product')) %}
-{% set message = get_draft_status_tooltip_grid(record.getValue('proposal_product')) %}
+{% set status = get_draft_status_grid(record.getValue('proposal')) %}
+{% set message = get_draft_status_tooltip_grid(record.getValue('proposal')) %}
 
 <span class="AknBadge AknBadge--grey badge-info-large"{% if '' != message %} title="{{ message|trans }}"{% endif %}>
     {{ status|trans }}
 </span>
-

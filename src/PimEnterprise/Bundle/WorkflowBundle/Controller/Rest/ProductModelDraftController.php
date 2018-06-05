@@ -13,23 +13,29 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
-use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\EntityWithValuesDraftRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use Symfony\Component\HttpFoundation\{
-    JsonResponse, RedirectResponse, Request
-};
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
+use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Product model draft rest controller
@@ -59,6 +65,18 @@ class ProductModelDraftController
     /** @var UserContext */
     private $userContext;
 
+    /** @var AttributeRepositoryInterface */
+    private $attributeRepository;
+
+    /** @var ChannelRepositoryInterface */
+    private $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    private $localeRepository;
+
+    /** @var array */
+    private $supportedReviewActions = ['approve', 'refuse'];
+
     public function __construct(
         ProductModelRepository $productModelRepository,
         TokenStorageInterface $tokenStorage,
@@ -66,7 +84,10 @@ class ProductModelDraftController
         AuthorizationCheckerInterface $authorizationChecker,
         EntityWithValuesDraftManager $manager,
         NormalizerInterface $normalizer,
-        UserContext $userContext
+        UserContext $userContext,
+        AttributeRepositoryInterface $attributeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->tokenStorage = $tokenStorage;
@@ -75,6 +96,9 @@ class ProductModelDraftController
         $this->manager = $manager;
         $this->normalizer = $normalizer;
         $this->userContext = $userContext;
+        $this->attributeRepository = $attributeRepository;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     public function readyAction(Request $request, $productModelId)
@@ -87,7 +111,7 @@ class ProductModelDraftController
         $productModelDraft = $this->findDraftForProductModelOr404($productModel);
         $comment = $request->get('comment') ?: null;
 
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productModelDraft)) {
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productModelDraft)) {
             throw new AccessDeniedHttpException();
         }
 
@@ -97,6 +121,57 @@ class ProductModelDraftController
                 'filter_types'               => ['pim.internal_api.product_value.view'],
                 'disable_grouping_separator' => true
             ];
+
+        return new JsonResponse($this->normalizer->normalize(
+            $productModel,
+            'internal_api',
+            $normalizationContext
+        ));
+    }
+
+    public function partialReviewAction(Request $request, $id, $code, $action)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $productModelDraft = $this->findProductModelDraftOr404($id);
+
+        if (!in_array($action, $this->supportedReviewActions)) {
+            throw new \LogicException(sprintf('"%s" is not a valid review action', $action));
+        }
+
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productModelDraft->getEntityWithValue())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $channelCode = $request->query->get('scope', null);
+        $channel = null !== $channelCode ? $this->findChannelOr404($channelCode) : null;
+
+        $localeCode = $request->query->get('locale', null);
+        $locale = null !== $localeCode ? $this->findLocaleOr404($localeCode) : null;
+
+        $attribute = $this->findAttributeOr404($code);
+
+        try {
+            $method = $action . 'Change';
+            $this->manager->$method(
+                $productModelDraft,
+                $attribute,
+                $locale,
+                $channel,
+                ['comment' => $request->query->get('comment')]
+            );
+        } catch (ValidatorException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], 400);
+        }
+
+        $normalizationContext = $this->userContext->toArray() + [
+                'filter_types'               => ['pim.internal_api.product_value.view'],
+                'disable_grouping_separator' => true
+            ];
+
+        $productModel = $productModelDraft->getEntityWithValue();
 
         return new JsonResponse($this->normalizer->normalize(
             $productModel,
@@ -124,5 +199,45 @@ class ProductModelDraftController
         }
 
         return $productModelDraft;
+    }
+
+    private function findProductModelDraftOr404(string $draftId): EntityWithValuesDraftInterface
+    {
+        $productModelDraft = $this->entityWithValuesDraftRepo->find($draftId);
+        if (null === $productModelDraft) {
+            throw new NotFoundHttpException(sprintf('Draft with id %s not found', $draftId));
+        }
+
+        return $productModelDraft;
+    }
+
+    private function findAttributeOr404(string $code): AttributeInterface
+    {
+        $attribute = $this->attributeRepository->findOneByIdentifier($code);
+        if (null === $attribute) {
+            throw new NotFoundHttpException(sprintf('Attribute "%s" not found', $code));
+        }
+
+        return $attribute;
+    }
+
+    private function findChannelOr404(string $code): ChannelInterface
+    {
+        $channel = $this->channelRepository->findOneByIdentifier($code);
+        if (null === $channel) {
+            throw new NotFoundHttpException(sprintf('Channel "%s" not found', $code));
+        }
+
+        return $channel;
+    }
+
+    private function findLocaleOr404(string $code): LocaleInterface
+    {
+        $locale = $this->localeRepository->findOneByIdentifier($code);
+        if (null === $locale) {
+            throw new NotFoundHttpException(sprintf('Locale "%s" not found', $code));
+        }
+
+        return $locale;
     }
 }

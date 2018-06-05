@@ -1,11 +1,11 @@
-{% if record.getValue('status') == constant('PimEnterprise\\Component\\Workflow\\Model\\ProductDraft::IN_PROGRESS') %}
+{% if record.getValue('status') == constant('PimEnterprise\\Component\\Workflow\\Model\\EntityWithValuesDraftInterface::IN_PROGRESS') %}
     <em>{{ 'pimee_workflow.proposal.draft_in_progress'|trans({'%author%': record.getValue('author')}) }}</em>
 {% else %}
     {% for code, changes in value %}
         {% set isAttributeLocalizable = is_attribute_localizable(code) %}
         {% set canView = is_attribute_granted(constant('PimEnterprise\\Component\\Security\\Attributes::VIEW_ATTRIBUTES'), code) %}
         {% for change in changes %}
-            {% set product_draft_change = present_product_draft_change(record.getValue('proposal_product'), change, code) %}
+            {% set product_draft_change = present_product_draft_change(record.getValue('proposal'), change, code) %}
             {% if
                 canView and
                 (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Component\\Security\\Attributes::VIEW_ITEMS'), change.locale)) and
@@ -20,12 +20,12 @@
                 %}
                 <table
                     class="AknGrid AknGrid--condensed proposal-changes{% if not canReview %} readonly{% endif %}"
-                    data-product="{{ record.getValue('product').identifier }}"
+                    data-document-type="{{ record.getValue('document_type') }}"
                     data-scope="{{ change.scope }}"
                     data-locale="{{ change.locale }}"
                     data-attribute="{{ code }}"
-                    data-product-draft="{{ record.getValue('id') }}"
                     data-author="{{ record.getValue('author') }}"
+                    data-draft="{{ record.getValue('id') }}"
                 >
                     <thead>
                         <tr>
@@ -42,26 +42,26 @@
                                     <div class="AknButtonList AknButtonList--right">
                                         <button
                                             class="AknButtonList-item AknIconButton AknIconButton--apply AknIconButton--small partial-approve-link"
-                                            data-product="{{ record.getValue('product').identifier }}"
+                                            data-document-type="{{ record.getValue('document_type') }}"
                                             data-scope="{{ change.scope }}"
                                             data-locale="{{ change.locale }}"
                                             data-attribute="{{ code }}"
-                                            data-product-draft="{{ record.getValue('id') }}"
                                             data-author="{{ record.getValue('author') }}"
+                                            data-draft="{{ record.getValue('id') }}"
                                             data-action="approve"
-                                            title="{{ 'pimee_workflow.product_draft.action.partial_approve'|trans({'%attribute%': code, '%product%': record.getValue('product').identifier}) }}">
+                                            title="{{ 'pimee_workflow.product_draft.action.partial_approve'|trans({'%attribute%': code, '%product%': record.getValue('product').id}) }}">
                                             <i class="icon-ok"></i>
                                         </button>
                                         <button
                                             class="AknButtonList-item AknIconButton AknIconButton--important AknIconButton--small partial-reject-link"
-                                            data-product="{{ record.getValue('product').identifier }}"
+                                            data-document-type="{{ record.getValue('document_type') }}"
                                             data-scope="{{ change.scope }}"
                                             data-locale="{{ change.locale }}"
                                             data-attribute="{{ code }}"
-                                            data-product-draft="{{ record.getValue('id') }}"
                                             data-author="{{ record.getValue('author') }}"
+                                            data-draft="{{ record.getValue('id') }}"
                                             data-action="reject"
-                                            title="{{ 'pimee_workflow.product_draft.action.partial_reject'|trans({'%attribute%': code, '%product%': record.getValue('product').identifier}) }}">
+                                            title="{{ 'pimee_workflow.product_draft.action.partial_reject'|trans({'%attribute%': code, '%product%': record.getValue('product').id}) }}">
                                             <i class="icon-remove"></i>
                                         </button>
                                     </div>
