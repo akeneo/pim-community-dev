@@ -12,7 +12,7 @@ import { catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged } from 'ak
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
-const userContext = require('pim/user-context')
+const userContext = require('pim/user-context');
 
 class EnrichedEntityEditController extends BaseController {
   renderRoute(route: any) {

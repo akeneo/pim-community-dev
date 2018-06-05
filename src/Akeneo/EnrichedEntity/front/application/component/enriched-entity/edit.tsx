@@ -8,12 +8,14 @@ import {saveEditForm} from 'akeneoenrichedentity/application/action/enriched-ent
 import Form from 'akeneoenrichedentity/application/component/enriched-entity/edit/form';
 import { getImageShowUrl } from 'akeneoenrichedentity/tools/media-url-generator';
 
+const mediator = require('oro/mediator');
+
 interface EditState {
   enrichedEntity: EnrichedEntity|null;
   context: {
     locale: string;
   };
-};
+}
 
 interface EditDispatch {
   events: {
@@ -36,6 +38,14 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
         locale: this.props.context.locale
       }
     }
+  }
+
+  componentDidMount() {
+    mediator.trigger('column-tab:register', {
+      code: '1',
+      isVisible: true,
+      label: __('pim_enriched_entity.enriched_entity.properties_tab')
+    });
   }
 
   updateEditFormHandler = (enrichedEntity: EnrichedEntity) => {
