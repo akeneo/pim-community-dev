@@ -35,7 +35,6 @@ RUN apt-get update && apt-get install -y apt-transport-https \
   && docker-php-ext-configure gd --with-jpeg-dir=/usr/include/ \
   && docker-php-ext-install -j$(nproc) \
       bcmath \
-      curl \
       exif \
       gd \
       intl \
@@ -67,4 +66,4 @@ RUN composer config repositories.pim-community-dev '{"type": "path", "url": "pac
     && yarn run webpack \
     && cp app/config/parameters.yml app/config/parameters_test.yml \
     && chown -R www-data:www-data var web \
-    && chmod 777 -R features/Context/fixtures/ var web vendor/akeneo/pim-community-dev/features/Context/fixtures/
+    && chmod 777 -R tests/legacy/features/Context/fixtures/ var web vendor/akeneo/pim-community-dev/tests/legacy/features/Context/fixtures/
