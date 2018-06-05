@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductPropo
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;

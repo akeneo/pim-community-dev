@@ -26,7 +26,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
             type: datetime
     manyToOne:
         family:
-            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
             joinColumns:
                 family_id:
                     referencedColumnName: id

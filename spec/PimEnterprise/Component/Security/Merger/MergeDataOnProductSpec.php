@@ -10,7 +10,7 @@ use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
