@@ -118,8 +118,8 @@ class FamilyNormalizer implements NormalizerInterface
      * Fetches attributes by code and normalizes them
      *
      * @param FamilyInterface $family
-     * @param boolean                                               $fullAttributes
-     * @param array                                                 $context
+     * @param boolean         $fullAttributes
+     * @param array           $context
      *
      * @return array
      */

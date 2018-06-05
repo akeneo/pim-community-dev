@@ -272,8 +272,8 @@ class FamilyController
      * Update a family. It throws an error 422 if a problem occurred during the update.
      *
      * @param FamilyInterface $family family to update
-     * @param array                                                 $data   data of the request already decoded, it should be the standard format
-     * @param string                                                $anchor
+     * @param array           $data   data of the request already decoded, it should be the standard format
+     * @param string          $anchor
      *
      * @throws DocumentedHttpException
      */
