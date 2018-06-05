@@ -1,0 +1,55 @@
+@import '../../base/variables';
+
+.AknAssetPreview {
+  @arrowWidth: 40px;
+
+  height: ~"calc(100vh - 170px)";
+  text-align: center;
+
+  &-main {
+    display: flex;
+  }
+
+  &-buttons {
+    overflow-x: auto;
+    display: inline-block;
+    max-width: 90vw;
+  }
+
+  &-imageContainer {
+    flex-grow: 1;
+    text-align: center;
+    align-self: center;
+  }
+
+  &-image {
+    max-height: ~"calc(100vh - 330px)";
+    max-width: ~"calc(100vw - 80px)";
+    min-width: 40px;
+    min-height: 40px;
+    background: url("../../../images/loader-V2.svg") no-repeat center;
+  }
+
+  &-left, &-right {
+    flex-basis: @arrowWidth * 2 ;
+    height: ~"calc(100vh - 314px)";
+    background-image: url("../../../images/icon-right.svg");
+    background-size: @arrowWidth;
+    background-repeat: no-repeat;
+    background-position: center left;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.15s ease-in;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &-left {
+    transform: rotate(180deg);
+  }
+
+  &-right {
+  }
+}

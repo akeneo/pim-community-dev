@@ -19,6 +19,11 @@
     flex-wrap: wrap;
     padding: 5px;
     min-height: @itemHeight;
+
+    &--unwrapped {
+      flex-wrap: nowrap;
+      position: relative;
+    }
   }
 
   &-listItem {
@@ -29,6 +34,16 @@
     margin: 5px;
     position: relative;
     background-color: @AknWhite;
+    cursor: pointer;
+
+    &--transparent {
+      opacity: 0.4;
+      transition: opacity 0.15s ease-in;
+
+      &:hover {
+        opacity: 0.6;
+      }
+    }
   }
 
   &-assetThumbnail {
