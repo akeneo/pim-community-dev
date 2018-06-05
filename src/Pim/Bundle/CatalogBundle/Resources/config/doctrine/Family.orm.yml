@@ -42,7 +42,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
             targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
             mappedBy: family
         translations:
-            targetEntity: Pim\Component\Catalog\Model\FamilyTranslationInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist
