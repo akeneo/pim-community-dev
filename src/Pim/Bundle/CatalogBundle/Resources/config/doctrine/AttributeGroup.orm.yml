@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
+Akeneo\Pim\Structure\Component\Model\AttributeGroup:
     type: entity
     table: pim_catalog_attribute_group
     changeTrackingPolicy: DEFERRED_EXPLICIT
