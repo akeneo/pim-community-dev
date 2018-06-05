@@ -44,7 +44,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'Pim\Component\Catalog\Model\GroupTypeTranslationInterface'      => 'pim_catalog.entity.group_type_translation.class',
             'Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface' => 'pim_catalog.entity.family_variant.class',
             'Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslationInterface' => 'pim_catalog.entity.family_variant_translation.class',
-            'Pim\Component\Catalog\Model\VariantAttributeSetInterface'       => 'pim_catalog.entity.variant_attribute_set.class',
+            'Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface' => 'pim_catalog.entity.variant_attribute_set.class',
         ];
     }
 }

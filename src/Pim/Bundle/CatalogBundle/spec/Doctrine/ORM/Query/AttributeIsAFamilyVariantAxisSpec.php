@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Prophecy\Argument;
 
 class AttributeIsAFamilyVariantAxisSpec extends ObjectBehavior

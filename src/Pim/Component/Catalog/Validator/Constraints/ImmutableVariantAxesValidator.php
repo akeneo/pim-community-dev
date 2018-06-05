@@ -6,7 +6,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\VariantAttributeSet;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

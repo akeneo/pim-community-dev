@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\EntityWithFamilyVariant\AddParent;
 use PhpSpec\ObjectBehavior;
