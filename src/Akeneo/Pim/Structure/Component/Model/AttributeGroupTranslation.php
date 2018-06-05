@@ -1,9 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface;
 
 /**
  * Attribute group translation entity

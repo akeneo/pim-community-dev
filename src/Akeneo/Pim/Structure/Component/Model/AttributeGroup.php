@@ -290,7 +290,7 @@ class AttributeGroup implements AttributeGroupInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation';
+        return 'Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation';
     }
 
     /**

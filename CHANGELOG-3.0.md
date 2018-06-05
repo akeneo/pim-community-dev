@@ -135,3 +135,7 @@
 - Move `Pim\Component\Catalog\Model\FamilyVariantTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslationInterface`
 - Move `Pim\Bundle\CatalogBundle\Entity\AttributeRequirement` to `Akeneo\Pim\Structure\Component\Model\AttributeRequirement`
 - Move `Pim\Component\Catalog\Model\AttributeRequirementInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AttributeGroup` to `Akeneo\Pim\Structure\Component\Model\AttributeGroup`
+- Move `Pim\Component\Catalog\Model\AttributeGroupInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation` to `Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation`
+- Move `Pim\Component\Catalog\Model\AttributeGroupTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface`
