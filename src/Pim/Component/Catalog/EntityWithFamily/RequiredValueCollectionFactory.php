@@ -38,23 +38,13 @@ class RequiredValueCollectionFactory
         foreach ($this->filterRequirementsByChannel($family, $channel) as $attributeRequirement) {
             foreach ($attributeRequirement->getChannel()->getLocales() as $locale) {
                 if ($attributeRequirement->isRequired()) {
-                    $channel = $attributeRequirement->getChannel();
-
                     $attribute = $attributeRequirement->getAttribute();
-                    $channelCode = $attribute->isScopable() ? $channel->getCode() : null;
-                    $localeCode = $attribute->isLocalizable() ? $locale->getCode() : null;
-                    $getter = $this->simpleValueGetter();
 
                     if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
                         continue;
                     }
 
-                    if (!$attribute->isLocalizable() && $attribute->isLocaleSpecific() && $attribute->hasLocaleSpecific($locale)) {
-                        $localeCode = $locale->getCode();
-                        $getter = $this->localeSpecficGetter();
-                    }
-
-                    $requiredValues[] = new RequiredValue($attribute, $channelCode, $localeCode, $getter);
+                    $requiredValues[] = new RequiredValue($attribute, $attributeRequirement->getChannel(), $locale);
                 }
             }
         }
@@ -80,33 +70,5 @@ class RequiredValueCollectionFactory
         }
 
         return $requirements;
-    }
-
-    protected function simpleValueGetter(): \Closure
-    {
-        return function (
-            EntityWithValuesInterface $entityWithValues,
-            AttributeInterface $attribute,
-            $channelCode,
-            $localeCode
-        ) {
-            $requiredValue = new RequiredValue($attribute, $channelCode, $localeCode);
-
-            return $entityWithValues->getValues()->getSame($requiredValue);
-        };
-    }
-
-    protected function localeSpecficGetter(): \Closure
-    {
-        return function (
-            EntityWithValuesInterface $entityWithValues,
-            AttributeInterface $attribute,
-            $channelCode,
-            $localeCode
-        ) {
-            $requiredValue = new RequiredValue($attribute, $channelCode, null);
-
-            return $entityWithValues->getValues()->getSame($requiredValue);
-        };
     }
 }

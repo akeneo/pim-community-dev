@@ -62,7 +62,7 @@ class IncompleteValueCollectionFactory
     }
 
     /**
-     * @param ValueInterface            $value
+     * @param ValueInterface            $requiredValue
      * @param ChannelInterface          $channel
      * @param LocaleInterface           $locale
      * @param EntityWithValuesInterface $entityWithValues
@@ -70,16 +70,15 @@ class IncompleteValueCollectionFactory
      * @return bool
      */
     private function isValueMissingOrEmpty(
-        RequiredValue $value,
+        RequiredValue $requiredValue,
         ChannelInterface $channel,
         LocaleInterface $locale,
         EntityWithValuesInterface $entityWithValues
     ) {
-        $actualValue = $value->valueFromEntity()(
-            $entityWithValues,
-            $value->getAttribute(),
-            $value->getScope(),
-            $value->getLocale()
+        $actualValue = $entityWithValues->getValues()->getByCodes(
+            $requiredValue->forAttributeCode(),
+            $requiredValue->forScope(),
+            $requiredValue->forLocale($locale)
         );
 
         if (null === $actualValue) {

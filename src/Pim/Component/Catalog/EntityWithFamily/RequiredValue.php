@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\EntityWithFamily;
 
-use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * A required value is the translation of the attribute requirements
@@ -23,47 +23,75 @@ use Pim\Component\Catalog\Model\ValueInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class RequiredValue extends AbstractValue implements ValueInterface
+class RequiredValue
 {
-    /** @var \Closure  */
-    private $valueGetter;
+    /** @var AttributeInterface */
+    private $attribute;
+
+    /** @var ChannelInterface */
+    private $channel;
+
+    /** @var LocaleInterface */
+    private $locale;
 
     /**
      * @param AttributeInterface $attribute
-     * @param string             $channel
-     * @param string             $locale
-     * @param string             $valueGetter
+     * @param ChannelInterface   $channel
+     * @param LocaleInterface    $locale
      */
     public function __construct(
         AttributeInterface $attribute,
-        string $channel = null,
-        string $locale = null,
-        \Closure $valueGetter = null
+        ChannelInterface $channel,
+        LocaleInterface $locale
     ) {
-        $this->setAttribute($attribute);
-        $this->setScope($channel);
-        $this->setLocale($locale);
-        $this->valueGetter = $valueGetter;
+        $this->attribute = $attribute;
+        $this->channel = $channel;
+        $this->locale = $locale;
     }
 
-    public function valueFromEntity(): \Closure
+    public function getAttribute(): AttributeInterface
     {
-        return $this->valueGetter;
+        return $this->attribute;
+    }
+
+    public function getScope(): ChannelInterface
+    {
+        return $this->channel;
+    }
+
+    public function getLocale(): LocaleInterface
+    {
+        return $this->locale;
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getData()
+    public function forAttributeCode(): string
     {
-        return null;
+        return $this->attribute->getCode();
     }
 
     /**
-     * {@inheritdoc}
+     * @return null|string
      */
-    public function __toString()
+    public function forScope(): ?string
     {
-        return null;
+        return $this->attribute->isScopable() ? $this->channel->getCode() : null;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function forLocale(LocaleInterface $locale): ?string
+    {
+        if (!$this->attribute->isLocalizable() &&
+            $this->attribute->isLocaleSpecific() &&
+            $this->attribute->hasLocaleSpecific($locale)
+        ) {
+            return null;
+        }
+
+        return $this->locale->getCode();
     }
 }
