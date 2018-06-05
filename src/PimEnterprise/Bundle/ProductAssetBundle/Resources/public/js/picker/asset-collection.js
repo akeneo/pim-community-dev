@@ -36,7 +36,7 @@ define(
             template: _.template(template),
             events: {
                 'click .add-asset': 'updateAssets',
-                'click .asset-thumbnail': 'openPreviewModal'
+                'click .asset-thumbnail': 'updateAssetsFromPreview'
             },
             modalTemplate: _.template(templateModal),
 
@@ -168,11 +168,27 @@ define(
             },
 
             /**
+             * Launch the asset picker and set the assets after update
+             *
+             * @param {Event} clickEvent
+             */
+            updateAssetsFromPreview: function (clickEvent) {
+                this.openPreviewModal(clickEvent).then(function (assets) {
+                    this.data = assets;
+
+                    this.trigger('collection:change', assets);
+                    this.render();
+                }.bind(this));
+            },
+
+            /**
              * Opens a modal to show the preview
              *
              * @param {Event} clickEvent
              */
             openPreviewModal(clickEvent) {
+                const deferred = $.Deferred();
+
                 FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(function (assets) {
                     const modal = new Backbone.BootstrapModal({
                         className: 'modal modal--fullPage modal--topButton',
@@ -206,14 +222,21 @@ define(
                         modal.$('.download').attr('href', item.data('url'));
                     };
 
-                    const switchWithGap = function (gap) {
-                        const thumbnails = modal.$('.asset-thumbnail-item');
+                    const switchWithGap = function (gap, destroy) {
+                        let thumbnails = modal.$('.asset-thumbnail-item');
                         let clickedIndex = null;
                         thumbnails.each(function (i, thumbnail) {
                             if (!($(thumbnail).hasClass('AknAssetCollectionField-listItem--transparent'))) {
                                 clickedIndex = i;
                             }
                         });
+                        if (destroy === true) {
+                            $(thumbnails[clickedIndex]).remove();
+                            thumbnails = modal.$('.asset-thumbnail-item');
+                            if (clickedIndex === 0) {
+                                clickedIndex++;
+                            }
+                        }
                         switchModalItem($(thumbnails[(clickedIndex + gap + thumbnails.length) % thumbnails.length]));
                     };
 
@@ -222,17 +245,34 @@ define(
                     });
 
                     modal.$('.browse-left').click(function () {
-                        switchWithGap(-1);
+                        switchWithGap(-1, false);
                     });
 
                     modal.$('.browse-right').click(function () {
-                        switchWithGap(1);
+                        switchWithGap(1, false);
                     });
+
+                    modal.$('.remove').click(function (e) {
+                        e.stopPropagation();
+                        switchWithGap(-1, true);
+                    });
+
+                    modal.on('cancel', function () {
+                        const thumbnails = modal.$('.asset-thumbnail-item');
+                        let assetCodes = [];
+                        thumbnails.each(function (i, thumbnail) {
+                            assetCodes.push($(thumbnail).data('asset'))
+                        });
+                        modal.close();
+
+                        deferred.resolve(assetCodes);
+                    }.bind(this));
 
                     const clickedAsset = $(clickEvent.currentTarget).closest('.asset-thumbnail-item').data('asset');
                     switchModalItem(modal.$('.asset-thumbnail-item[data-asset="' + clickedAsset + '"]'));
-                    this.delegateEvents();
                 }.bind(this));
+
+                return deferred.promise();
             }
         });
     }

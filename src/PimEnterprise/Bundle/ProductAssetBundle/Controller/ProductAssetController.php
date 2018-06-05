@@ -125,6 +125,9 @@ class ProductAssetController extends Controller
     /** @var CategoryManager */
     protected $categoryManager;
 
+    /** @var string */
+    protected $defaultImagePath;
+
     /**
      * @param AssetRepositoryInterface         $assetRepository
      * @param ReferenceRepositoryInterface     $referenceRepository
@@ -146,6 +149,7 @@ class ProductAssetController extends Controller
      * @param AssetCategoryRepositoryInterface $assetCategoryRepo
      * @param CategoryRepositoryInterface      $categoryRepository
      * @param CategoryManager                  $categoryManager
+     * @param string                           $defaultImagePath
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -167,7 +171,8 @@ class ProductAssetController extends Controller
         FileController $fileController,
         AssetCategoryRepositoryInterface $assetCategoryRepo,
         CategoryRepositoryInterface $categoryRepository,
-        CategoryManager $categoryManager
+        CategoryManager $categoryManager,
+        $defaultImagePath
     ) {
         $this->assetRepository = $assetRepository;
         $this->referenceRepository = $referenceRepository;
@@ -189,6 +194,7 @@ class ProductAssetController extends Controller
         $this->assetCategoryRepo = $assetCategoryRepo;
         $this->categoryRepository = $categoryRepository;
         $this->categoryManager = $categoryManager;
+        $this->defaultImagePath = $defaultImagePath;
     }
 
     /**
@@ -578,8 +584,7 @@ class ProductAssetController extends Controller
     {
         $filename = $this->getFileName($code, $channelCode, $localeCode);
         if (FileController::DEFAULT_IMAGE_KEY === $filename) {
-            // TODO Put this into conf
-            return new RedirectResponse('/bundles/pimui/images/Default-picture.svg', 301);
+            return new RedirectResponse($this->defaultImagePath, 301);
         }
 
         return $this->fileController->downloadAction(urlencode($filename));
@@ -592,7 +597,7 @@ class ProductAssetController extends Controller
      *
      * @return string
      */
-    private function getFileName($code, $channelCode, $localeCode = null) {
+    private function getFileName($code, $channelCode, $localeCode = null): string {
         $asset = $this->findProductAssetByCodeOr404($code);
         $filename = FileController::DEFAULT_IMAGE_KEY;
 

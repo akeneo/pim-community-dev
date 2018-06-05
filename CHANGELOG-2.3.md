@@ -3,6 +3,7 @@
 ## Improve Julia's experience
 
 - PIM-7405: As Julia, I would like to order the assets linked to the products in the asset collection in the product form
+- PIM-7397: Add asset collection preview on the product edit form
 
 ## BC Breaks
 
@@ -20,6 +21,7 @@
 - AOB-62: Property `$product` has been renamed into `$entityWithValues` into `PimEnterprise\Component\Workflow\Model\ProductDraft`
 - AOB-62: Column `product` has been renamed into `entityWithValues` on the `pimee_workflow_product_draft` table.
 - AOB-62: Renamed `PimEnterprise\Component\Workflow\Event\ProductDraftEvents` into `PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents`.
+- PIM-7397: Add `string` as last parameter of `PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController` constructor.
 
 # 2.3.0-ALPHA1 (2018-04-27)
 
@@ -41,4 +43,5 @@
 - AOB-62: Rename `PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectProductForProductDraftSubscriber` into `PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectEntityWithValuesForProductDraftSubscriber`
 
 ## New jobs
+
 Be sure to run the following command `bin/console pim:installer:grant-backend-processes-accesses --env=prod` to add missing job profile accesses.
