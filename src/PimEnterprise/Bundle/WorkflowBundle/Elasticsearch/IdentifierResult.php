@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Elasticsearch;
 
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
@@ -49,12 +58,12 @@ class IdentifierResult
         return $this->type;
     }
 
-    public function isProductIdentifierEquals(string $identifier): bool
+    public function isProductDraftIdentifierEquals(string $identifier): bool
     {
         return $identifier === $this->identifier && ProductDraft::class === $this->type;
     }
 
-    public function isProductModelIdentifierEquals(string $identifier): bool
+    public function isProductModelDraftIdentifierEquals(string $identifier): bool
     {
         return $identifier === $this->identifier && ProductModelDraft::class === $this->type;
     }
