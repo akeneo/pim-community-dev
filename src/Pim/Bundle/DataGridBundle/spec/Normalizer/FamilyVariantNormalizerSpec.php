@@ -5,8 +5,8 @@ namespace spec\Pim\Bundle\DataGridBundle\Normalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Normalizer\FamilyVariantNormalizer;
-use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class FamilyVariantNormalizerSpec extends ObjectBehavior

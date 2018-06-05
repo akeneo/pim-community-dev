@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Pim\Component\Catalog\Validator\Constraints\Immutable;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 /**
@@ -22,7 +22,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     public function getFullRequirementsQB(FamilyInterface $family, $localeCode)
     {
         $qb = $this->getEntityManager()
-            ->getRepository('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement')
+            ->getRepository('Akeneo\Pim\Structure\Component\Model\AttributeRequirement')
             ->createQueryBuilder('r')
             ->select('r, a, t')
             ->leftJoin('r.attribute', 'a');

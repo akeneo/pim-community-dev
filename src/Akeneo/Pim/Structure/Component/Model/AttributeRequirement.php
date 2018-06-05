@@ -1,11 +1,12 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * The attribute requirement for a channel and a family

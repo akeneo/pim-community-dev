@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Manager\CompletenessManager;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -68,7 +68,7 @@ class FamilySaverSpec extends ObjectBehavior
             ->shouldThrow(
                 new \InvalidArgumentException(
                     sprintf(
-                        'Expects a "Pim\Component\Catalog\Model\FamilyInterface", "%s" provided.',
+                        'Expects a "Akeneo\Pim\Structure\Component\Model\FamilyInterface", "%s" provided.',
                         get_class($anythingElse)
                     )
                 )

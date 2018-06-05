@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

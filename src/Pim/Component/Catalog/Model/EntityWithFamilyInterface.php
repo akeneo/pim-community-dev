@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+
 /**
  * Entity with a family.
  *

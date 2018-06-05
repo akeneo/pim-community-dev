@@ -4,14 +4,14 @@ namespace Pim\Component\Catalog\tests\integration\Updater;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Updater\AttributeGroupUpdater;
 
 class AttributeGroupUpdaterIntegration extends TestCase
 {
     /**
      * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException
-     * @expectedExceptionMessage Expects a "Pim\Component\Catalog\Model\AttributeGroupInterface", "stdClass" given.
+     * @expectedExceptionMessage Expects a "Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface", "stdClass" given.
      */
     public function testUpdateObjectInAttributeGroupUpdater()
     {

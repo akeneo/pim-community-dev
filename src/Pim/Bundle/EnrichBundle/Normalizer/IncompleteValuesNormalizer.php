@@ -10,7 +10,7 @@ use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

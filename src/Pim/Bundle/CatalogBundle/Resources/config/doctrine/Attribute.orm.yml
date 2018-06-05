@@ -150,7 +150,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             orphanRemoval: true
     manyToOne:
         group:
-            targetEntity: Pim\Component\Catalog\Model\AttributeGroupInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface
             inversedBy: attributes
             joinColumns:
                 group_id:
@@ -170,5 +170,5 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                         referencedColumnName: id
                         onDelete: CASCADE
         families:
-            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
             mappedBy: attributes

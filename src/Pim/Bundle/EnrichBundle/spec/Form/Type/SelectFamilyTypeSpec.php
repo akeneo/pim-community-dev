@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Form\Type\AsyncSelectType;
 use Pim\Bundle\EnrichBundle\Form\Type\SelectFamilyType;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\AbstractType;

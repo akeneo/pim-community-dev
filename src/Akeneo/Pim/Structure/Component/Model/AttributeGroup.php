@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
@@ -290,7 +290,7 @@ class AttributeGroup implements AttributeGroupInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation';
+        return 'Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation';
     }
 
     /**

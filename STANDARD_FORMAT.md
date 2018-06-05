@@ -464,7 +464,7 @@ Its standard format would be the following:
 | type          | data structure | data example                                                              | notes                                                                                            |
 | ------------- | -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | identifier    | string         | `"bar"`                                                                   | it's the identifier of the product                                                               |
-| family        | string         | `"familyA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface*                    |
+| family        | string         | `"familyA"`                                                               | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyInterface*                    |
 | groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the objects *Pim\Component\Catalog\Model\GroupInterface*             |
 | categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the objects *Akeneo\Tool\Component\Classification\Model\CategoryInterface* |
 | enabled       | boolean        | `true`                                                                    |                                                                                                  |
@@ -818,7 +818,7 @@ Its standard format would be the following:
 
 | type          | data structure | data example           | notes                                                                                            |
 | ------------- | -------------- | ---------------------- | ------------------------------------------------------------------------------------------------ |
-| family_variant| string         | `"familyVariantA"`     | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyVariantInterface*             |
+| family_variant| string         | `"familyVariantA"`     | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface*             |
 | parent        | string         | `"fooProductModel"`    | it represents the *code* of the *Pim\Component\Catalog\Model\ProductModelInterface*              |
 
 ## Product model
@@ -854,8 +854,8 @@ Its standard format would be the following:
 | type          | data structure | data example                                                              | notes                                                                                            |
 | ------------- | -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | code          | string         | `"bar"`                                                                   | it's the identifier of the product model                                                         |
-| family        | string         | `"familyA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface*                    |
-| family_variant| string         | `"familyVariantA1"`                                                       | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyVariantInterface*             |
+| family        | string         | `"familyA"`                                                               | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyInterface*                    |
+| family_variant| string         | `"familyVariantA1"`                                                       | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface*             |
 | parent        | string         | `"fooProductModel"`                                                       | it represents the *code* of the *Pim\Component\Catalog\Model\ProductModelInterface*              |
 | groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
 | categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Tool\Component\Classification\Model\CategoryInterface* |
@@ -1364,7 +1364,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | attribute_as_label     | string         | `"sku"`                                                                  | it represents the *code* of the object *Akeneo\Pim\Structure\Component\Model\AttributeInterface* used as label              |
 | attribute_as_image     | string         | `"image"`                                                                | it represents the *code* of the object *Akeneo\Pim\Structure\Component\Model\AttributeInterface* used as image. Can be null |
 | attribute_requirements | array          | `["ecommerce" => [0 => "sku", "a_text_area"], "tablet" => [0 => "sku"]]` | each element of the array represents the *code* of the *Akeneo\Pim\Structure\Component\Model\AttributeInterface*            |
-| family_variants        | array          | `[0 => "a_family_variant", 1 => "another_family_variant"]`               | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\FamilyVariantInterface*            |
+| family_variants        | array          | `[0 => "a_family_variant", 1 => "another_family_variant"]`               | each element of the array represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface*            |
 
 
 ### Family variant
@@ -1393,7 +1393,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | type                   | data structure | data example                                                                                               | notes                                                                                                   |
 | ---------------------- | -------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | code                   | string         | `"my_family_variant"`                                                                                      | it's the identifier of the family variant                                                                |
-| family                 | string         | `"family"`                                                                                                 | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface* the family variant belongs to |
+| family                 | string         | `"family"`                                                                                                 | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyInterface* the family variant belongs to |
 | labels                 | array          | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*        |
 | variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select_attribute"], "attributes" => ["a_simple_select_attribute", "an_attribute", "an_other_attribute"]]]`, | an array containing the 3 following keys: `level` which is an integer always stricly higher than 0, `axes` and `attributes` which are arrays where each element represents the *code* of the *Akeneo\Pim\Structure\Component\Model\AttributeInterface* |
 
