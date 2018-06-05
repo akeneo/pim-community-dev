@@ -1,0 +1,98 @@
+{
+  "id": "35c1c788-bef2-4024-8366-237145703fef",
+  "spec": {
+    "mpn": "03504410000",
+    "sku": "1112059",
+    "brand": "Continental Tire",
+    "attributes": {
+      "Aspect Ratio": "45"
+    },
+    "last_modified": "2018-04-10 16:07:40"
+  },
+  "_links": {
+    "self": {
+      "href": "https://0.0.0.0/api/subscription/35c1c788-bef2-4024-8366-237145703fef"
+    },
+    "subscribe": {
+      "href": "https://0.0.0.0/subscribe",
+      "type": "application/prs.hal-forms+json"
+    },
+    "unsubscribe": {
+      "href": "https://0.0.0.0/unsubscribe",
+      "type": "application/prs.hal-forms+json"
+    },
+    "server-sent-events": {
+      "href": "https://0.0.0.0/sse/",
+      "type": "text/event-stream"
+    },
+    "websocket": {
+      "href": "https://0.0.0.0/ws/"
+    }
+  },
+  "_embedded": {
+    "subscribe": {
+      "_links": {
+        "self": {
+          "href": "https://0.0.0.0/subscribe"
+        }
+      },
+      "_templates": {
+        "default": {
+          "title": "subscribe",
+          "method": "POST",
+          "contentType": "application/x-www-form-urlencoded",
+          "properties": [
+            {
+              "name": "hub.callback",
+              "required": true,
+              "type": "url"
+            },
+            {
+              "name": "hub.topic",
+              "required": true,
+              "type": "url"
+            },
+            {
+              "name": "hub.mode",
+              "required": true,
+              "type": "string",
+              "value": "subscribe"
+            }
+          ]
+        }
+      }
+    },
+    "unsubscribe": {
+      "_links": {
+        "self": {
+          "href": "https://0.0.0.0/unsubscribe"
+        }
+      },
+      "_templates": {
+        "default": {
+          "title": "unsubscribe",
+          "method": "POST",
+          "contentType": "application/x-www-form-urlencoded",
+          "properties": [
+            {
+              "name": "hub.callback",
+              "required": true,
+              "type": "url"
+            },
+            {
+              "name": "hub.topic",
+              "required": true,
+              "type": "url"
+            },
+            {
+              "name": "hub.mode",
+              "required": true,
+              "type": "string",
+              "value": "unsubscribe"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

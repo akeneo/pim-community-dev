@@ -1,0 +1,325 @@
+{
+  "_links": {
+    "product": [
+      {
+        "href": "https://::ffff:172.20.0.11/api/subscription/cd442ee0-5692-4249-a7f6-a69473c028d7"
+      },
+      {
+        "href": "https://::ffff:172.20.0.11/api/subscription/dd5e0bcd-9ba4-41da-9388-0b5338df671e"
+      },
+      {
+        "href": "https://::ffff:172.20.0.11/api/subscription/72eee431-f49b-481e-9473-fb6231d58772"
+      }
+    ]
+  },
+  "_embedded": {
+    "product": [
+      {
+        "id": "cd442ee0-5692-4249-a7f6-a69473c028d7",
+        "spec": {
+          "sku": "accc6f08-bbd0-4959-bea1-0cfd4cd5a431",
+          "upc": "822422805250",
+          "asin": "B0778KFZ3X",
+          "brand": "FIRSTSTEP",
+          "attributes": {
+            "Material Type": "NBR",
+            "Product Color": "Brown"
+          },
+          "last_modified": "2018-04-24 14:32:48"
+        },
+        "_links": {
+          "self": {
+            "href": "https://::ffff:172.20.0.11/api/subscription/cd442ee0-5692-4249-a7f6-a69473c028d7"
+          },
+          "subscribe": {
+            "href": "https://::ffff:172.20.0.11/subscribe",
+            "type": "application/prs.hal-forms+json"
+          },
+          "unsubscribe": {
+            "href": "https://::ffff:172.20.0.11/unsubscribe",
+            "type": "application/prs.hal-forms+json"
+          },
+          "server-sent-events": {
+            "href": "https://::ffff:172.20.0.11/sse/",
+            "type": "text/event-stream"
+          },
+          "websocket": {
+            "href": "https://::ffff:172.20.0.11/ws/"
+          }
+        },
+        "_embedded": {
+          "subscribe": {
+            "_links": {
+              "self": {
+                "href": "https://::ffff:172.20.0.11/subscribe"
+              }
+            },
+            "_templates": {
+              "default": {
+                "title": "subscribe",
+                "method": "POST",
+                "contentType": "application/x-www-form-urlencoded",
+                "properties": [
+                  {
+                    "name": "hub.callback",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.topic",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.mode",
+                    "required": true,
+                    "type": "string",
+                    "value": "subscribe"
+                  }
+                ]
+              }
+            }
+          },
+          "unsubscribe": {
+            "_links": {
+              "self": {
+                "href": "https://::ffff:172.20.0.11/unsubscribe"
+              }
+            },
+            "_templates": {
+              "default": {
+                "title": "unsubscribe",
+                "method": "POST",
+                "contentType": "application/x-www-form-urlencoded",
+                "properties": [
+                  {
+                    "name": "hub.callback",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.topic",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.mode",
+                    "required": true,
+                    "type": "string",
+                    "value": "unsubscribe"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "dd5e0bcd-9ba4-41da-9388-0b5338df671e",
+        "spec": {
+          "asin": "auisretaurnie"
+        },
+        "_links": {
+          "self": {
+            "href": "https://::ffff:172.20.0.11/api/subscription/dd5e0bcd-9ba4-41da-9388-0b5338df671e"
+          },
+          "subscribe": {
+            "href": "https://::ffff:172.20.0.11/subscribe",
+            "type": "application/prs.hal-forms+json"
+          },
+          "unsubscribe": {
+            "href": "https://::ffff:172.20.0.11/unsubscribe",
+            "type": "application/prs.hal-forms+json"
+          },
+          "server-sent-events": {
+            "href": "https://::ffff:172.20.0.11/sse/",
+            "type": "text/event-stream"
+          },
+          "websocket": {
+            "href": "https://::ffff:172.20.0.11/ws/"
+          }
+        },
+        "_embedded": {
+          "subscribe": {
+            "_links": {
+              "self": {
+                "href": "https://::ffff:172.20.0.11/subscribe"
+              }
+            },
+            "_templates": {
+              "default": {
+                "title": "subscribe",
+                "method": "POST",
+                "contentType": "application/x-www-form-urlencoded",
+                "properties": [
+                  {
+                    "name": "hub.callback",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.topic",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.mode",
+                    "required": true,
+                    "type": "string",
+                    "value": "subscribe"
+                  }
+                ]
+              }
+            }
+          },
+          "unsubscribe": {
+            "_links": {
+              "self": {
+                "href": "https://::ffff:172.20.0.11/unsubscribe"
+              }
+            },
+            "_templates": {
+              "default": {
+                "title": "unsubscribe",
+                "method": "POST",
+                "contentType": "application/x-www-form-urlencoded",
+                "properties": [
+                  {
+                    "name": "hub.callback",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.topic",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.mode",
+                    "required": true,
+                    "type": "string",
+                    "value": "unsubscribe"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": "72eee431-f49b-481e-9473-fb6231d58772",
+        "spec": {
+          "mpn": "0008700",
+          "sku": "e7c4c7ab-ce00-422c-ac41-fad480d544c2",
+          "upc": "0043396087002",
+          "asin": "B00006L927",
+          "brand": "David Connelly (Actor), Joseph Siravo (Actor), Jil",
+          "attributes": {
+            "Genre": "Drama",
+            "Rated": "R restricted",
+            "Dubbed": "French",
+            "Rating": "R",
+            "Studio": "Sony Pictures Home Entertainment",
+            "Edition": "Special Edition",
+            "Director": "Jill Sprecher",
+            "Language": "English (Dolby Digital 5.1), French (Unknown)",
+            "Run Time": "104 min",
+            "Format(s)": "DVD",
+            "Producers": "Beni Tadd Atoori , Gina Resnick",
+            "Region Code": "DVD: 0/ALL (Region Free/Worldwide)",
+            "Aspect Ratio": "1.85:1",
+            "Number of Discs": "1",
+            "DVD Release Date": "November 19, 2002"
+          },
+          "last_modified": "2018-04-24 14:15:52"
+        },
+        "_links": {
+          "self": {
+            "href": "https://::ffff:172.20.0.11/api/subscription/72eee431-f49b-481e-9473-fb6231d58772"
+          },
+          "subscribe": {
+            "href": "https://::ffff:172.20.0.11/subscribe",
+            "type": "application/prs.hal-forms+json"
+          },
+          "unsubscribe": {
+            "href": "https://::ffff:172.20.0.11/unsubscribe",
+            "type": "application/prs.hal-forms+json"
+          },
+          "server-sent-events": {
+            "href": "https://::ffff:172.20.0.11/sse/",
+            "type": "text/event-stream"
+          },
+          "websocket": {
+            "href": "https://::ffff:172.20.0.11/ws/"
+          }
+        },
+        "_embedded": {
+          "subscribe": {
+            "_links": {
+              "self": {
+                "href": "https://::ffff:172.20.0.11/subscribe"
+              }
+            },
+            "_templates": {
+              "default": {
+                "title": "subscribe",
+                "method": "POST",
+                "contentType": "application/x-www-form-urlencoded",
+                "properties": [
+                  {
+                    "name": "hub.callback",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.topic",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.mode",
+                    "required": true,
+                    "type": "string",
+                    "value": "subscribe"
+                  }
+                ]
+              }
+            }
+          },
+          "unsubscribe": {
+            "_links": {
+              "self": {
+                "href": "https://::ffff:172.20.0.11/unsubscribe"
+              }
+            },
+            "_templates": {
+              "default": {
+                "title": "unsubscribe",
+                "method": "POST",
+                "contentType": "application/x-www-form-urlencoded",
+                "properties": [
+                  {
+                    "name": "hub.callback",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.topic",
+                    "required": true,
+                    "type": "url"
+                  },
+                  {
+                    "name": "hub.mode",
+                    "required": true,
+                    "type": "string",
+                    "value": "unsubscribe"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

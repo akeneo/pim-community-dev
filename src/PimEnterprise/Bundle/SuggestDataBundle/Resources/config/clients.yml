@@ -1,0 +1,26 @@
+services:
+
+    pimee_suggestdata.pim_ai_client:
+        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Clients\Memory
+        public: false
+        arguments:
+            - !service
+              class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\UriGenerator
+              arguments:
+                  - 'http://localhost:8080'
+
+    pimee_suggestdata.pim_ai_api_enrichment:
+        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Enrichment
+        arguments:
+            - '@pimee_suggestdata.pim_ai_client'
+
+    pimee_suggestdata.pim_ai_api_subscription:
+        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Subscription
+        arguments:
+            - '@pimee_suggestdata.pim_ai_client'
+
+    pimee_suggestdata.pim_ai_api_client:
+        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\PimAiApi
+        arguments:
+            - '@pimee_suggestdata.pim_ai_api_enrichment'
+            - '@pimee_suggestdata.pim_ai_api_subscription'

@@ -32,5 +32,6 @@ class PimEnterpriseSuggestDataExtension extends Extension
         $loader->load('connector.yml');
         $loader->load('controllers.yml');
         $loader->load('data_providers.yml');
+        $loader->load('clients.yml');
     }
 }
