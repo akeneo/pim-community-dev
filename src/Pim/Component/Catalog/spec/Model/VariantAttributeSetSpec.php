@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\VariantAttributeSet;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 
 class VariantAttributeSetSpec extends ObjectBehavior

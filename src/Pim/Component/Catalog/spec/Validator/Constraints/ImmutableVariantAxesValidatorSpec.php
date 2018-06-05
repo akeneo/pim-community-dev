@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\VariantAttributeSet;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
 use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes;
 use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator;
 use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;

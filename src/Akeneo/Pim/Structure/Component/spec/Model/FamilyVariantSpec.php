@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\VariantAttributeSet;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -158,7 +158,7 @@ class FamilyVariantSpec extends ObjectBehavior
         $name = new Attribute();
         $name->setCode('name');
 
-        $variantAttributeSet = new VariantAttributeSet();
+        $variantAttributeSet = new \Akeneo\Pim\Structure\Component\Model\VariantAttributeSet();
         $variantAttributeSet->addAttribute($name);
         $variantAttributeSet->setLevel(1);
 
@@ -195,7 +195,7 @@ class FamilyVariantSpec extends ObjectBehavior
         $name = new Attribute();
         $name->setCode('name');
 
-        $variantAttributeSet = new VariantAttributeSet();
+        $variantAttributeSet = new \Akeneo\Pim\Structure\Component\Model\VariantAttributeSet();
         $variantAttributeSet->setAxes([$color]);
         $variantAttributeSet->setLevel(1);
 
