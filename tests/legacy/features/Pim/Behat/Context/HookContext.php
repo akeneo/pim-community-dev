@@ -3,6 +3,7 @@
 namespace Pim\Behat\Context;
 
 use Akeneo\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Tester\Result\StepResult;
@@ -59,7 +60,7 @@ class HookContext extends PimContext
 
         $purger->purge();
 
-        $this->resetElasticsearchIndex();
+        $this->deleteElasticsearchDocuments();
     }
 
     /**
@@ -205,15 +206,6 @@ class HookContext extends PimContext
     /**
      * @BeforeScenario
      */
-    public function clearRecordedMails()
-    {
-        //TODO
-//        $this->getMainContext()->getMailRecorder()->clear();
-    }
-
-    /**
-     * @BeforeScenario
-     */
     public static function resetPlaceholderValues()
     {
         parent::resetPlaceholderValues();
@@ -292,15 +284,22 @@ class HookContext extends PimContext
     }
 
     /**
-     * Resets the elasticsearch index
+     * Delete all documents in all clients.
+     * Before deleting all of them, we need to refresh the index to avoid a Elasticsearch\Common\Exceptions\Conflict409Exception
+     * And to be sure the index will be clean at the end of the process, we refresh it again.
      */
-    private function resetElasticsearchIndex()
+    private function deleteElasticsearchDocuments()
     {
         $clientRegistry = $this->getService('akeneo_elasticsearch.registry.clients');
         $clients = $clientRegistry->getClients();
 
         foreach ($clients as $client) {
-            $client->resetIndex();
+            $client->refreshIndex();
+            $client->deleteByQuery([
+                'query' => [
+                    'match_all' => new \stdClass()
+                ],
+            ], Refresh::waitFor());
         }
     }
 }

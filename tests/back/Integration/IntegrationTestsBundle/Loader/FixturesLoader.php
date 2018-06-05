@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -80,7 +81,7 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     public function load(): void
     {
-        $this->resetElasticsearchIndex();
+        $this->deleteElasticsearchDocuments();
 
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
@@ -370,13 +371,23 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->container->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);
     }
 
-    protected function resetElasticsearchIndex(): void
+    /**
+     * Delete all documents in all clients.
+     * Before deleting all of them, we need to refresh the index to avoid a Elasticsearch\Common\Exceptions\Conflict409Exception
+     * And to be sure the index will be clean at the end of the process, we refresh it again.
+     */
+    protected function deleteElasticsearchDocuments(): void
     {
         $clientRegistry = $this->container->get('akeneo_elasticsearch.registry.clients');
         $clients = $clientRegistry->getClients();
 
         foreach ($clients as $client) {
-            $client->resetIndex();
+            $client->refreshIndex();
+            $client->deleteByQuery([
+                'query' => [
+                    'match_all' => new \stdClass()
+                ],
+            ], Refresh::waitFor());
         }
     }
 }
