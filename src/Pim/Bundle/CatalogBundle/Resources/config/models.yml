@@ -9,7 +9,7 @@ parameters:
     pim_catalog.model.group.interface:                  Pim\Component\Catalog\Model\GroupInterface
     pim_catalog.model.group_type.interface:             Pim\Component\Catalog\Model\GroupTypeInterface
     pim_catalog.model.attribute.interface:              Akeneo\Pim\Structure\Component\Model\AttributeInterface
-    pim_catalog.model.attribute_group.interface:        Pim\Component\Catalog\Model\AttributeGroupInterface
+    pim_catalog.model.attribute_group.interface:        Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface
     pim_catalog.model.attribute_option.interface:       Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
     pim_catalog.model.attribute_option_value.interface: Pim\Component\Catalog\Model\AttributeOptionValueInterface
     pim_catalog.model.attribute_requirement.interface:  Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface
