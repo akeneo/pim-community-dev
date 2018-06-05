@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Model;
+namespace spec\Akeneo\Pim\Structure\Component\Model;
 
-use Pim\Component\Catalog\Model\FamilyVariantTranslation;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslation;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\FamilyVariantTranslationInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslationInterface;
 use Prophecy\Argument;
 
 class FamilyVariantTranslationSpec extends ObjectBehavior

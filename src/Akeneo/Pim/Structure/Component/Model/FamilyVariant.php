@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
-use Pim\Component\Catalog\Model\FamilyVariantTranslation;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslation;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 
 /**

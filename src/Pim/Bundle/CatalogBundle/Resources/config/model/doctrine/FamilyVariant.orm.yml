@@ -16,7 +16,7 @@ Pim\Component\Catalog\Model\FamilyVariant:
 
     oneToMany:
         translations:
-            targetEntity: Pim\Component\Catalog\Model\FamilyVariantTranslationInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist
