@@ -133,6 +133,13 @@ legacy:
                     - '@pim_catalog.saver.product'
                     - '@pim_catalog.repository.product'
                     - '@doctrine.orm.entity_manager'
+                - PimEnterprise\Behat\Context\Proposal\ProductProposalStorageContext:
+                    - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+                    - '@pim_catalog.repository.product'
+                    - '@pimee_workflow.repository.product_draft'
+                    - '@doctrine.orm.entity_manager'
+                - PimEnterprise\Behat\Context\AuthenticatedImportFileContext:
+                    - 'Context\EnterpriseFeatureContext'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
