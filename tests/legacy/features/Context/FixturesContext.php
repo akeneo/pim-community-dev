@@ -1979,7 +1979,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $familyCode
      * @param string $channelCode
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeRequirement|null
+     * @return AttributeRequirement|null
      */
     protected function getAttributeRequirement($attributeCode, $familyCode, $channelCode)
     {
