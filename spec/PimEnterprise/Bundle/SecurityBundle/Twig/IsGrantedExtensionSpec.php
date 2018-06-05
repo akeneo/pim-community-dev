@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;

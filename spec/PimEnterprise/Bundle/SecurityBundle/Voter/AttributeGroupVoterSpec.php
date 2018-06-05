@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 use PimEnterprise\Component\Security\Attributes;

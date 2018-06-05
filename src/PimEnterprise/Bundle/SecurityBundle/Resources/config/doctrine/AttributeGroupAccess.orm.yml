@@ -31,7 +31,7 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
                 default: false
     manyToOne:
         attributeGroup:
-            targetEntity: Pim\Component\Catalog\Model\AttributeGroupInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface
             joinColumns:
                 attribute_group_id:
                     referencedColumnName: id

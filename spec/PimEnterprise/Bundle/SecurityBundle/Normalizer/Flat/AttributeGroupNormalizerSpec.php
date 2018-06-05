@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
 
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
