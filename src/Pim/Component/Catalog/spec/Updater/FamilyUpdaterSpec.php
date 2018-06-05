@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
+use Akeneo\Pim\Structure\Component\Model\FamilyTranslation;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
