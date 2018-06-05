@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
-use Pim\Component\Catalog\Model\AttributeTranslationInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
 
 /**
  * Attribute translation entity

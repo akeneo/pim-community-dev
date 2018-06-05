@@ -142,7 +142,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 sortOrder: ASC
                 code: ASC
         translations:
-            targetEntity: Pim\Component\Catalog\Model\AttributeTranslationInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist
