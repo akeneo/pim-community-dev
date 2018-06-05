@@ -15,7 +15,7 @@ parameters:
     pim_catalog.entity.group_type.class:                   Pim\Bundle\CatalogBundle\Entity\GroupType
     pim_catalog.entity.group_type_translation.class:       Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation
     pim_catalog.entity.attribute.class:                    Akeneo\Pim\Structure\Component\Model\Attribute
-    pim_catalog.entity.attribute_translation.class:        Pim\Bundle\CatalogBundle\Entity\AttributeTranslation
+    pim_catalog.entity.attribute_translation.class:        Akeneo\Pim\Structure\Component\Model\AttributeTranslation
     pim_catalog.entity.attribute_group.class:              Akeneo\Pim\Structure\Component\Model\AttributeGroup
     pim_catalog.entity.attribute_group_translation.class:  Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation
     pim_catalog.entity.attribute_option.class:             Akeneo\Pim\Structure\Component\Model\AttributeOption

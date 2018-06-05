@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
+use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 
 class TranslationNormalizerSpec extends ObjectBehavior
 {
