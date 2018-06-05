@@ -10,7 +10,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleRelationRepositoryInterfa
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AbstractAttribute;
+use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;

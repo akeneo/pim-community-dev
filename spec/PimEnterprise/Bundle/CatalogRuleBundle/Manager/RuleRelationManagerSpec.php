@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AbstractAttribute;
+use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
@@ -24,7 +24,7 @@ class RuleRelationManagerSpec extends ObjectBehavior
         CategoryRepositoryInterface $categoryRepository,
         RuleRelationRepositoryInterface $ruleRelationRepo
     ) {
-        $this->beConstructedWith($ruleRelationRepo, $attributeRepository, $categoryRepository, 'Pim\Bundle\CatalogBundle\Entity\Attribute', 'Pim\Bundle\CatalogBundle\Entity\Category');
+        $this->beConstructedWith($ruleRelationRepo, $attributeRepository, $categoryRepository, 'Akeneo\Pim\Structure\Component\Model\Attribute', 'Pim\Bundle\CatalogBundle\Entity\Category');
     }
 
     function it_returns_impacted_attributes(
@@ -73,11 +73,11 @@ class RuleRelationManagerSpec extends ObjectBehavior
 
     function it_tells_if_a_resource_is_impacted($ruleRelationRepo)
     {
-        $ruleRelationRepo->isResourceImpactedByRule(10, 'Pim\Bundle\CatalogBundle\Entity\Attribute')->willReturn(true);
-        $ruleRelationRepo->isResourceImpactedByRule(20, 'Pim\Bundle\CatalogBundle\Entity\Attribute')->willReturn(false);
+        $ruleRelationRepo->isResourceImpactedByRule(10, 'Akeneo\Pim\Structure\Component\Model\Attribute')->willReturn(true);
+        $ruleRelationRepo->isResourceImpactedByRule(20, 'Akeneo\Pim\Structure\Component\Model\Attribute')->willReturn(false);
 
         $this->isResourceImpacted(10, 'attribute')->shouldReturn(true);
-        $this->isResourceImpacted(20, 'Pim\Bundle\CatalogBundle\Entity\Attribute')->shouldReturn(false);
+        $this->isResourceImpacted(20, 'Akeneo\Pim\Structure\Component\Model\Attribute')->shouldReturn(false);
     }
 
     function it_throws_an_exception_when_retrieving_rules_of_an_unknown_resource()
@@ -101,6 +101,6 @@ class RuleRelationManagerSpec extends ObjectBehavior
         $ruleRelationRepo->findBy(Argument::any())->willReturn($relations);
 
         $this->getRulesForResource(Argument::any(), 'attribute')->shouldReturn($definitions);
-        $this->getRulesForResource(Argument::any(), 'Pim\Bundle\CatalogBundle\Entity\Attribute')->shouldReturn($definitions);
+        $this->getRulesForResource(Argument::any(), 'Akeneo\Pim\Structure\Component\Model\Attribute')->shouldReturn($definitions);
     }
 }
