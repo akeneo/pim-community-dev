@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Extracts attribute field information

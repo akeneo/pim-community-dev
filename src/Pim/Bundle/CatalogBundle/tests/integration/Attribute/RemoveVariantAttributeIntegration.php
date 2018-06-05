@@ -6,7 +6,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Attribute;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\FamilyVariant;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 
 /**
  * @author    Elodie Raposo (elodie.raposo@akeneo.com)

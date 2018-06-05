@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Component\Catalog\Value\OptionValueInterface;
 use Prophecy\Argument;

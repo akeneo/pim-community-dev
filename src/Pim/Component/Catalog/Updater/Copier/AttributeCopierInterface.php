@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
@@ -35,7 +35,7 @@ interface AttributeCopierInterface extends CopierInterface
      * Supports the source and destination attributes, and ensure both attributes
      * are of the same type.
      *
-     * @param AttributeInterface $fromAttribute
+     * @param AttributeInterface                                       $fromAttribute
      * @param AttributeInterface $toAttribute
      *
      * @return bool

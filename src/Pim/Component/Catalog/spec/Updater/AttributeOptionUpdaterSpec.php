@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
@@ -34,7 +34,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Pim\Component\Catalog\Model\AttributeOptionInterface'
+                'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface'
             )
         )->during(
             'update',
@@ -143,7 +143,7 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
             ]
         );
     }
-    
+
     function it_throws_an_exception_when_code_is_not_scalar(AttributeOptionInterface $attributeOption)
     {
         $values = [

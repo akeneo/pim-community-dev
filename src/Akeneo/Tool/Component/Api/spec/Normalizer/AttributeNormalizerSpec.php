@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Component\Api\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Normalizer\AttributeNormalizer;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

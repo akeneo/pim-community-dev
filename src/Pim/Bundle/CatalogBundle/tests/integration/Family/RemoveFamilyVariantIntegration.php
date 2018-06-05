@@ -6,7 +6,7 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

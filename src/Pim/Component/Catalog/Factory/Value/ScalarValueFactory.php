@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Factory\Value;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Factory that creates simple product values (text, textarea and number).

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Provider\Form;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>

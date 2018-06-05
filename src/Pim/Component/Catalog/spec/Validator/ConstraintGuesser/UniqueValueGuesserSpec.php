@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Validator\ConstraintGuesser;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 class UniqueValueGuesserSpec extends ObjectBehavior
 {

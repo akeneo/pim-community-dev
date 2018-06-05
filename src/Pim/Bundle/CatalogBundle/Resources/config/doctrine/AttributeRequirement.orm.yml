@@ -18,7 +18,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeRequirement:
             type: boolean
     manyToOne:
         family:
-            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
             inversedBy: requirements
             joinColumns:
                 family_id:
@@ -26,7 +26,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeRequirement:
                     onDelete: CASCADE
                     nullable: false
         attribute:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
             joinColumns:
                 attribute_id:
                     referencedColumnName: id

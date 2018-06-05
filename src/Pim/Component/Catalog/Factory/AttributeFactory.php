@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Pim\Component\Catalog\AttributeTypeRegistry;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Creates and configures an attribute instance.

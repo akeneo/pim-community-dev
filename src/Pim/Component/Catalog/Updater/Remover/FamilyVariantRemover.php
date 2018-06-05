@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\ProductAndProductModel\Query\CountEntityWithFamilyVariantInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

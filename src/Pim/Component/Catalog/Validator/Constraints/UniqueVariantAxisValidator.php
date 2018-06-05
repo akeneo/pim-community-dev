@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\EntityWithFamilyVariantRepositoryInterface;
@@ -124,8 +124,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *
      * This means "$uniqueAxesCombinationSet" has to be stateful.
      *
-     * @param EntityWithFamilyVariantInterface $entity
-     * @param AttributeInterface[]             $axes
+     * @param EntityWithFamilyVariantInterface                           $entity
+     * @param AttributeInterface[] $axes
      */
     private function validateValueWasNotAlreadyValidated(EntityWithFamilyVariantInterface $entity, array $axes): void
     {
@@ -164,8 +164,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *       This implies to remove "Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider"
      *       and merge its code in the product, published product and product model.
      *
-     * @param EntityWithFamilyVariantInterface $entity
-     * @param AttributeInterface[]             $axes
+     * @param EntityWithFamilyVariantInterface                           $entity
+     * @param AttributeInterface[] $axes
      *
      * @return string
      */

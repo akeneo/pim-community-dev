@@ -11,8 +11,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Component\Catalog\AttributeTypeInterface;
 use Pim\Component\Catalog\AttributeTypeRegistry;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
@@ -44,7 +44,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Pim\Component\Catalog\Model\AttributeInterface'
+                'Akeneo\Pim\Structure\Component\Model\AttributeInterface'
             )
         )->during(
             'update',

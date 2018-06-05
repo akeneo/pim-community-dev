@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
@@ -12,7 +12,7 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationCol
 class AttributeColumnInfoExtractorSpec extends ObjectBehavior
 {
     const ASSOC_TYPE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
-    const ATTRIBUTE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
+    const ATTRIBUTE_CLASS = 'Akeneo\Pim\Structure\Component\Model\Attribute';
     const CHANNEL_CLASS = 'Akeneo\Channel\Component\Model\Channel';
     const LOCALE_CLASS = 'Akeneo\Channel\Component\Model\Locale';
 

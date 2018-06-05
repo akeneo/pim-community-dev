@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Value;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 class MediaValueSpec extends ObjectBehavior
 {

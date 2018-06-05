@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Storage\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Storage\Product\ProductValueNormalizer;
 use Prophecy\Argument;

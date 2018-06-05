@@ -15,7 +15,7 @@ Pim\Component\Catalog\Model\VariantAttributeSet:
 
     manyToMany:
         attributes:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
             joinTable:
                 name: pim_catalog_variant_attribute_set_has_attributes
                 joinColumns:
@@ -26,7 +26,7 @@ Pim\Component\Catalog\Model\VariantAttributeSet:
                         referencedColumnName: id
                         onDelete: CASCADE
         axes:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
             joinTable:
                 name: pim_catalog_variant_attribute_set_has_axes
                 joinColumns:

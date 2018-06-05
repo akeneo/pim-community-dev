@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Query\Sorter;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Aims to register and retrieve sorters useable on product query builder

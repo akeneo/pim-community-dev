@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+
 /**
  * Business collection interface to handle product values.
  * It does not extends \ArrayAccess as indexation could be performed internally

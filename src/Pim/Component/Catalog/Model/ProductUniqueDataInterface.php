@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+
 /**
  * Product unique data consists of data that is unique among all the products for a given attribute.
  * Only pim_catalog_identifier, pim_catalog_number, pim_catalog_text and pim_catalog_date attribute types can be

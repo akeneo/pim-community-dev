@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Validation\Attribute;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -433,7 +433,7 @@ abstract class AbstractAttributeTestCase extends TestCase
 
     /**
      * @param AttributeInterface $attribute
-     * @param array              $data
+     * @param array                                                    $data
      */
     protected function updateAttribute(AttributeInterface $attribute, array $data)
     {

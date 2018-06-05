@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Value;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Component\Catalog\Model\AbstractValue;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Product value for attribute types:

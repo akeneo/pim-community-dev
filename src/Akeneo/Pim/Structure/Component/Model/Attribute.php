@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Pim\Structure\Component\Model;
 
-use Pim\Component\Catalog\Model\AbstractAttribute;
+use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

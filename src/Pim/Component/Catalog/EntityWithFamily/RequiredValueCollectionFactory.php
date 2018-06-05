@@ -7,7 +7,7 @@ namespace Pim\Component\Catalog\EntityWithFamily;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * Simple factory of a "required value" collection.

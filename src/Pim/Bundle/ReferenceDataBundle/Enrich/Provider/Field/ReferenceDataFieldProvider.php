@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Field;
 
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Field provider for reference data

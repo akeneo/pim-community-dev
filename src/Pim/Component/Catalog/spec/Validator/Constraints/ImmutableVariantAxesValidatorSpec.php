@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSet;
 use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes;
 use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator;
