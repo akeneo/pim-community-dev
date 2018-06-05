@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
-use Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
 
 /**
  * Attribute translation entity
