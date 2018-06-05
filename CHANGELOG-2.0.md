@@ -1,3 +1,9 @@
+# 2.0.x 
+
+## Bug fixes
+
+- PIM-7355: Fix imagick launcher options order
+
 # 2.0.25 (2018-05-21)
 
 ## Bug fixes
@@ -19,7 +25,7 @@
 
 ## Bug fixes
 
-- PIM-7283: Fix slowness on count product in categories for the product grid
+- PIM-7283: Fix slowness on count product in categories for the product grid 
 
 # 2.0.21 (2018-04-09)
 
