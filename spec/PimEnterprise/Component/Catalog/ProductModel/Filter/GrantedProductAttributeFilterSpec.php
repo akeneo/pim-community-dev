@@ -15,7 +15,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter;
 use PimEnterprise\Component\Security\Attributes;
