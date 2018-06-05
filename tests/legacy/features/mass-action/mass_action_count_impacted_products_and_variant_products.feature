@@ -22,4 +22,4 @@ Feature: Count products during a mass edit
     And I unselect rows Bag, aphrodite
     And I press the "Bulk actions" button
     And I choose the "Edit attributes values" operation
-    Then I should see the text "236 products"
+    Then I should see the text "136 products"
