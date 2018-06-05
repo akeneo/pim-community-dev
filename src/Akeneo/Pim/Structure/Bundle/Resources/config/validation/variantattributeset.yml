@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\VariantAttributeSet:
+Akeneo\Pim\Structure\Component\Model\VariantAttributeSet:
     constraints:
         - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes: ~
     payload:
