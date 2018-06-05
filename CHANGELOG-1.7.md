@@ -33,6 +33,7 @@
 ## Improvements
 
 - IM-824: Change message when the user or email is not valid to a more generic message
+- PIM-7253: Do not schedule mongo queries to update normalizedData for newly created entities
 
 ## Bug Fixes
 
