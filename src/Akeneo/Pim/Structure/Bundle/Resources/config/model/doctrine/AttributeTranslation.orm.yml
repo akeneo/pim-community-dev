@@ -1,6 +1,6 @@
-Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation:
+Akeneo\Pim\Structure\Component\Model\AttributeTranslation:
     type: entity
-    table: pim_catalog_attribute_group_translation
+    table: pim_catalog_attribute_translation
     changeTrackingPolicy: DEFERRED_EXPLICIT
     uniqueConstraints:
         locale_foreign_key_idx:
@@ -22,7 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

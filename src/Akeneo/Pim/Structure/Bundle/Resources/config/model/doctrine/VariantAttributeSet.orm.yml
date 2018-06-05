@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\VariantAttributeSet:
+Akeneo\Pim\Structure\Component\Model\VariantAttributeSet:
     type: entity
     table: pim_catalog_family_variant_attribute_set
     changeTrackingPolicy: DEFERRED_EXPLICIT

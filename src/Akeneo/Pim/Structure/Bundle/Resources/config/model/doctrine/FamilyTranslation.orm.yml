@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\FamilyTranslation:
+Akeneo\Pim\Structure\Component\Model\FamilyTranslation:
     type: entity
     table: pim_catalog_family_translation
     changeTrackingPolicy: DEFERRED_EXPLICIT

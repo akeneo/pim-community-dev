@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\Family:
+Akeneo\Pim\Structure\Component\Model\Family:
     type: entity
     table: pim_catalog_family
     changeTrackingPolicy: DEFERRED_EXPLICIT

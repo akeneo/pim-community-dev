@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\DependencyInjection\CompilerPass;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\ChannelTranslationInterface;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslationInterface;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
 /**
@@ -24,6 +31,18 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
      */
     protected function getParametersMapping(): array
     {
-        return [];
+        return [
+            AttributeInterface::class                 => 'pim_catalog.entity.attribute.class',
+            AttributeTranslationInterface::class      => 'pim_catalog.entity.attribute_translation.class',
+            AttributeOptionInterface::class           => 'pim_catalog.entity.attribute_option.class',
+            AttributeGroupInterface::class            => 'pim_catalog.entity.attribute_group.class',
+            AttributeGroupTranslationInterface::class => 'pim_catalog.entity.attribute_group_translation.class',
+            AttributeRequirementInterface::class      => 'pim_catalog.entity.attribute_requirement.class',
+            FamilyInterface::class                    => 'pim_catalog.entity.family.class',
+            FamilyTranslationInterface::class         => 'pim_catalog.entity.family_translation.class',
+            FamilyVariantInterface::class             => 'pim_catalog.entity.family_variant.class',
+            FamilyVariantTranslationInterface::class  => 'pim_catalog.entity.family_variant_translation.class',
+            VariantAttributeSetInterface::class       => 'pim_catalog.entity.variant_attribute_set.class',
+        ];
     }
 }
