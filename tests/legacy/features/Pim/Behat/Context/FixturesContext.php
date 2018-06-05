@@ -11,7 +11,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Debug;
 use Doctrine\Common\Util\Inflector;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\FamilyVariant;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

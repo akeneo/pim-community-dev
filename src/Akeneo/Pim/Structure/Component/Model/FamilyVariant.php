@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
+namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -8,6 +8,9 @@ use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Model\CommonAttributeCollection;
+use Pim\Component\Catalog\Model\FamilyVariantTranslation;
+use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 
 /**
  * A variant in a family defines the structure for the products with variants:

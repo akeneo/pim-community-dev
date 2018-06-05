@@ -11,7 +11,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariant;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Updater\FamilyUpdater;
 use Symfony\Component\HttpFoundation\JsonResponse;
