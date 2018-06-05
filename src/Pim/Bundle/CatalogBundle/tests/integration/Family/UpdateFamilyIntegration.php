@@ -7,7 +7,7 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabel;
 use Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxis;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

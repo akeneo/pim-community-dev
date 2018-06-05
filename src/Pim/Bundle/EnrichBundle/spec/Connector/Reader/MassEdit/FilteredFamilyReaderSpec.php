@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 class FilteredFamilyReaderSpec extends ObjectBehavior

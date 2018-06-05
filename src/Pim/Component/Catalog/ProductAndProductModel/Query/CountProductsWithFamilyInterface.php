@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\ProductAndProductModel\Query;
 
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * Find the number of product count belonging to the given family

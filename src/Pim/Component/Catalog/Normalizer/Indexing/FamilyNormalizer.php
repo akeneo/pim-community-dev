@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Normalizer\Indexing;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;

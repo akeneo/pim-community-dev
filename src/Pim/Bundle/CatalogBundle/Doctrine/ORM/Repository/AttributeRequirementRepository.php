@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 
 /**

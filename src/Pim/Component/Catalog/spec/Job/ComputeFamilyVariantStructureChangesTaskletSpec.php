@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;

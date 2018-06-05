@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Pim\Bundle\EnrichBundle\Form\Type\FamilyType;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -121,5 +121,21 @@
 - Remove class `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface` 
 - Remove class `Pim\Bundle\PdfGeneratorBundle\Twig\ImageExtension` 
 - Move `Pim\Bundle\CatalogBundle\Entity\Attribute` to `Akeneo\Pim\Structure\Component\Model\Attribute`
-- Move `Pim\Bundle\CatalogBundle\Entity\AbstractAttribute` to `Akeneo\Pim\Structure\Component\Model\AbstractAttribute`
-- Move `Pim\Bundle\CatalogBundle\Entity\AttributeInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeInterface`
+- Move `Pim\Component\Catalog\Model\AbstractAttribute` to `Akeneo\Pim\Structure\Component\Model\AbstractAttribute`
+- Move `Pim\Component\Catalog\Model\AttributeInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeInterface`
+- Move `Pim\Component\Catalog\Model\AttributeOptionInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AttributeOption` to `Akeneo\Pim\Structure\Component\Model\AttributeOption`
+- Move `Pim\Component\Catalog\Model\FamilyInterface` to `Akeneo\Pim\Structure\Component\Model\FamilyInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\Family` to `Akeneo\Pim\Structure\Component\Model\Family`
+- Move `Pim\Bundle\CatalogBundle\Entity\FamilyTranslation` to `Akeneo\Pim\Structure\Component\Model\FamilyTranslation`
+- Move `Pim\Component\Catalog\Model\FamilyTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface`
+- Move `Pim\Component\Catalog\Model\FamilyVariantInterface` to `Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface`
+- Move `Pim\Component\Catalog\Model\FamilyVariant` to `Akeneo\Pim\Structure\Component\Model\FamilyVariant`
+- Move `Pim\Component\Catalog\Model\FamilyVariantTranslation` to `Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslation`
+- Move `Pim\Component\Catalog\Model\FamilyVariantTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslationInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AttributeRequirement` to `Akeneo\Pim\Structure\Component\Model\AttributeRequirement`
+- Move `Pim\Component\Catalog\Model\AttributeRequirementInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AttributeGroup` to `Akeneo\Pim\Structure\Component\Model\AttributeGroup`
+- Move `Pim\Component\Catalog\Model\AttributeGroupInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation` to `Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation`
+- Move `Pim\Component\Catalog\Model\AttributeGroupTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface`

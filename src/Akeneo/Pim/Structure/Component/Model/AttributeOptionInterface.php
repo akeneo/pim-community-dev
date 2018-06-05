@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
+namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
+use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 /**
  * Attribute options

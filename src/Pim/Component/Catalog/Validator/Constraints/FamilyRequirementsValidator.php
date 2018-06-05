@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

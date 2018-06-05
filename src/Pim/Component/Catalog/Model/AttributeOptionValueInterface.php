@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+
 /**
  * Attribute option values
  *

@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 
 /**
  * Factory that creates option (simple-select) product values.

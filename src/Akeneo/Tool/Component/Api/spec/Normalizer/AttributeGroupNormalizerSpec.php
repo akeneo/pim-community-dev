@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Component\Api\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Normalizer\AttributeGroupNormalizer;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeGroupNormalizerSpec extends ObjectBehavior

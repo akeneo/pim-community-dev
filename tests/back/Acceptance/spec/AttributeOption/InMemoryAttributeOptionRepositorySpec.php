@@ -7,9 +7,9 @@ namespace spec\Akeneo\Test\Acceptance\AttributeOption;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 
 class InMemoryAttributeOptionRepositorySpec extends ObjectBehavior

@@ -7,9 +7,9 @@ use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\TimestampableInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 

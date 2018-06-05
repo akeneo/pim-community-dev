@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\ProductAndProductModel\Query;
 
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**

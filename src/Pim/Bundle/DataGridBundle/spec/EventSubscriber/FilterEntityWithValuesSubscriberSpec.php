@@ -10,7 +10,7 @@ use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriberCo
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Prophecy\Argument;
 
 class FilterEntityWithValuesSubscriberSpec extends ObjectBehavior

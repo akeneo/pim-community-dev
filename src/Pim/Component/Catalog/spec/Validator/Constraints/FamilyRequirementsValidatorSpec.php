@@ -3,8 +3,8 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\FamilyRequirements;

@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\ProductEvents;

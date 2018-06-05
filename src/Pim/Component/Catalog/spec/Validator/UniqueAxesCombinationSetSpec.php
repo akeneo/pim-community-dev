@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
-use Pim\Component\Catalog\Model\FamilyVariant;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Pim\Component\Catalog\Model\Product;
 use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;

@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

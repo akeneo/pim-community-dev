@@ -8,7 +8,7 @@ use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 

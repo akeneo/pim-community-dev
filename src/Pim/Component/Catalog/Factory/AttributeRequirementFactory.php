@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 
 /**
  * Creates and configures an attribute requirement instance.

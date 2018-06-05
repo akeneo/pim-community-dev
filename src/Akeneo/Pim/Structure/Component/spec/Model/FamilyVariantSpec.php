@@ -1,19 +1,19 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Model;
+namespace spec\Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSet;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
-use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariant;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
