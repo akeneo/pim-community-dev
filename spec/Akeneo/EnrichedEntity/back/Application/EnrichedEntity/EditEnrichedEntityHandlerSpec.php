@@ -5,6 +5,7 @@ namespace spec\Akeneo\EnrichedEntity\back\Application\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -34,10 +35,8 @@ class EditEnrichedEntityHandlerSpec extends ObjectBehavior
         $repository->findOneByIdentifier(Argument::type(EnrichedEntityIdentifier::class))
             ->willReturn($enrichedEntity);
 
-        $enrichedEntity->updateLabels([
-            'fr_FR' => 'Designer',
-            'en_US' => 'Designer',
-        ])->shouldBeCalled();
+        $enrichedEntity->updateLabels(Argument::type(LabelCollection::class))
+            ->shouldBeCalled();
 
         $repository->update($enrichedEntity)->shouldBeCalled();
 

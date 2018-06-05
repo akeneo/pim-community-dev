@@ -60,11 +60,9 @@ class EnrichedEntitySpec extends ObjectBehavior
 
     public function it_updates_labels()
     {
-        $labels = [
-            'de_DE' => 'Designer',
-        ];
+        $labelCollection = LabelCollection::fromArray(['fr_FR' => 'Concepteur']);
 
-        $this->updateLabels($labels);
-        $this->getLabel('de_DE')->shouldBe('Designer');
+        $this->updateLabels($labelCollection);
+        $this->getLabel('fr_FR')->shouldBe('Concepteur');
     }
 }

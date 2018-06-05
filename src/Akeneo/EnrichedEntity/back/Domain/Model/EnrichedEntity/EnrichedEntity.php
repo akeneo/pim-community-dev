@@ -47,10 +47,8 @@ class EnrichedEntity
         return $this->labelCollection->getLocaleCodes();
     }
 
-    public function updateLabels(array $rawLabelCollection): void
+    public function updateLabels(LabelCollection $labelCollection): void
     {
-        $labelCollection = LabelCollection::fromArray($rawLabelCollection);
-
         $this->labelCollection = $labelCollection;
     }
 }
