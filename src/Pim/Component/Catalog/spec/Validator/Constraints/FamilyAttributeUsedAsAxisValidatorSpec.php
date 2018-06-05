@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxis;
 use Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxisValidator;
 use Prophecy\Argument;

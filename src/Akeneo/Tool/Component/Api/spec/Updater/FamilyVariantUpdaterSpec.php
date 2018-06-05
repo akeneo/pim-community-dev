@@ -12,7 +12,7 @@ use Gedmo\Exception;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
 use Akeneo\Tool\Component\Api\Updater\FamilyVariantUpdater;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Prophecy\Argument;
 
 class FamilyVariantUpdaterSpec extends ObjectBehavior

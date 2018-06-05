@@ -7,7 +7,7 @@ namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\FamilyVarian
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListFamilyVariantIntegration extends ApiTestCase
