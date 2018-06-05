@@ -46,7 +46,7 @@ services:
         class: '%pimee_datagrid.datasource.product_proposal.class%'
         arguments:
             - '@pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory_with_permissions'
-            - '@pimee_workflow.normalizer.proposal_product'
+            - '@pim_serializer'
         calls:
             - [ setMassActionRepository, ['@pimee_workflow.repository.product_draft' ]]
         tags:

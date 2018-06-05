@@ -30,7 +30,7 @@ class ProductModelProposalNormalizer implements NormalizerInterface, NormalizerA
     /**
      * {@inheritdoc}
      */
-    public function normalize($proposalProduct, $format = null, array $context = []): array
+    public function normalize($proposalModelProduct, $format = null, array $context = []): array
     {
         if (!$this->normalizer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
@@ -38,14 +38,14 @@ class ProductModelProposalNormalizer implements NormalizerInterface, NormalizerA
 
         $data = [];
 
-        $data['changes'] = $this->normalizer->normalize($proposalProduct->getValues(), 'standard', $context);
-        $data['createdAt'] = $this->normalizer->normalize($proposalProduct->getCreatedAt(), $format, $context);
-        $data['product'] = $proposalProduct->getEntityWithValue();
-        $data['author'] = $proposalProduct->getAuthor();
-        $data['status'] = $proposalProduct->getStatus();
-        $data['proposal_product'] = $proposalProduct;
-        $data['search_id'] = $proposalProduct->getEntityWithValue()->getCode();
-        $data['id'] = $proposalProduct->getId();
+        $data['changes'] = $this->normalizer->normalize($proposalModelProduct->getValues(), 'standard', $context);
+        $data['createdAt'] = $this->normalizer->normalize($proposalModelProduct->getCreatedAt(), $format, $context);
+        $data['product'] = $proposalModelProduct->getEntityWithValue();
+        $data['author'] = $proposalModelProduct->getAuthor();
+        $data['status'] = $proposalModelProduct->getStatus();
+        $data['proposal'] = $proposalModelProduct;
+        $data['search_id'] = $proposalModelProduct->getEntityWithValue()->getCode();
+        $data['id'] = $proposalModelProduct->getId();
         $data['document_type'] = 'product_model_draft';
 
         return $data;

@@ -82,7 +82,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
                 'product' => $product,
                 'author' => 'Mary',
                 'status' => 1,
-                'proposal_product' => $productProposal,
+                'proposal' => $productProposal,
                 'search_id' => 2,
                 'id' => 1,
                 'document_type' => 'product_draft',
