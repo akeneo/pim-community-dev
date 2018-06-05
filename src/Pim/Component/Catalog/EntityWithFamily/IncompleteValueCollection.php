@@ -6,7 +6,6 @@ namespace Pim\Component\Catalog\EntityWithFamily;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * A collection of incomplete values depending on an entity with a family
@@ -43,8 +42,20 @@ class IncompleteValueCollection implements \Countable, \IteratorAggregate
                 );
             }
 
-            $this->values[] = $value;
+            $this->values[$this->buildInternalKey($value)] = $value;
         }
+    }
+
+    /**
+     * Is there already a value with the same attribute, channel and locale than $value?
+     *
+     * @param RequiredValue $value
+     *
+     * @return bool
+     */
+    public function hasSame(RequiredValue $value): bool
+    {
+        return array_key_exists($this->buildInternalKey($value), $this->values);
     }
 
     /**
@@ -57,7 +68,7 @@ class IncompleteValueCollection implements \Countable, \IteratorAggregate
         $attributes = new ArrayCollection();
 
         foreach ($this->values as $value) {
-            $attribute = $value->getAttribute();
+            $attribute = $value->forAttribute();
             if (!$attributes->contains($attribute)) {
                 $attributes->add($attribute);
             }
@@ -80,5 +91,19 @@ class IncompleteValueCollection implements \Countable, \IteratorAggregate
     public function count()
     {
         return count($this->values);
+    }
+
+    /**
+     * @param RequiredValue $requiredValue
+     *
+     * @return string
+     */
+    private function buildInternalKey(RequiredValue $requiredValue): string
+    {
+        $channelCode = null !== $requiredValue->scope() ? $requiredValue->scope() : '<all_channels>';
+        $localeCode = null !== $requiredValue->locale() ? $requiredValue->locale() : '<all_locales>';
+        $key = sprintf('%s-%s-%s', $requiredValue->attribute(), $channelCode, $localeCode);
+
+        return $key;
     }
 }

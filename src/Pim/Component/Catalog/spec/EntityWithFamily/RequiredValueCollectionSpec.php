@@ -3,11 +3,11 @@
 namespace spec\Pim\Component\Catalog\EntityWithFamily;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\EntityWithFamily\RequiredValue;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
 
 class RequiredValueCollectionSpec extends ObjectBehavior
 {
@@ -21,13 +21,13 @@ class RequiredValueCollectionSpec extends ObjectBehavior
         ChannelInterface $print,
         LocaleInterface $en_US,
         LocaleInterface $fr_FR,
-        ValueInterface $value1,
-        ValueInterface $value2,
-        ValueInterface $value3,
-        ValueInterface $value4,
-        ValueInterface $value5,
-        ValueInterface $value6,
-        ValueInterface $value7
+        RequiredValue $value1,
+        RequiredValue $value2,
+        RequiredValue $value3,
+        RequiredValue $value4,
+        RequiredValue $value5,
+        RequiredValue $value6,
+        RequiredValue $value7
     ) {
         $length->isUnique()->willReturn(false);
         $price->isUnique()->willReturn(false);
@@ -74,31 +74,53 @@ class RequiredValueCollectionSpec extends ObjectBehavior
         $en_US->getCode()->willReturn('en_US');
         $fr_FR->getCode()->willReturn('fr_FR');
 
-        $value1->getAttribute()->willReturn($length);
-        $value2->getAttribute()->willReturn($price);
-        $value3->getAttribute()->willReturn($description);
-        $value4->getAttribute()->willReturn($description);
-        $value5->getAttribute()->willReturn($description);
-        $value6->getAttribute()->willReturn($releaseDate);
-        $value7->getAttribute()->willReturn($image);
+        $value1->forAttribute()->willReturn($length);
+        $value2->forAttribute()->willReturn($price);
+        $value3->forAttribute()->willReturn($description);
+        $value4->forAttribute()->willReturn($description);
+        $value5->forAttribute()->willReturn($description);
+        $value6->forAttribute()->willReturn($releaseDate);
+        $value7->forAttribute()->willReturn($image);
 
-        $value1->getScope()->willReturn(null);
-        $value2->getScope()->willReturn(null);
-        $value3->getScope()->willReturn('ecommerce');
-        $value4->getScope()->willReturn('ecommerce');
-        $value5->getScope()->willReturn('print');
-        $value6->getScope()->willReturn(null);
-        $value7->getScope()->willReturn(null);
+        $value1->forScope()->willReturn($ecommerce);
+        $value2->forScope()->willReturn($ecommerce);
+        $value3->forScope()->willReturn($ecommerce);
+        $value4->forScope()->willReturn($ecommerce);
+        $value5->forScope()->willReturn($print);
+        $value6->forScope()->willReturn($print);
+        $value7->forScope()->willReturn($print);
 
-        $value1->getLocale()->willReturn(null);
-        $value2->getLocale()->willReturn(null);
-        $value3->getLocale()->willReturn('en_US');
-        $value4->getLocale()->willReturn('fr_FR');
-        $value5->getLocale()->willReturn('en_US');
-        $value6->getLocale()->willReturn(null);
-        $value7->getLocale()->willReturn('fr_FR');
+        $value1->forLocale()->willReturn($fr_FR);
+        $value2->forLocale()->willReturn($fr_FR);
+        $value4->forLocale()->willReturn($fr_FR);
+        $value3->forLocale()->willReturn($en_US);
+        $value5->forLocale()->willReturn($en_US);
+        $value6->forLocale()->willReturn($en_US);
+        $value7->forLocale()->willReturn($en_US);
 
-        $value6->getData()->willReturn('2016-09-12');
+        $value1->attribute()->willReturn('length');
+        $value2->attribute()->willReturn('price');
+        $value3->attribute()->willReturn('description');
+        $value4->attribute()->willReturn('description');
+        $value5->attribute()->willReturn('description');
+        $value6->attribute()->willReturn('release_date');
+        $value7->attribute()->willReturn('image');
+
+        $value1->scope()->willReturn(null);
+        $value2->scope()->willReturn(null);
+        $value3->scope()->willReturn('ecommerce');
+        $value4->scope()->willReturn('ecommerce');
+        $value5->scope()->willReturn('print');
+        $value6->scope()->willReturn(null);
+        $value7->scope()->willReturn(null);
+
+        $value1->locale()->willReturn(null);
+        $value2->locale()->willReturn(null);
+        $value3->locale()->willReturn('en_US');
+        $value4->locale()->willReturn('fr_FR');
+        $value5->locale()->willReturn('en_US');
+        $value6->locale()->willReturn(null);
+        $value7->locale()->willReturn('fr_FR');
 
         $this->beConstructedWith([$value1, $value2, $value3, $value4, $value5, $value6, $value7]);
     }
@@ -133,12 +155,11 @@ class RequiredValueCollectionSpec extends ObjectBehavior
         $filteredValues = $this->filterByChannelAndLocale($ecommerce, $fr_FR);
 
         $filteredValues->shouldHaveType(RequiredValueCollection::class);
-        $filteredValues->count()->shouldReturn(5);
+        $filteredValues->count()->shouldReturn(4);
         $filteredValues->hasSame($value1)->shouldReturn(true);
         $filteredValues->hasSame($value2)->shouldReturn(true);
         $filteredValues->hasSame($value4)->shouldReturn(true);
         $filteredValues->hasSame($value6)->shouldReturn(true);
-        $filteredValues->hasSame($value7)->shouldReturn(true);
 
         $filteredValues = $this->filterByChannelAndLocale($ecommerce, $en_US);
 

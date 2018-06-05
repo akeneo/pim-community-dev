@@ -62,7 +62,7 @@ class IncompleteValueCollectionFactory
     }
 
     /**
-     * @param ValueInterface            $requiredValue
+     * @param RequiredValue             $requiredValue
      * @param ChannelInterface          $channel
      * @param LocaleInterface           $locale
      * @param EntityWithValuesInterface $entityWithValues
@@ -76,9 +76,9 @@ class IncompleteValueCollectionFactory
         EntityWithValuesInterface $entityWithValues
     ) {
         $actualValue = $entityWithValues->getValues()->getByCodes(
-            $requiredValue->forAttributeCode(),
-            $requiredValue->forScope(),
-            $requiredValue->forLocale($locale)
+            $requiredValue->attribute(),
+            $requiredValue->scope(),
+            $requiredValue->locale()
         );
 
         if (null === $actualValue) {

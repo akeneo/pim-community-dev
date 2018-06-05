@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * A required value is the translation of the attribute requirements
- * {@see Pim\Component\Catalog\Model\AttributeRequirementInterface} in terms of values.
+ * {@see Pim\Component\Catalog\Model\AttributeRequirementInterface}.
  *
  * Therefore a required value contains no data. It simply expresses the fact that for instance:
  *  - a "sku" is required on all channels and all locales
@@ -18,6 +18,21 @@ use Pim\Component\Catalog\Model\LocaleInterface;
  *  - a name is required on all channels and the locale "en_US"
  *  - a price is required on the channel "ecommerce" and all locales
  *  - ...
+ *
+ * This object gives you the information of the requirement in the matrix: attribute, channel, locale.
+ * that's why the functions forAttribute, forScope and ForLocale always return an object.
+ *
+ * It also helps you how to retrieve the corresponding value in a value collection.
+ * For instance, if the attribute is not scopable and not localizable. if we try to compute the completeness on the
+ * channel 'ecommerce' and locale 'fr_FR' for this attribute.
+ * - forScope will return the channel ecommerde
+ * - forLocale will return the locale fr_FR
+ * the information of the matrix, and
+ * - scope() will return null
+ * - locale('fr_FR') will return null
+ *
+ * This way, we decouple what is the required value in the matrix, from the way we retrieve it in the value collection
+ * (depending on the attribute's settings).
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -49,17 +64,26 @@ class RequiredValue
         $this->locale = $locale;
     }
 
-    public function getAttribute(): AttributeInterface
+    /**
+     * @return AttributeInterface
+     */
+    public function forAttribute(): AttributeInterface
     {
         return $this->attribute;
     }
 
-    public function getScope(): ChannelInterface
+    /**
+     * @return ChannelInterface
+     */
+    public function forScope(): ChannelInterface
     {
         return $this->channel;
     }
 
-    public function getLocale(): LocaleInterface
+    /**
+     * @return LocaleInterface
+     */
+    public function forLocale(): LocaleInterface
     {
         return $this->locale;
     }
@@ -67,7 +91,7 @@ class RequiredValue
     /**
      * @return string
      */
-    public function forAttributeCode(): string
+    public function attribute(): string
     {
         return $this->attribute->getCode();
     }
@@ -75,23 +99,18 @@ class RequiredValue
     /**
      * @return null|string
      */
-    public function forScope(): ?string
+    public function scope(): ?string
     {
         return $this->attribute->isScopable() ? $this->channel->getCode() : null;
     }
 
     /**
+     * @param LocaleInterface $locale
+     *
      * @return null|string
      */
-    public function forLocale(LocaleInterface $locale): ?string
+    public function locale(): ?string
     {
-        if (!$this->attribute->isLocalizable() &&
-            $this->attribute->isLocaleSpecific() &&
-            $this->attribute->hasLocaleSpecific($locale)
-        ) {
-            return null;
-        }
-
-        return $this->locale->getCode();
+        return $this->attribute->isLocalizable() ? $this->locale->getCode() : null;
     }
 }

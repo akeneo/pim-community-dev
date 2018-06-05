@@ -39,8 +39,20 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
                 );
             }
 
-            $this->values[] = $value;
+            $this->values[$this->buildInternalKey($value)] = $value;
         }
+    }
+
+    /**
+     * Is there already a value with the same attribute, channel and locale than $value?
+     *
+     * @param RequiredValue $value
+     *
+     * @return bool
+     */
+    public function hasSame(RequiredValue $value): bool
+    {
+        return array_key_exists($this->buildInternalKey($value), $this->values);
     }
 
     /**
@@ -58,18 +70,18 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
         $filteredValues = array_filter(
             $this->values,
             function (RequiredValue $requiredValue) use ($channel, $locale) {
-                $attribute = $requiredValue->getAttribute();
+                $attribute = $requiredValue->forAttribute();
 
-                if ($attribute->isScopable() && $requiredValue->getScope() !== $channel->getCode()) {
+                if ($attribute->isScopable() && $requiredValue->forScope()->getCode() !== $channel->getCode()) {
                     return false;
                 }
 
-                if ($attribute->isLocalizable() && $requiredValue->getLocale() !== $locale->getCode()) {
+                if ($attribute->isLocalizable() && $requiredValue->forLocale()->getCode() !== $locale->getCode()) {
                     return false;
                 }
 
                 if ($attribute->isLocaleSpecific() &&
-                    (!$attribute->hasLocaleSpecific($locale) || $requiredValue->getLocale()!== $locale->getCode())
+                    (!$attribute->hasLocaleSpecific($locale) || $requiredValue->forLocale()->getCode() !== $locale->getCode())
                 ) {
                     return false;
                 }
@@ -95,5 +107,19 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
     public function count()
     {
         return count($this->values);
+    }
+
+    /**
+     * @param RequiredValue $value
+     *
+     * @return string
+     */
+    private function buildInternalKey(RequiredValue $requiredValue): string
+    {
+        $channelCode = null !== $requiredValue->scope() ? $requiredValue->scope() : '<all_channels>';
+        $localeCode = null !== $requiredValue->locale() ? $requiredValue->locale() : '<all_locales>';
+        $key = sprintf('%s-%s-%s', $requiredValue->attribute(), $channelCode, $localeCode);
+
+        return $key;
     }
 }
