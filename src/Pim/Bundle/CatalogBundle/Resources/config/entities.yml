@@ -20,7 +20,7 @@ parameters:
     pim_catalog.entity.attribute_group_translation.class:  Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation
     pim_catalog.entity.attribute_option.class:             Akeneo\Pim\Structure\Component\Model\AttributeOption
     pim_catalog.entity.attribute_option_value.class:       Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
-    pim_catalog.entity.attribute_requirement.class:        Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+    pim_catalog.entity.attribute_requirement.class:        Akeneo\Pim\Structure\Component\Model\AttributeRequirement
     pim_catalog.entity.family.class:                       Akeneo\Pim\Structure\Component\Model\Family
     pim_catalog.entity.family_translation.class:           Akeneo\Pim\Structure\Component\Model\FamilyTranslation
     pim_catalog.entity.metric.class:                       Pim\Component\Catalog\Model\Metric

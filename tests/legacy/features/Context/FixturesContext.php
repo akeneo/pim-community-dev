@@ -24,7 +24,7 @@ use OAuth2\OAuth2;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
@@ -1979,7 +1979,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $familyCode
      * @param string $channelCode
      *
-     * @return AttributeRequirement|null
+     * @return \Akeneo\Pim\Structure\Component\Model\AttributeRequirement|null
      */
     protected function getAttributeRequirement($attributeCode, $familyCode, $channelCode)
     {
