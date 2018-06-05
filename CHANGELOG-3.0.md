@@ -133,3 +133,5 @@
 - Move `Pim\Component\Catalog\Model\FamilyVariant` to `Akeneo\Pim\Structure\Component\Model\FamilyVariant`
 - Move `Pim\Component\Catalog\Model\FamilyVariantTranslation` to `Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslation`
 - Move `Pim\Component\Catalog\Model\FamilyVariantTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslationInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AttributeRequirement` to `Akeneo\Pim\Structure\Component\Model\AttributeRequirement`
+- Move `Pim\Component\Catalog\Model\AttributeRequirementInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface`
