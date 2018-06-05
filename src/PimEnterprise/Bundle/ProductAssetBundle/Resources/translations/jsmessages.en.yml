@@ -9,6 +9,7 @@ pimee_product_asset:
                     confirm: Confirm
                 title: Manage assets
                 description: Choose the assets you want to attach to your product
+                preview_title: Asset collection preview
         asset:
             not_empty: Code is required. It can not be empty.
             alpha_numeric_plus_underscore: The code should be only alphanumeric or underscore.
