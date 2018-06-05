@@ -127,3 +127,9 @@
 - Move `Pim\Bundle\CatalogBundle\Entity\AttributeOption` to `Akeneo\Pim\Structure\Component\Model\AttributeOption`
 - Move `Pim\Component\Catalog\Model\FamilyInterface` to `Akeneo\Pim\Structure\Component\Model\FamilyInterface`
 - Move `Pim\Bundle\CatalogBundle\Entity\Family` to `Akeneo\Pim\Structure\Component\Model\Family`
+- Move `Pim\Bundle\CatalogBundle\Entity\FamilyTranslation` to `Akeneo\Pim\Structure\Component\Model\FamilyTranslation`
+- Move `Pim\Component\Catalog\Model\FamilyTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface`
+- Move `Pim\Component\Catalog\Model\FamilyVariantInterface` to `Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface`
+- Move `Pim\Component\Catalog\Model\FamilyVariant` to `Akeneo\Pim\Structure\Component\Model\FamilyVariant`
+- Move `Pim\Component\Catalog\Model\FamilyVariantTranslation` to `Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslation`
+- Move `Pim\Component\Catalog\Model\FamilyVariantTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslationInterface`
