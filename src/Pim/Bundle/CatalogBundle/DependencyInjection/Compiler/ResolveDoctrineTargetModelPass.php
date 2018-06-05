@@ -37,7 +37,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'Akeneo\Pim\Structure\Component\Model\FamilyInterface' => 'pim_catalog.entity.family.class',
             'Pim\Component\Catalog\Model\CategoryTranslationInterface'       => 'pim_catalog.entity.category_translation.class',
             'Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface' => 'pim_catalog.entity.family_translation.class',
-            'Pim\Component\Catalog\Model\AttributeGroupTranslationInterface' => 'pim_catalog.entity.attribute_group_translation.class',
+            'Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface' => 'pim_catalog.entity.attribute_group_translation.class',
             'Pim\Component\Catalog\Model\AttributeTranslationInterface'      => 'pim_catalog.entity.attribute_translation.class',
             'Pim\Component\Catalog\Model\AssociationTypeTranslationInterface'=> 'pim_catalog.entity.association_type_translation.class',
             'Pim\Component\Catalog\Model\GroupTranslationInterface'          => 'pim_catalog.entity.group_translation.class',

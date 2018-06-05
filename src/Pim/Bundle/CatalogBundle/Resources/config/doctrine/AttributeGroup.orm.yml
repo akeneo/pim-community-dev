@@ -36,7 +36,7 @@ Akeneo\Pim\Structure\Component\Model\AttributeGroup:
             orderBy:
                 sortOrder: ASC
         translations:
-            targetEntity: Pim\Component\Catalog\Model\AttributeGroupTranslationInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist
