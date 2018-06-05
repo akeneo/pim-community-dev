@@ -357,9 +357,9 @@ class AttributeOptionController
     /**
      * Update an attribute option. It throws an error 422 if a problem occurred during the update.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface $attributeOption
-     * @param array                                                          $data
-     * @param string                                                         $anchor
+     * @param AttributeOptionInterface $attributeOption
+     * @param array                    $data
+     * @param string                   $anchor
      *
      * @throws DocumentedHttpException
      */
@@ -380,7 +380,7 @@ class AttributeOptionController
      * Validate an attribute option. It throws an error 422 with every violated constraints if
      * the validation failed.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface $attributeOption
+     * @param AttributeOptionInterface $attributeOption
      *
      * @throws ViolationHttpException
      */

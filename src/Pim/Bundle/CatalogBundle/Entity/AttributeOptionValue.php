@@ -20,7 +20,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     protected $id;
 
     /**
-     * @var \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
+     * @var AttributeOptionInterface
      */
     protected $option;
 

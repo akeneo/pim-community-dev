@@ -151,7 +151,7 @@ abstract class AbstractExportTestCase extends TestCase
     /**
      * @param array $data
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
+     * @return AttributeOptionInterface
      */
     protected function createAttributeOption(array $data = []) : AttributeOptionInterface
     {

@@ -15,7 +15,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
  */
 class OptionValue extends AbstractValue implements OptionValueInterface
 {
-    /** @var \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface */
+    /** @var AttributeOptionInterface */
     protected $data;
 
     /**

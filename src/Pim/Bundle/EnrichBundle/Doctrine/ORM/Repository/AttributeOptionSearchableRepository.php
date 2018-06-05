@@ -47,7 +47,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
     /**
      * {@inheritdoc}
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface[]
+     * @return AttributeOptionInterface[]
      */
     public function findBySearch($search = null, array $options = [])
     {

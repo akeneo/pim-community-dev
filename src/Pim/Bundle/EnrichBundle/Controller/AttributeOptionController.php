@@ -225,8 +225,8 @@ class AttributeOptionController
     /**
      * Manage form submission of an attribute option
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface $attributeOption
-     * @param array                                                          $data
+     * @param AttributeOptionInterface $attributeOption
+     * @param array                    $data
      *
      * @return FormInterface
      */
@@ -294,7 +294,7 @@ class AttributeOptionController
      *
      * @throws NotFoundHttpException
      *
-     * @return \Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
+     * @return AttributeOptionInterface
      */
     protected function findAttributeOptionOr404($id)
     {
