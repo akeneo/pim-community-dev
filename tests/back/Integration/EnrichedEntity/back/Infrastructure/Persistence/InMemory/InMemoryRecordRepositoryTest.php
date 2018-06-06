@@ -36,7 +36,7 @@ class InMemoryRecordRepositoryTest extends TestCase
     {
         $identifier = RecordIdentifier::fromString('record_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
-        $record = Record::create($identifier, $enrichedEntityIdentifier, LabelCollection::fromArray([]));
+        $record = Record::create($identifier, $enrichedEntityIdentifier, []);
 
         $this->recordRepository->add($record);
 
@@ -61,9 +61,9 @@ class InMemoryRecordRepositoryTest extends TestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
 
         $identifier1 = RecordIdentifier::fromString('identifier1');
-        $record1 = Record::create($identifier1, $enrichedEntityIdentifier, LabelCollection::fromArray([]));
+        $record1 = Record::create($identifier1, $enrichedEntityIdentifier, []);
         $identifier2 = RecordIdentifier::fromString('identifier2');
-        $record2 = Record::create($identifier2, $enrichedEntityIdentifier, LabelCollection::fromArray([]));
+        $record2 = Record::create($identifier2, $enrichedEntityIdentifier, []);
 
         $this->recordRepository->add($record1);
         $this->recordRepository->add($record2);

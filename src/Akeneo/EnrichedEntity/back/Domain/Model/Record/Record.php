@@ -37,8 +37,10 @@ class Record
     public static function create(
         RecordIdentifier $identifier,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
-        LabelCollection $labelCollection
+        array $rawLabelCollection
     ): self {
+        $labelCollection = LabelCollection::fromArray($rawLabelCollection);
+
         return new self($identifier, $enrichedEntityIdentifier, $labelCollection);
     }
 

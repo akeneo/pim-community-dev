@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\Show\ShowEnrichedEntityHandler;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\ListEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
@@ -19,8 +19,8 @@ use Behat\Gherkin\Node\TableNode;
  */
 final class ShowEnrichedEntityContext implements Context
 {
-    /** @var ShowEnrichedEntityHandler */
-    private $showEnrichedEntityHandler;
+    /** @var ListEnrichedEntityHandler */
+    private $listEnrichedEntityHandler;
 
     /** @var EnrichedEntityRepository */
     private $enrichedEntityRepository;
@@ -29,14 +29,14 @@ final class ShowEnrichedEntityContext implements Context
     private $entitiesFound;
 
     /**
-     * @param ShowEnrichedEntityHandler $showEnrichedEntityHandler
+     * @param ListEnrichedEntityHandler $listEnrichedEntityHandler
      * @param EnrichedEntityRepository  $enrichedEntityRepository
      */
     public function __construct(
-        ShowEnrichedEntityHandler $showEnrichedEntityHandler,
+        ListEnrichedEntityHandler $listEnrichedEntityHandler,
         EnrichedEntityRepository $enrichedEntityRepository
     ) {
-        $this->showEnrichedEntityHandler = $showEnrichedEntityHandler;
+        $this->listEnrichedEntityHandler = $listEnrichedEntityHandler;
         $this->enrichedEntityRepository = $enrichedEntityRepository;
     }
 
@@ -50,9 +50,9 @@ final class ShowEnrichedEntityContext implements Context
             if ($identifier === null || $identifier === '') {
                 continue;
             }
-            $enrichedEntity = EnrichedEntity::define(
+            $enrichedEntity = EnrichedEntity::create(
                 EnrichedEntityIdentifier::fromString($identifier),
-                LabelCollection::fromArray([])
+                []
             );
             $this->enrichedEntityRepository->add($enrichedEntity);
         }
@@ -81,9 +81,9 @@ final class ShowEnrichedEntityContext implements Context
             if ($identifier === null || $identifier === '') {
                 continue;
             }
-            $enrichedEntity = EnrichedEntity::define(
+            $enrichedEntity = EnrichedEntity::create(
                 EnrichedEntityIdentifier::fromString($identifier),
-                LabelCollection::fromArray([])
+                []
             );
             $this->enrichedEntityRepository->add($enrichedEntity);
         }
@@ -94,7 +94,8 @@ final class ShowEnrichedEntityContext implements Context
      */
     public function theUserAskForTheEnrichedEntityList(): void
     {
-        $this->entitiesFound = $this->showEnrichedEntityHandler->findAll();
+        $handler = $this->listEnrichedEntityHandler;
+        $this->entitiesFound = $handler();
     }
 
     /**

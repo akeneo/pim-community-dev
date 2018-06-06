@@ -6,8 +6,14 @@ akeneo_enriched_entities_enriched_entities_edit:
 
 akeneo_enriched_entities_enriched_entities_index_rest:
     path: '/rest/enriched_entity'
-    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.index:indexAction }
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.index }
 
 akeneo_enriched_entities_enriched_entities_get_rest:
     path: '/rest/enriched_entity/{identifier}'
-    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.get:getAction }
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.get }
+    methods: [GET]
+
+akeneo_enriched_entities_enriched_entities_edit_rest:
+    path: '/rest/enriched_entity/{identifier}'
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.edit }
+    methods: [POST]

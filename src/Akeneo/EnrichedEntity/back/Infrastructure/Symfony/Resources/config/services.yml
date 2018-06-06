@@ -11,22 +11,40 @@ services:
     akeneo_enrichedentity.infrastructure.action.enriched_entity.index:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity\IndexAction'
         arguments:
-            - '@akeneo_enrichedentity.application.enriched_entity.show.enriched_entity_handler'
+            - '@akeneo_enrichedentity.application.enriched_entity.list_enriched_entity_handler'
             - '@akeneo_enrichedentity.infrastructure.normalizer.enriched_entity'
 
     akeneo_enrichedentity.infrastructure.action.enriched_entity.get:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity\GetAction'
         arguments:
-            - '@akeneo_enrichedentity.application.enriched_entity.show.enriched_entity_handler'
+            - '@akeneo_enrichedentity.application.enriched_entity.show_enriched_entity_handler'
             - '@akeneo_enrichedentity.infrastructure.normalizer.enriched_entity'
+
+    akeneo_enrichedentity.infrastructure.action.enriched_entity.edit:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity\EditAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
+            - '@akeneo_enrichedentity.infrastructure.normalizer.enriched_entity'
+            - '@serializer'
+            - '@validator'
 
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlEnrichedEntityRepository'
         arguments:
             - '@database_connection'
 
-    akeneo_enrichedentity.application.enriched_entity.show.enriched_entity_handler:
-        class: 'Akeneo\EnrichedEntity\back\Application\EnrichedEntity\Show\ShowEnrichedEntityHandler'
+    akeneo_enrichedentity.application.enriched_entity.show_enriched_entity_handler:
+        class: 'Akeneo\EnrichedEntity\back\Application\EnrichedEntity\ShowEnrichedEntityHandler'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+
+    akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler:
+        class: 'Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntityHandler'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+
+    akeneo_enrichedentity.application.enriched_entity.list_enriched_entity_handler:
+        class: 'Akeneo\EnrichedEntity\back\Application\EnrichedEntity\ListEnrichedEntityHandler'
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
 

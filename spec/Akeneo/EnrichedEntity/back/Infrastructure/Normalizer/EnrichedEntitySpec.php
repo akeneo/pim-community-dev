@@ -26,11 +26,11 @@ class EnrichedEntitySpec extends ObjectBehavior
     public function it_normalizes_an_enriched_entity()
     {
         $designerIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $designerLabels = LabelCollection::fromArray([
+        $designerLabels = [
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur'
-        ]);
-        $designer = EnrichedEntityModel::define($designerIdentifier, $designerLabels);
+        ];
+        $designer = EnrichedEntityModel::create($designerIdentifier, $designerLabels);
 
         $this->normalize($designer, 'internal_api')->shouldReturn([
             'identifier' => 'designer',

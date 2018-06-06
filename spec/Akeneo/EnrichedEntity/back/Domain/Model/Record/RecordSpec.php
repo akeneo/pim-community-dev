@@ -15,10 +15,10 @@ class RecordSpec extends ObjectBehavior
     {
         $identifier = RecordIdentifier::fromString('stark');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $labelCollection = LabelCollection::fromArray([
+        $labelCollection = [
             'en_US' => 'Stark',
             'fr_FR' => 'Stark'
-        ]);
+        ];
 
         $this->beConstructedThrough('create', [$identifier, $enrichedEntityIdentifier, $labelCollection]);
     }
@@ -49,7 +49,7 @@ class RecordSpec extends ObjectBehavior
         $sameRecord = Record::create(
             $sameIdentifier,
             $sameEnrichedEntityIdentifier,
-            LabelCollection::fromArray([])
+            []
         );
 
         $this->equals($sameRecord)->shouldReturn(true);
@@ -58,7 +58,7 @@ class RecordSpec extends ObjectBehavior
         $anotherRecord = Record::create(
             $anotherIdentifier,
             $sameEnrichedEntityIdentifier,
-            LabelCollection::fromArray([])
+            []
         );
         $this->equals($anotherRecord)->shouldReturn(false);
 
@@ -66,7 +66,7 @@ class RecordSpec extends ObjectBehavior
         $anotherRecord = Record::create(
             $sameIdentifier,
             $anotherEnrichedEntityIdentifier,
-            LabelCollection::fromArray([])
+            []
         );
         $this->equals($anotherRecord)->shouldReturn(false);
     }

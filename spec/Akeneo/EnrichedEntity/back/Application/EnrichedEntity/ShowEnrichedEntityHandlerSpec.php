@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\back\Application\EnrichedEntity\Show;
+namespace spec\Akeneo\EnrichedEntity\back\Application\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\Show\ShowEnrichedEntityHandler;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\ShowEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
@@ -22,18 +22,20 @@ class ShowEnrichedEntityHandlerSpec extends ObjectBehavior
 
     function it_returns_an_enriched_entity_given_its_identifier(
         $repository,
-        EnrichedEntityIdentifier $identifier,
         EnrichedEntity $enrichedEntity
     ) {
+        $identifier = EnrichedEntityIdentifier::fromString('designer');
         $repository->findOneByIdentifier($identifier)->willReturn($enrichedEntity);
-        $this->show($identifier)->shouldReturn($enrichedEntity);
+
+        $this->__invoke('designer')->shouldReturn($enrichedEntity);
     }
 
     function it_returns_null_if_there_enriched_entity_does_not_exist_for_the_given_identifier(
-        $repository,
-        EnrichedEntityIdentifier $identifier
+        $repository
     ) {
+        $identifier = EnrichedEntityIdentifier::fromString('sofa');
         $repository->findOneByIdentifier($identifier)->willReturn(null);
-        $this->show($identifier)->shouldReturn(null);
+
+        $this->__invoke($identifier)->shouldReturn(null);
     }
 }

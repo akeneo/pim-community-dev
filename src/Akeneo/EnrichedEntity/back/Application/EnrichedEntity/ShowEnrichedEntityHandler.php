@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\back\Application\EnrichedEntity\Show;
+namespace Akeneo\EnrichedEntity\back\Application\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
@@ -31,20 +31,14 @@ class ShowEnrichedEntityHandler
     }
 
     /**
-     * @param EnrichedEntityIdentifier $identifier
+     * @param string $rawIdentifier
      *
-     * @return EnrichedEntity|null
+     * @return EnrichedEntity
      */
-    public function findByIdentifier(EnrichedEntityIdentifier $identifier): ?EnrichedEntity
+    public function __invoke(string $rawIdentifier): ?EnrichedEntity
     {
-        return $this->enrichedEntityRepository->findOneByIdentifier($identifier);
-    }
+        $identifier = EnrichedEntityIdentifier::fromString($rawIdentifier);
 
-    /**
-     * @return EnrichedEntity[]
-     */
-    public function findAll(): array
-    {
-        return $this->enrichedEntityRepository->all();
+        return $this->enrichedEntityRepository->findOneByIdentifier($identifier);
     }
 }

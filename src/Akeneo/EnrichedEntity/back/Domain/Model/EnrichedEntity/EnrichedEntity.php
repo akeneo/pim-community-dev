@@ -20,8 +20,10 @@ class EnrichedEntity
         $this->labelCollection = $labelCollection;
     }
 
-    public static function define(EnrichedEntityIdentifier $identifier, LabelCollection $labelCollection): self
+    public static function create(EnrichedEntityIdentifier $identifier, array $rawLabelCollection): self
     {
+        $labelCollection = LabelCollection::fromArray($rawLabelCollection);
+
         return new self($identifier, $labelCollection);
     }
 
@@ -43,5 +45,10 @@ class EnrichedEntity
     public function getLabelCodes(): array
     {
         return $this->labelCollection->getLocaleCodes();
+    }
+
+    public function updateLabels(LabelCollection $labelCollection): void
+    {
+        $this->labelCollection = $labelCollection;
     }
 }
