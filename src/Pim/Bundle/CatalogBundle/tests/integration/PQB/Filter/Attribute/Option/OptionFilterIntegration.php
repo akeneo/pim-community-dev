@@ -72,10 +72,10 @@ class OptionFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testOperatorNotIn()
     {
         $result = $this->executeFilter([['a_simple_select', Operators::NOT_IN_LIST, ['black']]]);
-        $this->assert($result, ['product_one']);
+        $this->assert($result, ['empty_product','product_one']);
 
         $result = $this->executeFilter([['a_simple_select', Operators::NOT_IN_LIST, ['orange']]]);
-        $this->assert($result, ['product_two']);
+        $this->assert($result, ['empty_product','product_two']);
     }
 
     /**

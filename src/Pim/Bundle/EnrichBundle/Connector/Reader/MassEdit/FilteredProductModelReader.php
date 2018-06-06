@@ -44,6 +44,9 @@ class FilteredProductModelReader implements
     /** @var CursorInterface */
     private $productsAndProductModels;
 
+    /** @var bool */
+    private $firstRead = true;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
@@ -64,6 +67,8 @@ class FilteredProductModelReader implements
      */
     public function initialize(): void
     {
+        $this->firstRead = true;
+
         $channel = $this->getConfiguredChannel();
         $filters = $this->getConfiguredFilters();
         $this->productsAndProductModels = $this->getProductModelsCursor($filters, $channel);
@@ -165,9 +170,15 @@ class FilteredProductModelReader implements
         $entity = null;
 
         while ($this->productsAndProductModels->valid()) {
-            $entity = $this->productsAndProductModels->current();
+            if (!$this->firstRead) {
+                $this->productsAndProductModels->next();
+            }
 
-            $this->productsAndProductModels->next();
+            $this->firstRead = false;
+            $entity = $this->productsAndProductModels->current();
+            if (false === $entity) {
+                return null;
+            }
 
             $this->stepExecution->incrementSummaryInfo('read');
 

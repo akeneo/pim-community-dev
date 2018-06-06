@@ -877,7 +877,7 @@ pim_enrich:
             ">=": Vollständig für mindestens ein ausgewähltes Gebietsschemata
             "GREATER OR EQUALS THAN ON ALL LOCALES": Vollständig für alle ausgewählten Gebietsschemata
             LOWER THAN ON ALL LOCALES: Unvollständig für alle ausgewählten Gebietsschemas
-            AT LEAST COMPLETE: Mindestens ein Variantenprodukt ist in einem ausgewählten Gebietsschema vollständig 
+            AT LEAST COMPLETE: Mindestens ein Variantenprodukt ist in einem ausgewählten Gebietsschema vollständig
             ALL COMPLETE: Alle Variantenprodukte sind auf allen ausgewählten Gebietsschemata vollständig
           empty_selection: Produktfamilie wählen
         category:

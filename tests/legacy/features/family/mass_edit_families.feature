@@ -99,9 +99,7 @@ Feature: Mass Edit Families
     And I confirm mass edit
     And I wait for the "set_attribute_requirements" job to finish
     And I am on the dashboard page
-    Then I should see notification:
-      | type    | message                                              |
-      | success | Mass edit Set family attribute requirements finished |
+    Then I should see the text "Completed"
 
   Scenario: Successfully mass edit attribute requirements by attribute group
     Given the "footwear" catalog configuration

@@ -19,6 +19,8 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
+    const IDENTIFIER_KEY = 'identifier';
+
     /**
      * @param array $supportedAttributeTypes
      * @param array $supportedOperators
@@ -175,6 +177,14 @@ class IdentifierFilter extends AbstractAttributeFilter implements AttributeFilte
                     'terms' => [
                         $attributePath => $value,
                     ],
+                ];
+
+                $this->searchQueryBuilder->addMustNot($clause);
+                break;
+
+            case Operators::IS_EMPTY:
+                $clause = [
+                    'exists' => ['field' => static::IDENTIFIER_KEY],
                 ];
 
                 $this->searchQueryBuilder->addMustNot($clause);

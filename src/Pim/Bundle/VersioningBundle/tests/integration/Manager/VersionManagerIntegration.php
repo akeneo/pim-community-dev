@@ -87,6 +87,7 @@ class VersionManagerIntegration extends TestCase
             'family'     => '',
             'groups'     => '',
             'categories' => '',
+            'parent'     => '',
             'enabled'    => 1,
         ]);
         $this->assertEquals($version->getChangeset(), [
@@ -132,6 +133,7 @@ class VersionManagerIntegration extends TestCase
             'family'     => '',
             'groups'     => 'groupB',
             'categories' => '',
+            'parent'     => '',
             'a_date'     => '2017-02-01',
             'enabled'    => 1,
         ]);
@@ -181,6 +183,7 @@ class VersionManagerIntegration extends TestCase
             'family'     => '',
             'groups'     => 'groupB',
             'categories' => '',
+            'parent'     => '',
             'enabled'    => 1,
         ]);
         $this->assertEquals($version->getChangeset(), [

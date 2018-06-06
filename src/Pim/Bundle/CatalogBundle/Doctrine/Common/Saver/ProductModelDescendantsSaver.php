@@ -6,6 +6,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Manager\CompletenessManager;
@@ -46,13 +47,17 @@ class ProductModelDescendantsSaver implements SaverInterface
     /** @var ProductQueryBuilderFactoryInterface */
     private $pqbFactory;
 
+    /** @var IndexerInterface */
+    private $productModelIndexer;
+
     /**
      * @param ObjectManager                       $entityManager
      * @param ProductModelRepositoryInterface     $productModelRepository
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param CompletenessManager                 $completenessManager
      * @param BulkIndexerInterface                $productIndexer
-     * @param BulkIndexerInterface                $productModelIndexer
+     * @param BulkIndexerInterface                $bulkProductModelIndexer
+     * @param IndexerInterface                    $productModelIndexer
      */
     public function __construct(
         ObjectManager $entityManager,
@@ -60,14 +65,16 @@ class ProductModelDescendantsSaver implements SaverInterface
         ProductQueryBuilderFactoryInterface $pqbFactory,
         CompletenessManager $completenessManager,
         BulkIndexerInterface $productIndexer,
-        BulkIndexerInterface $productModelIndexer
+        BulkIndexerInterface $bulkProductModelIndexer,
+        IndexerInterface $productModelIndexer
     ) {
         $this->objectManager = $entityManager;
         $this->productModelRepository = $productModelRepository;
         $this->completenessManager = $completenessManager;
         $this->bulkProductIndexer = $productIndexer;
-        $this->bulkProductModelIndexer = $productModelIndexer;
+        $this->bulkProductModelIndexer = $bulkProductModelIndexer;
         $this->pqbFactory = $pqbFactory;
+        $this->productModelIndexer = $productModelIndexer;
     }
 
     /**
@@ -91,6 +98,15 @@ class ProductModelDescendantsSaver implements SaverInterface
         if (!empty($productModelsChildren)) {
             $this->bulkProductModelIndexer->indexAll($productModelsChildren);
         }
+
+        /**
+         * In this method, we computed the completeness of the product model children. That means the ratio of complete
+         * product models may change during this task so we need to index again the product model. If we don't do that
+         * it may break the complete filter on the grid because wrong data was indexed in ES.
+         *
+         * You should have a look to https://akeneo.atlassian.net/browse/PIM-7388
+         */
+        $this->productModelIndexer->index($productModel);
     }
 
     /**

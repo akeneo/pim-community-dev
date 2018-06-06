@@ -32,7 +32,7 @@
                                     <tr class="AknGrid-bodyRow">
                                         <td class="AknGrid-bodyCell AknGrid-bodyCell--highlightAlternative AknGrid-bodyCell--withoutBottomBorder property" colspan="2"><%= value.label %></td>
                                     </tr>
-                                    <tr class="AknGrid-bodyRow">
+                                    <tr class="AknGrid-bodyRow AknGrid-bodyRow--wordBreakable">
                                         <td class="AknGrid-bodyCell AknGrid-bodyCell--withoutTopBorder"><span class="AknDiff--remove"><%- _.__('pim_enrich.entity.product.history.old_value') %>:</span> <span class="old-values"><%- value.old %></span></td>
                                         <td class="AknGrid-bodyCell AknGrid-bodyCell--withoutTopBorder"><span class="AknDiff--add"><%- _.__('pim_enrich.entity.product.history.new_value') %>:</span> <span class="new-values"><%- value.new %></span></td>
                                     </tr>
