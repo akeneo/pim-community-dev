@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Clients;
 
+use GuzzleHttp\ClientInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Client;
 use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\UriGenerator;
 use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\ApiResponse;
-use GuzzleHttp\ClientInterface;
 
 class Webservice implements Client
 {
-    private
-        $uriGenerator,
-        $httpClient;
+    private $uriGenerator;
+    
+    private $httpClient;
 
     public function __construct(UriGenerator $uriGenerator, ClientInterface $httpClient)
     {

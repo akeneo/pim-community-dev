@@ -6,8 +6,7 @@ namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscr
 
 class Request
 {
-    private
-        $productCodes;
+    private $productCodes;
 
     public function __construct()
     {
@@ -24,8 +23,7 @@ class Request
     public function toArray()
     {
         $result = [];
-        foreach($this->productCodes as $productCode)
-        {
+        foreach ($this->productCodes as $productCode) {
             $result[$productCode->identifierName()][] = $productCode->value();
         }
 

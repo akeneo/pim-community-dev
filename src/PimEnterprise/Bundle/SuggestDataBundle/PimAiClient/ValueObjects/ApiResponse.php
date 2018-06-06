@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiResponse
 {
-    private
-        $responseCode,
-        $content;
+    private $responseCode;
+    
+    private $content;
 
     public function __construct(int $responseCode, ?array $content = [])
     {

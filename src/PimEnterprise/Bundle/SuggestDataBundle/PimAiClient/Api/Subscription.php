@@ -10,8 +10,7 @@ use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscription
 
 class Subscription
 {
-    private
-        $client;
+    private $client;
 
     public function __construct(Client $client)
     {

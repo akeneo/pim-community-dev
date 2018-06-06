@@ -6,8 +6,7 @@ namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects;
 
 class SubscriptionId
 {
-    private
-        $id;
+    private $id;
 
     public function __construct(string $id)
     {
@@ -24,8 +23,7 @@ class SubscriptionId
 
     private function validate(string $id)
     {
-        if(empty($id))
-        {
+        if (empty($id)) {
             throw new \InvalidArgumentException('Subscription id must not be empty');
         }
     }

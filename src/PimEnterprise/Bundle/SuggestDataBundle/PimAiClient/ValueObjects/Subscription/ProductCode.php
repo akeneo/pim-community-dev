@@ -6,9 +6,9 @@ namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscr
 
 class ProductCode
 {
-    private
-        $identifierName,
-        $value;
+    private $identifierName;
+    
+    private $value;
 
     public function __construct(string $identifierName, string $value)
     {
@@ -33,13 +33,11 @@ class ProductCode
 
     private function validate(string $identifierName, string $value)
     {
-        if(empty($identifierName))
-        {
+        if (empty($identifierName)) {
             throw new \InvalidArgumentException('Product identifier name name must not be empty');
         }
 
-        if(empty($value))
-        {
+        if (empty($value)) {
             throw new \InvalidArgumentException('Product identifier value must not be empty');
         }
     }

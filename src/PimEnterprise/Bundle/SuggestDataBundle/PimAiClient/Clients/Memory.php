@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Memory implements Client
 {
-    private
-        $uriGenerator,
-        $fixtures;
+    private $uriGenerator;
+    
+    private $fixtures;
 
     public function __construct(UriGenerator $uriGenerator)
     {
@@ -37,8 +37,7 @@ class Memory implements Client
 
     private function getResponse(string $route): ApiResponse
     {
-        if(! array_key_exists($route, $this->fixtures))
-        {
+        if (! array_key_exists($route, $this->fixtures)) {
             throw new \Exception(sprintf('Route %s not found', $route));
         }
 

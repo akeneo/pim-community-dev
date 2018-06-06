@@ -9,9 +9,9 @@ use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Subscription;
 
 class PimAiApi
 {
-    private
-        $enrichmentApi,
-        $subscriptionApi;
+    private $enrichmentApi;
+    
+    private $subscriptionApi;
 
     public function __construct(Enrichment $enrichmentApi, Subscription $subscriptionApi)
     {
