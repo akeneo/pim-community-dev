@@ -15,19 +15,3 @@ extensions:
         config:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
-
-    pim-enriched-entities-edit-form-left-column:
-        module: pim/form/common/column
-        position: 5
-        targetZone: column
-        config:
-          stateCode: enriched_entity_edit_form
-          navigationTitle: pim_enriched_entity.enriched_entity.navigation
-
-    pim-enriched-entities-edit-form-column-tabs-navigation:
-        module: pim/form/common/column-tabs-navigation
-        parent: pim-enriched-entities-edit-form-left-column
-        targetZone: navigation
-        position: 10
-        config:
-          title: pim_enriched_entity.enriched_entity.navigation

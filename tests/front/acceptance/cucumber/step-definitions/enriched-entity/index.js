@@ -30,11 +30,20 @@ module.exports = async function (cucumber) {
     await this.page.evaluate(async () => {
       const Controller = require('pim/controller/enriched-entity/list');
       const controller = new Controller();
-      controller.renderRoute()
+      controller.renderRoute();
       await document.getElementById('app').appendChild(controller.el);
     });
 
     await this.page.waitFor('.AknGridContainer');
+  });
+
+  When('the user ask for the enriched entity {string}', async function (identifier) {
+      // const Controller = require('pim/controller/enriched-entity/list');
+      // const controller = new Controller();
+      // controller.renderRoute({params: { identifier }});
+      // await document.getElementById('app').appendChild(controller.el);
+      // return 'pending';
+      await this.page.goto(`http://pim.com/enriched_entity/${identifier}`);
   });
 
   Then('the user get a selection of {int} items out of {int} items in total', async function (count, total) {
