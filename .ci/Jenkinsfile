@@ -120,7 +120,15 @@ stage("Test") {
                 container: tag,
                 containers: pimContainers(image: tag, selenium: false),
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/vendor/akeneo/pim-community-dev/src", "/var/www/pim/vendor/akeneo/pim-community-dev/tests"])},
+                fetcher: {
+                    return pimPhpunitFetcher(
+                        paths:[
+                            "/var/www/pim/src",
+                            "/var/www/pim/vendor/akeneo/pim-community-dev/src",
+                            "/var/www/pim/vendor/akeneo/pim-community-dev/tests"
+                        ]
+                    )
+                },
                 parallelism: 50
             )},
 
