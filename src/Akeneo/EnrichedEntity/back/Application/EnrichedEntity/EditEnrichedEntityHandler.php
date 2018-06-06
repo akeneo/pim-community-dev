@@ -35,15 +35,14 @@ class EditEnrichedEntityHandler
     }
 
     /**
-     * @param string $rawIdentifier
-     * @param array  $labels
+     * @param EditEnrichedEntityCommand $editEnrichedEntityCommand
      *
      * @return EnrichedEntity
      */
-    public function __invoke(string $rawIdentifier, array $labels): EnrichedEntity
+    public function __invoke(EditEnrichedEntityCommand $editEnrichedEntityCommand): EnrichedEntity
     {
-        $identifier = EnrichedEntityIdentifier::fromString($rawIdentifier);
-        $labelCollection = LabelCollection::fromArray($labels);
+        $identifier = EnrichedEntityIdentifier::fromString($editEnrichedEntityCommand->identifier);
+        $labelCollection = LabelCollection::fromArray($editEnrichedEntityCommand->labels);
 
         $enrichedEntity = $this->enrichedEntityRepository->findOneByIdentifier($identifier);
         $enrichedEntity->updateLabels($labelCollection);

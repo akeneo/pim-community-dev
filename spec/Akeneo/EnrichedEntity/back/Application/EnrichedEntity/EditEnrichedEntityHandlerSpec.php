@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\EnrichedEntity\back\Application\EnrichedEntity;
 
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
@@ -24,13 +25,11 @@ class EditEnrichedEntityHandlerSpec extends ObjectBehavior
 
     function it_edits_an_enriched_entity(
         EnrichedEntityRepository $repository,
-        EnrichedEntity $enrichedEntity
+        EnrichedEntity $enrichedEntity,
+        EditEnrichedEntityCommand $editEnrichedEntityCommand
     ) {
-        $identifier = 'designer';
-        $labels = [
-            'fr_FR' => 'Designer',
-            'en_US' => 'Designer',
-        ];
+        $editEnrichedEntityCommand->identifier = 'designer';
+        $editEnrichedEntityCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
 
         $repository->findOneByIdentifier(Argument::type(EnrichedEntityIdentifier::class))
             ->willReturn($enrichedEntity);
@@ -40,6 +39,6 @@ class EditEnrichedEntityHandlerSpec extends ObjectBehavior
 
         $repository->update($enrichedEntity)->shouldBeCalled();
 
-        $this->__invoke($identifier, $labels);
+        $this->__invoke($editEnrichedEntityCommand);
     }
 }
