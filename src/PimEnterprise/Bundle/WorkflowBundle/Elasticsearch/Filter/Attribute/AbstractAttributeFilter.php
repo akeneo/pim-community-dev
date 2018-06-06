@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 
 /**

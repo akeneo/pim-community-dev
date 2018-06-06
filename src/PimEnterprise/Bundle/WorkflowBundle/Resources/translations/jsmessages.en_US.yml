@@ -8,8 +8,10 @@ Refuse selected: Reject selected
 pim_datagrid:
     no_entities:
         proposal: There is no proposal to review.
+        product_draft: There is no product draft to review.
     no_results:
         proposal: There is no proposal to review. Try to change your search criteria.
+        product_draft: There is no product draft to review. Try to change your search criteria.
 
 pimee_workflow:
     entity:

@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventListener\Datagrid;
 
-use Akeneo\Bundle\RuleEngineBundle\Doctrine\ORM\QueryBuilder\RuleQueryBuilder;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\ORM\QueryBuilder\RuleQueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
@@ -48,11 +48,11 @@ class ConfigureRuleRelationGridListenerSpec extends ObjectBehavior
         $datagrid->getDatasource()->willReturn($datasource);
         $datasource->getQueryBuilder()->willReturn($qb);
 
-        $requestParams->get('resourceName', null)->willReturn('Pim\Bundle\CatalogBundle\Entity\Attribute');
-        $requestParams->get('resourceName')->willReturn('Pim\Bundle\CatalogBundle\Entity\Attribute');
+        $requestParams->get('resourceName', null)->willReturn('Akeneo\Pim\Structure\Component\Model\Attribute');
+        $requestParams->get('resourceName')->willReturn('Akeneo\Pim\Structure\Component\Model\Attribute');
         $requestParams->get('resourceId')->willReturn(35);
 
-        $qb->joinResource('Pim\Bundle\CatalogBundle\Entity\Attribute', 35)->shouldBeCalled();
+        $qb->joinResource('Akeneo\Pim\Structure\Component\Model\Attribute', 35)->shouldBeCalled();
 
         $this->configure($event);
     }

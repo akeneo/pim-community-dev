@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace spec\PimEnterprise\Component\CatalogRule\Connector\Executor;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
-use Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;

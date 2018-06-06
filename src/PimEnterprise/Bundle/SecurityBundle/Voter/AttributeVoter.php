@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;

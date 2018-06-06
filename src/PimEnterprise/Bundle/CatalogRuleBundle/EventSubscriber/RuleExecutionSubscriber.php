@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber;
 
-use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

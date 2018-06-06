@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 

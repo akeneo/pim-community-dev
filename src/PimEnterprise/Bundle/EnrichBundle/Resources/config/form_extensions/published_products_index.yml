@@ -90,7 +90,7 @@ extensions:
         parent: pimee-published-product-index
         targetZone: bottom-panel
         config:
-            label: pim_enrich.entity.product.selected
+            label: pim_datagrid.mass_action.selected.product
 
     pimee-published-product-index-filters-manage:
         module: oro/datafilter/filters-button
@@ -152,5 +152,5 @@ extensions:
         config:
             buttonClass: 'AknDropdown-menuLink'
             route: pim_enrich_product_index
-            label: pim_common.products
+            label: pim_enrich.entity.product.plural_label
 

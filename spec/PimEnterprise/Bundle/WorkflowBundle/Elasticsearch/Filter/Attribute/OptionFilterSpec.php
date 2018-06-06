@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\OptionFilter;

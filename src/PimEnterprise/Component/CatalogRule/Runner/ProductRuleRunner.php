@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\CatalogRule\Runner;
 
-use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
-use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
-use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\SelectorInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

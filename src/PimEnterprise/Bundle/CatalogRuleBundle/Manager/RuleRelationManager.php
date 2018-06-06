@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
-use Akeneo\Bundle\RuleEngineBundle\Repository\RuleRelationRepositoryInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleRelationRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\FieldImpactActionInterface;

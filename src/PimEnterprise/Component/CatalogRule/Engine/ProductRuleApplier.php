@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Component\CatalogRule\Engine;
 
-use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
-use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
-use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver;

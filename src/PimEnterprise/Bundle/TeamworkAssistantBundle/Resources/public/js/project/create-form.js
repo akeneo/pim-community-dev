@@ -262,7 +262,7 @@ define(
                         titleLabel: __('pim_common.create'),
                         picture: 'illustrations/Project.svg',
                         fields: this.template({
-                            channelLabel: __('pim_common.channel'),
+                            channelLabel: __('pim_enrich.entity.channel.uppercase_label'),
                             channelValue: channelValue,
                             localeLabel: __('teamwork_assistant.project.locale'),
                             localeValue: localeValue,

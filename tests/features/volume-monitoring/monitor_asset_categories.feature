@@ -3,7 +3,7 @@ Feature: Monitor catalog volume
   As an administrator user
   I want to monitor the volume of asset categories
 
-  @acceptance-back
+  @acceptance-back @acceptance-front
   Scenario: Monitor the number of asset categories
     Given a catalog with 5 asset categories
     When the administrator user asks for the catalog volume monitoring report

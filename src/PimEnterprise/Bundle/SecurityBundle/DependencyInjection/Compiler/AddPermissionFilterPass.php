@@ -36,7 +36,7 @@ class AddPermissionFilterPass implements CompilerPassInterface
                                 'type' => 'product_permission',
                                 'ftype' => 'choice',
                                 'data_name' => 'permissions',
-                                'label' => 'pimee_workflow.product.permission.label',
+                                'label' => 'pim_common.permissions',
                                 'options' => [
                                     'field_options' => [
                                         'multiple' => false,

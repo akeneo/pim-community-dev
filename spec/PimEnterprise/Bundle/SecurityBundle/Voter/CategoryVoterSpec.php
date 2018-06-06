@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
-use PimEnterprise\Component\ProductAsset\Model\Category;
+use Akeneo\Asset\Component\Model\Category;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

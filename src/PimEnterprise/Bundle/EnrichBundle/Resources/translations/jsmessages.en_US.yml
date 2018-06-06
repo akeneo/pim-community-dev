@@ -19,8 +19,8 @@ pim_enrich:
         attribute_label:
             pim_assets_collection: Assets collection
         attribute:
-            type:
-                pim_assets_collection: Assets collection
+            property:
+                is_read_only: Read only
     form:
         attribute:
             tab:
@@ -38,7 +38,6 @@ pimee_enrich:
         job_instance:
             tab:
                 permission:
-                    title: Permissions
                     added: The group {{ group }} will be allowed to {{ permission }} job profile
                     execute.label: Allowed to execute job profile
                     edit.label: Allowed to edit job profile
@@ -55,6 +54,7 @@ pimee_enrich:
                     edit.label: Allowed to edit attributes
                     removed: The group {{ group }} will not be allowed to {{ permission }} attribute group
                     added: The group {{ group }} will be allowed to {{ permission }} attribute group
+
     entity:
         product:
             index_title: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
@@ -168,7 +168,6 @@ pimee_enrich:
                 height: '%value%px height'
     mass_edit:
         cancel: Cancel
-        confirm: Confirm
         product:
             operation:
                 publish:
@@ -205,6 +204,10 @@ pimee_enrich:
                     label: Classify assets in categories
                     description: The assets will be positioned into following categories, the existing placement will be lost.
                     label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|] 1, Inf [Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
+    category:
+        tab:
+            permission:
+                title: Permissions
 
 pim_menu:
     tab:
@@ -225,7 +228,7 @@ pim_title:
     pimee_asset_categorytree_index: Categories
     pimee_asset_categorytree_edit: Category {{ category.label }} | Edit
     pimee_catalog_rule_rule_index: Rules
-    pimee_enrich_locale_edit: Locales | Edit
+    pimee_enrich_locale_edit: Locale | Edit
 
 batch_jobs:
     yml_asset_channel_configuration_import:

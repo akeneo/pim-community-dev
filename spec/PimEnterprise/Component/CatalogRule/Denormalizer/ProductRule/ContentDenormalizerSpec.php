@@ -11,7 +11,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
     function let(DenormalizerInterface $chainedDenormalizer)
     {
         $this->beConstructedWith(
-            'Akeneo\Bundle\RuleEngineBundle\Model\Rule',
+            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule',
             'PimEnterprise\Component\CatalogRule\Model\ProductCondition',
             [
                 'copy_value' => 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction',
@@ -70,7 +70,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         // TODO: use a custom matcher to test it
-        $this->denormalize($content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule');
+        $this->denormalize($content, 'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule');
     }
 
     function it_throws_an_exception_when_deserializing_a_product_rule_content_with_no_action_type()
@@ -88,7 +88,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException(sprintf('Rule content "%s" has an action with no type.', json_encode($content)))
-        )->during('denormalize', [$content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule']);
+        )->during('denormalize', [$content, 'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule']);
     }
 
     function it_throws_an_exception_when_deserializing_a_product_rule_content_with_an_invalid_action_type($chainedDenormalizer)
@@ -110,6 +110,6 @@ class ContentDenormalizerSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException(sprintf('Rule content "%s" has an unknown type of action "unknown_action".', json_encode($content)))
-        )->during('denormalize', [$content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule']);
+        )->during('denormalize', [$content, 'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule']);
     }
 }

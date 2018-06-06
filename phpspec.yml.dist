@@ -6,9 +6,49 @@ suites:
     PimEnterprise:
         namespace: PimEnterprise
 
-    Akeneo:
-        namespace: Akeneo
+    ## Asset
+    AssetBundle:
+        namespace: Akeneo\Asset\Bundle
+        psr4_prefix: Akeneo\Asset\Bundle
+        spec_path: src/Akeneo/Asset/Bundle
+        src_path: src/Akeneo/Asset/Bundle
+    AssetComponent:
+        namespace: Akeneo\Asset\Component
+        psr4_prefix: Akeneo\Asset\Component
+        spec_path: src/Akeneo/Asset/Component
+        src_path: src/Akeneo/Asset/Component
 
+    ## Tool
+    FileMetadata:
+        namespace: Akeneo\Tool\Component\FileMetadata
+        psr4_prefix: Akeneo\Tool\Component\FileMetadata
+        spec_path: src/Akeneo/Tool/Component/FileMetadata
+        src_path: src/Akeneo/Tool/Component/FileMetadata
+    FileTransformer:
+        namespace: Akeneo\Tool\Component\FileTransformer
+        psr4_prefix: Akeneo\Tool\Component\FileTransformer
+        spec_path: src/Akeneo/Tool/Component/FileTransformer
+        src_path: src/Akeneo/Tool/Component/FileTransformer
+    RuleEngine:
+        namespace: Akeneo\Tool\Component\RuleEngine
+        psr4_prefix: Akeneo\Tool\Component\RuleEngine
+        spec_path: src/Akeneo/Tool/Component/RuleEngine
+        src_path: src/Akeneo/Tool/Component/RuleEngine
+    FileMetadataBundle:
+        namespace: Akeneo\Tool\Bundle\FileMetadataBundle
+        psr4_prefix: Akeneo\Tool\Bundle\FileMetadataBundle
+        spec_path: src/Akeneo/Tool/Bundle/FileMetadataBundle
+        src_path: src/Akeneo/Tool/Bundle/FileMetadataBundle
+    FileTransformerBundle:
+        namespace: Akeneo\Tool\Bundle\FileTransformerBundle
+        psr4_prefix: Akeneo\Tool\Bundle\FileTransformerBundle
+        spec_path: src/Akeneo/Tool/Bundle/FileTransformerBundle
+        src_path: src/Akeneo/Tool/Bundle/FileTransformerBundle
+    RuleEngineBundle:
+        namespace: Akeneo\Tool\Bundle\RuleEngineBundle
+        psr4_prefix: Akeneo\Tool\Bundle\RuleEngineBundle
+        spec_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
+        src_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
     ## Acceptance
     Acceptance:
         namespace: AkeneoEnterprise\Test\Acceptance

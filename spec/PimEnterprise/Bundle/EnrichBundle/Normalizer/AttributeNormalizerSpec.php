@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeNormalizerSpec extends ObjectBehavior

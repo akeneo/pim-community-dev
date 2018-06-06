@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Import\Product;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

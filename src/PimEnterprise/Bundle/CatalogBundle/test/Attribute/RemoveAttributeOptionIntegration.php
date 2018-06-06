@@ -7,7 +7,7 @@ use Akeneo\Test\Integration\TestCase;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\Product;
 
 class RemoveAttributeOptionIntegration extends TestCase

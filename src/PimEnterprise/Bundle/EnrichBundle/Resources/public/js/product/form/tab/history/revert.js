@@ -86,7 +86,9 @@ define(
                         ).fail(
                             function (response) {
                                 loadingMask.hide().$el.remove();
-                                var message = response.responseJSON ? response.responseJSON.error : __('error.common');
+                                const message = response.responseJSON ?
+                                    response.responseJSON.error :
+                                    __('pim_enrich.entity.fallback.generic_error');
 
                                 messenger.notify('error', message);
                             }

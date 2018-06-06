@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use AkeneoEnterprise\Test\Acceptance\ProductAsset\AssetCategory\InMemoryAssetCategoryRepository;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Model\Category;
-use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
+use Akeneo\Asset\Component\Model\Category;
+use Akeneo\Asset\Component\Repository\AssetCategoryRepositoryInterface;
 use Prophecy\Argument;
 
 class InMemoryAssetCategoryRepositorySpec extends ObjectBehavior

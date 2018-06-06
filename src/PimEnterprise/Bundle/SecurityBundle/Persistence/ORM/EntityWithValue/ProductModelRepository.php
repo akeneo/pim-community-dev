@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
@@ -224,6 +224,16 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     public function findRootProductModels(FamilyVariantInterface $familyVariant): array
     {
         $productModels = $this->productModelRepository->findRootProductModels($familyVariant);
+
+        return $this->getFilteredProductModels($productModels);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findProductModelsForFamilyVariant(FamilyVariantInterface $familyVariant, ?string $search = null): array
+    {
+        $productModels = $this->productModelRepository->findProductModelsForFamilyVariant($familyVariant, $search);
 
         return $this->getFilteredProductModels($productModels);
     }

@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\CatalogRule\Validator;
 
-use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
-use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
+use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
+use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

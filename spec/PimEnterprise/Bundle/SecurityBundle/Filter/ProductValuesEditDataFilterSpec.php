@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 class ProductValuesEditDataFilterSpec extends ObjectBehavior

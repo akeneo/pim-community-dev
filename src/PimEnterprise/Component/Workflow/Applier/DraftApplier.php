@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\Workflow\Applier;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
@@ -53,7 +54,7 @@ class DraftApplier implements DraftApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyAllChanges(ProductInterface $product, EntityWithValuesDraftInterface $productDraft)
+    public function applyAllChanges(EntityWithValuesInterface $entityWithValues, EntityWithValuesDraftInterface $productDraft)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPLY, new GenericEvent($productDraft));
 
@@ -62,7 +63,7 @@ class DraftApplier implements DraftApplierInterface
             return;
         }
 
-        $this->applyValues($product, $changes['values']);
+        $this->applyValues($entityWithValues, $changes['values']);
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_APPLY, new GenericEvent($productDraft));
     }
@@ -70,7 +71,7 @@ class DraftApplier implements DraftApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyToReviewChanges(ProductInterface $product, EntityWithValuesDraftInterface $productDraft)
+    public function applyToReviewChanges(EntityWithValuesInterface $entityWithValues, EntityWithValuesDraftInterface $productDraft)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPLY, new GenericEvent($productDraft));
 
@@ -79,22 +80,22 @@ class DraftApplier implements DraftApplierInterface
             return;
         }
 
-        $this->applyValues($product, $changes['values']);
+        $this->applyValues($entityWithValues, $changes['values']);
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_APPLY, new GenericEvent($productDraft));
     }
 
     /**
-     * @param ProductInterface $product
-     * @param array            $changesValues
+     * @param EntityWithValuesInterface $entityWithValues
+     * @param array                     $changesValues
      */
-    protected function applyValues(ProductInterface $product, array $changesValues)
+    protected function applyValues(EntityWithValuesInterface $entityWithValues, array $changesValues)
     {
         foreach ($changesValues as $code => $values) {
             if ($this->attributeExists($code)) {
                 foreach ($values as $value) {
                     $this->propertySetter->setData(
-                        $product,
+                        $entityWithValues,
                         $code,
                         $value['data'],
                         ['locale' => $value['locale'], 'scope' => $value['scope']]

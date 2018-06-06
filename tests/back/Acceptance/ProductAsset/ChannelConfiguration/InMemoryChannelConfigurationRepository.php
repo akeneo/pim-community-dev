@@ -6,8 +6,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
-use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfiguration;
-use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
+use Akeneo\Asset\Component\Model\ChannelVariationsConfiguration;
+use Akeneo\Asset\Component\Repository\ChannelConfigurationRepositoryInterface;
 
 class InMemoryChannelConfigurationRepository implements IdentifiableObjectRepositoryInterface, SaverInterface, ChannelConfigurationRepositoryInterface
 {

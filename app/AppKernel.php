@@ -81,8 +81,8 @@ class AppKernel extends Kernel
     protected function getPimEnterpriseBundles()
     {
         return [
-            new Akeneo\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
-            new Akeneo\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
+            new Akeneo\Tool\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
+            new Akeneo\Tool\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
             new Akeneo\EnrichedEntity\back\Infrastructure\Symfony\AkeneoEnrichedEntityBundle(),
             new PimEnterprise\Bundle\CatalogBundle\PimEnterpriseCatalogBundle(),
             new PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle(),
@@ -90,7 +90,7 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\DataGridBundle\PimEnterpriseDataGridBundle(),
             new PimEnterprise\Bundle\EnrichBundle\PimEnterpriseEnrichBundle(),
             new PimEnterprise\Bundle\InstallerBundle\PimEnterpriseInstallerBundle(),
-            new PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle(),
+            new Akeneo\Asset\Bundle\PimEnterpriseProductAssetBundle(),
             new PimEnterprise\Bundle\SecurityBundle\PimEnterpriseSecurityBundle(),
             new PimEnterprise\Bundle\TeamworkAssistantBundle\PimEnterpriseTeamworkAssistantBundle(),
             new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
@@ -118,8 +118,10 @@ class AppKernel extends Kernel
             new Akeneo\Channel\Bundle\AkeneoChannelBundle(),
 
             // PIM bundles
+            new Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle(),
+            new Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle(),
             new Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
-            new Akeneo\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle(),
+            new Akeneo\Tool\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle(),
             new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
             new Akeneo\Tool\Bundle\ApiBundle\PimApiBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),

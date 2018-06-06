@@ -10,8 +10,8 @@ use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -19,7 +19,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Akeneo\Asset\Component\Model\AssetInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior

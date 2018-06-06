@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\CatalogRule\Connector\Processor\Normalization;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

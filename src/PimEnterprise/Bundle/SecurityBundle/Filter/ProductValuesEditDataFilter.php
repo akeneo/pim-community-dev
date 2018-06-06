@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Product values edit data filter

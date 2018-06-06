@@ -1,6 +1,6 @@
 parameters:
-    pimee_catalog_rule.denormalizer.product_rule.chained.class:   Akeneo\Bundle\RuleEngineBundle\Denormalizer\ChainedDenormalizer
-    pimee_catalog_rule.denormalizer.product_rule.class:           Akeneo\Bundle\RuleEngineBundle\Denormalizer\RuleDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.chained.class:   Akeneo\Tool\Bundle\RuleEngineBundle\Denormalizer\ChainedDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.class:           Akeneo\Tool\Bundle\RuleEngineBundle\Denormalizer\RuleDenormalizer
     pimee_catalog_rule.denormalizer.product_rule.content.class:   PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ContentDenormalizer
     pimee_catalog_rule.denormalizer.product_rule.action.class:    PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ActionDenormalizer
     pimee_catalog_rule.denormalizer.product_rule.condition.class: PimEnterprise\Component\CatalogRule\Denormalizer\ProductRule\ConditionDenormalizer

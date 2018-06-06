@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Applier;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
 /**
@@ -24,16 +24,16 @@ interface DraftApplierInterface
     /**
      * Apply all changes on the product no matter the review statuses
      *
-     * @param ProductInterface                     $product
-     * @param EntityWithValuesDraftInterface $productDraft
+     * @param EntityWithValuesInterface      $entityWithValues
+     * @param EntityWithValuesDraftInterface $entityWithValuesDraft
      */
-    public function applyAllChanges(ProductInterface $product, EntityWithValuesDraftInterface $productDraft);
+    public function applyAllChanges(EntityWithValuesInterface $entityWithValues, EntityWithValuesDraftInterface $entityWithValuesDraft);
 
     /**
      * Apply only changes with the status EntityWithValuesDraftInterface::TO_REVIEW on the product
      *
-     * @param ProductInterface                     $product
-     * @param EntityWithValuesDraftInterface $productDraft
+     * @param EntityWithValuesInterface      $product
+     * @param EntityWithValuesDraftInterface $entityWithValuesDraft
      */
-    public function applyToReviewChanges(ProductInterface $product, EntityWithValuesDraftInterface $productDraft);
+    public function applyToReviewChanges(EntityWithValuesInterface $entityWithValues, EntityWithValuesDraftInterface $entityWithValuesDraft);
 }
