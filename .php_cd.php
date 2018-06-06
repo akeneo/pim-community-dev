@@ -103,7 +103,8 @@ $cPimRules = [
     new Rule(
         'Pim\Component\ReferenceData',
         array_merge($cDeps, [
-            'Pim\Component\Catalog',         // because ;)
+            'Pim\Component\Catalog',
+            'Akeneo\Pim\Structure\Component'
         ]),
         RuleInterface::TYPE_ONLY
     ),
