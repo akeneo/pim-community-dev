@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Tool\Component\Api\Updater;
+namespace spec\Akeneo\Pim\Structure\Component\Updater\ExternalApi;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
