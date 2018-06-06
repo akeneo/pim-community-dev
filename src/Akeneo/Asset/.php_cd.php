@@ -51,7 +51,7 @@ $rules = [
         'PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException',
         // TODO: we must not depend on PIM BC
         'Pim\Component\Catalog\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
-        'Pim\Component\Catalog\Model\AttributeInterface', // We should not use public constant
+        'Akeneo\Pim\Structure\Component\Model\AttributeInterface', // We should not use public constant
         'Pim\Bundle\EnrichBundle\Controller\FileController', // We should not use public constant
         'Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface', // Related to the front end

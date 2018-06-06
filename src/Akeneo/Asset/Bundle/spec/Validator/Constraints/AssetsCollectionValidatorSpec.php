@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Asset\Bundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Asset\Bundle\Validator\Constraints\AssetsCollectionConstraint;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

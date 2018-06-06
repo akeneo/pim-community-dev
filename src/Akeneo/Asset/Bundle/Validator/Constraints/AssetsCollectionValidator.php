@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Bundle\Validator\Constraints;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

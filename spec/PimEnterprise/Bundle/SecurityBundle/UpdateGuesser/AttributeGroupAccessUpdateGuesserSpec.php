@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\UpdateGuesser;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 
 class AttributeGroupAccessUpdateGuesserSpec extends ObjectBehavior

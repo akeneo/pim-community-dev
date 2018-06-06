@@ -12,8 +12,8 @@
 namespace Akeneo\Asset\Bundle\Enrich\Provider\EmptyValue;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * EmptyValue provider for asset collections

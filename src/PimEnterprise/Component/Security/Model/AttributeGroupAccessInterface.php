@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Security\Model;
 
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 
 /**
  * Attribute group access interface
