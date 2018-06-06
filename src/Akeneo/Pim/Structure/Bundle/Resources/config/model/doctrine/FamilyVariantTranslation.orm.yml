@@ -1,6 +1,6 @@
-Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
+Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslation:
     type: entity
-    table: pim_catalog_attribute_translation
+    table: pim_catalog_family_variant_translation
     changeTrackingPolicy: DEFERRED_EXPLICIT
     uniqueConstraints:
         locale_foreign_key_idx:
@@ -20,9 +20,10 @@ Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
         locale:
             type: string
             length: 20
+
     manyToOne:
         foreignKey:
-            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

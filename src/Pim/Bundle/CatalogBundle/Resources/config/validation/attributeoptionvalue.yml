@@ -1,0 +1,11 @@
+Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
+    properties:
+        value:
+            - Length:
+                max: 255
+                payload:
+                  standardPropertyName: labels
+        locale:
+            - Akeneo\Channel\Component\Validator\Constraint\Locale:
+                payload:
+                  standardPropertyName: labels

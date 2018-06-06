@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\AttributeRequirement:
+Akeneo\Pim\Structure\Component\Model\AttributeRequirement:
     type: entity
     table: pim_catalog_attribute_requirement
     changeTrackingPolicy: DEFERRED_EXPLICIT

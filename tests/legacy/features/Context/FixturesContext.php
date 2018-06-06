@@ -1984,7 +1984,7 @@ class FixturesContext extends BaseFixturesContext
     protected function getAttributeRequirement($attributeCode, $familyCode, $channelCode)
     {
         $em   = $this->getEntityManager();
-        $repo = $em->getRepository('PimCatalogBundle:AttributeRequirement');
+        $repo = $em->getRepository(AttributeRequirement::class);
 
         $attribute = $this->getAttribute($attributeCode);
         $family    = $this->getFamily($familyCode);

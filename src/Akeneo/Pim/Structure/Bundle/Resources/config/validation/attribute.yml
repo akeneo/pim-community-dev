@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\Attribute:
+Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttribute:
@@ -429,7 +429,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
         group:
             - Valid: ~
 
-Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
+Akeneo\Pim\Structure\Component\Model\AttributeTranslation:
     properties:
         label:
             - Length:
@@ -441,7 +441,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
                 payload:
                     standardPropertyName: labels
 
-Pim\Bundle\CatalogBundle\Entity\AttributeOption:
+Akeneo\Pim\Structure\Component\Model\AttributeOption:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             - code
@@ -467,14 +467,4 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
         optionValues:
             - Valid: ~
 
-Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
-    properties:
-        value:
-            - Length:
-                max: 255
-                payload:
-                  standardPropertyName: labels
-        locale:
-            - Akeneo\Channel\Component\Validator\Constraint\Locale:
-                payload:
-                  standardPropertyName: labels
+
