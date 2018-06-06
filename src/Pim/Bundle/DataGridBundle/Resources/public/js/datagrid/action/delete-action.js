@@ -71,7 +71,7 @@ define([
                         this.getErrorDialog(message).open();
                     }.bind(this),
                     success: function() {
-                        var messageText = __('flash.' + this.getEntityCode() + '.removed');
+                        var messageText = __('pim_enrich.entity.' + this.getEntityCode() + '.flash.delete.success');
                         messenger.notify('success', messageText);
                         userContext.initialize();
 
@@ -107,7 +107,10 @@ define([
                 if (!this.errorModal) {
                     this.errorModal = new Modal({
                         title: __('pim_datagrid.delete_error.title'),
-                        content: '' === message ? __('error.removing.' + this.getEntityHint()) : message,
+                        content:
+                            '' === message ?
+                            __('pim_enrich.entity.' + this.getEntityHint() + '.flash.delete.fail') :
+                            message,
                         cancelText: false
                     });
                 }

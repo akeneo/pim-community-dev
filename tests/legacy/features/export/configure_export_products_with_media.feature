@@ -8,7 +8,7 @@ Feature: Configure export of products media
     Given a "footwear" catalog configuration
     And the following jobs:
       | connector             | type   | alias               | code                | label                        |
-      | Akeneo XLSX Connector | export | xlsx_product_export | xlsx_product_export | XSLX footwear product export |
+      | Akeneo XLSX Connector | export | xlsx_product_export | xlsx_product_export | XLSX footwear product export |
     And the following products:
       | sku           | name-en_US    | price-EUR | size | color | side_view             | family | categories        |
       | gothic_boot_1 | Gothic Boot A | 19.99     | 35   | black | %fixtures%/akeneo.jpg | boots  | winter_collection |

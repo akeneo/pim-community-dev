@@ -105,7 +105,7 @@ define(
                             message = response.responseText;
                         }
 
-                        Dialog.alert(message, __('pim_enrich.item.list.delete.error'));
+                        Dialog.alert(message, __('pim_enrich.entity.fallback.flash.delete.error'));
                     }.bind(this)
                 });
             },

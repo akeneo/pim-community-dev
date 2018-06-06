@@ -6,7 +6,7 @@ extensions:
                 title: pim_common.create
                 subTitle: pim_menu.item.group
             picture: illustrations/Groups.svg
-            successMessage: pim_enrich.entity.group.message.created
+            successMessage: pim_enrich.entity.group.flash.create.success
             editRoute: pim_enrich_group_edit
             postUrl: pim_enrich_group_rest_create
             routerKey: code

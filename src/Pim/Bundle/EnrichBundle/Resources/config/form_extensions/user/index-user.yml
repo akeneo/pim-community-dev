@@ -24,7 +24,7 @@ extensions:
         parent: pim-user-index
         targetZone: title
         config:
-            title: pim_enrich.index.user.title
+            title: pim_user_management.entity.user.page_title.index
 
     pim-user-index-breadcrumbs:
         module: pim/common/breadcrumbs

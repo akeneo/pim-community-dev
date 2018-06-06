@@ -37,5 +37,5 @@ extensions:
         config:
             type: import
             identifier: job_name
-            label: pim_enrich.form.job_instance.meta.job
+            label: pim_import_export.form.job_instance.meta.job
             url: pim_enrich_job_instance_rest_jobs_get

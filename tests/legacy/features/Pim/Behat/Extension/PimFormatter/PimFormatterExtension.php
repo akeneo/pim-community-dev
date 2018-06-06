@@ -17,7 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class PimFormatterExtension implements ExtensionInterface
 {
-
     /**
      * {@inheritdoc}
      */

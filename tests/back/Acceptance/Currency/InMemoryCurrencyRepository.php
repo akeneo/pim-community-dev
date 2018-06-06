@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Currency;
 
+use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
@@ -14,7 +15,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
 final class InMemoryCurrencyRepository implements
     SaverInterface,
     IdentifiableObjectRepositoryInterface,
-    ObjectRepository
+    ObjectRepository,
+    CurrencyRepositoryInterface
 {
     /** @var Collection */
     private $currencies;
@@ -99,6 +101,22 @@ final class InMemoryCurrencyRepository implements
      * {@inheritdoc}
      */
     public function getClassName()
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActivatedCurrencies()
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActivatedCurrencyCodes()
     {
         throw new NotImplementedException(__METHOD__);
     }

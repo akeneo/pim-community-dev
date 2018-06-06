@@ -39,7 +39,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_common.channel
+            entity: pim_enrich.entity.channel.uppercase_label
 
     pim-channel-create-form-properties-tab:
         module: pim/common/tab

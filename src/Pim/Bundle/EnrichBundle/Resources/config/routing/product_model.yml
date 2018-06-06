@@ -68,3 +68,8 @@ pim_enrich_product_model_listcategories:
     requirements:
         id: '[0-9a-f]+'
         categoryId: \d+
+
+pim_enrich_product_model_for_family_variant_rest_list:
+    path: /rest/product-model/family-variant
+    defaults: { _controller: pim_enrich.controller.rest.product_model:listFamilyVariantProductModels }
+    methods: [GET]

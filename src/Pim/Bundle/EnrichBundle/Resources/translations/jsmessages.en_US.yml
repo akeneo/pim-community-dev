@@ -1,16 +1,40 @@
+#Global structure of translation files
+#
+#pim_bundle_name:
+#    entity:
+#        entity_name:
+#            label: entity
+#            uppercase_label: Entity
+#            plural_label: Entities
+#            flash:
+#                update:
+#                    fail: Update failed
+#                    success: Entity Successfully updated
+#                delete:
+#                    fail: Cannot delete this entity
+#                    success: Entity successfully removed
+#                create:
+#                    fail: Can not create this entity
+#                    success: Entity successfully created
+#            page_title:
+#                index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#            property:
+#                field_name: Field name
+#                complex_field:
+#                    label: Field name
+#                    choose: Choose a field name
+
 pim_common:
+    actions: Actions
     add: Add
     add_attributes: Add attributes
     after: After
     all: All
     and: and
     apply: Apply
-    attributes: Attributes
-    attribute_groups: Attribute groups
     before: Before
+    by: by
     cancel: Cancel
-    categories: Categories
-    channel: Channel
     code: Code
     confirm: Confirm
     confirm_deletion: Confirm deletion
@@ -26,7 +50,6 @@ pim_common:
     label_translations: Label translations
     less_than: Less than
     loading: Loading...
-    locales: Locales
     more_than: More than
     next: Next
     "no": "No"
@@ -34,9 +57,9 @@ pim_common:
     not_available: N/A
     now: Now
     ok: OK
+    permissions: Permissions
     previous: Previous
     properties: Properties
-    products: Products
     save: Save
     status: Status
     to: to
@@ -60,24 +83,32 @@ pim_common:
 
 confirmation:
     remove:
-        item:             Are you sure you want to delete this item?
+        title: Delete this {{ itemName }}
+        alternative_title: Confirm removal
+        item: Are you sure you want to delete this item?
+        item_placeholder: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action.
         association_type: Are you sure you want to delete this association type?
-        attribute:        Are you sure you want to delete this attribute?
-        attribute_group:  Are you sure you want to delete this attribute group?
-        family:           Are you sure you want to delete this family?
-        family_variant:   Are you sure you want to delete this family variant ?
-        product:          Are you sure you want to delete this product?
-        product_model:    Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
-        channel:          Are you sure you want to delete this channel?
-        group:            Are you sure you want to delete this group?
-        group_type:       Are you sure you want to delete this group type?
-        import_profile:   Are you sure you want to delete this import profile?
-        export_profile:   Are you sure you want to delete this export profile?
-        user:             Are you sure you want to delete this user?
-        role:             Are you sure you want to delete this role?
-        job_instance:     Are you sure you want to delete this job instance?
-        api_connection:   Are you sure you want to revoke this API connection? All API calls made through this connection will now throw an error.
+        attribute: Are you sure you want to delete this attribute?
+        attribute_from_family: Are you sure you want to delete this attribute from the family?
+        attribute_from_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
+        attribute_from_product: Are you sure you want to delete this attribute from the product?
+        attribute_group: Are you sure you want to delete this attribute group?
+        family: Are you sure you want to delete this family?
+        family_variant: Are you sure you want to delete this family variant?
+        product: Are you sure you want to delete this product?
+        product_model: Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
+        channel: Are you sure you want to delete this channel?
+        group: Are you sure you want to delete this group?
+        group_type: Are you sure you want to delete this group type?
+        user: Are you sure you want to delete this user?
+        role: Are you sure you want to delete this role?
+        api_connection: Are you sure you want to revoke this API connection? All API calls made through this connection will now throw an error.
         products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
+    leave: Are you sure you want to leave this page?
+    discard_changes: You will lose changes to the {{ entity }} if you leave the page.
+    cancel:
+        title: Cancel modification
+        message: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option?
 
 pim_datagrid:
     mass_action_group:
@@ -88,8 +119,8 @@ pim_datagrid:
     mass_action:
         delete:
             confirm_content: Are you sure you want to delete the selected products?
-            success:         Selected products successfully deleted.
-            error:           Error ocurred when trying to delete selected products, please try again.
+            success: Selected products successfully deleted.
+            error: Error ocurred when trying to delete selected products, please try again.
         quick_export:
             csv_all: CSV (All attributes)
             csv_grid_context: CSV (Grid context)
@@ -98,6 +129,9 @@ pim_datagrid:
         mass_edit: Bulk actions
         sequential_edit: Sequential edit
         mass_delete: Mass delete
+        selected:
+            family: selected families
+            product: selected results
     view_selector:
         view: Views
     actions:
@@ -106,68 +140,15 @@ pim_datagrid:
         delete_product: Delete the product
         change_status: Change status
         toggle_status: Toggle status
+        other: Other actions
     empty_results:
         associated_product:
             hint: There are no associated products
             subHint: 'Click on the button "Add associations" to associate this product'
 
-flash:
-    item:
-        removed: Item successfully removed
-    association_type:
-        removed: Association type successfully removed
-    attribute:
-        removed: Attribute successfully removed
-    attribute_group:
-        removed: Attribute group successfully removed
-    family:
-        removed: Family successfully removed
-    family_variant:
-        removed: Family variant successfully removed
-    product:
-        removed: Product successfully removed
-    product_model:
-        removed: Product model successfully removed
-    channel:
-        removed: Channel successfully removed
-    group:
-        removed: Group successfully removed
-    group_type:
-        removed: Group type successfully removed
-    import profile:
-        removed: Import profile successfully removed
-    export profile:
-        removed: Export profile successfully removed
-    user:
-        removed: User successfully removed
-    role:
-        removed: Role successfully removed
-    job_instance:
-        removed: Job instance successfully removed
-    api_connection:
-        removed: API connection successfully revoked
-
 error:
-    common: An error occured
-    creating:
-        product: No attribute is configured as a product identifier or you don't have the rights to edit it.
-    removing:
-        item:             Cannot delete this item
-        association_type: Cannot delete this association type
-        attribute:        Cannot delete this attribute
-        family:           Cannot delete this family
-        product:          Cannot delete this product
-        channel:          Cannot delete this channel
-        group:            Cannot delete this group
-        group type:       Cannot delete this group type
-        import profile:   Cannot delete this import profile
-        export profile:   Cannot delete this export profile
-        user:             Cannot delete this user
-        role:             Cannot delete this role
-        attribute_option: Error during deletion of the attribute option
-    saving:
-        attribute_option: Cannot save attribute option
-        export_profile: Cannot save export profile. Please check that all filters are well filled
+    exception: Oh snap! A {{ status_code }} error occured...
+    forbidden: Forbidden. You are not allowed to access this page
 
 alert:
     attribute_option:
@@ -176,38 +157,40 @@ alert:
     session_storage:
         not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
 
-confirm:
-    attribute_option:
-        cancel_edition_on_new_option_text: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option?
-        cancel_edition_on_new_option_title: Cancel modification
-
 pim_enrich:
-    item:
-        list:
-            delete.error: Error during item deletion
-        delete:
-            confirm.content: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action
-            confirm.title: Delete this {{ itemName }}
-
-    navigation:
-        link:
-            back_to_grid: Back to grid
-        other_actions: Other actions
     entity:
-        info:
-            update_failed: Update failed
-            update_successful: Successfully updated
+        fallback:
+            flash:
+                generic_error: An error occured
+                update:
+                    fail: Update failed
+                    success: Successfully updated
+                delete:
+                    fail: Cannot delete this item
+                    success: Item successfully removed
+
         product:
-            navigation: Product navigation
-            infos: Product infos
-            index_title: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
-            title: product
-            locale: Locale
-            category: Category
+            label: product
+            uppercase_label: Product
+            plural_label: Products
+            flash:
+                update:
+                    success: Product successfully updated.
+                    fail: The product could not be updated.
+                    fields_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
+                    already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
+                    file_upload: An error occured during the file upload
+                delete:
+                    success: Product successfully deleted.
+                    fail: The product could not be deleted.
+                create:
+                    success: Product successfully created
+                    fail: No attribute is configured as a product identifier or you don't have the rights to edit it.
+            page_title:
+                index: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
             subTitle: Create product
             modalTitle: Select your action
             filters: Filters
-            selected: selected results
             common: Common
             btn:
                 enabled: Enabled
@@ -222,22 +205,9 @@ pim_enrich:
                 modified: Modified
                 old_value: Old value
                 new_value: New value
-                actions: Actions
-            info:
-                deletion_successful: Product successfully deleted.
-                deletion_failed: The product could not be deleted.
-                update_successful: Product successfully updated.
-                update_failed: The product could not be updated.
-                field_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
-                already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
-            error:
-                upload: An error occured during the file upload
             meta:
-                created_by: By
-                updated_by: By
+                infos: Product infos
                 updated: Last update
-                family:
-                    title: Family
                 family_variant:
                     title: Variant
                 groups:
@@ -246,7 +216,6 @@ pim_enrich:
                         title: Group {{ group }}
                         view_group: View group
                         more_products: '{{ count }} more products...'
-                locale: Locale
             copy:
                 select: Select
                 all_visible: All visible
@@ -260,78 +229,105 @@ pim_enrich:
             media:
                 upload: Drag and drop to upload or click here
             create_popin:
-                type: Product
                 labels:
                     family: Choose a family
                     family_variant: Choose a family variant
-            message:
-                created: Product successfully created
             completeness: Complete
             sequential_edit:
                 item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
                 empty: Your selection is empty, please change your search criteria
+
         product_model:
+            label: product model
+            uppercase_label: Product model
+            plural_label: Product models
+            flash:
+                create:
+                    success: Product model successfully created
+                update:
+                    success: Product model successfully updated. The completeness of its variant products will be recalculated.
+                    fail: The product model could not be updated.
+                    fields_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
+                delete:
+                    success: Product model successfully deleted.
+                    fail: Cannot delete this product model
+            choose: Choose a product model
             create_popin:
-                type: Product model
                 title: Create a product model
                 content: A product model gathers variant products and eases the enrichment of their common properties.
-            info:
-                create_successful: Product model successfully created
-                update_successful: Product model successfully updated. The completeness of its variant products will be recalculated.
-                deletion_successful: Product model successfully deleted.
-                update_failed: The product model could not be updated.
-                field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
             read_only_parent_attribute_from_common: This attribute can be updated in the common attributes.
             read_only_parent_attribute_from_model: "This attribute can be updated in the attributes by {{ axes }}"
             variant_axis: Variant axis
-            title: product models
             add_child:
                 create: Add new
                 create_label: "Add a new {{ axes }}"
                 fields:
                     required_label: (variant axis)
+
         association_type:
-            info:
-                deletion_successful: Association type successfully deleted.
-                deletion_failed: Association type could not be deleted.
-                update_successful: Association type successfully updated.
-                update_failed: The association type could not be updated.
-                field_not_ready: "The association type cannot be saved right now. The following fields are not ready: {{ fields }}"
-            title: association type
-            message:
-                created: Association type successfully created
+            label: association type
+            flash:
+                update:
+                    success: Association type successfully updated.
+                    fail: The association type could not be updated.
+                    fields_not_ready: "The association type cannot be saved right now. The following fields are not ready: {{ fields }}"
+                create:
+                    success: Association type successfully created
+                delete:
+                    success: Association type successfully removed
+                    fail: Cannot delete this association type
+            page_title:
+                index: "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} association types"
+
         group_type:
-            info:
-                deletion_successful: Group type successfully deleted.
-                deletion_failed: Group type could not be deleted.
-                update_successful: Group type successfully updated.
-                update_failed: The group type could not be updated.
-                field_not_ready: "The group type cannot be saved right now. The following fields are not ready: {{ fields }}"
-            title: group type
-            message:
-                created: Group type successfully created
+            label: group type
+            flash:
+                update:
+                    success: Group type successfully updated.
+                    fail: The group type could not be updated.
+                    fields_not_ready: "The group type cannot be saved right now. The following fields are not ready: {{ fields }}"
+                create:
+                    success: Group type successfully created
+                delete:
+                    success: Group type successfully removed
+                    fail: Cannot delete this group type
+            page_title:
+                index: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} group types"
+
         channel:
-            info:
-                deletion_successful: Channel successfully deleted.
-                deletion_failed: Channel could not be deleted.
-                update_successful: Channel successfully updated.
-                update_failed: The channel could not be updated.
-                create_successful: Channel successfully created.
-                create_failed: The channel could not be created.
-                field_not_ready: "The channel cannot be saved right now. The following fields are not ready: {{ fields }}"
+            label: channel
+            uppercase_label: Channel
+            flash:
+                update:
+                    success: Channel successfully updated.
+                    fail: The channel could not be updated.
+                create:
+                    success: Channel successfully created.
+                    fail: The channel could not be created.
+                delete:
+                    success: Channel successfully removed
+                    fail: Cannot delete this channel
+            page_title:
+                index: "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} channels"
+
         family:
-            title: family
-            selected: selected families
-            info:
-                update_successful: Family successfully updated.
-                create_successful: Channel successfully created.
-                update_failed: An error occured during family update.
-                cant_remove_attribute_as_label: Cannot remove attribute used as label
-                cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
-                attribute_edit_permission_is_not_granted: You have no rights to edit family's attributes
-                cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
-            message:
-                created: Family successfully created
+            label: family
+            uppercase_label: Family
+            flash:
+                update:
+                    success: Family successfully updated.
+                    fail: An error occured during family update.
+                    cant_remove_attribute_as_label: Cannot remove attribute used as label
+                    cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
+                    cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
+                    fields_not_ready: "The family cannot be saved right now. The following fields are not ready: {{ fields }}"
+                create:
+                    success: Family successfully created
+                delete:
+                    success: Family successfully removed
+                    fail: Cannot delete this family
+            page_title:
+                index: "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} families"
             variant:
                 common:
                     title: Common attributes
@@ -349,88 +345,169 @@ pim_enrich:
                 confirm_attribute_removal:
                     title: Confirm remove of attributes
                     message: By removing these attributes you will put them back in the common attributes of the family variant and remove the values from the variant products
+
         family_variant:
-            info:
-                update_successful: Family variant successfully updated. The products with variants will be updated with your changes.
+            label: family variant
+            flash:
+                update:
+                    success: Family variant successfully updated. The products with variants will be updated with your changes.
+                    fail: The family variant could not be updated.
+                create:
+                    success: Family variant successfully created
+
         attribute_option:
-            actions: Actions
+            flash:
+                create:
+                    success: Attribute option successfully created
+                    fail: An error ocurred when trying to create the attribute option
+                update:
+                    fail: Cannot save attribute option
+                delete:
+                    fail: Error during deletion of the attribute option
+
         group:
-            title: Group
-            info:
-                deletion_successful: Group successfully deleted.
-                deletion_failed: Group could not be deleted.
-                update_successful: Group successfully updated.
-                update_failed: The group could not be updated.
-                field_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
-            message:
-                created: Group successfully created
-        job_instance:
-            title: job profile
-            info:
-                update_failed: The job profile could not be updated.
-                update_successful: The job profile has been successfully updated.
+            label: Group
+            flash:
+                update:
+                    success: Group successfully updated.
+                    fail: The group could not be updated.
+                    fields_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
+                create:
+                    success: Group successfully created
+                delete:
+                    success: Group successfully removed
+                    fail: Cannot delete this group
+            page_title:
+                index: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
+
         attribute:
-            info:
-                deletion_successful: Attribute successfully deleted.
-                deletion_failed: The attribute could not be deleted.
-                update_successful: Attribute successfully updated.
-                update_failed: The attribute could not be updated.
-                create_successful: Attribute successfully created.
-                create_failed: The attribute could not be created.
-                field_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
-            scopable: Scopable
-            type:
-                pim_catalog_identifier:             Identifier
-                pim_catalog_text:                   Text
-                pim_catalog_textarea:               Text Area
-                pim_catalog_number:                 Number
-                pim_catalog_price_collection:       Price
-                pim_catalog_multiselect:            Multi select
-                pim_catalog_simpleselect:           Simple select
-                pim_catalog_file:                   File
-                pim_catalog_image:                  Image
-                pim_catalog_boolean:                "Yes/No"
-                pim_catalog_date:                   Date
-                pim_catalog_metric:                 Metric
-                pim_reference_data_simpleselect:    Reference data simple select
-                pim_reference_data_multiselect:     Reference data multi select
-            validation_rule:
-                email: E-mail
-                regexp: Regular expression
-                url: URL
-            title: attribute
+            label: attribute
+            plural_label: Attributes
+            flash:
+                update:
+                    success: Attribute successfully updated.
+                    fail: The attribute could not be updated.
+                    fields_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
+                delete:
+                    success: Attribute successfully removed
+                    fail: Cannot delete this attribute
+            page_title:
+                index: "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} attributes"
+            property:
+                allowed_extensions: Allowed extensions
+                auto_option_sorting: Sort automatically options by alphabetical order
+                available_locales: Available locales
+                date_max: Max date
+                date_min: Min date
+                decimals_allowed: Decimal values allowed
+                default_metric_unit:
+                    label: Default metric unit
+                    choose: Choose a unit
+                group:
+                    label: Attribute group
+                    choose: Choose the attribute group
+                is_locale_specific: Locale specific
+                localizable: Value per locale
+                max_characters: Max characters
+                max_file_size: Max file size (MB)
+                metric_family:
+                    label: Metric family
+                    choose: Choose a family
+                minimum_input_length: Minimum length for autocompletion
+                negative_allowed: Negative values allowed
+                number_max: Max number
+                number_min: Min number
+                reference_data_name:
+                    label: Reference data type
+                    choose: Choose the reference data type
+                scopable: Value per channel
+                type:
+                    choose: Choose the attribute type
+                    pim_catalog_identifier: Identifier
+                    pim_catalog_text: Text
+                    pim_catalog_textarea: Text Area
+                    pim_catalog_number: Number
+                    pim_catalog_price_collection: Price
+                    pim_catalog_multiselect: Multi select
+                    pim_catalog_simpleselect: Simple select
+                    pim_catalog_file: File
+                    pim_catalog_image: Image
+                    pim_catalog_boolean: "Yes/No"
+                    pim_catalog_date: Date
+                    pim_catalog_metric: Metric
+                    pim_reference_data_simpleselect: Reference data simple select
+                    pim_reference_data_multiselect: Reference data multi select
+                unique: Unique value
+                useable_as_grid_filter: Usable in grid
+                validation_regexp: Regular expression
+                validation_rule:
+                    label: Validation rule
+                    email: E-mail
+                    regexp: Regular expression
+                    url: URL
+                wysiwyg_enabled: Rich text editor enabled
+            tab:
+                properties:
+                    section:
+                        common: General parameters
+                        type_specific: Type specific parameters
+                        validation: Validation parameters
+                choices:
+                    title: Options
+            create:
+                create_btn: Create attribute
+
         attribute_group:
-            info:
-                update_failed: Attribute group could not be updated
-                update_successful: Attribute group successfully updated
+            label: attribute group
+            plural_label: Attribute groups
+            flash:
+                update:
+                    success: Attribute group successfully updated
+                    fail: Attribute group could not be updated
+                    fields_not_ready: "The attribute group cannot be saved right now. The following fields are not ready: {{ fields }}"
+                delete:
+                    success: Attribute group successfully removed
+                    fail: Cannot delete this attribute group
+
         api_connection:
-            message:
-                created: API connection successfully created
-    confirmation:
-        leave:           Are you sure you want to leave this page?
-        discard_changes: You will lose changes to the {{ entity }} if you leave the page.
-        remove_item:     Confirm removal
-        delete:
-            attribute: Are you sure you want to delete this attribute from the product?
-            attribute_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
+            flash:
+                create:
+                    success: API connection successfully created
+                delete:
+                    success: API connection successfully revoked
+                    fail: Cannot revoke this API connection
+            page_title:
+                index: "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API connections"
+
+        locale:
+            label: locale
+            uppercase_label: Locale
+            plural_label: Locales
+            page_title:
+                index: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
+
+        category:
+            label: category
+            uppercase_label: Category
+            plural_label: Categories
+
+        currency:
+            page_title:
+                index: "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} currencies"
+
+        job_execution:
+            page_title:
+                index: "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operations"
+
     info:
-        not_applicable: N/A
         entity:
             updated: There are unsaved changes.
-    error:
-        upload: An error occured during the upload of the file
-    alert:
-        not_allowed: Forbidden. You are not allowed to access this page
-        error_occured: An error occured during the loading of the page
     form:
         required: (required)
         product_model:
-            choose_product_model: Choose a product model
-            choose_variant: Choose a variant
             complete_variant_product: variant product
             complete_variant_products: variant products
             family_variant: Variant
-            product_model: Product model
             flash:
                 product_model_added: Product model successfully added to the product model
                 variant_product_added: Variant product successfully added to the product model
@@ -483,8 +560,6 @@ pim_enrich:
                     keep_attributes:  No attributes will be removed.
                     change_family_to: Change the family to
                     empty_selection:  Choose a family
-            flash:
-                attribute_deletion_error: An error occured during the attribute deletion
             mass_edit:
                 select_attributes: Select attributes
                 select: Select
@@ -512,8 +587,6 @@ pim_enrich:
                     required_label: Required
                 variant:
                     title: Variants
-                    flash:
-                        family_variant_created: Family variant successfully created
         family_variant:
             tab:
                 attributes:
@@ -521,9 +594,6 @@ pim_enrich:
                 labels:
                     title: Label translations
         attribute_option:
-            flash:
-                option_created: Attribute option successfully created
-                error_creating_option: An error ocurred when trying to create the attribute option
             add_option_modal:
                 title: Add attribute option
             add_option: Add an option
@@ -538,142 +608,9 @@ pim_enrich:
         common:
             tab:
                 attributes:
-                    btn:
-                        add_attributes: Add attributes
                     info:
                         search_attributes: Search...
                         no_available_attributes: There are no more attributes to add
-        job_execution:
-            title.details:    Execution details
-            refreshBtn.title: Refresh
-            button:
-                show_profile.title: Show profile
-                download_log.title: Download log
-                download_file.title: Download generated file
-                download_archive.title: Downlaod generated archive
-            summary:
-                fetching:        Collecting data about job execution...
-                warning:         Warning
-                header.step:     Step
-                header.warnings: Warnings
-                header.summary:  Summary
-                header.start:    Start
-                header.end:      End
-        job_instance:
-            fail:
-                launch: Failed to launch the job profile. Make sure it is valid and that you have right to launch it.
-                save: Failed to save the job profile. Make sure that you have right to edit it.
-            title:
-                import: Import profile
-                export: Export profile
-            button:
-                export.title: Export now
-                import.launch: Import now
-                import.upload: Upload and import now
-                import.upload_file: Upload a file
-            meta:
-                job: Job
-                connector: Connector
-            subsection:
-                last_executions: Last executions
-            tab:
-                content:
-                    title: Content
-                properties:
-                    decimal_separator:
-                        title: Decimal separator
-                        help: Determine the decimal separator
-                    date_format:
-                        title: Date format
-                        help: Determine the format of date fields
-                    file_path:
-                        title: File path
-                        help: Where to write the generated file on the file system
-                    delimiter:
-                        title: Delimiter
-                        help: One character used to set the field delimiter
-                    enclosure:
-                        title: Enclosure
-                        help: One character used to set the field enclosure
-                    with_header:
-                        title: With header
-                        help: Whether or not to print the column name
-                    with_media:
-                        title: Export files and images
-                        help: Whether or not to export product files and images
-                    lines_per_file:
-                        title: Number of lines per file
-                        help: Define the limit number of lines per file
-                    upload_allowed:
-                        title: Allow file upload
-                        help: Whether or not to allow uploading the file directly
-                    categories_column:
-                        title: Categories column
-                        help: Name of the categories column
-                    escape:
-                        title: Escape
-                        help: One character used to set the field escape
-                    family_column:
-                        title: Family column
-                        help: Name of the family column
-                    groups_column:
-                        title: Groups column
-                        help: Name of the groups column
-                    enabled:
-                        title: Enable the product
-                        help: Whether or not imported product should be enabled
-                    enabled_comparison:
-                        title: Compare values
-                        help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
-                    real_time_versioning:
-                        title: Real time history update
-                        help: Means that the product history is automatically updated, can be switched off to improve performances
-                    family_variant_column:
-                        title: Family variant column
-            file_path: File path
-        attribute:
-            meta:
-                created_by: by
-                updated: Last update
-                updated_by: by
-            tab:
-                properties:
-                    section:
-                        common: General parameters
-                        type_specific: Type specific parameters
-                        validation: Validation parameters
-                    label:
-                        allowed_extensions: Allowed extensions
-                        auto_option_sorting: Sort automatically options by alphabetical order
-                        available_locales: Available locales
-                        date_max: Max date
-                        date_min: Min date
-                        decimals_allowed: Decimal values allowed
-                        default_metric_unit: Default metric unit
-                        group: Attribute group
-                        is_locale_specific: Locale specific
-                        localizable: Value per locale
-                        max_characters: Max characters
-                        max_file_size: Max file size (MB)
-                        metric_family: Metric family
-                        minimum_input_length: Minimum length for autocompletion
-                        negative_allowed: Negative values allowed
-                        number_max: Max number
-                        number_min: Min number
-                        reference_data_name: Reference data type
-                        scopable: Value per channel
-                        unique: Unique value
-                        useable_as_grid_filter: Usable in grid
-                        validation_regexp: Regular expression
-                        validation_rule: Validation rule
-                        wysiwyg_enabled: Rich text editor enabled
-                    default_label:
-                        default_metric_unit: Choose a unit
-                        group: Choose the attribute group
-                        metric_family: Choose a family
-                        reference_data_name: Choose the reference data type
-                choices:
-                    title: Options
         mass_edit:
             family:
                 attributes:
@@ -767,56 +704,30 @@ pim_enrich:
             description: Only the attributes belonging to the families of the selected products will be edited with the following data for the <span class="highlight">{{ locale }}</span> locale and the <span class="highlight">{{ channel }}</span> channel.
     index:
         association_type:
-            title:      "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} association types"
             create_btn: Create association type
         import_profiles:
-            title:      "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} import profiles"
             create_btn: Create import profile
             list:       Select a job
             message:
                 created: Import profile successfully created
-        import_history:
-            title:      Import reports
         group:
-            title:       "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
             create_btn: Create group
         export_profiles:
-            title:      "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} export profiles"
             create_btn: Create export profile
             message:
                 created: Export profile successfully created
-        export_history:
-            title:      Export reports
         family:
-            title:       "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} families"
             create_btn: Create family
         grouptype:
-            title:       "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} group types"
             create_btn: Create group type
-        currency:
-            title:      "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} currencies"
-        locale:
-            title:      "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
         user:
-            title:      "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} users"
             create_btn: Create user
         user_role:
-            title:      "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
             create_btn: Create role
         user_group:
-            title:      "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
             create_btn: Create group
-        process_tracker:
-            title:      "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operations"
         channel:
-            title:      "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} channels"
             create_btn: Create channel
-        attribute:
-            title:       "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} attributes"
-            create_btn:  Create attribute
-            modal_title: Choose the attribute type
-        api_connection:
-            title:       "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API connections"
     mass_edit:
         product:
             title: Products bulk action
@@ -853,7 +764,6 @@ pim_enrich:
                     label: Change family
                     label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The family of the selected products will be changed to the chosen family
-                    field: Family
                 add_to_group:
                     label: Add to groups
                     label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
@@ -900,11 +810,6 @@ pim_enrich:
                     label: Set attributes requirements
                     description: The following attributes requirements will be applied to the selected families
                     label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
-
-pim_enrich.error:
-    exception.title: Oh snap! A {{ status_code }} error occured...
-    http:
-        403: Forbidden. You are not allowed to access this page
 
 # Page titles
 pim_title:
@@ -974,7 +879,6 @@ pim_menu:
         group: Groups
         group_type: Group types
         product_model: Product Models
-        published_product: Published Products
         export_history: Exports history
         export_profile: Export profiles
         import_history: Imports history
@@ -994,6 +898,7 @@ pim_menu:
         system: System navigation
         user: Users management navigation
         settings: Settings navigation
+        product: Product navigation
 
     user:
         logout: Logout
@@ -1008,93 +913,53 @@ pim_notification:
 
 # Background jobs & steps labels
 batch_jobs:
-    add_product_value:
-        label: Add product value
-        perform.label: Add product value
-    update_product_value:
-        label: Update product value
-        perform.label: Update product value
+    add_association:
+        label: Associate to products
+        perform.label: Associate to products
     add_attribute_value:
         label: Add attributes value
         perform.label: Add attributes value
+    add_product_value:
+        label: Add product value
+        perform.label: Add product value
+    add_to_category:
+        label: Add to category
+        perform.label: Add to category
+    add_to_existing_product_model:
+        label: Add to an existing product model
+        perform.label: Add to an existing product model
+    csv_product_grid_context_quick_export:
+        quick_export.label: Csv product grid context quick export
+        quick_export_product_model.label: CSV product model grid context quick export
+        perform.label: Csv product grid context quick export
+    csv_product_quick_export:
+        quick_export.label: Csv product quick export
+        quick_export_product_model.label: CSV product model quick export
+        perform.label: Csv product quick export
+    delete_products_and_product_models:
+        delete_products_and_product_models.label: Mass delete products
     edit_common_attributes:
         label: Edit attributes
         perform.label: Edit attributes
         clean.label: Clean files for attributes
         cleaner.label: Clean files for attributes
-    add_to_category:
-        label: Add to category
-        perform.label: Add to category
     move_to_category:
         label: Move to category
         perform.label: Move to category
-    remove_from_category:
-        label: Remove from category
-        perform.label: Remove from category
-    add_association:
-        label: Associate to products
-        perform.label: Associate to products
-    add_to_existing_product_model:
-        label: Add to an existing product model
-        perform.label: Add to an existing product model
-    set_attribute_requirements:
-        label: Set attributes requirements
-        perform.label: Set attributes requirements
-    csv_product_quick_export:
-        quick_export.label: Csv product quick export
-        perform.label: Csv product quick export
-    csv_product_grid_context_quick_export:
-        quick_export.label: Csv product grid context quick export
-        perform.label: Csv product grid context quick export
-    xlsx_product_quick_export:
-        quick_export.label: Xlsx product quick export
-        perform.label: Xlsx product quick export
-    xlsx_product_grid_context_quick_export:
-        quick_export.label: Xlsx product grid context quick export
-        perform.label: Xlsx product grid context quick export
-    delete_products_and_product_models:
-        delete_products_and_product_models.label: Mass delete products
-    add_product_value:
-        label: Add product value
-        perform.label: Add product value
     update_product_value:
         label: Update product value
         perform.label: Update product value
-    edit_common_attributes:
-        label: Edit attributes
-        perform.label: Edit attributes
-        cleaner.label: Clean files for attributes
-    add_to_category:
-        label: Add to category
-        perform.label: Add to category
-    move_to_category:
-        label: Move to category
-        perform.label: Move to category
     remove_from_category:
         label: Remove from category
         perform.label: Remove from category
-    add_association:
-        label: Associate to products
-        perform.label: Associate to products
-    add_to_existing_product_model:
-        label: Add to an existing product model
-        perform.label: Add to an existing product model
     set_attribute_requirements:
         label: Set attributes requirements
         perform.label: Set attributes requirements
-    csv_product_quick_export:
-        quick_export.label: CSV product quick export
-        quick_export_product_model.label: CSV product model quick export
-        perform.label: CSV product quick export
-    csv_product_grid_context_quick_export:
-        quick_export.label: CSV product grid context quick export
-        quick_export_product_model.label: CSV product model grid context quick export
-        perform.label: CSV product grid context quick export
-    xlsx_product_quick_export:
-        quick_export.label: XSLX product quick export
-        quick_export_product_model.label: XSLX product model quick export
-        perform.label: XSLX product quick export
     xlsx_product_grid_context_quick_export:
-        quick_export.label: XSLX product grid context quick export
-        quick_export_product_model.label: XSLX product model grid context quick export
-        perform.label: XSLX product grid context quick export
+        quick_export.label: XLSX product grid context quick export
+        quick_export_product_model.label: XLSX product model grid context quick export
+        perform.label: XLSX product grid context quick export
+    xlsx_product_quick_export:
+        quick_export.label: XLSX product quick export
+        quick_export_product_model.label: XLSX product model quick export
+        perform.label: XLSX product quick export

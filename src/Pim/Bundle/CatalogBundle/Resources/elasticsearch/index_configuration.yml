@@ -7,6 +7,8 @@ mappings:
             family.code:
                 type: 'keyword'
             # family labels are handled by the "family" dynamic template
+            family_variant:
+                type: 'keyword'
             id:
                 type: 'keyword'
             enabled:

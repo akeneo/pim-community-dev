@@ -1,5 +1,5 @@
 @javascript
-Feature: Export options in XSLX
+Feature: Export options in XLSX
   In order to be able to access and modify options data outside PIM
   As a product manager
   I need to be able to export options in XLSX

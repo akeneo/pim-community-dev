@@ -8,6 +8,8 @@ pim_common:
     created: Created
     updated: Updated
     create: Create
+    permissions: Permissions
+    properties: Properties
 
 pim_enrich:
     # Attribute
@@ -36,7 +38,6 @@ pim_enrich:
     locale:
         tab:
             property.title: Properties
-            permission.title: Permissions
     # Mass edit operations
     mass_edit_action:
         limit_exceeded: Please choose less than %limit% items to edit

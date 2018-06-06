@@ -81,7 +81,7 @@ define(
                 this.trigger('tab:register', {
                     code: (undefined === this.config.tabCode) ? this.code : this.config.tabCode,
                     isVisible: this.isVisible.bind(this),
-                    label: __('pim_common.categories')
+                    label: __('pim_enrich.entity.category.plural_label')
                 });
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {

@@ -96,7 +96,7 @@ define(
                     if (controller.aclResourceId && !securityContext.isGranted(controller.aclResourceId)) {
                         this.hideLoadingMask();
 
-                        return this.displayErrorPage(__('pim_enrich.error.http.403'), '403');
+                        return this.displayErrorPage(__('error.exception.forbidden'), '403');
                     }
 
                     controller.el = $view;

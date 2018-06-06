@@ -47,7 +47,7 @@ extensions:
         targetZone: column
         config:
           stateCode: product_edit_form
-          navigationTitle: pim_enrich.entity.product.navigation
+          navigationTitle: pim_menu.navigation.product
 
     pim-product-model-edit-form-column-tabs-navigation:
         module: pim/form/common/column-tabs-navigation
@@ -55,7 +55,7 @@ extensions:
         targetZone: navigation
         position: 10
         config:
-          title: pim_enrich.entity.product.navigation
+          title: pim_menu.navigation.product
 
     pim-product-model-edit-form-meta:
         module: pim/form/common/meta
@@ -63,7 +63,7 @@ extensions:
         targetZone: bottom
         position: 10
         config:
-            label: pim_enrich.entity.product.infos
+            label: pim_enrich.entity.product.meta.infos
 
     pim-product-model-edit-form-column-tabs:
         module: pim/form/common/column-tabs
@@ -98,10 +98,10 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.product_model
-                subTitle: pim_common.products_model
+                subTitle: pim_enrich.entity.product.plural_label_model
                 content: pim_common.confirm_deletion
-                success: pim_enrich.entity.product_model.info.deletion_successful
-                fail: pim_enrich.entity.product_model.info.deletion_failed
+                success: pim_enrich.entity.product_model.flash.delete.success
+                fail: pim_enrich.entity.product_model.flash.delete.fail
             redirect: pim_enrich_product_index
 
     pim-product-model-edit-form-save-buttons:
@@ -122,7 +122,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.product.title
+            entity: pim_enrich.entity.product.label
 
     pim-product-model-edit-form-family:
         module: pim/product-edit-form/meta/family
@@ -143,7 +143,7 @@ extensions:
         position: 90
         config:
             label: pim_common.created
-            labelBy: pim_enrich.entity.product.meta.created_by
+            labelBy: pim_common.by
 
     pim-product-model-edit-form-updated:
         module: pim/product-edit-form/meta/updated
@@ -152,7 +152,7 @@ extensions:
         position: 100
         config:
             label: pim_enrich.entity.product.meta.updated
-            labelBy: pim_enrich.entity.product.meta.updated_by
+            labelBy: pim_common.by
 
     pim-product-model-edit-form-attributes:
         module: pim/product-edit-form/attributes
@@ -163,8 +163,8 @@ extensions:
         config:
             removeAttributeRoute: pim_enrich_product_remove_attribute_rest
             removeAttributeACL: pim_enrich_product_remove_attribute
-            tabTitle: pim_common.attributes
-            deletionFailed: pim_enrich.form.product.flash.attribute_deletion_error
+            tabTitle: pim_enrich.entity.attribute.plural_label
+            deletionFailed: pim_enrich.entity.attribute.flash.delete.fail
 
     pim-product-model-edit-form-categories:
         module: pim/product-edit-form/categories

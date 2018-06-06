@@ -13,10 +13,11 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.family_variant.title
+            entity: pim_enrich.entity.family_variant.label
 
     pim-family-variant-edit-form-tabs:
         module: pim/form/common/form-tabs
+        module: pim/family-variant-edit-form/attribute-set
         parent: pim-family-variant-edit-form
         targetZone: content
         position: 90

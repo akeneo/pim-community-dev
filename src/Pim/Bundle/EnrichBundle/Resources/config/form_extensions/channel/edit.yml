@@ -52,8 +52,8 @@ extensions:
                 title: confirmation.remove.channel
                 subTitle: pim_menu.item.channel
                 content: pim_common.confirm_deletion
-                success: flash.channel.removed
-                fail: error.removing.channel
+                success: pim_enrich.entity.channel.flash.delete.success
+                fail: pim_enrich.entity.channel.flash.delete.fail
             redirect: pim_enrich_channel_index
 
     pim-channel-edit-form-save-buttons:
@@ -76,7 +76,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_common.channel
+            entity: pim_enrich.entity.channel.label
 
     pim-channel-edit-form-properties-tab:
         module: pim/common/tab

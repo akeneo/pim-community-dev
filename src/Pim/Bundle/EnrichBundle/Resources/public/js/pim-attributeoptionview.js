@@ -109,8 +109,8 @@ define(
                 if (!this.model.id || this.dirty) {
                     if (this.dirty) {
                         Dialog.confirm(
-                            __('confirm.attribute_option.cancel_edition_on_new_option_text'),
-                            __('confirm.attribute_option.cancel_edition_on_new_option_title'),
+                            __('confirmation.cancel.message'),
+                            __('confirmation.cancel.title'),
                             function () {
                                 this.showReadableItem(this);
                                 if (!this.model.id) {
@@ -132,12 +132,12 @@ define(
                 var itemCode = this.el.firstChild.innerText;
 
                 Dialog.confirmDelete(
-                    __('pim_enrich.item.delete.confirm.content', {'itemName': itemCode}),
-                    __('pim_enrich.item.delete.confirm.title', {'itemName': itemCode}),
+                    __('confirmation.remove.item_placeholder', {'itemName': itemCode}),
+                    __('confirmation.remove.title', {'itemName': itemCode}),
                     function () {
                         this.parent.deleteItem(this);
                     }.bind(this),
-                    __('pim_common.attributes')
+                    __('pim_enrich.entity.attribute.plural_label')
                 );
             },
             updateItem: function () {
@@ -178,7 +178,7 @@ define(
                 } else {
                     Dialog.alert(
                         __('alert.attribute_option.error_occured_during_submission'),
-                        __('error.saving.attribute_option')
+                        __('pim_enrich.entity.attribute_option.flash.update.fail')
                     );
                 }
             },
@@ -413,7 +413,7 @@ define(
                             message = response.responseText;
                         }
 
-                        Dialog.alert(message, __('error.removing.attribute_option'));
+                        Dialog.alert(message, __('pim_enrich.entity.attribute_option.flash.delete.fail'));
                     }.bind(this)
                 });
             },

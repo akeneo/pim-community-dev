@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Add to existing product model operation
+ * Allow to search a product with family variant in order to update it
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -15,7 +15,7 @@ define(
         'oro/messenger',
         'pim/mass-edit-form/product/operation',
         'pim/common/property',
-        'pim/template/mass-edit/product/add-to-existing-product-model'
+        'pim/template/mass-edit/product/update-entity-with-family-variant-parent'
     ],
     function (
         $,

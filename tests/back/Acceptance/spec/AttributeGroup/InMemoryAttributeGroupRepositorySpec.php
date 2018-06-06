@@ -74,6 +74,18 @@ class InMemoryAttributeGroupRepositorySpec extends ObjectBehavior
             ->during('save', [$object]);
     }
 
+    function it_finds_all_attribute_groups()
+    {
+        $attributeGroup1 = $this->createAttributeGroup('attribute_group_1');
+        $attributeGroup2 = $this->createAttributeGroup('attribute_group_2');
+        $this->beConstructedWith([
+            $attributeGroup1->getCode() => $attributeGroup1,
+            $attributeGroup2->getCode() => $attributeGroup2
+        ]);
+
+        $this->findAll()->shouldReturn(['attribute_group_1' => $attributeGroup1, 'attribute_group_2' => $attributeGroup2]);
+    }
+
     private function createAttributeGroup(string $code): AttributeGroupInterface
     {
         $attributeGroup = new AttributeGroup();

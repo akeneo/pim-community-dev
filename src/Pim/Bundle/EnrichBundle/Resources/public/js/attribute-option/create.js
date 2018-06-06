@@ -59,7 +59,7 @@ define(
                             modal.close();
                             messenger.notify(
                                 'success',
-                                _.__('pim_enrich.form.attribute_option.flash.option_created')
+                                _.__('pim_enrich.entity.attribute_option.flash.create.success')
                             );
                             deferred.resolve(option);
                         }).fail(function (xhr) {
@@ -74,7 +74,7 @@ define(
                             } else {
                                 messenger.notify(
                                     'error',
-                                    _.__('pim_enrich.form.attribute_option.flash.error_creating_option')
+                                    _.__('pim_enrich.entity.attribute_option.flash.create.fail')
                                 );
                             }
                         }.bind(this));

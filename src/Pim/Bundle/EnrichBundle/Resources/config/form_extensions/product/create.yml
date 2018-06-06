@@ -4,9 +4,9 @@ extensions:
        config:
            labels:
                title: pim_common.create
-               subTitle: pim_common.products
+               subTitle: pim_enrich.entity.product.plural_label
            picture: illustrations/Product.svg
-           successMessage: pim_enrich.entity.product.message.created
+           successMessage: pim_enrich.entity.product.flash.create.success
            editRoute: pim_enrich_product_edit
            postUrl: pim_enrich_product_rest_create
 
@@ -25,5 +25,5 @@ extensions:
         position: 20
         config:
             fieldName: family
-            label: pim_enrich.entity.product.meta.family.title
+            label: pim_enrich.entity.family.uppercase_label
             choiceRoute: pim_enrich_family_rest_index

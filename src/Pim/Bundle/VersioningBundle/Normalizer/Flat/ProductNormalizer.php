@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -25,19 +29,21 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     use SerializerAwareTrait;
 
     /** @staticvar string */
-    const FIELD_FAMILY = 'family';
+    protected const FIELD_FAMILY = 'family';
 
     /** @staticvar string */
-    const FIELD_GROUPS = 'groups';
+    protected const FIELD_GROUPS = 'groups';
 
     /** @staticvar string */
-    const FIELD_CATEGORY = 'categories';
+    protected const FIELD_CATEGORY = 'categories';
+
+    protected const FIELD_PARENT = 'parent';
 
     /** @staticvar string */
-    const FIELD_ENABLED = 'enabled';
+    protected const FIELD_ENABLED = 'enabled';
 
     /** @staticvar string */
-    const ITEM_SEPARATOR = ',';
+    protected const ITEM_SEPARATOR = ',';
 
     /** @var string[] */
     protected $supportedFormats = ['flat'];
@@ -58,7 +64,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @param ProductInterface $object
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($object, $format = null, array $context = []): array
     {
         $context = $this->resolveContext($context);
 
@@ -66,6 +72,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         $results[self::FIELD_FAMILY] = $this->normalizeFamily($object->getFamily());
         $results[self::FIELD_GROUPS] = $this->normalizeGroups($object->getGroupCodes());
         $results[self::FIELD_CATEGORY] = $this->normalizeCategories($object->getCategoryCodes());
+        $results[self::FIELD_PARENT] = $this->normalizeParent($object->getParent());
         $results = array_merge($results, $this->normalizeAssociations($object->getAssociations()));
         $results = array_replace($results, $this->normalizeValues($object, $format, $context));
         $results[self::FIELD_ENABLED] = (int) $object->isEnabled();
@@ -76,7 +83,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ProductInterface && in_array($format, $this->supportedFormats);
     }
@@ -90,7 +97,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return array
      */
-    protected function normalizeValues(ProductInterface $product, $format = null, array $context = [])
+    protected function normalizeValues(ProductInterface $product, $format = null, array $context = []): array
     {
         $values = $this->getFilteredValues($product, $context);
 
@@ -147,7 +154,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return string
      */
-    protected function getFieldValue($value)
+    protected function getFieldValue($value): string
     {
         $suffix = '';
 
@@ -168,7 +175,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return string
      */
-    protected function normalizeFamily(FamilyInterface $family = null)
+    protected function normalizeFamily(FamilyInterface $family = null): string
     {
         return $family ? $family->getCode() : '';
     }
@@ -180,7 +187,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return string
      */
-    protected function normalizeGroups($groups = [])
+    protected function normalizeGroups(array $groups = []): string
     {
         return implode(static::ITEM_SEPARATOR, $groups);
     }
@@ -192,19 +199,31 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return string
      */
-    protected function normalizeCategories($categories = [])
+    protected function normalizeCategories(array $categories = []): string
     {
         return implode(static::ITEM_SEPARATOR, $categories);
     }
 
     /**
+     * Normalizes a product parent.
+     *
+     * @param ProductModelInterface $parent
+     *
+     * @return string
+     */
+    protected function normalizeParent(ProductModelInterface $parent = null): string
+    {
+        return $parent ? $parent->getCode() : '';
+    }
+
+    /**
      * Normalize associations
      *
-     * @param AssociationInterface[] $associations
+     * @param Collection|AssociationInterface[] $associations
      *
      * @return array
      */
-    protected function normalizeAssociations($associations = [])
+    protected function normalizeAssociations($associations = []): array
     {
         $results = [];
         foreach ($associations as $association) {
@@ -240,7 +259,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return array
      */
-    protected function resolveContext(array $context)
+    protected function resolveContext(array $context): array
     {
         return array_merge(
             [

@@ -94,8 +94,8 @@ extensions:
         config:
             fieldCode: configuration.filePath
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.file_path.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
+            label: pim_import_export.form.job_instance.tab.properties.file_path.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
 
     pim-job-instance-csv-base-export-edit-properties-delimiter:
         module: pim/job/common/edit/field/text
@@ -105,8 +105,8 @@ extensions:
         config:
             fieldCode: configuration.delimiter
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.delimiter.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.delimiter.help
+            label: pim_import_export.form.job_instance.tab.properties.delimiter.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.delimiter.help
 
     pim-job-instance-csv-base-export-edit-properties-enclosure:
         module: pim/job/common/edit/field/text
@@ -116,8 +116,8 @@ extensions:
         config:
             fieldCode: configuration.enclosure
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.enclosure.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.enclosure.help
+            label: pim_import_export.form.job_instance.tab.properties.enclosure.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.enclosure.help
 
     pim-job-instance-csv-base-export-edit-properties-with-header:
         module: pim/job/common/edit/field/switch
@@ -127,8 +127,8 @@ extensions:
         config:
             fieldCode: configuration.withHeader
             readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.with_header.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
+            label: pim_import_export.form.job_instance.tab.properties.with_header.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_header.help
 
     pim-job-instance-csv-base-export-edit-label:
         module: pim/job/common/edit/label
@@ -159,7 +159,7 @@ extensions:
                 title: confirmation.remove.export_profile
                 subTitle: pim_menu.item.export_profile
                 content: pim_common.confirm_deletion
-                success: flash.job_instance.removed
+                success: pim_import_export.entity.job_instance.flash.delete.success
                 failed: error.removing.job_instance
             redirect: pim_importexport_export_profile_index
 
@@ -183,7 +183,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.job_instance.title
+            entity: pim_import_export.entity.job_instance.label
 
     pim-job-instance-csv-base-export-edit-validation:
         module: pim/job/common/edit/validation

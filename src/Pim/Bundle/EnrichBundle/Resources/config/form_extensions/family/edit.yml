@@ -52,8 +52,8 @@ extensions:
                 title: confirmation.remove.family
                 subTitle: pim_menu.item.family
                 content: pim_common.confirm_deletion
-                success: flash.family.removed
-                fail: error.removing.family
+                success: pim_enrich.entity.family.flash.delete.success
+                fail: pim_enrich.entity.family.flash.delete.fail
             redirect: pim_enrich_family_index
 
     pim-family-edit-form-save-buttons:
@@ -74,7 +74,7 @@ extensions:
         targetZone: state
         position: 900
         config:
-            entity: pim_enrich.entity.family.title
+            entity: pim_enrich.entity.family.label
 
     pim-family-edit-form-properties-tab:
         module: pim/common/tab
@@ -155,7 +155,7 @@ extensions:
         targetZone: container
         position: 150
         config:
-            label: 'pim_common.attributes'
+            label: 'pim_enrich.entity.attribute.plural_label'
 
     pim-family-edit-form-attributes-toolbar:
         module: pim/family-edit-form/attributes/toolbar
@@ -208,9 +208,9 @@ extensions:
         config:
             label: pim_common.label
             confirmation:
-                title: pim_enrich.confirmation.remove_item
-                subTitle: pim_common.attributes
-                message: pim_enrich.confirmation.delete.attribute_from_family
+                title: confirmation.remove.alternative_title
+                subTitle: pim_enrich.entity.attribute.plural_label
+                message: confirmation.remove.attribute_from_family
                 buttonText: pim_common.remove
 
     pim-family-edit-form-variant:

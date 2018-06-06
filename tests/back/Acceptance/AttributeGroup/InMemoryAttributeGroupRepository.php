@@ -95,7 +95,7 @@ class InMemoryAttributeGroupRepository implements AttributeGroupRepositoryInterf
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->attributeGroups->toArray();
     }
 
     /**
