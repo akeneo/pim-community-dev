@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscription;
 
-class ProductId
+class ProductCode
 {
     private
         $identifierName,
