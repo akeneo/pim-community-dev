@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Catalog\Updater\Adder;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Updater\Adder\AbstractAttributeAdder;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;

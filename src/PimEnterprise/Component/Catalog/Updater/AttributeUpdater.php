@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\Catalog\Updater;
 
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 
 /**
  * Enterprise decorator of the Community AttributeUpdater

@@ -12,8 +12,8 @@
 namespace Akeneo\Asset\Bundle\Enrich\Provider\Field;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
-use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 
 /**
  * Field provider for asset collections
