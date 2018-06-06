@@ -15,6 +15,7 @@
 - PIM-7383: Fix 'in list' product filters with large amount of items
 - PIM-7398: Fix the impossibility to unselect categories in the category tree in case of category with numeric code
 
+
 # 2.0.25 (2018-05-21)
 
 ## Bug fixes
