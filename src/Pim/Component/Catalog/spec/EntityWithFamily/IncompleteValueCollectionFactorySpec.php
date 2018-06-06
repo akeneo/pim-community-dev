@@ -80,24 +80,24 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $requiredValuesForChannelAndLocaleIterator->next()->shouldBeCalled();
 
         $requiredValue1->forAttribute()->willReturn($price);
-        $requiredValue1->forScope()->willReturn($ecommerce);
+        $requiredValue1->forChannel()->willReturn($ecommerce);
         $requiredValue1->forLocale()->willReturn($en_US);
         $requiredValue1->attribute()->willReturn('price');
-        $requiredValue1->scope()->willReturn('ecommerce');
+        $requiredValue1->channel()->willReturn('ecommerce');
         $requiredValue1->locale()->willReturn(null);
 
         $requiredValue2->forAttribute()->willReturn($description);
-        $requiredValue2->forScope()->willReturn('ecommerce');
+        $requiredValue2->forChannel()->willReturn('ecommerce');
         $requiredValue2->forLocale()->willReturn('en_US');
         $requiredValue2->attribute()->willReturn('description');
-        $requiredValue2->scope()->willReturn('ecommerce');
+        $requiredValue2->channel()->willReturn('ecommerce');
         $requiredValue2->locale()->willReturn('en_US');
 
         $requiredValue3->forAttribute()->willReturn($name);
-        $requiredValue3->forScope()->willReturn($en_US);
+        $requiredValue3->forChannel()->willReturn($en_US);
         $requiredValue3->forLocale()->willReturn('en_US');
         $requiredValue3->attribute()->willReturn('name');
-        $requiredValue3->scope()->willReturn(null);
+        $requiredValue3->channel()->willReturn(null);
         $requiredValue3->locale()->willReturn('en_US');
 
         $product->getValues()->willReturn($productValues);
@@ -135,10 +135,10 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $requiredValuesForChannelAndLocaleIterator->next()->shouldBeCalled();
 
         $requiredValue->forAttribute()->willReturn($price);
-        $requiredValue->forScope()->willReturn('ecommerce');
+        $requiredValue->forChannel()->willReturn('ecommerce');
         $requiredValue->forLocale()->willReturn($en_US);
         $requiredValue->attribute()->willReturn('price');
-        $requiredValue->scope()->willReturn('ecommerce');
+        $requiredValue->channel()->willReturn('ecommerce');
         $requiredValue->locale()->willReturn(null);
 
         $product->getValues()->willReturn($productValues);
@@ -171,10 +171,10 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $requiredValuesForChannelAndLocaleIterator->next()->shouldBeCalled();
 
         $requiredValue->forAttribute()->willReturn($price);
-        $requiredValue->forScope()->willReturn('ecommerce');
+        $requiredValue->forChannel()->willReturn('ecommerce');
         $requiredValue->forLocale()->willReturn($en_US);
         $requiredValue->attribute()->willReturn('price');
-        $requiredValue->scope()->willReturn('ecommerce');
+        $requiredValue->channel()->willReturn('ecommerce');
         $requiredValue->locale()->willReturn(null);
 
         $product->getValues()->willReturn($productValues);
@@ -208,10 +208,10 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $requiredValuesForChannelAndLocaleIterator->next()->shouldBeCalled();
 
         $requiredValue->forAttribute()->willReturn($price);
-        $requiredValue->forScope()->willReturn('ecommerce');
+        $requiredValue->forChannel()->willReturn('ecommerce');
         $requiredValue->forLocale()->willReturn($en_US);
         $requiredValue->attribute()->willReturn('price');
-        $requiredValue->scope()->willReturn('ecommerce');
+        $requiredValue->channel()->willReturn('ecommerce');
         $requiredValue->locale()->willReturn(null);
 
         $product->getValues()->willReturn($productValues);

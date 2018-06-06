@@ -82,13 +82,13 @@ class RequiredValueCollectionSpec extends ObjectBehavior
         $value6->forAttribute()->willReturn($releaseDate);
         $value7->forAttribute()->willReturn($image);
 
-        $value1->forScope()->willReturn($ecommerce);
-        $value2->forScope()->willReturn($ecommerce);
-        $value3->forScope()->willReturn($ecommerce);
-        $value4->forScope()->willReturn($ecommerce);
-        $value5->forScope()->willReturn($print);
-        $value6->forScope()->willReturn($print);
-        $value7->forScope()->willReturn($print);
+        $value1->forChannel()->willReturn($ecommerce);
+        $value2->forChannel()->willReturn($ecommerce);
+        $value3->forChannel()->willReturn($ecommerce);
+        $value4->forChannel()->willReturn($ecommerce);
+        $value5->forChannel()->willReturn($print);
+        $value6->forChannel()->willReturn($print);
+        $value7->forChannel()->willReturn($print);
 
         $value1->forLocale()->willReturn($fr_FR);
         $value2->forLocale()->willReturn($fr_FR);
@@ -106,13 +106,13 @@ class RequiredValueCollectionSpec extends ObjectBehavior
         $value6->attribute()->willReturn('release_date');
         $value7->attribute()->willReturn('image');
 
-        $value1->scope()->willReturn(null);
-        $value2->scope()->willReturn(null);
-        $value3->scope()->willReturn('ecommerce');
-        $value4->scope()->willReturn('ecommerce');
-        $value5->scope()->willReturn('print');
-        $value6->scope()->willReturn(null);
-        $value7->scope()->willReturn(null);
+        $value1->channel()->willReturn(null);
+        $value2->channel()->willReturn(null);
+        $value3->channel()->willReturn('ecommerce');
+        $value4->channel()->willReturn('ecommerce');
+        $value5->channel()->willReturn('print');
+        $value6->channel()->willReturn(null);
+        $value7->channel()->willReturn(null);
 
         $value1->locale()->willReturn(null);
         $value2->locale()->willReturn(null);

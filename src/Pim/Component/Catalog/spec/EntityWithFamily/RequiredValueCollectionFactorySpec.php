@@ -62,38 +62,38 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         RequiredValue $expectedRequiredValue5
     ) {
         $expectedRequiredValue1->forAttribute()->willReturn($sku);
-        $expectedRequiredValue1->forScope()->willReturn($ecommerce);
+        $expectedRequiredValue1->forChannel()->willReturn($ecommerce);
         $expectedRequiredValue1->forLocale()->willReturn($en_US);
         $expectedRequiredValue1->attribute()->willReturn('sku');
-        $expectedRequiredValue1->scope()->willReturn(null);
+        $expectedRequiredValue1->channel()->willReturn(null);
         $expectedRequiredValue1->locale()->willReturn(null);
 
         $expectedRequiredValue2->forAttribute()->willReturn($description);
-        $expectedRequiredValue2->forScope()->willReturn($ecommerce);
+        $expectedRequiredValue2->forChannel()->willReturn($ecommerce);
         $expectedRequiredValue2->forLocale()->willReturn($en_US);
         $expectedRequiredValue2->attribute()->willReturn('description');
-        $expectedRequiredValue2->scope()->willReturn('ecommerce');
+        $expectedRequiredValue2->channel()->willReturn('ecommerce');
         $expectedRequiredValue2->locale()->willReturn('en_US');
 
         $expectedRequiredValue3->forAttribute()->willReturn($description);
-        $expectedRequiredValue3->forScope()->willReturn($ecommerce);
+        $expectedRequiredValue3->forChannel()->willReturn($ecommerce);
         $expectedRequiredValue3->forLocale()->willReturn($fr_FR);
         $expectedRequiredValue3->attribute()->willReturn('description');
-        $expectedRequiredValue3->scope()->willReturn('ecommerce');
+        $expectedRequiredValue3->channel()->willReturn('ecommerce');
         $expectedRequiredValue3->locale()->willReturn('fr_FR');
 
         $expectedRequiredValue4->forAttribute()->willReturn($price);
-        $expectedRequiredValue4->forScope()->willReturn($ecommerce);
+        $expectedRequiredValue4->forChannel()->willReturn($ecommerce);
         $expectedRequiredValue4->forLocale()->willReturn($en_US);
         $expectedRequiredValue4->attribute()->willReturn('price');
-        $expectedRequiredValue4->scope()->willReturn(null);
+        $expectedRequiredValue4->channel()->willReturn(null);
         $expectedRequiredValue4->locale()->willReturn(null);
 
         $expectedRequiredValue5->forAttribute()->willReturn($image);
-        $expectedRequiredValue5->forScope()->willReturn($ecommerce);
+        $expectedRequiredValue5->forChannel()->willReturn($ecommerce);
         $expectedRequiredValue5->forLocale()->willReturn($fr_FR);
         $expectedRequiredValue5->attribute()->willReturn('image');
-        $expectedRequiredValue5->scope()->willReturn(null);
+        $expectedRequiredValue5->channel()->willReturn(null);
         $expectedRequiredValue5->locale()->willReturn(null);
 
         $family->getAttributeRequirements()->willReturn([$requirement1, $requirement2, $requirement3, $requirement4, $requirement5, $requirement6]);

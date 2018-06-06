@@ -72,7 +72,7 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
             function (RequiredValue $requiredValue) use ($channel, $locale) {
                 $attribute = $requiredValue->forAttribute();
 
-                if ($attribute->isScopable() && $requiredValue->forScope()->getCode() !== $channel->getCode()) {
+                if ($attribute->isScopable() && $requiredValue->forChannel()->getCode() !== $channel->getCode()) {
                     return false;
                 }
 
@@ -116,7 +116,7 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
      */
     private function buildInternalKey(RequiredValue $requiredValue): string
     {
-        $channelCode = null !== $requiredValue->scope() ? $requiredValue->scope() : '<all_channels>';
+        $channelCode = null !== $requiredValue->channel() ? $requiredValue->channel() : '<all_channels>';
         $localeCode = null !== $requiredValue->locale() ? $requiredValue->locale() : '<all_locales>';
         $key = sprintf('%s-%s-%s', $requiredValue->attribute(), $channelCode, $localeCode);
 

@@ -20,19 +20,26 @@ use Pim\Component\Catalog\Model\LocaleInterface;
  *  - ...
  *
  * This object gives you the information of the requirement in the matrix: attribute, channel, locale.
- * that's why the functions forAttribute, forScope and ForLocale always return an object.
+ * that's why the functions forAttribute, forChannel and ForLocale always return an object representing the value in those
+ * axis.
  *
- * It also helps you how to retrieve the corresponding value in a value collection.
- * For instance, if the attribute is not scopable and not localizable. if we try to compute the completeness on the
+ * It also helps to retrieve the corresponding value in a value collection:
+ *
+ * For instance, if the attribute 'description' is not scopable and not localizable and we try to compute the completeness on the
  * channel 'ecommerce' and locale 'fr_FR' for this attribute.
- * - forScope will return the channel ecommerde
- * - forLocale will return the locale fr_FR
- * the information of the matrix, and
- * - scope() will return null
- * - locale('fr_FR') will return null
  *
- * This way, we decouple what is the required value in the matrix, from the way we retrieve it in the value collection
- * (depending on the attribute's settings).
+ * - forAttribute() will return the attribute description object
+ * - forChannel() will return the channel ecommerce object
+ * - forLocale() will return the locale fr_FR object
+ *
+ * However, to retrieve the corresponding value in the value collection, we will use:
+ * - attribute() will return the code of the description attribute 'description'
+ * - channel() will return null (because the attribute is note scopable)
+ * - locale() will return null (because the attribute is not localizable)
+ *
+ * This way, the required value holds two kind of information:
+ * - The attribute, channel, locale for which this required value is relevant (using the for* functions)
+ * - the way we retrieve it in the value collection (depending on the attribute's settings).
  *
  * @author    Julien Janvier <j.janvier@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -41,13 +48,13 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 class RequiredValue
 {
     /** @var AttributeInterface */
-    private $attribute;
+    private $forAttribute;
 
     /** @var ChannelInterface */
-    private $channel;
+    private $forChannel;
 
     /** @var LocaleInterface */
-    private $locale;
+    private $forLocale;
 
     /**
      * @param AttributeInterface $attribute
@@ -59,9 +66,9 @@ class RequiredValue
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $this->attribute = $attribute;
-        $this->channel = $channel;
-        $this->locale = $locale;
+        $this->forAttribute = $attribute;
+        $this->forChannel = $channel;
+        $this->forLocale = $locale;
     }
 
     /**
@@ -69,15 +76,15 @@ class RequiredValue
      */
     public function forAttribute(): AttributeInterface
     {
-        return $this->attribute;
+        return $this->forAttribute;
     }
 
     /**
      * @return ChannelInterface
      */
-    public function forScope(): ChannelInterface
+    public function forChannel(): ChannelInterface
     {
-        return $this->channel;
+        return $this->forChannel;
     }
 
     /**
@@ -85,7 +92,7 @@ class RequiredValue
      */
     public function forLocale(): LocaleInterface
     {
-        return $this->locale;
+        return $this->forLocale;
     }
 
     /**
@@ -93,24 +100,22 @@ class RequiredValue
      */
     public function attribute(): string
     {
-        return $this->attribute->getCode();
+        return $this->forAttribute->getCode();
     }
 
     /**
      * @return null|string
      */
-    public function scope(): ?string
+    public function channel(): ?string
     {
-        return $this->attribute->isScopable() ? $this->channel->getCode() : null;
+        return $this->forAttribute->isScopable() ? $this->forChannel->getCode() : null;
     }
 
     /**
-     * @param LocaleInterface $locale
-     *
      * @return null|string
      */
     public function locale(): ?string
     {
-        return $this->attribute->isLocalizable() ? $this->locale->getCode() : null;
+        return $this->forAttribute->isLocalizable() ? $this->forLocale->getCode() : null;
     }
 }

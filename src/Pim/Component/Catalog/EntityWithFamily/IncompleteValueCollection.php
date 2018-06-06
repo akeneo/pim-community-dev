@@ -100,7 +100,7 @@ class IncompleteValueCollection implements \Countable, \IteratorAggregate
      */
     private function buildInternalKey(RequiredValue $requiredValue): string
     {
-        $channelCode = null !== $requiredValue->scope() ? $requiredValue->scope() : '<all_channels>';
+        $channelCode = null !== $requiredValue->channel() ? $requiredValue->channel() : '<all_channels>';
         $localeCode = null !== $requiredValue->locale() ? $requiredValue->locale() : '<all_locales>';
         $key = sprintf('%s-%s-%s', $requiredValue->attribute(), $channelCode, $localeCode);
 

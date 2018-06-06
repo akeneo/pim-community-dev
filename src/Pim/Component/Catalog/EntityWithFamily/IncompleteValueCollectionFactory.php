@@ -77,7 +77,7 @@ class IncompleteValueCollectionFactory
     ) {
         $actualValue = $entityWithValues->getValues()->getByCodes(
             $requiredValue->attribute(),
-            $requiredValue->scope(),
+            $requiredValue->channel(),
             $requiredValue->locale()
         );
 

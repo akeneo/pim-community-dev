@@ -27,7 +27,7 @@ class RequiredValueSpec extends ObjectBehavior
 
     function it_returns_the_scope($channel)
     {
-        $this->forScope()->shouldReturn($channel);
+        $this->forChannel()->shouldReturn($channel);
     }
 
     function it_returns_the_locale($locale)
@@ -44,7 +44,7 @@ class RequiredValueSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $this->attribute()->shouldReturn('attribute_code');
-        $this->scope()->shouldReturn(null);
+        $this->channel()->shouldReturn(null);
         $this->locale($locale)->shouldReturn(null);
     }
 
@@ -58,7 +58,7 @@ class RequiredValueSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $this->attribute()->shouldReturn('attribute_code');
-        $this->scope()->shouldReturn('channel');
+        $this->channel()->shouldReturn('channel');
         $this->locale($locale)->shouldReturn(null);
     }
 
@@ -72,7 +72,7 @@ class RequiredValueSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
 
         $this->attribute()->shouldReturn('attribute_code');
-        $this->scope()->shouldReturn(null);
+        $this->channel()->shouldReturn(null);
         $this->locale($locale)->shouldReturn('locale');
     }
 
@@ -89,7 +89,7 @@ class RequiredValueSpec extends ObjectBehavior
         $attribute->hasLocaleSpecific($anotherLocale)->willReturn(false);
 
         $this->attribute()->shouldReturn('attribute_code');
-        $this->scope()->shouldReturn(null);
+        $this->channel()->shouldReturn(null);
         $this->locale($locale)->shouldReturn(null);
         $this->locale($anotherLocale)->shouldReturn(null);
     }
