@@ -3,6 +3,7 @@ import __ from 'akeneoenrichedentity/tools/translator';
 import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import Flag from 'akeneoenrichedentity/application/component/app/flag';
 
 interface FormProps {
   locale: string;
@@ -76,6 +77,7 @@ export default class EditForm extends React.Component<FormProps> {
               </div>
               <div className="AknFieldContainer-inputContainer field-input">
                 <input type="text" name="label" className="AknTextField" value={this.state.label} onChange={this.handleChange} />
+                <Flag locale={this.props.locale} displayLanguage={false} />
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import Properties from 'akeneoenrichedentity/application/component/enriched-entity/edit/properties';
-import Sidebar from 'akeneoenrichedentity/application/component/sidebar';
+import Sidebar from 'akeneoenrichedentity/application/component/app/sidebar';
 import {Tab} from "akeneoenrichedentity/application/reducer/sidebar";
 
 interface EditState {
