@@ -6,9 +6,9 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**

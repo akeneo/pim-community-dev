@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Pim\Behat\Context\Storage;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
-use Akeneo\Pim\Structure\Component\Model\AttributeOption;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 
 class AttributeOptionStorage implements Context
 {

@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Registry of copiers

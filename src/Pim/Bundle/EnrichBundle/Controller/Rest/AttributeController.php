@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
@@ -15,7 +16,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\AttributeFactory;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

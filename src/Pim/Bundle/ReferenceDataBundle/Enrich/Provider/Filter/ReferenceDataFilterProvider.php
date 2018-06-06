@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Filter;
 
-use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
 
 /**
  * Filter provider for reference data

@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -12,8 +14,6 @@ use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType;
 use Pim\Component\Catalog\Manager\AttributeOptionsSorter;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;

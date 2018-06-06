@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Job;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Batch\Job\UndefinedJobParameterException;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;

@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
@@ -12,8 +14,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;

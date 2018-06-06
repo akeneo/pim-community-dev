@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Attribute Group entity

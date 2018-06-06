@@ -3,10 +3,10 @@
 namespace Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 

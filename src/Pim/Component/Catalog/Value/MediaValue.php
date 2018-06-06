@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Value;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Component\Catalog\Model\AbstractValue;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * Product value for attribute types:

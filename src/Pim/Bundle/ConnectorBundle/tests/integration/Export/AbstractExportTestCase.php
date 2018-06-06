@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\ConnectorBundle\tests\integration\Export;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 

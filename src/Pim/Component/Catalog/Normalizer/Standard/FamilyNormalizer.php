@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard;
 
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

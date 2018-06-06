@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Manager;
 
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 
 /**
  * Sort attribute options and save them.

@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**

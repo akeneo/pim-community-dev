@@ -3,11 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
-use Pim\Component\Catalog\Model\CompletenessInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Test\Integration\TestCase;
+use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

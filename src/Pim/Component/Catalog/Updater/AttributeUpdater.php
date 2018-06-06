@@ -3,6 +3,8 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -11,8 +13,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\AttributeTypeRegistry;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;

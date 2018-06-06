@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface;
 use Pim\Component\Catalog\Updater\Setter\SetterRegistryInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;

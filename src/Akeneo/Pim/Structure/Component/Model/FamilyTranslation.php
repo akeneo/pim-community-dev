@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
+use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 
 /**
  * Family translation entity

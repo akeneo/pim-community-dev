@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
-use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessTestCase;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

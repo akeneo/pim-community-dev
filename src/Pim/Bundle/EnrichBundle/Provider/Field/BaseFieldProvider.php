@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Provider\Field;
 
-use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Field provider for attributes

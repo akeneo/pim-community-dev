@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
-use Doctrine\ORM\EntityManager;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Doctrine\ORM\EntityManager;
 use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 /**

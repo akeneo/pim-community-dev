@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\ProductAndProductModel\Query\CountProductsWithFamilyInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

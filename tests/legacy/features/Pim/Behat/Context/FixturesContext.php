@@ -9,13 +9,13 @@ use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Debug;
 use Doctrine\Common\Util\Inflector;
 use PHPUnit\Framework\Assert;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

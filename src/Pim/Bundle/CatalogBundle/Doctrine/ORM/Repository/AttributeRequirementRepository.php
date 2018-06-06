@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 
 /**

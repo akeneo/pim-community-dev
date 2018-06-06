@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Checks if an attribute is used as family variant axis

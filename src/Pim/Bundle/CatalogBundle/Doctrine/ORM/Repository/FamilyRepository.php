@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Doctrine\ORM\EntityRepository;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 
 /**

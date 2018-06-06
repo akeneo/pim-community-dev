@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

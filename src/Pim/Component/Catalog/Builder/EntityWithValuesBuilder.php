@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Catalog\Builder;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 

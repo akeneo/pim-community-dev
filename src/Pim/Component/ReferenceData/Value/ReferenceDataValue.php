@@ -2,8 +2,8 @@
 
 namespace Pim\Component\ReferenceData\Value;
 
-use Pim\Component\Catalog\Model\AbstractValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**

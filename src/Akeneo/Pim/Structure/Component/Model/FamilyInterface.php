@@ -3,12 +3,12 @@
 namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 
 /**
  * Family interface

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Validation\Attribute;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**

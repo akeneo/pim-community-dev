@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

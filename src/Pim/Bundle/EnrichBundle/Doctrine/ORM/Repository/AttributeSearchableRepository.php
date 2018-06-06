@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityManagerInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

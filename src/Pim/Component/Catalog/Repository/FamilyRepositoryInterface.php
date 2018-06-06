@@ -3,9 +3,9 @@
 namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 
 /**
  * Family repository interface

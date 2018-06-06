@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\EntityWithFamilyVariantRepositoryInterface;

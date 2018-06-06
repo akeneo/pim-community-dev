@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence;
 
-use Akeneo\Test\Integration\TestCase;
-use PHPUnit\Framework\Assert;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\Assert;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 

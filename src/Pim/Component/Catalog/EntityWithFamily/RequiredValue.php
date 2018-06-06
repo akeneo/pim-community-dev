@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\EntityWithFamily;
 
-use Pim\Component\Catalog\Model\AbstractValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AbstractValue;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**

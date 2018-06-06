@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 
 /**

@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
