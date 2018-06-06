@@ -53,8 +53,8 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
 
     public function __construct(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
+        CursorableRepositoryInterface $productDraftRepository,
+        CursorableRepositoryInterface $productModelDraftRepository,
         array $esQuery,
         string $indexType,
         int $pageSize,
@@ -62,8 +62,8 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         int $from = 0
     ) {
         $this->esClient = $esClient;
-        $this->productRepository = $productRepository;
-        $this->productModelRepository = $productModelRepository;
+        $this->productDraftRepository = $productDraftRepository;
+        $this->productModelDraftRepository = $productModelDraftRepository;
         $this->esQuery = $esQuery;
         $this->indexType = $indexType;
         $this->pageSize = $pageSize;

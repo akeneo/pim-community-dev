@@ -30,10 +30,10 @@ abstract class AbstractCursor implements CursorInterface
     protected $esClient;
 
     /** @var CursorableRepositoryInterface */
-    protected $productRepository;
+    protected $productDraftRepository;
 
     /** @var CursorableRepositoryInterface */
-    protected $productModelRepository;
+    protected $productModelDraftRepository;
 
     /** @var array */
     protected $items;
@@ -103,10 +103,10 @@ abstract class AbstractCursor implements CursorInterface
             return [];
         }
 
-        $hydratedProducts = $this->productRepository->getItemsFromIdentifiers(
+        $hydratedProducts = $this->productDraftRepository->getItemsFromIdentifiers(
             $identifierResults->getProductIdentifiers()
         );
-        $hydratedProductModels = $this->productModelRepository->getItemsFromIdentifiers(
+        $hydratedProductModels = $this->productModelDraftRepository->getItemsFromIdentifiers(
             $identifierResults->getProductModelIdentifiers()
         );
         $hydratedItems = array_merge($hydratedProducts, $hydratedProductModels);

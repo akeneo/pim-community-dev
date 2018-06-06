@@ -14,16 +14,16 @@ class FromSizeCursorSpec extends ObjectBehavior
 {
     function let(
         Client $esClient,
-        CursorableRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $productModelRepository,
+        CursorableRepositoryInterface $productDraftRepository,
+        CursorableRepositoryInterface $productModelDraftRepository,
         ProductDraft $variantProductDraft,
         ProductModelDraft $subProductModelDraft
     ) {
         $variantProductDraft->getIdentifier()->willReturn('a-variant-product');
-        $productRepository->getItemsFromIdentifiers(['a-variant-product'])->willReturn([$variantProductDraft]);
+        $productDraftRepository->getItemsFromIdentifiers(['a-variant-product'])->willReturn([$variantProductDraft]);
 
         $subProductModelDraft->getIdentifier()->willReturn('a-sub-product-model');
-        $productModelRepository->getItemsFromIdentifiers(['a-sub-product-model'])->willReturn([$subProductModelDraft]);
+        $productModelDraftRepository->getItemsFromIdentifiers(['a-sub-product-model'])->willReturn([$subProductModelDraft]);
 
         $esClient->search('pim_catalog_product', [
             'from' => 0,
@@ -48,8 +48,8 @@ class FromSizeCursorSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $esClient,
-            $productRepository,
-            $productModelRepository,
+            $productDraftRepository,
+            $productModelDraftRepository,
             [],
             'pim_catalog_product',
             3,
@@ -74,16 +74,16 @@ class FromSizeCursorSpec extends ObjectBehavior
         $esClient,
         $variantProductDraft,
         $subProductModelDraft,
-        $productRepository,
-        $productModelRepository,
+        $productDraftRepository,
+        $productModelDraftRepository,
         ProductDraft $productDraft,
         ProductModelDraft $rootProductModelDraft
     ) {
         $productDraft->getIdentifier()->willReturn('a-product');
-        $productRepository->getItemsFromIdentifiers(['a-product'])->willReturn([$productDraft]);
+        $productDraftRepository->getItemsFromIdentifiers(['a-product'])->willReturn([$productDraft]);
 
         $rootProductModelDraft->getIdentifier()->willReturn('a-root-product-model');
-        $productModelRepository->getItemsFromIdentifiers(['a-root-product-model'])->willReturn([$rootProductModelDraft]);
+        $productModelDraftRepository->getItemsFromIdentifiers(['a-root-product-model'])->willReturn([$rootProductModelDraft]);
 
         $esClient->search(
             'pim_catalog_product',
@@ -149,16 +149,16 @@ class FromSizeCursorSpec extends ObjectBehavior
         $esClient,
         $variantProductDraft,
         $subProductModelDraft,
-        $productRepository,
-        $productModelRepository,
+        $productDraftRepository,
+        $productModelDraftRepository,
         ProductDraft $productDraft,
         ProductModelDraft $rootProductModelDraft
     ) {
         $productDraft->getIdentifier()->willReturn('foo');
-        $productRepository->getItemsFromIdentifiers(['foo'])->willReturn([$productDraft]);
+        $productDraftRepository->getItemsFromIdentifiers(['foo'])->willReturn([$productDraft]);
 
         $rootProductModelDraft->getIdentifier()->willReturn('foo');
-        $productModelRepository->getItemsFromIdentifiers(['foo'])->willReturn([$rootProductModelDraft]);
+        $productModelDraftRepository->getItemsFromIdentifiers(['foo'])->willReturn([$rootProductModelDraft]);
 
         $esClient->search(
             'pim_catalog_product',
