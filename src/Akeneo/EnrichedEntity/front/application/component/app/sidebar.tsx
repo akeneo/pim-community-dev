@@ -65,10 +65,14 @@ class Sidebar extends React.Component<SidebarProps> {
 }
 
 export default connect((state: State): SidebarState => {
+  const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
+  const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
+  const isCollapsed = undefined === state.sidebar.isCollapsed ? false : state.sidebar.isCollapsed;
+
   return {
-    tabs: state.sidebar.tabs,
-    currentTab: state.sidebar.currentTab,
-    isCollapsed: state.sidebar.isCollapsed
+    tabs,
+    currentTab,
+    isCollapsed
   }
 }, (dispatch: any): SidebarDispatch => {
   return {

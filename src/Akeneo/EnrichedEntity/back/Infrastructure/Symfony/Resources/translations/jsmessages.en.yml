@@ -1,4 +1,6 @@
 pim_enriched_entity:
+    button:
+        save: Save
     enriched_entity:
         title: Entities
         navigation: Entities

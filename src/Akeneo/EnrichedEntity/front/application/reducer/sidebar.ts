@@ -1,16 +1,15 @@
 export interface Tab {
   code: string;
   label: string;
-  panel: string;
 }
 
 export interface SidebarState {
-  isCollapsed: boolean;
-  tabs: Tab[];
-  currentTab: string;
+  isCollapsed?: boolean;
+  tabs?: Tab[];
+  currentTab?: string;
 }
 export default (
-  state: SidebarState = {isCollapsed: false, tabs: [], currentTab: ''},
+  state: SidebarState = {},
   action: {type: string; isCollapsed: boolean; tabs: Tab[]; currentTab: string}
 ): SidebarState => {
   switch (action.type) {

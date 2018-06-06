@@ -3,7 +3,16 @@ import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/en
 import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import reducer from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 
-describe('akeneo > enriched entity > application > reducer --- edit', () => {
+describe('akeneo > enriched entity > application > reducer > enriched-entity --- edit', () => {
+  test('I ignore other commands', () => {
+    const state = {};
+    const newState = reducer.enrichedEntity(state, {
+      type: 'ANOTHER_ACTION',
+    });
+
+    expect(newState).toBe(state);
+  });
+
   test('I can add the enriched entity', () => {
     const state = {};
     const identifier: Identifier = createIdentifier('designer');

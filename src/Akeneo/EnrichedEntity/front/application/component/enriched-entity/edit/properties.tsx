@@ -73,7 +73,7 @@ class Properties extends React.Component<PropertiesProps> {
                     <div className="AknButtonList" >
                       <div className="AknTitleContainer-rightButton">
                         <button className="AknButton AknButton--apply save" onClick={this.saveEditForm}>
-                          Save
+                          {__('pim_enriched_entity.button.save')}
                         </button>
                       </div>
                     </div>

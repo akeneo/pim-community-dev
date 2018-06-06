@@ -25,7 +25,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
         </div>
         <div className="AknDefault-contentWithBottom">
             {
-              (selectedTab && selectedTab.panel === "Properties") &&
+              (selectedTab && selectedTab.label === "Properties") &&
               <Properties />
             }
         </div>
@@ -37,8 +37,11 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
 
 
 export default connect((state: State): EditState => {
+  const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
+  const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
+
   return {
-    tabs: state.sidebar.tabs,
-    currentTab: state.sidebar.currentTab
+    tabs,
+    currentTab
   }
 })(EnrichedEntityEditView);
