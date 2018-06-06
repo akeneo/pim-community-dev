@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
@@ -18,7 +18,7 @@ use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Updater\FamilyVariantUpdater;
+use Akeneo\Pim\Structure\Component\Updater\FamilyVariantUpdater;
 use Prophecy\Argument;
 
 class FamilyVariantUpdaterSpec extends ObjectBehavior

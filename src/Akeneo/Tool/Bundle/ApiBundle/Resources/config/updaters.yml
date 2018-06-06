@@ -1,5 +1,5 @@
 parameters:
-    pim_api.updater.family_variant.class: Akeneo\Tool\Component\Api\Updater\FamilyVariantUpdater
+    pim_api.updater.family_variant.class: Akeneo\Pim\Structure\Component\Updater\ExternalApi\FamilyVariantUpdater
     pim_api.updater.product_model.class: Akeneo\Tool\Component\Api\Updater\ProductModelUpdater
 
 services:

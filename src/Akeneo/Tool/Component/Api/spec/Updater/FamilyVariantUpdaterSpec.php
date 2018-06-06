@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Exception;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
-use Akeneo\Tool\Component\Api\Updater\FamilyVariantUpdater;
+use Akeneo\Pim\Structure\Component\Updater\ExternalApi\FamilyVariantUpdater;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Prophecy\Argument;
 

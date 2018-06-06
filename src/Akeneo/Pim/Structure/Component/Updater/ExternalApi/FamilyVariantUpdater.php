@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Component\Api\Updater;
+namespace Akeneo\Pim\Structure\Component\Updater\ExternalApi;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\MandatoryPropertyException;
