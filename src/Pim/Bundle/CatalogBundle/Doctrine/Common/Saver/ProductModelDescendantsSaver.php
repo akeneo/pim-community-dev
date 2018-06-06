@@ -66,7 +66,7 @@ class ProductModelDescendantsSaver implements SaverInterface
         CompletenessManager $completenessManager,
         BulkIndexerInterface $productIndexer,
         BulkIndexerInterface $bulkProductModelIndexer,
-        IndexerInterface $productModelIndexer = null
+        IndexerInterface $productModelIndexer
     ) {
         $this->objectManager = $entityManager;
         $this->productModelRepository = $productModelRepository;
@@ -105,12 +105,8 @@ class ProductModelDescendantsSaver implements SaverInterface
          * it may break the complete filter on the grid because wrong data was indexed in ES.
          *
          * You should have a look to https://akeneo.atlassian.net/browse/PIM-7388
-         *
-         * @TODO We need to remove the if condition during the pull day
          */
-        if (null !== $this->productModelIndexer) {
-            $this->productModelIndexer->index($productModel);
-        }
+        $this->productModelIndexer->index($productModel);
     }
 
     /**
