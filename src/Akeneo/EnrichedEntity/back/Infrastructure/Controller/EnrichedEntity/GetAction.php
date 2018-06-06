@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\ShowEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

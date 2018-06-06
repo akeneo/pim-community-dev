@@ -12,13 +12,16 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\back\Infrastructure\Validation\EnrichedEntity\RawDataValidator;
+use Akeneo\EnrichedEntity\back\Infrastructure\Validation\EnrichedEntity\EnrichedEntityEditCommandValidator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Edit enriched entity action
@@ -34,16 +37,28 @@ class EditAction
     /** @var NormalizerInterface */
     private $enrichedEntityNormalizer;
 
+    /** @var Serializer */
+    private $serializer;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
     /**
      * @param EditEnrichedEntityHandler $editEnrichedEntityHandler
      * @param NormalizerInterface       $enrichedEntityNormalizer
+     * @param Serializer                $serializer
+     * @param ValidatorInterface        $validator
      */
     public function __construct(
         EditEnrichedEntityHandler $editEnrichedEntityHandler,
-        NormalizerInterface $enrichedEntityNormalizer
+        NormalizerInterface $enrichedEntityNormalizer,
+        Serializer $serializer,
+        ValidatorInterface $validator
     ) {
         $this->editEnrichedEntityHandler = $editEnrichedEntityHandler;
         $this->enrichedEntityNormalizer  = $enrichedEntityNormalizer;
+        $this->serializer = $serializer;
+        $this->validator = $validator;
     }
 
     /**
@@ -57,17 +72,20 @@ class EditAction
             return new RedirectResponse('/');
         }
 
-        $identifier = $request->get('identifier');
-        $data = $request->getContent();
-
-        $validator = new RawDataValidator();
-        $violations = $validator->validate($data);
+        $command = $this->serializer->deserialize($request->getContent(), EditEnrichedEntityCommand::class, 'json');
+        $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
-            return new JsonResponse(['errors' => json_encode($violations)], Response::HTTP_BAD_REQUEST);
+            $errors = [];
+            foreach ($violations as $violation) {
+                // TODO: format the error the way we want for the front
+                $errors[] = $violation->getPropertyPath() .' '. $violation->getMessage();
+            }
+
+            return new JsonResponse(['errors' => json_encode($errors)], Response::HTTP_BAD_REQUEST);
         }
 
-        $enrichedEntity = ($this->editEnrichedEntityHandler)($identifier, $data['labels']);
+        $enrichedEntity = ($this->editEnrichedEntityHandler)($command);
 
         return new JsonResponse(
             $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api')
