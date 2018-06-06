@@ -92,7 +92,8 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                 'biker-jacket-polyester-m',
                 'biker-jacket-polyester-l',
 
-                'other_product'
+                'empty_product',
+                'camera_nikon',
             ]
         );
     }
