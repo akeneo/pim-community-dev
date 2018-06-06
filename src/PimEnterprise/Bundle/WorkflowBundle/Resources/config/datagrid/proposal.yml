@@ -106,7 +106,7 @@ datagrid:
                     data_name: label_or_identifier
                 identifier:
                     label:         Identifier
-                    data_name:     product_identifier
+                    data_name:     entity_with_values_identifier
                     type:          product_value_string
                     ftype:         string
                     options:
