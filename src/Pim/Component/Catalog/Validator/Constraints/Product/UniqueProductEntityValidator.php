@@ -4,9 +4,9 @@ namespace Pim\Component\Catalog\Validator\Constraints\Product;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -56,14 +56,17 @@ class UniqueProductEntityValidator extends ConstraintValidator
          * We need to check if the product has already been processed during the import. When we apply validation
          * the product may not be saved in the database.
          */
-        $identifierValue = $entity->getValues()->filter(function (ValueInterface $value): bool {
-            return $value->getAttribute()->getType() === AttributeTypes::IDENTIFIER;
-        })->first();
+        $identifierValue = $this->getIdentifierValue($entity);
+        if (null === $identifierValue) {
+            return;
+        }
 
         if (false === $this->uniqueValuesSet->addValue($identifierValue, $entity)) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('identifier')
                 ->addViolation();
+
+            return;
         }
 
         /**
@@ -82,5 +85,23 @@ class UniqueProductEntityValidator extends ConstraintValidator
                 ->atPath('identifier')
                 ->addViolation();
         }
+    }
+
+    /**
+     * @param EntityWithValuesInterface $entity
+     *
+     * @return mixed
+     */
+    private function getIdentifierValue(EntityWithValuesInterface $entity): ?ValueInterface
+    {
+        $filteredValueCollection = $entity->getValues()->filter(function (ValueInterface $value) {
+            return $value->getAttribute()->getType() === AttributeTypes::IDENTIFIER;
+        });
+
+        if ($filteredValueCollection->isEmpty()) {
+            return null;
+        }
+
+        return $filteredValueCollection->first();
     }
 }

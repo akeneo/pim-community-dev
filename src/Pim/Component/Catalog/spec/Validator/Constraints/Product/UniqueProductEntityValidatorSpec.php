@@ -48,6 +48,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
 
         $product->getValues()->willReturn($values);
         $values->filter(Argument::any())->willReturn($values);
+        $values->isEmpty()->willReturn(false);
         $values->first()->willReturn($identifierValue);
         $uniqueValuesSet->addValue($identifierValue, $product)->willReturn(true);
 
@@ -78,6 +79,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
 
         $product->getValues()->willReturn($values);
         $values->filter(Argument::any())->willReturn($values);
+        $values->isEmpty()->willReturn(false);
         $values->first()->willReturn($identifierValue);
         $uniqueValuesSet->addValue($identifierValue, $product)->willReturn(false);
 
@@ -104,6 +106,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
 
         $product->getValues()->willReturn($values);
         $values->filter(Argument::any())->willReturn($values);
+        $values->isEmpty()->willReturn(false);
         $values->first()->willReturn($identifierValue);
         $uniqueValuesSet->addValue($identifierValue, $product)->willReturn(true);
 
@@ -112,6 +115,18 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
 
         $context->buildViolation('The same identifier is already set on another product')->shouldNotBeCalled();
 
+        $this->validate($product, $constraint)->shouldReturn(null);
+    }
+
+    function it_does_nothing_if_the_product_does_not_have_an_identifier(
+        ProductInterface $product,
+        ValueCollectionInterface $values
+    ) {
+        $constraint = new UniqueProductEntity();
+
+        $product->getValues()->willReturn($values);
+        $values->filter(Argument::any())->willReturn($values);
+        $values->isEmpty()->willReturn(true);
         $this->validate($product, $constraint)->shouldReturn(null);
     }
 
