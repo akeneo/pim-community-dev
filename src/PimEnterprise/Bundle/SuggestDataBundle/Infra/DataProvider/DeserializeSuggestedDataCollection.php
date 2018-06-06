@@ -28,9 +28,8 @@ class DeserializeSuggestedDataCollection
      *
      * @return SuggestedDataCollectionInterface
      */
-    public function deserialize(string $hal): SuggestedDataCollectionInterface
+    public function deserialize(array $data): SuggestedDataCollectionInterface
     {
-        $data = json_decode($hal, true);
         $this->validateData($data);
 
         $suggestedDataCollection = new SuggestedDataCollection();

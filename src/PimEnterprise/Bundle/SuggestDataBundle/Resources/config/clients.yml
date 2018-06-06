@@ -1,21 +1,27 @@
 services:
 
-    pimee_suggestdata.pim_ai_client:
-        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Clients\Memory
+    pimee_suggestdata.uri_generator:
+        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\UriGenerator
         public: false
         arguments:
+            - 'http://localhost:8080'          
+    
+    pimee_suggestdata.pim_ai_client:
+        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Clients\Webservice
+        public: false
+        arguments:
+            - '@pimee_suggestdata.uri_generator'
             - !service
-              class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\UriGenerator
-              arguments:
-                  - 'http://localhost:8080'
+              class: GuzzleHttp\Client
 
     pimee_suggestdata.pim_ai_api_enrichment:
-        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Enrichment
-        arguments:
-            - '@pimee_suggestdata.pim_ai_client'
+        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Enrichment\Memory
+        # class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Enrichment\Webservice
+        # arguments:
+        #     - '@pimee_suggestdata.pim_ai_client'
 
     pimee_suggestdata.pim_ai_api_subscription:
-        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Subscription
+        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Subscription\Webservice
         arguments:
             - '@pimee_suggestdata.pim_ai_client'
 

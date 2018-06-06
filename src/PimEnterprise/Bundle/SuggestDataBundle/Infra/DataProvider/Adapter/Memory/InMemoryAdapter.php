@@ -8,7 +8,9 @@ use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\DataProvid
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DeserializeSuggestedDataCollection;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataCollectionInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataInterface;
-use PimEnterprise\Bundle\SuggestDataBundle\Infra\Fake\FakeHALProducts;
+use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\EnrichmentApi;
+use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscription\ProductCode;
+use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscription\ProductCodeCollection;
 
 /**
  * In memory implementation to connect to a data provider
@@ -18,26 +20,22 @@ use PimEnterprise\Bundle\SuggestDataBundle\Infra\Fake\FakeHALProducts;
 class InMemoryAdapter implements DataProviderAdapterInterface
 {
     /** @var array */
-    private $pushedProducts;
-
-    /** @var array */
     private $config;
-
-    /** @var FakeHALProducts */
-    private $fakeHALProducts;
 
     /** @var DeserializeSuggestedDataCollection */
     protected $deserializer;
+    
+    private $enrichmentApi;
 
     /**
      * @param DeserializeSuggestedDataCollection $deserializer
      * @param array                              $config
      */
-    public function __construct(DeserializeSuggestedDataCollection $deserializer, array $config)
+    public function __construct(DeserializeSuggestedDataCollection $deserializer, array $config, EnrichmentApi $enrichmentApi)
     {
         $this->deserializer = $deserializer;
-        $this->fakeHALProducts = new FakeHALProducts();
-        $this->pushedProducts = [];
+        $this->enrichmentApi = $enrichmentApi;
+        
         $this->configure($config);
     }
 
@@ -47,13 +45,9 @@ class InMemoryAdapter implements DataProviderAdapterInterface
     public function push(ProductInterface $product): SuggestedDataInterface
     {
         $identifier = $product->getIdentifier(); // TODO get with mapping
-        if (!in_array($identifier, $this->pushedProducts)) {
-            $this->pushedProducts[] = $identifier;
-        }
 
-        $hal = $this->fakeHALProducts->addProduct($identifier)->getFakeHAL();
-
-        $collection = $this->deserializer->deserialize($hal);
+        $apiResponse = $this->enrichmentApi->subscribeProduct(new ProductCode('sku', $identifier));
+        $collection = $this->deserializer->deserialize($apiResponse->content());
 
         return $collection->current();
     }
@@ -63,17 +57,15 @@ class InMemoryAdapter implements DataProviderAdapterInterface
      */
     public function bulkPush(array $products): SuggestedDataCollectionInterface
     {
+        $productCodes = new ProductCodeCollection();
         foreach ($products as $product) {
             $identifier = $product->getIdentifier(); // TODO get with mapping
-            if (!in_array($identifier, $this->pushedProducts)) {
-                $this->pushedProducts[] = $identifier;
-            }
-            $this->fakeHALProducts->addProduct($identifier);
+            $productCodes->add(new ProductCode('sku', $identifier));
         }
 
-        $hal = $this->fakeHALProducts->getFakeHAL();
+        $apiResponse = $this->enrichmentApi->subscribeProducts($productCodes);
 
-        return $this->deserializer->deserialize($hal);
+        return $this->deserializer->deserialize($apiResponse->content());
     }
 
     public function pull(ProductInterface $product)

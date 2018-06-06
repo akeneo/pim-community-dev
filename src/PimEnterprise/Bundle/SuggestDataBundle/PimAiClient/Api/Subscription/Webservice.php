@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api;
+namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Subscription;
 
 use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Client;
 use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\ApiResponse;
 use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\SubscriptionId;
 
-class Subscription
+class Webservice
 {
     private $client;
 
