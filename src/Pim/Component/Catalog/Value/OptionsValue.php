@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Value;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\AbstractValue;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**
  * Product value for "pim_catalog_multiselect" attribute type

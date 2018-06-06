@@ -2,10 +2,10 @@
 
 namespace Pim\Component\ReferenceData\Factory\Value;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
@@ -140,9 +140,9 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
      *       one reference data, when the others in the collection could be valid. So the value will not
      *       be loaded at all, when what we want is the value to be loaded minus the wrong reference data.
      *
-     * @param AttributeInterface               $attribute
-     * @param ReferenceDataRepositoryInterface $repository
-     * @param string                           $referenceDataCode
+     * @param AttributeInterface $attribute
+     * @param ReferenceDataRepositoryInterface                         $repository
+     * @param string                                                   $referenceDataCode
      *
      * @throws InvalidPropertyException
      * @return ReferenceDataInterface

@@ -26,7 +26,7 @@ Pim\Component\Catalog\Model\Product:
             type: datetime
     manyToOne:
         family:
-            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface
             joinColumns:
                 family_id:
                     referencedColumnName: id
@@ -39,7 +39,7 @@ Pim\Component\Catalog\Model\Product:
                     referencedColumnName: id
                     onDelete: CASCADE
         familyVariant:
-            targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
             joinColumn:
                 name: family_variant_id
                 referencedColumnName: id

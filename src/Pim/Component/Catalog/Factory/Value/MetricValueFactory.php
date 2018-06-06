@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Factory\Value;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Factory\MetricFactory;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Factory that creates metric product values.

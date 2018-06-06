@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Validator;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraints;
 
 /**

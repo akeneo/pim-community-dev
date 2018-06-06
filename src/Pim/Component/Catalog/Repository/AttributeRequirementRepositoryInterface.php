@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Repository;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
  * Repository interface for attribute requirements

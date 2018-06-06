@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Change attribute group update guesser

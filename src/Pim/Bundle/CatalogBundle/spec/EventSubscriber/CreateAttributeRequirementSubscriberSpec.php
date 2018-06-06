@@ -2,15 +2,16 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeRequirementInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Prophecy\Argument;
 
 class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
@@ -31,7 +32,7 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         $eventArgs->getEntityManager()
             ->willReturn($entityManager);
 
-        $entityManager->getRepository(Argument::exact('PimCatalogBundle:Family'))
+        $entityManager->getRepository(Argument::exact(Family::class))
             ->willReturn($repository);
 
         $repository->findAll()
@@ -79,7 +80,7 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         $eventArgs->getEntityManager()
             ->shouldBeCalled();
 
-        $entityManager->getRepository(Argument::exact('PimCatalogBundle:Family'))
+        $entityManager->getRepository(Argument::exact(Family::class))
             ->shouldBeCalled();
 
         $repository->findAll()

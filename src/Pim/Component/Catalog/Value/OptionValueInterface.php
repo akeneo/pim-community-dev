@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Value;
 
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**

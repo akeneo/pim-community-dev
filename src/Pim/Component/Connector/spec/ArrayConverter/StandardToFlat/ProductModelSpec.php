@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
 

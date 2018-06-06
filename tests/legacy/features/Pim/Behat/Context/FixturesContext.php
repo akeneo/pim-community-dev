@@ -5,13 +5,17 @@ namespace Pim\Behat\Context;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Currency;
 use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Pim\Structure\Component\Model\AttributeOption;
+use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Debug;
 use Doctrine\Common\Util\Inflector;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -26,12 +30,12 @@ class FixturesContext extends PimContext
     use SpinCapableTrait;
 
     protected $entities = [
-        'Attribute'        => 'PimCatalogBundle:Attribute',
-        'AttributeGroup'   => 'PimCatalogBundle:AttributeGroup',
-        'AttributeOption'  => 'PimCatalogBundle:AttributeOption',
+        'Attribute'        => Attribute::class,
+        'AttributeGroup'   => AttributeGroup::class,
+        'AttributeOption'  => AttributeOption::class,
         'Channel'          => Channel::class,
         'Currency'         => Currency::class,
-        'Family'           => 'PimCatalogBundle:Family',
+        'Family'           => Family::class,
         'FamilyVariant'    => FamilyVariant::class,
         'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
         'ProductCategory'  => 'PimCatalogBundle:Category',

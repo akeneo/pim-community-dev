@@ -8,7 +8,7 @@ use Pim\Component\Catalog\AttributeTypeRegistry;
 
 class AttributeFactorySpec extends ObjectBehavior
 {
-    const ATTRIBUTE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
+    const ATTRIBUTE_CLASS = 'Akeneo\Pim\Structure\Component\Model\Attribute';
     const PRODUCT_CLASS = 'Pim\Component\Catalog\Model\Product';
 
     function let(AttributeTypeRegistry $registry)

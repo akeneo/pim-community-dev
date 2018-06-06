@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Manager\CompletenessManager;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -102,7 +102,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         if (!$family instanceof FamilyInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Component\Catalog\Model\FamilyInterface", "%s" provided.',
+                    'Expects a "Akeneo\Pim\Structure\Component\Model\FamilyInterface", "%s" provided.',
                     ClassUtils::getClass($family)
                 )
             );

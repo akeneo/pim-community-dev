@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Factory;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Pim\Component\Catalog\AttributeTypeRegistry;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Creates and configures an attribute instance.

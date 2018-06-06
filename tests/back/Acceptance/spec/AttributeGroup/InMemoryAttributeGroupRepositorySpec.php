@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Test\Acceptance\AttributeGroup;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
 
 class InMemoryAttributeGroupRepositorySpec extends ObjectBehavior

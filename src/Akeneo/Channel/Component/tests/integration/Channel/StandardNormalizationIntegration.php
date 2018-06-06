@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Channel\Componenttests\integration\Channel;
+namespace Akeneo\Channel\Component\tests\integration\Channel;
 
 use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
 

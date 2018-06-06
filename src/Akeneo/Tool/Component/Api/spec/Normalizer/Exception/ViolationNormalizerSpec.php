@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Component\Api\Normalizer\Exception;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;

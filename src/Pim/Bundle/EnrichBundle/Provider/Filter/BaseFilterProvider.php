@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Provider\Filter;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Filter provider for attributes

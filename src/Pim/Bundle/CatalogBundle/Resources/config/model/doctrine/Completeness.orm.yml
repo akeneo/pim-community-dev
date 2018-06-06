@@ -51,7 +51,7 @@ Pim\Component\Catalog\Model\Completeness:
                     nullable: false
     manyToMany:
         missingAttributes:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeInterface
             joinTable:
                 name: pim_catalog_completeness_missing_attribute
                 joinColumns:

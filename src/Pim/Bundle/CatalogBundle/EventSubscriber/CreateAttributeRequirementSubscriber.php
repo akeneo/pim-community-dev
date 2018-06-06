@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pim\Component\Catalog\AttributeTypes;
@@ -53,7 +54,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
         }
 
         $entityManager = $event->getEntityManager();
-        $families = $entityManager->getRepository('PimCatalogBundle:Family')->findAll();
+        $families = $entityManager->getRepository(Family::class)->findAll();
 
         foreach ($families as $family) {
             foreach ($family->getAttributes() as $attribute) {

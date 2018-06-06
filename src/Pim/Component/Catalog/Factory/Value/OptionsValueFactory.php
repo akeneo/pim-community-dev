@@ -2,12 +2,12 @@
 
 namespace Pim\Component\Catalog\Factory\Value;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Exception\InvalidOptionsException;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
 
 /**
  * Factory that creates options (multi-select) product values.
@@ -111,7 +111,7 @@ class OptionsValueFactory implements ValueFactoryInterface
      * Returns an array of attribute options.
      *
      * @param AttributeInterface $attribute
-     * @param string[]           $data
+     * @param string[]                                                 $data
      *
      * @throws InvalidOptionsException
      * @return array

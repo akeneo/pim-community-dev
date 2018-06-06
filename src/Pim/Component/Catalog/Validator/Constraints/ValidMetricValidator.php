@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Value\MetricValueInterface;
@@ -41,7 +41,7 @@ class ValidMetricValidator extends ConstraintValidator
      * Validate metric type and default metric unit
      *
      * @param AttributeInterface|MetricInterface|ValueInterface $object
-     * @param Constraint                                        $constraint
+     * @param Constraint                                                                              $constraint
      */
     public function validate($object, Constraint $constraint)
     {

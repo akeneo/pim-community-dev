@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Storage;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Normalizer\Storage\AttributeOptionNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\DataGridBundle\EventSubscriber;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>

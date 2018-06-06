@@ -6,9 +6,9 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
@@ -91,8 +91,8 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
      * Generate filtered values for the given attribute
      *
      * @param AttributeInterface $attribute
-     * @param array              $values
-     * @param array              $options
+     * @param array                                                    $values
+     * @param array                                                    $options
      *
      * @return array
      */
@@ -113,7 +113,7 @@ class ProductValuesEditDataFilter implements CollectionFilterInterface
      * Test if a value is accepted or not
      *
      * @param AttributeInterface $attribute
-     * @param array              $value
+     * @param array                                                    $value
      *
      * @return boolean
      */

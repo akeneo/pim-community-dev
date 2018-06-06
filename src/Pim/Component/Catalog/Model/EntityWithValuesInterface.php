@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+
 /**
  * This interface wears the responsibility of having values.
  * A value is defined by an attribute, a locale, a scope and a data.

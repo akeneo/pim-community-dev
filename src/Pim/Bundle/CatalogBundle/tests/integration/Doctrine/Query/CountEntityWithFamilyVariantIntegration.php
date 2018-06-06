@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\tests\integration\Doctrine\Query;
 
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

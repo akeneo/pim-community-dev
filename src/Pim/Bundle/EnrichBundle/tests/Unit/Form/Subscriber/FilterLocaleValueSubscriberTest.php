@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\tests\Unit\Form\Subscriber;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PHPUnit\Framework\TestCase;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\FilterLocaleValueSubscriber;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
@@ -170,7 +170,7 @@ class FilterLocaleValueSubscriberTest extends TestCase
     /**
      * @param bool $localizable
      *
-     * @return \Pim\Component\Catalog\Model\AttributeInterface
+     * @return AttributeInterface
      */
     private function getAttributeMock($localizable = true)
     {

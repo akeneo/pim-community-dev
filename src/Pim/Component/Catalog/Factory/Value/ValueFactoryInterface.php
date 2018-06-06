@@ -1,7 +1,7 @@
 <?php
 namespace Pim\Component\Catalog\Factory\Value;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
 /**

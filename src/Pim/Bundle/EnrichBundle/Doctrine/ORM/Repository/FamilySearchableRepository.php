@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
  * Family searchable repository

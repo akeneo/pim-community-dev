@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Exception\InvalidOptionException;
 use Pim\Component\Catalog\Exception\InvalidOptionsException;
 use Pim\Component\Catalog\Factory\ValueCollectionFactory;
 use Pim\Component\Catalog\Factory\ValueFactory;
-use Pim\Component\Catalog\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\AnalyticsBundle\Doctrine\Query;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Return the number of scopable attributes

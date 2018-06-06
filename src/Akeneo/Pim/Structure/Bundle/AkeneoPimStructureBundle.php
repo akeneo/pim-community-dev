@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle;
 
-use Akeneo\Channel\Bundle\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
-use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
+use Akeneo\Pim\Structure\Bundle\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -22,5 +21,20 @@ class AkeneoPimStructureBundle extends Bundle
      */
     public function build(ContainerBuilder $container): void
     {
+        $container
+            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
+        ;
+
+        $productMappings = [
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Pim\Structure\Component\Model'
+        ];
+
+        $container->addCompilerPass(
+            DoctrineOrmMappingsPass::createYamlMappingDriver(
+                $productMappings,
+                ['doctrine.orm.entity_manager'],
+                false
+            )
+        );
     }
 }
