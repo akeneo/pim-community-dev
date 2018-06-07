@@ -33,8 +33,8 @@ class ComputeCompletenessOnFamilyUpdateSubscriberSpec extends ObjectBehavior
             $jobLauncher,
             $jobInstanceRepository,
             $attributeRequirementRepository,
-            $findAttributesForFamily,
-            'my_job_name'
+            'my_job_name',
+            $findAttributesForFamily
         );
     }
 

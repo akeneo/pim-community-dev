@@ -61,8 +61,8 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
         JobLauncherInterface $jobLauncher,
         IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         AttributeRequirementRepositoryInterface $attributeRequirementRepository,
-        FindAttributesForFamily $findAttributesForFamily,
-        string $jobName
+        string $jobName,
+        FindAttributesForFamily $findAttributesForFamily = null // @pull-up @todo master: remove the = null
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->jobLauncher = $jobLauncher;
@@ -138,7 +138,8 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
         }
 
         if ($this->areAttributeRequirementsUpdatedForFamilies || $this->isAttributeListUpdated) {
-            $user = $this->tokenStorage->getToken()->getUser();
+            $token = $this->tokenStorage->getToken();
+            $user = $token->getUser();
             $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
             $this->jobLauncher->launch($jobInstance, $user, ['family_code' => $subject->getCode()]);
         }
@@ -162,7 +163,7 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
             array_diff($newAttributeRequirementsKeys, $oldAttributeRequirementsKeys)
         );
 
-        return \count($diff) > 0;
+        return count($diff) > 0;
     }
 
     /**
@@ -176,8 +177,11 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
 
         $oldAttributeRequirements = $this->attributeRequirementRepository->findRequiredAttributesCodesByFamily($family);
         foreach ($oldAttributeRequirements as $oldAttributeRequirement) {
-            $oldAttributeRequirementsKeys[] = $oldAttributeRequirement['attribute'] . '_' .
-                $oldAttributeRequirement['channel'];
+            $oldAttributeRequirementsKeys[] = sprintf(
+                '%s_%s',
+                $oldAttributeRequirement['attribute'],
+                $oldAttributeRequirement['channel']
+            );
         }
 
         return $oldAttributeRequirementsKeys;
@@ -205,6 +209,6 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
             array_diff($newAttributeList, $oldAttributeList)
         );
 
-        return \count($diff) > 0;
+        return count($diff) > 0;
     }
 }
