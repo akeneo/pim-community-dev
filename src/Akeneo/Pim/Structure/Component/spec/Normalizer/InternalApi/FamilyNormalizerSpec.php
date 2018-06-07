@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;

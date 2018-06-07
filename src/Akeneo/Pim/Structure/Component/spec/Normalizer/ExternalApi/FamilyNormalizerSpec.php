@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\Tool\Component\Api\Normalizer;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\ExternalApi;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Component\Api\Normalizer\FamilyNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\FamilyNormalizer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

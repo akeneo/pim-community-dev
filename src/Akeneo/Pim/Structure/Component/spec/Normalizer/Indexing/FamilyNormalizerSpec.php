@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Indexing;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Indexing;
 
+use Akeneo\Pim\Structure\Component\Normalizer\Indexing\FamilyNormalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductPrice;
-use Pim\Component\Catalog\Normalizer\Indexing\FamilyNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;

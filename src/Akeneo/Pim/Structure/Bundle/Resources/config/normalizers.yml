@@ -64,3 +64,49 @@ services:
             - '@pim_catalog.normalizer.standard.attribute_option'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+    ### Family
+    pim_enrich.normalizer.family:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\FamilyNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family'
+            - '@pim_enrich.normalizer.attribute'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_api.normalizer.family:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\FamilyNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.family:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\FamilyNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.family:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_requirement'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product.product.family:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Indexing\FamilyNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.repository.locale'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
