@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Behat\Context;
 
 use Akeneo\Component\Batch\Model\JobExecution;
@@ -20,10 +22,11 @@ use PHPUnit\Framework\Assert;
  * It gives a more natural language.
  *
  * In this context, there is no notion of who launched the job. This is made on purpose, don't try to
- * introduce it later, it makes no sense. The goal is to test the imports coming from an external application,
- * or required at the setup of the application. Those imports are made by a CLI, not by a human.
+ * introduce it later, it makes no sense. The goal is to test the imports and exports coming from an external
+ * application, or required at the setup of the application. Those imports and exports are made by a CLI, not
+ * by a human.
  */
-final class ImportFileContext extends PimContext implements SnippetAcceptingContext
+final class ImportExportFileContext extends PimContext implements SnippetAcceptingContext
 {
     use SpinCapableTrait;
 
@@ -38,7 +41,7 @@ final class ImportFileContext extends PimContext implements SnippetAcceptingCont
     /**
      * @When /^the (.*) are imported via the job ([\w\_]+)$/
      */
-    public function entitiesAreImportedViaTheJob($entities, $jobName)
+    public function entitiesAreImportedViaTheJob(string $entities, string $jobName)
     {
         $this->entitiesAreImportedViaTheJobWithOptions($entities, $jobName, new TableNode([]));
     }
@@ -46,26 +49,27 @@ final class ImportFileContext extends PimContext implements SnippetAcceptingCont
     /**
      * @When /^the (.*) are imported via the job ([\w\_]+) with options:$/
      */
-    public function entitiesAreImportedViaTheJobWithOptions($entities, $jobName, TableNode $jobOptions)
+    public function entitiesAreImportedViaTheJobWithOptions(string $entities, string $jobName, TableNode $jobOptions)
     {
         $newJobOptions = new TableNode(
             array_merge($jobOptions->getTable(), [['filePath', self::$placeholderValues['%file to import%']]])
         );
 
-        $this->jobInstance = $this->mainContext->getSubcontext('job')->theFollowingJobConfiguration($jobName, $newJobOptions);
+        $this->launchJob($jobName, $newJobOptions);
+    }
 
-        $user = $this->getFixturesContext()->getUser(self::USERNAME_FOR_JOB_LAUNCH);
-
-        $launcher = $this->mainContext->getContainer()->get('akeneo_batch.launcher.simple_job_launcher');
-        $launcher->launch($this->jobInstance, $user);
-
-        $this->jobExecution = $this->waitForJobToFinish($this->jobInstance);
+    /**
+     * @When /^the (.*) are exported via the job ([\w\_]+)$/
+     */
+    public function entitiesAreExportedViaTheJob(string $entities, string $jobName)
+    {
+        $this->launchJob($jobName, new TableNode([]));
     }
 
     /**
      * @Then there should be :number product(s) skipped because there is no difference
      */
-    public function thereShouldBeProductSkippedBecauseThereIsNoDifference($number)
+    public function thereShouldBeProductSkippedBecauseThereIsNoDifference(string $number)
     {
         $productsSkipped = array_map(function ($stepExecution) {
             return $stepExecution->getSummaryInfo('product_skipped_no_diff');
@@ -77,7 +81,7 @@ final class ImportFileContext extends PimContext implements SnippetAcceptingCont
     /**
      * @Then /^I should have the error "(?P<error>(?:[^"]|\\")*)"$/
      */
-    public function iShouldHaveTheError($error)
+    public function iShouldHaveTheError(string $error)
     {
         foreach ($this->jobExecution->getStepExecutions() as $stepExecution) {
             foreach ($stepExecution->getWarnings() as $warning) {
@@ -88,6 +92,20 @@ final class ImportFileContext extends PimContext implements SnippetAcceptingCont
         }
 
         throw new \Exception(sprintf('Cannot find the error "%s"', $error));
+    }
+
+    private function launchJob(string $jobName, TableNode $newJobOptions)
+    {
+        $this->jobInstance = $this->mainContext
+            ->getSubcontext('job')
+            ->theFollowingJobConfiguration($jobName, $newJobOptions);
+
+        $user = $this->getFixturesContext()->getUser(self::USERNAME_FOR_JOB_LAUNCH);
+
+        $launcher = $this->mainContext->getContainer()->get('akeneo_batch.launcher.simple_job_launcher');
+        $launcher->launch($this->jobInstance, $user);
+
+        $this->jobExecution = $this->waitForJobToFinish($this->jobInstance);
     }
 
     private function waitForJobToFinish(JobInstance $jobInstance): JobExecution
