@@ -1,3 +1,9 @@
+# 2.3.x
+
+## Improve Julia's experience
+
+- PIM-7347: Improve the calculation of the completeness for locale specific attributes.
+
 # 2.3.0-ALPHA2 (2018-06-07)
 
 ## Improve Julia's experience

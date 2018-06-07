@@ -25,11 +25,13 @@ use Doctrine\Common\Collections\Collection;
  */
 class IncompleteValueCollection implements \Countable, \IteratorAggregate
 {
-    /** @var ValueInterface[] */
+    /** @var RequiredValue[] */
     private $values;
 
     /**
-     * @param ValueInterface[] $values
+     * @param RequiredValue[] $values
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct(array $values)
     {
@@ -88,9 +90,9 @@ class IncompleteValueCollection implements \Countable, \IteratorAggregate
     /**
      * {@inheritDoc}
      */
-    public function count()
+    public function count(): int
     {
-        return count($this->values);
+        return \count($this->values);
     }
 
     /**
@@ -100,8 +102,8 @@ class IncompleteValueCollection implements \Countable, \IteratorAggregate
      */
     private function buildInternalKey(RequiredValue $requiredValue): string
     {
-        $channelCode = null !== $requiredValue->channel() ? $requiredValue->channel() : '<all_channels>';
-        $localeCode = null !== $requiredValue->locale() ? $requiredValue->locale() : '<all_locales>';
+        $channelCode = $requiredValue->channel() ?? '<all_channels>';
+        $localeCode = $requiredValue->locale() ?? '<all_locales>';
         $key = sprintf('%s-%s-%s', $requiredValue->attribute(), $channelCode, $localeCode);
 
         return $key;
