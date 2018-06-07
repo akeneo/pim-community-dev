@@ -20,6 +20,7 @@
 - PIM-7009: Fix bug with pagination on associated products page on product edit form
 - PIM-7383: Fix 'in list' product filters with large amount of items
 - PIM-7398: Fix the impossibility to unselect categories in the category tree in case of category with numeric code
+- PIM-7363: Add family filter on remove values at wrong level command
 
 # 2.0.25 (2018-05-21)
 
