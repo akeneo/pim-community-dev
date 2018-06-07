@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Storage;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Storage;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Normalizer\Storage\AttributeOptionNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Storage\AttributeOptionNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

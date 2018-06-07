@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Storage;
+namespace Akeneo\Pim\Structure\Component\Normalizer\Storage;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

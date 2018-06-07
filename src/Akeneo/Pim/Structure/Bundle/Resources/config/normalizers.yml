@@ -57,3 +57,10 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeOptionNormalizer'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.storage.attribute_option:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Storage\AttributeOptionNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_option'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
