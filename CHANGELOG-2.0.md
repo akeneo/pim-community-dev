@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7426: Fix search on the product 'add to group' mass edit
+
 # 2.0.26 (2018-06-06)
 
 ## Bug fixes
