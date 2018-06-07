@@ -1,5 +1,9 @@
 # 2.3.0-ALPHA2 (2018-06-07)
 
+## Improve Julia's experience
+
+- PIM-7405: As Julia, I would like to order the assets linked to the products in the asset collection in the product form
+
 ## BC Breaks
 
 - AOB-62: `PimEnterprise\Component\Workflow\Model\ProductDraft` now implements `Pim\Component\Catalog\Model\EntityWithValuesInterface`
