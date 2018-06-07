@@ -169,7 +169,7 @@ define(
                                                     return Routing.generate(
                                                         'pim_enrich_category_rest_list_selected_children',
                                                         {
-                                                            identifier: category.code,
+                                                            identifier: category.code
                                                         }
                                                     );
                                                 }

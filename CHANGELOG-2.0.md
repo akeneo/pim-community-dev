@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7323: Fix unique data synchronizer to handle value removal
+- PIM-7411: Fix Request-URI Too Large issue on category selection for product export builder
 
 # 2.0.23 (2018-04-30)
 
