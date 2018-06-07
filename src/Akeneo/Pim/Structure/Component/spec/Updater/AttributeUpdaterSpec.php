@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
@@ -38,7 +38,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\AttributeUpdater');
+        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Updater\AttributeUpdater');
     }
 
     function it_is_a_updater()
@@ -132,7 +132,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
                 'group',
                 'code',
                 'The attribute group does not exist',
-                'Pim\Component\Catalog\Updater\AttributeUpdater',
+                'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater',
                 'marketing'
             )
         )->during(
@@ -144,7 +144,9 @@ class AttributeUpdaterSpec extends ObjectBehavior
     function it_throws_an_exception_if_it_attribute_type_is_empty(AttributeInterface $attribute)
     {
         $this->shouldThrow(
-            InvalidPropertyException::valueNotEmptyExpected('type', 'Pim\Component\Catalog\Updater\AttributeUpdater')
+            InvalidPropertyException::valueNotEmptyExpected('type',
+                'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater'
+            )
         )->during(
             'update',
             [$attribute, ['type' => '']]
@@ -160,7 +162,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
                 'type',
                 'attribute type',
                 'The attribute type does not exist',
-                'Pim\Component\Catalog\Updater\AttributeUpdater',
+                'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater',
                 'unknown_type'
             )
         )->during('update', [$attribute, ['type' => 'unknown_type']]);
@@ -172,7 +174,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             InvalidPropertyException::dateExpected(
                 'date_min',
                 'yyyy-mm-dd',
-                'Pim\Component\Catalog\Updater\AttributeUpdater',
+                'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater',
                 'not a date'
             )
         )->during(
@@ -187,7 +189,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             InvalidPropertyException::dateExpected(
                 'date_min',
                 'yyyy-mm-dd',
-                'Pim\Component\Catalog\Updater\AttributeUpdater',
+                'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater',
                 '45/45/2016'
             )
         )->during(
@@ -202,7 +204,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
             InvalidPropertyException::dateExpected(
                 'date_min',
                 'yyyy-mm-dd',
-                'Pim\Component\Catalog\Updater\AttributeUpdater',
+                'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater',
                 '2016/12/12'
             )
         )->during(
@@ -236,7 +238,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
                 'available_locales',
                 'locale code',
                 'The locale does not exist',
-                'Pim\Component\Catalog\Updater\AttributeUpdater',
+                'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater',
                 'foo'
             )
         )->during('update', [$attribute, $values, []]);
@@ -250,7 +252,8 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::scalarExpected('code', 'Pim\Component\Catalog\Updater\AttributeUpdater', [])
+                InvalidPropertyTypeException::scalarExpected('code',
+                    'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater', [])
             )
             ->during('update', [$attribute, $values, []]);
     }
@@ -263,7 +266,8 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::arrayExpected('labels', 'Pim\Component\Catalog\Updater\AttributeUpdater', 'not_an_array')
+                InvalidPropertyTypeException::arrayExpected('labels',
+                    'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater', 'not_an_array')
             )
             ->during('update', [$attribute, $values, []]);
     }
@@ -276,7 +280,8 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::arrayExpected('available_locales', 'Pim\Component\Catalog\Updater\AttributeUpdater', 'not_an_array')
+                InvalidPropertyTypeException::arrayExpected('available_locales',
+                    'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater', 'not_an_array')
             )
             ->during('update', [$attribute, $values, []]);
     }
@@ -289,7 +294,8 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidPropertyTypeException::arrayExpected('allowed_extensions', 'Pim\Component\Catalog\Updater\AttributeUpdater', 'not_an_array')
+                InvalidPropertyTypeException::arrayExpected('allowed_extensions',
+                    'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater', 'not_an_array')
             )
             ->during('update', [$attribute, $values, []]);
     }

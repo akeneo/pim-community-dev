@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Updater;
+namespace Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
