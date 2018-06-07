@@ -18,7 +18,7 @@ Feature: Keep product asset order during product import
       | paint  | asset_main_catalog |
 
   Scenario: Add ordered assets in a product asset collection through product import
-    Given the following product:
+    Given the following products:
       | sku  | family |
       | bag1 | bags   |
       | bag2 | bags   |
@@ -33,7 +33,7 @@ Feature: Keep product asset order during product import
     And the asset collection photos of the product bag2 should be ordered as paint, bridge and dog
 
   Scenario: Update ordered product asset collections through product import
-    Given the following product:
+    Given the following products:
       | sku  | family | photos           |
       | bag1 | bags   | bridge,dog,paint |
       | bag2 | bags   | bridge,dog,paint |
