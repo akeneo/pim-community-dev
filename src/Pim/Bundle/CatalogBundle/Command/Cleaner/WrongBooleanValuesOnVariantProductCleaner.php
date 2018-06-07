@@ -30,18 +30,32 @@ class WrongBooleanValuesOnVariantProductCleaner
         }
 
         $isModified = false;
-
-        foreach ($variantProduct->getFamily()->getAttributes() as $attribute) {
+        $cleanedAttributes = [];
+        $attributes = $variantProduct->getFamily()->getAttributes();
+        foreach ($attributes as $attribute) {
             if ($this->isProductImpactedForAttribute($variantProduct, $attribute)) {
                 $this->cleanProductForAttribute($variantProduct, $attribute);
+                $cleanedAttributes[] = $attribute->getCode();
                 $isModified = true;
             }
+        }
+
+        if ($isModified) {
+            file_put_contents(sprintf('%s/cleaned_products_%s.txt', getcwd(), $variantProduct->getFamily()->getCode()), sprintf(
+                "%s;%s;%s;%s\n",
+                $variantProduct->getIdentifier(),
+                $variantProduct->getFamily()->getCode(),
+                $variantProduct->getFamilyVariant()->getCode(),
+                implode($cleanedAttributes, ',')
+            ), FILE_APPEND);
         }
 
         return $isModified;
     }
 
     /**
+     * We want to know what attribute that are in the parent level but actually in the children level
+     *
      * @param ProductInterface   $variantProduct
      * @param AttributeInterface $attribute
      *
@@ -49,19 +63,13 @@ class WrongBooleanValuesOnVariantProductCleaner
      */
     private function isProductImpactedForAttribute(ProductInterface $variantProduct, AttributeInterface $attribute): bool
     {
-        if ($attribute->getType() !== AttributeTypes::BOOLEAN) {
-            return false;
-        }
-
         $familyVariant = $variantProduct->getFamilyVariant();
         $attributeLevel = $familyVariant->getLevelForAttributeCode($attribute->getCode());
-        $attributeIsOnLastLevel = $attributeLevel === $familyVariant->getNumberOfLevel();
+        $hasAttributeInParentLevel = $attributeLevel !== $familyVariant->getNumberOfLevel();
+        $attributeCodesInLastLevel = $variantProduct->getValuesForVariation()->getAttributesKeys();
+        $hasValueForThisAttributeInLastLevel = in_array($attribute->getCode(), $attributeCodesInLastLevel);
 
-        if ($attributeIsOnLastLevel) {
-            return false;
-        }
-
-        return null !== $variantProduct->getValuesForVariation()->getByCodes($attribute->getCode());
+        return $hasAttributeInParentLevel && $hasValueForThisAttributeInLastLevel;
     }
 
     /**
@@ -70,7 +78,7 @@ class WrongBooleanValuesOnVariantProductCleaner
      */
     private function cleanProductForAttribute(ProductInterface $variantProduct, AttributeInterface $attribute): void
     {
-        $values = $variantProduct->getValues();
+        $values = $variantProduct->getValuesForVariation();
         $values->removeByAttribute($attribute);
         $variantProduct->setValues($values);
     }
