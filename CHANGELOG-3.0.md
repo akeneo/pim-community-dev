@@ -143,3 +143,7 @@
 - Move `Pim\Component\Catalog\Model\AttributeTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface`
 - Move `Pim\Component\Catalog\Model\VariantAttributeSet` to `Akeneo\Pim\Structure\Component\Model\VariantAttributeSet`
 - Move `Pim\Component\Catalog\Model\VariantAttributeSetInterface` to `Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface`
+- Move `Pim\Component\Catalog\Updater\AttributeUpdater` to `Akeneo\Pim\Structure\Component\Updater\AttributeUpdater`
+- Move `Pim\Component\Catalog\Updater\AttributeOptionUpdater` to `Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater`
+- Move `Pim\Component\Catalog\Updater\FamilyUpdater` to `Akeneo\Pim\Structure\Component\Updater\FamilyUpdater`
+- Move `Akeneo\Tool\Component\Api\Updater\FamilyVariantUpdater` to `Akeneo\Pim\Structure\Component\Updater\ExternalApi\FamilyVariantUpdater`

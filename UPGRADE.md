@@ -121,3 +121,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Ent
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AttributeTranslationInterface/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeTranslationInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\VariantAttributeSet/Akeneo\\Pim\\Structure\\Component\\Model\\VariantAttributeSet/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\VariantAttributeSetInterface/Akeneo\\Pim\\Structure\\Component\\Model\\VariantAttributeSetInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Updater\\AttributeUpdater/Akeneo\\Pim\\Structure\\Component\\Updater\\AttributeUpdater/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Updater\\AttributeOptionUpdater/Akeneo\\Pim\\Structure\\Component\\Updater\\AttributeOptionUpdater/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Updater\\FamilyUpdater/Akeneo\\Pim\\Structure\\Component\\Updater\\FamilyUpdater/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Updater\\FamilyVariantUpdater/Akeneo\\Pim\\Structure\\Component\\Updater\\ExternalApi\\FamilyVariantUpdater/g'
