@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects;
+namespace PimEnterprise\Component\SuggestData\PimAiClient\Api;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class ApiResponse
+final class ApiResponse
 {
     private $responseCode;
     
     private $content;
 
-    public function __construct(int $responseCode, ?array $content = [])
+    public function __construct(int $responseCode, array $content = [])
     {
         $this->responseCode = $responseCode;
         $this->content = $content;
@@ -28,7 +28,7 @@ class ApiResponse
         return $this->code() === Response::HTTP_OK;
     }
 
-    public function content(): ?array
+    public function content(): array
     {
         return $this->content;
     }

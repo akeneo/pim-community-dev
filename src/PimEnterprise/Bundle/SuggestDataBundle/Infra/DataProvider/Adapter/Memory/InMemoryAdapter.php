@@ -8,9 +8,9 @@ use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\DataProvid
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DeserializeSuggestedDataCollection;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataCollectionInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataInterface;
-use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\EnrichmentApi;
-use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscription\ProductCode;
-use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscription\ProductCodeCollection;
+use PimEnterprise\Component\SuggestData\PimAiClient\Api\Subscription\SubscriptionApiInterface;
+use PimEnterprise\Component\SuggestData\Product\ProductCode;
+use PimEnterprise\Component\SuggestData\Product\ProductCodeCollection;
 
 /**
  * In memory implementation to connect to a data provider
@@ -25,17 +25,18 @@ class InMemoryAdapter implements DataProviderAdapterInterface
     /** @var DeserializeSuggestedDataCollection */
     protected $deserializer;
     
-    private $enrichmentApi;
+    private $subscriptionApi;
 
     /**
      * @param DeserializeSuggestedDataCollection $deserializer
-     * @param array                              $config
+     * @param SubscriptionApiInterface $subscriptionApi
+     * @param array $config
      */
-    public function __construct(DeserializeSuggestedDataCollection $deserializer, array $config, EnrichmentApi $enrichmentApi)
+    public function __construct(DeserializeSuggestedDataCollection $deserializer, SubscriptionApiInterface $subscriptionApi, array $config)
     {
         $this->deserializer = $deserializer;
-        $this->enrichmentApi = $enrichmentApi;
-        
+        $this->subscriptionApi = $subscriptionApi;
+
         $this->configure($config);
     }
 
@@ -46,7 +47,7 @@ class InMemoryAdapter implements DataProviderAdapterInterface
     {
         $identifier = $product->getIdentifier(); // TODO get with mapping
 
-        $apiResponse = $this->enrichmentApi->subscribeProduct(new ProductCode('sku', $identifier));
+        $apiResponse = $this->subscriptionApi->subscribeProduct(new ProductCode('sku', $identifier));
         $collection = $this->deserializer->deserialize($apiResponse->content());
 
         return $collection->current();
@@ -63,7 +64,7 @@ class InMemoryAdapter implements DataProviderAdapterInterface
             $productCodes->add(new ProductCode('sku', $identifier));
         }
 
-        $apiResponse = $this->enrichmentApi->subscribeProducts($productCodes);
+        $apiResponse = $this->subscriptionApi->subscribeProducts($productCodes);
 
         return $this->deserializer->deserialize($apiResponse->content());
     }

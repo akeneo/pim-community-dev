@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscription;
+namespace PimEnterprise\Component\SuggestData\Product;
 
-class ProductCode
+final class ProductCode
 {
     private $identifierName;
     
@@ -34,7 +34,7 @@ class ProductCode
     private function validate(string $identifierName, string $value)
     {
         if (empty($identifierName)) {
-            throw new \InvalidArgumentException('Product identifier name name must not be empty');
+            throw new \InvalidArgumentException('Product identifier name must not be empty');
         }
 
         if (empty($value)) {

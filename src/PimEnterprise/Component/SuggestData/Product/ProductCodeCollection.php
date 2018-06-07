@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscription;
+namespace PimEnterprise\Component\SuggestData\Product;
 
-class ProductCodeCollection implements \IteratorAggregate
+final class ProductCodeCollection implements \IteratorAggregate
 {
     private $productCodes;
 
@@ -19,12 +19,12 @@ class ProductCodeCollection implements \IteratorAggregate
 
         return $this;
     }
-    
+
     public function getIterator()
     {
         return new \ArrayIterator($this->productCodes);
     }
-    
+
     public function toArray()
     {
         $result = [];

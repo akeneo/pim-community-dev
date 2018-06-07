@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider;
 
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\DataProviderAdapterInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\Memory\InMemoryAdapter;
-use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\EnrichmentApi;
+use PimEnterprise\Component\SuggestData\PimAiClient\Api\Subscription\SubscriptionApiInterface;
 
 /**
  * Data provider factory
@@ -19,15 +19,15 @@ class DataProviderFactory
     /** @var DeserializeSuggestedDataCollection */
     protected $deserializer;
     
-    private $enrichmentApi;
+    private $subcriptionApi;
 
     /**
      * @param DeserializeSuggestedDataCollection $deserializer
      */
-    public function __construct(DeserializeSuggestedDataCollection $deserializer, EnrichmentApi $enrichmentApi)
+    public function __construct(DeserializeSuggestedDataCollection $deserializer, SubscriptionApiInterface $subcriptionApi)
     {
         $this->deserializer = $deserializer;
-        $this->enrichmentApi = $enrichmentApi;
+        $this->subcriptionApi = $subcriptionApi;
     }
 
     /**
@@ -48,6 +48,6 @@ class DataProviderFactory
         // TODO: Remove hardcoded configuration
         $config = ['url' => 'pim.ai.host', 'token' => 'my_personal_token'];
         
-        return new InMemoryAdapter($this->deserializer, $config, $this->enrichmentApi);
+        return new InMemoryAdapter($this->deserializer, $this->subcriptionApi, $config);
     }
 }

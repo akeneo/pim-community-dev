@@ -3,7 +3,7 @@ services:
         class: PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory
         arguments:
             - '@pimee_suggest_data.deserialize_suggested_data_collection'
-            - '@pimee_suggestdata.pim_ai_api_enrichment'
+            - '@pimee_suggest_data.pimai_client.subscribe_webservice'
 
     pimee_suggest_data.deserialize_suggested_data_collection:
         class: PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DeserializeSuggestedDataCollection

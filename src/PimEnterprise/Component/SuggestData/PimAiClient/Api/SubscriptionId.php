@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects;
+namespace PimEnterprise\Component\SuggestData\PimAiClient\Api;
 
-class SubscriptionId
+final class SubscriptionId
 {
     private $id;
 

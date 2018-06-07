@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Enrichment;
+namespace PimEnterprise\Component\SuggestData\PimAiClient\Api\Subscription;
 
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\Fake\FakeHALProducts;
-use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\EnrichmentApi;
-use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\ApiResponse;
-use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscription\ProductCode;
-use PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\ValueObjects\Subscription\ProductCodeCollection;
+use PimEnterprise\Component\SuggestData\PimAiClient\Api\ApiResponse;
+use PimEnterprise\Component\SuggestData\Product\ProductCode;
+use PimEnterprise\Component\SuggestData\Product\ProductCodeCollection;
 use Symfony\Component\HttpFoundation\Response;
 
-class Memory implements EnrichmentApi
+final class Memory implements SubscriptionApiInterface
 {
     private $fakeHALProducts;
 

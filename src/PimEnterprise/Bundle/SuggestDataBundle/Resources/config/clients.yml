@@ -1,32 +1,21 @@
 services:
+    pimee_suggest_data.pimai_client.uri_generator:
+        class: PimEnterprise\Component\SuggestData\PimAiClient\UriGenerator
+        public: false
+        arguments:
+            - 'http://localhost:8080'
 
-    pimee_suggestdata.uri_generator:
-        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\UriGenerator
-        public: false
+    pimee_suggest_data.pimai_client.enrichment_webservice:
+        class: PimEnterprise\Component\SuggestData\PimAiClient\Api\Enrichment\EnrichmentWebservice
         arguments:
-            - 'http://localhost:8080'          
-    
-    pimee_suggestdata.pim_ai_client:
-        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Clients\Webservice
-        public: false
-        arguments:
-            - '@pimee_suggestdata.uri_generator'
+            - '@pimee_suggest_data.pimai_client.uri_generator'
             - !service
               class: GuzzleHttp\Client
 
-    pimee_suggestdata.pim_ai_api_enrichment:
-        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Enrichment\Memory
-        # class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Enrichment\Webservice
-        # arguments:
-        #     - '@pimee_suggestdata.pim_ai_client'
-
-    pimee_suggestdata.pim_ai_api_subscription:
-        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\Api\Subscription\Webservice
-        arguments:
-            - '@pimee_suggestdata.pim_ai_client'
-
-    pimee_suggestdata.pim_ai_api_client:
-        class: PimEnterprise\Bundle\SuggestDataBundle\PimAiClient\PimAiApi
-        arguments:
-            - '@pimee_suggestdata.pim_ai_api_enrichment'
-            - '@pimee_suggestdata.pim_ai_api_subscription'
+    pimee_suggest_data.pimai_client.subscribe_webservice:
+        class: PimEnterprise\Component\SuggestData\PimAiClient\Api\Subscription\Memory
+#        class: PimEnterprise\Component\SuggestData\PimAiClient\Api\Subscription\SubscriptionWebservice
+#        arguments:
+#            - '@pimee_suggest_data.pimai_client.uri_generator'
+#            - !service
+#              class: GuzzleHttp\Client
