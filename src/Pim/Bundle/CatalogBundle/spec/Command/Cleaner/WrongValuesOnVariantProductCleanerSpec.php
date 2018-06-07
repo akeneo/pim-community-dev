@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
-class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
+class WrongValuesOnVariantProductCleanerSpec extends ObjectBehavior
 {
     function it_updates_wrong_boolean_values_on_impacted_variant_products(
         VariantProductInterface $variantProductImpacted,
@@ -32,10 +32,11 @@ class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
         $familyVariant->getNumberOfLevel()->willReturn(1);
 
         $variantProductImpacted->getValuesForVariation()->willReturn($valuesForVariation);
-        $valuesForVariation->getByCodes('bool_attribute')->willReturn($booleanValue);
+        $valuesForVariation->getAttributesKeys()->willReturn(['bool_attribute']);
 
-        $variantProductImpacted->getValues()->willReturn($values);
+        $variantProductImpacted->getValuesForVariation()->willReturn($values);
         $values->removeByAttribute($booleanAttribute)->shouldBeCalled();
+        $values->getAttributesKeys()->willReturn(['bool_attribute']);
         $variantProductImpacted->setValues($values)->shouldBeCalled();
 
         $this->cleanProduct($variantProductImpacted);
@@ -45,6 +46,7 @@ class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
         VariantProductInterface $variantProductNotImpacted,
         FamilyInterface $boots,
         AttributeInterface $textAttribute,
+        ValueCollectionInterface $valuesForVariation,
         FamilyVariantInterface $familyVariant
     ) {
         $variantProductNotImpacted->getFamily()->willReturn($boots);
@@ -52,8 +54,10 @@ class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
         $textAttribute->getType()->willReturn('pim_catalog_text');
         $textAttribute->getCode()->willReturn('text_attribute');
 
+        $variantProductNotImpacted->getValuesForVariation()->willReturn($valuesForVariation);
+        $valuesForVariation->getAttributesKeys()->willReturn(['bool_attribute']);
         $variantProductNotImpacted->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getLevelForAttributeCode('bool_attribute')->willReturn(0);
+        $familyVariant->getLevelForAttributeCode('text_attribute')->willReturn(1);
         $familyVariant->getNumberOfLevel()->willReturn(1);
 
         $this->cleanProduct($variantProductNotImpacted);
@@ -63,6 +67,7 @@ class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
         VariantProductInterface $variantProductNotImpacted,
         FamilyInterface $boots,
         AttributeInterface $booleanAttribute,
+        ValueCollectionInterface $valuesForVariation,
         FamilyVariantInterface $familyVariant
     ) {
         $variantProductNotImpacted->getFamily()->willReturn($boots);
@@ -71,6 +76,8 @@ class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
         $booleanAttribute->getCode()->willReturn('bool_attribute');
 
         $variantProductNotImpacted->getFamilyVariant()->willReturn($familyVariant);
+        $variantProductNotImpacted->getValuesForVariation()->willReturn($valuesForVariation);
+        $valuesForVariation->getAttributesKeys()->willReturn(['bool_attribute']);
         $familyVariant->getLevelForAttributeCode('bool_attribute')->willReturn(1);
         $familyVariant->getNumberOfLevel()->willReturn(1);
 
@@ -94,7 +101,7 @@ class WrongBooleanValuesOnVariantProductCleanerSpec extends ObjectBehavior
         $familyVariant->getNumberOfLevel()->willReturn(1);
 
         $variantProductNotImpacted->getValuesForVariation()->willReturn($valuesForVariation);
-        $valuesForVariation->getByCodes('bool_attribute')->willReturn(null);
+        $valuesForVariation->getAttributesKeys()->willReturn(['text_attribute']);
 
         $this->cleanProduct($variantProductNotImpacted);
     }

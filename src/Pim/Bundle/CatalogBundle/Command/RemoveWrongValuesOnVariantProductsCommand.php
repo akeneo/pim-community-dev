@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -15,14 +16,14 @@ use Symfony\Component\Process\Process;
 /**
  * Command to fix PIM-7263.
  *
- * If some variant products have a some boolean values at their variation level that should belong to their
+ * If some variant products have a some values at their variation level that should belong to their
  * parents instead, this command will remove these values.
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCommand
+class RemoveWrongValuesOnVariantProductsCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -30,9 +31,13 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
     protected function configure(): void
     {
         $this
-            ->setName('pim:catalog:remove-wrong-boolean-values-on-variant-products')
-            ->setAliases(['pim:catalog:remove-wrong-values-on-variant-products'])
-            ->setDescription('Remove boolean values on variant products that should belong to their parents')
+            ->setName('pim:catalog:remove-wrong-values-on-variant-products')
+            ->addArgument(
+                'family',
+                InputArgument::OPTIONAL,
+                'Code of the family to clean'
+            )
+            ->setDescription('Remove values on variant products that should belong to their parents')
         ;
     }
 
@@ -42,21 +47,25 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);
-        $io->text('Cleaning wrong boolean values on variant products...');
+        $io->text('Cleaning wrong values on variant products...');
 
         $productBatchSize = $this->getContainer()->getParameter('pim_job_product_batch_size');
         $rootDir = $this->getContainer()->get('kernel')->getRootDir();
+        $family = $input->getArgument('family');
         $env = $input->getOption('env');
         $cacheClearer = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
 
-        $variantProducts = $this->getVariantProducts();
+        $variantProducts = $this->getVariantProducts($family);
 
         $io->progressStart($variantProducts->count());
 
         $productsToClean = [];
         foreach ($variantProducts as $variantProduct) {
-            $productsToClean[] = $variantProduct->getId();
-
+            // TODO: Replace this check for 2.2 version by ``if (!$variantProduct->isVariant()) {}``
+            if (!($variantProduct instanceof VariantProductInterface)) {
+                continue;
+            }
+            $productsToClean[] = $variantProduct->getIdentifier();
             if (count($productsToClean) >= $productBatchSize) {
                 $this->launchCleanTask($productsToClean, $env, $rootDir);
                 $cacheClearer->clear();
@@ -71,37 +80,40 @@ class RemoveWrongBooleanValuesOnVariantProductsCommand extends ContainerAwareCom
         }
 
         $io->progressFinish();
-        $io->text('Cleaning wrong boolean values on variant products [DONE]');
+        $io->text('Cleaning wrong values on variant products [DONE]');
     }
 
     /**
      * @return CursorInterface
      */
-    private function getVariantProducts(): CursorInterface
+    private function getVariantProducts(?string $familyCode): CursorInterface
     {
         $pqb = $this->getContainer()
             ->get('pim_enrich.query.product_and_product_model_query_builder_factory')
             ->create();
 
         $pqb->addFilter('parent', Operators::IS_NOT_EMPTY, null);
+        if (null !== $familyCode) {
+            $pqb->addFilter('family', Operators::IN_LIST, [$familyCode]);
+        }
 
         return $pqb->execute();
     }
 
     /**
-     * Lanches the clean command on given ids
+     * Lanches the clean command on given identifiers
      *
-     * @param array  $productIds
+     * @param array  $productIdentifiers
      * @param string $env
      * @param string $rootDir
      */
-    private function launchCleanTask(array $productIds, string $env, string $rootDir)
+    private function launchCleanTask(array $productIdentifiers, string $env, string $rootDir)
     {
         $process = new Process([
             sprintf('%s/../bin/console', $rootDir),
-            'pim:catalog:remove-wrong-boolean-values-on-variant-products-batch',
+            'pim:catalog:remove-wrong-values-on-variant-products-batch',
             sprintf('--env=%s', $env),
-            implode(',', $productIds)
+            implode(',', $productIdentifiers)
         ]);
         $process->run();
     }
