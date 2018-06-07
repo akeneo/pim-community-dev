@@ -59,7 +59,7 @@ class SectionView extends BaseView {
       code: '',
       title: '',
     },
-    title: '',
+    title: ''
   };
 
   public events(): Backbone.EventsHash {
@@ -117,7 +117,7 @@ class SectionView extends BaseView {
     this.$el.empty().html(
       this.template({
         title: __(this.config.title),
-        hintTitle: __(this.config.hint.title),
+        hintTitle: __(this.config.hint.title).replace('{{link}}', __('catalog_volume.link')),
         hintIsHidden: this.hintIsHidden(),
         align: this.config.align,
       })
