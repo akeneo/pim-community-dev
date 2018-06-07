@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7425: Prevent job 'compute_completeness_of_products_family' to run in some cases.
+
 # 2.0.27 (2018-06-13)
 
 ## Bug fixes
