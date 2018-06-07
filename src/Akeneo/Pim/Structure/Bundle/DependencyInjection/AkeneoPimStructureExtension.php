@@ -23,5 +23,6 @@ class AkeneoPimStructureExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('updaters.yml');
+        $loader->load('normalizers.yml');
     }
 }

@@ -1,0 +1,32 @@
+services:
+    pim_catalog.normalizer.standard.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.normalizer.standard.datetime'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_enrich.normalizer.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeNormalizer'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_enrich.provider.field.chained'
+            - '@pim_enrich.provider.empty_value.chained'
+            - '@pim_enrich.provider.filter.chained'
+            - '@pim_catalog.localization.localizer.number'
+
+    pim_versioning.serializer.normalizer.flat.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }

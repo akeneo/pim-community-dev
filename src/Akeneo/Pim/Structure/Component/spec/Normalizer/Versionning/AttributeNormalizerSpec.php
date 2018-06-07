@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Versionning;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Normalizer\Standard\AttributeNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeNormalizer;
 use Prophecy\Argument;
 
 class AttributeNormalizerSpec extends ObjectBehavior
@@ -22,7 +22,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeNormalizer');
+        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeNormalizer');
     }
 
     function it_is_a_normalizer()

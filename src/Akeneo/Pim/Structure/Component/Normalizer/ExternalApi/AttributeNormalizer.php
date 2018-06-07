@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Component\Api\Normalizer;
+namespace Akeneo\Pim\Structure\Component\Normalizer\ExternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

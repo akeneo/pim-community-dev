@@ -1,8 +1,10 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Standard;
+namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer;
+use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

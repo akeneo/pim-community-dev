@@ -1,7 +1,6 @@
 parameters:
     # Normalizers
     pim_serializer.normalizer.flat.association_type.class:  Pim\Bundle\VersioningBundle\Normalizer\Flat\AssociationTypeNormalizer
-    pim_serializer.normalizer.flat.attribute.class:         Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeNormalizer
     pim_serializer.normalizer.flat.attribute_group.class:   Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeGroupNormalizer
     pim_serializer.normalizer.flat.category.class:          Pim\Bundle\VersioningBundle\Normalizer\Flat\CategoryNormalizer
     pim_serializer.normalizer.flat.family.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer
@@ -39,14 +38,6 @@ services:
         class: '%pim_serializer.normalizer.flat.category.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.category'
-            - '@pim_versioning.serializer.normalizer.flat.label_translation'
-        tags:
-            - { name: pim_versioning.serializer.normalizer, priority: 90 }
-
-    pim_versioning.serializer.normalizer.flat.attribute:
-        class: '%pim_serializer.normalizer.flat.attribute.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.attribute'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }

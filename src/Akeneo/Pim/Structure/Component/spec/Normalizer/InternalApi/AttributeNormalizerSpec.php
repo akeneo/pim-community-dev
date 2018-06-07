@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;

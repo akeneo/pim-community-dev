@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
+namespace Akeneo\Pim\Structure\Component\Normalizer\Versionning;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

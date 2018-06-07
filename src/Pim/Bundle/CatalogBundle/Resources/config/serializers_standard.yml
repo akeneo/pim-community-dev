@@ -10,7 +10,6 @@ parameters:
     pim_catalog.normalizer.standard.datetime.class: Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer
     pim_catalog.normalizer.standard.file.class: Pim\Component\Catalog\Normalizer\Standard\FileNormalizer
     pim_catalog.normalizer.standard.association_type.class: Pim\Component\Catalog\Normalizer\Standard\AssociationTypeNormalizer
-    pim_catalog.normalizer.standard.attribute.class: Pim\Component\Catalog\Normalizer\Standard\AttributeNormalizer
     pim_catalog.normalizer.standard.attribute_group.class: Pim\Component\Catalog\Normalizer\Standard\AttributeGroupNormalizer
     pim_catalog.normalizer.standard.attribute_option.class: Pim\Component\Catalog\Normalizer\Standard\AttributeOptionNormalizer
     pim_catalog.normalizer.standard.category.class: Pim\Component\Catalog\Normalizer\Standard\CategoryNormalizer
@@ -89,14 +88,6 @@ services:
         class: '%pim_catalog.normalizer.standard.association_type.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_catalog.normalizer.standard.attribute:
-        class: '%pim_catalog.normalizer.standard.attribute.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.translation'
-            - '@pim_catalog.normalizer.standard.datetime'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
