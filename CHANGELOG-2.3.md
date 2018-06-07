@@ -1,4 +1,4 @@
-# 2.3.x
+# 2.3.0-ALPHA2 (2018-06-07)
 
 ## Improve Julia's experience
 
