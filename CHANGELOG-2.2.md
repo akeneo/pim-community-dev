@@ -3,6 +3,7 @@
 ##Bug fixes
 
 - PIM-7399: Fix attributes order on Product model export
+- PIM-7384: Fix Memory leak on Quick export
 
 # 2.2.8 (2018-06-07)
 
