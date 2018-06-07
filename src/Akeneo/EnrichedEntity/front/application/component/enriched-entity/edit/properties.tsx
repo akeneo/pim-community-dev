@@ -48,7 +48,7 @@ class Properties extends React.Component<PropertiesProps> {
     this.setState({ enrichedEntity: enrichedEntity });
   };
 
-  render(){
+  render() {
     return(
       <div className="AknDefault-mainContent">
         <header className="AknTitleContainer navigation">
