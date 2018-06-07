@@ -88,6 +88,8 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\TeamworkAssistant\ProjectContext:
                     - 'Context\EnterpriseFeatureContext'
+                - PimEnterprise\Behat\Context\AssetContext:
+                    - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\HookContext:
                     - 'Context\EnterpriseFeatureContext'
                     - 1280
