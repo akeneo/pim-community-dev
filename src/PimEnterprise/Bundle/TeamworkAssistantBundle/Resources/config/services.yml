@@ -143,6 +143,7 @@ services:
             - '@pimee_teamwork_assistant.repository.project'
             - '@pimee_teamwork_assistant.repository.project_completeness'
             - '@security.token_storage'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: project_completeness }
 
