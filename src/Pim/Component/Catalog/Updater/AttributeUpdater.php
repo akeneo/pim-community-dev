@@ -41,24 +41,29 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
     /** @var TranslatableUpdater */
     protected $translatableUpdater;
+    /** @var array */
+    private $properties;
 
     /**
      * @param AttributeGroupRepositoryInterface $attrGroupRepo
      * @param LocaleRepositoryInterface         $localeRepository
      * @param AttributeTypeRegistry             $registry
      * @param TranslatableUpdater               $translatableUpdater
+     * @param array                             $properties
      */
     public function __construct(
         AttributeGroupRepositoryInterface $attrGroupRepo,
         LocaleRepositoryInterface $localeRepository,
         AttributeTypeRegistry $registry,
-        TranslatableUpdater $translatableUpdater
+        TranslatableUpdater $translatableUpdater,
+        array $properties
     ) {
         $this->attrGroupRepo = $attrGroupRepo;
         $this->localeRepository = $localeRepository;
         $this->registry = $registry;
         $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->translatableUpdater = $translatableUpdater;
+        $this->properties = $properties;
     }
 
     /**
@@ -181,11 +186,12 @@ class AttributeUpdater implements ObjectUpdaterInterface
             case 'allowed_extensions':
                 $attribute->setAllowedExtensions(implode(',', $data));
                 break;
-            case 'auto_option_sorting':
-                $attribute->setProperty('auto_option_sorting', $data);
-                break;
             default:
-                $this->setValue($attribute, $field, $data);
+                if (in_array($field, $this->properties)) {
+                    $attribute->setProperty($field, $data);
+                } else {
+                    $this->setValue($attribute, $field, $data);
+                }
         }
     }
 

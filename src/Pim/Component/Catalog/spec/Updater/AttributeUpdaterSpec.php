@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -26,7 +27,13 @@ class AttributeUpdaterSpec extends ObjectBehavior
         AttributeTypeRegistry $registry,
         TranslatableUpdater $translatableUpdater
     ) {
-        $this->beConstructedWith($attrGroupRepo, $localeRepository, $registry, $translatableUpdater);
+        $this->beConstructedWith(
+            $attrGroupRepo,
+            $localeRepository,
+            $registry,
+            $translatableUpdater,
+            ['auto_option_sorting']
+        );
     }
 
     function it_is_initializable()
@@ -37,6 +44,12 @@ class AttributeUpdaterSpec extends ObjectBehavior
     function it_is_a_updater()
     {
         $this->shouldImplement('Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+    }
+
+    function it_updates_attribute_properties(AttributeInterface $attribute)
+    {
+        $attribute->setProperty('auto_option_sorting', true)->shouldBeCalled();
+        $this->update($attribute, ['auto_option_sorting' => true]);
     }
 
     function it_throw_an_exception_when_trying_to_update_anything_else_than_an_attribute()
@@ -57,7 +70,6 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $registry,
         $translatableUpdater,
         AttributeInterface $attribute,
-        AttributeTranslation $translation,
         AttributeGroupInterface $attributeGroup,
         PropertyAccessor $accessor,
         AttributeTypeInterface $attributeType
@@ -96,7 +108,6 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $registry,
         $translatableUpdater,
         AttributeInterface $attribute,
-        AttributeTranslation $translation,
         AttributeTypeInterface $attributeType
     ) {
         $attribute->getId()->willReturn(null);
