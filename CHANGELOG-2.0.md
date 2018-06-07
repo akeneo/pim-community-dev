@@ -1,3 +1,9 @@
+# 2.0.*
+
+## Bug fixes
+
+- PIM-7327: Fix memory leak on completeness calculation
+
 # 2.0.26 (2018-06-06)
 
 ## Bug fixes
