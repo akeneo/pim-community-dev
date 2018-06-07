@@ -1,6 +1,6 @@
 import __ from 'akeneoenrichedentity/tools/translator';
-import { toggleSidebar, setUpTabs, updateCurrentTab } from 'akeneoenrichedentity/application/event/sidebar';
-import { Tab } from 'akeneoenrichedentity/application/reducer/sidebar';
+import {toggleSidebar, setUpTabs, updateCurrentTab} from 'akeneoenrichedentity/application/event/sidebar';
+import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
 
 export const setUpSidebar = () => async (dispatch: any): Promise<void> => {
   dispatch(toggleSidebar(false));

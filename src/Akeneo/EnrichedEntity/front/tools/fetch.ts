@@ -6,3 +6,9 @@ export const getJSON = function({}: any) {
 
   return promisify(promise);
 };
+
+export const postJSON = function(url: any, data: {}) {
+  const promise = $.post(url, JSON.stringify(data), null, 'json');
+
+  return promisify(promise);
+};

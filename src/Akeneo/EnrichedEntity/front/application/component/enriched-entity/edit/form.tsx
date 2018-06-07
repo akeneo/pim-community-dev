@@ -67,7 +67,7 @@ export default class EditForm extends React.Component<FormProps> {
                 <input
                   type="text"
                   name="code"
-                  className="AknTextField AknTextField--withDashedBottomBorder"
+                  className="AknTextField AknTextField--withDashedBottomBorder AknTextField--disabled"
                   value={this.state.code}
                   onChange={this.handleChange}
                 />

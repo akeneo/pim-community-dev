@@ -59,8 +59,8 @@ describe('akeneo > enriched entity > application > reducer --- sidebar', () => {
     const currentTab: string = 'tab-1';
     const newState = reducer(state, {
       type: 'UPDATE_CURRENT_TAB',
-      currentTab
-    })
+      currentTab,
+    });
 
     expect(newState).toEqual({
       currentTab,

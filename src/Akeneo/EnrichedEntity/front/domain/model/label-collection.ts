@@ -39,6 +39,10 @@ export default class LabelCollection {
 
     return this.labels[locale];
   }
+
+  public getLabels(): RawLabelCollection {
+    return this.labels;
+  }
 }
 
 export const createLabelCollection = LabelCollection.create;
