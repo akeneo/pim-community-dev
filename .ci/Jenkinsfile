@@ -118,16 +118,27 @@ stage("Test") {
             "back-integration": {queue(
                 condition: launchBackIntegrationTests.equals("yes"),
                 container: tag,
+                containers: pimContainers(image: tag, selenium: false),
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/vendor/akeneo/pim-community-dev/src /var/www/pim/vendor/akeneo/pim-community-dev/tests /var/www/pim/src /var/www/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+                fetcher: {
+                    return pimPhpunitFetcher(
+                        paths:[
+                            "/var/www/pim/src",
+                            "/var/www/pim/vendor/akeneo/pim-community-dev/src",
+                            "/var/www/pim/vendor/akeneo/pim-community-dev/tests"
+                        ]
+                    )
+                },
+                parallelism: 50
             )},
 
             // END TO END TESTS
             "legacy-end-to-end-behat": {queue(
                 condition: launchEndToEndTests.equals("yes"),
                 container: tag,
+                containers: pimContainers(image: tag),
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimBehatFetcher(profiles: ["legacy"], features: legacyFeatures)}
+                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
             )}
         )
     } finally {
