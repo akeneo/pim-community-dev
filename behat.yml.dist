@@ -130,6 +130,7 @@ legacy:
                     - '@pim_catalog.updater.product'
                     - '@pim_catalog.saver.product'
                     - '@pim_catalog.repository.product'
+                    - '@doctrine.orm.entity_manager'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

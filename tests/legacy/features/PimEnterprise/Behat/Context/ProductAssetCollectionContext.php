@@ -16,6 +16,7 @@ namespace PimEnterprise\Behat\Context;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Behat\Context\Context;
+use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -33,19 +34,25 @@ class ProductAssetCollectionContext implements Context
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
     /**
      * @param ObjectUpdaterInterface     $productUpdater
      * @param SaverInterface             $productSaver
      * @param ProductRepositoryInterface $productRepository
+     * @param EntityManagerInterface     $entityManager
      */
     public function __construct(
         ObjectUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->productUpdater = $productUpdater;
         $this->productSaver = $productSaver;
         $this->productRepository = $productRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -92,6 +99,7 @@ class ProductAssetCollectionContext implements Context
         $expectedAssetCodes = $this->listToArray($orderedAssetCodes);
         $currentAssetCodes = [];
 
+        $this->entityManager->clear();
         $product = $this->productRepository->findOneByIdentifier($productIdentifier);
         $assetCollectionValue = $product->getValue($attributeCode);
 

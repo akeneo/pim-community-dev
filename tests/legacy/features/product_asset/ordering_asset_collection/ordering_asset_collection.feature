@@ -1,5 +1,5 @@
 Feature: Order product assets inside asset collections
-  In order to use and export ordered product assets in asset collections
+  In order to use ordered product assets in asset collections
   As a product manager
   I would like to order the assets linked to the products in the asset collection
 
