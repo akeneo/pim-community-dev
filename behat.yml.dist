@@ -55,8 +55,7 @@ legacy:
                     - '@pim_catalog.saver.product_model'
                     - '@pim_catalog.validator.product'
                     - '@pim_versioning.repository.version'
-                - Pim\Behat\Context\Domain\Enrich\VariantProductContext:
-                    - 'Context\FeatureContext'
+                - Pim\Behat\Context\Domain\Enrich\ProductContext:
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.updater.product'
                     - '@pim_catalog.saver.product'
@@ -112,7 +111,6 @@ legacy:
                     - 'Context\FeatureContext'
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
-
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
