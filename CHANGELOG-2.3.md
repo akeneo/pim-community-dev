@@ -21,7 +21,6 @@
 - AOB-62: Property `$product` has been renamed into `$entityWithValues` into `PimEnterprise\Component\Workflow\Model\ProductDraft`
 - AOB-62: Column `product` has been renamed into `entityWithValues` on the `pimee_workflow_product_draft` table.
 - AOB-62: Renamed `PimEnterprise\Component\Workflow\Event\ProductDraftEvents` into `PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents`.
-- PIM-7397: Add `string` as last parameter of `PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController` constructor.
 
 # 2.3.0-ALPHA1 (2018-04-27)
 

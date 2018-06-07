@@ -173,7 +173,9 @@ define(
              * @param {Event} clickEvent
              */
             updateAssetsFromPreview: function (clickEvent) {
-                this.openPreviewModal(clickEvent).then(function (assets) {
+                const currentAssetCode = $(clickEvent.currentTarget).closest('.asset-thumbnail-item').data('asset');
+
+                this.openPreviewModal(currentAssetCode).then(function (assets) {
                     this.data = assets;
 
                     this.trigger('collection:change', assets);
@@ -186,7 +188,7 @@ define(
              *
              * @param {Event} clickEvent
              */
-            openPreviewModal(clickEvent) {
+            openPreviewModal(currentAssetCode) {
                 const deferred = $.Deferred();
 
                 FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(function (assets) {
@@ -210,19 +212,19 @@ define(
                     });
                     modal.open();
 
-                    const switchModalItem = function (item) {
+                    const navigateToItem = function (assetThumbnail) {
                         modal.$('.asset-thumbnail-item').addClass('AknAssetCollectionField-listItem--transparent');
-                        item.removeClass('AknAssetCollectionField-listItem--transparent');
-                        $('.main-preview').attr('src', item.data('url'));
-                        $('.buttons').stop(true, true).animate({
-                            scrollLeft: item.position().left
-                            - ($('.buttons').width() - 140) / 2
+                        assetThumbnail.removeClass('AknAssetCollectionField-listItem--transparent');
+                        modal.$('.main-preview').attr('src', assetThumbnail.data('url'));
+                        modal.$('.buttons').stop(true, true).animate({
+                            scrollLeft: assetThumbnail.position().left
+                            - (modal.$('.buttons').width() - 140) / 2
                         }, 400);
-                        modal.$('.description').html(item.data('description'));
-                        modal.$('.download').attr('href', item.data('url'));
+                        modal.$('.description').html(assetThumbnail.data('description'));
+                        modal.$('.download').attr('href', assetThumbnail.data('url'));
                     };
 
-                    const switchWithGap = function (gap, destroy) {
+                    const navigateToNeighbor = function (side, isCurrentElementDestroyed) {
                         let thumbnails = modal.$('.asset-thumbnail-item');
                         let clickedIndex = null;
                         thumbnails.each(function (i, thumbnail) {
@@ -230,31 +232,31 @@ define(
                                 clickedIndex = i;
                             }
                         });
-                        if (destroy === true) {
+                        if (isCurrentElementDestroyed === true) {
                             $(thumbnails[clickedIndex]).remove();
                             thumbnails = modal.$('.asset-thumbnail-item');
                             if (clickedIndex === 0) {
                                 clickedIndex++;
                             }
                         }
-                        switchModalItem($(thumbnails[(clickedIndex + gap + thumbnails.length) % thumbnails.length]));
+                        navigateToItem($(thumbnails[(clickedIndex + side + thumbnails.length) % thumbnails.length]));
                     };
 
                     modal.$('.AknAssetCollectionField-listItem').click(function () {
-                        switchModalItem($(this));
+                        navigateToItem($(this));
                     });
 
                     modal.$('.browse-left').click(function () {
-                        switchWithGap(-1, false);
+                        navigateToNeighbor(-1, false);
                     });
 
                     modal.$('.browse-right').click(function () {
-                        switchWithGap(1, false);
+                        navigateToNeighbor(1, false);
                     });
 
                     modal.$('.remove').click(function (e) {
                         e.stopPropagation();
-                        switchWithGap(-1, true);
+                        navigateToNeighbor(-1, true);
                     });
 
                     modal.on('cancel', function () {
@@ -268,8 +270,7 @@ define(
                         deferred.resolve(assetCodes);
                     }.bind(this));
 
-                    const clickedAsset = $(clickEvent.currentTarget).closest('.asset-thumbnail-item').data('asset');
-                    switchModalItem(modal.$('.asset-thumbnail-item[data-asset="' + clickedAsset + '"]'));
+                    navigateToItem(modal.$('.asset-thumbnail-item[data-asset="' + currentAssetCode + '"]'));
                 }.bind(this));
 
                 return deferred.promise();
