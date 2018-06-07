@@ -156,17 +156,20 @@ define(
                                     )
                                 }));
 
+                                var selectedCategories = this.attributes.categories;
+
                                 this.$('.root').jstree(_.extend(this.config, {
                                     json_data: {
                                         ajax: {
+                                            dataType: 'json',
+                                            method: 'POST',
                                             url: function (node) {
-                                                if (-1 === node && 0 < this.attributes.categories.length) {
+                                                if (-1 === node && 0 < selectedCategories.length) {
                                                     // First load of the tree: get the checked categories
                                                     return Routing.generate(
                                                         'pim_enrich_category_rest_list_selected_children',
                                                         {
-                                                            identifier: category.code,
-                                                            selected: this.attributes.categories
+                                                            identifier: category.code
                                                         }
                                                     );
                                                 }
@@ -177,7 +180,10 @@ define(
                                             }.bind(this),
                                             data: function (node) {
                                                 if (-1 === node) {
-                                                    return {id: this.get_container().data('tree-id')};
+                                                    return {
+                                                        id: this.get_container().data('tree-id'),
+                                                        selected: selectedCategories
+                                                    };
                                                 }
 
                                                 return {id: node.attr('id').replace('node_', '')};
