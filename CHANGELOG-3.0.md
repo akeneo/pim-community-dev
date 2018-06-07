@@ -151,3 +151,4 @@
 - Remove `PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle`
 - Remove `PimEnterprise\Bundle\PdfGeneratorBundle\DependencyInjection\PimEnterprisePdfGeneratorExtension`
 - Remove `PimEnterprise\Bundle\UIBundle\DependencyInjection\PimEnterpriseUIExtension`
+- Remove `PimEnterprise\Component\Catalog\Updater`
