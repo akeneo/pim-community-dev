@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
+namespace Akeneo\Pim\Structure\Component\Normalizer\Versionning;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Normalizer\Standard\AttributeOptionNormalizer as BaseNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeOptionNormalizer as BaseNormalizer;
 
 /**
  * Normalize an attribute option
@@ -11,8 +11,6 @@ use Pim\Component\Catalog\Normalizer\Standard\AttributeOptionNormalizer as BaseN
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @see       Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer
  */
 class AttributeOptionNormalizer extends BaseNormalizer
 {

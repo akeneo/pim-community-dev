@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\Tool\Component\Api\Normalizer;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\ExternalApi;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Component\Api\Normalizer\AttributeOptionNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeOptionNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

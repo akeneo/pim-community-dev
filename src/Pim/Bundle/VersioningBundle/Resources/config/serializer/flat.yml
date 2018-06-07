@@ -13,7 +13,6 @@ parameters:
     pim_serializer.normalizer.flat.collection.class:        Pim\Bundle\VersioningBundle\Normalizer\Flat\CollectionNormalizer
     pim_serializer.normalizer.flat.datetime.class:          Pim\Bundle\VersioningBundle\Normalizer\Flat\DateTimeNormalizer
     pim_serializer.normalizer.flat.metric.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\MetricNormalizer
-    pim_serializer.normalizer.flat.option.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeOptionNormalizer
     pim_serializer.normalizer.flat.price.class:             Pim\Bundle\VersioningBundle\Normalizer\Flat\PriceNormalizer
     pim_serializer.normalizer.flat.file.class:              Pim\Bundle\VersioningBundle\Normalizer\Flat\FileNormalizer
 
@@ -96,11 +95,6 @@ services:
 
     pim_versioning.serializer.normalizer.flat.datetime:
         class: '%pim_serializer.normalizer.flat.datetime.class%'
-        tags:
-            - { name: pim_versioning.serializer.normalizer, priority: 90 }
-
-    pim_versioning.serializer.normalizer.flat.option:
-        class: '%pim_serializer.normalizer.flat.option.class%'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
