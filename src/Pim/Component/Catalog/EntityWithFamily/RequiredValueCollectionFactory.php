@@ -6,8 +6,11 @@ namespace Pim\Component\Catalog\EntityWithFamily;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * Simple factory of a "required value" collection.
@@ -35,17 +38,13 @@ class RequiredValueCollectionFactory
         foreach ($this->filterRequirementsByChannel($family, $channel) as $attributeRequirement) {
             foreach ($attributeRequirement->getChannel()->getLocales() as $locale) {
                 if ($attributeRequirement->isRequired()) {
-                    $channel = $attributeRequirement->getChannel();
-
                     $attribute = $attributeRequirement->getAttribute();
+
                     if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
                         continue;
                     }
 
-                    $channelCode = $attribute->isScopable() ? $channel->getCode() : null;
-                    $localeCode = $attribute->isLocalizable() ? $locale->getCode() : null;
-
-                    $requiredValues[] = new RequiredValue($attribute, $channelCode, $localeCode);
+                    $requiredValues[] = new RequiredValue($attribute, $attributeRequirement->getChannel(), $locale);
                 }
             }
         }

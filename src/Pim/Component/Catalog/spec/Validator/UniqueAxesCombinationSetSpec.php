@@ -38,6 +38,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $anotherProductModel->setParent($rootProductModel);
 
         $identifierAttribute = new Attribute();
+        $identifierAttribute->setCode('sku');
         $identifierA = new ScalarValue($identifierAttribute, null, null, 'product_a');
 
         $variantProductA = new Product();
@@ -98,6 +99,7 @@ class UniqueAxesCombinationSetSpec extends ObjectBehavior
         $productModel->setFamilyVariant($familyVariant);
 
         $identifierAttribute = new Attribute();
+        $identifierAttribute->setCode('sku');
         $identifier = new ScalarValue($identifierAttribute, null, null, 'valid_variant_product');
 
         $variantProduct = new Product();

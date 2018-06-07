@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\EntityWithFamily;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
+use Pim\Component\Catalog\EntityWithFamily\RequiredValue;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
@@ -61,9 +62,9 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         RequiredValueCollection $requiredValues,
         RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,
-        ValueInterface $requiredValue1,
-        ValueInterface $requiredValue2,
-        ValueInterface $requiredValue3,
+        RequiredValue $requiredValue1,
+        RequiredValue $requiredValue2,
+        RequiredValue $requiredValue3,
         ValueInterface $productValue1,
         ValueInterface $productValue3
     ) {
@@ -78,22 +79,31 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         );
         $requiredValuesForChannelAndLocaleIterator->next()->shouldBeCalled();
 
-        $requiredValue1->getAttribute()->willReturn($price);
-        $requiredValue1->getScope()->willReturn('ecommerce');
-        $requiredValue1->getLocale()->willReturn(null);
+        $requiredValue1->forAttribute()->willReturn($price);
+        $requiredValue1->forChannel()->willReturn($ecommerce);
+        $requiredValue1->forLocale()->willReturn($en_US);
+        $requiredValue1->attribute()->willReturn('price');
+        $requiredValue1->channel()->willReturn('ecommerce');
+        $requiredValue1->locale()->willReturn(null);
 
-        $requiredValue2->getAttribute()->willReturn($description);
-        $requiredValue2->getScope()->willReturn('ecommerce');
-        $requiredValue2->getLocale()->willReturn('en_US');
+        $requiredValue2->forAttribute()->willReturn($description);
+        $requiredValue2->forChannel()->willReturn('ecommerce');
+        $requiredValue2->forLocale()->willReturn('en_US');
+        $requiredValue2->attribute()->willReturn('description');
+        $requiredValue2->channel()->willReturn('ecommerce');
+        $requiredValue2->locale()->willReturn('en_US');
 
-        $requiredValue3->getAttribute()->willReturn($name);
-        $requiredValue3->getScope()->willReturn(null);
-        $requiredValue3->getLocale()->willReturn('en_US');
+        $requiredValue3->forAttribute()->willReturn($name);
+        $requiredValue3->forChannel()->willReturn($en_US);
+        $requiredValue3->forLocale()->willReturn('en_US');
+        $requiredValue3->attribute()->willReturn('name');
+        $requiredValue3->channel()->willReturn(null);
+        $requiredValue3->locale()->willReturn('en_US');
 
         $product->getValues()->willReturn($productValues);
-        $productValues->getSame($requiredValue1)->willReturn($productValue1);
-        $productValues->getSame($requiredValue2)->willReturn(null);
-        $productValues->getSame($requiredValue3)->willReturn($productValue3);
+        $productValues->getByCodes('price', 'ecommerce', null)->willReturn($productValue1);
+        $productValues->getByCodes('description', 'ecommerce', 'en_US')->willReturn(null);
+        $productValues->getByCodes('name', null, 'en_US')->willReturn($productValue3);
 
         $completeValueChecker->isComplete($productValue1, $ecommerce, $en_US)->willReturn(true);
         $completeValueChecker->isComplete($productValue3, $ecommerce, $en_US)->willReturn(false);
@@ -114,7 +124,7 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         RequiredValueCollection $requiredValues,
         RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,
-        ValueInterface $requiredValue,
+        RequiredValue $requiredValue,
         ValueInterface $productValue
     ) {
         $requiredValues->filterByChannelAndLocale($ecommerce, $en_US)->willReturn($requiredValuesForChannelAndLocale);
@@ -124,12 +134,15 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $requiredValuesForChannelAndLocaleIterator->current()->willReturn($requiredValue);
         $requiredValuesForChannelAndLocaleIterator->next()->shouldBeCalled();
 
-        $requiredValue->getAttribute()->willReturn($price);
-        $requiredValue->getScope()->willReturn('ecommerce');
-        $requiredValue->getLocale()->willReturn(null);
+        $requiredValue->forAttribute()->willReturn($price);
+        $requiredValue->forChannel()->willReturn('ecommerce');
+        $requiredValue->forLocale()->willReturn($en_US);
+        $requiredValue->attribute()->willReturn('price');
+        $requiredValue->channel()->willReturn('ecommerce');
+        $requiredValue->locale()->willReturn(null);
 
         $product->getValues()->willReturn($productValues);
-        $productValues->getSame($requiredValue)->willReturn($productValue);
+        $productValues->getByCodes('price', 'ecommerce', null)->willReturn($productValue);
 
         $completeValueChecker->isComplete($productValue, $ecommerce, $en_US)->willReturn(false);
 
@@ -148,7 +161,7 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         RequiredValueCollection $requiredValues,
         RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,
-        ValueInterface $requiredValue
+        RequiredValue $requiredValue
     ) {
         $requiredValues->filterByChannelAndLocale($ecommerce, $en_US)->willReturn($requiredValuesForChannelAndLocale);
         $requiredValuesForChannelAndLocale->getIterator()->willReturn($requiredValuesForChannelAndLocaleIterator);
@@ -157,12 +170,15 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $requiredValuesForChannelAndLocaleIterator->current()->willReturn($requiredValue);
         $requiredValuesForChannelAndLocaleIterator->next()->shouldBeCalled();
 
-        $requiredValue->getAttribute()->willReturn($price);
-        $requiredValue->getScope()->willReturn('ecommerce');
-        $requiredValue->getLocale()->willReturn(null);
+        $requiredValue->forAttribute()->willReturn($price);
+        $requiredValue->forChannel()->willReturn('ecommerce');
+        $requiredValue->forLocale()->willReturn($en_US);
+        $requiredValue->attribute()->willReturn('price');
+        $requiredValue->channel()->willReturn('ecommerce');
+        $requiredValue->locale()->willReturn(null);
 
         $product->getValues()->willReturn($productValues);
-        $productValues->getSame($requiredValue)->willReturn(null);
+        $productValues->getByCodes('price', 'ecommerce', null)->willReturn(null);
 
         $completeValueChecker->isComplete(Argument::cetera())->shouldNotBeCalled();
 
@@ -181,7 +197,7 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         RequiredValueCollection $requiredValues,
         RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,
-        ValueInterface $requiredValue,
+        RequiredValue $requiredValue,
         ValueInterface $productValue
     ) {
         $requiredValues->filterByChannelAndLocale($ecommerce, $en_US)->willReturn($requiredValuesForChannelAndLocale);
@@ -191,12 +207,15 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $requiredValuesForChannelAndLocaleIterator->current()->willReturn($requiredValue);
         $requiredValuesForChannelAndLocaleIterator->next()->shouldBeCalled();
 
-        $requiredValue->getAttribute()->willReturn($price);
-        $requiredValue->getScope()->willReturn('ecommerce');
-        $requiredValue->getLocale()->willReturn(null);
+        $requiredValue->forAttribute()->willReturn($price);
+        $requiredValue->forChannel()->willReturn('ecommerce');
+        $requiredValue->forLocale()->willReturn($en_US);
+        $requiredValue->attribute()->willReturn('price');
+        $requiredValue->channel()->willReturn('ecommerce');
+        $requiredValue->locale()->willReturn(null);
 
         $product->getValues()->willReturn($productValues);
-        $productValues->getSame($requiredValue)->willReturn($productValue);
+        $productValues->getByCodes('price', 'ecommerce', null)->willReturn($productValue);
 
         $completeValueChecker->isComplete($productValue, $ecommerce, $en_US)->willReturn(true);
 

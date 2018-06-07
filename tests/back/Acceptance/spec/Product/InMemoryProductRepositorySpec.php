@@ -44,7 +44,9 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
     function it_finds_a_product_by_identifier()
     {
         $product = new Product();
-        $product->setIdentifier(new ScalarValue(new Attribute(), '', '', 'a-product'));
+        $attribute = new Attribute();
+        $attribute->setCode('my_attribute');
+        $product->setIdentifier(new ScalarValue($attribute, '', '', 'a-product'));
         $this->beConstructedWith([$product->getIdentifier() => $product]);
 
         $this->findOneByIdentifier('a-product')->shouldReturn($product);
@@ -58,7 +60,9 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
     function it_saves_a_product()
     {
         $product = new Product();
-        $product->setIdentifier(new ScalarValue(new Attribute(), '', '', 'a-product'));
+        $attribute = new Attribute();
+        $attribute->setCode('my_attribute');
+        $product->setIdentifier(new ScalarValue($attribute, '', '', 'a-product'));
 
         $this->save($product)->shouldReturn(null);
 
