@@ -138,7 +138,7 @@ stage("Test") {
                 container: tag,
                 containers: pimContainers(image: tag),
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimBehatFetcher(profiles: ["legacy"], features: legacyFeatures)}
+                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
             )}
         )
     } finally {
