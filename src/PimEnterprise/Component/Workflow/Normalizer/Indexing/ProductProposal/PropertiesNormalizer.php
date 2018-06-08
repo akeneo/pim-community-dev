@@ -68,13 +68,15 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $attributeAsLabelCode = null !== $product->getFamily() ?
             $product->getFamily()->getAttributeAsLabel()->getCode() : null;
 
-        $labelValue = $product->getValue($attributeAsLabelCode);
-
-        $productLabel = null !== $labelValue
-            ? $this->serializer->normalize(
-                $labelValue,
-                $format
-            ) : [];
+        $productLabel = [];
+        if (null !== $attributeAsLabelCode) {
+            $labelValue = $product->getValue($attributeAsLabelCode);
+            $productLabel = null !== $labelValue
+                ? $this->serializer->normalize(
+                    $labelValue,
+                    $format
+                ) : [];
+        }
 
         $data[StandardPropertiesNormalizer::FIELD_LABEL] = $this->getLabel(
             $productLabel,
