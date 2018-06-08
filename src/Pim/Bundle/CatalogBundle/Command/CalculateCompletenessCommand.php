@@ -61,7 +61,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
 
             if (count($productsToSave) === $container->getParameter('pim_job_product_batch_size')) {
                 $container->get('pim_catalog.saver.product')->saveAll($productsToSave);
-                $container->get('pim_catalog.elasticsearch.indexer.product')->indexAll($productsToSave);
+                $container->get('pim_connector.doctrine.cache_clearer')->clear();
 
                 $productsToSave = [];
             }
@@ -69,7 +69,6 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
 
         if (!empty($productsToSave)) {
             $container->get('pim_catalog.saver.product')->saveAll($productsToSave);
-            $container->get('pim_catalog.elasticsearch.indexer.product')->indexAll($productsToSave);
         }
 
         $output->writeln("<info>Missing completenesses generated.</info>");
