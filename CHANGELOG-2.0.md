@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7327: Fix memory leak on completeness calculation
+- PIM-7426: Fix search on the product 'add to group' mass edit
 
 # 2.0.26 (2018-06-06)
 
