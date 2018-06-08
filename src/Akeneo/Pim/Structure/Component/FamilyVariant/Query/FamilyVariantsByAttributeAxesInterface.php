@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\FamilyVariant\Query;
+namespace Akeneo\Pim\Structure\Component\FamilyVariant\Query;
 
 /**
  * Find family variants identifiers by their attribute axes.

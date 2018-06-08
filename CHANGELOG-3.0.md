@@ -10,6 +10,8 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes`
+- Move `Pim\Component\Catalog\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface` to `Akeneo\Pim\Structure\Component\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface`
 - Move `Pim\Component\Catalog\FamilyVariant\AddUniqueAttributes` to `Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes`
 - Move `Pim\Component\Catalog\Factory\FamilyFactory` to `Akeneo\Pim\Structure\Component\Factory\FamilyFactory`
 - Move `Pim\Component\Catalog\Factory\AttributeRequirementFactory` to `Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory`
