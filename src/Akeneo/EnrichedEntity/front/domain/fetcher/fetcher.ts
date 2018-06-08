@@ -16,4 +16,4 @@ export default interface Fetcher<Entity> {
   fetch: (identifier: string) => Promise<Entity>;
   fetchAll: () => Promise<Entity[]>;
   search: (query: Query) => Promise<{items: Entity[]; total: number}>;
-};
+}

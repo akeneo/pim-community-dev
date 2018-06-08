@@ -12,7 +12,7 @@ interface FormProps {
 }
 
 interface FormState {
-  code: string,
+  identifier: string,
   label: string
 }
 
@@ -29,14 +29,14 @@ export default class EditForm extends React.Component<FormProps> {
     } = this.props;
 
     this.state = {
-      code: null !== enrichedEntity ? enrichedEntity.getIdentifier().stringValue() : '',
+      identifier: null !== enrichedEntity ? enrichedEntity.getIdentifier().stringValue() : '',
       label: null !== enrichedEntity ? enrichedEntity.getLabel(locale) : ''
     };
   }
 
   componentDidUpdate(prevProps: FormProps, prevState: FormState) {
     if (this.props === prevProps && this.state !== prevState) {
-      const identifier: Identifier = createIdentifier(this.state.code);
+      const identifier: Identifier = createIdentifier(this.state.identifier);
       const labelCollection: LabelCollection = createLabelCollection({ [this.props.locale]: this.state.label });
       const enrichedEntityUpdated: EnrichedEntity = createEnrichedEntity(identifier, labelCollection);
       this.props.updateEditForm(enrichedEntityUpdated);
@@ -59,16 +59,16 @@ export default class EditForm extends React.Component<FormProps> {
               <div className="AknFieldContainer-header">
                 <label className="AknFieldContainer-label AknFieldContainer-label--grey">
                   <span className="badge-elements-container"></span>
-                  {__('pim_enriched_entity.enriched_entity.properties.code')}
+                  {__('pim_enriched_entity.enriched_entity.properties.identifier')}
                   <span className="label-elements-container"></span>
                 </label>
               </div>
               <div className="AknFieldContainer-inputContainer field-input">
                 <input
                   type="text"
-                  name="code"
+                  name="identifier"
                   className="AknTextField AknTextField--withDashedBottomBorder AknTextField--disabled"
-                  value={this.state.code}
+                  value={this.state.identifier}
                   onChange={this.handleChange}
                 />
               </div>

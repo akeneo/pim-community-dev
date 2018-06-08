@@ -24,7 +24,7 @@ class EnrichedEntityEditController extends BaseController {
         store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
         store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-        store.dispatch(setUpSidebar());
+        store.dispatch(setUpSidebar() as any);
 
         mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-enriched-entity' });
 

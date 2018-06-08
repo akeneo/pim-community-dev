@@ -35,7 +35,7 @@ class Sidebar extends React.Component<SidebarProps> {
     const colapsedClass = (this.props.isCollapsed) ? 'AknColumn--collapsed' : '';
 
     return (
-      <div className={"AknColumn " + colapsedClass}>
+      <div className={`AknColumn ${colapsedClass}`}>
         <div className="AknColumn-inner column-inner">
           <div className="AknColumn-innerTop">
             <div className="AknColumn-block">
@@ -46,11 +46,11 @@ class Sidebar extends React.Component<SidebarProps> {
                 return (
                   <div
                     key={tab.code}
-                    className={"AknColumn-navigationLink column-navigation-link " + activeClass}
+                    className={`AknColumn-navigationLink column-navigation-link ${activeClass}`}
                     data-tab={tab.code}
                     onClick={this.updateCurrentTab}
                   >
-                    {tab.label}
+                    {__(tab.label)}
                   </div>
                 );
               })}

@@ -9,7 +9,7 @@ pim_enriched_entity:
             properties: Properties
         properties:
             title: Entity properties
-            code: Code
+            identifier: Identifier
             label: Label
         index:
             grid:

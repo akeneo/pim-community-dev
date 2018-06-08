@@ -41,4 +41,8 @@ describe('akeneo > enriched entity > domain > model --- enriched entity', () => 
     expect(createEnrichedEntity(michelIdentifier, michelLabels).getLabel('en_US')).toBe('Michel');
     expect(createEnrichedEntity(michelIdentifier, michelLabels).getLabel('fr_FR')).toBe('[michel]');
   });
+
+  test('I can get the collection of labels', () => {
+    expect(createEnrichedEntity(michelIdentifier, michelLabels).getLabelCollection()).toBe(michelLabels);
+  });
 });

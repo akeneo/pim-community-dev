@@ -13,6 +13,14 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
     expect(newState).toBe(state);
   });
 
+  test('I can generate a default state', () => {
+    const newState = reducer.enrichedEntity(undefined, {
+      type: 'ANOTHER_ACTION',
+    });
+
+    expect(newState).toEqual(null);
+  });
+
   test('I can add the enriched entity', () => {
     const state = {};
     const identifier: Identifier = createIdentifier('designer');

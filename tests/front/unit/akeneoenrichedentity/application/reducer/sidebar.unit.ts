@@ -11,6 +11,14 @@ describe('akeneo > enriched entity > application > reducer --- sidebar', () => {
     expect(newState).toBe(state);
   });
 
+  test('I can generate a default state', () => {
+    const newState = reducer(undefined, {
+      type: 'ANOTHER_ACTION',
+    });
+
+    expect(newState).toEqual({});
+  });
+
   test('I can toggle the sidebar', () => {
     const state = {};
     const collapsedState = reducer(state, {

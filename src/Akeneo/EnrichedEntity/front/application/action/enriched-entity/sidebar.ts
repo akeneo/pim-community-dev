@@ -6,5 +6,5 @@ export const setUpSidebar = () => async (dispatch: any): Promise<void> => {
   const tabs: Tab[] = editTabsProvider.getTabs();
   dispatch(toggleSidebar(false));
   dispatch(setUpTabs(tabs));
-  dispatch(updateCurrentTab(editTabsProvider.getCurrentTab()));
+  dispatch(updateCurrentTab(editTabsProvider.getDefaultTab()));
 };

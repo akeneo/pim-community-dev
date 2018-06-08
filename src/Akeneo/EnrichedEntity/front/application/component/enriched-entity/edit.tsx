@@ -29,7 +29,6 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     }
   }
 
-
   private async updateTabView(currentTab: string): Promise<void> {
     const TabView = await editTabsProvider.getView(currentTab);
 
@@ -51,7 +50,6 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     );
   }
 }
-
 
 export default connect((state: State): EditState => {
   const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;

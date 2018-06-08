@@ -17,7 +17,7 @@ config:
                 pim-enriched-entity-edit-form-properties:
                     label: pim_enriched_entity.enriched_entity.tab.properties
                     panel: akeneoenrichedentity/application/component/enriched-entity/edit/properties
-            current_tab: pim-enriched-entity-edit-form-properties
+            default_tab: pim-enriched-entity-edit-form-properties
     paths:
         pim/controller/enriched-entity/list: akeneoenrichedentity/infrastructure/controller/enriched-entity/list.tsx
         pim/controller/enriched-entity/edit: akeneoenrichedentity/infrastructure/controller/enriched-entity/edit.tsx
