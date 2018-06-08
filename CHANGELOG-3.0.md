@@ -10,6 +10,7 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Factory\FamilyFactory` to `Akeneo\Pim\Structure\Component\Factory\FamilyFactory`
 - Move `Pim\Component\Catalog\Factory\AttributeRequirementFactory` to `Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory`
 - Move `Pim\Component\Catalog\Factory\AttributeFactory` to `Akeneo\Pim\Structure\Component\Factory\AttributeFactory`
 - Move `Pim\Component\Catalog\Validator\Constraints\ActivatedLocale` to `Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale`

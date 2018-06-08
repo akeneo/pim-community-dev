@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory;
+namespace spec\Akeneo\Pim\Structure\Component\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;

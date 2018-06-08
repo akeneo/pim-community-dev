@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Factory;
+namespace Akeneo\Pim\Structure\Component\Factory;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;

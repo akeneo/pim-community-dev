@@ -12,7 +12,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Factory\FamilyFactory;
+use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
