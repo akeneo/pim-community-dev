@@ -1,12 +1,13 @@
 parameters:
-    pimee_catalog.normalizer.standard.attribute.class: PimEnterprise\Component\Catalog\Normalizer\Standard\AttributeNormalizer
+    pimee_catalog.normalizer.standard.attribute.class: 'PimEnterprise\Component\Catalog\Normalizer\Standard\AttributeNormalizer'
+    pim_catalog.normalizer.standard.product.product_value.class: 'PimEnterprise\Component\Catalog\Normalizer\Standard\ProductValueNormalizer'
 
 services:
     pimee_catalog.normalizer.standard.attribute:
         class: '%pimee_catalog.normalizer.standard.attribute.class%'
-        decorates: pim_catalog.normalizer.standard.attribute
-        decoration_inner_name: pim_catalog.normalizer.standard.attribute.base
+        decorates: 'pim_catalog.normalizer.standard.attribute'
+        decoration_inner_name: 'pim_catalog.normalizer.standard.attribute.base'
         arguments:
             - '@pim_catalog.normalizer.standard.attribute.base'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: 'pim_serializer.normalizer', priority: 90 }
