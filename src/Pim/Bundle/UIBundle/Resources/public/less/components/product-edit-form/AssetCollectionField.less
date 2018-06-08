@@ -1,8 +1,9 @@
 @import '../../base/variables';
 
 .AknAssetCollectionField {
-  @itemWidth: (@AknMaxFormWidth - 4 * 10px) / 3 - 1;
-  @itemHeight: 110px;
+  @itemWidth: 100px;
+  @itemHeight: 100px;
+  @padding: 10px;
 
   width: 100%;
   border: 1px solid @AknBorderColor;
@@ -10,7 +11,7 @@
   &-header {
     background: lighten(@AknGrey, 30%);
     border-bottom: 1px solid @AknBorderColor;
-    padding: 10px;
+    padding: @padding;
     margin: 0;
   }
 
@@ -47,8 +48,8 @@
   }
 
   &-assetThumbnail {
-    width: @itemWidth - 2*10px;
-    height: @itemHeight;
+    width: @itemWidth - 2 * (@padding + 1px);
+    height: @itemHeight - 2 * (@padding + 1px);
     background-size: 100% auto;
     background-position: center center;
     background-repeat: no-repeat;
