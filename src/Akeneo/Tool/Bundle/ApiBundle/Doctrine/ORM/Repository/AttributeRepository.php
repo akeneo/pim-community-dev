@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Api\Repository\AttributeRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnexpectedResultException;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface as CatalogAttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface as CatalogAttributeRepositoryInterface;
 
 /**
  * Attribute repository for the API

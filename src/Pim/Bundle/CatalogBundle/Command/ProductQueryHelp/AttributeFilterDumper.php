@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Command\ProductQueryHelp;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Command\DumperInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
