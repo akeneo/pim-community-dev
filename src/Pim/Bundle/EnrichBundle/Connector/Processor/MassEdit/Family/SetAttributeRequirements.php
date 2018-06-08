@@ -6,7 +6,7 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
+use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -23,7 +23,7 @@ class SetAttributeRequirements extends AbstractProcessor
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var \ChannelRepositoryInterface */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
     /** @var AttributeRequirementFactory */

@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.factory.family.class:                Pim\Component\Catalog\Factory\FamilyFactory
-    pim_catalog.factory.attribute_requirement.class: Pim\Component\Catalog\Factory\AttributeRequirementFactory
     pim_catalog.factory.metric.class:                Pim\Component\Catalog\Factory\MetricFactory
     pim_catalog.factory.price.class:                 Pim\Component\Catalog\Factory\PriceFactory
     pim_catalog.factory.group.class:                 Pim\Component\Catalog\Factory\GroupFactory
@@ -50,11 +49,6 @@ services:
         class: '%pim_catalog.factory.group_type.class%'
         arguments:
             - '%pim_catalog.entity.group_type.class%'
-
-    pim_catalog.factory.attribute_requirement:
-        class: '%pim_catalog.factory.attribute_requirement.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute_requirement.class%'
 
     pim_catalog.factory.attribute_option:
         class: '%akeneo_storage_utils.factory.simple.class%'

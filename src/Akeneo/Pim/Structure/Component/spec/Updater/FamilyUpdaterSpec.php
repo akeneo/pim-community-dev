@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslation;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Factory\AttributeRequirementFactory;
+use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
