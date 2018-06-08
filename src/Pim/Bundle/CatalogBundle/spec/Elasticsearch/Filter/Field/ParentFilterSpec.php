@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 
 class ParentFilterSpec extends ObjectBehavior

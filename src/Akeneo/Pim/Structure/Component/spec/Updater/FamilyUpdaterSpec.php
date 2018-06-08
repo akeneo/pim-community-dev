@@ -18,7 +18,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 

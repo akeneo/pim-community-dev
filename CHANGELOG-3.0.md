@@ -10,6 +10,7 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Repository\FamilyRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface`
 - Move `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface`
 - Move `Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeGroupRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeGroupRepository`
