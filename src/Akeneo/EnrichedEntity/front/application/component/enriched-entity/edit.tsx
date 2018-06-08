@@ -1,81 +1,62 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import __ from 'akeneoenrichedentity/tools/translator';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
-import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit'
+import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
+import Sidebar from 'akeneoenrichedentity/application/component/app/sidebar';
+import {Tab} from "akeneoenrichedentity/application/reducer/sidebar";
+import editTabsProvider from 'akeneoenrichedentity/application/configuration/edit-tabs';
 
-interface StateProps {
-  enrichedEntity: EnrichedEntity|null;
-  context: {
-    locale: string;
-  };
-};
+interface EditState {
+  tabs: Tab[];
+  currentTab: string;
+}
 
-interface DispatchProps {}
+interface EditProps extends EditState {}
 
-const enrichedEntityEditView = ({context, enrichedEntity}: StateProps & DispatchProps) => (
-  <div className="AknDefault-contentWithColumn">
-    <div className="AknDefault-thirdColumnContainer">
-      <div className="AknDefault-thirdColumn"></div>
-    </div>
-    <div className="AknDefault-contentWithBottom">
-      <div className="AknDefault-mainContent">
-        <header className="AknTitleContainer">
-          <div className="AknTitleContainer-line">
-            <div className="AknTitleContainer-mainContainer">
-              <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-breadcrumbs">
-                  <div className="AknBreadcrumb">
-                    <a href="#" className="AknBreadcrumb-item AknBreadcrumb-item--routable breadcrumb-tab" data-code="pim-menu-entities">
-                      {__('pim_enriched_entity.enriched_entity.title')}
-                    </a>
-                  </div>
-                </div>
-                <div className="AknTitleContainer-buttonsContainer">
-                  <div className="AknTitleContainer-userMenu">
-                    <PimView viewName="pim-enriched-entity-index-user-navigation"/>
-                  </div>
-                </div>
-              </div>
-              <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-title">
-                  {null !== enrichedEntity ? enrichedEntity.getLabel(context.locale) : ''}
-                </div>
-                <div className="AknTitleContainer-state"></div>
-              </div>
-            </div>
-            <div>
-              <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-context AknButtonList"></div>
-              </div>
-              <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-meta AknButtonList"></div>
-              </div>
-            </div>
-          </div>
-          <div className="AknTitleContainer-line">
-            <div className="AknTitleContainer-navigation"></div>
-          </div>
-        </header>
-        <div className="">
+class EnrichedEntityEditView extends React.Component<EditProps> {
+  private tabView: JSX.Element;
 
-        </div>
-      </div>
-    </div>
-  </div>
-);
+  public props: EditProps;
 
-export default connect((state: State): StateProps => {
-  const enrichedEntity = undefined === state.enrichedEntity ? null : state.enrichedEntity;
-  const locale = undefined === state.user || undefined === state.user.uiLocale ? '' : state.user.uiLocale;
+  constructor(props: EditProps) {
+    super(props);
 
-  return {
-    enrichedEntity,
-    context: {
-      locale
+    this.updateTabView(props.currentTab);
+  }
+
+  componentDidUpdate(nextProps: EditProps) {
+    if (JSON.stringify(this.props.currentTab) !== JSON.stringify(nextProps.currentTab)) {
+      this.updateTabView(this.props.currentTab);
     }
   }
-}, (): DispatchProps => {
-  return {}
-})(enrichedEntityEditView);
+
+  private async updateTabView(currentTab: string): Promise<void> {
+    const TabView = await editTabsProvider.getView(currentTab);
+
+    this.tabView = (<TabView />);
+    this.forceUpdate();
+  }
+
+  render(): JSX.Element | JSX.Element[] {
+    return (
+      <div className="AknDefault-contentWithColumn">
+        <div className="AknDefault-thirdColumnContainer">
+          <div className="AknDefault-thirdColumn"></div>
+        </div>
+        <div className="AknDefault-contentWithBottom">
+          {this.tabView}
+        </div>
+        <Sidebar />
+      </div>
+    );
+  }
+}
+
+export default connect((state: State): EditState => {
+  const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
+  const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
+
+  return {
+    tabs,
+    currentTab
+  }
+})(EnrichedEntityEditView);

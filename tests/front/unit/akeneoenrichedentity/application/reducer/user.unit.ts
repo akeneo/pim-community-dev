@@ -12,7 +12,7 @@ describe('akeneo > enriched entity > application > reducer --- user', () => {
   test('I ignore other commands', () => {
     const state = {};
     const newState = reducer(state, {
-      type: 'GO_FIRST_PAGE',
+      type: 'ANOTHER_ACTION',
     });
 
     expect(newState).toBe(state);

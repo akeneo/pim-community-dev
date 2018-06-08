@@ -4,6 +4,7 @@ import LabelCollection from 'akeneoenrichedentity/domain/model/label-collection'
 export default interface EnrichedEntity {
   getIdentifier: () => Identifier;
   getLabel: (locale: string) => string;
+  getLabelCollection: () => LabelCollection;
   equals: (enrichedEntity: EnrichedEntity) => boolean;
 }
 class InvalidArgumentError extends Error {}
@@ -32,6 +33,10 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return this.labelCollection.hasLabel(locale)
       ? this.labelCollection.getLabel(locale)
       : `[${this.getIdentifier().stringValue()}]`;
+  }
+
+  public getLabelCollection(): LabelCollection {
+    return this.labelCollection;
   }
 
   public equals(enrichedEntity: EnrichedEntity): boolean {

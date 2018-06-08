@@ -1,4 +1,4 @@
-import Fetcher from 'akeneoenrichedentity/application/fetcher/fetcher';
+import Fetcher from 'akeneoenrichedentity/domain/fetcher/fetcher';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import hidrator from 'akeneoenrichedentity/application/hidrator/enriched-entity';
 import hidrateAll from 'akeneoenrichedentity/application/hidrator/hidrator';

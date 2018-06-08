@@ -1,11 +1,14 @@
 const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
-const {answerJson} = require('../../../../../../vendor/akeneo/pim-community-dev/tests/front/acceptance/cucumber/tools.js');
+
+const {
+    tools: { answerJson }
+} = require('../../test-helpers.js');
+
 module.exports = async function (cucumber) {
   const { Given, Then, When } = cucumber;
   const assert = require('assert');
 
   Given('the following enriched entities:', function (enrichedEntities) {
-    debugger;
     const enrichedEntityResponse = enrichedEntities.hashes().map(function (enrichedEntity) {
       const enrichedEntityBuilder = new EnrichedEntityBuilder();
 
@@ -13,11 +16,19 @@ module.exports = async function (cucumber) {
         enrichedEntityBuilder.withIdentifier(enrichedEntity.identifier);
       }
       if (undefined !== enrichedEntity.labels) {
-        enrichedEntityBuilder.withLabels(enrichedEntity.labels);
+        enrichedEntityBuilder.withLabels(JSON.parse(enrichedEntity.labels));
       }
 
       return enrichedEntityBuilder.build();
     });
+
+    enrichedEntityResponse.forEach(enrichedEntity => {
+      this.page.on('request', request => {
+        if (`http://pim.com//rest/enriched_entity/${enrichedEntity.identifier}` === request.url()) {
+          answerJson(request, enrichedEntity);
+        }
+      });
+    })
 
     this.page.on('request', request => {
       if ('http://pim.com//rest/enriched_entity' === request.url()) {
@@ -30,7 +41,7 @@ module.exports = async function (cucumber) {
     await this.page.evaluate(async () => {
       const Controller = require('pim/controller/enriched-entity/list');
       const controller = new Controller();
-      controller.renderRoute()
+      controller.renderRoute();
       await document.getElementById('app').appendChild(controller.el);
     });
 
