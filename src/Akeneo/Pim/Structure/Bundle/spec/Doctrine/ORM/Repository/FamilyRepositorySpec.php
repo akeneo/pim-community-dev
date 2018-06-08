@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
