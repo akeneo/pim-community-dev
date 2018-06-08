@@ -55,8 +55,7 @@ legacy:
                     - '@pim_catalog.saver.product_model'
                     - '@pim_catalog.validator.product'
                     - '@pim_versioning.repository.version'
-                - Pim\Behat\Context\Domain\Enrich\VariantProductContext:
-                    - 'Context\FeatureContext'
+                - Pim\Behat\Context\Domain\Enrich\ProductContext:
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.updater.product'
                     - '@pim_catalog.saver.product'
@@ -83,7 +82,7 @@ legacy:
                     - 1024
                 - Pim\Behat\Context\JobContext:
                     - 'Context\FeatureContext'
-                - Pim\Behat\Context\ImportFileContext:
+                - Pim\Behat\Context\ImportExportFileContext:
                     - 'Context\FeatureContext'
                 - Pim\Behat\Context\Storage\FileInfoStorage:
                     - 'Context\FeatureContext'
@@ -112,7 +111,6 @@ legacy:
                     - 'Context\FeatureContext'
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
-
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
