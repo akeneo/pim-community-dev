@@ -13,9 +13,9 @@ Feature: Associate many products at once
     When I sort by "ID" value ascending
     Given I select rows Bag, Belt and Hat
     And I press the "Bulk actions" button
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     And I move on to the choose step
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     Given I press the "Add associations" button and wait for modal
     And I check the row "Scarf"
     And the item picker basket should contain Scarf
@@ -40,9 +40,9 @@ Feature: Associate many products at once
     When I sort by "ID" value ascending
     Given I select rows Bag, Belt and Hat
     And I press the "Bulk actions" button
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     And I move on to the choose step
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     Given I press the "Add associations" button and wait for modal
     And I search "juno"
     And I check the row "juno"
@@ -69,9 +69,9 @@ Feature: Associate many products at once
     When I sort by "ID" value ascending
     Given I select rows amor
     And I press the "Bulk actions" button
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     And I move on to the choose step
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     Given I press the "Add associations" button and wait for modal
     And I check the row "Scarf"
     And the item picker basket should contain Scarf

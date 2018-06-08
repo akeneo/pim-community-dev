@@ -938,9 +938,9 @@ batch_jobs:
         perform:
             label: Remove from category
     add_association:
-        label: Associate to products
+        label: Associate
         perform:
-            label: Associate to products
+            label: Associate
     add_to_existing_product_model:
         label: Add to an existing product model
         perform:
