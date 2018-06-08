@@ -3,13 +3,14 @@ pim_enriched_entity:
         save: Save
     enriched_entity:
         title: Entities
-        navigation: Entities
-        records_tab: Records
-        attributes_tab: Attributes
-        properties_tab: Properties
-        properties_title: Entity properties
-        code: Code
-        label: Label
+        tab:
+            records: Records
+            attributes: Attributes
+            properties: Properties
+        properties:
+            title: Entity properties
+            code: Code
+            label: Label
         index:
             grid:
                 count: "{{ count }} results"

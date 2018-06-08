@@ -3,13 +3,16 @@ import __ from 'akeneoenrichedentity/tools/translator';
 const requireContext = require('require-context');
 import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
 
-export interface EditTabsConfiguration {
-  tabs: {
-    [code: string]: {
-      label: string;
-      panel: string;
-    };
+interface EditTabConfiguration {
+  [code: string]: {
+    label: string;
+    panel: string;
   };
+}
+
+interface EditTabsConfiguration {
+  tabs: EditTabConfiguration;
+  current_tab: string;
 }
 
 export class EditTabsProvider {
@@ -26,13 +29,13 @@ export class EditTabsProvider {
   }
 
   public getTabs(): Tab[] {
-    let tabs: Tab[] = [];
-    for (let code in this.configuration.tabs) {
-      let tab = this.configuration.tabs[code];
-      tabs = [...tabs, {code, label: __(tab.label)}];
-    }
+    return Object.keys(this.configuration.tabs).map((code: string) => {
+      return {code, label: __(this.configuration.tabs[code].label)};
+    });
+  }
 
-    return tabs;
+  public getCurrentTab(): string {
+    return this.configuration.current_tab;
   }
 
   public async getView(code: string): Promise<typeof React.Component> {

@@ -5,9 +5,9 @@ export const toggleSidebar = (isCollapsed: boolean) => {
 };
 
 export const setUpTabs = (tabs: Tab[]) => {
-  return {type: 'SETUP_TABS', tabs};
+  return {type: 'SETUP_SIDEBAR_TABS', tabs};
 };
 
 export const updateCurrentTab = (tabCode: string) => {
-  return {type: 'UPDATE_CURRENT_TAB', currentTab: tabCode};
+  return {type: 'UPDATE_CURRENT_SIDEBAR_TAB', currentTab: tabCode};
 };

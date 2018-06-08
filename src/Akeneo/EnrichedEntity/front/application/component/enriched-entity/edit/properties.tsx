@@ -45,7 +45,7 @@ class Properties extends React.Component<PropertiesProps> {
   };
 
   updateEditForm = (enrichedEntity: EnrichedEntity) => {
-    this.setState({ enrichedEntity: enrichedEntity });
+    this.setState({ enrichedEntity });
   };
 
   render() {
@@ -131,12 +131,12 @@ export default connect((state: State): PropertiesState => {
       locale
     },
   }
-  }, (dispatch: any): PropertiesDispatch => {
-    return {
-      events: {
-        onSaveEditForm: (enrichedEntity: EnrichedEntity) => {
-          dispatch(saveEditForm(enrichedEntity))
-        }
+}, (dispatch: any): PropertiesDispatch => {
+  return {
+    events: {
+      onSaveEditForm: (enrichedEntity: EnrichedEntity) => {
+        dispatch(saveEditForm(enrichedEntity))
       }
     }
+  }
 })(Properties);

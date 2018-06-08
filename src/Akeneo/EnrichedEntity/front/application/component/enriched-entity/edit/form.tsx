@@ -3,7 +3,7 @@ import __ from 'akeneoenrichedentity/tools/translator';
 import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-import Flag from 'akeneoenrichedentity/application/component/app/flag';
+import Flag from 'akeneoenrichedentity/tools/component/flag';
 
 interface FormProps {
   locale: string;
@@ -51,7 +51,7 @@ export default class EditForm extends React.Component<FormProps> {
     return (
       <div className="AknSubsection">
         <header className="AknSubsection-title AknSubsection-title--blockDown">
-            <span className="group-label">{__('pim_enriched_entity.enriched_entity.properties_title')}</span>
+            <span className="group-label">{__('pim_enriched_entity.enriched_entity.properties.title')}</span>
         </header>
         <div>
           <div className="AknComparableFields field-container">
@@ -59,7 +59,7 @@ export default class EditForm extends React.Component<FormProps> {
               <div className="AknFieldContainer-header">
                 <label className="AknFieldContainer-label AknFieldContainer-label--grey">
                   <span className="badge-elements-container"></span>
-                  {__('pim_enriched_entity.enriched_entity.code')}
+                  {__('pim_enriched_entity.enriched_entity.properties.code')}
                   <span className="label-elements-container"></span>
                 </label>
               </div>
@@ -78,7 +78,7 @@ export default class EditForm extends React.Component<FormProps> {
             <div className="akeneo-text-field AknComparableFields-item AknFieldContainer original-field edit">
               <div className="AknFieldContainer-header">
                 <label className="AknFieldContainer-label AknFieldContainer-label--grey">
-                  {__('pim_enriched_entity.enriched_entity.label')}
+                  {__('pim_enriched_entity.enriched_entity.properties.label')}
                 </label>
               </div>
               <div className="AknFieldContainer-inputContainer field-input">

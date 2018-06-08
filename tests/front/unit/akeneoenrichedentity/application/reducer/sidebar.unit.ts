@@ -45,7 +45,7 @@ describe('akeneo > enriched entity > application > reducer --- sidebar', () => {
       },
     ];
     const newState = reducer(state, {
-      type: 'SETUP_TABS',
+      type: 'SETUP_SIDEBAR_TABS',
       tabs,
     });
 
@@ -58,7 +58,7 @@ describe('akeneo > enriched entity > application > reducer --- sidebar', () => {
     const state = {};
     const currentTab: string = 'tab-1';
     const newState = reducer(state, {
-      type: 'UPDATE_CURRENT_TAB',
+      type: 'UPDATE_CURRENT_SIDEBAR_TAB',
       currentTab,
     });
 

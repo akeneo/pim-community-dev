@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import Sidebar from 'akeneoenrichedentity/application/component/app/sidebar';
 import {Tab} from "akeneoenrichedentity/application/reducer/sidebar";
-import EditTabsProvider from 'akeneoenrichedentity/application/configuration/edit-tabs';
+import editTabsProvider from 'akeneoenrichedentity/application/configuration/edit-tabs';
 
 interface EditState {
   tabs: Tab[];
@@ -31,7 +31,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
 
 
   private async updateTabView(currentTab: string): Promise<void> {
-    const TabView = await EditTabsProvider.getView(currentTab);
+    const TabView = await editTabsProvider.getView(currentTab);
 
     this.tabView = (<TabView />);
     this.forceUpdate();

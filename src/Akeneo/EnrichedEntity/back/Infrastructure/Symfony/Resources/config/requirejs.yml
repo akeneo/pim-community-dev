@@ -9,14 +9,15 @@ config:
         akeneoenrichedentity/application/configuration/edit-tabs:
             tabs:
                 pim-enriched-entity-edit-form-records:
-                    label: pim_enriched_entity.enriched_entity.records_tab
+                    label: pim_enriched_entity.enriched_entity.tab.records
                     panel: akeneoenrichedentity/application/component/enriched-entity/edit/records
                 pim-enriched-entity-edit-form-attributes:
-                    label: pim_enriched_entity.enriched_entity.attributes_tab
+                    label: pim_enriched_entity.enriched_entity.tab.attributes
                     panel: akeneoenrichedentity/application/component/enriched-entity/edit/attributes
                 pim-enriched-entity-edit-form-properties:
-                    label: pim_enriched_entity.enriched_entity.properties_tab
+                    label: pim_enriched_entity.enriched_entity.tab.properties
                     panel: akeneoenrichedentity/application/component/enriched-entity/edit/properties
+            current_tab: pim-enriched-entity-edit-form-properties
     paths:
         pim/controller/enriched-entity/list: akeneoenrichedentity/infrastructure/controller/enriched-entity/list.tsx
         pim/controller/enriched-entity/edit: akeneoenrichedentity/infrastructure/controller/enriched-entity/edit.tsx
