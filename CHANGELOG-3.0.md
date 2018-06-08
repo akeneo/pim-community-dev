@@ -10,6 +10,7 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Factory\AttributeFactory` to `Akeneo\Pim\Structure\Component\Factory\AttributeFactory`
 - Move `Pim\Component\Catalog\Validator\Constraints\ActivatedLocale` to `Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale`
 - Move `Pim\Component\Catalog\Validator\Constraints\Locale` to `Akeneo\Channel\Component\Validator\Constraint\Locale`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository`

@@ -15,7 +15,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Factory\AttributeFactory;
+use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

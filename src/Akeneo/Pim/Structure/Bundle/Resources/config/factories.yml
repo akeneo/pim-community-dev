@@ -1,0 +1,7 @@
+services:
+    pim_catalog.factory.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Factory\AttributeFactory'
+        arguments:
+            - '@pim_catalog.registry.attribute_type'
+            - '%pim_catalog.entity.attribute.class%'
+            - '%pim_catalog.entity.product.class%'

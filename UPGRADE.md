@@ -6,6 +6,7 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\AttributeFactory/Akeneo\\Pim\\Structure\\Component\\Factory\\AttributeFactory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeGroup/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AttributeGroupInterface/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeGroupInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeGroupTranslation/g'
