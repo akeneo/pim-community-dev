@@ -36,7 +36,7 @@ define(
             template: _.template(template),
             events: {
                 'click .add-asset': 'updateAssets',
-                'click .asset-thumbnail': 'updateAssetsFromPreview'
+                'click .asset-thumbnail-item': 'updateAssetsFromPreview'
             },
             modalTemplate: _.template(templateModal),
 
@@ -186,7 +186,7 @@ define(
             /**
              * Opens a modal to show the preview
              *
-             * @param {Event} clickEvent
+             * @param {Event} currentAssetCode
              */
             openPreviewModal(currentAssetCode) {
                 const deferred = $.Deferred();
@@ -215,6 +215,7 @@ define(
                     const navigateToItem = function (assetThumbnail) {
                         modal.$('.asset-thumbnail-item').addClass('AknAssetCollectionField-listItem--transparent');
                         assetThumbnail.removeClass('AknAssetCollectionField-listItem--transparent');
+                        modal.$('.main-preview').attr('src', '');
                         modal.$('.main-preview').attr('src', assetThumbnail.data('url'));
                         modal.$('.buttons').stop(true, true).animate({
                             scrollLeft: assetThumbnail.position().left
@@ -223,7 +224,6 @@ define(
                         modal.$('.description').html(assetThumbnail.data('description'));
                         modal.$('.download').attr('href', assetThumbnail.data('url'));
                     };
-
                     const navigateToNeighbor = function (side, isCurrentElementDestroyed) {
                         let thumbnails = modal.$('.asset-thumbnail-item');
                         let clickedIndex = null;
