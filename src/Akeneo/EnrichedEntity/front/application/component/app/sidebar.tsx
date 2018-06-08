@@ -45,12 +45,12 @@ class Sidebar extends React.Component<SidebarProps> {
 
                 return (
                   <div
-                    key={ tab.code }
-                    className={"AknColumn-navigationLink column-navigation-link " + activeClass }
-                    data-tab={ tab.code }
+                    key={tab.code}
+                    className={"AknColumn-navigationLink column-navigation-link " + activeClass}
+                    data-tab={tab.code}
                     onClick={this.updateCurrentTab}
                   >
-                    { tab.label }
+                    {tab.label}
                   </div>
                 );
               })}
