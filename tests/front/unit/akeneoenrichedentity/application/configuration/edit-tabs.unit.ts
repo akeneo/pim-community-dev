@@ -51,9 +51,8 @@ describe('akeneo > enriched entity > application > configuration --- edit-tabs',
     );
 
     tabProvider.getView('first').then(module => {
-      expect(module.default).toEqual('view');
+      expect(module).toEqual('view');
     });
-
-    // expect(tabProvider.getView('first')).toEqual([{code: 'first', 'label': "First tab"}]);
+    expect.assertions(2);
   });
 });
