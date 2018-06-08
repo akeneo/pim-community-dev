@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
-use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 
 class InMemoryFamilyVariantRepository implements SaverInterface, IdentifiableObjectRepositoryInterface, FamilyVariantRepositoryInterface
 {

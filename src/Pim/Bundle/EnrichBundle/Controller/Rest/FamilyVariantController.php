@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -39,7 +39,7 @@ use Pim\Component\Catalog\Model\ProductModelAssociation;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Value\OptionValueInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;

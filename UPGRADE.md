@@ -6,6 +6,7 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\FamilyVariantRepositoryInterface/Akeneo\\Pim\\Structure\\Component\\Repository\\FamilyVariantRepositoryInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\FamilyRepositoryInterface/Akeneo\\Pim\\Structure\\Component\\Repository\\FamilyRepositoryInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\AttributeRepositoryInterface/Akeneo\\Pim\\Structure\\Component\\Repository\\AttributeRepositoryInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\AttributeGroupRepositoryInterface/Akeneo\\Pim\\Structure\\Component\\Repository\\AttributeGroupRepositoryInterface/g'

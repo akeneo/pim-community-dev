@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
