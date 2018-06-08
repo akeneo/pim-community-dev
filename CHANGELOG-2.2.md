@@ -1,3 +1,9 @@
+#2.2.x
+
+##Bug fixes
+
+- PIM-7399: Fix attributes order on Product model export
+
 # 2.2.8 (2018-06-07)
 
 ## Bug fixes
@@ -7,7 +13,6 @@
 - PIM-7393: Improve error message when importing fields without locale or scope specification
 - PIM-7382: Fix scopable attributes disappearing from edit form after editing a product model 
 - PIM-7386: Fix 'NOT IN' operator not taking empty values into account for select fields
-- PIM-7399: Fix attributes order on Product model export
 
 # 2.2.7 (2018-05-31)
 
