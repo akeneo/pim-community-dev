@@ -6,7 +6,6 @@ const path = require('path');
 const htmlTemplate =  fs.readFileSync(process.cwd() + '/web/test_dist/index.html', 'utf-8');
 const translations = fs.readFileSync(path.join(process.cwd(), './web/js/translation/en_US.js'), 'utf-8');
 const userBuilder = new UserBuilder();
-
 module.exports = function(cucumber) {
   const {Before, After, Status } = cucumber;
 
