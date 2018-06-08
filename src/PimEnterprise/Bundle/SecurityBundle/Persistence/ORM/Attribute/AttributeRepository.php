@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Attribute;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository as BaseAttributeRepository;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository as BaseAttributeRepository;
 
 /**
  * Override attribute repository

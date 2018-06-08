@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRemover as BaseCompletenes
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * Simple ORM version of the completeness remover.
