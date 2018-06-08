@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class RemoveWrongBooleanValuesOnVariantProductsBatchCommand extends ContainerAwareCommand
+class RemoveWrongValuesOnVariantProductsBatchCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -28,14 +28,14 @@ class RemoveWrongBooleanValuesOnVariantProductsBatchCommand extends ContainerAwa
     protected function configure(): void
     {
         $this
-            ->setName('pim:catalog:remove-wrong-boolean-values-on-variant-products-batch')
+            ->setName('pim:catalog:remove-wrong-values-on-variant-products-batch')
             ->setHidden(true)
             ->addArgument(
                 'identifiers',
                 InputArgument::REQUIRED,
                 'The variant product identifiers to clean (comma separated values)'
             )
-            ->setDescription('Auxiliary command for pim:catalog:remove-wrong-boolean-values-on-variant-products-batch')
+            ->setDescription('Auxiliary command for pim:catalog:remove-wrong-values-on-variant-products-batch')
         ;
     }
 
@@ -45,8 +45,9 @@ class RemoveWrongBooleanValuesOnVariantProductsBatchCommand extends ContainerAwa
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $cleaner = $this->getContainer()
-            ->get('pim_catalog.command.cleaner.wrong_boolean_value_on_variant_product');
+            ->get('pim_catalog.command.cleaner.wrong_value_on_variant_product');
         $validator = $this->getContainer()->get('pim_catalog.validator.product');
+        $identifiers = $input->getArgument('identifiers');
         $variantProducts = $this->getVariantProducts(explode(',', $identifiers));
 
         $productsToSave = [];
@@ -88,7 +89,7 @@ class RemoveWrongBooleanValuesOnVariantProductsBatchCommand extends ContainerAwa
             ->get('pim_enrich.query.product_and_product_model_query_builder_factory')
             ->create();
 
-        $pqb->addFilter('id', Operators::IN_LIST, $identifiers);
+        $pqb->addFilter('identifier', Operators::IN_LIST, $identifiers);
 
         return $pqb->execute();
     }
