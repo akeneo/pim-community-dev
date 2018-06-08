@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\FamilyVariant;
+namespace Akeneo\Pim\Structure\Component\FamilyVariant;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -11,7 +11,7 @@ use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Automatically sets identifier attribute and attributes with unique value in
- * the variant attribute set corresponding to the variant product.
+ * the bottom attribute set.
  *
  * @author    Damien Carcel <damien.carcel@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -32,11 +32,11 @@ class AddUniqueAttributes
             }
         )->toArray();
 
-        $variantProductAttributeSet = $familyVariant->getVariantAttributeSet($familyVariant->getNumberOfLevel());
+        $bottomAttributeSet = $familyVariant->getVariantAttributeSet($familyVariant->getNumberOfLevel());
 
         foreach ($familyUniqueAttributes as $uniqueAttribute) {
             if (!in_array($uniqueAttribute->getCode(), $familyVariantAttributeCodes)) {
-                $variantProductAttributeSet->addAttribute($uniqueAttribute);
+                $bottomAttributeSet->addAttribute($uniqueAttribute);
             }
         }
     }

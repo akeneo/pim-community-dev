@@ -25,5 +25,6 @@ class AkeneoPimStructureExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('updaters.yml');
         $loader->load('normalizers.yml');
+        $loader->load('services.yml');
     }
 }
