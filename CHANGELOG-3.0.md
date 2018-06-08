@@ -10,6 +10,8 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeGroupRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeGroupRepository`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes`
 - Move `Pim\Component\Catalog\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface` to `Akeneo\Pim\Structure\Component\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface`
 - Move `Pim\Component\Catalog\FamilyVariant\AddUniqueAttributes` to `Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes`
