@@ -1084,6 +1084,10 @@ pim_enrich:
           label_count: "{1}Associer <span class=\"AknFullPage-title--highlight\">1 produit</span> à des produits ou modèles de produits|] 1, Inf [Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des produits ou modèles de produits"
           description: Les produits sélectionnés depuis la grille seront associés aux produits et modèles de produits sélectionnés, pour le type d'association sélectionné
           validate: Veuillez ajouter une association avant de passer à l’étape suivante
+        change_parent_product_model:
+          label: Changer le parent de produits
+          label_count: "{1}Changer le parent  d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Changer le parent de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+          description: Le parent des produits variants et des sous modèles de produits sélectionnés dans la grille va être modifié avec ce modèle de produit.
     family:
       title: Action de masse sur les familles
       confirm: "{1}Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
