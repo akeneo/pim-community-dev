@@ -109,7 +109,7 @@ pim_menu:
 pim_title:
   published_product:
     index: Veröffentlichte Produkte
-    view: Veröffentlichtes Produkt %product.label% | Anzeigen
+    view: Veröffentlichtes Produkt %product.label% | Ansehen
   product:
     dispatch: "Produkt %product.label%"
     show: "Produkt %product.label% | Anzeigen"
