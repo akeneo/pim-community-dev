@@ -48,7 +48,7 @@ Groups and Roles: Gruppen und Rollen
 Username: Benutzername
 Password: Passwort
 Password (again): Passwort wiederholen
-Re-enter password: Kennwort erneut eingeben
+Re-enter password: Passwort erneut eingeben
 Name prefix: Namenspräfix
 First name: Vorname
 Middle name: Zweiter Vorname
@@ -59,8 +59,8 @@ Avatar: Benutzerbild
 Additional emails: Zusätzliche E-Mail Adressen
 Add another email: Weitere E-Mail Adresse hinzufügen
 Catalog locale: Katalog-Gebietsschema
-Catalog scope: Katalog-Gültigkeit
-Default tree: Standardstruktur
+Catalog scope: Standard-Gültigkeitsbereich
+Default tree: Standardkategoriebaum Produkte
 Business Units: Geschäftsbereich
 Email synchronization settings: Einstellungen für E-Mail Synchronisierung
 Host: Host
@@ -77,7 +77,7 @@ Birthday: Geburtstag
 API key: API-Schlüssel
 Ui locale: UI-Gebietsschema
 UI locale: UI-Gebietsschema
-User salt: Benutzer-Salt
+User salt: Benutzer-Streuung
 Current password: Aktuelles Passwort
 New password: Neues Passwort
 Repeat new password: Neues Passwort (Wiederholung)
@@ -85,9 +85,9 @@ Generate key: Schlüssel erzeugen
 Primary: Primär
 Removed user: Benutzer gelöscht
 user:
-  product_grid_filters: Produktübersichtsfilter
+  product_grid_filters: Filter Produktliste
   default_product_grid_view:
-    label: Standardansicht Produktübersicht
+    label: Standardansicht Produktliste
   default_grid_view:
     none: Keine
   timezone: Zeitzone
@@ -155,4 +155,4 @@ Username or Email: Benutzername oder E-Mail
 Forgot Password: Passwort vergessen
 Request: Anfrage
 Check Email: Posteingang überprüfen
-Go to homepage: Zur Startseite
+Go to homepage: Zurück zur Hauptseite
