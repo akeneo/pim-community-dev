@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Common\Builder\EntityWithValue\Builder;
+namespace Akeneo\Test\Common\EntityWithValue\Builder;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Test\Common\Builder\EntityWithValue\Association;
-use Akeneo\Test\Common\Builder\EntityWithValue\Code;
-use Akeneo\Test\Common\Builder\EntityWithValue\ListOfCodes;
-use Akeneo\Test\Common\Builder\EntityWithValue\Status;
-use Akeneo\Test\Common\Builder\EntityWithValue\Value;
-use Akeneo\Test\Common\Builder\EntityWithValue\ListOfValues;
+use Akeneo\Test\Common\EntityWithValue\Association;
+use Akeneo\Test\Common\EntityWithValue\Code;
+use Akeneo\Test\Common\EntityWithValue\ListOfCodes;
+use Akeneo\Test\Common\EntityWithValue\ListOfValues;
+use Akeneo\Test\Common\EntityWithValue\Status;
+use Akeneo\Test\Common\EntityWithValue\Value;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -76,11 +76,16 @@ final class Product
     }
 
     /**
+     * Why do we need the $dataValidation param? We are using anemic model, that means we validate model before
+     * its creation. Sometimes we need to create invalid model to check validation rules.
+     *
+     * @param bool $dataValidation
+     *
      * @return ProductInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function build(): ProductInterface
+    public function build($dataValidation = true): ProductInterface
     {
         $productStandardFormat = [
             'values' => $this->values->toStandardFormat(),
@@ -93,9 +98,11 @@ final class Product
         $product = $this->productBuilder->createProduct((string) $this->identifier, (string) $this->family);
         $this->productUpdater->update($product, $productStandardFormat);
 
-        $errors = $this->validator->validate($product);
-        if (0 < $errors->count()) {
-            throw new \InvalidArgumentException(sprintf('The given product data are invalid: %s', $errors));
+        if ($dataValidation) {
+            $errors = $this->validator->validate($product);
+            if (0 < $errors->count()) {
+                throw new \InvalidArgumentException(sprintf('The given product data are invalid: %s', $errors));
+            }
         }
 
         return $product;

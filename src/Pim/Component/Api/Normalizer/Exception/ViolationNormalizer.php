@@ -92,13 +92,6 @@ class ViolationNormalizer implements NormalizerInterface
 
                 if (AttributeTypes::IDENTIFIER === $attributeType) {
                     $propertyPath = 'identifier';
-                    $uniqueValueConstraint = new UniqueValue();
-
-                    if ($uniqueValueConstraint->message === $violationMessage) {
-                        // this is the translation key used in
-                        // Pim/Bundle/CatalogBundle/Resources/config/validation/product.yml
-                        $violationMessage = 'The same identifier is already set on another product';
-                    }
                 }
             }
 

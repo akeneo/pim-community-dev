@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Common\Builder\EntityWithValue\Builder;
+namespace Akeneo\Test\Common\EntityWithValue\Builder;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Test\Common\Builder\EntityBuilder;
-use Akeneo\Test\Common\Builder\EntityWithValue\Code;
-use Akeneo\Test\Common\Builder\EntityWithValue\ListOfCodes;
-use Akeneo\Test\Common\Builder\EntityWithValue\Value;
-use Akeneo\Test\Common\Builder\EntityWithValue\ListOfValues;
+use Akeneo\Test\Common\EntityBuilder;
+use Akeneo\Test\Common\EntityWithValue\Code;
+use Akeneo\Test\Common\EntityWithValue\ListOfCodes;
+use Akeneo\Test\Common\EntityWithValue\ListOfValues;
+use Akeneo\Test\Common\EntityWithValue\Value;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**

@@ -233,9 +233,15 @@ suites:
         spec_path: src/Oro/Bundle/FilterBundle
         src_path: src/Oro/Bundle/FilterBundle
 
-    ## Acceptance
+    ## Test
     Acceptance:
         namespace: Akeneo\Test\Acceptance
         psr4_prefix: Akeneo\Test\Acceptance
         spec_path: tests/back/Acceptance
         src_path: tests/back/Acceptance
+
+    Common:
+        namespace: Akeneo\Test\Common
+        psr4_prefix: Akeneo\Test\Common
+        spec_path: tests/back/Common
+        src_path: tests/back/Common

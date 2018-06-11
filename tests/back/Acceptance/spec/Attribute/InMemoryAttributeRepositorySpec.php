@@ -7,6 +7,7 @@ namespace spec\Akeneo\Test\Acceptance\Attribute;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
@@ -72,6 +73,16 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this
             ->shouldThrow(new \InvalidArgumentException('The object argument should be a attribute'))
             ->during('save', [$object]);
+    }
+
+    function it_get_identifier_by_identifier()
+    {
+        $identifier = (new Attribute())->setType(AttributeTypes::IDENTIFIER);
+
+        $this->save($identifier);
+        $this->save((new Attribute())->setCode('name'));
+
+        $this->getIdentifier()->shouldReturn($identifier);
     }
 
     private function createAttribute(string $code): AttributeInterface
