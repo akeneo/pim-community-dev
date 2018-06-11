@@ -8,6 +8,8 @@ pim_common:
   created: Luotu
   updated: Päivitetty
   create: Luo
+  permissions: Käyttöoikeudet
+  properties: Ominaisuudet
 pim_enrich:
   create:
     attribute: luo attribuutti
