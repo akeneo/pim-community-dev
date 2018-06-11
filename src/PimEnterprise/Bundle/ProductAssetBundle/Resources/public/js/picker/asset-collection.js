@@ -41,8 +41,13 @@ define(
              */
             render() {
                 FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(assets => {
+                    let orderedAssets = [];
+                    this.data.forEach(assetCode => {
+                        orderedAssets = orderedAssets.concat(assets.filter(asset => asset.code === assetCode));
+                    });
+
                     this.$el.html(this.template({
-                        assets: assets,
+                        assets: orderedAssets,
                         locale: this.context.locale,
                         scope: this.context.scope,
                         thumbnailFilter: 'thumbnail',
