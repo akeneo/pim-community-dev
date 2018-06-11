@@ -10,6 +10,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Datagrid;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\AssociatedProductDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\AssociatedProductModelDatasource;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
 use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
@@ -24,7 +25,7 @@ use Pim\Component\Catalog\Query\Sorter\Directions;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class AssociatedProductDatasourceSpec extends ObjectBehavior
+class AssociatedProductModelDatasourceSpec extends ObjectBehavior
 {
     public function let(
         ObjectManager $objectManager,
@@ -40,7 +41,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AssociatedProductDatasource::class);
+        $this->shouldHaveType(AssociatedProductModelDatasource::class);
     }
 
     function it_is_a_datasource()
@@ -67,19 +68,19 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'not a product instance',
-                ProductInterface::class
+                ProductModelInterface::class
             )
         )->during('getResults');
     }
 
-    function it_gets_products_sorted_by_association_status(
+    function it_gets_product_models_sorted_by_association_status(
         $pqbFactory,
         $productNormalizer,
         Datagrid $datagrid,
         ProductQueryBuilderInterface $pqb,
         ProductQueryBuilderInterface $pqbAsso,
         ProductQueryBuilderInterface $pqbAssoProductModel,
-        ProductInterface $currentProduct,
+        ProductModelInterface $currentProduct,
         ProductModelInterface $parent,
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
@@ -124,7 +125,6 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associatedProductModel->getCode()->willReturn('associated_product_model_1');
         $associatedProductModel->getId()->willReturn('2');
         $currentProduct->getAllAssociations()->willReturn($associationCollection);
-        $currentProduct->getIdentifier()->willReturn('current_product');
         $currentProduct->getParent()->willReturn($parent);
 
         $parent->getAllAssociations()->willReturn($parentAssociationCollection);

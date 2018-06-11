@@ -54,6 +54,8 @@ datagrid:
             updated:
                 label:         Updated At
                 type:          field
+            from_inheritance:
+                frontend_type: boolean
         properties:
             id: ~
             document_type: ~
