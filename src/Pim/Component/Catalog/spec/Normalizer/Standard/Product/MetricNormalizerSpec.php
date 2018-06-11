@@ -57,4 +57,23 @@ class MetricNormalizerSpec extends ObjectBehavior
             'unit'   => 'KILOGRAM'
         ]);
     }
+
+    function it_returns_empty_unit_if_it_is_an_empty_amount(
+        MetricInterface $metric,
+        ProductValueInterface $productValue,
+        AttributeInterface $attribute
+    ) {
+        $metric->getValue()->willReturn($productValue);
+        $productValue->getAttribute()->willReturn($attribute);
+        $attribute->isDecimalsAllowed()->willReturn(true);
+
+        $metric->getUnit()->willReturn('KILOGRAM');
+        $metric->getData()->willReturn(null);
+
+        $this->normalize($metric, 'standard', ['is_decimals_allowed' => true])->shouldReturn([
+            'amount' => null,
+            'unit'   => null
+        ]);
+    }
+
 }

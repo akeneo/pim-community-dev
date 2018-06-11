@@ -1,8 +1,12 @@
-# 1.7.x
+# 1.7.22 (2018-06-05)
 
 ## Bug fixes
 
 - PIM-7336: Fix channel update with "do not convert" values for conversion units
+- PIM-7385: Fix memory leak on purge job command
+- PIM-7375: Fix metric unit values on export/import with empty values
+- PIM-7370: disable multisorting on group/user and role/user grid for a better sort experience
+- PIM-7394: add slash as an allowed character for the identifier of a product in the API
 
 # 1.7.21 (2018-04-23)
 
@@ -30,6 +34,7 @@
 ## Improvements
 
 - IM-824: Change message when the user or email is not valid to a more generic message
+- PIM-7253: Do not schedule mongo queries to update normalizedData for newly created entities
 
 ## Bug Fixes
 
