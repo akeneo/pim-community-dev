@@ -16,7 +16,6 @@ use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
-use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver;
 use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsUpdater;
@@ -30,9 +29,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ProductRuleApplier implements ApplierInterface
 {
-    /** @var PaginatorFactoryInterface */
-    protected $paginatorFactory;
-
     /** @var ProductsUpdater */
     protected $productsUpdater;
 
@@ -48,28 +44,31 @@ class ProductRuleApplier implements ApplierInterface
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
 
+    /** @var int */
+    protected $pageSize;
+
     /**
-     * @param PaginatorFactoryInterface $paginatorFactory
      * @param ProductsUpdater           $productsUpdater
      * @param ProductsValidator         $productsValidator
      * @param ProductsSaver             $productsSaver
      * @param EventDispatcherInterface  $eventDispatcher
      * @param ObjectDetacherInterface   $objectDetacher
+     * @param int                       $pageSize
      */
     public function __construct(
-        PaginatorFactoryInterface $paginatorFactory,
         ProductsUpdater $productsUpdater,
         ProductsValidator $productsValidator,
         ProductsSaver $productsSaver,
         EventDispatcherInterface $eventDispatcher,
-        ObjectDetacherInterface $objectDetacher
+        ObjectDetacherInterface $objectDetacher,
+        $pageSize = 1000
     ) {
-        $this->paginatorFactory = $paginatorFactory;
         $this->productsUpdater = $productsUpdater;
         $this->productsValidator = $productsValidator;
         $this->productsSaver = $productsSaver;
         $this->eventDispatcher = $eventDispatcher;
         $this->objectDetacher = $objectDetacher;
+        $this->pageSize = $pageSize;
     }
 
     /**
@@ -79,13 +78,17 @@ class ProductRuleApplier implements ApplierInterface
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_APPLY, new SelectedRuleEvent($rule, $subjectSet));
 
-        $paginator = $this->paginatorFactory->createPaginator($subjectSet->getSubjectsCursor());
+        $productsPage = [];
+        foreach ($subjectSet->getSubjectsCursor() as $product) {
+            $productsPage[] = $product;
+            if (count($productsPage) >= $this->pageSize) {
+                $this->updateProducts($rule, $productsPage);
+                $productsPage = [];
+            }
+        }
 
-        foreach ($paginator as $productsPage) {
-            $this->productsUpdater->update($rule, $productsPage);
-            $validProducts = $this->productsValidator->validate($rule, $productsPage);
-            $this->productsSaver->save($rule, $validProducts);
-            $this->detachProducts($productsPage);
+        if (count($productsPage) > 0) {
+            $this->updateProducts($rule, $productsPage);
         }
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
@@ -99,5 +102,17 @@ class ProductRuleApplier implements ApplierInterface
         foreach ($productsPage as $product) {
             $this->objectDetacher->detach($product);
         }
+    }
+
+    /**
+     * @param RuleInterface $rule
+     * @param array $products
+     */
+    protected function updateProducts(RuleInterface $rule, array $products)
+    {
+        $this->productsUpdater->update($rule, $products);
+        $validProducts = $this->productsValidator->validate($rule, $products);
+        $this->productsSaver->save($rule, $validProducts);
+        $this->detachProducts($products);
     }
 }
