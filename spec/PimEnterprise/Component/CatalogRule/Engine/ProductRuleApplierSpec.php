@@ -6,6 +6,7 @@ use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -18,6 +19,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class ProductRuleApplierSpec extends ObjectBehavior
 {
     function let(
+        PaginatorFactoryInterface $paginatorFactory,
         ProductsUpdater $productsUpdater,
         ProductsValidator $productsValidator,
         ProductsSaver $productsSaver,
@@ -25,6 +27,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ObjectDetacherInterface $objectDetacher
     ) {
         $this->beConstructedWith(
+            $paginatorFactory,
             $productsUpdater,
             $productsValidator,
             $productsSaver,

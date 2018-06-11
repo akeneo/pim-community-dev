@@ -16,6 +16,7 @@ use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver;
 use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsUpdater;
@@ -29,6 +30,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ProductRuleApplier implements ApplierInterface
 {
+    /** @var PaginatorFactoryInterface */
+    protected $paginatorFactory;
+
     /** @var ProductsUpdater */
     protected $productsUpdater;
 
@@ -48,6 +52,9 @@ class ProductRuleApplier implements ApplierInterface
     protected $pageSize;
 
     /**
+     * @TODO @merge: refactor on master: remove PaginatorFactoryInterface from the constructor
+     *
+     * @param PaginatorFactoryInterface $paginatorFactory
      * @param ProductsUpdater           $productsUpdater
      * @param ProductsValidator         $productsValidator
      * @param ProductsSaver             $productsSaver
@@ -56,6 +63,7 @@ class ProductRuleApplier implements ApplierInterface
      * @param int                       $pageSize
      */
     public function __construct(
+        PaginatorFactoryInterface $paginatorFactory,
         ProductsUpdater $productsUpdater,
         ProductsValidator $productsValidator,
         ProductsSaver $productsSaver,
@@ -63,6 +71,7 @@ class ProductRuleApplier implements ApplierInterface
         ObjectDetacherInterface $objectDetacher,
         $pageSize = 1000
     ) {
+        $this->paginatorFactory = $paginatorFactory;
         $this->productsUpdater = $productsUpdater;
         $this->productsValidator = $productsValidator;
         $this->productsSaver = $productsSaver;

@@ -5,9 +5,19 @@ parameters:
     pimee_catalog_rule.applier.product.saver.class:       PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver
     pimee_catalog_rule.builder.product.class:             PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder
     pimee_catalog_rule.selector.product.class:            PimEnterprise\Component\CatalogRule\Engine\ProductRuleSelector
+    # @merge: remove the 2 following parameters in master
+    pimee_catalog_rule.paginator.paginator_factory.class: Akeneo\Component\StorageUtils\Cursor\PaginatorFactory
+    pimee_catalog_rule.paginator.class:                   Akeneo\Component\StorageUtils\Cursor\Paginator
     pimee_catalog_rule.paginator.page_size: 1000
 
 services:
+    # @merge: remove the pimee_catalog_rule.product.paginator service definition in master
+    pimee_catalog_rule.product.paginator:
+        class: '%pimee_catalog_rule.paginator.paginator_factory.class%'
+        arguments:
+            - '%pimee_catalog_rule.paginator.class%'
+            - '%pimee_catalog_rule.paginator.page_size%'
+
     pimee_catalog_rule.builder.product:
         class: '%pimee_catalog_rule.builder.product.class%'
         arguments:
@@ -27,6 +37,7 @@ services:
     pimee_catalog_rule.applier.product:
         class: '%pimee_catalog_rule.applier.product.class%'
         arguments:
+            - '@pimee_catalog_rule.product.paginator'
             - '@pimee_catalog_rule.applier.product.updater'
             - '@pimee_catalog_rule.applier.product.validator'
             - '@pimee_catalog_rule.applier.product.saver'
