@@ -19,11 +19,11 @@ class GetProductIntegration extends AbstractProductTestCase
         $products = $this->get('pim_catalog.repository.product')->findAll();
         $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
 
-        $product = $this->get('pim_catalog.repository.product')->findoneByIdentifier('foo');
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
 
         $association = $product->getAssociationForTypeCode('X_SELL');
         $association->addProductModel(
-            $this->get('pim_catalog.repository.product_model')->findoneByIdentifier('bar')
+            $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('bar')
         );
         $errors = $this->get('pim_catalog.validator.product')->validate($product);
 

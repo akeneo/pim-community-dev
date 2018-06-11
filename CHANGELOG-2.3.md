@@ -15,6 +15,7 @@
 - PIM-6250: As Julia, I would like to change the parent of a variant product/sub product model from the UI
 - PIM-6784: Improve the product grid search with categories
 - PIM-7308: As Julia, I would like to bulk add product models associations if product models are selected.
+- PIM-7001: Don't display remove button on an association if it comes from inheritance
 
 ## Technical improvements
 
