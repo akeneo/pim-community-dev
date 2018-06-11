@@ -37,6 +37,9 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /* @var string */
     protected $jobExecutionClass;
 
+    /* @var int */
+    protected $batchSize;
+
     /**
      * Provides the doctrine entity manager
      *
@@ -49,7 +52,8 @@ class DoctrineJobRepository implements JobRepositoryInterface
         EntityManager $entityManager,
         $jobExecutionClass,
         $jobInstanceClass,
-        $jobInstanceRepoClass
+        $jobInstanceRepoClass,
+        $batchSize = 100
     ) {
         $currentConn = $entityManager->getConnection();
 
@@ -87,6 +91,8 @@ class DoctrineJobRepository implements JobRepositoryInterface
         // the good way to fix this is to configure the new connection in a more classic way and to re-write parts of
         // BatchBundle to avoid job instance merges and other weirdnesses
         // ... end of the ugly fix ...
+
+        $this->batchSize = $batchSize;
     }
 
     /**
@@ -190,8 +196,12 @@ class DoctrineJobRepository implements JobRepositoryInterface
      */
     public function remove(array $jobsExecutions)
     {
-        foreach ($jobsExecutions as $jobsExecution) {
+        foreach ($jobsExecutions as $i => $jobsExecution) {
             $this->jobManager->remove($jobsExecution);
+
+            if (0 === $i % $this->batchSize) {
+                $this->jobManager->flush();
+            }
         }
         $this->jobManager->flush();
     }
