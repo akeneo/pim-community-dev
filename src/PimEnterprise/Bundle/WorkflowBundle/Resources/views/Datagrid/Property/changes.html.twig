@@ -26,7 +26,7 @@
                     data-locale="{{ change.locale }}"
                     data-attribute="{{ code }}"
                     data-author="{{ record.getValue('author') }}"
-                    data-draft="{{ record.getValue('id') }}"
+                    data-draft="{{ record.getValue('proposal_id') }}"
                 >
                     <thead>
                         <tr>
@@ -49,7 +49,7 @@
                                             data-locale="{{ change.locale }}"
                                             data-attribute="{{ code }}"
                                             data-author="{{ record.getValue('author') }}"
-                                            data-draft="{{ record.getValue('id') }}"
+                                            data-draft="{{ record.getValue('proposal_id') }}"
                                             data-action="approve"
                                             title="{{ 'pimee_workflow.product_draft.action.partial_approve'|trans({'%attribute%': code, '%product%': record.getValue('product').id}) }}">
                                             <i class="icon-ok"></i>
@@ -62,7 +62,7 @@
                                             data-locale="{{ change.locale }}"
                                             data-attribute="{{ code }}"
                                             data-author="{{ record.getValue('author') }}"
-                                            data-draft="{{ record.getValue('id') }}"
+                                            data-draft="{{ record.getValue('proposal_id') }}"
                                             data-action="reject"
                                             title="{{ 'pimee_workflow.product_draft.action.partial_reject'|trans({'%attribute%': code, '%product%': record.getValue('product').id}) }}">
                                             <i class="icon-remove"></i>

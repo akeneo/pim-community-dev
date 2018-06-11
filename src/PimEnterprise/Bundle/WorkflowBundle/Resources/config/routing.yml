@@ -14,6 +14,10 @@ product_draft:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/product_draft.yml'
     prefix: /product_draft
 
+product_model_draft:
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/product_model_draft.yml'
+    prefix: /product_model_draft
+
 proposal:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/proposal.yml'
     prefix: /proposal

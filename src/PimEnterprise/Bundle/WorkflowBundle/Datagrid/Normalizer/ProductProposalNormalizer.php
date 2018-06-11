@@ -45,8 +45,9 @@ class ProductProposalNormalizer implements NormalizerInterface, NormalizerAwareI
         $data['status'] = $proposalProduct->getStatus();
         $data['proposal'] = $proposalProduct;
         $data['search_id'] = $proposalProduct->getEntityWithValue()->getIdentifier();
-        $data['id'] = $proposalProduct->getId();
+        $data['id'] = 'product_draft_' . (string) $proposalProduct->getId();
         $data['document_type'] = 'product_draft';
+        $data['proposal_id'] = $proposalProduct->getId();
 
         return $data;
     }

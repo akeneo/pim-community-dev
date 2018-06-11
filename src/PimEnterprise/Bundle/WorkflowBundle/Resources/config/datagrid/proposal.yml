@@ -32,7 +32,8 @@ datagrid:
                 template: PimEnterpriseWorkflowBundle:Datagrid:Property/product_draft_status.html.twig
                 frontend_type: html
         properties:
-            id:
+            id: ~
+            proposal_id:
                 type:          field
                 data_name:     search_id
             document_type: ~
@@ -40,12 +41,12 @@ datagrid:
                 type: url
                 route: pimee_workflow_product_draft_approve
                 params:
-                    - id
+                    - proposal_id
             refuse_link:
                 type: url
                 route: pimee_workflow_product_draft_refuse
                 params:
-                    - id
+                    - proposal_id
         actions:
             approve:
                 type: approve-proposal

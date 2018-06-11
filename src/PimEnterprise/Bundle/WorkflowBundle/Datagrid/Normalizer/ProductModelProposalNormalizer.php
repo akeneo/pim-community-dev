@@ -45,8 +45,9 @@ class ProductModelProposalNormalizer implements NormalizerInterface, NormalizerA
         $data['status'] = $proposalModelProduct->getStatus();
         $data['proposal'] = $proposalModelProduct;
         $data['search_id'] = $proposalModelProduct->getEntityWithValue()->getCode();
-        $data['id'] = $proposalModelProduct->getId();
+        $data['id'] = 'product_model_draft_' . (string) $proposalModelProduct->getId();
         $data['document_type'] = 'product_model_draft';
+        $data['proposal_id'] = $proposalModelProduct->getId();
 
         return $data;
     }
