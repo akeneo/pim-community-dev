@@ -147,3 +147,4 @@
 - Move `Pim\Component\Catalog\Updater\AttributeOptionUpdater` to `Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater`
 - Move `Pim\Component\Catalog\Updater\FamilyUpdater` to `Akeneo\Pim\Structure\Component\Updater\FamilyUpdater`
 - Move `Akeneo\Tool\Component\Api\Updater\FamilyVariantUpdater` to `Akeneo\Pim\Structure\Component\Updater\ExternalApi\FamilyVariantUpdater`
+- Move `Pim\Component\Catalog\Updater\FamilyVariantUpdater` to `Akeneo\Pim\Structure\Component\Updater\FamilyVariantUpdater`

@@ -125,3 +125,4 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Update
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Updater\\AttributeOptionUpdater/Akeneo\\Pim\\Structure\\Component\\Updater\\AttributeOptionUpdater/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Updater\\FamilyUpdater/Akeneo\\Pim\\Structure\\Component\\Updater\\FamilyUpdater/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\\Tool\\Component\\Api\\Updater\\FamilyVariantUpdater/Akeneo\\Pim\\Structure\\Component\\Updater\\ExternalApi\\FamilyVariantUpdater/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Updater\\FamilyVariantUpdater/Akeneo\\Pim\\Structure\\Component\\Updater\\FamilyVariantUpdater/g'
