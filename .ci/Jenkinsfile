@@ -11,6 +11,7 @@ String launchEndToEndTests = "yes"
 String verboseOutputs = "yes"
 String slackChannel = ""
 String tag = "eu.gcr.io/akeneo-ci/pim-community-dev:${env.BRANCH_NAME}"
+String composer_command = "update"
 
 stage("Build") {
     milestone 1
@@ -52,7 +53,7 @@ stage("Build") {
                     containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
                 ]) {container('docker') {
                     checkout scm
-                    sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag} ."
+                    sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composer_command} ."
                 }}
             },
             "pim-ee": {
