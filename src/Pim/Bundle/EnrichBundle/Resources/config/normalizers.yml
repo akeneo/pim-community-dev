@@ -10,7 +10,6 @@ parameters:
     pim_enrich.normalizer.collection.class:                        Pim\Bundle\EnrichBundle\Normalizer\CollectionNormalizer
     pim_enrich.normalizer.association_type.class:                  Pim\Bundle\EnrichBundle\Normalizer\AssociationTypeNormalizer
     pim_enrich.normalizer.group_type.class:                        Pim\Bundle\EnrichBundle\Normalizer\GroupTypeNormalizer
-    pim_enrich.normalizer.family_variant.class:                    Pim\Bundle\EnrichBundle\Normalizer\FamilyVariantNormalizer
     pim_enrich.normalizer.attribute.versioned.class:               Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
@@ -120,14 +119,6 @@ services:
 
     pim_enrich.normalizer.collection:
         class: '%pim_enrich.normalizer.collection.class%'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
-
-    pim_enrich.normalizer.family_variant:
-        class: '%pim_enrich.normalizer.family_variant.class%'
-        arguments:
-            - '@pim_serializer'
-            - '@pim_enrich.provider.structure_version.family_variant'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

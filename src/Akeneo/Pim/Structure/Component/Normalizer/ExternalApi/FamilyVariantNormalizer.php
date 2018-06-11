@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Component\Api\Normalizer;
+namespace Akeneo\Pim\Structure\Component\Normalizer\ExternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Standard;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\Normalizer\Standard\FamilyVariantNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyVariantNormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

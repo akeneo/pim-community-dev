@@ -110,3 +110,26 @@ services:
             - '@pim_catalog.repository.locale'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+    ### Family Variant
+    pim_enrich.normalizer.family_variant:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\FamilyVariantNormalizer'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_enrich.provider.structure_version.family_variant'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_api.normalizer.family_variant:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\FamilyVariantNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family_variant'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.family_variant:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyVariantNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

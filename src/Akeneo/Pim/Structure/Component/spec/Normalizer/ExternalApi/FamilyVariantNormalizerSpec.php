@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\Tool\Component\Api\Normalizer;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\ExternalApi;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Component\Api\Normalizer\FamilyVariantNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\FamilyVariantNormalizer;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -16,7 +16,7 @@ class FamilyVariantNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(FamilyVariantNormalizer::class);
+        $this->shouldHaveType(\Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\FamilyVariantNormalizer::class);
     }
 
     function it_supports_a_family_variant(FamilyVariantInterface $familyVariant)

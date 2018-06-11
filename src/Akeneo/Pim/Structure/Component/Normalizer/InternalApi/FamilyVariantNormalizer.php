@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Normalizer;
+namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
@@ -25,8 +25,8 @@ class FamilyVariantNormalizer implements NormalizerInterface
     protected $structureVersionProvider;
 
     /**
-     * @param NormalizerInterface                $normalizer
-     * @param StructuredVersionProviderInterface $structureVersionProvider
+     * @param NormalizerInterface               $normalizer
+     * @param StructureVersionProviderInterface $structureVersionProvider
      */
     public function __construct(
         NormalizerInterface $normalizer,
