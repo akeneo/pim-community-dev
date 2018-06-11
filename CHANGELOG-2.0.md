@@ -1,5 +1,13 @@
 # 2.0.27 (2018-06-13)
 
+## Bug fixes
+
+- PIM-7423: Fix rules not applied on every product if rule action affects the conditions
+
+## BC breaks
+
+- Change the constructor of `PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier` to remove `Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface`  
+
 # 2.0.26 (2018-06-06) 
 
 ## Bug fixes
