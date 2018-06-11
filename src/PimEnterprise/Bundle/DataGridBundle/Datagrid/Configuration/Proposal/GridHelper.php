@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\ProductDraftGrantedAttributeProvider;
 use PimEnterprise\Component\Security\Attributes;
@@ -116,7 +117,35 @@ class GridHelper
 
         foreach ($proposals as $proposal) {
             $product = $proposal->getProduct();
-            $choices[$product->getLabel()] = $product->getId();
+            if ($product instanceof EntityWithFamilyVariantInterface) {
+
+                $parentProduct = $product->getParent();
+                if (null === $parentProduct) {
+                    continue;
+                }
+
+                $familyVariant = $parentProduct->getFamilyVariant();
+                if (null === $familyVariant) {
+                    continue;
+                }
+
+                $variationLevel = $product->getVariationLevel();
+                $variantAttributeSet = $familyVariant->getVariantAttributeSet($variationLevel);
+                if (null === $variantAttributeSet) {
+                    continue;
+                }
+
+                $productLabel = trim($product->getLabel());
+                $axes = $familyVariant->getAxes();
+
+                foreach ($axes as $axe) {
+                    $productLabel .= ' - ' . $product->getValue($axe->getCode());
+                }
+
+                $choices[$productLabel] = $product->getId();
+            } else {
+                $choices[$product->getLabel()] = $product->getId();
+            }
         }
         asort($choices);
 
