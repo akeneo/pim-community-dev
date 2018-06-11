@@ -54,9 +54,11 @@ define(
                         editMode: this.context.editMode
                     }));
 
-                    this.$('.AknAssetCollectionField-list').sortable({
-                        update: this.updateDataFromDom.bind(this)
-                    });
+                    if ('view' !== this.context.editMode) {
+                        this.$('.AknAssetCollectionField-list').sortable({
+                            update: this.updateDataFromDom.bind(this)
+                        });
+                    }
 
                     this.delegateEvents();
                 });
