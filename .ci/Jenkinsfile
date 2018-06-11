@@ -46,6 +46,7 @@ stage("Build") {
             launchEndToEndTests = userInput['launchEndToEndTests']
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
+            composer_command = "install"
         }
     }
     milestone 2
