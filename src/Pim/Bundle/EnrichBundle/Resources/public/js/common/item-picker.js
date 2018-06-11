@@ -267,7 +267,7 @@ define(
              */
             setItems: function (itemCodes) {
                 $('#item-picker-append-field').val(itemCodes.join(','));
-                this.updateBasket();
+                this.updateBasket(itemCodes);
 
                 return this;
             },
@@ -310,12 +310,16 @@ define(
             /**
              * Fetches the new items and render the basket
              */
-            updateBasket: function () {
-                FetcherRegistry.getFetcher(this.config.fetcher).fetchByIdentifiers(this.getItems())
-                    .then(function (items) {
-                        this.renderBasket(items);
-                        this.delegateEvents();
-                    }.bind(this));
+            updateBasket: function (itemCodes) {
+                FetcherRegistry.getFetcher(this.config.fetcher).fetchByIdentifiers(this.getItems()).then(items => {
+                    let orderedItems = [];
+                    itemCodes.forEach(itemCode => {
+                        orderedItems = orderedItems.concat(items.filter(item => item.code === itemCode));
+                    });
+
+                    this.renderBasket(orderedItems);
+                    this.delegateEvents();
+                });
             },
 
             /**
