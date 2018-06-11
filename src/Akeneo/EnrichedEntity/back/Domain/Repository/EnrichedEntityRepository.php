@@ -10,6 +10,8 @@ interface EnrichedEntityRepository
 {
     public function add(EnrichedEntity $enrichedEntity): void;
 
+    public function update(EnrichedEntity $enrichedEntity): void;
+
     public function findOneByIdentifier(EnrichedEntityIdentifier $identifier): ?EnrichedEntity;
 
     public function all(): array;

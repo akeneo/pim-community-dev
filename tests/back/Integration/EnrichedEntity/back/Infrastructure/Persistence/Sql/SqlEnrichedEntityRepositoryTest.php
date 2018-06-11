@@ -36,7 +36,7 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
      */
     public function it_adds_enriched_entity_and_returns_it() {
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::define($identifier, LabelCollection::fromArray(['en_US' => 'Designer', 'fr_FR' => 'Concepteur']));
+        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
 
         $this->repository->add($enrichedEntity);
 
@@ -59,11 +59,11 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
     public function it_returns_all_the_enriched_entities_added()
     {
         $identifier1 = EnrichedEntityIdentifier::fromString('designer');
-        $enrichedEntity1 = EnrichedEntity::define($identifier1, LabelCollection::fromArray(['en_US' => 'Designer', 'fr_FR' => 'Concepteur']));
+        $enrichedEntity1 = EnrichedEntity::create($identifier1, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
         $identifier2 = EnrichedEntityIdentifier::fromString('fabricant');
-        $enrichedEntity2 = EnrichedEntity::define($identifier2, LabelCollection::fromArray(['en_US' => 'Manufacturer', 'fr_FR' => 'Fabricant']));
+        $enrichedEntity2 = EnrichedEntity::create($identifier2, ['en_US' => 'Manufacturer', 'fr_FR' => 'Fabricant']);
         $identifier3 = EnrichedEntityIdentifier::fromString('other');
-        $enrichedEntity3 = EnrichedEntity::define($identifier3, LabelCollection::fromArray([]));
+        $enrichedEntity3 = EnrichedEntity::create($identifier3, []);
 
         $this->repository->add($enrichedEntity1);
         $this->repository->add($enrichedEntity2);

@@ -6,7 +6,6 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -49,6 +48,32 @@ SQL;
         if ($statement->rowCount() !== 1) {
             throw new \LogicException(
                 sprintf('Expected to add one enriched entity. "%d" added', $statement->rowCount())
+            );
+        }
+    }
+
+    /**
+     * @param EnrichedEntity $enrichedEntity
+     */
+    public function update(EnrichedEntity $enrichedEntity): void
+    {
+        $serializedLabels = $this->getSerializedLabels($enrichedEntity);
+        $update = <<<SQL
+        UPDATE akeneo_enriched_entity_enriched_entity 
+        SET labels = :labels
+        WHERE identifier = :identifier;
+SQL;
+        $statement = $this->sqlConnection->executeQuery(
+            $update,
+            [
+                'identifier' => (string) $enrichedEntity->getIdentifier(),
+                'labels' => $serializedLabels
+            ]
+        );
+
+        if ($statement->rowCount() !== 1) {
+            throw new \LogicException(
+                sprintf('Expected to update one enriched entity. "%d" updated', $statement->rowCount())
             );
         }
     }
@@ -100,6 +125,7 @@ SQL;
 
     /**
      * @param string $identifier
+     * @param string $normalizedLabels
      *
      * @return EnrichedEntity
      */
@@ -110,11 +136,11 @@ SQL;
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
 
-        $enrichedEntity = EnrichedEntity::define(
+        $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString(
                 $identifier
             ),
-            LabelCollection::fromArray($labels)
+            $labels
         );
 
         return $enrichedEntity;
@@ -123,7 +149,7 @@ SQL;
     /**
      * @param EnrichedEntity $enrichedEntity
      *
-     * @return array
+     * @return string
      */
     private function getSerializedLabels(EnrichedEntity $enrichedEntity): string
     {

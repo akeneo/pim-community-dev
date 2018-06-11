@@ -12,10 +12,5 @@ parameters:
         class: AkeneoEnterprise\Test\Acceptance\ProductAsset\ChannelConfiguration\InMemoryChannelConfigurationRepository
 
 services:
-    pim_catalog.repository.enriched_entity:
+    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
         class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryEnrichedEntityRepository
-
-    pim_enriched_entity.application.show_enriched_entity:
-        class: 'Akeneo\EnrichedEntity\back\Application\EnrichedEntity\Show\ShowEnrichedEntityHandler'
-        arguments:
-            - '@pim_catalog.repository.enriched_entity'

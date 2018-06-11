@@ -1,10 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-const viewBuilder = require('pim/form-builder')
+const viewBuilder = require('pim/form-builder');
 
 interface PimViewProps {
   viewName: string;
+  className: string;
 }
 
 export default class PimView extends React.Component<PimViewProps, {}> {
@@ -24,7 +25,7 @@ export default class PimView extends React.Component<PimViewProps, {}> {
   }
 
   render() {
-    return <div></div>;
+    return <div className={this.props.className}></div>;
   }
 
   componentWillUnmount() {

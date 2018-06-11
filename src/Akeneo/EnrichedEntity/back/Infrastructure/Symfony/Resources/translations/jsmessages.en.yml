@@ -1,6 +1,16 @@
 pim_enriched_entity:
+    button:
+        save: Save
     enriched_entity:
         title: Entities
+        tab:
+            records: Records
+            attributes: Attributes
+            properties: Properties
+        properties:
+            title: Entity properties
+            identifier: Identifier
+            label: Label
         index:
             grid:
                 count: "{{ count }} results"

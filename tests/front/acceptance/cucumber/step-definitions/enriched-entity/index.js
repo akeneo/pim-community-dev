@@ -1,11 +1,14 @@
 const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
-const {answerJson} = require('../../../../../../vendor/akeneo/pim-community-dev/tests/front/acceptance/cucumber/tools.js');
+
+const {
+    tools: { answerJson }
+} = require('../../test-helpers.js');
+
 module.exports = async function (cucumber) {
   const { Given, Then, When } = cucumber;
   const assert = require('assert');
 
   Given('the following enriched entities:', function (enrichedEntities) {
-    debugger;
     const enrichedEntityResponse = enrichedEntities.hashes().map(function (enrichedEntity) {
       const enrichedEntityBuilder = new EnrichedEntityBuilder();
 
@@ -13,15 +16,22 @@ module.exports = async function (cucumber) {
         enrichedEntityBuilder.withIdentifier(enrichedEntity.identifier);
       }
       if (undefined !== enrichedEntity.labels) {
-        enrichedEntityBuilder.withLabels(enrichedEntity.labels);
+        enrichedEntityBuilder.withLabels(JSON.parse(enrichedEntity.labels));
       }
 
       return enrichedEntityBuilder.build();
     });
 
+    enrichedEntityResponse.forEach(enrichedEntity => {
+      this.page.on('request', request => {
+        if (`http://pim.com//rest/enriched_entity/${enrichedEntity.identifier}` === request.url()) {
+          answerJson(request, enrichedEntity);
+        }
+      });
+    })
+
     this.page.on('request', request => {
-      if (request.url().includes('/rest/enriched_entity')) {
-        debugger;
+      if ('http://pim.com//rest/enriched_entity' === request.url()) {
         answerJson(request, { items: enrichedEntityResponse, total: 1000 });
       }
     });
@@ -29,10 +39,9 @@ module.exports = async function (cucumber) {
 
   When('the user ask for the enriched entity list', async function () {
     await this.page.evaluate(async () => {
-      debugger;
-      const Controller = require('pim/controller/enriched-entity');
+      const Controller = require('pim/controller/enriched-entity/list');
       const controller = new Controller();
-      controller.renderRoute()
+      controller.renderRoute();
       await document.getElementById('app').appendChild(controller.el);
     });
 
@@ -52,6 +61,11 @@ module.exports = async function (cucumber) {
 
   Then('I get an enriched entity {string}', async function (identifier) {
     await this.page.waitForSelector(`.AknGrid-bodyRow[data-identifier="${identifier}"]`);
+  });
+
+  Then('there is no enriched entity', async function () {
+    const rows = await this.page.$$('.AknGrid-bodyRow');
+    assert.equal(rows.length, 0);
   });
 
   Then('the user ask for the next enriched entities', async function () {

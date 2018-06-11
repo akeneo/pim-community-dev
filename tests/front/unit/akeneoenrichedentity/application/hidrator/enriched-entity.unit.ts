@@ -21,4 +21,10 @@ describe('akeneo > enriched entity > application > hidrator --- enriched entity'
 
     expect(hidrate({identifier: 'designer', labels: {en_US: 'Designer'}}));
   });
+
+  test('It throw an error if I pass a malformed enriched entity', () => {
+    expect(() => hidrator()({})).toThrow();
+    expect(() => hidrator()({labels: {}})).toThrow();
+    expect(() => hidrator()({identifier: 'sofa'})).toThrow();
+  });
 });

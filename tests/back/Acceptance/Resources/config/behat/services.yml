@@ -3,7 +3,7 @@ services:
     test.enriched_entity.show_enriched_entity.context:
         class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context\ShowEnrichedEntityContext
         arguments:
-            - '@__symfony__.pim_enriched_entity.application.show_enriched_entity'
-            - '@__symfony__.pim_catalog.repository.enriched_entity'
+            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.list_enriched_entity_handler'
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
         tags:
             - { name: fob.context_service }
