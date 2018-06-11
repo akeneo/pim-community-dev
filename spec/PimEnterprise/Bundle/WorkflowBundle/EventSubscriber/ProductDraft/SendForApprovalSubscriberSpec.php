@@ -84,7 +84,7 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
                         'mary'
                     ]
                 ],
-                'sku'    => [
+                'identifier'    => [
                     'value' => '666',
                     'type' => 1,
                 ],

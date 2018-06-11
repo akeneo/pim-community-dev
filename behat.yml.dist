@@ -57,8 +57,7 @@ legacy:
                     - '@pim_catalog.saver.product_model'
                     - '@pim_catalog.validator.product'
                     - '@pim_versioning.repository.version'
-                - Pim\Behat\Context\Domain\Enrich\VariantProductContext:
-                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Enrich\ProductContext:
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.updater.product'
                     - '@pim_catalog.saver.product'
@@ -95,7 +94,7 @@ legacy:
                     - 1024
                 - PimEnterprise\Behat\Context\JobContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Pim\Behat\Context\ImportFileContext:
+                - Pim\Behat\Context\ImportExportFileContext:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
@@ -127,6 +126,11 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
+                - PimEnterprise\Behat\Context\ProductAssetCollectionContext:
+                    - '@pim_catalog.updater.product'
+                    - '@pim_catalog.saver.product'
+                    - '@pim_catalog.repository.product'
+                    - '@doctrine.orm.entity_manager'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

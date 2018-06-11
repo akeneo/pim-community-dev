@@ -63,7 +63,7 @@ Feature: List proposals
       | author              | in list      | Julia         | 1     | jacket                  |
       | author              | in list      | Sandra,Mary   | 2     | sweater, tshirt         |
       | label_or_identifier | equals       | tshirt        | 1     | tshirt                  |
-      | sku                 | in list      | tshirt,jacket | 2     | tshirt, jacket          |
+      | identifier          | in list      | tshirt,jacket | 2     | tshirt, jacket          |
       | name                | is not empty |               | 3     | tshirt, sweater, jacket |
       | description         | is not empty |               | 1     | tshirt                  |
       | price               | is not empty | USD           | 1     | jacket                  |

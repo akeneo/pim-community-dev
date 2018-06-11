@@ -20,3 +20,13 @@ swiftmailer:
 
 assetic:
     use_controller: false
+
+parameters:
+    installer_data:       PimEnterpriseInstallerBundle:minimal
+    upload_dir:           '%kernel.root_dir%/../var/cache/uploads/product'
+    archive_dir:          '%kernel.root_dir%/../var/cache/archive'
+    logs_dir:             '%kernel.logs_dir%'
+    catalog_storage_dir:  '%kernel.root_dir%/../var/cache/file_storage/catalog'
+    asset_storage_dir:    '%kernel.root_dir%/../var/cache/file_storage/asset'
+    tmp_storage_dir:      '%kernel.root_dir%/../var/cache/tmp/pim/file_storage'
+    upload_tmp_dir:       '%kernel.root_dir%/../var/cache/tmp/pim/upload_tmp_dir'

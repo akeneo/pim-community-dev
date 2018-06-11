@@ -95,7 +95,8 @@ class ListProductModelWithPermissionIntegration extends ApiTestCase
                     ]
                 },
                 "created": "2016-06-14T13:12:50+02:00",
-                "updated": "2016-06-14T13:12:50+02:00"
+                "updated": "2016-06-14T13:12:50+02:00",
+                "associations": []
             },
             {
                 "_links": {
@@ -129,7 +130,8 @@ class ListProductModelWithPermissionIntegration extends ApiTestCase
                     ]
                 },
                 "created": "2016-06-14T13:12:50+02:00",
-                "updated": "2016-06-14T13:12:50+02:00"
+                "updated": "2016-06-14T13:12:50+02:00",
+                "associations": []
             }
         ]
     }
@@ -149,7 +151,7 @@ JSON;
         $expected = json_decode($expected, true);
 
         if (!isset($result['_embedded'])) {
-            \PHPUnit_Framework_Assert::fail($response->getContent());
+            Assert::fail($response->getContent());
         }
 
         foreach ($result['_embedded']['items'] as $index => $product) {

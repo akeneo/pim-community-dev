@@ -115,9 +115,9 @@ class ProposalWidget implements WidgetInterface
                 'productLabel'     => $proposal->getEntityWithValue()->getLabel(),
                 'authorFullName'   => $this->getAuthorFullName($proposal->getAuthor()),
                 'productReviewUrl' => $route . $this->getProposalGridParametersAsUrl(
-                    $proposal->getAuthor(),
-                    $proposal->getEntityWithValue()->getIdentifier()
-                ),
+                        $proposal->getAuthor(),
+                        $proposal->getEntityWithValue()->getIdentifier()
+                    ),
                 'createdAt' => $this->presenter->present(
                     $proposal->getCreatedAt(),
                     [
@@ -175,7 +175,7 @@ class ProposalWidget implements WidgetInterface
                         $authorUsername,
                     ],
                 ],
-                'sku'    => [
+                'identifier'    => [
                     'value' => $productIdentifier,
                     'type' => 1,
                 ],
