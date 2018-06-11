@@ -1,16 +1,14 @@
 pim_common:
+  actions: Actions
   add: Ajouter
   add_attributes: Ajouter des attributs
   after: Après
   all: Tous
   and: et
   apply: Appliquer
-  attributes: Attributs
-  attribute_groups: Groupes d'attributs
   before: Avant
+  by: par
   cancel: Annuler
-  categories: Catégories
-  channel: Canal
   code: Code
   confirm: Confirmer
   confirm_deletion: Supprimer l'élément
@@ -26,7 +24,6 @@ pim_common:
   label_translations: Traduction des libellés
   less_than: Moins de
   loading: Chargement en cours...
-  locales: Locales
   more_than: Plus de
   next: Suivant
   "no": "Non"
@@ -34,9 +31,9 @@ pim_common:
   not_available: N/A
   now: Maintenant
   ok: OK
+  permissions: Permissions
   previous: Précédent
   properties: Propriétés
-  products: Produits
   save: Enregistrer
   status: État
   to: À
@@ -59,24 +56,32 @@ pim_common:
     ENDS WITH: Finit par
 confirmation:
   remove:
+    title: Supprimer l'élément {{ itemName }}
+    alternative_title: Confirmer la suppression
     item: Êtes-vous sûr(e) de vouloir supprimer cet élément ?
+    item_placeholder: Êtes-vous sûr(e) de vouloir supprimer ce(tte) {{ itemName }} ? Il est impossible d'annuler cette action.
     association_type: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
     attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut ?
+    attribute_from_family: Êtes-vous sûr(e) de vouloir supprimer cet attribut de la famille ?
+    attribute_from_group: Êtes vous sûr(e) de vouloir retirer l'attribut {{ attribute }} de ce groupe d'attributs ?
+    attribute_from_product: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?
     attribute_group: Êtes-vous sûr(e) de vouloir supprimer ce groupe d'attributs ?
     family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
-    family_variant: Êtes-vous sûr(e) de vouloir supprimer la variante de famille ?
+    family_variant: Êtes-vous sûr(e) de vouloir supprimer cette variante de famille ?
     product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
     product_model: Êtes-vous sûr de que vouloir supprimer ce modèle de produit ? Tous ses enfants, modèles de produit et de variantes de produits seront également supprimés.
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
     group: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
     group_type: Êtes-vous sûr(e) de vouloir supprimer ce type de groupe ?
-    import_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
-    export_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
     user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
     role: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
-    job_instance: Êtes-vous sûr(e) de vouloir supprimer cette opération ?
     api_connection: Êtes-vous certain(e) de vouloir révoquer cette connexion API ? Toutes les requêtes API renverront ensuite une erreur.
     products_and_product_models: Êtes-vous sûr(e) de vouloir supprimer les produits et modèles de produits sélectionnés ? Tous les enfants des modèles de produits seront aussi supprimés.
+  leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
+  discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
+  cancel:
+    title: Annuler les modifications
+    message: Attention, vous allez perdre les données non sauvegardées. Êtes-vous sûr(e) de vouloir annuler les modifications sur cette nouvelle option ?
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -96,6 +101,9 @@ pim_datagrid:
     mass_edit: Actions de masse
     sequential_edit: Modification séquentielle
     mass_delete: Suppression massive
+    selected:
+      family: familles sélectionnées
+      product: résultats sélectionnés
   view_selector:
     view: Vues
   actions:
@@ -104,102 +112,53 @@ pim_datagrid:
     delete_product: Supprimer le produit
     change_status: Changer le statut
     toggle_status: Changer le statut
+    other: Autres actions
   empty_results:
     associated_product:
       hint: Il n’y a aucun produit associé
       subHint: 'Cliquez sur le bouton « Ajouter des associations » pour associer ce produit'
-flash:
-  item:
-    removed: Élément supprimé avec succès
-  association_type:
-    removed: Le type d'association a été supprimé avec succès
-  attribute:
-    removed: Attribut supprimé avec succès
-  attribute_group:
-    removed: Groupe d'attributs supprimé avec succès
-  family:
-    removed: Famille supprimée avec succès
-  family_variant:
-    removed: La variante de famille a été supprimée
-  product:
-    removed: Produit supprimé avec succès
-  product_model:
-    removed: Le modèle de produit a bien été supprimé
-  channel:
-    removed: Canal supprimé avec succès
-  group:
-    removed: Groupe supprimé avec succès
-  group_type:
-    removed: Le type de groupe a bien été supprimé
-  import profile:
-    removed: Le profil d'import a bien été supprimé
-  export profile:
-    removed: Le profil d'export a bien été supprimé
-  user:
-    removed: Utilisateur supprimé avec succès
-  role:
-    removed: Le rôle a bien été supprimé
-  job_instance:
-    removed: La tâche a bien été supprimée
-  api_connection:
-    removed: La connexion API a été révoquée avec succès
 error:
-  common: Une erreur est survenue
-  creating:
-    product: Aucun attribut n'est configuré comme identifiant produit ou vous ne disposez pas des droits pour le modifier.
-  removing:
-    item: Impossible de supprimer cet élément
-    association_type: Impossible de supprimer ce type d'association
-    attribute: Impossible de supprimer cet attribut
-    family: Impossible de supprimer cette famille
-    product: Impossible de supprimer ce produit
-    channel: Impossible de supprimer ce canal
-    group: Impossible de supprimer ce groupe
-    group type: Impossible de supprimer ce type de groupe
-    import profile: Impossible de supprimer ce profil d'import
-    export profile: Impossible de supprimer ce profil d'export
-    user: Impossible de supprimer cet utilisateur
-    role: Impossible de supprimer ce rôle
-    attribute_option: Erreur lors de la suppression de l'option de l'attribut
-  saving:
-    attribute_option: Impossible d'enregistrer l'option de l'attribut
-    export_profile: Impossible d'enregistrer le profil d'export. Vérifiez que tous les champs sont correctement remplis.
+  exception: Oups! Une erreur {{ status_code }} s'est produite...
+  forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
 alert:
   attribute_option:
     error_occured_during_submission: Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur
     save_before_edit_other: Veuillez enregistrer vos modifications sur les autres lignes avant de modifier celle-ci
   session_storage:
     not_available: Votre navigateur Internet ne semble pas être compatible avec sessionStorage. Contactez votre administrateur
-confirm:
-  attribute_option:
-    cancel_edition_on_new_option_text: Attention, vous allez perdre les données non sauvegardées. Êtes-vous sûr(e) de vouloir annuler les modifications sur cette nouvelle option ?
-    cancel_edition_on_new_option_title: Annuler les modifications
 pim_enrich:
-  item:
-    list:
-      delete.error: Erreur lors de la suppression de l'élément
-    delete:
-      confirm.content: Êtes-vous sûr(e) de vouloir supprimer {{ itemName }} ? Il est impossible d'annuler cette action
-      confirm.title: Supprimer l'élément {{ itemName }}
-  navigation:
-    link:
-      back_to_grid: Retour à la grille
-    other_actions: Autres actions
   entity:
-    info:
-      update_failed: Échec de la mise à jour
-      update_successful: Mise à jour effectuée avec succès
+    fallback:
+      flash:
+        generic_error: Une erreur est survenue
+        update:
+          fail: Échec de la mise à jour
+          success: Mise à jour effectuée avec succès
+        delete:
+          fail: Impossible de supprimer cet élément
+          success: Élément supprimé avec succès
     product:
-      navigation: Navigation produit
-      infos: Infos produit
-      index_title: "] -Inf, 1] {{ count }} résultat|] 1, Inf [{{ count }} résultats"
-      title: produit
-      locale: Locale
-      category: Catégorie
+      label: produit
+      uppercase_label: Produit
+      plural_label: Produits
+      flash:
+        update:
+          success: Le produit a bien été mis à jour.
+          fail: Le produit n'a pas pu être mis à jour.
+          fields_not_ready: "Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+          already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
+          file_upload: Une erreur s'est produite lors du transfert du fichier.
+        delete:
+          success: Les produits ont bien été supprimés.
+          fail: Le produit n'a pas pu être supprimé.
+        create:
+          success: Produit créé avec succès
+          fail: Aucun attribut n'est configuré comme identifiant produit ou vous ne disposez pas des droits pour le modifier.
+      page_title:
+        index: "] -Inf, 1] {{ count }} résultat|] 1, Inf [{{ count }} résultats"
       subTitle: Créer un produit
       modalTitle: Sélectionnez une action
       filters: Filtres
-      selected: résultats sélectionnés
       common: Commun
       btn:
         enabled: Activé
@@ -214,22 +173,9 @@ pim_enrich:
         modified: Modifié
         old_value: Ancienne valeur
         new_value: Nouvelle valeur
-        actions: Actions
-      info:
-        deletion_successful: Les produits ont bien été supprimés.
-        deletion_failed: Le produit n'a pas pu être supprimé.
-        update_successful: Le produit a bien été mis à jour.
-        update_failed: Le produit n'a pas pu être mis à jour.
-        field_not_ready: "Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
-      error:
-        upload: Une erreur s'est produite lors du transfert du fichier.
       meta:
-        created_by: par
-        updated_by: par
+        infos: Infos produit
         updated: Dernière mise à jour
-        family:
-          title: Famille
         family_variant:
           title: Variante
         groups:
@@ -238,7 +184,6 @@ pim_enrich:
             title: Groupe {{ group }}
             view_group: Afficher le groupe
             more_products: '{{ count }} produits supplémentaires...'
-        locale: Locale
       copy:
         select: Sélectionner
         all_visible: Tous les éléments visibles
@@ -252,78 +197,100 @@ pim_enrich:
       media:
         upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
       create_popin:
-        type: Produit
         labels:
           family: Choisir une famille
           family_variant: Sélectionnez une variante de famille
-      message:
-        created: Produit créé avec succès
       completeness: Complet
       sequential_edit:
         item_limit: Seuls les 1000 premiers sont affichés dans cette modification séquentielle ({{ count }} sélectionnés)
         empty: Votre sélection est vide, veuillez modifier vos critères de recherche
     product_model:
+      label: modèle de produits
+      uppercase_label: Modèle de produit
+      plural_label: Modèles de produits
+      flash:
+        create:
+          success: Le modèle de produit a bien été créé
+        update:
+          success: Le modèle de produit a été mis à jour. La complétude de ses produits variants va être recalculée.
+          fail: Le modèle de produit n'a pas pu être mis à jour.
+          fields_not_ready: "Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+        delete:
+          success: Le modèle de produit a bien été supprimé.
+          fail: Impossible de supprimer ce modèle de produit
+      choose: Choisissez un modèle de produit
       create_popin:
-        type: Modèle de produit
         title: Créer un modèle de produit
         content: Un modèle de produit rassemble des variantes de produits pour faciliter l'enrichissement de leurs propriétés communes.
-      info:
-        create_successful: Le modèle de produit a bien été créé
-        update_successful: Le modèle de produit a été mis à jour. La complétude de ses produits variants va être recalculée.
-        deletion_successful: Le modèle de produit a bien été supprimé.
-        update_failed: Le modèle de produit n'a pas pu être mis à jour.
-        field_not_ready: "Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
       read_only_parent_attribute_from_common: Cet attribut peut être mis à jour dans les attributs communs.
       read_only_parent_attribute_from_model: "Cet attribut peut être mis à jour sur les attributs par {{ axes }}"
       variant_axis: Axe de variante
-      title: modèles de produits
       add_child:
         create: Créer
         create_label: "Créer un nouvel axe avec {{ axes }}"
         fields:
           required_label: (axe de variante)
     association_type:
-      info:
-        deletion_successful: Le type d'association a été créé avec succès.
-        deletion_failed: Le type d’association n’a pas pu être supprimé.
-        update_successful: Le type d'association a été mis à jour avec succès.
-        update_failed: Le type d’association n’a pas pu être modifié.
-        field_not_ready: "Le type d'association ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-      title: type d'association
-      message:
-        created: Le type d'association est créé avec succès
+      label: type d'association
+      flash:
+        update:
+          success: Le type d'association a été mis à jour avec succès.
+          fail: Le type d’association n’a pas pu être modifié.
+          fields_not_ready: "Le type d'association ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+        create:
+          success: Le type d'association est créé avec succès
+        delete:
+          success: Le type d'association a été supprimé avec succès
+          fail: Impossible de supprimer ce type d'association
+      page_title:
+        index: "] -Inf, 1] {{ count }} type d'association|] 1, Inf [{{ count }} types d'association"
     group_type:
-      info:
-        deletion_successful: Le type de groupe a bien été supprimé.
-        deletion_failed: Le type de groupe n'a pas pu être supprimé.
-        update_successful: Le type de groupe a bien été mis à jour.
-        update_failed: Le type de groupe n'a pas pu être mis à jour.
-        field_not_ready: "Le type de groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-      title: type de groupe
-      message:
-        created: Le type de groupe a bien été créé
+      label: type de groupe
+      flash:
+        update:
+          success: Le type de groupe a bien été mis à jour.
+          fail: Le type de groupe n'a pas pu être mis à jour.
+          fields_not_ready: "Le type de groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+        create:
+          success: Le type de groupe a bien été créé
+        delete:
+          success: Le type de groupe a bien été supprimé
+          fail: Impossible de supprimer ce type de groupe
+      page_title:
+        index: "] -Inf, 1] {{ count }} type de groupe|] 1, Inf [{{ count }} types de groupe"
     channel:
-      info:
-        deletion_successful: Le canal a bien été supprimé.
-        deletion_failed: Le canal ne peut pas être supprimé.
-        update_successful: Le canal a bien été mis à jour.
-        update_failed: Le canal n'a pas pu être mis à jour.
-        create_successful: Canal créé avec succès.
-        create_failed: Le canal ne peut pas être créé.
-        field_not_ready: "Le canal ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+      label: canal
+      uppercase_label: Canal
+      flash:
+        update:
+          success: Le canal a bien été mis à jour.
+          fail: Le canal n'a pas pu être mis à jour.
+        create:
+          success: Canal créé avec succès.
+          fail: Le canal ne peut pas être créé.
+        delete:
+          success: Canal supprimé avec succès
+          fail: Impossible de supprimer ce canal
+      page_title:
+        index: "] -Inf, 1] {{ count }} canal|] 1, Inf [{{ count }} canaux"
     family:
-      title: famille
-      selected: familles sélectionnées
-      info:
-        update_successful: Famille mise à jour avec succès.
-        create_successful: Canal créé avec succès.
-        update_failed: Une erreur s'est produite à la mise à jour de la famille.
-        cant_remove_attribute_as_label: Impossible de supprimer un attribut utilisé comme libellé
-        cant_remove_attribute_as_image: Impossible de supprimer un attribut utilisé comme image principale
-        attribute_edit_permission_is_not_granted: Vous n'avez pas les permissions pour mettre à jour les attributs de la famille
-        cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation de la variante de famille
-      message:
-        created: Famille créée avec succès
+      label: famille
+      uppercase_label: Famille
+      flash:
+        update:
+          success: Famille mise à jour avec succès.
+          fail: Une erreur s'est produite à la mise à jour de la famille.
+          cant_remove_attribute_as_label: Impossible de supprimer un attribut utilisé comme libellé
+          cant_remove_attribute_as_image: Impossible de supprimer un attribut utilisé comme image principale
+          cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation de la variante de famille
+          fields_not_ready: "La famille ne peut actuellement pas être sauvée. Les champs suivants ne sont pas prêts : {{ fields }}"
+        create:
+          success: Famille créée avec succès
+        delete:
+          success: Famille supprimée avec succès
+          fail: Impossible de supprimer cette famille
+      page_title:
+        index: "] -Inf, 1] {{ count }} famille|] 1, Inf [{{ count }} familles"
       variant:
         common:
           title: Attributs communs
@@ -342,29 +309,49 @@ pim_enrich:
           title: Confirmer la suppression des attributs
           message: En supprimant ces attributs, vous allez les replacez dans les attributs communs de la famille variante, et supprimer toutes les valeurs des produits variants
     family_variant:
-      info:
-        update_successful: Famille variante mise à jour avec succès. Les produits avec variantes vont être mis à jour avec vos changements.
+      label: variante de famille
+      flash:
+        update:
+          success: Famille variante mise à jour avec succès. Les produits avec variantes vont être mis à jour avec vos changements.
+          fail: La variante de famille n'a pas pu être mise à jour.
+        create:
+          success: La variante de famille a été créée
     attribute_option:
-      actions: Actions
+      flash:
+        create:
+          success: L'option d'attribut a été créée avec succès.
+          fail: Une erreur s'est produite en essayant de créer l'option d'attribut.
+        update:
+          fail: Impossible d'enregistrer l'option de l'attribut
+        delete:
+          fail: Erreur lors de la suppression de l'option de l'attribut
     group:
-      title: Groupe
-      info:
-        deletion_successful: Groupe supprimé avec succès.
-        deletion_failed: Le groupe n'a pas pu être supprimé.
-        update_successful: Groupe mis à jour avec succès.
-        update_failed: Le groupe n'a pas pu être mis à jour.
-        field_not_ready: "Le groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-      message:
-        created: Groupe créé avec succès
-    job_instance:
-      title: profil
-      info:
-        update_failed: Le profil n'a pas pu être mis à jour.
-        update_successful: Le profil a été mis à jour avec succès.
+      label: Groupe
+      flash:
+        update:
+          success: Groupe mis à jour avec succès.
+          fail: Le groupe n'a pas pu être mis à jour.
+          fields_not_ready: "Le groupe ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+        create:
+          success: Groupe créé avec succès
+        delete:
+          success: Groupe supprimé avec succès
+          fail: Impossible de supprimer ce groupe
+      page_title:
+        index: "] -Inf, 1] {{ count }} groupe|] 1, Inf [{{ count }} groupes"
     attribute:
-      label: Attribut
-      uppercase_label: Attribut
+      label: attribut
       plural_label: Attributs
+      flash:
+        update:
+          success: Attribut mis à jour avec succès.
+          fail: L'attribut n'a pas pu être mis à jour.
+          fields_not_ready: "L'attribut ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
+        delete:
+          success: Attribut supprimé avec succès
+          fail: Impossible de supprimer cet attribut
+      page_title:
+        index: "] -Inf, 1] {{ count }} attribut|] 1, Inf [{{ count }} attributs"
       property:
         allowed_extensions: Extensions autorisées
         auto_option_sorting: Trier automatiquement les options par ordre alphabétique
@@ -372,25 +359,29 @@ pim_enrich:
         date_max: Date maxi
         date_min: Date mini
         decimals_allowed: Valeurs décimales autorisées
-        default_metric_unit.label: Unité de mesure par défaut
-        group.label: Groupe d'attributs
+        default_metric_unit:
+          label: Unité de mesure par défaut
+          choose: Choisir une unité
+        group:
+          label: Groupe d'attributs
+          choose: Choisir le groupe d'attributs
         is_locale_specific: Spécifique à une locale
         localizable: Valeur par locale
         max_characters: Nombre maximum de caractères
         max_file_size: Taille de fichier maximale (MB)
-        metric_family.label: Type de mesure
+        metric_family:
+          label: Type de mesure
+          choose: Choisir une famille
         minimum_input_length: Longueur minimale pour l’auto-complétion
         negative_allowed: Valeurs négatives autorisées
         number_max: Nombre max
         number_min: Nombre min
-        reference_data_name.label: Type de données de référence
+        reference_data_name:
+          label: Type de données de référence
+          choose: Choisir un type de données référentielles
         scopable: Valeur par canal
-        unique: Valeur unique
-        useable_as_grid_filter: Utilisable sur la grille
-        validation_regexp: Expression régulière
-        validation_rule: Règle de validation
-        wysiwyg_enabled: Éditeur de texte enrichi activé
         type:
+          choose: Choisir le type d'attribut
           pim_catalog_identifier: Identifiant
           pim_catalog_text: Texte
           pim_catalog_textarea: Zone de texte
@@ -405,52 +396,70 @@ pim_enrich:
           pim_catalog_metric: Unité de mesure
           pim_reference_data_simpleselect: Liste à choix unique de données référentielles
           pim_reference_data_multiselect: Liste à choix multiples de données référentielles
-      info:
-        deletion_successful: Attribut supprimé avec succès.
-        deletion_failed: L'attribut n'a pas pu être supprimé.
-        update_successful: Attribut mis à jour avec succès.
-        update_failed: L'attribut n'a pas pu être mis à jour.
-        create_successful: Attribut créé avec succès.
-        create_failed: L'attribut n'a pas pu être créé.
-        field_not_ready: "L'attribut ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}"
-      scopable: Décliné par canal
-      validation_rule:
-        email: E-mail
-        regexp: Expression régulière
-        url: URL
-      title: attribut
+        unique: Valeur unique
+        useable_as_grid_filter: Utilisable sur la grille
+        validation_regexp: Expression régulière
+        validation_rule:
+          label: Règle de validation
+          email: E-mail
+          regexp: Expression régulière
+          url: URL
+        wysiwyg_enabled: Éditeur de texte enrichi activé
+      tab:
+        properties:
+          section:
+            common: Paramètres généraux
+            type_specific: Paramètres spécifiques
+            validation: Paramètres de validation
+        choices:
+          title: Options
+      create:
+        create_btn: Créer un attribut
     attribute_group:
-      info:
-        update_failed: Le groupe d'attributs n'a pas pu être mis à jour.
-        update_successful: Groupe d'attributs mis à jour avec succès
+      label: groupe d'attributs
+      plural_label: Groupes d'attributs
+      flash:
+        update:
+          success: Groupe d'attributs mis à jour avec succès
+          fail: Le groupe d'attributs n'a pas pu être mis à jour.
+          fields_not_ready: "Le groupe d''attributs ne peut actuellement pas être sauvé. Les champs suivants ne sont pas prêts : {{ fields }}"
+        delete:
+          success: Groupe d'attributs supprimé avec succès
+          fail: Impossible de supprimer ce groupe d'attributs
     api_connection:
-      message:
-        created: Connexion API créée avec succès
-  confirmation:
-    leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
-    discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
-    remove_item: Confirmer la suppression
-    delete:
-      attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?
-      attribute_group: Êtes vous sûr(e) de vouloir retirer l'attribut {{ attribute }} de ce groupe d'attributs ?
+      flash:
+        create:
+          success: Connexion API créée avec succès
+        delete:
+          success: La connexion API a été révoquée avec succès
+          fail: Impossible de révoquer cette connexion API
+      page_title:
+        index: "] -Inf, 1] {{ count }} connexion API|] 1, Inf [{{ count }} connexion API"
+    locale:
+      label: locale
+      uppercase_label: Locale
+      plural_label: Locales
+      page_title:
+        index: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
+    category:
+      label: catégorie
+      uppercase_label: Catégorie
+      plural_label: Catégories
+    currency:
+      page_title:
+        index: "] -Inf, 1] {{ count }} devise|] 1, Inf [{{ count }} devises"
+    job_execution:
+      page_title:
+        index: "] -Inf, 1] {{ count }} opération|] 1, Inf [{{ count }} opérations"
   info:
-    not_applicable: N/A
     entity:
       updated: Des modifications n'ont pas encore été sauvegardées.
-  error:
-    upload: Une erreur s'est produite pendant le chargement du fichier
-  alert:
-    not_allowed: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
-    error_occured: Une erreur s'est produite lors du chargement de la page
   form:
     required: (obligatoire)
     product_model:
-      choose_product_model: Choisissez un modèle de produit
-      choose_variant: Choisissez une variante
       complete_variant_product: produit variant
       complete_variant_products: produits variants
       family_variant: Variante
-      product_model: Modèle de produit
       flash:
         product_model_added: Le modèle de produit a été correctement ajouté au modèle de produit
         variant_product_added: Le produit variant a été correctement ajouté au modèle de produit
@@ -503,8 +512,6 @@ pim_enrich:
           keep_attributes: Aucun attribut ne sera supprimé.
           change_family_to: Changer la famille pour
           empty_selection: Choisir une famille
-      flash:
-        attribute_deletion_error: Une erreur s'est produite lors de la suppression de l'attribut
       mass_edit:
         select_attributes: Sélectionnez les attributs
         select: Sélectionner
@@ -532,12 +539,13 @@ pim_enrich:
           required_label: Obligatoire
         variant:
           title: Variantes
-          flash:
-            family_variant_created: La variante de famille a été créée
+    family_variant:
+      tab:
+        attributes:
+          title: Attributs variants
+        labels:
+          title: Traduction des libellés
     attribute_option:
-      flash:
-        option_created: L'option d'attribut a été créée avec succès.
-        error_creating_option: Une erreur s'est produite en essayant de créer l'option d'attribut.
       add_option_modal:
         title: Ajouter une option d'attribut
       add_option: Ajouter une option
@@ -552,142 +560,9 @@ pim_enrich:
     common:
       tab:
         attributes:
-          btn:
-            add_attributes: Ajouter des attributs
           info:
             search_attributes: Rechercher...
             no_available_attributes: Il n'y a plus d'attributs disponibles
-    job_execution:
-      title.details: Détails d'exécution
-      refreshBtn.title: Mettre à jour
-      button:
-        show_profile.title: Afficher le profil
-        download_log.title: Télécharger l'historique
-        download_file.title: Télécharger le fichier généré
-        download_archive.title: Télécharger l'archive générée
-      summary:
-        fetching: Collecte de données de l'exécution...
-        warning: Attention
-        header.step: Étape
-        header.warnings: Avertissements
-        header.summary: Résumé
-        header.start: Début
-        header.end: Fin
-    job_instance:
-      fail:
-        launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous disposez des droits pour le lancer.
-        save: Impossible de sauvegarder le profil. Assurez-vous que vous disposez des droits pour l'éditer.
-      title:
-        import: Profil d'import
-        export: Profil d'export
-      button:
-        export.title: Exporter maintenant
-        import.launch: Importer maintenant
-        import.upload: Télécharger et importer maintenant
-        import.upload_file: Déposer un fichier
-      meta:
-        job: Tâche
-        connector: Connecteur
-      subsection:
-        last_executions: Dernières exécutions
-      tab:
-        content:
-          title: Contenu
-        properties:
-          decimal_separator:
-            title: Séparateur de décimales
-            help: Détermine le séparateur de décimale
-          date_format:
-            title: Format de date
-            help: Déterminer le format des champs de type date
-          file_path:
-            title: Chemin du fichier
-            help: Emplacement du fichier généré sur le serveur
-          delimiter:
-            title: Délimiteur
-            help: Caractère unique utilisé pour délimiter les valeurs
-          enclosure:
-            title: Caractère d'encadrement
-            help: Caractère unique utilisé pour encadrer les champs
-          with_header:
-            title: Avec en-tête
-            help: Définit si la première ligne du fichier contient les libellés des colonnes
-          with_media:
-            title: Exporter les fichiers et les images
-            help: Exporter ou non les fichiers produits et les images
-          lines_per_file:
-            title: Nombre de lignes par fichier
-            help: Définit la limite de nombre de lignes par fichier
-          upload_allowed:
-            title: Autoriser l'envoi de fichiers sur le serveur
-            help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
-          categories_column:
-            title: Colonne des catégories
-            help: Nom de la colonne qui contient les catégories
-          escape:
-            title: Échappement
-            help: Le caractère utilisé pour échapper les champs
-          family_column:
-            title: Colonne de la famille
-            help: Nom de la colonne qui contient la famille du produit
-          groups_column:
-            title: Colonne des groupes
-            help: Intitulé de la colonne contenant les groupes de produits
-          enabled:
-            title: Activer le produit
-            help: Activer automatiquement les produits importés
-          enabled_comparison:
-            title: Comparer les valeurs
-            help: Permettre la comparaison entre les valeurs d'origine et les valeurs importées. Permet d'accélérer les imports si les valeurs importées sont très similaires aux valeurs d'origine
-          real_time_versioning:
-            title: Mise à jour de l'historique en temps réel
-            help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
-          family_variant_column:
-            title: Colonne variante de famille
-      file_path: Chemin du fichier
-    attribute:
-      meta:
-        created_by: par
-        updated: Dernière mise à jour
-        updated_by: par
-      tab:
-        properties:
-          section:
-            common: Paramètres généraux
-            type_specific: Paramètres spécifiques
-            validation: Paramètres de validation
-          label:
-            allowed_extensions: Extensions autorisées
-            auto_option_sorting: Trier automatiquement les options par ordre alphabétique
-            available_locales: Locales disponibles
-            date_max: Date maxi
-            date_min: Date mini
-            decimals_allowed: Valeurs décimales autorisées
-            default_metric_unit: Unité de mesure par défaut
-            group: Groupe d'attributs
-            is_locale_specific: Spécifique à une locale
-            localizable: Valeur par locale
-            max_characters: Nombre maximum de caractères
-            max_file_size: Taille de fichier maximale (MB)
-            metric_family: Type de mesure
-            minimum_input_length: Longueur minimale pour l’auto-complétion
-            negative_allowed: Valeurs négatives autorisées
-            number_max: Nombre max
-            number_min: Nombre min
-            reference_data_name: Type de données de référence
-            scopable: Valeur par canal
-            unique: Valeur unique
-            useable_as_grid_filter: Utilisable sur la grille
-            validation_regexp: Expression régulière
-            validation_rule: Règle de validation
-            wysiwyg_enabled: Éditeur de texte enrichi activé
-          default_label:
-            default_metric_unit: Choisir une unité
-            group: Choisir le groupe d'attributs
-            metric_family: Choisir une famille
-            reference_data_name: Choisir un type de données référentielles
-        choices:
-          title: Options
     mass_edit:
       family:
         attributes:
@@ -779,56 +654,30 @@ pim_enrich:
       description: Seuls les attributs appartenant aux familles des produits sélectionnés seront édités avec les données suivantes pour la locale <span class="highlight">{{ locale }}</span> et le canal de <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
-      title: "] -Inf, 1] {{ count }} type d'association|] 1, Inf [{{ count }} types d'association"
       create_btn: Créer un type d'association
     import_profiles:
-      title: "] -Inf, 1] {{ count }} profil d'import|] 1, Inf [{{ count }} profils d'import"
       create_btn: Créer un profil d'import
       list: Sélectionner une tâche
       message:
         created: Le profil d'export a bien été créé
-    import_history:
-      title: Rapports d'import
     group:
-      title: "] -Inf, 1] {{ count }} groupe|] 1, Inf [{{ count }} groupes"
       create_btn: Créer un groupe
     export_profiles:
-      title: "] -Inf, 1] {{ count }} profil d'export|] 1, Inf [{{ count }} profils d'export"
       create_btn: Créer un profil d'export
       message:
         created: Le profil d'exportation a bien été créé
-    export_history:
-      title: Rapports d'export
     family:
-      title: "] -Inf, 1] {{ count }} famille|] 1, Inf [{{ count }} familles"
       create_btn: Créer une famille
     grouptype:
-      title: "] -Inf, 1] {{ count }} type de groupe|] 1, Inf [{{ count }} types de groupe"
       create_btn: Créer un type de groupe
-    currency:
-      title: "] -Inf, 1] {{ count }} devise|] 1, Inf [{{ count }} devises"
-    locale:
-      title: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
     user:
-      title: "] -Inf, 1] {{ count }} utilisateur|] 1, Inf [{{ count }} utilisateurs"
       create_btn: Créer un utilisateur
     user_role:
-      title: "] -Inf, 1] {{ count }} rôle|] 1, Inf [{{ count }} rôles"
       create_btn: Créer un rôle
     user_group:
-      title: "] -Inf, 1] {{ count }} groupe|] 1, Inf [{{ count }} groupes"
       create_btn: Créer un groupe
-    process_tracker:
-      title: "] -Inf, 1] {{ count }} opération|] 1, Inf [{{ count }} opérations"
     channel:
-      title: "] -Inf, 1] {{ count }} canal|] 1, Inf [{{ count }} canaux"
       create_btn: Créer un canal
-    attribute:
-      title: "] -Inf, 1] {{ count }} attribut|] 1, Inf [{{ count }} attributs"
-      create_btn: Créer un attribut
-      modal_title: Choisir le type d'attribut
-    api_connection:
-      title: "] -Inf, 1] {{ count }} connexion API|] 1, Inf [{{ count }} connexion API"
   mass_edit:
     product:
       title: Action de masse sur les produits
@@ -865,7 +714,6 @@ pim_enrich:
           label: Changer de famille
           label_count: "{1}Changer la famille d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Changer la famille de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
           description: La famille des produits sélectionnés sera remplacée par la famille choisie
-          field: Famille
         add_to_group:
           label: Ajouter aux groupes
           label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à des groupes|] 1, Inf [Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des groupes"
@@ -912,10 +760,6 @@ pim_enrich:
           label: Configurer les exigences d'attributs
           description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
           label_count: "{1}Modifier les exigences d'attributs d'<span class=\"AknFullPage-title--highlight\">1 famille</span>|] 1, Inf [Modifier les exigences d'attributes de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familles</span>"
-pim_enrich.error:
-  exception.title: Oups! Une erreur {{ status_code }} s'est produite...
-  http:
-    403: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
 pim_title:
   oro_default: Tableau de bord
   pim_enrich_attributegroup_index: Groupes d'attributs
@@ -981,7 +825,6 @@ pim_menu:
     group: Groupes
     group_type: Types de groupe
     product_model: Modèles de produits
-    published_product: Produits publiés
     export_history: Historique des exports
     export_profile: Profils d'export
     import_history: Historique des imports
@@ -1000,6 +843,7 @@ pim_menu:
     system: Navigation système
     user: Navigation utilisateurs
     settings: Navigation paramètres
+    product: Navigation produit
   user:
     logout: Déconnexion
     user_account: Mon compte
@@ -1010,52 +854,53 @@ pim_notification:
     quick_export: Export rapide
     mass_edit: Edition en masse
 batch_jobs:
-  add_product_value:
-    label: Ajouter une valeur de produit
-    perform.label: Ajouter une valeur de produit
-  update_product_value:
-    label: Mise à jour de la valeur du produit
-    perform.label: Mise à jour de la valeur du produit
-  add_attribute_value:
-    label: Ajouter une valeur d’attribut
-    perform.label: Ajouter une valeur d’attribut
-  edit_common_attributes:
-    label: Modifier des attributs
-    perform.label: Modifier des attributs
-    cleaner.label: Nettoyer les fichiers pour les attributs
-  add_to_category:
-    label: Ajouter à une catégorie
-    perform.label: Ajouter à une catégorie
-  move_to_category:
-    label: Déplacer dans la catégorie
-    perform.label: Déplacer dans la catégorie
-  remove_from_category:
-    label: Retirer de la catégorie
-    perform.label: Retirer de la catégorie
   add_association:
     label: Associer aux produits
     perform.label: Associer aux produits
+  add_attribute_value:
+    label: Ajouter une valeur d’attribut
+    perform.label: Ajouter une valeur d’attribut
+  add_product_value:
+    label: Ajouter une valeur de produit
+    perform.label: Ajouter une valeur de produit
+  add_to_category:
+    label: Ajouter à une catégorie
+    perform.label: Ajouter à une catégorie
   add_to_existing_product_model:
     label: Ajouter à un modèle de produit existant
     perform.label: Ajouter à un modèle de produit existant
-  set_attribute_requirements:
-    label: Configurer les exigences d'attributs
-    perform.label: Configurer les exigences d'attributs
-  csv_product_quick_export:
-    quick_export.label: Export rapide de produits en CSV
-    quick_export_product_model.label: Export rapide de modèles de produit en CSV
-    perform.label: Export rapide de produits en CSV
   csv_product_grid_context_quick_export:
     quick_export.label: Export rapide de la grille de produits en CSV
     quick_export_product_model.label: Export rapide de la grille de modèles de produit en CSV
     perform.label: Export rapide de la grille de produits en CSV
+  csv_product_quick_export:
+    quick_export.label: Export rapide de produits en CSV
+    quick_export_product_model.label: Export rapide de modèles de produit en CSV
+    perform.label: Export rapide de produits en CSV
+  delete_products_and_product_models:
+    delete_products_and_product_models.label: Suppression massive de produits
+  edit_common_attributes:
+    label: Modifier des attributs
+    perform.label: Modifier des attributs
+    clean.label: Nettoyer les fichiers pour les attributs
+    cleaner.label: Nettoyer les fichiers pour les attributs
+  move_to_category:
+    label: Déplacer dans la catégorie
+    perform.label: Déplacer dans la catégorie
+  update_product_value:
+    label: Mise à jour de la valeur du produit
+    perform.label: Mise à jour de la valeur du produit
+  remove_from_category:
+    label: Retirer de la catégorie
+    perform.label: Retirer de la catégorie
+  set_attribute_requirements:
+    label: Configurer les exigences d'attributs
+    perform.label: Configurer les exigences d'attributs
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: Exportation rapide de la grille de produits en XLSX
+    quick_export_product_model.label: Export rapide de la grille de modèles de produit en XLSX
+    perform.label: Export rapide de la grille de produits en XLSX
   xlsx_product_quick_export:
     quick_export.label: Export rapide de produits en XLSX
     quick_export_product_model.label: Export rapide de modèles de produit en XLSX
     perform.label: Export rapide de produits en XLSX
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: Export rapide de la grille de produits en XLSX
-    quick_export_product_model.label: Export rapide de la grille de modèles de produit en XLSX
-    perform.label: Export rapide de la grille de produits en XLSX
-  delete_products_and_product_models:
-    delete_products_and_product_models.label: Suppression massive de produits

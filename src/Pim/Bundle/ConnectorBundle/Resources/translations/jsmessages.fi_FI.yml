@@ -98,7 +98,6 @@ batch_jobs:
     label: Tuotteiden tuonti XLSX-muodossa
     import.label: Tuotteiden tuonti
   xlsx_product_model_import:
-    label: Tuotemallien tuonti XLSX-muodossa
     import_product_model_descendants.label: Lasketaan tuotemallin rakenne
   xlsx_group_export:
     label: Ryhmävienti XLSX-muodossa

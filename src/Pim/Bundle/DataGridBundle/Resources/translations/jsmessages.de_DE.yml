@@ -17,6 +17,7 @@ pim_datagrid:
     clear: Zurücksetzen
     displayed_columns: Ausgewählte Spalten
     remove_column: Entfernen
+    description: Wählen Sie die Information, die Sie als Spalte anzeigen möchten
     min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
     system_group: System
   view_selector:

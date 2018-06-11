@@ -47,7 +47,7 @@ pim_datagrid:
     default:
       confirmation:
         title: Confirmation de l'Action de masse
-        content: Êtes-vous sûr(e) de vouloir faire cela ?
+        content: Êtes-vous sûr(e) de que vouloir faire cela ?
       success: Action de masse effectuée
       error: L'action de masse n'a pas été effectuée
       no_items: Veuillez sélectionner des éléments pour exécuter cette action de masse.
@@ -58,7 +58,7 @@ pim_datagrid:
     default:
       confirmation:
         title: Confirmation de l'exécution
-        content: Êtes-vous sûr(e) que vouloir faire cela ?
+        content: Êtes-vous sûr(e) de que vouloir faire cela ?
       success: Action exécutée
       error: L'action n'a pas été exécutée
       no_items: Veuillez sélectionner des éléments afin d'effectuer l'action.
