@@ -112,7 +112,7 @@ final class ShowEnrichedEntityContext implements Context
     }
 
     /**
-     * @Then /^I get an enriched entity "([^"]*)"$/
+     * @Then /^the user gets an enriched entity "([^"]*)"$/
      */
     public function iShouldGetAnEnrichedEntity(string $enrichedEntityIdentifier): void
     {

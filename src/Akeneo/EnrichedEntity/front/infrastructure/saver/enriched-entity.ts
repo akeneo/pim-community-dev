@@ -1,14 +1,14 @@
 import Saver from 'akeneoenrichedentity/domain/saver/saver';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {postJSON} from 'akeneoenrichedentity/tools/fetch';
-import hidrator from 'akeneoenrichedentity/application/hidrator/enriched-entity';
+import hydrator from 'akeneoenrichedentity/application/hydrator/enriched-entity';
 
 const routing = require('routing');
 
 export interface EnrichedEntitySaver extends Saver<EnrichedEntity> {}
 
 export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
-  constructor(private hidrator: (backendEnrichedEntity: any) => EnrichedEntity) {
+  constructor(private hydrator: (backendEnrichedEntity: any) => EnrichedEntity) {
     Object.freeze(this);
   }
 
@@ -23,8 +23,8 @@ export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
       }
     );
 
-    return this.hidrator(backendEnrichedEntity);
+    return this.hydrator(backendEnrichedEntity);
   }
 }
 
-export default new EnrichedEntitySaverImplementation(hidrator);
+export default new EnrichedEntitySaverImplementation(hydrator);

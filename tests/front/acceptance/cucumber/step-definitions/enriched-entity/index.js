@@ -59,7 +59,7 @@ module.exports = async function (cucumber) {
     assert.equal(title.trim(), `${total} result${total > 1 ? 's' : ''}`);
   });
 
-  Then('I get an enriched entity {string}', async function (identifier) {
+  Then('the user gets an enriched entity {string}', async function (identifier) {
     await this.page.waitForSelector(`.AknGrid-bodyRow[data-identifier="${identifier}"]`);
   });
 
