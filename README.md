@@ -2,6 +2,8 @@ Akeneo PIM Application
 ======================
 Welcome to Akeneo PIM Product.
 
+Let's test CI
+
 This repository is used to develop the Akeneo PIM product.
 Practically, it means the Akeneo PIM bundles are present in the src/ directory.
 
