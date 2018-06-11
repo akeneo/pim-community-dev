@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Component\Catalog\Normalizer\Standard;
+namespace Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -133,3 +133,34 @@ services:
             - '@pim_catalog.normalizer.standard.translation'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_enrich.normalizer.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeGroupNormalizer'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_api.normalizer.category:
+        class: 'Akeneo\Tool\Component\Api\Normalizer\CategoryNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.category'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_versioning.serializer.normalizer.flat.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeGroupNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_group'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeGroupNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

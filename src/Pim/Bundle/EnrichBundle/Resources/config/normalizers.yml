@@ -18,7 +18,7 @@ parameters:
     pim_enrich.normalizer.violation.class:                         Pim\Bundle\EnrichBundle\Normalizer\ViolationNormalizer
     pim_enrich.normalizer.datagrid_view.class:                     Pim\Bundle\EnrichBundle\Normalizer\DatagridViewNormalizer
     pim_enrich.normalizer.category.class:                          Pim\Bundle\EnrichBundle\Normalizer\CategoryNormalizer
-    pim_enrich.normalizer.attribute_group.class:                   Pim\Bundle\EnrichBundle\Normalizer\AttributeGroupNormalizer
+    pim_enrich.normalizer.attribute_group.class:                   Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeGroupNormalizer
     pim_enrich.normalizer.structured.attribute_option.class:       Pim\Bundle\EnrichBundle\Normalizer\StructuredAttributeOptionNormalizer
     pim_enrich.normalizer.entity_with_family_variant.class:        Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer
     pim_enrich.normalizer.variant_navigation.class:                Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer
@@ -205,14 +205,6 @@ services:
         class: '%pim_enrich.normalizer.category.class%'
         arguments:
             - '@pim_serializer'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
-
-    pim_enrich.normalizer.attribute_group:
-        class: '%pim_enrich.normalizer.attribute_group.class%'
-        arguments:
-            - '@pim_serializer'
-            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
