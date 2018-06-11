@@ -152,7 +152,7 @@ class ProductReverterIntegration extends TestCase
      */
     protected function getProductReverter()
     {
-        return $this->get('pimee_versioning.reverter.product');
+        return $this->get('pimee_revert.reverter.product');
     }
 
     /**
