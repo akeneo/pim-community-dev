@@ -16,7 +16,7 @@ class FamilyVariantNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\FamilyVariantNormalizer::class);
+        $this->shouldHaveType(FamilyVariantNormalizer::class);
     }
 
     function it_supports_a_family_variant(FamilyVariantInterface $familyVariant)

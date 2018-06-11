@@ -142,13 +142,6 @@ services:
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
-    pim_api.normalizer.category:
-        class: 'Akeneo\Tool\Component\Api\Normalizer\CategoryNormalizer'
-        arguments:
-            - '@pim_catalog.normalizer.standard.category'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
     pim_versioning.serializer.normalizer.flat.attribute_group:
         class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeGroupNormalizer'
         arguments:
@@ -162,5 +155,12 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
             - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeGroupNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.attribute_group'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
