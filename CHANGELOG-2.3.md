@@ -16,6 +16,7 @@
 - PIM-6784: Improve the product grid search with categories for products with variants
 - PIM-7308: As Julia, I would like to bulk add product models associations if product models are selected.
 - PIM-7001: Don't display remove button on an association if it comes from inheritance
+- PIM-7390: In the Product Edit Form, we now keep the context of attributes filter (missing, all, level specific...)
 
 ## Technical improvements
 
