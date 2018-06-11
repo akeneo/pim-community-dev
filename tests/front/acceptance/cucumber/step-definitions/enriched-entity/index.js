@@ -49,8 +49,8 @@ module.exports = async function (cucumber) {
   });
 
   Then('the user get a selection of {int} items out of {int} items in total', async function (count, total) {
-    await this.page.waitForSelector('.AknGrid-bodyRow');
-    const rows = await this.page.$$('.AknGrid-bodyRow');
+    await this.page.waitForSelector('.AknGrid-bodyRow:not(.AknLoadingPlaceHolder)');
+    const rows = await this.page.$$('.AknGrid-bodyRow:not(.AknLoadingPlaceHolder)');
     assert.equal(rows.length, count);
 
     const titleElement = await this.page.waitForSelector('.AknTitleContainer-title');
@@ -64,7 +64,7 @@ module.exports = async function (cucumber) {
   });
 
   Then('there is no enriched entity', async function () {
-    const rows = await this.page.$$('.AknGrid-bodyRow');
+    const rows = await this.page.$$('.AknGrid-bodyRow:not(.AknLoadingPlaceHolder)');
     assert.equal(rows.length, 0);
   });
 

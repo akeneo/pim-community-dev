@@ -15,6 +15,7 @@ interface StateProps {
   grid: {
     enrichedEntities: EnrichedEntity[];
     total: number;
+    isLoading: boolean;
   };
 };
 
@@ -50,7 +51,9 @@ const enrichedEntityListView = ({ grid, context, events }: StateProps & Dispatch
               </div>
               <div className="AknTitleContainer-line">
                 <div className="AknTitleContainer-title">
-                  {__('pim_enriched_entity.enriched_entity.index.grid.count', {count: grid.enrichedEntities.length})}
+                  <span className={grid.isLoading ? 'AknLoadingPlaceHolder' : ''}>
+                    {__('pim_enriched_entity.enriched_entity.index.grid.count', {count: grid.enrichedEntities.length})}
+                  </span>
                 </div>
                 <div className="AknTitleContainer-state"></div>
               </div>
@@ -96,7 +99,8 @@ export default connect((state: State): StateProps => {
     },
     grid: {
       enrichedEntities,
-      total
+      total,
+      isLoading: state.grid.isFetching && state.grid.items.length === 0
     }
   }
 }, (dispatch: any): DispatchProps => {
