@@ -29,6 +29,10 @@
 - Add a new public method `findProductModelsForFamilyVariant` to `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface`
 - Change signature of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductModelDescendantsSaver` constructor to add `Akeneo\Component\StorageUtils\Indexer\IndexerInterface`
 
+## Technical improvements
+
+- PIM-7324: Rework structure version provider to better handle cache invalidation
+
 # 2.3.0-ALPHA1 (2018-04-27)
 
 ## Improve Julia's experience
