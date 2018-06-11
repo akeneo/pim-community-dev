@@ -1,0 +1,10 @@
+parameters:
+    pim_registry_current_number.manager.registry_current_number.class: Pim\Bundle\RegistryOfCurrentNumberBundle\Manager\RegistryOfCurrentNumberManager
+
+services:
+    pim_registry_current_number.manager.registry_current_number:
+        class: '%pim_registry_current_number.manager.registry_current_number.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.attribute.class%'
+            - !php/const:Pim\Bundle\RegistryOfCurrentNumberBundle\Model\RegistryOfCurrentNumberInterface::CODE_ATTRIBUTE

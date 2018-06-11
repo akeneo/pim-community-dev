@@ -1,0 +1,19 @@
+Pim\Bundle\RegistryOfCurrentNumberBundle\Entity\RegistryOfCurrentNumber:
+    type: entity
+    table: pim_registry_current_number
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Pim\Bundle\RegistryOfCurrentNumberBundle\Doctrine\ORM\Repository\RegistryOfCurrentNumberRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            unique: true
+        value:
+            type: integer
+            length: 100
+            default: 0
