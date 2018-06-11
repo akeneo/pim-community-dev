@@ -13,34 +13,36 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\ListEnrichedEntityHandler;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityList\EnrichedEntityItem;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityList\FindEnrichedEntitiesQuery;
+use Akeneo\EnrichedEntity\back\Infrastructure\Normalizer\EnrichedEntityItemNormalizer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Enriched entity index action
  *
- * @author Julien Sanchez <julien@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class IndexAction
 {
-    /** @var ListEnrichedEntityHandler */
-    private $listEnrichedEntityHandler;
+    /** @var FindEnrichedEntitiesQuery */
+    private $findEnrichedEntitiesQuery;
 
     /** @var NormalizerInterface */
-    private $enrichedEntityNormalizer;
+    private $enrichedEntityItemNormalizer;
 
     /**
-     * @param ListEnrichedEntityHandler $listEnrichedEntityHandler
-     * @param NormalizerInterface       $enrichedEntityNormalizer
+     * @param FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery
+     * @param NormalizerInterface       $enrichedEntityItemNormalizer
      */
     public function __construct(
-        ListEnrichedEntityHandler $listEnrichedEntityHandler,
-        NormalizerInterface $enrichedEntityNormalizer
+        FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery,
+        NormalizerInterface $enrichedEntityItemNormalizer
     ) {
-        $this->listEnrichedEntityHandler = $listEnrichedEntityHandler;
-        $this->enrichedEntityNormalizer  = $enrichedEntityNormalizer;
+        $this->findEnrichedEntitiesQuery = $findEnrichedEntitiesQuery;
+        $this->enrichedEntityItemNormalizer = $enrichedEntityItemNormalizer;
     }
 
     /**
@@ -50,14 +52,24 @@ class IndexAction
      */
     public function __invoke(): JsonResponse
     {
-        $enrichedEntities = ($this->listEnrichedEntityHandler)();
-        $normalizedEnrichedEntities = array_map(function ($enrichedEntity) {
-            return $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api');
-        }, $enrichedEntities);
+        $enrichedEntityItems = ($this->findEnrichedEntitiesQuery)();
+        $normalizedEnrichedEntityItems = $this->normalizeEnrichedEntityItems($enrichedEntityItems);
 
         return new JsonResponse([
-            'items' => $normalizedEnrichedEntities,
-            'total' => count($normalizedEnrichedEntities)
+            'items' => $normalizedEnrichedEntityItems,
+            'total' => count($normalizedEnrichedEntityItems),
         ]);
+    }
+
+    /**
+     * @param EnrichedEntityItem[] $enrichedEntityItems
+     *
+     * @return array
+     */
+    private function normalizeEnrichedEntityItems(array $enrichedEntityItems): array
+    {
+        return array_map(function (EnrichedEntityItem $enrichedEntityItem) {
+            return $this->enrichedEntityItemNormalizer->normalize($enrichedEntityItem, 'internal_api');
+        }, $enrichedEntityItems);
     }
 }

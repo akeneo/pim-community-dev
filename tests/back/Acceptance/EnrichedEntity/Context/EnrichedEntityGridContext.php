@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\ListEnrichedEntityHandler;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\EnrichedEntityDetails;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityList\FindEnrichedEntitiesQuery;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -17,31 +17,31 @@ use Behat\Gherkin\Node\TableNode;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ShowEnrichedEntityContext implements Context
+final class EnrichedEntityGridContext implements Context
 {
-    /** @var ListEnrichedEntityHandler */
-    private $listEnrichedEntityHandler;
+    /** @var FindEnrichedEntitiesQuery */
+    private $findEnrichedEntitiesQuery;
 
     /** @var EnrichedEntityRepository */
     private $enrichedEntityRepository;
 
-    /** @var EnrichedEntity[] */
+    /** @var EnrichedEntityDetails[] */
     private $entitiesFound;
 
     /**
-     * @param ListEnrichedEntityHandler $listEnrichedEntityHandler
+     * @param FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery
      * @param EnrichedEntityRepository  $enrichedEntityRepository
      */
     public function __construct(
-        ListEnrichedEntityHandler $listEnrichedEntityHandler,
+        FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery,
         EnrichedEntityRepository $enrichedEntityRepository
     ) {
-        $this->listEnrichedEntityHandler = $listEnrichedEntityHandler;
+        $this->findEnrichedEntitiesQuery = $findEnrichedEntitiesQuery;
         $this->enrichedEntityRepository = $enrichedEntityRepository;
     }
 
     /**
-     * @Given /^the following enriched entity:$/
+     * @Given the following enriched entities to list:
      */
     public function theFollowingEnrichedEntity(TableNode $table): void
     {
@@ -63,7 +63,7 @@ final class ShowEnrichedEntityContext implements Context
      */
     public function thereShouldBeNoEnrichedEntity(): void
     {
-        $entitiesFoundCount = \count($this->entitiesFound);
+        $entitiesFoundCount = count($this->entitiesFound);
         if ($entitiesFoundCount > 0) {
             throw new \LogicException(
                 sprintf('There should be no entity found, "%d" found', $entitiesFoundCount)
@@ -90,16 +90,15 @@ final class ShowEnrichedEntityContext implements Context
     }
 
     /**
-     * @When /^the user ask for the enriched entity list$/
+     * @When /^the user asks for the enriched entity list$/
      */
     public function theUserAskForTheEnrichedEntityList(): void
     {
-        $handler = $this->listEnrichedEntityHandler;
-        $this->entitiesFound = $handler();
+        $this->entitiesFound = ($this->findEnrichedEntitiesQuery)();
     }
 
     /**
-     * @Then /^the user get a selection of (\d+) items out of (\d+) items in total$/
+     * @Then /^the user gets a selection of (\d+) items out of (\d+) items in total$/
      */
     public function theUserShouldGetASelectionOfItemsOutOfItemsInTotal(int $numberOfItems, $arg2)
     {
@@ -114,19 +113,17 @@ final class ShowEnrichedEntityContext implements Context
     /**
      * @Then /^the user gets an enriched entity "([^"]*)"$/
      */
-    public function iShouldGetAnEnrichedEntity(string $enrichedEntityIdentifier): void
+    public function iShouldGetAnEnrichedEntity(string $expectedEnrichedEntityIdentifier): void
     {
         foreach ($this->entitiesFound as $enrichedEntity) {
-            $isFound = $enrichedEntity->getIdentifier()->equals(
-                EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier)
-            );
+            $isFound = $expectedEnrichedEntityIdentifier === $enrichedEntity->identifier;
             if ($isFound) {
                 return;
             }
         }
 
         throw new \LogicException(
-            sprintf('Expected enriched entity with id "%s" to be found, none given.', $enrichedEntityIdentifier)
+            sprintf('Expected enriched entity with id "%s" to be found, none given.', $expectedEnrichedEntityIdentifier)
         );
     }
 }
