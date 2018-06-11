@@ -6,14 +6,14 @@
 
 # 2.3.0-ALPHA2 (2018-06-07)
 
-## Improve Julia's experience
+## Better manage products with variants
 
 - PIM-6897: As Julia, I would like to update the family variant labels from the UI
 - PIM-7302: As Julia, I am not able to delete an attribute option if it's use as variant axis.
 - PIM-7330: Improve validation message in case of product model or variant product axis values duplication
 - PIM-7326: Create a version when the parent of a variant product or a sub product model is changed.
 - PIM-6250: As Julia, I would like to change the parent of a variant product/sub product model from the UI
-- PIM-6784: Improve the product grid search with categories
+- PIM-6784: Improve the product grid search with categories for products with variants
 - PIM-7308: As Julia, I would like to bulk add product models associations if product models are selected.
 - PIM-7001: Don't display remove button on an association if it comes from inheritance
 
@@ -35,13 +35,19 @@
 
 # 2.3.0-ALPHA1 (2018-04-27)
 
-## Improve Julia's experience
+## Better manage products with variants
 
 - PIM-6795: As Julia, I would like to display only the current level attributes
 - PIM-7284: Be able to bulk change the status of children products if product models are selected
 - PIM-7296: As Julia, I would like to change the parent of a variant product by import.
 - PIM-6989: As Julia, I would like to associate product models by import
+- PIM-7000: As Julia, I would like to manage associations for products models from the UI
+- PIM-6991: As Julia, I would like to export product models associations
 - PIM-7286: Be able to bulk add children products of product models to group
+
+## Improve Julia's experience
+
+- PIM-7294: As Julia, I don't want to remove a family with products
 
 ## Technical improvements
 
