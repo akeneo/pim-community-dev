@@ -29,8 +29,7 @@ class IdentifierFilterSpec extends ObjectBehavior
                 '=',
                 '!=',
                 'IN LIST',
-                'NOT IN LIST',
-                'EMPTY'
+                'NOT IN LIST'
             ]
         );
     }
@@ -55,8 +54,7 @@ class IdentifierFilterSpec extends ObjectBehavior
             '=',
             '!=',
             'IN LIST',
-            'NOT IN LIST',
-            'EMPTY'
+            'NOT IN LIST'
         ]);
         $this->supportsOperator('=')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
@@ -241,19 +239,5 @@ class IdentifierFilterSpec extends ObjectBehavior
                 'sku-001'
             )
         )->during('addAttributeFilter', [$sku, Operators::IN_LIST, 'sku-001', null, null, []]);
-    }
-
-    function it_adds_an_attribute_filter_with_operator_empty(SearchQueryBuilder $sqb, AttributeInterface $sku)
-    {
-        $sku->getCode()->willReturn('sku');
-        $sku->getBackendType()->willReturn('identifier');
-        $sqb->addMustNot(
-            [
-                'exists' => ['field' => 'identifier'],
-            ]
-        )->shouldBeCalled();
-
-        $this->setQueryBuilder($sqb);
-        $this->addAttributeFilter($sku, Operators::IS_EMPTY, 'sku-001', null, null, []);
     }
 }
