@@ -59,14 +59,8 @@ class MetricNormalizerSpec extends ObjectBehavior
     }
 
     function it_returns_empty_unit_if_it_is_an_empty_amount(
-        MetricInterface $metric,
-        ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        MetricInterface $metric
     ) {
-        $metric->getValue()->willReturn($productValue);
-        $productValue->getAttribute()->willReturn($attribute);
-        $attribute->isDecimalsAllowed()->willReturn(true);
-
         $metric->getUnit()->willReturn('KILOGRAM');
         $metric->getData()->willReturn(null);
 
