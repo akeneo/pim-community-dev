@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Value;
 
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
@@ -31,10 +30,8 @@ class ValueCollectionNormalizer implements NormalizerInterface, SerializerAwareI
     {
         $result = [];
         foreach ($values as $value) {
-            if (AttributeTypes::IDENTIFIER !== $value->getAttribute()->getType()) {
-                $normalizedValue = $this->serializer->normalize($value, $format, $context);
-                $result = array_merge_recursive($result, $normalizedValue);
-            }
+            $normalizedValue = $this->serializer->normalize($value, $format, $context);
+            $result = array_merge_recursive($result, $normalizedValue);
         }
 
         return $result;

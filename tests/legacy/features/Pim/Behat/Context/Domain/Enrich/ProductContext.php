@@ -8,11 +8,10 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Context\Spin\SpinCapableTrait;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Behat\Context\PimContext;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -24,10 +23,8 @@ use Webmozart\Assert\Assert;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantProductContext extends PimContext
+class ProductContext implements Context
 {
-    use SpinCapableTrait;
-
     /** @var IdentifiableObjectRepositoryInterface */
     private $productRepository;
 
@@ -47,7 +44,6 @@ class VariantProductContext extends PimContext
     private $versionRepository;
 
     /**
-     * @param string                                $mainContextClass
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param ObjectUpdaterInterface                $productUpdater
      * @param SaverInterface                        $productSaver
@@ -56,7 +52,6 @@ class VariantProductContext extends PimContext
      * @param VersionRepositoryInterface            $versionRepository
      */
     public function __construct(
-        string $mainContextClass,
         IdentifiableObjectRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
@@ -64,8 +59,6 @@ class VariantProductContext extends PimContext
         EntityManagerInterface $entityManager,
         VersionRepositoryInterface $versionRepository
     ) {
-        parent::__construct($mainContextClass);
-
         $this->productRepository = $productRepository;
         $this->productUpdater = $productUpdater;
         $this->productSaver = $productSaver;
@@ -124,9 +117,10 @@ class VariantProductContext extends PimContext
      * @param string    $identifier
      * @param TableNode $expectedVersion
      *
+     * @Then the last version of the product :identifier should be:
      * @Then the last version of the variant product :identifier should be:
      */
-    public function checkVariantProductLastVersion(string $identifier, TableNode $expectedVersion): void
+    public function checkProductLastVersion(string $identifier, TableNode $expectedVersion): void
     {
         $product = $this->findProduct($identifier);
         $lastVersion = $this->versionRepository->getNewestLogEntry(

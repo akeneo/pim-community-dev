@@ -131,7 +131,7 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.add_association'
+            - '@pim_enrich.reader.database.grouped_product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.add_value'
             - '@pim_enrich.writer.database.product_and_product_model_writer'
 

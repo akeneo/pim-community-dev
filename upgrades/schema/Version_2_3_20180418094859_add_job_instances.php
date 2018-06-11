@@ -5,7 +5,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-class Version_2_3_20180418094859 extends AbstractMigration
+class Version_2_3_20180418094859_add_job_instances extends AbstractMigration
 {
     /**
      * @param Schema $schema

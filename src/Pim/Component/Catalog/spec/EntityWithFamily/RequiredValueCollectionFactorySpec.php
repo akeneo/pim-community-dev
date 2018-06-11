@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\EntityWithFamily;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\EntityWithFamily\RequiredValue;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
@@ -17,6 +18,7 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         AttributeInterface $sku,
         AttributeInterface $price,
         AttributeInterface $description,
+        AttributeInterface $image,
         ChannelInterface $ecommerce,
         ChannelInterface $print,
         LocaleInterface $en_US,
@@ -25,6 +27,7 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         $sku->getCode()->willReturn('sku');
         $price->getCode()->willReturn('price');
         $description->getCode()->willReturn('description');
+        $image->getCode()->willReturn('image');
         $ecommerce->getCode()->willReturn('ecommerce');
         $print->getCode()->willReturn('print');
         $en_US->getCode()->willReturn('en_US');
@@ -42,6 +45,7 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         $sku,
         $description,
         $price,
+        $image,
         $ecommerce,
         $print,
         FamilyInterface $family,
@@ -50,28 +54,49 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         AttributeRequirementInterface $requirement3,
         AttributeRequirementInterface $requirement4,
         AttributeRequirementInterface $requirement5,
-        ValueInterface $expectedValue1,
-        ValueInterface $expectedValue2,
-        ValueInterface $expectedValue3,
-        ValueInterface $expectedValue4
+        AttributeRequirementInterface $requirement6,
+        RequiredValue $expectedRequiredValue1,
+        RequiredValue $expectedRequiredValue2,
+        RequiredValue $expectedRequiredValue3,
+        RequiredValue $expectedRequiredValue4,
+        RequiredValue $expectedRequiredValue5
     ) {
-        $expectedValue1->getAttribute()->willReturn($sku);
-        $expectedValue1->getScope()->willReturn(null);
-        $expectedValue1->getLocale()->willReturn(null);
+        $expectedRequiredValue1->forAttribute()->willReturn($sku);
+        $expectedRequiredValue1->forChannel()->willReturn($ecommerce);
+        $expectedRequiredValue1->forLocale()->willReturn($en_US);
+        $expectedRequiredValue1->attribute()->willReturn('sku');
+        $expectedRequiredValue1->channel()->willReturn(null);
+        $expectedRequiredValue1->locale()->willReturn(null);
 
-        $expectedValue2->getAttribute()->willReturn($description);
-        $expectedValue2->getScope()->willReturn('ecommerce');
-        $expectedValue2->getLocale()->willReturn('en_US');
+        $expectedRequiredValue2->forAttribute()->willReturn($description);
+        $expectedRequiredValue2->forChannel()->willReturn($ecommerce);
+        $expectedRequiredValue2->forLocale()->willReturn($en_US);
+        $expectedRequiredValue2->attribute()->willReturn('description');
+        $expectedRequiredValue2->channel()->willReturn('ecommerce');
+        $expectedRequiredValue2->locale()->willReturn('en_US');
 
-        $expectedValue3->getAttribute()->willReturn($description);
-        $expectedValue3->getScope()->willReturn('ecommerce');
-        $expectedValue3->getLocale()->willReturn('fr_FR');
+        $expectedRequiredValue3->forAttribute()->willReturn($description);
+        $expectedRequiredValue3->forChannel()->willReturn($ecommerce);
+        $expectedRequiredValue3->forLocale()->willReturn($fr_FR);
+        $expectedRequiredValue3->attribute()->willReturn('description');
+        $expectedRequiredValue3->channel()->willReturn('ecommerce');
+        $expectedRequiredValue3->locale()->willReturn('fr_FR');
 
-        $expectedValue4->getAttribute()->willReturn($price);
-        $expectedValue4->getScope()->willReturn(null);
-        $expectedValue4->getLocale()->willReturn(null);
+        $expectedRequiredValue4->forAttribute()->willReturn($price);
+        $expectedRequiredValue4->forChannel()->willReturn($ecommerce);
+        $expectedRequiredValue4->forLocale()->willReturn($en_US);
+        $expectedRequiredValue4->attribute()->willReturn('price');
+        $expectedRequiredValue4->channel()->willReturn(null);
+        $expectedRequiredValue4->locale()->willReturn(null);
 
-        $family->getAttributeRequirements()->willReturn([$requirement1, $requirement2, $requirement3, $requirement4, $requirement5]);
+        $expectedRequiredValue5->forAttribute()->willReturn($image);
+        $expectedRequiredValue5->forChannel()->willReturn($ecommerce);
+        $expectedRequiredValue5->forLocale()->willReturn($fr_FR);
+        $expectedRequiredValue5->attribute()->willReturn('image');
+        $expectedRequiredValue5->channel()->willReturn(null);
+        $expectedRequiredValue5->locale()->willReturn(null);
+
+        $family->getAttributeRequirements()->willReturn([$requirement1, $requirement2, $requirement3, $requirement4, $requirement5, $requirement6]);
 
         $ecommerce->getLocales()->willReturn([$en_US, $fr_FR]);
         $print->getLocales()->willReturn([$en_US]);
@@ -85,6 +110,11 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         $price->isScopable()->willReturn(false);
         $price->isLocalizable()->willReturn(false);
         $price->isLocaleSpecific()->willReturn(false);
+        $image->isScopable()->willReturn(false);
+        $image->isLocalizable()->willReturn(false);
+        $image->isLocaleSpecific()->willReturn(true);
+        $image->hasLocaleSpecific($fr_FR)->willReturn(true);
+        $image->hasLocaleSpecific($en_US)->willReturn(false);
 
         $requirement1->getAttribute()->willReturn($sku);
         $requirement1->getChannel()->willReturn($ecommerce);
@@ -106,14 +136,19 @@ class RequiredValueCollectionFactorySpec extends ObjectBehavior
         $requirement5->getChannel()->willReturn($print);
         $requirement5->isRequired()->willReturn(true);
 
+        $requirement6->getAttribute()->willReturn($image);
+        $requirement6->getChannel()->willReturn($ecommerce);
+        $requirement6->isRequired()->willReturn(true);
+
         $expectedRequiredValuesEcommerce = $this->forChannel($family, $ecommerce);
-        $expectedRequiredValuesEcommerce->count()->shouldReturn(3);
-        $expectedRequiredValuesEcommerce->hasSame($expectedValue1)->shouldReturn(true);
-        $expectedRequiredValuesEcommerce->hasSame($expectedValue2)->shouldReturn(true);
-        $expectedRequiredValuesEcommerce->hasSame($expectedValue3)->shouldReturn(true);
+        $expectedRequiredValuesEcommerce->count()->shouldReturn(4);
+        $expectedRequiredValuesEcommerce->hasSame($expectedRequiredValue1)->shouldReturn(true);
+        $expectedRequiredValuesEcommerce->hasSame($expectedRequiredValue2)->shouldReturn(true);
+        $expectedRequiredValuesEcommerce->hasSame($expectedRequiredValue3)->shouldReturn(true);
+        $expectedRequiredValuesEcommerce->hasSame($expectedRequiredValue5)->shouldReturn(true);
 
         $expectedRequiredValuesPrint = $this->forChannel($family, $print);
         $expectedRequiredValuesPrint->count()->shouldReturn(1);
-        $expectedRequiredValuesPrint->hasSame($expectedValue4)->shouldReturn(true);
+        $expectedRequiredValuesPrint->hasSame($expectedRequiredValue4)->shouldReturn(true);
     }
 }

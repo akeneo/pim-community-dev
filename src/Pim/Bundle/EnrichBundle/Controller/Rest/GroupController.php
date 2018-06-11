@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
@@ -111,6 +112,23 @@ class GroupController
         $groups = $this->groupRepository->findAll();
 
         return new JsonResponse($this->normalizer->normalize($groups, 'internal_api', $this->userContext->toArray()));
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function searchAction(Request $request): JsonResponse
+    {
+        $groups = $this->groupRepository->getOptions(
+            $dataLocale = $this->userContext->getUiLocaleCode(),
+            null,
+            $request->request->get('search'),
+            $this->parseOptions($request)
+        );
+
+        return new JsonResponse($groups);
     }
 
     /**
@@ -254,5 +272,34 @@ class GroupController
             $group,
             'internal_api'
         ));
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function parseOptions(Request $request): array
+    {
+        $options = $request->get('options', []);
+        $options['type'] = 'code';
+
+        if (!isset($options['limit'])) {
+            $options['limit'] = SearchableRepositoryInterface::FETCH_LIMIT;
+        }
+
+        if (0 > intval($options['limit'])) {
+            $options['limit'] = null;
+        }
+
+        if (!isset($options['locale'])) {
+            $options['locale'] = null;
+        }
+
+        if (isset($options['identifiers'])) {
+            $options['ids'] = explode(',', $options['identifiers']);
+        }
+
+        return $options;
     }
 }

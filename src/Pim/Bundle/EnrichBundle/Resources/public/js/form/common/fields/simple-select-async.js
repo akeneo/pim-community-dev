@@ -45,11 +45,15 @@ define(
              */
             initialize() {
                 this.choiceUrl = null;
+                this.choiceVerb = 'GET';
 
                 BaseField.prototype.initialize.apply(this, arguments);
 
                 if (undefined !== this.config.choiceRoute) {
                     this.setChoiceUrl(Routing.generate(this.config.choiceRoute));
+                }
+                if (undefined !== this.config.choiceVerb) {
+                    this.choiceVerb = this.config.choiceVerb;
                 }
             },
 
@@ -89,7 +93,8 @@ define(
                         url: this.choiceUrl,
                         cache: true,
                         data: this.select2Data.bind(this),
-                        results: this.select2Results.bind(this)
+                        results: this.select2Results.bind(this),
+                        type: this.choiceVerb
                     },
                     initSelection: this.select2InitSelection.bind(this),
                     placeholder: undefined !== this.config.placeholder ? __(this.config.placeholder) : ' '
@@ -156,17 +161,20 @@ define(
             select2InitSelection(element, callback) {
                 const id = $(element).val();
                 if ('' !== id) {
-                    $.get(this.choiceUrl, {options: {identifiers: [id]}})
-                        .then((response) => {
-                            let selected = _.findWhere(response, {code: id});
+                    $.ajax({
+                        url: this.choiceUrl,
+                        data: {options: {identifiers: [id]}},
+                        type: this.choiceVerb
+                    }).then((response) => {
+                        let selected = _.findWhere(response, {code: id});
 
-                            if (!selected) {
-                                selected = _.findWhere(response.results, {id: id});
-                            } else {
-                                selected = this.convertBackendItem(selected);
-                            }
-                            callback(selected);
-                        });
+                        if (!selected) {
+                            selected = _.findWhere(response.results, {id: id});
+                        } else {
+                            selected = this.convertBackendItem(selected);
+                        }
+                        callback(selected);
+                    });
                 }
             },
 

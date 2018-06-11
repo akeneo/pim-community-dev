@@ -1,5 +1,4 @@
 #!groovy
-
 String[] editions = ["ce"]
 String[] legacyFeatures = ["tests/legacy/features"]
 String launchUnitTests = "yes"
@@ -146,13 +145,17 @@ stage("Test") {
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
-                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/src /var/www/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+                containers: pimContainers(image: tag, selenium: false),
+                fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/tests"])},
+                parallelism: 50
             )},
             "back-legacy-phpunit-integration-ee": {queue(
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
-                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/src /var/www/pim/tests /var/www/pim/vendor/akeneo/pim-community-dev/src /var/www/pim/vendor/akeneo/pim-community-dev/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+                containers: pimContainers(image: "${tag}-ee", selenium: false),
+                fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/vendor/akeneo/pim-community-dev/src", "/var/www/pim/vendor/akeneo/pim-community-dev/tests"])},
+                parallelism: 50
             )},
 
             // END TO END TESTS
@@ -160,13 +163,15 @@ stage("Test") {
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
-                fetcher: {return pimBehatFetcher(profiles: ["legacy"], features: legacyFeatures)}
+                containers: pimContainers(image: tag),
+                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
             )},
             "legacy-end-to-end-behat-ee": {queue(
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
-                fetcher: {return pimBehatFetcher(profiles: ["legacy"], features: legacyFeatures)}
+                containers: pimContainers(image: "${tag}-ee"),
+                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
             )}
         )
     } finally {

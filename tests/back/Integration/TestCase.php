@@ -6,6 +6,7 @@ namespace Akeneo\Test\Integration;
 
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -122,5 +123,20 @@ abstract class TestCase extends KernelTestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return CategoryInterface
+     */
+    protected function createCategory(array $data = []): CategoryInterface
+    {
+        $category = $this->get('pim_catalog.factory.category')->create();
+        $this->get('pim_catalog.updater.category')->update($category, $data);
+        $this->get('validator')->validate($category);
+        $this->get('pim_catalog.saver.category')->save($category);
+
+        return $category;
     }
 }

@@ -99,7 +99,7 @@ class AssociationTypeController
      *
      * @return JsonResponse
      *
-     * @AclAncestor("pim_enrich_associationtype_edit")
+     * @AclAncestor("pim_enrich_associationtype_index")
      */
     public function getAction($identifier)
     {

@@ -2,11 +2,20 @@
 
 ## Improve Julia's experience
 
+- PIM-7347: Improve the calculation of the completeness for locale specific attributes.
+
+# 2.3.0-ALPHA2 (2018-06-07)
+
+## Improve Julia's experience
+
 - PIM-6897: As Julia, I would like to update the family variant labels from the UI
 - PIM-7302: As Julia, I am not able to delete an attribute option if it's use as variant axis.
 - PIM-7330: Improve validation message in case of product model or variant product axis values duplication
 - PIM-7326: Create a version when the parent of a variant product or a sub product model is changed.
 - PIM-6250: As Julia, I would like to change the parent of a variant product/sub product model from the UI
+- PIM-6784: Improve the product grid search with categories
+- PIM-7308: As Julia, I would like to bulk add product models associations if product models are selected.
+- PIM-7001: Don't display remove button on an association if it comes from inheritance
 
 ## Technical improvements
 
@@ -18,6 +27,7 @@
 - Change the method signature of `Pim\Component\Catalog\Validator\UniqueAxesCombinationSet::addCombination`, this method does not return anything anymore, but can throw `AlreadyExistingAxisValueCombinationException`
 - Add method `generateMissingForProducts` to `Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface`
 - Add a new public method `findProductModelsForFamilyVariant` to `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface`
+- Change signature of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductModelDescendantsSaver` constructor to add `Akeneo\Component\StorageUtils\Indexer\IndexerInterface`
 
 # 2.3.0-ALPHA1 (2018-04-27)
 

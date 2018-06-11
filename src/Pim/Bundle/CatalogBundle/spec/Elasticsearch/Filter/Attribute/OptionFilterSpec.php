@@ -163,14 +163,6 @@ class OptionFilterSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $sqb->addFilter(
-            [
-                'exists' => [
-                    'field' => 'values.color-option.ecommerce.en_US',
-                ],
-            ]
-        )->shouldBeCalled();
-
         $this->setQueryBuilder($sqb);
         $this->addAttributeFilter($color, Operators::NOT_IN_LIST, ['black'], 'en_US', 'ecommerce', []);
     }

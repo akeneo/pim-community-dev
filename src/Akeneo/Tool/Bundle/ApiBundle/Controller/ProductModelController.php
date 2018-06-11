@@ -169,7 +169,7 @@ class ProductModelController
             throw new NotFoundHttpException(sprintf('Product model "%s" does not exist.', $code));
         }
 
-        $productModelApi = $this->normalizer->normalize($productModels->current(), 'standard');
+        $productModelApi = $this->normalizer->normalize($productModels->current(), 'external_api');
 
         return new JsonResponse($productModelApi);
     }
@@ -301,7 +301,7 @@ class ProductModelController
         try {
             $count = 'true' === $queryParameters['with_count'] ? $productModels->count() : null;
             $paginatedProductModels = $this->offsetPaginator->paginate(
-                $this->normalizer->normalize($productModels, 'standard'),
+                $this->normalizer->normalize($productModels, 'external_api'),
                 $paginationParameters,
                 $count
             );

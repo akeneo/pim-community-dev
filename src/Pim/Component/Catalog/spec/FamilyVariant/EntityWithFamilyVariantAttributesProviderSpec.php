@@ -23,9 +23,9 @@ class EntityWithFamilyVariantAttributesProviderSpec extends ObjectBehavior
         AttributeInterface $description,
         AttributeInterface $color
     ) {
-        $variantionLevel = 1;
+        $variationLevel = 1;
 
-        $familyVariant->getVariantAttributeSet($variantionLevel)->willReturn($attributeSet);
+        $familyVariant->getVariantAttributeSet($variationLevel)->willReturn($attributeSet);
         $familyVariant->getCommonAttributes()->willReturn($commonAttributes);
         $commonAttributes->toArray()->willReturn([$price]);
 
@@ -74,6 +74,17 @@ class EntityWithFamilyVariantAttributesProviderSpec extends ObjectBehavior
         $this->getAttributes($entity)->shouldReturn([]);
     }
 
+    function it_returns_no_attribute_if_the_family_variant_of_the_entity_has_no_attribute_set(
+        $familyVariant,
+        EntityWithFamilyVariantInterface $entity
+    ) {
+        $entity->getVariationLevel()->willReturn(1);
+        $entity->getFamilyVariant()->willReturn($familyVariant);
+        $familyVariant->getVariantAttributeSet(1)->willReturn(null);
+
+        $this->getAttributes($entity)->shouldReturn([]);
+    }
+
     function it_gets_axes_from_an_entity_with_a_family_variant(
         $familyVariant,
         $color,
@@ -87,6 +98,7 @@ class EntityWithFamilyVariantAttributesProviderSpec extends ObjectBehavior
 
     function it_returns_no_axis_if_the_entity_has_no_family_variant(EntityWithFamilyVariantInterface $entity)
     {
+        $entity->getVariationLevel()->willReturn(1);
         $entity->getFamilyVariant()->willReturn(null);
 
         $this->getAxes($entity)->shouldReturn([]);

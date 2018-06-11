@@ -98,13 +98,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
                         $attributePath => $values,
                     ],
                 ];
-                $filterClause = [
-                    'exists' => [
-                        'field' => $attributePath,
-                    ],
-                ];
                 $this->searchQueryBuilder->addMustNot($mustNotClause);
-                $this->searchQueryBuilder->addFilter($filterClause);
                 break;
 
             default:

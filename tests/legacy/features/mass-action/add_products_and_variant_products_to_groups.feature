@@ -16,7 +16,7 @@ Feature: Add products and variant products to many groups at once via a form
     Given I select rows kickers, hiking_shoes and moon_boots
     And I press the "Bulk actions" button
     And I choose the "Add to groups" operation
-    And I check "Similar boots"
+    And I change the "Groups" to "Similar boots"
     When I confirm mass edit
     And I wait for the "add_to_group" job to finish
     Then "similar_boots" group should contain "kickers, hiking_shoes and moon_boots"
@@ -55,7 +55,7 @@ Feature: Add products and variant products to many groups at once via a form
     When I select rows bag_white and bag_red
     And I press the "Bulk actions" button
     And I choose the "Add to groups" operation
-    And I check "Bageneo"
+    And I change the "Groups" to "Bageneo"
     And I confirm mass edit
     And I wait for the "add_to_group" job to finish
     Then "bageneo" group should contain "bag_white_large, bag_white_small, bag_red_small and bag_red_large"

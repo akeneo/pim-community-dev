@@ -242,9 +242,11 @@ class SearchSelfAndAncestorsIntegration extends AbstractPimCatalogProductModelIn
                 'biker-jacket-polyester-s',
                 'biker-jacket-polyester-m',
                 'biker-jacket-polyester-l',
+                'camera_nikon',
                 'model-biker-jacket-leather',
                 'model-biker-jacket-polyester',
                 'watch',
+                'empty_product'
             ]
         );
     }

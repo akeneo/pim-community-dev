@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -71,6 +72,14 @@ class AssociatedProductModelDatasource extends ProductDatasource
         $from = null !== $this->getConfiguration('from', false) ?
             (int) $this->getConfiguration('from', false) : 0;
 
+        $associatedProductsIdentifiersFromParent = [];
+        $associatedProductModelsIdentifiersFromParent = [];
+        $parentAssociation = $this->getParentAssociation($sourceProduct, $this->getConfiguration('association_type_id'));
+        if (null !== $parentAssociation) {
+            $associatedProductsIdentifiersFromParent = $this->getAssociatedProductIdentifiers($parentAssociation);
+            $associatedProductModelsIdentifiersFromParent = $this->getAssociatedProductModelIdentifiers($parentAssociation);
+        }
+
         $associatedProducts = $this->getAssociatedProducts(
             $associatedProductsIdentifiers,
             $limit,
@@ -79,10 +88,10 @@ class AssociatedProductModelDatasource extends ProductDatasource
             $scope
         );
 
-        $productModelLimit = $limit - count($associatedProducts);
+        $productModelLimit = $limit - $associatedProducts->count();
         $associatedProductModels = [];
         if ($productModelLimit > 0) {
-            $productModelFrom = $from - count($associatedProductsIdentifiers) + count($associatedProducts);
+            $productModelFrom = $from - count($associatedProductsIdentifiers) + $associatedProducts->count();;
             $associatedProductModels = $this->getAssociatedProductModels(
                 $associatedProductModelsIdentifiers,
                 $productModelLimit,
@@ -92,10 +101,47 @@ class AssociatedProductModelDatasource extends ProductDatasource
             );
         }
 
+        $normalizedAssociatedProducts = $this->normalizeProductsAndProductModels(
+            $associatedProducts,
+            $associatedProductsIdentifiersFromParent,
+            $locale,
+            $scope
+        );
+
+        $normalizedAssociatedProductModels = $this->normalizeProductsAndProductModels(
+            $associatedProductModels,
+            $associatedProductModelsIdentifiersFromParent,
+            $locale,
+            $scope
+        );
+
         $rows = ['totalRecords' => count($associatedProductsIdentifiers) + count($associatedProductModelsIdentifiers)];
-        $rows['data'] = array_merge($associatedProducts, $associatedProductModels);
+        $rows['data'] = array_merge($normalizedAssociatedProducts, $normalizedAssociatedProductModels);
 
         return $rows;
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $product
+     * @param mixed                            $associationTypeId
+     *
+     * @return AssociationInterface|null
+     */
+    protected function getParentAssociation(EntityWithFamilyVariantInterface $product, $associationTypeId): ?AssociationInterface
+    {
+        $parent = $product->getParent();
+
+        if (null === $parent) {
+            return null;
+        }
+
+        foreach ($parent->getAllAssociations() as $association) {
+            if ($association->getAssociationType()->getId() === (int)$associationTypeId) {
+                return $association;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -135,7 +181,7 @@ class AssociatedProductModelDatasource extends ProductDatasource
      * @param string $locale
      * @param string $scope
      *
-     * @return array
+     * @return CursorInterface
      */
     protected function getAssociatedProducts(
         array $associatedProductsIdentifiers,
@@ -147,9 +193,8 @@ class AssociatedProductModelDatasource extends ProductDatasource
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('identifier', Operators::IN_LIST, $associatedProductsIdentifiers);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
-        $products = $pqb->execute();
 
-        return $this->normalizeProductsAndProductModels($products, $locale, $scope);
+        return $pqb->execute();
     }
 
     /**
@@ -159,7 +204,7 @@ class AssociatedProductModelDatasource extends ProductDatasource
      * @param string $locale
      * @param string $scope
      *
-     * @return array
+     * @return CursorInterface
      */
     protected function getAssociatedProductModels(
         array $associatedProductModelsIdentifiers,
@@ -171,13 +216,13 @@ class AssociatedProductModelDatasource extends ProductDatasource
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
         $pqb->addFilter('identifier', Operators::IN_LIST, $associatedProductModelsIdentifiers);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class);
-        $products = $pqb->execute();
 
-        return $this->normalizeProductsAndProductModels($products, $locale, $scope);
+        return $pqb->execute();
     }
 
     /**
      * @param CursorInterface $products
+     * @param array           $identifiersFromInheritance
      * @param string          $locale
      * @param string          $scope
      *
@@ -185,6 +230,7 @@ class AssociatedProductModelDatasource extends ProductDatasource
      */
     protected function normalizeProductsAndProductModels(
         CursorInterface $products,
+        array $identifiersFromInheritance,
         $locale,
         $scope
     ) {
@@ -202,11 +248,23 @@ class AssociatedProductModelDatasource extends ProductDatasource
             $normalized = array_merge(
                 $this->normalizer->normalize($product, 'datagrid', $context),
                 [
-                    'id'         => $product->getId(),
+                    'id'         => sprintf(
+                        '%s-%s',
+                        $product instanceof ProductModelInterface ? 'product-model' : 'product',
+                        $product->getId()
+                    ),
                     'dataLocale' => $dataLocale,
                     'is_associated' => true,
                 ]
             );
+
+            if ($product instanceof ProductModelInterface) {
+                $identifier = $product->getCode();
+            } else {
+                $identifier = $product->getIdentifier();
+            }
+
+            $normalized['from_inheritance'] = in_array($identifier, $identifiersFromInheritance);
 
             $data[] = new ResultRecord($normalized);
         }

@@ -4,6 +4,8 @@ namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use PHPUnit\Framework\Assert;
+use Pim\Component\Catalog\Model\ProductModelAssociation;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -11,6 +13,8 @@ class GetProductModelIntegration extends ApiTestCase
 {
     public function testSuccessfullyGetProductModel()
     {
+        $this->addAssociationsToProductModel('model-biker-jacket-leather');
+
         $standardProductModel = [
             'code' => 'model-biker-jacket-leather',
             'family_variant' => 'clothing_material_size',
@@ -74,7 +78,9 @@ class GetProductModelIntegration extends ApiTestCase
             ],
             'created' => '2017-10-02T15:03:55+02:00',
             'updated' => '2017-10-02T15:03:55+02:00',
-            'associations' => [],
+            'associations'  => [
+                'X_SELL' => ['groups' => [], 'products' => ['biker-jacket-leather-m'], 'product_models' => ['model-biker-jacket-polyester']],
+            ]
         ];
         $client = $this->createAuthenticatedClient();
 
@@ -93,6 +99,33 @@ class GetProductModelIntegration extends ApiTestCase
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
+
+    protected function addAssociationsToProductModel($productModelCode)
+    {
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByCode($productModelCode);
+
+        $association = $productModel->getAssociationForTypeCode('X_SELL');
+        if (null === $association) {
+            $associationType = $this->get('pim_catalog.repository.association_type')
+                ->findOneBy(['code' => 'X_SELL']);
+
+            $association = new ProductModelAssociation();
+            $association->setAssociationType($associationType);
+            $productModel->addAssociation($association);
+        }
+        $association->addProductModel(
+            $this->get('pim_catalog.repository.product_model')->findOneByCode('model-biker-jacket-polyester')
+        );
+
+        $association->addProduct(
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-m')
+        );
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+
+        Assert::assertCount(0, $errors);
+
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
     }
 
     /**
