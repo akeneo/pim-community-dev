@@ -109,9 +109,46 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsUpdater->update($rule, Argument::any())->shouldBeCalled();
         $productsValidator->validate($rule, Argument::any())->willReturn([$validProduct1, $validProduct2]);
         $productsSaver->save($rule, [$validProduct1, $validProduct2])->shouldBeCalled();
-        $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(13);
+        $objectDetacher->detach(Argument::any())->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
+
+        $this->apply($rule, $subjectSet);
+    }
+
+    function it_applies_a_rule_on_every_product_in_the_subject_set(
+        $productsUpdater,
+        $productsValidator,
+        $productsSaver,
+        $objectDetacher,
+        RuleInterface $rule,
+        RuleSubjectSetInterface $subjectSet,
+        ProductInterface $selectedProduct,
+        CursorInterface $cursor
+    ) {
+        $indexPage = 0;
+        $cursor->rewind()->will(
+            function () use (&$indexPage) {
+                $indexPage = 0;
+            }
+        );
+        $cursor->current()->willReturn($selectedProduct);
+        $cursor->next()->will(
+            function () use (&$indexPage) {
+                $indexPage++;
+            }
+        );
+        $cursor->valid()->will(
+            function () use (&$indexPage) {
+                return $indexPage < 42;
+            }
+        );
+        $subjectSet->getSubjectsCursor()->willReturn($cursor);
+
+        $productsUpdater->update($rule, Argument::type('array'))->shouldBeCalledTimes(5);
+        $productsValidator->validate($rule, Argument::type('array'))->shouldBeCalledTimes(5)->willReturnArgument(1);
+        $productsSaver->save($rule, Argument::type('array'))->shouldBeCalledTimes(5);
+        $objectDetacher->detach(Argument::type(ProductInterface::class))->shouldBeCalledTimes(42);
 
         $this->apply($rule, $subjectSet);
     }
