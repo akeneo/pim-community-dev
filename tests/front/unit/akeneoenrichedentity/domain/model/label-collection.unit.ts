@@ -25,7 +25,7 @@ describe('akeneo > enriched entity > domain > model --- label collection', () =>
     expect(createLabelCollection(rawLabels).getLabel('en_US')).toBe('michel');
   });
 
-  test('I can get a label for the given locale', () => {
+  test('I cannot get a label for an unknown locale', () => {
     const rawLabels = {en_US: 'michel'};
 
     expect(() => {

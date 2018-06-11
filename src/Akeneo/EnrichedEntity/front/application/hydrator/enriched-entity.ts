@@ -20,7 +20,7 @@ const validateKeys = (object: any, keys: string[]) => {
   }
 };
 
-export const hidrator = (
+export const hydrator = (
   createEnrichedEntity: (identifier: Identifier, labelCollection: LabelCollection) => EnrichedEntity,
   createIdentifier: (identifier: string) => Identifier,
   createLabelCollection: (labelCollection: any) => LabelCollection
@@ -35,4 +35,4 @@ export const hidrator = (
   return createEnrichedEntity(identifier, labelCollection);
 };
 
-export default hidrator(createEnrichedEntity, createIdentifier, createLabelCollection);
+export default hydrator(createEnrichedEntity, createIdentifier, createLabelCollection);

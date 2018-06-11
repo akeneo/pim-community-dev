@@ -5,15 +5,16 @@ import { getImageShowUrl } from 'akeneoenrichedentity/tools/media-url-generator'
 export default ({
   enrichedEntity,
   locale,
+  isLoading = false,
   onRedirectToEnrichedEntity,
-}: {enrichedEntity: EnrichedEntity; locale: string; position: number} &
+}: {enrichedEntity: EnrichedEntity; locale: string; isLoading?:boolean, position: number} &
 {
   onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void;
 }) => {
   return (
     <tr
       title={enrichedEntity.getLabel(locale)}
-      className="AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder"
+      className={`AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder ${isLoading ? 'AknLoadingPlaceHolder' : ''}`}
       data-identifier={enrichedEntity.getIdentifier().stringValue()}
       onClick={() => onRedirectToEnrichedEntity(enrichedEntity)}
     >

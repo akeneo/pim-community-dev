@@ -59,7 +59,7 @@ SQL;
     {
         $serializedLabels = $this->getSerializedLabels($enrichedEntity);
         $update = <<<SQL
-        UPDATE akeneo_enriched_entity_enriched_entity 
+        UPDATE akeneo_enriched_entity_enriched_entity
         SET labels = :labels
         WHERE identifier = :identifier;
 SQL;
@@ -100,7 +100,7 @@ SQL;
             return null;
         }
 
-        return $this->hidrateEnrichedEntity($result['identifier'], $result['labels']);
+        return $this->hydrateEnrichedEntity($result['identifier'], $result['labels']);
     }
 
     /**
@@ -117,7 +117,7 @@ SQL;
 
         $enrichedEntities = [];
         foreach ($results as $result) {
-            $enrichedEntities[] = $this->hidrateEnrichedEntity($result['identifier'], $result['labels']);
+            $enrichedEntities[] = $this->hydrateEnrichedEntity($result['identifier'], $result['labels']);
         }
 
         return $enrichedEntities;
@@ -129,7 +129,7 @@ SQL;
      *
      * @return EnrichedEntity
      */
-    private function hidrateEnrichedEntity(string $identifier, string $normalizedLabels): EnrichedEntity
+    private function hydrateEnrichedEntity(string $identifier, string $normalizedLabels): EnrichedEntity
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
 

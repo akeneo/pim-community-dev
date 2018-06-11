@@ -1,8 +1,8 @@
-import {hidrator} from 'akeneoenrichedentity/application/hidrator/enriched-entity';
+import {hydrator} from 'akeneoenrichedentity/application/hydrator/enriched-entity';
 
-describe('akeneo > enriched entity > application > hidrator --- enriched entity', () => {
-  test('I can hidrate a new enriched entity', () => {
-    const hidrate = hidrator(
+describe('akeneo > enriched entity > application > hydrator --- enriched entity', () => {
+  test('I can hydrate a new enriched entity', () => {
+    const hydrate = hydrator(
       (identifier, labelCollection) => {
         expect(identifier).toEqual('designer');
         expect(labelCollection).toEqual({en_US: 'Designer'});
@@ -19,12 +19,12 @@ describe('akeneo > enriched entity > application > hidrator --- enriched entity'
       }
     );
 
-    expect(hidrate({identifier: 'designer', labels: {en_US: 'Designer'}}));
+    expect(hydrate({identifier: 'designer', labels: {en_US: 'Designer'}}));
   });
 
   test('It throw an error if I pass a malformed enriched entity', () => {
-    expect(() => hidrator()({})).toThrow();
-    expect(() => hidrator()({labels: {}})).toThrow();
-    expect(() => hidrator()({identifier: 'sofa'})).toThrow();
+    expect(() => hydrator()({})).toThrow();
+    expect(() => hydrator()({labels: {}})).toThrow();
+    expect(() => hydrator()({identifier: 'sofa'})).toThrow();
   });
 });
