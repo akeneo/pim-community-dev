@@ -114,7 +114,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
             }
         } elseif (in_array(
             $field,
-            [
+            array_merge([
                 'code',
                 'type',
                 'group',
@@ -139,8 +139,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 'localizable',
                 'scopable',
                 'required',
-                'auto_option_sorting',
-            ]
+            ], $this->properties)
         )) {
             if (null !== $data && !is_scalar($data)) {
                 throw InvalidPropertyTypeException::scalarExpected($field, static::class, $data);
