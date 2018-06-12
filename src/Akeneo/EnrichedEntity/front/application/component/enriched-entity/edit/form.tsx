@@ -2,7 +2,7 @@ import * as React from 'react';
 import __ from 'akeneoenrichedentity/tools/translator';
 import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import LabelCollection from 'akeneoenrichedentity/domain/model/label-collection';
 import Flag from 'akeneoenrichedentity/tools/component/flag';
 
 interface FormProps {
@@ -35,10 +35,11 @@ export default class EditForm extends React.Component<FormProps> {
   }
 
   componentDidUpdate(prevProps: FormProps, prevState: FormState) {
-    if (this.props === prevProps && this.state !== prevState) {
-      const identifier: Identifier = createIdentifier(this.state.identifier);
-      const labelCollection: LabelCollection = createLabelCollection({ [this.props.locale]: this.state.label });
+    if (this.props === prevProps && this.state !== prevState && null !== this.props.enrichedEntity) {
+      const identifier: Identifier = createIdentifier(this.props.enrichedEntity.getIdentifier().stringValue());
+      const labelCollection: LabelCollection = this.props.enrichedEntity.getLabelCollection().setLabel(this.props.locale, this.state.label);
       const enrichedEntityUpdated: EnrichedEntity = createEnrichedEntity(identifier, labelCollection);
+
       this.props.updateEditForm(enrichedEntityUpdated);
     }
   }
