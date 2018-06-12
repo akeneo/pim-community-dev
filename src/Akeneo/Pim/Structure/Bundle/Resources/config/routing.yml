@@ -20,6 +20,10 @@ internal_api_attribute_group:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute_group.yml'
     prefix: /rest/attribute-group
 
+internal_api_family:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/family.yml'
+    prefix: /configuration/family
+
 ### Front routes
 front_routes:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/front.yml'

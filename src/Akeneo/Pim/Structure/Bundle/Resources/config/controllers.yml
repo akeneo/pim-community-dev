@@ -116,3 +116,17 @@ services:
             - '@pim_catalog.factory.attribute_group'
             - '@event_dispatcher'
             - '@pim_catalog.filter.chained'
+
+    pim_enrich.controller.rest.family:
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyController'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_internal_api_serializer'
+            - '@pim_enrich.repository.family.search'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.saver.family'
+            - '@pim_catalog.remover.family'
+            - '@validator'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.factory.family'
+            - '@pim_enrich.normalizer.violation'

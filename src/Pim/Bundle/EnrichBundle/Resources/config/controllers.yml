@@ -11,7 +11,6 @@ parameters:
     pim_enrich.controller.rest.attribute_type.class:          Pim\Bundle\EnrichBundle\Controller\Rest\AttributeTypeController
     pim_enrich.controller.rest.category.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CategoryController
     pim_enrich.controller.rest.currency.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CurrencyController
-    pim_enrich.controller.rest.family.class:                  Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController
     pim_enrich.controller.rest.family_variant.class:          Pim\Bundle\EnrichBundle\Controller\Rest\FamilyVariantController
     pim_enrich.controller.rest.form_extension.class:          Pim\Bundle\EnrichBundle\Controller\Rest\FormExtensionController
     pim_enrich.controller.rest.group.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\GroupController
@@ -210,20 +209,6 @@ services:
             - '@pim_catalog.validator.product'
             - '@pim_catalog.repository.attribute'
             - '@pim_enrich.normalizer.product_violation'
-
-    pim_enrich.controller.rest.family:
-        class: '%pim_enrich.controller.rest.family.class%'
-        arguments:
-            - '@pim_catalog.repository.family'
-            - '@pim_internal_api_serializer'
-            - '@pim_enrich.repository.family.search'
-            - '@pim_catalog.updater.family'
-            - '@pim_catalog.saver.family'
-            - '@pim_catalog.remover.family'
-            - '@validator'
-            - '@oro_security.security_facade'
-            - '@pim_catalog.factory.family'
-            - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.family_variant:
         class: '%pim_enrich.controller.rest.family_variant.class%'
