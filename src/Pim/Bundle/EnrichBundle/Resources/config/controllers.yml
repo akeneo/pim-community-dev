@@ -1,7 +1,6 @@
 parameters:
     pim_enrich.controller.category_tree.class:                Pim\Bundle\EnrichBundle\Controller\CategoryTreeController
     pim_enrich.controller.currency.class:                     Pim\Bundle\EnrichBundle\Controller\CurrencyController
-    pim_enrich.controller.family.class:                       Pim\Bundle\EnrichBundle\Controller\FamilyController
     pim_enrich.controller.attribute_option.class:             Pim\Bundle\EnrichBundle\Controller\AttributeOptionController
     pim_enrich.controller.product.class:                      Pim\Bundle\EnrichBundle\Controller\ProductController
     pim_enrich.controller.product_model.class:                Pim\Bundle\EnrichBundle\Controller\ProductModelController
@@ -58,14 +57,6 @@ services:
             - '@router'
             - '@pim_catalog.saver.currency'
 
-    pim_enrich.controller.family:
-        class: '%pim_enrich.controller.family.class%'
-        arguments:
-            - '@request_stack'
-            - '@router'
-            - '@pim_catalog.factory.family'
-            - '@pim_enrich.form.handler.family'
-            - '@pim_enrich.form.family'
     pim_enrich.controller.attribute_option:
         class: '%pim_enrich.controller.attribute_option.class%'
         arguments:

@@ -1,4 +1,5 @@
 services:
+    ### External API
     pim_api.controller.attribute:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeController'
         arguments:
