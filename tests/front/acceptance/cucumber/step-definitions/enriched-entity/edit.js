@@ -15,7 +15,6 @@ module.exports = async function (cucumber) {
   });
 
   When('the user asks for the enriched entity {string}', async function (identifier) {
-  When('the user ask for the enriched entity {string}', async function (identifier) {
     await this.page.evaluate(async (identifier) => {
         const Controller = require('pim/controller/enriched-entity/edit');
         const controller = new Controller();
@@ -26,7 +25,7 @@ module.exports = async function (cucumber) {
     await this.page.waitFor('.object-attributes');
   });
 
-  Given('the user gets the enriched entity {string} with label {string}', async function (
+  When('the user gets the enriched entity {string} with label {string}', async function (
     expectedIdentifier,
     expectedLabel
   ) {
@@ -43,18 +42,18 @@ module.exports = async function (cucumber) {
     assert.equal(labelValue, expectedLabel);
   });
 
-  When('I try to collapse the sidebar', async function () {
+  When('the user tries to collapse the sidebar', async function () {
       await this.page.evaluate(async () => {
           const element = document.querySelector('.AknColumn-collapseButton');
           element.click();
       });
   });
 
-  Then('I should see the sidebar collapsed', async function () {
+  Then('the user should see the sidebar collapsed', async function () {
       await this.page.waitFor('.AknColumn--collapsed:defined');
   });
 
-  Then('I should see the sidebar with the configured tabs', async function () {
+  Then('the user should see the sidebar with the configured tabs', async function () {
       const values = await this.page.evaluate(
           () => [...document.querySelectorAll('.AknColumn-navigationLink')]
               .map(element => element.getAttribute('data-tab'))
@@ -63,7 +62,7 @@ module.exports = async function (cucumber) {
       assert.deepStrictEqual(values, this.expectedTabs);
   });
 
-    Then('I should see the properties view', async function () {
+    Then('the user should see the properties view', async function () {
         const activeTab = await this.page.evaluate(
             () => document.querySelector('.AknColumn-navigationLink--active').getAttribute('data-tab')
         );
