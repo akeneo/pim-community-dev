@@ -3,6 +3,7 @@
 ## Improve Julia's experience
 
 - PIM-7347: Improve the calculation of the completeness for locale specific attributes.
+- PIM-7345: Remove the "is empty" operator for sku.
 
 # 2.3.0-ALPHA2 (2018-06-07)
 
