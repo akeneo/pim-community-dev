@@ -115,37 +115,8 @@ class GridHelper
         $proposals = $this->draftRepository->findApprovableByUser($user);
         $choices = [];
 
-        foreach ($proposals as $proposal) {
-            $product = $proposal->getProduct();
-            if ($product instanceof EntityWithFamilyVariantInterface) {
-                $parentProduct = $product->getParent();
-                if (null === $parentProduct) {
-                    continue;
-                }
+        $choices = $this->generateLabel($proposals, $choices);
 
-                $familyVariant = $parentProduct->getFamilyVariant();
-                if (null === $familyVariant) {
-                    continue;
-                }
-
-                $variationLevel = $product->getVariationLevel();
-                $variantAttributeSet = $familyVariant->getVariantAttributeSet($variationLevel);
-                if (null === $variantAttributeSet) {
-                    continue;
-                }
-
-                $productLabel = trim($product->getLabel());
-                $axes = $familyVariant->getAxes();
-
-                foreach ($axes as $axe) {
-                    $productLabel .= ' - ' . $product->getValue($axe->getCode());
-                }
-
-                $choices[$productLabel] = $product->getId();
-            } else {
-                $choices[$product->getLabel()] = $product->getId();
-            }
-        }
         asort($choices);
 
         return $choices;
@@ -244,5 +215,46 @@ class GridHelper
         }
 
         return $params['product'];
+    }
+
+    /**
+     * It generates labels. If the proposal is a variant it concatenates with the axes values to prevent label
+     * duplication.
+     */
+    private function generateLabel(array $proposals, array $choices): array
+    {
+        foreach ($proposals as $proposal) {
+            $product = $proposal->getProduct();
+            if ($product instanceof EntityWithFamilyVariantInterface) {
+                $parentProduct = $product->getParent();
+                if (null === $parentProduct) {
+                    continue;
+                }
+
+                $familyVariant = $parentProduct->getFamilyVariant();
+                if (null === $familyVariant) {
+                    continue;
+                }
+
+                $variationLevel = $product->getVariationLevel();
+                $variantAttributeSet = $familyVariant->getVariantAttributeSet($variationLevel);
+                if (null === $variantAttributeSet) {
+                    continue;
+                }
+
+                $productLabel = trim($product->getLabel());
+                $axes = $familyVariant->getAxes();
+
+                foreach ($axes as $axe) {
+                    $productLabel .= ' - '.$product->getValue($axe->getCode());
+                }
+
+                $choices[$productLabel] = $product->getId();
+            } else {
+                $choices[$product->getLabel()] = $product->getId();
+            }
+        }
+
+        return $choices;
     }
 }
