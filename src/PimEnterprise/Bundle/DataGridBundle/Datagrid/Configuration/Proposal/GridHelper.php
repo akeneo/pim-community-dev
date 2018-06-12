@@ -118,7 +118,6 @@ class GridHelper
         foreach ($proposals as $proposal) {
             $product = $proposal->getProduct();
             if ($product instanceof EntityWithFamilyVariantInterface) {
-
                 $parentProduct = $product->getParent();
                 if (null === $parentProduct) {
                     continue;
