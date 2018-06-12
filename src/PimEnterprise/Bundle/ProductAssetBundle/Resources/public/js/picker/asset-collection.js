@@ -17,8 +17,7 @@ define(
         'pim/form-builder',
         'routing',
         'backbone/bootstrap-modal'
-    ],
-    function (
+    ], (
         $,
         _,
         __,
@@ -27,7 +26,7 @@ define(
         FetcherRegistry,
         FormBuilder,
         Routing
-    ) {
+    ) => {
         return Backbone.View.extend({
             className: 'AknAssetCollectionField',
             data: [],
@@ -39,21 +38,48 @@ define(
 
             /**
              * {@inheritdoc}
+             *
+             * In the case where asset codes are integers, even if their order iscorrectly managed by the backend, the
+             * fetcher will reorganize them, sorting them by code ascending. As "this.data" contains the codes in the
+             * correct order, we reorder the assets according to this list of code.
              */
-            render: function () {
-                FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(function (assets) {
+            render() {
+                FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(assets => {
+                    let orderedAssets = [];
+                    this.data.forEach(assetCode => {
+                        orderedAssets = orderedAssets.concat(assets.filter(asset => asset.code === assetCode));
+                    });
+
                     this.$el.html(this.template({
-                        assets: assets,
+                        assets: orderedAssets,
                         locale: this.context.locale,
                         scope: this.context.scope,
                         thumbnailFilter: 'thumbnail',
                         editMode: this.context.editMode
                     }));
 
+                    if ('view' !== this.context.editMode) {
+                        this.$('.AknAssetCollectionField-list').sortable({
+                            update: this.updateDataFromDom.bind(this)
+                        });
+                    }
+
                     this.delegateEvents();
-                }.bind(this));
+                });
 
                 return this;
+            },
+
+            /**
+             *
+             */
+            updateDataFromDom() {
+                const assets = this.$('.AknAssetCollectionField-listItem')
+                    .map((index, listItem) => listItem.dataset.asset)
+                    .get();
+
+                this.data = assets;
+                this.trigger('collection:change', assets);
             },
 
             /**
@@ -61,7 +87,7 @@ define(
              *
              * @param {Array} data
              */
-            setData: function (data) {
+            setData(data) {
                 this.data = data;
             },
 
@@ -70,20 +96,20 @@ define(
              *
              * @param {Object} context
              */
-            setContext: function (context) {
+            setContext(context) {
                 this.context = context;
             },
 
             /**
              * Launch the asset picker and set the assets after update
              */
-            updateAssets: function () {
-                this.manageAssets().then(function (assets) {
+            updateAssets() {
+                this.manageAssets().then(assets => {
                     this.data = assets;
 
                     this.trigger('collection:change', assets);
                     this.render();
-                }.bind(this));
+                });
             },
 
             /**
@@ -91,10 +117,10 @@ define(
              *
              * @return {Promise}
              */
-            manageAssets: function () {
-                var deferred = $.Deferred();
+            manageAssets() {
+                const deferred = $.Deferred();
 
-                FormBuilder.build('pimee-product-asset-picker-form').then(function (form) {
+                FormBuilder.build('pimee-product-asset-picker-form').then(form => {
                     let modal = new Backbone.BootstrapModal({
                         className: 'modal modal--fullPage modal--topButton',
                         modalOptions: {
@@ -119,22 +145,20 @@ define(
                         });
                     });
 
-                    form.setLabelMethod(function (item) {
-                        return item.description;
-                    });
+                    form.setLabelMethod(item => item.description);
 
                     form.setElement(modal.$('.modal-body'))
                         .render()
                         .setItems(this.data);
 
                     modal.on('cancel', deferred.reject);
-                    modal.on('ok', function () {
-                        var assets = _.sortBy(form.getItems(), 'code');
+                    modal.on('ok', () => {
+                        const assets = _.sortBy(form.getItems(), 'code');
                         modal.close();
 
                         deferred.resolve(assets);
-                    }.bind(this));
-                }.bind(this));
+                    });
+                });
 
                 return deferred.promise();
             }
