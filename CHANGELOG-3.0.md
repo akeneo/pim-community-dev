@@ -92,8 +92,8 @@
 - Move namespace `Pim\Component\Classification` to `Akeneo\Tool\Component\Classification`
 - Move namespace `Pim\Bundle\ClassificationBundle` to `Akeneo\Tool\Bundle\ClassificationBundle`
 - Move namespace `Pim\Bundle\BufferBundle` to `Akeneo\Tool\Bundle\BufferBundle`
-- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\ChannelController` to `Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController`
-- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\ChannelController` to `Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController`
+- Move `Pim\Bundle\ApiBundle\Controller\ChannelController` to `Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController`
+- Move `Pim\Bundle\ApiBundle\Controller\ChannelController` to `Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\ChannelController` to `Akeneo\Channel\Bundle\Controller\InternalApi\ChannelController`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover` to `Akeneo\Channel\Bundle\Doctrine\Remover\ChannelRemover`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository`
@@ -183,3 +183,14 @@
 - Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeNormalizer`
 - Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeOptionNormalizer`
 - Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\FamilyNormalizer`
+- Move `Pim\Bundle\ApiBundle\Controller\AttributeController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeController`
+- Move `Pim\Bundle\ApiBundle\Controller\AttributeGroupController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeGroupController`
+- Move `Pim\Bundle\ApiBundle\Controller\AttributeOptionController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeOptionController`
+- Move `Pim\Bundle\ApiBundle\Controller\FamilyController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\FamilyController`
+- Move `Pim\Bundle\ApiBundle\Controller\FamilyVariantController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\FamilyVariantController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeOptionController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyVariantController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyVariantController`
+- Remove class `Pim\Bundle\EnrichBundle\Controller\FamilyController`
