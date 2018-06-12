@@ -38,6 +38,10 @@ define(
 
             /**
              * {@inheritdoc}
+             *
+             * In the case where asset codes are integers, even if their order iscorrectly managed by the backend, the
+             * fetcher will reorganize them, sorting them by code ascending. As "this.data" contains the codes in the
+             * correct order, we reorder the assets according to this list of code.
              */
             render() {
                 FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(assets => {
