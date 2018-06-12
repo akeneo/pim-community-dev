@@ -6,6 +6,7 @@ parameters:
     pimee_workflow.controller.product_draft_rest.class:     PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController
     pimee_workflow.controller.rest.product.class:           PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductController
     pimee_workflow.controller.product_model_draft_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductModelDraftController
+    pimee_workflow.controller.author_draft.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\AuthorDraftController
 
 services:
     pimee_workflow.controller.product_draft:
@@ -102,3 +103,9 @@ services:
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_catalog.filter.chained'
             - '@oro_datagrid.mass_action.parameters_parser'
+
+    pimee_workflow.controller.author_draft:
+        class: '%pimee_workflow.controller.author_draft.class%'
+        arguments:
+            - '@pimee_workflow.query.authors_draft'
+            - '@pim_user.context.user'

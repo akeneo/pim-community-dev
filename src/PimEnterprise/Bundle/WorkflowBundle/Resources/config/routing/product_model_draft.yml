@@ -5,3 +5,8 @@ pimee_workflow_product_model_draft_approve:
 pimee_workflow_product_model_draft_refuse:
     path: /{proposal_id}/refuse
     defaults: { _controller: pimee_workflow.controller.product_model_draft:reviewAction, action: refuse }
+
+pimee_workflow_product_model_draft_ready:
+    path: /product-model/{productModelId}/send-draft
+    defaults: { _controller: pimee_workflow.controller.product_model_draft_rest:readyAction }
+    methods: [POST]
