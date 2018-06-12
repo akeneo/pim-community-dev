@@ -1,4 +1,5 @@
 import {EditTabsProvider} from 'akeneoenrichedentity/application/configuration/edit-tabs';
+import {Missconfiguration} from 'akeneoenrichedentity/application/configuration/error';
 
 jest.mock('require-context', name => {});
 
@@ -15,13 +16,35 @@ describe('akeneo > enriched entity > application > configuration --- edit-tabs',
     expect(tabProvider.getDefaultTab()).toEqual('my-default-tab');
   });
 
+  test('I get a Missconfiguration exception if the default tab is not well configured', () => {
+    expect.assertions(1);
+    const tabProvider = EditTabsProvider.create(
+      {
+        tabs: {},
+      },
+      () => {}
+    );
+
+    try {
+      tabProvider.getDefaultTab();
+    } catch (error) {
+      const confPath = `
+config:
+    config:
+       akeneoenrichedentity/application/configuration/edit-tabs:
+            default_tab: tab-code
+      `;
+      expect(error.message).toBe(`Cannot get the default tab. The configuration path should be ${confPath}?`);
+    }
+  });
+
   test('I can get the tab list', () => {
     const tabProvider = EditTabsProvider.create(
       {
         tabs: {
           first: {
             label: 'First tab',
-            panel: 'view-to-load',
+            view: 'view-to-load',
           },
         },
         default_tab: 'my-default-tab',
@@ -32,13 +55,37 @@ describe('akeneo > enriched entity > application > configuration --- edit-tabs',
     expect(tabProvider.getTabs()).toEqual([{code: 'first', label: 'First tab'}]);
   });
 
+  test('I get a Missconfiguration exception if the tabs are not well configured', () => {
+    expect.assertions(1);
+    const tabProvider = EditTabsProvider.create(
+      {
+        default_tab: 'my-default-tab',
+      },
+      () => {}
+    );
+
+    try {
+      tabProvider.getTabs();
+    } catch (error) {
+      const confPath = `
+config:
+    config:
+       akeneoenrichedentity/application/configuration/edit-tabs:
+            tabs:
+                tab-code:
+                    view: your_view_path_here
+      `;
+      expect(error.message).toBe(`Cannot get the tabs configured. The configuration path should be ${confPath}?`);
+    }
+  });
+
   test('I can get a view', () => {
     const tabProvider = EditTabsProvider.create(
       {
         tabs: {
           first: {
             label: 'First tab',
-            panel: 'view-to-load',
+            view: 'view-to-load',
           },
         },
         default_tab: 'my-default-tab',
@@ -54,5 +101,33 @@ describe('akeneo > enriched entity > application > configuration --- edit-tabs',
       expect(module).toEqual('view');
     });
     expect.assertions(2);
+  });
+
+  test('I get a Missconfiguration exception if the view is not well configured', () => {
+    expect.assertions(1);
+    const tabProvider = EditTabsProvider.create(
+      {
+        tabs: {},
+        default_tab: 'my-default-tab',
+      },
+      name => {
+        expect(name).toEqual('view-to-load');
+
+        return Promise.resolve({default: 'view'});
+      }
+    );
+    try {
+      tabProvider.getView('first');
+    } catch (error) {
+      const confPath = `
+config:
+    config:
+       akeneoenrichedentity/application/configuration/edit-tabs:
+            tabs:
+                first:
+                    view: your_view_path_here
+      `;
+      expect(error.message).toBe(`Cannot load view configuration for tab "first". The configuration path should be ${confPath}?`);
+    }
   });
 });
