@@ -3,11 +3,11 @@
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**

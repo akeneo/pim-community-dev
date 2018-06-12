@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Query;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
@@ -12,7 +13,6 @@ use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * Product query builder provides shortcuts to ease the appliance of filters and sorters on fields or attributes

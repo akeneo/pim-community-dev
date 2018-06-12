@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * Product value sorter

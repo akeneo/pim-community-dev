@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query;
 
+use Akeneo\Pim\Structure\Component\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Doctrine\ORM\EntityManagerInterface;
-use Akeneo\Pim\Structure\Component\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface;
 
 /**
  * Find family variants identifiers by their attribute axes.

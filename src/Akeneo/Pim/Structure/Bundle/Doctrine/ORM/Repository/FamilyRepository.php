@@ -4,8 +4,8 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Doctrine\ORM\EntityRepository;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Repository

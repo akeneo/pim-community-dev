@@ -3,10 +3,10 @@
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 
 /**
  * Repository
