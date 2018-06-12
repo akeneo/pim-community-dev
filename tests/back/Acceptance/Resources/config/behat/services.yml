@@ -1,9 +1,17 @@
 services:
 
-    test.enriched_entity.show_enriched_entity.context:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context\ShowEnrichedEntityContext
+    test.enriched_entity.enriched_entity_grid.context:
+        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context\EnrichedEntityGridContext
         arguments:
-            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.list_enriched_entity_handler'
+            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.enriched_entity_grid.find_enriched_entities_query'
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+        tags:
+            - { name: fob.context_service }
+
+    test.enriched_entity.enriched_entity_details.context:
+        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context\EnrichedEntityDetailsContext
+        arguments:
+            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.enriched_entity_details.find_enriched_entity_query'
             - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
         tags:
             - { name: fob.context_service }

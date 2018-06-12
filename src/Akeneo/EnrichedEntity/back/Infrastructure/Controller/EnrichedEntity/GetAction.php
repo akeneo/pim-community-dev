@@ -12,7 +12,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\ShowEnrichedEntityHandler;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\EnrichedEntityDetails;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\FindEnrichedEntityQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -25,22 +26,22 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class GetAction
 {
-    /** @var ShowEnrichedEntityHandler */
-    private $showEnrichedEntityHandler;
+    /** @var FindEnrichedEntityQuery */
+    private $findEnrichedEntityQuery;
 
     /** @var NormalizerInterface */
-    private $enrichedEntityNormalizer;
+    private $enrichedEntityDetailsNormalizer;
 
     /**
-     * @param ShowEnrichedEntityHandler $showEnrichedEntityHandler
-     * @param NormalizerInterface       $enrichedEntityNormalizer
+     * @param FindEnrichedEntityQuery $findEnrichedEntityQuery
+     * @param NormalizerInterface     $enrichedEntityDetailsNormalizer
      */
     public function __construct(
-        ShowEnrichedEntityHandler $showEnrichedEntityHandler,
-        NormalizerInterface $enrichedEntityNormalizer
+        FindEnrichedEntityQuery $findEnrichedEntityQuery,
+         $enrichedEntityDetailsNormalizer
     ) {
-        $this->showEnrichedEntityHandler = $showEnrichedEntityHandler;
-        $this->enrichedEntityNormalizer  = $enrichedEntityNormalizer;
+        $this->findEnrichedEntityQuery = $findEnrichedEntityQuery;
+        $this->enrichedEntityDetailsNormalizer = $enrichedEntityDetailsNormalizer;
     }
 
     /**
@@ -50,14 +51,22 @@ class GetAction
      */
     public function __invoke(string $identifier): JsonResponse
     {
-        $enrichedEntity = ($this->showEnrichedEntityHandler)($identifier);
+        $enrichedEntityDetails = ($this->findEnrichedEntityQuery)($identifier);
 
-        if (null === $enrichedEntity) {
+        if (null === $enrichedEntityDetails) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse(
-            $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api')
-        );
+        return new JsonResponse($this->normalizeEnrichedEntityDetails($enrichedEntityDetails));
+    }
+
+    /**
+     * @param EnrichedEntityDetails $enrichedEntityDetails
+     *
+     * @return array
+     */
+    private function normalizeEnrichedEntityDetails(EnrichedEntityDetails $enrichedEntityDetails): array
+    {
+        return $this->enrichedEntityDetailsNormalizer->normalize($enrichedEntityDetails);
     }
 }

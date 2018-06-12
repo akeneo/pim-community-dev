@@ -8,36 +8,38 @@ module.exports = async function (cucumber) {
   const { Given, Then, When } = cucumber;
   const assert = require('assert');
 
-  Given('the following enriched entities:', function (enrichedEntities) {
-    const enrichedEntityResponse = enrichedEntities.hashes().map(function (enrichedEntity) {
-      const enrichedEntityBuilder = new EnrichedEntityBuilder();
+  const givenEnrichedEntities = function (enrichedEntities) {
+      const enrichedEntityResponse = enrichedEntities.hashes().map(function (enrichedEntity) {
+          const enrichedEntityBuilder = new EnrichedEntityBuilder();
 
-      if (undefined !== enrichedEntity.identifier) {
-        enrichedEntityBuilder.withIdentifier(enrichedEntity.identifier);
-      }
-      if (undefined !== enrichedEntity.labels) {
-        enrichedEntityBuilder.withLabels(JSON.parse(enrichedEntity.labels));
-      }
+          if (undefined !== enrichedEntity.identifier) {
+              enrichedEntityBuilder.withIdentifier(enrichedEntity.identifier);
+          }
+          if (undefined !== enrichedEntity.labels) {
+              enrichedEntityBuilder.withLabels(JSON.parse(enrichedEntity.labels));
+          }
 
-      return enrichedEntityBuilder.build();
-    });
-
-    enrichedEntityResponse.forEach(enrichedEntity => {
-      this.page.on('request', request => {
-        if (`http://pim.com//rest/enriched_entity/${enrichedEntity.identifier}` === request.url()) {
-          answerJson(request, enrichedEntity);
-        }
+          return enrichedEntityBuilder.build();
       });
-    })
 
-    this.page.on('request', request => {
-      if ('http://pim.com//rest/enriched_entity' === request.url()) {
-        answerJson(request, { items: enrichedEntityResponse, total: 1000 });
-      }
-    });
-  });
+      enrichedEntityResponse.forEach(enrichedEntity => {
+          this.page.on('request', request => {
+              if (`http://pim.com//rest/enriched_entity/${enrichedEntity.identifier}` === request.url()) {
+                  answerJson(request, enrichedEntity);
+              }
+          });
+      });
 
-  When('the user ask for the enriched entity list', async function () {
+      this.page.on('request', request => {
+          if ('http://pim.com//rest/enriched_entity' === request.url()) {
+              answerJson(request, { items: enrichedEntityResponse, total: 1000 });
+          }
+      });
+  };
+  Given('the following enriched entities to list:', givenEnrichedEntities);
+  Given('the following enriched entities to show:', givenEnrichedEntities);
+
+  When('the user asks for the enriched entity list', async function () {
     await this.page.evaluate(async () => {
       const Controller = require('pim/controller/enriched-entity/list');
       const controller = new Controller();
@@ -48,7 +50,7 @@ module.exports = async function (cucumber) {
     await this.page.waitFor('.AknGridContainer');
   });
 
-  Then('the user get a selection of {int} items out of {int} items in total', async function (count, total) {
+  Then('the user gets a selection of {int} items out of {int} items in total', async function (count, total) {
     await this.page.waitForSelector('.AknGrid-bodyRow:not(.AknLoadingPlaceHolder)');
     const rows = await this.page.$$('.AknGrid-bodyRow:not(.AknLoadingPlaceHolder)');
     assert.equal(rows.length, count);
@@ -68,7 +70,7 @@ module.exports = async function (cucumber) {
     assert.equal(rows.length, 0);
   });
 
-  Then('the user ask for the next enriched entities', async function () {
+  Then('the user asks for the next enriched entities', async function () {
     this.page.evaluate(_ => {
       window.scrollBy(0, window.innerHeight);
     });

@@ -8,7 +8,7 @@ module.exports = async function (cucumber) {
   const { Given, Then, When } = cucumber;
   const assert = require('assert');
 
-  When('the user ask for the enriched entity {string}', async function (identifier) {
+  When('the user asks for the enriched entity {string}', async function (identifier) {
     await this.page.evaluate(async (identifier) => {
         const Controller = require('pim/controller/enriched-entity/edit');
         const controller = new Controller();
@@ -19,7 +19,7 @@ module.exports = async function (cucumber) {
     await this.page.waitFor('.object-attributes');
   });
 
-  Given('I get the enriched entity {string} with label {string}', async function (
+  Given('the user gets the enriched entity {string} with label {string}', async function (
     expectedIdentifier,
     expectedLabel
   ) {

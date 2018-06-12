@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\ListEnrichedEntityHandler;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityList\FindEnrichedEntitiesQuery;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
 use Behat\Behat\Context\Context;
@@ -15,8 +15,8 @@ use Behat\Behat\Context\Context;
  */
 final class EditEnrichedEntityContext implements Context
 {
-    /** @var ListEnrichedEntityHandler */
-    private $listEnrichedEntityHandler;
+    /** @var FindEnrichedEntitiesQuery */
+    private $findEnrichedEntitiesQuery;
 
     /** @var EnrichedEntityRepository */
     private $enrichedEntityRepository;
@@ -25,14 +25,14 @@ final class EditEnrichedEntityContext implements Context
     private $entitiesFound;
 
     /**
-     * @param ListEnrichedEntityHandler $listEnrichedEntityHandler
+     * @param FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery
      * @param EnrichedEntityRepository  $enrichedEntityRepository
      */
     public function __construct(
-        ListEnrichedEntityHandler $listEnrichedEntityHandler,
+        FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery,
         EnrichedEntityRepository $enrichedEntityRepository
     ) {
-        $this->listEnrichedEntityHandler = $listEnrichedEntityHandler;
+        $this->findEnrichedEntitiesQuery = $findEnrichedEntitiesQuery;
         $this->enrichedEntityRepository = $enrichedEntityRepository;
     }
 }

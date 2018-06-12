@@ -12,8 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntityCommand;
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntityHandler;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\back\Infrastructure\Validation\EnrichedEntity\EnrichedEntityEditCommandValidator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
