@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7426: Fix search on the product 'add to group' mass edit
+- PIM-7415: Force the minus symbol for number on localization, whatever the locale of the user
 
 # 2.0.26 (2018-06-06)
 
