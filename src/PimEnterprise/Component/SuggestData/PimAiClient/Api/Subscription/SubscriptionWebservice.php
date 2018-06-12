@@ -22,6 +22,9 @@ class SubscriptionWebservice implements SubscriptionApiInterface
         $this->httpClient = $httpClient;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function subscribeProduct(ProductCode $productCode): ApiResponse
     {
         $route = $this->uriGenerator->generate('/enrichments');
@@ -35,7 +38,10 @@ class SubscriptionWebservice implements SubscriptionApiInterface
             json_decode($response->getBody()->getContents(), true)
         );
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function subscribeProducts(ProductCodeCollection $productCodeCollection): ApiResponse
     {
         $route = $this->uriGenerator->generate('/enrichments');

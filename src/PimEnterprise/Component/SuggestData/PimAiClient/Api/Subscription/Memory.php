@@ -19,6 +19,9 @@ final class Memory implements SubscriptionApiInterface
         $this->fakeHALProducts = new FakeHALProducts();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function subscribeProduct(ProductCode $productCode): ApiResponse
     {
         $hal = $this->fakeHALProducts->addProduct($productCode->value())->getFakeHAL();
@@ -28,7 +31,10 @@ final class Memory implements SubscriptionApiInterface
              json_decode($hal, true)
          );
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function subscribeProducts(ProductCodeCollection $productCodeCollection): ApiResponse
     {
         foreach ($productCodeCollection as $productCode) {

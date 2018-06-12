@@ -23,6 +23,7 @@ class DataProviderFactory
 
     /**
      * @param DeserializeSuggestedDataCollection $deserializer
+     * @param SubscriptionApiInterface $subcriptionApi
      */
     public function __construct(DeserializeSuggestedDataCollection $deserializer, SubscriptionApiInterface $subcriptionApi)
     {

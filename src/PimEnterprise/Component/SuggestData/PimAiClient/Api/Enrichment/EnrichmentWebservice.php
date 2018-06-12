@@ -21,6 +21,9 @@ class EnrichmentWebservice implements EnrichmentApiInterface
         $this->httpClient = $httpClient;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getEnrichedData(SubscriptionId $subcriptionId): ApiResponse
     {
         $route = $this->uriGenerator->generate('/subscription/%s', [$subcriptionId->value()]);

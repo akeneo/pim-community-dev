@@ -24,7 +24,7 @@ class DeserializeSuggestedDataCollection
     /**
      * HAL suggested data to SuggestedDataCollectionInterface.
      *
-     * @param string $hal
+     * @param array $data
      *
      * @return SuggestedDataCollectionInterface
      */
