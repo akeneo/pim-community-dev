@@ -8,7 +8,7 @@ pim_api_product_get:
     defaults: { _controller: pim_api.controller.product:getAction, _format: json }
     methods: [GET]
     requirements:
-        code: .+
+        code: (.+$)(?<!/draft|/proposal)
 
 pim_api_product_create:
     path: /products
@@ -20,7 +20,7 @@ pim_api_product_partial_update:
     defaults: { _controller: pim_api.controller.product:partialUpdateAction, _format: json }
     methods: [PATCH]
     requirements:
-        code: .+
+        code: (.+$)(?<!/draft|/proposal)
 
 pim_api_product_partial_update_list:
     path: /products
@@ -32,4 +32,4 @@ pim_api_product_delete:
     defaults: { _controller: pim_api.controller.product:deleteAction, _format: json }
     methods: [DELETE]
     requirements:
-        code: .+
+        code: (.+$)(?<!/draft|/proposal)
