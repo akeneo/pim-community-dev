@@ -60,3 +60,19 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.stream.family_partial_update_stream'
             - '%pim_api.configuration%'
+
+    pim_api.controller.family_variant:
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\FamilyVariantController'
+        arguments:
+            - '@pim_api.repository.family'
+            - '@pim_api.repository.family_variant'
+            - '@pim_serializer'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@validator'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_api.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@router'
+            - '@pim_api.stream.family_variant_partial_update_stream'
+            - '%pim_api.configuration%'

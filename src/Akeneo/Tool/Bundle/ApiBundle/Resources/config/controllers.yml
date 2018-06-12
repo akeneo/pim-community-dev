@@ -1,6 +1,5 @@
 parameters:
     pim_api.controller.category.class: Akeneo\Tool\Bundle\ApiBundle\Controller\CategoryController
-    pim_api.controller.family_variant.class: Akeneo\Tool\Bundle\ApiBundle\Controller\FamilyVariantController
     pim_api.controller.token.class: Akeneo\Tool\Bundle\ApiBundle\Controller\TokenController
     pim_api.controller.product.class: Akeneo\Tool\Bundle\ApiBundle\Controller\ProductController
     pim_api.controller.product_model.class: Akeneo\Tool\Bundle\ApiBundle\Controller\ProductModelController
@@ -26,21 +25,6 @@ services:
             - '@pim_api.stream.category_partial_update_stream'
             - '%pim_api.configuration%'
 
-    pim_api.controller.family_variant:
-        class: '%pim_api.controller.family_variant.class%'
-        arguments:
-            - '@pim_api.repository.family'
-            - '@pim_api.repository.family_variant'
-            - '@pim_serializer'
-            - '@pim_api.pagination.offset_hal_paginator'
-            - '@pim_api.pagination.parameter_validator'
-            - '@validator'
-            - '@pim_catalog.factory.family_variant'
-            - '@pim_api.updater.family_variant'
-            - '@pim_catalog.saver.family_variant'
-            - '@router'
-            - '@pim_api.stream.family_variant_partial_update_stream'
-            - '%pim_api.configuration%'
     pim_api.controller.token:
         class: '%pim_api.controller.token.class%'
         arguments:

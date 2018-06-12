@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\Controller;
+namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
