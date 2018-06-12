@@ -6,13 +6,13 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer\ProductProposalNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductDraftHydratorSpec extends ObjectBehavior
 {
     function let(
         RequestParametersExtractorInterface $extractor,
-        ProductProposalNormalizer $normalizer
+        NormalizerInterface $normalizer
     ) {
         $this->beConstructedWith($extractor, $normalizer);
     }
@@ -22,9 +22,8 @@ class ProductDraftHydratorSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface');
     }
 
-    function it_hydrates_a_result_record(QueryBuilder $builder, AbstractQuery $query, $extractor)
+    function it_hydrates_a_result_record(QueryBuilder $builder, AbstractQuery $query)
     {
-        $extractor->getParameter('dataLocale')->shouldBeCalled();
         $builder->getQuery()->willReturn($query);
         $query->execute()->willReturn([]);
 

@@ -32,6 +32,14 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_product_draft }
 
+    pimee_catalog.datasource.product_model_draft:
+        class: '%pimee_datagrid.datasource.product_draft.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_datagrid.datasource.result_record.hydrator.product_model_draft'
+        tags:
+            - { name: oro_datagrid.datasource, type: pimee_datasource_product_model_draft }
+
     pim_datagrid.datasource.rule:
         class: '%pim_datagrid.datasource.default.class%'
         arguments:
