@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Twig;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Datagrid\Product;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as BaseContextConfigurator;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;

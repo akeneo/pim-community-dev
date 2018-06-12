@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Controller\InternalApi;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\EntityRepository;
-use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\HttpFoundation\JsonResponse;
