@@ -165,55 +165,6 @@ class MassUploadProcessorSpec extends ObjectBehavior
             ->shouldReturn($asset);
     }
 
-    function it_updates_an_asset_from_a_localizable_file(
-        SplFileInfo $file,
-        FileInfoInterface $fileInfo,
-        AssetInterface $asset,
-        ReferenceInterface $reference,
-        ParsedFilename $parsedFilename,
-        $uploadChecker,
-        $assetFactory,
-        $assetRepository,
-        $filesUpdater,
-        $fileStorer,
-        $localeRepository
-    ) {
-        $this->initializeApplyImportedUpload($file,
-            $fileInfo,
-            $asset,
-            $reference,
-            $filesUpdater,
-            $fileStorer,
-            'foobar.jpg'
-        );
-
-        $file->getFilename()->willReturn('foobar-en_US.jpg');
-
-        $parsedFilename->getAssetCode()->willReturn('foobar');
-        $parsedFilename->getLocaleCode()->willReturn('en_US');
-
-        $uploadChecker->getParsedFilename('foobar-en_US.jpg')
-            ->willReturn($parsedFilename);
-
-        $uploadChecker->validateFilenameFormat($parsedFilename)
-            ->willReturn(null);
-
-        $assetRepository->findOneByIdentifier('foobar')
-            ->willReturn($asset);
-
-        $assetFactory->create()
-            ->shouldNotBeCalled();
-
-        $asset->getCode()
-            ->willReturn('foobar');
-
-        $localeRepository->findOneBy(['code' => 'en_US'])
-            ->shouldBeCalled();
-
-        $this->applyImportedUpload($file)
-            ->shouldReturn($asset);
-    }
-
     function it_mass_upload_file(
         AssetInterface $asset,
         FileInfoInterface $fileInfo,
@@ -257,13 +208,14 @@ class MassUploadProcessorSpec extends ObjectBehavior
 
         $assetRepository->findOneByIdentifier('foobar')
             ->willReturn($asset);
+            
+        $assetRepository->findSimilarCodes('foobar')->willReturn(['foobar']);
 
-        $assetFactory->create()
-            ->shouldNotBeCalled();
-
-        $asset->getCode()
-            ->willReturn('foobar');
-
+        $assetFactory->create()->willReturn($asset);
+        
+        $assetFactory->createReferences($asset, true)->shouldBeCalled();
+        
+        $asset->setCode('foobar_1')->shouldBeCalled();
 
         $this->applyImportedUpload($file)
             ->shouldReturn($asset);

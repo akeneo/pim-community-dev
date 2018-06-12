@@ -98,8 +98,7 @@ Feature: Mass uploads assets
     And I import assets mass upload
     And I wait 5 seconds
     Then I should be on the last "apply_assets_mass_upload" import job page
-    And I should see the text "Asset created from file 3"
-    And I should see the text "Asset updated 1"
+    And I should see the text "Asset created from file 4"
     When I am on the job tracker page
     Then I should see the text "Mass Upload Assets"
     And I should see the text "COMPLETED"

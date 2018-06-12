@@ -180,13 +180,11 @@ class MassUploadProcessor
 
         $isLocalized = null !== $parsedFilename->getLocaleCode();
 
-        $asset = $this->assetRepository->findOneByIdentifier($parsedFilename->getAssetCode());
+        $assetCode = $this->computeAssetCode($parsedFilename->getAssetCode());
 
-        if (null === $asset) {
-            $asset = $this->assetFactory->create();
-            $asset->setCode($parsedFilename->getAssetCode());
-            $this->assetFactory->createReferences($asset, $isLocalized);
-        }
+        $asset = $this->assetFactory->create();
+        $asset->setCode($assetCode);
+        $this->assetFactory->createReferences($asset, $isLocalized);
 
         $file = $this->fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);
 
@@ -203,6 +201,26 @@ class MassUploadProcessor
         $this->filesUpdater->updateAssetFiles($asset);
 
         return $asset;
+    }
+    
+    private function computeAssetCode(string $assetCode)
+    {
+        $asset = $this->assetRepository->findOneByIdentifier($assetCode);
+
+        if ($asset instanceof AssetInterface) {
+            $codes = $this->assetRepository->findSimilarCodes($assetCode);
+
+            if (!empty($codes)) {
+                $nextId = 1;
+                while (in_array($assetCode . '_' . $nextId, $codes)) {
+                    $nextId++;
+                }
+                
+                $assetCode = sprintf('%s_%d', $assetCode, $nextId);
+            }
+        }
+        
+        return $assetCode;
     }
 
     /**

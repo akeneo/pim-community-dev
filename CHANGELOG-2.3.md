@@ -16,6 +16,7 @@
 
 - PIM-7405: As Julia, I would like to order the assets linked to the products in the asset collection in the product form
 - PIM-7397: Add asset collection preview on the product edit form
+- PIM-7446: As Julia, if I mass upload an asset which has the same name than another asset in the PIM, I would like it to be well created.
 
 ## BC Breaks
 
