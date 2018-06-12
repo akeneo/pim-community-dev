@@ -308,7 +308,11 @@ define(
             },
 
             /**
-             * Fetches the new items and render the basket
+             * Fetches the new items and render the basket.
+             *
+             * In the case where asset codes are integers, even if their order is correctly managed by the backend, the
+             * fetcher will reorganize them, sorting them by code ascending. As "itemCodes" contains the codes in the
+             * correct order, we reorder the assets according to this list of code.
              */
             updateBasket: function (itemCodes) {
                 FetcherRegistry.getFetcher(this.config.fetcher).fetchByIdentifiers(this.getItems()).then(items => {
