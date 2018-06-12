@@ -22,10 +22,6 @@ attribute_type:
     resource: '@PimEnrichBundle/Resources/config/routing/attribute_type/rest.yml'
     prefix: /rest/attribute-type
 
-attribute_option:
-    resource: '@PimEnrichBundle/Resources/config/routing/attributeoption.yml'
-    prefix: /configuration/attribute-option
-
 category:
     resource: '@PimEnrichBundle/Resources/config/routing/category.yml'
     prefix: /enrich/category
