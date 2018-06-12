@@ -24,6 +24,10 @@ internal_api_family:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/family.yml'
     prefix: /configuration/family
 
+internal_api_family_variant:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/family_variant.yml'
+    prefix: /configuration/family-variant
+
 ### Front routes
 front_routes:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/front.yml'

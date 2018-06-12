@@ -130,3 +130,16 @@ services:
             - '@oro_security.security_facade'
             - '@pim_catalog.factory.family'
             - '@pim_enrich.normalizer.violation'
+
+    pim_enrich.controller.rest.family_variant:
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyVariantController'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+            - '@pim_enrich.normalizer.violation'
+            - '@pim_catalog.saver.family_variant'
+            - '@pim_catalog.remover.family_variant'
+            - '@pim_enrich.repository.family_variant.search'

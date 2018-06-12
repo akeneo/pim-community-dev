@@ -18,10 +18,6 @@ currency:
     resource: '@PimEnrichBundle/Resources/config/routing/currency.yml'
     prefix: /configuration/currency
 
-family_variant:
-    resource: '@PimEnrichBundle/Resources/config/routing/family_variant.yml'
-    prefix: /configuration/family-variant
-
 attribute_type:
     resource: '@PimEnrichBundle/Resources/config/routing/attribute_type/rest.yml'
     prefix: /rest/attribute-type
