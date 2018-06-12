@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -14,6 +16,8 @@ namespace PimEnterprise\Component\Workflow\Connector\Tasklet;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
 
 /**
  * Tasklet for product drafts mass refusal.
@@ -28,37 +32,44 @@ class RefuseTasklet extends AbstractReviewTasklet
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): void
     {
         $this->initSecurityContext($this->stepExecution);
 
         $jobParameters = $this->stepExecution->getJobParameters();
-        $productDrafts = $this->draftRepository->findByIds($jobParameters->get('draftIds'));
+        $productDrafts = $this->productDraftRepository->findByIds($jobParameters->get('productDraftIds'));
+        $productModelDrafts = $this->productModelDraftRepository->findByIds($jobParameters->get('productModelDraftIds'));
         $context = ['comment' => $jobParameters->get('comment')];
 
-        $this->processDrafts($productDrafts, $context);
+        if (null !== $productDrafts) {
+            $this->processDrafts($productDrafts, $context);
+        }
+
+        if (null !== $productModelDrafts) {
+            $this->processDrafts($productModelDrafts, $context);
+        }
     }
 
     /**
-     * Skip or refuse given $productDrafts depending on permission
+     * Skip or refuse given $drafts depending on permission
      *
-     * @param mixed $productDrafts
+     * @param mixed $drafts
      * @param array $context
      */
-    protected function processDrafts($productDrafts, array $context)
+    protected function processDrafts($drafts, array $context): void
     {
-        foreach ($productDrafts as $productDraft) {
-            if ($this->permissionHelper->canEditOneChangeToReview($productDraft)) {
+        foreach ($drafts as $draft) {
+            if ($this->permissionHelper->canEditOneChangeToReview($draft)) {
                 try {
-                    $this->refuseDraft($productDraft, $context);
+                    $this->refuseDraft($draft, $context);
                     $this->stepExecution->incrementSummaryInfo('refused');
                 } catch (DraftNotReviewableException $e) {
                     $this->skipWithWarning(
                         $this->stepExecution,
                         self::TASKLET_NAME,
                         $e->getMessage(),
-                        [],
-                        $productDraft->getEntityWithValue()
+                        ($prev = $e->getPrevious()) ? ['%error%' => $prev->getMessage()] : [],
+                        $draft->getEntityWithValue()
                     );
                 }
             } else {
@@ -67,30 +78,32 @@ class RefuseTasklet extends AbstractReviewTasklet
                     self::TASKLET_NAME,
                     self::ERROR_CANNOT_EDIT_ATTR,
                     [],
-                    $productDraft->getEntityWithValue()
+                    $draft->getEntityWithValue()
                 );
             }
         }
     }
 
     /**
-     * Refuse a draft
-     *
-     * @param EntityWithValuesDraftInterface $productDraft
-     * @param array                                $context
+     * @param EntityWithValuesDraftInterface $draft
+     * @param array                          $context
      *
      * @throws DraftNotReviewableException
      */
-    protected function refuseDraft(EntityWithValuesDraftInterface $productDraft, array $context)
+    protected function refuseDraft(EntityWithValuesDraftInterface $draft, array $context): void
     {
-        if (EntityWithValuesDraftInterface::READY !== $productDraft->getStatus()) {
+        if (EntityWithValuesDraftInterface::READY !== $draft->getStatus()) {
             throw new DraftNotReviewableException(self::ERROR_DRAFT_NOT_READY);
         }
 
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $draft->getEntityWithValue())) {
             throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
         }
 
-        $this->productDraftManager->refuse($productDraft, $context);
+        if ($draft instanceof ProductDraft) {
+            $this->productDraftManager->refuse($draft, $context);
+        } elseif ($draft instanceof ProductModelDraft) {
+            $this->productModelDraftManager->refuse($draft, $context);
+        }
     }
 }

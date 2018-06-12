@@ -196,7 +196,8 @@ class ProductDraftController
         $user = $this->tokenStorage->getToken()->getUser();
 
         $configuration = [
-            'draftIds' => $filters['values'],
+            'productDraftIds' => $filters['values']['product_draft_ids'],
+            'productModelDraftIds' => $filters['values']['product_model_draft_ids'],
             'comment'  => $request->get('comment'),
             'user_to_notify' => $user->getUsername()
         ];
@@ -227,7 +228,8 @@ class ProductDraftController
         $user = $this->tokenStorage->getToken()->getUser();
 
         $configuration = [
-            'draftIds' => $filters['values'],
+            'productDraftIds' => $filters['values']['product_draft_ids'],
+            'productModelDraftIds' => $filters['values']['product_model_draft_ids'],
             'comment'  => $request->get('comment'),
             'user_to_notify' => $user->getUsername(),
         ];

@@ -1,5 +1,6 @@
 parameters:
     pimee_workflow.elasticsearch.from_size_cursor_factory.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\FromSizeCursorFactory
+    pimee_workflow.elasticsearch.cursor_factory.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\CursorFactory
 
 services:
     pimee_workflow.factory.published_product_cursor:
@@ -50,6 +51,16 @@ services:
     pimee_workflow.factory.product_and_product_model_proposal_from_size_cursor:
         public: false
         class: '%pimee_workflow.elasticsearch.from_size_cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_proposal'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '%pim_job_product_batch_size%'
+            - 'pimee_workflow_product_proposal'
+
+    pim_catalog.factory.product_and_product_model_proposal_cursor:
+        public: false
+        class: '%pimee_workflow.elasticsearch.cursor_factory.class%'
         arguments:
             - '@akeneo_elasticsearch.client.product_proposal'
             - '@pimee_workflow.repository.product_draft'

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -19,20 +21,13 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
- * Constraints for mass review.
- *
- * @author    Damien Carcel <damien.carcel@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class MassReview implements ConstraintCollectionProviderInterface
 {
     /** @var array */
     protected $supportedJobNames;
 
-    /**
-     * @param array $supportedJobNames
-     */
     public function __construct(array $supportedJobNames)
     {
         $this->supportedJobNames = $supportedJobNames;
@@ -41,15 +36,16 @@ class MassReview implements ConstraintCollectionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getConstraintCollection()
+    public function getConstraintCollection(): Collection
     {
         return new Collection(
             [
                 'fields' => [
-                    'draftIds'           => new NotBlank(),
-                    'comment'            => new IsString(),
-                    'realTimeVersioning' => new Type('bool'),
-                    'user_to_notify'     => new Type('string'),
+                    'productDraftIds'       => new Type('array'),
+                    'productModelDraftIds'  => new Type('array'),
+                    'comment'               => new IsString(),
+                    'realTimeVersioning'    => new Type('bool'),
+                    'user_to_notify'        => new Type('string'),
                     'is_user_authenticated' => new Type('bool'),
                 ]
             ]
@@ -59,7 +55,7 @@ class MassReview implements ConstraintCollectionProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

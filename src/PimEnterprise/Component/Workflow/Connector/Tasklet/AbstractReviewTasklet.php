@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -23,7 +25,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
- * Basic implementation of a product draft mass review tasklet
+ * Basic implementation of draft mass review tasklet
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
@@ -45,10 +47,16 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     protected $stepExecution;
 
     /** @var EntityWithValuesDraftRepositoryInterface */
-    protected $draftRepository;
+    protected $productDraftRepository;
 
     /** @var EntityWithValuesDraftManager */
     protected $productDraftManager;
+
+    /** @var EntityWithValuesDraftRepositoryInterface */
+    protected $productModelDraftRepository;
+
+    /** @var EntityWithValuesDraftManager */
+    protected $productModelDraftManager;
 
     /** @var  UserProviderInterface */
     protected $userProvider;
@@ -62,24 +70,20 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     /** @var ProductDraftChangesPermissionHelper */
     protected $permissionHelper;
 
-    /**
-     * @param EntityWithValuesDraftRepositoryInterface $draftRepository
-     * @param EntityWithValuesDraftManager             $productDraftManager
-     * @param UserProviderInterface                    $userProvider
-     * @param AuthorizationCheckerInterface            $authorizationChecker
-     * @param TokenStorageInterface                    $tokenStorage
-     * @param ProductDraftChangesPermissionHelper      $permissionHelper
-     */
     public function __construct(
-        EntityWithValuesDraftRepositoryInterface $draftRepository,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
         EntityWithValuesDraftManager $productDraftManager,
+        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
+        EntityWithValuesDraftManager $productModelDraftManager,
         UserProviderInterface $userProvider,
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         ProductDraftChangesPermissionHelper $permissionHelper
     ) {
-        $this->draftRepository = $draftRepository;
+        $this->productDraftRepository = $productDraftRepository;
         $this->productDraftManager = $productDraftManager;
+        $this->productModelDraftRepository = $productModelDraftRepository;
+        $this->productModelDraftManager = $productModelDraftManager;
         $this->userProvider = $userProvider;
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage = $tokenStorage;
@@ -89,19 +93,14 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): AbstractReviewTasklet
     {
         $this->stepExecution = $stepExecution;
 
         return $this;
     }
 
-    /**
-     * Initialize the SecurityContext from the given $stepExecution
-     *
-     * @param StepExecution $stepExecution
-     */
-    protected function initSecurityContext(StepExecution $stepExecution)
+    protected function initSecurityContext(StepExecution $stepExecution): void
     {
         $username = $stepExecution->getJobExecution()->getUser();
         $user = $this->userProvider->loadUserByUsername($username);
@@ -119,7 +118,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
      * @param array         $reasonParameters
      * @param mixed         $item
      */
-    protected function skipWithWarning(StepExecution $stepExecution, $name, $reason, array $reasonParameters, $item)
+    protected function skipWithWarning(StepExecution $stepExecution, $name, $reason, array $reasonParameters, $item): void
     {
         $stepExecution->incrementSummaryInfo('skip');
         $stepExecution->addWarning(

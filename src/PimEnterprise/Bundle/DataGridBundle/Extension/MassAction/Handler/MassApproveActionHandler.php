@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -17,7 +19,8 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -33,10 +36,6 @@ class MassApproveActionHandler implements MassActionHandlerInterface
     /** @var CursorFactoryInterface */
     protected $cursorFactory;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param CursorFactoryInterface   $cursorFactory
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher, CursorFactoryInterface $cursorFactory)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -46,7 +45,7 @@ class MassApproveActionHandler implements MassActionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
+    public function handle(DatagridInterface $datagrid, MassActionInterface $massAction): array
     {
         // dispatch pre handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, []);
@@ -57,12 +56,18 @@ class MassApproveActionHandler implements MassActionHandlerInterface
         $pqb = $datasource->getProductQueryBuilder();
         $cursor = $this->cursorFactory->createCursor($pqb->getQueryBuilder()->getQuery());
 
-        $objectIds = [];
-        foreach ($cursor as $productObject) {
-            if ($productObject instanceof EntityWithValuesDraftInterface) {
-                $objectIds[] = $productObject->getId();
+        $productDraftIds = [];
+        $productModelDraftIds = [];
+        foreach ($cursor as $draft) {
+            if ($draft instanceof ProductDraft) {
+                $productDraftIds[] = $draft->getId();
+            }
+            if ($draft instanceof ProductModelDraft) {
+                $productModelDraftIds[] = $draft->getId();
             }
         }
+
+        $objectIds = ['product_draft_ids' => $productDraftIds, 'product_model_draft_ids' => $productModelDraftIds];
 
         // dispatch post handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, $objectIds);
