@@ -15,7 +15,7 @@ use Pim\Component\Catalog\Model\VariantProductInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WrongBooleanValuesOnVariantProductCleaner
+class WrongValuesOnVariantProductCleaner
 {
     /**
      * Return true if the product has been modified, false otherwise
