@@ -1,0 +1,10 @@
+### Used by the front application
+pim_enrich_attributegroup_edit:
+    path: /configuration/attribute-group/{identifier}/edit
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+
+pim_enrich_attribute_edit:
+    path: /configuration/attribute/{code}/edit
+    requirements:
+        code: '[a-zA-Z0-9_]+'

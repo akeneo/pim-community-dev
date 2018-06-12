@@ -97,3 +97,22 @@ services:
             - '@pim_enrich.normalizer.attribute'
             - '@translator'
             - '@pim_catalog.doctrine.query.attribute_is_an_family_variant_axis'
+
+    pim_enrich.controller.rest.attribute_group:
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController'
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_enrich.repository.attribute_group.search'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
+            - '@pim_catalog.saver.attribute_group'
+            - '@pim_catalog.remover.attribute_group'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@pim_catalog.saver.attribute'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.factory.attribute_group'
+            - '@event_dispatcher'
+            - '@pim_catalog.filter.chained'

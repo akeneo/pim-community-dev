@@ -15,3 +15,11 @@ external_api_family:
 internal_api_attribute:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute.yml'
     prefix: /rest/attribute
+
+internal_api_attribute_group:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute_group.yml'
+    prefix: /rest/attribute-group
+
+### Front routes
+front_routes:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/front.yml'

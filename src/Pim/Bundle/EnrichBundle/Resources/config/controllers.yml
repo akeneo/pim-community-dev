@@ -9,7 +9,6 @@ parameters:
     pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
     pim_enrich.controller.rest.association_type.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController
     pim_enrich.controller.rest.attribute_type.class:          Pim\Bundle\EnrichBundle\Controller\Rest\AttributeTypeController
-    pim_enrich.controller.rest.attribute_group.class:         Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController
     pim_enrich.controller.rest.category.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CategoryController
     pim_enrich.controller.rest.currency.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CurrencyController
     pim_enrich.controller.rest.family.class:                  Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController
@@ -170,25 +169,6 @@ services:
         class: '%pim_enrich.controller.rest.attribute_type.class%'
         arguments:
             - '@pim_catalog.registry.attribute_type'
-
-    pim_enrich.controller.rest.attribute_group:
-        class: '%pim_enrich.controller.rest.attribute_group.class%'
-        arguments:
-            - '@pim_catalog.repository.attribute_group'
-            - '@pim_enrich.repository.attribute_group.search'
-            - '@pim_internal_api_serializer'
-            - '@pim_catalog.filter.chained'
-            - '@pim_catalog.updater.attribute_group'
-            - '@validator'
-            - '@pim_catalog.saver.attribute_group'
-            - '@pim_catalog.remover.attribute_group'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.updater.attribute'
-            - '@pim_catalog.saver.attribute'
-            - '@oro_security.security_facade'
-            - '@pim_catalog.factory.attribute_group'
-            - '@event_dispatcher'
-            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.rest.category:
         class: '%pim_enrich.controller.rest.category.class%'
