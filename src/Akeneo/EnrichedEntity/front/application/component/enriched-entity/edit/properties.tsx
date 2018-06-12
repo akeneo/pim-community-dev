@@ -22,7 +22,9 @@ interface PropertiesDispatch {
   }
 }
 
-interface PropertiesProps extends PropertiesState, PropertiesDispatch {}
+interface PropertiesProps extends PropertiesState, PropertiesDispatch {
+  code: string;
+}
 
 class Properties extends React.Component<PropertiesProps> {
   props: PropertiesProps;
@@ -51,7 +53,7 @@ class Properties extends React.Component<PropertiesProps> {
 
   render() {
     return(
-      <div className="AknDefault-mainContent">
+      <div className="AknDefault-mainContent" id={this.props.code}>
         <header className="AknTitleContainer navigation">
           <div className="AknTitleContainer-line">
             <div className="AknTitleContainer-imageContainer">

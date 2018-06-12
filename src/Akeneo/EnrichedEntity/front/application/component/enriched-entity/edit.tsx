@@ -32,7 +32,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
   private async updateTabView(currentTab: string): Promise<void> {
     const TabView = await editTabsProvider.getView(currentTab);
 
-    this.tabView = (<TabView />);
+    this.tabView = (<TabView code={currentTab} />);
     this.forceUpdate();
   }
 

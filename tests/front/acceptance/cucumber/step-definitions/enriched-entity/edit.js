@@ -8,6 +8,12 @@ module.exports = async function (cucumber) {
   const { Given, Then, When } = cucumber;
   const assert = require('assert');
 
+  Given('the following configured tabs:', async function(tabs) {
+      this.expectedTabs = tabs.hashes().reduce((previous, current) => {
+          return [...previous, current.code];
+      }, []);
+  });
+
   When('the user asks for the enriched entity {string}', async function (identifier) {
     await this.page.evaluate(async (identifier) => {
         const Controller = require('pim/controller/enriched-entity/edit');
