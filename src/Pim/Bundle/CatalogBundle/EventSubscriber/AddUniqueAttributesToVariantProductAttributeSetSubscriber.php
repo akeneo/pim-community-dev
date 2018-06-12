@@ -24,7 +24,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class AddUniqueAttributesToVariantProductAttributeSetSubscriber implements EventSubscriberInterface
 {
-    /** @var \Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes */
+    /** @var AddUniqueAttributes */
     private $addUniqueAttributes;
 
     /**
