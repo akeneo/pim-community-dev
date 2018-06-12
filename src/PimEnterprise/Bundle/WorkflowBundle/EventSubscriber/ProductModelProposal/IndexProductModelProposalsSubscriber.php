@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductModelProposal;
 
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductModelProposalIndexer;
-use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductProposalIndexer;
 use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
@@ -28,9 +28,9 @@ class IndexProductModelProposalsSubscriber implements EventSubscriberInterface
     /** @var ProductModelProposalIndexer */
     private $productModelProposalIndexer;
 
-    public function __construct(ProductModelProposalIndexer $productProposalIndexer)
+    public function __construct(ProductModelProposalIndexer $productModelProposalIndexer)
     {
-        $this->productModelProposalIndexer = $productProposalIndexer;
+        $this->productModelProposalIndexer = $productModelProposalIndexer;
     }
 
     /**
@@ -40,13 +40,16 @@ class IndexProductModelProposalsSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::POST_SAVE => ['indexProductModelProposal', 300],
+            StorageEvents::POST_SAVE_ALL => ['bulkIndexProductModelProposals', 300],
+            StorageEvents::POST_REMOVE => ['deleteProductModelProposal', 300],
+            EntityWithValuesDraftEvents::POST_REFUSE => ['deleteProductModelProposal', 300],
         ];
     }
 
     public function indexProductModelProposal(GenericEvent $event): void
     {
-        $productProposal = $event->getSubject();
-        if (!$productProposal instanceof ProductModelDraft) {
+        $productModelProposal = $event->getSubject();
+        if (!$productModelProposal instanceof ProductModelDraft) {
             return;
         }
 
@@ -54,14 +57,69 @@ class IndexProductModelProposalsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($productProposal instanceof ProductModelDraft) {
-            $changesToReview = $productProposal->getChangesToReview();
+        $changesToReview = $productModelProposal->getChangesToReview();
+        if (!empty($changesToReview['values'])) {
+            $productModelProposal->setChanges($changesToReview);
+            $this->productModelProposalIndexer->index($productModelProposal);
+        } else {
+            $this->productModelProposalIndexer->remove($productModelProposal->getId());
+        }
+    }
+
+    /**
+     * Index several product model proposals at a time.
+     *
+     * @param GenericEvent $event
+     */
+    public function bulkIndexProductModelProposals(GenericEvent $event)
+    {
+        $productModelProposals = $event->getSubject();
+        if (!is_array($productModelProposals)) {
+            return;
+        }
+
+        if (!current($productModelProposals) instanceof ProductModelDraft) {
+            return;
+        }
+
+        $proposalsToIndex = [];
+        $proposalsToRemove = [];
+        foreach ($productModelProposals as $productModelProposal) {
+            $changesToReview = $productModelProposal->getChangesToReview();
             if (!empty($changesToReview['values'])) {
-                $productProposal->setChanges($changesToReview);
-                $this->productModelProposalIndexer->index($productProposal);
+                $productModelProposal->setChanges($changesToReview);
+                $proposalsToIndex[] = $productModelProposal;
             } else {
-                $this->productModelProposalIndexer->remove($productProposal->getId());
+                $proposalsToRemove[] = $productModelProposal;
             }
+        }
+
+        if (!empty($proposalsToIndex)) {
+            $this->productModelProposalIndexer->indexAll($proposalsToIndex);
+        }
+
+        if (!empty($proposalsToRemove)) {
+            $this->productModelProposalIndexer->removeAll($proposalsToRemove);
+        }
+    }
+
+    /**
+     * Delete one single product model proposal.
+     *
+     * @param RemoveEvent $event
+     */
+    public function deleteProductModelProposal(GenericEvent $event)
+    {
+        $productModelProposal = $event->getSubject();
+        if (!$productModelProposal instanceof ProductModelDraft ||
+            $productModelProposal->getStatus() === EntityWithValuesDraftInterface::IN_PROGRESS) {
+            return;
+        }
+
+        if ($event instanceof RemoveEvent) {
+            $this->productModelProposalIndexer->remove($event->getSubjectId());
+        } elseif ($event instanceof GenericEvent) {
+            $this->productModelProposalIndexer->remove($event->getSubject()->getId());
         }
     }
 }
