@@ -29,17 +29,13 @@ class FindEnrichedEntityQuery
     /**
      * @param string $rawIdentifier
      *
-     * @return EnrichedEntityDetails|null
+     * @return EnrichedEntityDetails
      */
-    public function __invoke(string $rawIdentifier): ?EnrichedEntityDetails
+    public function __invoke(string $rawIdentifier): EnrichedEntityDetails
     {
         $identifier = EnrichedEntityIdentifier::fromString($rawIdentifier);
 
         $enrichedEntity = $this->enrichedEntityRepository->findOneByIdentifier($identifier);
-
-        if ($enrichedEntity === null) {
-            return null;
-        }
 
         return EnrichedEntityDetails::fromEntity($enrichedEntity);
     }

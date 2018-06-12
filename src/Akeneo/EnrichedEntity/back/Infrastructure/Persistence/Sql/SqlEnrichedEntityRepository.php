@@ -7,6 +7,7 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -28,9 +29,6 @@ class SqlEnrichedEntityRepository implements EnrichedEntityRepository
         $this->sqlConnection = $sqlConnection;
     }
 
-    /**
-     * @param EnrichedEntity $enrichedEntity
-     */
     public function add(EnrichedEntity $enrichedEntity): void
     {
         $serializedLabels = $this->getSerializedLabels($enrichedEntity);
@@ -53,7 +51,8 @@ SQL;
     }
 
     /**
-     * @param EnrichedEntity $enrichedEntity
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \RuntimeException
      */
     public function update(EnrichedEntity $enrichedEntity): void
     {
@@ -72,18 +71,13 @@ SQL;
         );
 
         if ($statement->rowCount() !== 1) {
-            throw new \LogicException(
+            throw new \RuntimeException(
                 sprintf('Expected to update one enriched entity. "%d" updated', $statement->rowCount())
             );
         }
     }
 
-    /**
-     * @param EnrichedEntityIdentifier $identifier
-     *
-     * @return EnrichedEntity
-     */
-    public function findOneByIdentifier(EnrichedEntityIdentifier $identifier): ?EnrichedEntity
+    public function findOneByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
     {
         $fetch = <<<SQL
         SELECT identifier, labels
@@ -97,15 +91,12 @@ SQL;
         $result = $statement->fetch();
 
         if (!$result) {
-            return null;
+            throw EntityNotFoundException::withIdentifier(EnrichedEntity::class, (string) $identifier);
         }
 
         return $this->hydrateEnrichedEntity($result['identifier'], $result['labels']);
     }
 
-    /**
-     * @return EnrichedEntity[]
-     */
     public function all(): array
     {
         $selectAllQuery = <<<SQL
@@ -123,12 +114,6 @@ SQL;
         return $enrichedEntities;
     }
 
-    /**
-     * @param string $identifier
-     * @param string $normalizedLabels
-     *
-     * @return EnrichedEntity
-     */
     private function hydrateEnrichedEntity(string $identifier, string $normalizedLabels): EnrichedEntity
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
@@ -146,11 +131,6 @@ SQL;
         return $enrichedEntity;
     }
 
-    /**
-     * @param EnrichedEntity $enrichedEntity
-     *
-     * @return string
-     */
     private function getSerializedLabels(EnrichedEntity $enrichedEntity): string
     {
         $labels = [];

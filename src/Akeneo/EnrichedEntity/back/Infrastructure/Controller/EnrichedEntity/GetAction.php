@@ -14,6 +14,7 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\FindEnrichedEntityQuery;
+use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -38,7 +39,7 @@ class GetAction
      */
     public function __construct(
         FindEnrichedEntityQuery $findEnrichedEntityQuery,
-         $enrichedEntityDetailsNormalizer
+        NormalizerInterface $enrichedEntityDetailsNormalizer
     ) {
         $this->findEnrichedEntityQuery = $findEnrichedEntityQuery;
         $this->enrichedEntityDetailsNormalizer = $enrichedEntityDetailsNormalizer;
@@ -51,9 +52,9 @@ class GetAction
      */
     public function __invoke(string $identifier): JsonResponse
     {
-        $enrichedEntityDetails = ($this->findEnrichedEntityQuery)($identifier);
-
-        if (null === $enrichedEntityDetails) {
+        try {
+            $enrichedEntityDetails = ($this->findEnrichedEntityQuery)($identifier);
+        } catch (EntityNotFoundException $exception) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

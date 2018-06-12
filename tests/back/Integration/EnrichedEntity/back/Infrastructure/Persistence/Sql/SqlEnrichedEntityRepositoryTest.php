@@ -7,6 +7,7 @@ use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -47,10 +48,10 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_if_the_identifier_is_not_found()
+    public function it_throws_if_the_identifier_is_not_found()
     {
-        $enrichedEntity = $this->repository->findOneByIdentifier(EnrichedEntityIdentifier::fromString('unknown_identifier'));
-        $this->assertNull($enrichedEntity);
+        $this->expectException(EntityNotFoundException::class);
+        $this->repository->findOneByIdentifier(EnrichedEntityIdentifier::fromString('unknown_identifier'));
     }
 
     /**
@@ -71,6 +72,26 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
         $enrichedEntitiesFound = $this->repository->all();
 
         $this->assertEnrichedEntityList([$enrichedEntity1, $enrichedEntity2, $enrichedEntity3], $enrichedEntitiesFound);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_an_enriched_entity()
+    {
+        $this->markTestIncomplete(
+            'Usecase was not tested. Not sure a method such as "update" should exist when "add" works equally ?'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_updating_an_enriched_entity_not_found()
+    {
+        $this->markTestIncomplete(
+            'Usecase was not tested. Not sure a method such as "update" should exist when "add" works equally ?'
+        );
     }
 
     /**
