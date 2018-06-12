@@ -90,6 +90,8 @@ extensions:
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         position: 115
+        config:
+            datagridName: product-draft-grid
 
     pim-product-edit-form-categories:
         module: pimee/product-edit-form/categories

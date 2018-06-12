@@ -43,3 +43,5 @@ extensions:
         parent: pim-product-model-edit-form-column-tabs
         targetZone: container
         position: 115
+        config:
+            datagridName: product-model-draft-grid
