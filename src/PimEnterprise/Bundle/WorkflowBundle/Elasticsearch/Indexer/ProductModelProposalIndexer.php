@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
@@ -51,15 +52,41 @@ class ProductModelProposalIndexer implements IndexerInterface, BulkIndexerInterf
      */
     public function indexAll(array $objects, array $options = [])
     {
-        // TODO: Implement indexAll() method.
+        if (empty($objects)) {
+            return;
+        }
+
+        $indexRefresh = $options['index_refresh'] ?? Refresh::waitFor();
+
+        $normalizedProductModels = [];
+        foreach ($objects as $object) {
+            $normalizedProductModel = $this->normalizer->normalize(
+                $object,
+                ProductModelProposalNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_PROPOSAL_INDEX
+            );
+            $this->validateObjectNormalization($normalizedProductModel);
+            $normalizedProductModels[] = $normalizedProductModel;
+        }
+
+        $this->productModelProposalClient->bulkIndexes($this->indexType, $normalizedProductModels, 'id', $indexRefresh);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function remove($object, array $options = [])
+    public function remove($objectId, array $options = [])
     {
-        // TODO: Implement remove() method.
+        $documents = $this->productModelProposalClient->search(
+            $this->indexType,
+            ['query' => ['term' => ['id' => self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId]]]
+        );
+
+        if (0 !== $documents['hits']['total']) {
+            $this->productModelProposalClient->delete(
+                $this->indexType,
+                self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId
+            );
+        }
     }
 
     /**
@@ -67,7 +94,11 @@ class ProductModelProposalIndexer implements IndexerInterface, BulkIndexerInterf
      */
     public function removeAll(array $objects, array $options = [])
     {
-        // TODO: Implement removeAll() method.
+        $objectIds = [];
+        foreach ($objects as $objectId) {
+            $objectIds[]  = self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId;
+        }
+        $this->productModelProposalClient->bulkDelete($this->indexType, $objectIds);
     }
 
     private function validateObjectNormalization(array $normalization) : void
