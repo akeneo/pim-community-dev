@@ -103,8 +103,7 @@ config:
     expect.assertions(2);
   });
 
-  test('I get a Missconfiguration exception if the view is not well configured', () => {
-    expect.assertions(1);
+  test('I get a Missconfiguration exception if the view is not well configured', async () => {
     const tabProvider = EditTabsProvider.create(
       {
         tabs: {},
@@ -116,8 +115,9 @@ config:
         return Promise.resolve({default: 'view'});
       }
     );
+
     try {
-      tabProvider.getView('first');
+      await tabProvider.getView('first');
     } catch (error) {
       const confPath = `
 config:
