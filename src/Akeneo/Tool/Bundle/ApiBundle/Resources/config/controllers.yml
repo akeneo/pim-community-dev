@@ -2,7 +2,6 @@ parameters:
     pim_api.controller.category.class: Akeneo\Tool\Bundle\ApiBundle\Controller\CategoryController
     pim_api.controller.family.class: Akeneo\Tool\Bundle\ApiBundle\Controller\FamilyController
     pim_api.controller.family_variant.class: Akeneo\Tool\Bundle\ApiBundle\Controller\FamilyVariantController
-    pim_api.controller.attribute_option.class: Akeneo\Tool\Bundle\ApiBundle\Controller\AttributeOptionController
     pim_api.controller.token.class: Akeneo\Tool\Bundle\ApiBundle\Controller\TokenController
     pim_api.controller.product.class: Akeneo\Tool\Bundle\ApiBundle\Controller\ProductController
     pim_api.controller.product_model.class: Akeneo\Tool\Bundle\ApiBundle\Controller\ProductModelController
@@ -58,24 +57,6 @@ services:
             - '@router'
             - '@pim_api.stream.family_variant_partial_update_stream'
             - '%pim_api.configuration%'
-
-    pim_api.controller.attribute_option:
-        class: '%pim_api.controller.attribute_option.class%'
-        arguments:
-            - '@pim_api.repository.attribute'
-            - '@pim_api.repository.attribute_option'
-            - '@pim_serializer'
-            - '@pim_catalog.factory.attribute_option'
-            - '@pim_catalog.updater.attribute_option'
-            - '@validator'
-            - '@pim_catalog.saver.attribute_option'
-            - '@router'
-            - '@pim_api.pagination.offset_hal_paginator'
-            - '@pim_api.pagination.parameter_validator'
-            - '@pim_api.stream.attribute_option_partial_update_stream'
-            - '%pim_api.configuration%'
-            - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
-
     pim_api.controller.token:
         class: '%pim_api.controller.token.class%'
         arguments:
