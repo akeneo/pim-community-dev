@@ -17,19 +17,27 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AttributeNormalizer implements NormalizerInterface
 {
     /** @var TranslationNormalizer */
-    protected $translationNormalizer;
+    private $translationNormalizer;
 
     /** @var DateTimeNormalizer */
-    protected $dateTimeNormalizer;
+    private $dateTimeNormalizer;
+
+    /** @var array */
+    private $properties;
 
     /**
      * @param TranslationNormalizer $translationNormalizer
      * @param DateTimeNormalizer    $dateTimeNormalizer
+     * @param array                 $properties
      */
-    public function __construct(TranslationNormalizer $translationNormalizer, DateTimeNormalizer $dateTimeNormalizer)
-    {
+    public function __construct(
+        TranslationNormalizer $translationNormalizer,
+        DateTimeNormalizer $dateTimeNormalizer,
+        array $properties
+    ) {
         $this->translationNormalizer = $translationNormalizer;
         $this->dateTimeNormalizer = $dateTimeNormalizer;
+        $this->properties = $properties;
     }
 
     /**
@@ -39,7 +47,12 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function normalize($attribute, $format = null, array $context = [])
     {
-        return [
+        $normalizedProperties = [];
+        foreach ($this->properties as $property) {
+            $normalizedProperties[$property] = $attribute->getProperty($property);
+        }
+
+        $normalizedAttribute = [
             'code'                   => $attribute->getCode(),
             'type'                   => $attribute->getType(),
             'group'                  => ($attribute->getGroup()) ? $attribute->getGroup()->getCode() : null,
@@ -73,8 +86,9 @@ class AttributeNormalizer implements NormalizerInterface
             'localizable'            => (bool) $attribute->isLocalizable(),
             'scopable'               => (bool) $attribute->isScopable(),
             'labels'                 => $this->translationNormalizer->normalize($attribute, $format, $context),
-            'auto_option_sorting'    => $attribute->getProperty('auto_option_sorting'),
         ];
+
+        return $normalizedAttribute + $normalizedProperties;
     }
 
     /**

@@ -13,7 +13,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
 {
     function let(TranslationNormalizer $transNormalizer, DateTimeNormalizer $dateTimeNormalizer)
     {
-        $this->beConstructedWith($transNormalizer, $dateTimeNormalizer);
+        $this->beConstructedWith($transNormalizer, $dateTimeNormalizer, ['auto_option_sorting']);
     }
 
     function it_is_initializable()
