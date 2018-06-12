@@ -1,3 +1,7 @@
 attribute:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/attribute.yml'
-    prefix: /rest/v1
+    prefix: /api/rest/v1
+
+attribute_group:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/attribute_group.yml'
+    prefix: /api/rest/v1

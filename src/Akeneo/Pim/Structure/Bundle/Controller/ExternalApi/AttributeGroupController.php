@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\Controller;
+namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;

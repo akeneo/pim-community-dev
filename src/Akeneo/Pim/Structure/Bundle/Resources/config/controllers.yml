@@ -13,3 +13,18 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.stream.attribute_partial_update_stream'
             - '%pim_api.configuration%'
+
+    pim_api.controller.attribute_group:
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeGroupController'
+        arguments:
+            - '@pim_api.repository.attribute_group'
+            - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_catalog.factory.attribute_group'
+            - '@pim_catalog.updater.attribute_group'
+            - '@validator'
+            - '@router'
+            - '@pim_catalog.saver.attribute_group'
+            - '@pim_api.stream.attribute_group_partial_update_stream'
+            - '%pim_api.configuration%'

@@ -6,11 +6,6 @@ family:
     resource: '@PimApiBundle/Resources/config/routing/family.yml'
     prefix: /rest/v1
 
-
-attribute_group:
-    resource: '@PimApiBundle/Resources/config/routing/attribute_group.yml'
-    prefix: /rest/v1
-
 product:
     resource: '@PimApiBundle/Resources/config/routing/product.yml'
     prefix: /rest/v1
