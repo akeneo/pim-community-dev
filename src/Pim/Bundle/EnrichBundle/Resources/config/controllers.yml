@@ -8,7 +8,6 @@ parameters:
     pim_enrich.controller.association_type.class:             Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
     pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
     pim_enrich.controller.rest.association_type.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController
-    pim_enrich.controller.rest.attribute.class:               Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController
     pim_enrich.controller.rest.attribute_type.class:          Pim\Bundle\EnrichBundle\Controller\Rest\AttributeTypeController
     pim_enrich.controller.rest.attribute_group.class:         Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController
     pim_enrich.controller.rest.category.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CategoryController
@@ -166,25 +165,6 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.factory.group_type'
             - '@pim_enrich.normalizer.violation'
-
-    pim_enrich.controller.rest.attribute:
-        class: '%pim_enrich.controller.rest.attribute.class%'
-        arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_internal_api_serializer'
-            - '@security.token_storage'
-            - '@pim_catalog.filter.chained'
-            - '@pim_enrich.repository.attribute.search'
-            - '@pim_catalog.updater.attribute'
-            - '@validator'
-            - '@pim_catalog.saver.attribute'
-            - '@pim_catalog.remover.attribute'
-            - '@pim_catalog.factory.attribute'
-            - '@pim_user.context.user'
-            - '@pim_catalog.localization.localizer.number'
-            - '@pim_enrich.normalizer.attribute'
-            - '@translator'
-            - '@pim_catalog.doctrine.query.attribute_is_an_family_variant_axis'
 
     pim_enrich.controller.rest.attribute_type:
         class: '%pim_enrich.controller.rest.attribute_type.class%'

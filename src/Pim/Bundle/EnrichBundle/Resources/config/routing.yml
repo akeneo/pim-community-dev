@@ -34,14 +34,6 @@ family_variant:
     resource: '@PimEnrichBundle/Resources/config/routing/family_variant.yml'
     prefix: /configuration/family-variant
 
-attribute_front:
-    resource: '@PimEnrichBundle/Resources/config/routing/attribute/front.yml'
-    prefix: /configuration/attribute
-
-attribute_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/attribute/rest.yml'
-    prefix: /rest/attribute
-
 attribute_type:
     resource: '@PimEnrichBundle/Resources/config/routing/attribute_type/rest.yml'
     prefix: /rest/attribute-type

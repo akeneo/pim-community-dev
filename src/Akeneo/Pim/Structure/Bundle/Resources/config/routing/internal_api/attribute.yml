@@ -28,3 +28,14 @@ pim_enrich_attribute_rest_remove:
     requirements:
         identifier: '[a-zA-Z0-9_]+'
     methods: [DELETE]
+
+pim_enrich_attribute_axes_index:
+    path: /axes
+    defaults: { _controller: pim_enrich.controller.rest.attribute:listAxesAction }
+    methods: [GET]
+
+### Used by the front application
+pim_enrich_attribute_edit:
+    path: /configuration/attribute/{code}/edit
+    requirements:
+        code: '[a-zA-Z0-9_]+'

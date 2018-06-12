@@ -1,11 +1,17 @@
-attribute:
-    resource: '@AkeneoPimStructureBundle/Resources/config/routing/attribute.yml'
+### External Api
+external_api_attribute:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/external_api/attribute.yml'
     prefix: /api/rest/v1
 
-attribute_group:
-    resource: '@AkeneoPimStructureBundle/Resources/config/routing/attribute_group.yml'
+external_api_attribute_group:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/external_api/attribute_group.yml'
     prefix: /api/rest/v1
 
-family:
-    resource: '@AkeneoPimStructureBundle/Resources/config/routing/family.yml'
+external_api_family:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/external_api/family.yml'
     prefix: /api/rest/v1
+
+### Internal API
+internal_api_attribute:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute.yml'
+    prefix: /rest/attribute
