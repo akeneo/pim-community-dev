@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-7400: Fix 'ensure-indexes' timeout command
+
 # 1.7.22 (2018-06-05)
 
 ## Bug fixes

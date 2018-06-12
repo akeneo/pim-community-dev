@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\ProductQueryUtility;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
@@ -106,8 +105,7 @@ class IndexCreator
 
         $scopables = $this->namingUtility->getScopableAttributes();
         foreach ($scopables as $scopable) {
-            $indexType = $this->getIndexTypeFromAttribute($scopable);
-            $this->ensureIndexesFromAttribute($scopable, $indexType);
+            $this->ensureIndexesFromAttribute($scopable);
         }
     }
 
@@ -125,8 +123,7 @@ class IndexCreator
 
         $localizables = $this->namingUtility->getLocalizableAttributes();
         foreach ($localizables as $localizable) {
-            $indexType = $this->getIndexTypeFromAttribute($localizable);
-            $this->ensureIndexesFromAttribute($localizable, $indexType);
+            $this->ensureIndexesFromAttribute($localizable);
         }
     }
 
@@ -135,15 +132,12 @@ class IndexCreator
      *
      * Indexes will be created on the normalizedData part for:
      * - prices (because of potentially added currency)
-     *
-     * @param CurrencyInterface $currency
      */
     public function ensureIndexesFromCurrency()
     {
         $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {
-            $indexType = $this->getIndexTypeFromAttribute($pricesAttribute);
-            $this->ensureIndexesFromAttribute($pricesAttribute, $indexType);
+            $this->ensureIndexesFromAttribute($pricesAttribute);
         }
     }
 
@@ -162,14 +156,13 @@ class IndexCreator
     public function ensureUniqueAttributesIndexes()
     {
         $attributes = $this->getAttributeRepository()->findBy(
-            ['unique'  => true],
+            ['unique' => true],
             ['created' => 'ASC'],
             self::MONGODB_INDEXES_LIMIT
         );
 
         foreach ($attributes as $attribute) {
-            $indexType = $this->getIndexTypeFromAttribute($attribute);
-            $this->ensureIndexesFromAttribute($attribute, $indexType);
+            $this->ensureIndexesFromAttribute($attribute);
         }
     }
 
@@ -180,13 +173,12 @@ class IndexCreator
     {
         $attributes = $this->getAttributeRepository()->findBy(
             ['useableAsGridFilter' => true],
-            ['created'             => 'ASC'],
+            ['created' => 'ASC'],
             self::MONGODB_INDEXES_LIMIT
         );
 
         foreach ($attributes as $attribute) {
-            $indexType = $this->getIndexTypeFromAttribute($attribute);
-            $this->ensureIndexesFromAttribute($attribute, $indexType);
+            $this->ensureIndexesFromAttribute($attribute);
         }
     }
 
@@ -275,7 +267,15 @@ class IndexCreator
     protected function ensureIndexes(array $fields, $indexType = self::ASCENDANT_INDEX_TYPE)
     {
         $collection = $this->getCollection();
-        $preNbIndexes = count($collection->getIndexInfo());
+        $preNbIndexes = -1;
+        do {
+            try {
+                $preNbIndexes = count($collection->getIndexInfo());
+            } catch (\MongoCursorTimeoutException $e) {
+                $erroMessage = sprintf('%s : getIndexInfo timeout.', self::class);
+                $this->logger->error($erroMessage);
+            }
+        } while ($preNbIndexes === -1);
         $postNbIndexes = $preNbIndexes + count($fields);
         if ($postNbIndexes > self::MONGODB_INDEXES_LIMIT) {
             $msg = sprintf('Too many MongoDB indexes (%d), no way to add %s', $preNbIndexes, print_r($fields, true));
@@ -286,7 +286,7 @@ class IndexCreator
 
         $indexOptions = [
             'background' => true,
-            'w'          => 0
+            'w'          => 0,
         ];
 
         foreach ($fields as $field) {
