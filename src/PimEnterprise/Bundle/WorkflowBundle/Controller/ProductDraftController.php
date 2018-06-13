@@ -140,7 +140,7 @@ class ProductDraftController
 
     /**
      * @param Request    $request
-     * @param int|string $proposal_id
+     * @param int|string $id
      * @param string     $action  either "approve" or "refuse"
      *
      * @throws \LogicException
@@ -149,10 +149,10 @@ class ProductDraftController
      *
      * @return JsonResponse
      */
-    public function reviewAction(Request $request, $proposal_id, $action)
+    public function reviewAction(Request $request, $id, $action)
     {
-        if (null === $productDraft = $this->repository->find($proposal_id)) {
-            throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $proposal_id));
+        if (null === $productDraft = $this->repository->find($id)) {
+            throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
         }
 
         if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {

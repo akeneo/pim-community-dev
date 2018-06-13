@@ -33,20 +33,8 @@ datagrid:
                 frontend_type: html
         properties:
             id: ~
-            proposal_id:
-                type:          field
-                data_name:     search_id
+            proposal_id: ~
             document_type: ~
-            approve_link:
-                type: url
-                route: pimee_workflow_product_draft_approve
-                params:
-                    - proposal_id
-            refuse_link:
-                type: url
-                route: pimee_workflow_product_draft_refuse
-                params:
-                    - proposal_id
         actions:
             approve:
                 type: approve-proposal
