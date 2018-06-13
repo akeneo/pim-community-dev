@@ -8,7 +8,7 @@ const createElementDecorator = (config) => async (parent, key) => {
   const decoratedElements = [];
 
   elements.forEach(element => {
-    decoratedElements.push(elementConfig.decorator(element, createElementDecorator));
+    decoratedElements.push(elementConfig.decorator(element, createElementDecorator, parent));
   });
 
   return (elementConfig.multiple ? decoratedElements : decoratedElements[0]);
