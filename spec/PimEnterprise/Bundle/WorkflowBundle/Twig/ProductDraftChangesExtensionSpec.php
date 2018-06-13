@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Factory\AttributeFactory;
+use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;

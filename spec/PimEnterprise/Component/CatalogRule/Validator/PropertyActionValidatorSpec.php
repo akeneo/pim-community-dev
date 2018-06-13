@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterfac
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\PropertyAction;
 use PimEnterprise\Component\CatalogRule\Model\ProductCopyAction;
 use PimEnterprise\Component\CatalogRule\Validator\PropertyActionValidator;

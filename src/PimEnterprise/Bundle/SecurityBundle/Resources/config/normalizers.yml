@@ -84,3 +84,11 @@ services:
         tags:
             - { name: pimee_authorization_serializer.normalizer, priority: 110 }
 
+    pim_catalog.normalizer.standard.attribute:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.normalizer.standard.datetime'
+            - ['auto_option_sorting', 'is_read_only']
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

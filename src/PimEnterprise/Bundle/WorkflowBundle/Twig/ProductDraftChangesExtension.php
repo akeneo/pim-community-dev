@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
+use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Factory\AttributeFactory;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
