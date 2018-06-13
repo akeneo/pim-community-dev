@@ -111,12 +111,9 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'association_type_id' => '1'
         ]);
 
-        $associatedProduct1->getIdentifier()->willReturn('associated_product_1');
-        $associatedProduct1->getId()->willReturn('2');
-        $associatedProduct2->getIdentifier()->willReturn('associated_product_2');
-        $associatedProduct2->getId()->willReturn('3');
-        $associatedProductModel->getCode()->willReturn('associated_product_model_1');
-        $associatedProductModel->getId()->willReturn('2');
+        $associatedProduct1->getId()->willReturn('1');
+        $associatedProduct2->getId()->willReturn('2');
+        $associatedProductModel->getId()->willReturn('1');
         $currentProduct->getAssociations()->willReturn($associationCollection);
         $currentProduct->getIdentifier()->willReturn('current_product');
 
@@ -153,9 +150,9 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
 
         $pqbAsso
             ->addFilter(
-                'identifier',
+                'id',
                 Operators::IN_LIST,
-                ['associated_product_1', 'associated_product_2']
+                ['product_1', 'product_2']
             )->shouldBeCalled();
         $pqbAsso
             ->addFilter(
@@ -182,9 +179,9 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
 
         $pqbAssoProductModel
             ->addFilter(
-                'identifier',
+                'id',
                 Operators::IN_LIST,
-                ['associated_product_model_1']
+                ['product_model_1']
             )->shouldBeCalled();
         $pqbAssoProductModel
             ->addFilter(
@@ -263,9 +260,9 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $results['data']->shouldBeArray();
         $results['data']->shouldHaveCount(3);
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
-        $results['data'][0]->getValue('id')->shouldReturn('product-2');
-        $results['data'][1]->getValue('id')->shouldReturn('product-3');
-        $results['data'][2]->getValue('id')->shouldReturn('product-model-2');
+        $results['data'][0]->getValue('id')->shouldReturn('product-1');
+        $results['data'][1]->getValue('id')->shouldReturn('product-2');
+        $results['data'][2]->getValue('id')->shouldReturn('product-model-1');
     }
 
     public function getMatchers()
