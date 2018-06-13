@@ -91,6 +91,9 @@ batch_jobs:
     apply_assets_mass_upload:
         label: Assets mass upload
         perform.label: Mass upload
+    apply_assets_mass_upload_and_add_to_product:
+        label: Assets mass upload and add to product
+        perform.label: Mass upload assets and add to product
     yml_asset_channel_configuration_import:
         label: Asset channel configuration import in Yaml
         validation.label: File validation

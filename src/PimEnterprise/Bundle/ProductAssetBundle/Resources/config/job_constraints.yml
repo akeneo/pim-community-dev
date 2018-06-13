@@ -61,6 +61,7 @@ services:
         arguments:
             -
                 - 'apply_assets_mass_upload'
+                - 'apply_assets_mass_upload_and_add_to_product'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 

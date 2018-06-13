@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,13 +18,11 @@ use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessorInterface;
 
 /**
- * Launch the asset upload processor to create/update assets from uploaded files
- *
- * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class MassUploadTasklet extends AbstractMassUploadTasklet implements TaskletInterface
+class MassUploadToProductTasklet extends AbstractMassUploadTasklet implements TaskletInterface
 {
-    public const TASKLET_NAME = 'asset_mass_upload';
+    public const TASKLET_NAME = 'assets_mass_upload_and_add_to_product';
 
     /**
      * @param MassUploadProcessorInterface $processor

@@ -5,8 +5,16 @@
 - AOB-58: Change signature of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor` constructor to add the `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - AOB-139: Make Teamwork assistant project filtering work with product models.
 
+## Improve Julia's experience
+
+- PIM-7405: As Julia, I would like to order the assets linked to the products in the asset collection in the product form.
+- PIM-7397: Add asset collection preview on the product edit form
+- PIM-7407: As Julia, I would like to upload assets linked to products directly from the Product Form in the asset collection.
+
 ## BC Breaks
 
+- PIM-7407: Remove class parameters `pimee_product_asset.upload_context.class`, `pimee_product_asset.upload_checker.class`, `pimee_product_asset.upload_importer.class`, `pimee_product_asset.mass_upload_processor.class` and `pimee_product_asset.tasklet.class`
+- PIM-7407: Move class `PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor` to `PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor`
 - AOB-139: Change constructor of `PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`.
 - AOB-139: Rename method `PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepositoryInterface::findProductIds` to `findProductIdentifiers`.
 
@@ -15,11 +23,6 @@
 - PIM-7446: As Julia, if I mass upload an asset which has the same name than another asset in the PIM, I would like it to be well created.
 
 # 2.3.0-ALPHA2 (2018-06-07)
-
-## Improve Julia's experience
-
-- PIM-7405: As Julia, I would like to order the assets linked to the products in the asset collection in the product form
-- PIM-7397: Add asset collection preview on the product edit form
 
 ## BC Breaks
 

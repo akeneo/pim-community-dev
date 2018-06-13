@@ -1,41 +1,45 @@
-parameters:
-    pimee_product_asset.upload_context.class:        PimEnterprise\Component\ProductAsset\Upload\UploadContext
-    pimee_product_asset.upload_checker.class:        PimEnterprise\Component\ProductAsset\Upload\UploadChecker
-    pimee_product_asset.upload_importer.class:       PimEnterprise\Component\ProductAsset\Upload\Importer
-    pimee_product_asset.mass_upload_processor.class: PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor
-    pimee_product_asset.mass_upload.tasklet.class:   PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet
-
 services:
     pimee_product_asset.upload_checker:
-        class: '%pimee_product_asset.upload_checker.class%'
+        class: 'PimEnterprise\Component\ProductAsset\Upload\UploadChecker'
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.locale'
 
     pimee_product_asset.upload_importer:
-        class: '%pimee_product_asset.upload_importer.class%'
+        class: 'PimEnterprise\Component\ProductAsset\Upload\Importer'
         arguments:
             - '@pimee_product_asset.upload_checker'
             - '@akeneo_file_storage.file_storage.file.file_storer'
 
-    pimee_product_asset.mass_upload_processor:
-        class: '%pimee_product_asset.mass_upload_processor.class%'
+    pimee_product_asset.mass_upload.imported_asset_reference_file:
+        class: 'PimEnterprise\Component\ProductAsset\Upload\Processor\AddImportedReferenceFIleToAsset'
         arguments:
             - '@pimee_product_asset.upload_checker'
-            - '@pimee_product_asset.upload_importer'
             - '@pimee_product_asset.factory.asset'
             - '@pimee_product_asset.repository.asset'
-            - '@pimee_product_asset.saver.asset'
             - '@pimee_product_asset.updater.files'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@pim_catalog.repository.locale'
+
+    pimee_product_asset.mass_upload_processor:
+        class: 'PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor'
+        arguments:
+            - '@pimee_product_asset.upload_importer'
+            - '@pimee_product_asset.mass_upload.imported_asset_reference_file'
+            - '@pimee_product_asset.saver.asset'
             - '@event_dispatcher'
             - '@translator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.mass_upload.tasklet:
-        class: '%pimee_product_asset.mass_upload.tasklet.class%'
+        class: 'PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet'
+        arguments:
+            - '@pimee_product_asset.mass_upload_processor'
+            - '%tmp_storage_dir%'
+
+    pimee_product_asset.mass_upload_and_add_to_product.tasklet:
+        class: 'PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadToProductTasklet'
         arguments:
             - '@pimee_product_asset.mass_upload_processor'
             - '%tmp_storage_dir%'

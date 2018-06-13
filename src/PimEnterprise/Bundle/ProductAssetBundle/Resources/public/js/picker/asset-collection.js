@@ -39,7 +39,8 @@ define(
             template: _.template(template),
             events: {
                 'click .add-asset': 'updateAssets',
-                'click .asset-thumbnail-item': 'updateAssetsFromPreview'
+                'click .asset-thumbnail-item': 'updateAssetsFromPreview',
+                'click .upload-assets': 'uploadAssets'
             },
             modalTemplate: _.template(templateModal),
 
@@ -116,6 +117,18 @@ define(
 
                     this.trigger('collection:change', assets);
                     this.render();
+                });
+            },
+
+            /**
+             * Open the modal to mass upload assets.
+             */
+            uploadAssets() {
+                FormBuilder.build('pimee-asset-mass-upload').then((form) => {
+                    form.setRoutes({
+                        cancelRedirectionRoute: '',
+                        importRoute: 'pimee_product_asset_mass_upload_and_add_to_product_rest_import'
+                    }).setElement(this.$('.asset-mass-uploader')).render();
                 });
             },
 

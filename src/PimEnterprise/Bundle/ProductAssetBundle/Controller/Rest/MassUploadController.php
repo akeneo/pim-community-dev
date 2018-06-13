@@ -238,6 +238,33 @@ class MassUploadController
     }
 
     /**
+     * @AclAncestor("pimee_product_asset_mass_upload")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function importAndAddToProductAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $result = $this->importer->import($this->getUploadContext());
+        $jobInstance = $this->jobInstanceRepo->findOneByIdentifier('apply_assets_mass_upload_and_add_to_product');
+        $user =  $this->tokenStorage->getToken()->getUser();
+
+        $configuration = ['user_to_notify' => $user->getUsername()];
+
+        $jobExecution = $this->jobLauncher->launch($jobInstance, $user, $configuration);
+
+        return new JsonResponse([
+            'result' => $result,
+            'jobId'  => $jobExecution->getId(),
+        ]);
+    }
+
+    /**
      * @return UploadContext
      */
     protected function getUploadContext()

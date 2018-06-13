@@ -1,6 +1,7 @@
 parameters:
     pimee_product_asset.connector_name.product_asset: 'Akeneo Product Asset Connector'
     pimee_product_asset.job_name.apply_assets_mass_upload: 'apply_assets_mass_upload'
+    pimee_product_asset.job_name.apply_assets_mass_upload_and_add_to_product: 'apply_assets_mass_upload_and_add_to_product'
     pimee_product_asset.job_name.yml_asset_channel_configuration_import: 'yml_asset_channel_configuration_import'
     pimee_product_asset.job_name.yml_asset_channel_configuration_export: 'yml_asset_channel_configuration_export'
     pimee_product_asset.job_name.csv_asset_import: 'csv_asset_import'
@@ -29,6 +30,17 @@ services:
                 - '@pimee_product_asset.step.apply_assets_mass_upload.perform'
         tags:
             - { name: akeneo_batch.job, connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pimee_product_asset.job.mass_upload_type%' }
+
+    pimee_product_asset.job.apply_assets_mass_upload_and_add_to_product:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pimee_product_asset.job_name.apply_assets_mass_upload_and_add_to_product%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pimee_product_asset.step.apply_assets_mass_upload_and_add_to_product.perform'
+        tags:
+            - { name: 'akeneo_batch.job', connector: '%pimee_product_asset.connector_name.product_asset%', type: '%pimee_product_asset.job.mass_upload_type%' }
 
     # YML Imports -----------------------------------------------------------------------------------------------------
     pimee_product_asset.job.yml_asset_channel_configuration_import:

@@ -53,7 +53,7 @@ class ProcessMassUploadCommand extends ContainerAwareCommand
 
         $context = new UploadContext($this->getTmpStorageDir(), $sourceDir);
 
-        $processedList = $processor->applyMassUpload($context);
+        $processedList = $processor->process($context);
 
         foreach ($processedList as $item) {
             $file = $item->getItem();
