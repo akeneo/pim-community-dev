@@ -299,12 +299,6 @@ services:
             - '@pim_internal_api_serializer'
             - '@pim_user.context.user'
 
-    pim_enrich.controller.rest.attribute_option:
-        class: '%pim_enrich.controller.rest.attribute_option.class%'
-        arguments:
-            - '@pim_enrich.repository.attribute_option.search'
-            - '@pim_enrich.normalizer.structured.attribute_option'
-
     pim_enrich.controller.rest.job_instance:
         class: '%pim_enrich.controller.rest.job_instance.class%'
         arguments:
