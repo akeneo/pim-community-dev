@@ -40,6 +40,10 @@ export default class LabelCollection {
     return this.labels[locale];
   }
 
+  public setLabel(locale: string, label: string): LabelCollection {
+    return LabelCollection.create({...this.labels, [locale]: label});
+  }
+
   public getLabels(): RawLabelCollection {
     return this.labels;
   }

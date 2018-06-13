@@ -27,6 +27,7 @@ cache:
   directories:
     - $HOME/.composer/cache/files
     - $HOME/.cache/yarn
+    - /tmp/jest
 
 before_install:
     - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
