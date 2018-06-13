@@ -157,3 +157,5 @@ services:
             - '@pim_catalog.remover.attribute_option'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_option'
+            - '@pim_enrich.repository.attribute_option.search'
+            - '@pim_enrich.normalizer.structured.attribute_option'

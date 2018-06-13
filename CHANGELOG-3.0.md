@@ -194,3 +194,4 @@
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyVariantController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyVariantController`
 - Remove class `Pim\Bundle\EnrichBundle\Controller\FamilyController`
+- Remove class `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController`

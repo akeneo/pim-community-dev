@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\View\View as RestView;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeOptionSearchableRepository;
 use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType;
 use Pim\Component\Catalog\Manager\AttributeOptionsSorter;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
@@ -64,17 +65,25 @@ class AttributeOptionController
     /** @var AttributeOptionRepositoryInterface */
     protected $optionRepository;
 
+    /** @var AttributeOptionSearchableRepository */
+    private $attributeOptionRepository;
+
+    /** @var NormalizerInterface */
+    private $structureNormalizer;
+
     /**
-     * @param NormalizerInterface          $normalizer
-     * @param EntityManager                $entityManager
-     * @param FormFactoryInterface         $formFactory
-     * @param ViewHandlerInterface         $viewHandler
-     * @param AttributeOptionsSorter       $sorter
-     * @param SimpleFactoryInterface       $optionFactory
-     * @param SaverInterface               $optionSaver
-     * @param RemoverInterface             $optionRemover
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param AttributeOptionRepositoryInterface $attributeOptionRepository
+     * @param NormalizerInterface                 $normalizer
+     * @param EntityManager                       $entityManager
+     * @param FormFactoryInterface                $formFactory
+     * @param ViewHandlerInterface                $viewHandler
+     * @param AttributeOptionsSorter              $sorter
+     * @param SimpleFactoryInterface              $optionFactory
+     * @param SaverInterface                      $optionSaver
+     * @param RemoverInterface                    $optionRemover
+     * @param AttributeRepositoryInterface        $attributeRepository
+     * @param AttributeOptionRepositoryInterface  $attributeOptionRepository
+     * @param AttributeOptionSearchableRepository $attributeOptionSearchableRepo
+     * @param NormalizerInterface                 $structureNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -86,7 +95,9 @@ class AttributeOptionController
         SaverInterface $optionSaver,
         RemoverInterface $optionRemover,
         AttributeRepositoryInterface $attributeRepository,
-        AttributeOptionRepositoryInterface $attributeOptionRepository
+        AttributeOptionRepositoryInterface $attributeOptionRepository,
+        AttributeOptionSearchableRepository $attributeOptionSearchableRepo,
+        NormalizerInterface $structureNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->entityManager = $entityManager;
@@ -98,6 +109,41 @@ class AttributeOptionController
         $this->optionSaver = $optionSaver;
         $this->attributeRepository = $attributeRepository;
         $this->optionRepository = $attributeOptionRepository;
+        $this->attributeOptionRepository = $attributeOptionSearchableRepo;
+        $this->structureNormalizer = $structureNormalizer;
+    }
+
+    /**
+     * Return the attribute option array
+     *
+     * @param Request $request
+     * @param int     $identifier
+     *
+     * @return JsonResponse
+     */
+    public function getAction(Request $request, $identifier)
+    {
+        $query  = $request->query;
+        $search = $query->get('search');
+
+        $options = $query->get('options', []);
+        $options['identifier'] = $identifier;
+
+        $attributeOptions = $this->attributeOptionRepository->findBySearch(
+            $search,
+            $options
+        );
+
+        $normalizedAttributeOptions = [];
+        foreach ($attributeOptions as $attributeOption) {
+            $normalizedAttributeOptions[] = $this->structureNormalizer->normalize(
+                $attributeOption,
+                'json',
+                ['onlyActivatedLocales' => true]
+            );
+        }
+
+        return new JsonResponse($normalizedAttributeOptions);
     }
 
     /**

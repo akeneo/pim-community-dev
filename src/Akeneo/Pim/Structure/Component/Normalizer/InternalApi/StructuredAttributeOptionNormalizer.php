@@ -1,10 +1,8 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Normalizer;
+namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionNormalizer;
-use Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionNormalizer as BaseAttributeOptionNormalizer;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
@@ -14,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class StructuredAttributeOptionNormalizer extends BaseAttributeOptionNormalizer
+class StructuredAttributeOptionNormalizer extends AttributeOptionNormalizer
 {
     /** @var array */
     protected $supportedFormat = ['json'];
