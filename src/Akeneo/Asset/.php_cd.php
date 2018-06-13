@@ -69,7 +69,7 @@ $rules = [
         'Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface', // Related to the front end (used to build form type)
         'Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer',
         'Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface',
-        'Pim\Component\Catalog\Repository\AttributeRepositoryInterface',
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
     ])->in('Akeneo\Asset\Bundle'),
     $builder->only([
         'Symfony\Component',
