@@ -35,7 +35,7 @@ class FindEnrichedEntityQuery
     {
         $identifier = EnrichedEntityIdentifier::fromString($rawIdentifier);
 
-        $enrichedEntity = $this->enrichedEntityRepository->findOneByIdentifier($identifier);
+        $enrichedEntity = $this->enrichedEntityRepository->getByIdentifier($identifier);
 
         return EnrichedEntityDetails::fromEntity($enrichedEntity);
     }

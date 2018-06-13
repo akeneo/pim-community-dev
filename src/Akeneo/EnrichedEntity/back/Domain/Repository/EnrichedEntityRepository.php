@@ -13,7 +13,7 @@ interface EnrichedEntityRepository
     /**
      * @throws EntityNotFoundException
      */
-    public function findOneByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity;
+    public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity;
 
     /**
      * @return EnrichedEntity[]

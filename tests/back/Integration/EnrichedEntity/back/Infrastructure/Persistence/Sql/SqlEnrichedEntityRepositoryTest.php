@@ -42,7 +42,7 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
 
         $this->repository->save($enrichedEntity);
 
-        $enrichedEntityFound = $this->repository->findOneByIdentifier($identifier);
+        $enrichedEntityFound = $this->repository->getByIdentifier($identifier);
         $this->assertEnrichedEntity($enrichedEntity, $enrichedEntityFound);
     }
 
@@ -52,7 +52,7 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
     public function it_throws_if_the_identifier_is_not_found()
     {
         $this->expectException(EntityNotFoundException::class);
-        $this->repository->findOneByIdentifier(EnrichedEntityIdentifier::fromString('unknown_identifier'));
+        $this->repository->getByIdentifier(EnrichedEntityIdentifier::fromString('unknown_identifier'));
     }
 
     /**
@@ -92,7 +92,7 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
         );
         $this->repository->save($enrichedEntity);
 
-        $enrichedEntityFound = $this->repository->findOneByIdentifier($identifier);
+        $enrichedEntityFound = $this->repository->getByIdentifier($identifier);
         $this->assertEnrichedEntity($enrichedEntity, $enrichedEntityFound);
     }
 

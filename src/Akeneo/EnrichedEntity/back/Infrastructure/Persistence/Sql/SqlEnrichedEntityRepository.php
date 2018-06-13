@@ -56,7 +56,7 @@ SQL;
         }
     }
 
-    public function findOneByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
+    public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
     {
         $fetch = <<<SQL
         SELECT identifier, labels

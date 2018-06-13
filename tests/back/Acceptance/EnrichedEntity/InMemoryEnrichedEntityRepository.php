@@ -25,7 +25,7 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
+    public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
     {
         $enrichedEntity = $this->enrichedEntities[(string) $identifier] ?? null;
         if (null === $enrichedEntity) {
