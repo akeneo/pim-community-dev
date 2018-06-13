@@ -26,10 +26,12 @@ use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\EntityWithValuesDraftRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -175,6 +177,52 @@ class ProductModelDraftController
 
         return new JsonResponse($this->normalizer->normalize(
             $productModel,
+            'internal_api',
+            $normalizationContext
+        ));
+    }
+
+    /**
+     * Approve or refuse a product draft
+     *
+     * @param Request $request
+     * @param mixed   $id
+     * @param string  $action  either "approve" or "refuse"
+     *
+     * @throws \LogicException
+     * @throws AccessDeniedHttpException
+     *
+     * @return Response
+     */
+    public function reviewAction(Request $request, $id, $action)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $productModelDraft = $this->findProductModelDraftOr404($id);
+
+        if (!in_array($action, $this->supportedReviewActions)) {
+            throw new \LogicException(sprintf('"%s" is not a valid review action', $action));
+        }
+
+        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productModelDraft->getEntityWithValue())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        try {
+            $this->manager->$action($productModelDraft, ['comment' => $request->request->get('comment')]);
+        } catch (ValidatorException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], 400);
+        }
+
+        $normalizationContext = $this->userContext->toArray() + [
+                'filter_types'               => ['pim.internal_api.product_value.view'],
+                'disable_grouping_separator' => true,
+            ];
+
+        return new JsonResponse($this->normalizer->normalize(
+            $productModelDraft->getEntityWithValue(),
             'internal_api',
             $normalizationContext
         ));

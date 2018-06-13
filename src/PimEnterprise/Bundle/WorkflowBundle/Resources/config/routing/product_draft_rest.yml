@@ -3,8 +3,8 @@ pimee_workflow_product_draft_rest_approve:
     defaults: { _controller: pimee_workflow.controller.product_draft_rest:reviewAction, action: approve }
     methods: [POST]
 
-pimee_workflow_product_draft_rest_reject:
-    path: /rest/{id}/reject
+pimee_workflow_product_draft_rest_refuse:
+    path: /rest/{id}/refuse
     defaults: { _controller: pimee_workflow.controller.product_draft_rest:reviewAction, action: refuse }
     methods: [POST]
 

@@ -139,48 +139,6 @@ class ProductDraftController
     }
 
     /**
-     * @param Request    $request
-     * @param int|string $id
-     * @param string     $action  either "approve" or "refuse"
-     *
-     * @throws \LogicException
-     * @throws NotFoundHttpException
-     * @throws AccessDeniedHttpException
-     *
-     * @return JsonResponse
-     */
-    public function reviewAction(Request $request, $id, $action)
-    {
-        if (null === $productDraft = $this->repository->find($id)) {
-            throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
-        }
-
-        if (!$this->authorizationChecker->isGranted(SecurityAttributes::OWN, $productDraft->getEntityWithValue())) {
-            throw new AccessDeniedHttpException();
-        }
-
-        try {
-            $this->manager->$action($productDraft, ['comment' => $request->request->get('comment')]);
-            $status = 'success';
-            $messageParams = [];
-        } catch (ValidatorException $e) {
-            $status = 'error';
-            $messageParams = ['%error%' => $e->getMessage()];
-        }
-
-        $message = 'approve' === $action ?
-            $this->translator->trans(sprintf('flash.product_draft.approve.%s', $status), $messageParams) :
-            $this->translator->trans('flash.product_draft.refuse.success');
-
-        return new JsonResponse(
-            [
-                'successful' => $status === 'success',
-                'message'    => $message
-            ]
-        );
-    }
-
-    /**
      * Launch the mass approve job
      *
      * @param Request $request

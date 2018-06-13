@@ -1,11 +1,3 @@
-pimee_workflow_product_draft_approve:
-    path: /{id}/approve
-    defaults: { _controller: pimee_workflow.controller.product_draft:reviewAction, action: approve }
-
-pimee_workflow_product_draft_refuse:
-    path: /{id}/refuse
-    defaults: { _controller: pimee_workflow.controller.product_draft:reviewAction, action: refuse }
-
 pimee_workflow_product_draft_mass_approve:
     path: /mass-approve
     defaults: { _controller: pimee_workflow.controller.product_draft:massApproveAction }

@@ -53,7 +53,6 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('mass_review_actions.yml');
         $loader->load('normalizers.yml');
         $loader->load('presenters.yml');
-        $loader->load('product_draft.yml');
         $loader->load('providers.yml');
         $loader->load('publishers.yml');
         $loader->load('queries.yml');

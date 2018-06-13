@@ -44,7 +44,7 @@ datagrid:
                     className: AknButton AknButton--apply AknButton--small
                 link: approve_link
             refuse:
-                type: reject-proposal
+                type: refuse-proposal
                 label: pimee_workflow.product_draft.action.refuse
                 launcherOptions:
                     iconClassName: AknButton-icon icon-remove
