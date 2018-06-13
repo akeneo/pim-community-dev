@@ -1,19 +1,14 @@
-const Sidebar = async(nodeElement) => {
+const Sidebar = async(nodeElement, createElementDecorator, page) => {
     const getCollapseButton = async () => {
         return await nodeElement.$('.AknColumn-collapseButton');
     };
 
     const getTabsCode = async () => {
-        const tabs = await nodeElement.$$('.AknColumn-navigationLink');
+        return await page.evaluate((sidebar) => {
+            const tabs = sidebar.querySelectorAll('.AknColumn-navigationLink');
 
-        const codes = tabs.map(async element => (await element.getProperty('data-tab')).jsonValue());
-
-        const realCodes = await Promise.all(codes);
-        console.log(realCodes);
-        // return await Promise.all(
-        //     (await nodeElement.$$('.AknColumn-navigationLink'))
-        //         .map(element => element.getProperty('data-tab'))
-        // );
+            return Object.values(tabs).map((tab) => tab.dataset.tab);
+        }, nodeElement);
     };
 
     const getActiveTabCode = async () => {

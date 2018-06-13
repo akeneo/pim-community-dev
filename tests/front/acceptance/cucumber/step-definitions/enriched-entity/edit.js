@@ -65,7 +65,6 @@ module.exports = async function (cucumber) {
 
   Then('the user should see the sidebar with the configured tabs', async function () {
       const sidebar = await (await getElement(this.page, 'Sidebar'));
-      debugger;
       const values = await sidebar.getTabsCode();
 
       assert.deepStrictEqual(values, this.expectedTabs);
