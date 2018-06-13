@@ -326,6 +326,7 @@ class AssertionContext extends PimContext
      * @Then /^I should see history:$/
      *
      * @throws ExpectationException
+     * @throws Spin\TimeoutException
      */
     public function iShouldSeeHistory(TableNode $table)
     {
@@ -400,7 +401,13 @@ class AssertionContext extends PimContext
                 }
 
                 return null;
-            }, sprintf('Can not find change of the property "%s"', $expectedProperty));
+            }, sprintf(
+                'Can not find change of the property "%s", found %s',
+                $expectedProperty,
+                join(', ', array_map(function ($change) {
+                    return sprintf('"%s"', $change[0]->getText());
+                }, $changes))
+            ));
 
             if (array_key_exists('before', $data)) {
                 $expectedBefore = $data['before'];
