@@ -1,9 +1,10 @@
 #2.2.x
 
-##Bug fixes
+## Bug fixes
 
 - PIM-7399: Fix attributes order on Product model export
 - PIM-7384: Fix Memory leak on Quick export
+- PIM-7438: Fix usage of identifier attribute on association grid
 
 # 2.2.8 (2018-06-07)
 
@@ -12,7 +13,7 @@
 - PIM-7316: Fix overlap of boolean fields on product edit form
 - PIM-7319: Fix association display on product edit form when managing the association type permissions
 - PIM-7393: Improve error message when importing fields without locale or scope specification
-- PIM-7382: Fix scopable attributes disappearing from edit form after editing a product model 
+- PIM-7382: Fix scopable attributes disappearing from edit form after editing a product model
 - PIM-7386: Fix 'NOT IN' operator not taking empty values into account for select fields
 
 # 2.2.7 (2018-05-31)
