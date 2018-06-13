@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -38,11 +38,11 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
     private $attributeRequirementRepository;
 
     /**
-     * @param TokenStorageInterface                   $tokenStorage
-     * @param JobLauncherInterface                    $jobLauncher
-     * @param IdentifiableObjectRepositoryInterface   $jobInstanceRepository
-     * @param AttributeRequirementRepositoryInterface $attributeRequirementRepository
-     * @param string                                  $jobName
+     * @param TokenStorageInterface                                                              $tokenStorage
+     * @param JobLauncherInterface                                                               $jobLauncher
+     * @param IdentifiableObjectRepositoryInterface                                              $jobInstanceRepository
+     * @param \Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface $attributeRequirementRepository
+     * @param string                                                                             $jobName
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
