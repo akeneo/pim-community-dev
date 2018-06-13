@@ -24,6 +24,7 @@ PimEnterprise\Component\TeamworkAssistant\Model\ProjectStatus:
                     referencedColumnName: id
         project:
             targetEntity: PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface
+            inversedBy: projectStatus
             joinColumns:
                 project_id:
                     nullable: false
