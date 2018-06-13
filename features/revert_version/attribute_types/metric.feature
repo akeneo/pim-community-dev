@@ -30,7 +30,7 @@ Feature: Revert product attributes to a previous version
 
     When I revert the product version number 2
     Then the product "t-shirt" should have the following values:
-    | length | 70.0000 CENTIMETER |
+    | length | 70.0000 MILLIMETER |
 
   Scenario: Successfully revert an empty metric attribute
     When I fill in the following information in the popin:
