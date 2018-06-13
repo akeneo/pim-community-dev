@@ -21,7 +21,7 @@ use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
-use PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessorInterface;
+use PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 
 /**
@@ -29,7 +29,7 @@ use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
  */
 class MassUploadTaskletSpec extends ObjectBehavior
 {
-    function let(MassUploadProcessorInterface $processor, StepExecution $stepExecution)
+    function let(MassUploadProcessor $processor, StepExecution $stepExecution)
     {
         $this->beConstructedWith($processor, '/tmp/pim/file_storage');
         $this->setStepExecution($stepExecution);

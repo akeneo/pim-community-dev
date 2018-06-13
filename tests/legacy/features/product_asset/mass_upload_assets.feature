@@ -12,9 +12,9 @@ Feature: Mass uploads assets
   Scenario: Successfully add and retrieve two assets
     Given I am on the asset mass upload page
     And I select the assets to upload:
-    | name        |
-    | akeneo.jpg  |
-    | akeneo2.jpg |
+      | name        |
+      | akeneo.jpg  |
+      | akeneo2.jpg |
     Then I should see "added" status for asset "akeneo.jpg"
     Then I should see "added" status for asset "akeneo2.jpg"
     When I start assets mass upload
@@ -47,8 +47,8 @@ Feature: Mass uploads assets
   Scenario: Cannot add the same file two times
     Given I am on the asset mass upload page
     And I select the assets to upload:
-    | name       |
-    | akeneo.jpg |
+      | name       |
+      | akeneo.jpg |
     Then I should see "added" status for asset "akeneo.jpg"
     And I start assets mass upload
     When I select the assets to upload:
@@ -96,7 +96,7 @@ Feature: Mass uploads assets
       | man-wall.jpg          |
     And I start assets mass upload
     And I import assets mass upload
-    And I wait 5 seconds
+    And I wait for the "apply_assets_mass_upload" job to finish
     Then I should be on the last "apply_assets_mass_upload" import job page
     And I should see the text "Asset created from file 4"
     When I am on the job tracker page
@@ -111,3 +111,20 @@ Feature: Mass uploads assets
     And I should see notification:
       | type    | message              |
       | success | Mass upload executed |
+
+  Scenario: Mass upload assets from product edit form
+    Given the following product:
+      | sku          | family  |
+      | basic_jacket | jackets |
+    And I am on the "basic_jacket" product page
+    When I open the mass uploader of the asset collection
+    And I select the assets to upload:
+      | name                  |
+      | akeneo.jpg            |
+      | akeneo2.jpg           |
+      | logo_akeneo-fr_FR.jpg |
+    And I start assets mass upload
+    And I import assets mass upload
+    And I wait for the "apply_assets_mass_upload_and_add_to_product" job to finish
+    Then the product "basic_jacket" should have the following values:
+      | gallery | akeneo, akeneo2, logo_akeneo |

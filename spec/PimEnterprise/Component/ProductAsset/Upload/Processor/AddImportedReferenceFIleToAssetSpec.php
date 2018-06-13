@@ -86,6 +86,7 @@ class AddImportedReferenceFIleToAssetSpec extends ObjectBehavior
 
         $asset->getReference(null)->willReturn($assetReference);
         $assetReference->setFileInfo($storedFile)->shouldBeCalled();
+        $filesUpdater->resetAllVariationsFiles($assetReference, true)->shouldBeCalled();
         $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
 
         $this->addFile($file)->shouldReturn($asset);
@@ -120,6 +121,7 @@ class AddImportedReferenceFIleToAssetSpec extends ObjectBehavior
 
         $asset->getReference(null)->willReturn($assetReference);
         $assetReference->setFileInfo($storedFile)->shouldBeCalled();
+        $filesUpdater->resetAllVariationsFiles($assetReference, true)->shouldBeCalled();
         $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
 
         $this->addFile($file)->shouldReturn($asset);
@@ -155,6 +157,7 @@ class AddImportedReferenceFIleToAssetSpec extends ObjectBehavior
 
         $asset->getReference($locale)->willReturn($assetReference);
         $assetReference->setFileInfo($storedFile)->shouldBeCalled();
+        $filesUpdater->resetAllVariationsFiles($assetReference, true)->shouldBeCalled();
         $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
 
         $this->addFile($file)->shouldReturn($asset);
@@ -186,6 +189,7 @@ class AddImportedReferenceFIleToAssetSpec extends ObjectBehavior
         $fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true)->willReturn($storedFile);
 
         $asset->getReference(null)->willReturn(null);
+        $filesUpdater->resetAllVariationsFiles(Argument::cetera())->shouldNotBeCalled();
         $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
 
         $this->addFile($file)->shouldReturn($asset);

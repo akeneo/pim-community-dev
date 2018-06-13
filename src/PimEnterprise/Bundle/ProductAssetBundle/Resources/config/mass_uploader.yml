@@ -22,7 +22,7 @@ services:
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@pim_catalog.repository.locale'
 
-    pimee_product_asset.mass_upload_processor:
+    pimee_product_asset.processor.mass_upload:
         class: 'PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor'
         arguments:
             - '@pimee_product_asset.upload_importer'
@@ -32,14 +32,43 @@ services:
             - '@translator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
+    pimee_product_asset.processor.mass_upload_to_product:
+        class: 'PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadIntoEntityWithValuesProcessor'
+        arguments:
+            - '@pimee_product_asset.upload_importer'
+            - '@pimee_product_asset.mass_upload.imported_asset_reference_file'
+            - '@pimee_product_asset.saver.asset'
+            - '@event_dispatcher'
+            - '@translator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product'
+
+    pimee_product_asset.processor.mass_upload_to_product_model:
+        class: 'PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadIntoEntityWithValuesProcessor'
+        arguments:
+            - '@pimee_product_asset.upload_importer'
+            - '@pimee_product_asset.mass_upload.imported_asset_reference_file'
+            - '@pimee_product_asset.saver.asset'
+            - '@event_dispatcher'
+            - '@translator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product_model'
+            - '@pim_catalog.saver.product_model'
+
     pimee_product_asset.mass_upload.tasklet:
         class: 'PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet'
         arguments:
-            - '@pimee_product_asset.mass_upload_processor'
+            - '@pimee_product_asset.processor.mass_upload'
             - '%tmp_storage_dir%'
 
     pimee_product_asset.mass_upload_and_add_to_product.tasklet:
-        class: 'PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadToProductTasklet'
+        class: 'PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadToEntityWithValuesTasklet'
         arguments:
-            - '@pimee_product_asset.mass_upload_processor'
+            - '@pimee_product_asset.processor.mass_upload_to_product'
+            - '@pimee_product_asset.processor.mass_upload_to_product_model'
             - '%tmp_storage_dir%'

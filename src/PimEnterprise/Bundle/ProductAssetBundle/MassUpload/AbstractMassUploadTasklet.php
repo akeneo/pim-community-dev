@@ -17,36 +17,20 @@ use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
-use PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessorInterface;
-use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
+use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 abstract class AbstractMassUploadTasklet
 {
-    /** @var StepExecution */
-    protected $stepExecution;
-
-    /** @var MassUploadProcessorInterface */
-    protected $processor;
-
-    /** @var string */
-    protected $tmpStorageDir;
-
     /**
-     * Mass uploads asset reference files and process them.
+     * @param ProcessedItemList $processedItems
+     * @param StepExecution     $stepExecution
      */
-    protected function doExecute(): void
+    protected function incrementSummaryInfo(ProcessedItemList $processedItems, StepExecution $stepExecution): void
     {
-        $jobExecution = $this->stepExecution->getJobExecution();
-
-        $username = $jobExecution->getUser();
-        $uploadContext = new UploadContext($this->tmpStorageDir, $username);
-
-        $processedList = $this->processor->process($uploadContext);
-
-        foreach ($processedList as $item) {
+        foreach ($processedItems as $item) {
             $file = $item->getItem();
 
             if (!$file instanceof \SplFileInfo) {
@@ -60,19 +44,19 @@ abstract class AbstractMassUploadTasklet
 
             switch ($item->getState()) {
                 case ProcessedItem::STATE_ERROR:
-                    $this->stepExecution->incrementSummaryInfo('error');
-                    $this->stepExecution->addError($item->getException()->getMessage());
+                    $stepExecution->incrementSummaryInfo('error');
+                    $stepExecution->addError($item->getException()->getMessage());
                     break;
                 case ProcessedItem::STATE_SKIPPED:
-                    $this->stepExecution->incrementSummaryInfo('variations_not_generated');
-                    $this->stepExecution->addWarning(
+                    $stepExecution->incrementSummaryInfo('variations_not_generated');
+                    $stepExecution->addWarning(
                         $item->getReason(),
                         [],
                         new DataInvalidItem(['filename' => $file->getFilename()])
                     );
                     break;
                 default:
-                    $this->stepExecution->incrementSummaryInfo($item->getReason());
+                    $stepExecution->incrementSummaryInfo($item->getReason());
                     break;
             }
         }

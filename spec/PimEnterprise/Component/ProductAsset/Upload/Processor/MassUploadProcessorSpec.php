@@ -23,9 +23,7 @@ use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Upload\ImporterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Processor\AddImportedReferenceFIleToAsset;
 use PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor;
-use PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessorInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
-use PimEnterprise\Component\ProductAsset\Upload\UploadMessages;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -52,10 +50,9 @@ class MassUploadProcessorSpec extends ObjectBehavior
         );
     }
 
-    function it_it_a_mass_upload_processor()
+    function it_is_initializable()
     {
         $this->shouldHaveType(MassUploadProcessor::class);
-        $this->shouldImplement(MassUploadProcessorInterface::class);
     }
 
     function it_mass_upload_asset_file(

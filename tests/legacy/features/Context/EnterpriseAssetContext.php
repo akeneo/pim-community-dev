@@ -170,39 +170,6 @@ class EnterpriseAssetContext extends PimContext
     }
 
     /**
-     * @param mixed|null  $file
-     * @param string|null $channel
-     *
-     * @throws ElementNotFoundException
-     */
-    protected function iUploadTheAssetFile($file = null, $channel = null)
-    {
-        if ($this->getMinkParameter('files_path')) {
-            $file = rtrim(
-                realpath($this->getMinkParameter('files_path')),
-                DIRECTORY_SEPARATOR
-            ) . DIRECTORY_SEPARATOR . $file;
-        }
-
-        if (null === $channel) {
-            $uploadZone = $this->getCurrentPage()->findReferenceUploadZone();
-        } else {
-            $uploadZone = $this->getCurrentPage()->findVariationUploadZone($channel);
-        }
-
-        $field = $uploadZone->find('css', 'input[type="file"]');
-        $field->attachFile($file);
-    }
-
-    /**
-     * @return Edit|Page
-     */
-    protected function getCurrentPage()
-    {
-        return $this->getMainContext()->getSubcontext('navigation')->getCurrentPage();
-    }
-
-    /**
      * @Then /^I delete the (\S+) variation for channel (\S+) and locale "(\S*)"$/
      *
      * @param $assetCode
@@ -225,6 +192,20 @@ class EnterpriseAssetContext extends PimContext
 
         $this->getAssetFileUpdater()->deleteVariationFile($variation);
         $this->getVariationSaver()->save($variation, ['schedule' => true]);
+    }
+
+    /**
+     * @throws Spin\TimeoutException
+     *
+     * @When I open the mass uploader of the asset collection
+     */
+    public function iOpenTheAssetCollectionMassUploader(): void
+    {
+        $button = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.upload-assets');
+        }, 'Impossible to open the mass uploader of the asset collection');
+
+        $button->click();
     }
 
     /**
@@ -398,6 +379,39 @@ class EnterpriseAssetContext extends PimContext
         $newUpdatedAtTimestamp = $asset->getUpdatedAt()->getTimestamp();
 
         Assert::assertGreaterThan($this->assetUpdatedAtTimestamp, $newUpdatedAtTimestamp);
+    }
+
+    /**
+     * @param mixed|null  $file
+     * @param string|null $channel
+     *
+     * @throws ElementNotFoundException
+     */
+    protected function iUploadTheAssetFile($file = null, $channel = null)
+    {
+        if ($this->getMinkParameter('files_path')) {
+            $file = rtrim(
+                    realpath($this->getMinkParameter('files_path')),
+                    DIRECTORY_SEPARATOR
+                ) . DIRECTORY_SEPARATOR . $file;
+        }
+
+        if (null === $channel) {
+            $uploadZone = $this->getCurrentPage()->findReferenceUploadZone();
+        } else {
+            $uploadZone = $this->getCurrentPage()->findVariationUploadZone($channel);
+        }
+
+        $field = $uploadZone->find('css', 'input[type="file"]');
+        $field->attachFile($file);
+    }
+
+    /**
+     * @return Edit|Page
+     */
+    protected function getCurrentPage()
+    {
+        return $this->getMainContext()->getSubcontext('navigation')->getCurrentPage();
     }
 
     /**

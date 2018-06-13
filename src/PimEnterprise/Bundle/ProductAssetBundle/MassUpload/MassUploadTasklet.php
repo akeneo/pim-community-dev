@@ -15,7 +15,8 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\MassUpload;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;
-use PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessorInterface;
+use PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor;
+use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 
 /**
  * Launch the asset upload processor to create/update assets from uploaded files
@@ -26,12 +27,21 @@ class MassUploadTasklet extends AbstractMassUploadTasklet implements TaskletInte
 {
     public const TASKLET_NAME = 'asset_mass_upload';
 
+    /** @var StepExecution */
+    protected $stepExecution;
+
+    /** @var MassUploadProcessor */
+    protected $processor;
+
+    /** @var string */
+    protected $tmpStorageDir;
+
     /**
-     * @param MassUploadProcessorInterface $processor
-     * @param string                       $tmpStorageDir
+     * @param MassUploadProcessor $processor
+     * @param string              $tmpStorageDir
      */
     public function __construct(
-        MassUploadProcessorInterface $processor,
+        MassUploadProcessor $processor,
         string $tmpStorageDir
     ) {
         $this->processor = $processor;
@@ -51,6 +61,13 @@ class MassUploadTasklet extends AbstractMassUploadTasklet implements TaskletInte
      */
     public function execute(): void
     {
-        $this->doExecute();
+        $jobExecution = $this->stepExecution->getJobExecution();
+
+        $username = $jobExecution->getUser();
+        $uploadContext = new UploadContext($this->tmpStorageDir, $username);
+
+        $processedItems = $this->processor->process($uploadContext);
+
+        $this->incrementSummaryInfo($processedItems, $this->stepExecution);
     }
 }

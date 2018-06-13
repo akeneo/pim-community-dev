@@ -104,6 +104,7 @@ class AddImportedReferenceFIleToAsset
 
         if (null !== $reference) {
             $reference->setFileInfo($file);
+            $this->filesUpdater->resetAllVariationsFiles($reference, true);
         }
 
         $this->filesUpdater->updateAssetFiles($asset);

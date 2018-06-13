@@ -36,7 +36,7 @@ define(
          * @returns {*}
          */
         Dropzone.createElement = function (string) {
-            var el = $(string);
+            const el = $(string);
 
             return el[0];
         };
@@ -51,11 +51,45 @@ define(
             myDropzone: null,
             pageTemplate: _.template(pageTemplate),
             rowTemplate: _.template(rowTemplate),
+            cancelRedirectionRoute: '',
+            importRoute: '',
+            entityType: '',
+            entityId: '',
+            entityAttribute: '',
+
+            /**
+             * Sets the various routes to use.
+             *
+             * @param {Object} routes
+             *
+             * @return {exports}
+             */
+            setRoutes(routes) {
+                this.cancelRedirectionRoute = routes.cancelRedirectionRoute;
+                this.importRoute = routes.importRoute;
+
+                return this;
+            },
+
+            /**
+             * Sets the type and ID of the entity the assets will be added to once uploaded.
+             *
+             * @param {Object} attributeField
+             *
+             * @return {exports}
+             */
+            setAttributeField(attributeField) {
+                this.entityType = attributeField.entityType;
+                this.entityId = attributeField.entityId;
+                this.attributeCode = attributeField.attributeCode;
+
+                return this;
+            },
 
             /**
              * Clean up modal
              */
-            clearModal: function() {
+            clearModal() {
                 if (this.modal) {
                     this.modal.close();
                     this.modal.remove();
@@ -68,7 +102,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            shutdown: function() {
+            shutdown() {
                 this.clearModal();
 
                 BaseForm.prototype.shutdown.apply(this, arguments);
@@ -77,16 +111,16 @@ define(
             /**
              * {@inheritdoc}
              */
-            render: function () {
+            render() {
                 this.clearModal();
 
                 const modal = new Backbone.BootstrapModal({
                     className: 'modal modal--fullPage modal--topButton mass-upload-modal',
                     allowCancel: false,
                     content: this.pageTemplate({
-                      __,
-                      subTitleLabel: 'Assets',
-                      titleLabel: 'Upload assets'
+                        __,
+                        subTitleLabel: 'Assets',
+                        titleLabel: 'Upload assets'
                     })
                 });
 
@@ -96,11 +130,7 @@ define(
                 modal.$el.on('click', '.start:not(.AknButton--disabled)', this.startAll.bind(this));
                 modal.$el.on('click', '.remove:not(.AknButton--disabled)', this.cancelAll.bind(this));
                 modal.$el.on('click', '.import:not(.AknButton--disabled)', this.importAll.bind(this));
-                modal.$el.on('click', '.cancel:not(.AknButton--disabled)', () => {
-                    this.myDropzone.removeAllFiles(true);
-                    this.clearModal();
-                    router.redirectToRoute('pimee_product_asset_index')
-                });
+                modal.$el.on('click', '.cancel:not(.AknButton--disabled)', this.cancel.bind(this));
 
                 this.modal = modal;
 
@@ -118,16 +148,16 @@ define(
              * Set the status as a data attribute for each asset
              * @param {Object} file File object for an asset
              */
-            setStatus: function(file) {
-                const progressBar = $(file.previewElement).find('.AknProgress')
+            setStatus(file) {
+                const progressBar = $(file.previewElement).find('.AknProgress');
                 progressBar.attr('data-status', file.status);
             },
 
             /**
              * Initialize the dropzone element
              */
-            initializeDropzone: function () {
-                var myDropzone = new Dropzone('.mass-upload-dropzone', {
+            initializeDropzone() {
+                const myDropzone = new Dropzone('.mass-upload-dropzone', {
                     url: router.generate('pimee_product_asset_rest_upload'),
                     thumbnailWidth: 70,
                     thumbnailHeight: 70,
@@ -167,7 +197,7 @@ define(
                         $cancelButton.removeClass('AknButton--hidden');
                     }).fail(function (response) {
                         file.status = Dropzone.ERROR;
-                        var message = 'pimee_product_asset.mass_upload.error.filename';
+                        let message = 'pimee_product_asset.mass_upload.error.filename';
                         if (response.responseJSON) {
                             message = response.responseJSON.error;
                         }
@@ -189,7 +219,7 @@ define(
                 }.bind(this));
 
                 myDropzone.on('success', function (file) {
-                    const progressBar = file.previewElement.querySelector('.AknProgress')
+                    const progressBar = file.previewElement.querySelector('.AknProgress');
                     progressBar.className = 'AknProgress AknProgress--apply';
                     this.setStatus(file);
                     file.previewElement.querySelector('.AknProgress .AknProgress-bar').style.width = '100%';
@@ -226,15 +256,15 @@ define(
                             ),
                             type: 'DELETE'
                         })
-                        .success(function () {
-                            Dropzone.prototype.removeFile.call(this, file);
-                        }.bind(this))
-                        .fail(function () {
-                            messenger.notify(
-                                'error',
-                                __('pimee_product_asset.mass_upload.error.delete')
-                            );
-                        });
+                            .success(function () {
+                                Dropzone.prototype.removeFile.call(this, file);
+                            }.bind(this))
+                            .fail(function () {
+                                messenger.notify(
+                                    'error',
+                                    __('pimee_product_asset.mass_upload.error.delete')
+                                );
+                            });
                     } else {
                         Dropzone.prototype.removeFile.call(this, file);
                     }
@@ -243,7 +273,7 @@ define(
                 $.get(router.generate('pimee_product_asset_mass_upload_rest_list'))
                     .done(function (response) {
                         _.each(response.files, function (file) {
-                            var mockFile = {
+                            const mockFile = {
                                 name: file.name,
                                 type: file.type,
                                 size: file.size,
@@ -270,14 +300,14 @@ define(
             /**
              * Starts uploads
              */
-            startAll: function () {
+            startAll() {
                 this.myDropzone.enqueueFiles(this.myDropzone.getFilesWithStatus(Dropzone.ADDED));
             },
 
             /**
              * Cancel all uploads and delete already uploaded files
              */
-            cancelAll: function () {
+            cancelAll() {
                 $importButton.addClass('AknButton--disabled');
                 this.myDropzone.removeAllFiles(true);
                 messenger.notify(
@@ -286,27 +316,42 @@ define(
                 );
             },
 
+            cancel() {
+                this.myDropzone.removeAllFiles(true);
+                this.clearModal();
+                if ('' !== this.cancelRedirectionRoute) {
+                    router.redirectToRoute(this.cancelRedirectionRoute);
+                }
+            },
+
             /**
              * Import uploaded files for asset processing
              */
-            importAll: function () {
+            importAll() {
                 $importButton.addClass('AknButton--disabled');
-                $.get(router.generate('pimee_product_asset_mass_upload_rest_import'))
-                    .done(function (response) {
-                        messenger.notify(
-                            'success',
-                            __('pimee_product_asset.mass_upload.success.imported')
-                        );
 
-                        router.redirectToRoute('pim_enrich_job_tracker_show', {id: response.jobId});
-                    }.bind(this))
-                    .fail(function () {
-                        messenger.notify(
-                            'error',
-                            __('pimee_product_asset.mass_upload.error.import')
-                        );
+                const route = '' !== this.entityType && '' !== this.entityId && '' !== this.attributeCode
+                    ? router.generate(this.importRoute, {
+                        entityType: this.entityType,
+                        entityId: this.entityId,
+                        attributeCode: this.attributeCode
                     })
-                ;
+                    : router.generate(this.importRoute);
+
+                $.get(route).done(response => {
+                    messenger.notify(
+                        'success',
+                        __('pimee_product_asset.mass_upload.success.imported')
+                    );
+
+                    this.clearModal();
+                    router.redirectToRoute('pim_enrich_job_tracker_show', {id: response.jobId});
+                }).fail(() => {
+                    messenger.notify(
+                        'error',
+                        __('pimee_product_asset.mass_upload.error.import')
+                    );
+                });
             },
 
             /**
@@ -316,7 +361,7 @@ define(
              *
              * @returns {Object|null}
              */
-            findFile: function (filename) {
+            findFile(filename) {
                 return _.findWhere(this.myDropzone.files, {name: filename});
             }
         });

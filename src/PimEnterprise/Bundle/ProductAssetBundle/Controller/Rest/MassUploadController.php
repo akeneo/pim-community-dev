@@ -241,10 +241,13 @@ class MassUploadController
      * @AclAncestor("pimee_product_asset_mass_upload")
      *
      * @param Request $request
+     * @param string  $entityType
+     * @param int     $entityId
+     * @param string  $attributeCode
      *
      * @return Response
      */
-    public function importAndAddToProductAction(Request $request)
+    public function importAndAddToAction(Request $request, $entityType, $entityId, $attributeCode)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -254,7 +257,12 @@ class MassUploadController
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier('apply_assets_mass_upload_and_add_to_product');
         $user =  $this->tokenStorage->getToken()->getUser();
 
-        $configuration = ['user_to_notify' => $user->getUsername()];
+        $configuration = [
+            'user_to_notify' => $user->getUsername(),
+            'entity_type' => $entityType,
+            'entity_id' => $entityId,
+            'attribute_code' => $attributeCode,
+        ];
 
         $jobExecution = $this->jobLauncher->launch($jobInstance, $user, $configuration);
 
