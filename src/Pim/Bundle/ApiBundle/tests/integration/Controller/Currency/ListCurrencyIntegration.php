@@ -32,7 +32,6 @@ class ListCurrencyIntegration extends ApiTestCase
     "current_page": 1,
     "_embedded" : {
         "items" : [
-            {$standardizedCurrencies['ADP']},
             {$standardizedCurrencies['AED']},
             {$standardizedCurrencies['AFA']},
             {$standardizedCurrencies['ALK']},
@@ -212,17 +211,6 @@ JSON;
      */
     protected function getStandardizedCurrencies()
     {
-        $standarizedCurrencies['ADP'] = <<<JSON
-{
-    "_links": {
-        "self": {
-            "href": "http://localhost/api/rest/v1/currencies/ADP"
-        }
-    },
-    "code": "ADP",
-    "enabled": false
-}
-JSON;
 
         $standarizedCurrencies['AED'] = <<<JSON
 {
