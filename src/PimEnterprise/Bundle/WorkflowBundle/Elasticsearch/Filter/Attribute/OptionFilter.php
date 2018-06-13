@@ -19,21 +19,21 @@ use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 
 /**
  * Proposal option filter for an Elasticsearch query
  */
 class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInterface
 {
-    /** @var AttributeOptionRepositoryInterface */
+    /** @var \Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface */
     protected $attributeOptionRepository;
 
     /**
-     * @param ProposalAttributePathResolver      $attributePathResolver
-     * @param AttributeOptionRepositoryInterface $attributeOptionRepository
-     * @param string[]                           $supportedAttributeTypes
-     * @param string[]                           $supportedOperators
+     * @param ProposalAttributePathResolver                                                 $attributePathResolver
+     * @param \Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface $attributeOptionRepository
+     * @param string[]                                                                      $supportedAttributeTypes
+     * @param string[]                                                                      $supportedOperators
      */
     public function __construct(
         ProposalAttributePathResolver $attributePathResolver,
