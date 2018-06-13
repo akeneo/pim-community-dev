@@ -8,7 +8,7 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Test\Acceptance\FamilyVariant\InMemoryFamilyVariantRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
-use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Prophecy\Argument;
 
 class InMemoryFamilyVariantRepositorySpec extends ObjectBehavior

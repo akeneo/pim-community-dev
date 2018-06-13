@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolverInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
 class ProductQueryBuilderFactorySpec extends ObjectBehavior

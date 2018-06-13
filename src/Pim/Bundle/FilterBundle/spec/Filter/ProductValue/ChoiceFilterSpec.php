@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
 use Akeneo\UserManagement\Bundle\Context\UserContext;

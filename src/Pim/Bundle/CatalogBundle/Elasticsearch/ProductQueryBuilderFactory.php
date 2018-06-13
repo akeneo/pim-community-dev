@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolverInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
