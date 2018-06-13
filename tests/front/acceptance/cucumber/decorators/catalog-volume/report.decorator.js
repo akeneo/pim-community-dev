@@ -1,5 +1,5 @@
-const Header = require('../common/header');
-const Volume = require('./volume');
+const Header = require('../common/header.decorator');
+const Volume = require('./volume.decorator');
 
 const Report = async (nodeElement, createElementDecorator) => {
   const children = {

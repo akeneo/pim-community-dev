@@ -7,7 +7,7 @@ module.exports = async function(cucumber) {
   const config = {
     'Catalog volume report':  {
       selector: '.AknDefault-mainContent',
-      decorator: require('../../decorators/catalog-volume/report')
+      decorator: require('../../decorators/catalog-volume/report.decorator')
     }
   };
 

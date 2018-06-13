@@ -1,4 +1,4 @@
-const createElementDecorator = (config, parent) => async (key) => {
+const createElementDecorator = (config) => async (parent, key) => {
   const elementConfig = config[key];
 
   if (Array.isArray(parent)) parent = parent[0];
