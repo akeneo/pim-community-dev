@@ -3,7 +3,7 @@ Feature: Monitor catalog volume
   As an administrator user
   I want to monitor the volume of assets
 
-  @acceptance-back
+#  @acceptance-back
   Scenario: Monitor the number of assets
     Given a catalog with 44 assets
     When the administrator user asks for the catalog volume monitoring report

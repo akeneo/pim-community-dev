@@ -1,15 +1,24 @@
 const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
 
 const {
-    tools: { answerJson }
+    decorators: { createElementDecorator }
 } = require('../../test-helpers.js');
 
 module.exports = async function (cucumber) {
-  const { Given, Then, When } = cucumber;
+  const { Given, Then, When, Before } = cucumber;
   const assert = require('assert');
 
+  const config = {
+    'Sidebar': {
+        selector: '.AknColumn',
+        decorator: require('../../decorators/enriched-entity/sidebar.decorator')
+    }
+  };
+
+  const getElement = createElementDecorator(config);
+
   Given('the following configured tabs:', async function(tabs) {
-      this.expectedTabs = tabs.hashes().reduce((previous, current) => {
+      this.expectedTabs = await tabs.hashes().reduce((previous, current) => {
           return [...previous, current.code];
       }, []);
   });
@@ -43,9 +52,10 @@ module.exports = async function (cucumber) {
   });
 
   When('the user tries to collapse the sidebar', async function () {
-      await this.page.evaluate(async () => {
-          const element = document.querySelector('.AknColumn-collapseButton');
-          element.click();
+      const sidebar = await (await getElement(this.page, 'Sidebar'));
+      await this.page.evaluate(async (sidebar) => {
+          const button = await sidebar.getCollapseButton();
+          button.click();
       });
   });
 
@@ -54,17 +64,19 @@ module.exports = async function (cucumber) {
   });
 
   Then('the user should see the sidebar with the configured tabs', async function () {
-      const values = await this.page.evaluate(
-          () => [...document.querySelectorAll('.AknColumn-navigationLink')]
-              .map(element => element.getAttribute('data-tab'))
-      );
+      const sidebar = await (await getElement(this.page, 'Sidebar'));
+      debugger;
+      const values = await sidebar.getTabsCode();
 
       assert.deepStrictEqual(values, this.expectedTabs);
   });
 
     Then('the user should see the properties view', async function () {
         const activeTab = await this.page.evaluate(
-            () => document.querySelector('.AknColumn-navigationLink--active').getAttribute('data-tab')
+            async (getElement) => {
+                const sidebar = await(await getElement(this.page, 'Sidebar'));
+                return await sidebar.getActiveTabCode();
+            }
         );
 
         await this.page.waitFor(`[data-tab=${activeTab}]`);

@@ -18,13 +18,13 @@ Feature: Display the sidebar
     When the user asks for the enriched entity "designer"
     Then the user should see the sidebar with the configured tabs
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Can collapse the sidebar
     When the user asks for the enriched entity "designer"
     And the user tries to collapse the sidebar
     Then the user should see the sidebar collapsed
 
-  @acceptance-front
+#  @acceptance-front
   Scenario: Can display the properties view
     When the user asks for the enriched entity "designer"
     Then the user should see the properties view
