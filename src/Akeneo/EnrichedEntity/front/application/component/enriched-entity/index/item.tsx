@@ -1,6 +1,7 @@
 import * as React from 'react';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import { getImageShowUrl } from 'akeneoenrichedentity/tools/media-url-generator';
+const router = require('pim/router');
 
 export default ({
   enrichedEntity,
@@ -11,28 +12,40 @@ export default ({
 {
   onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void;
 }) => {
+  const path = '' !== enrichedEntity.getIdentifier().stringValue() ?
+    `#${router.generate('akeneo_enriched_entities_enriched_entities_edit', {
+      identifier: enrichedEntity.getIdentifier().stringValue(),
+    })}` : '';
+
   return (
-    <tr
+    <a
+      href={path}
       title={enrichedEntity.getLabel(locale)}
       className={`AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder ${isLoading ? 'AknLoadingPlaceHolder' : ''}`}
       data-identifier={enrichedEntity.getIdentifier().stringValue()}
-      onClick={() => onRedirectToEnrichedEntity(enrichedEntity)}
+      onClick={(event) => {
+        event.preventDefault();
+
+        onRedirectToEnrichedEntity(enrichedEntity);
+
+        return false;
+      }}
     >
-      <td
+      <span
         className="AknGrid-fullImage"
         style={{backgroundImage: `url("${getImageShowUrl(null, 'thumbnail')}")`}}
       />
-      <td className="AknGrid-title">
+      <span className="AknGrid-title">
         {enrichedEntity.getLabel(locale)}
-      </td>
-      <td className="AknGrid-subTitle">
+      </span>
+      <span className="AknGrid-subTitle">
         {enrichedEntity.getIdentifier().stringValue()}
-      </td>
-      <td className="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox" />
-      <td className="AknGrid-bodyCell AknGrid-bodyCell--actions">
+      </span>
+      <span className="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox" />
+      <span className="AknGrid-bodyCell AknGrid-bodyCell--actions">
         <div className="AknButtonList AknButtonList--right" />
-      </td>
-    </tr>
+      </span>
+    </a>
   );
 };
 

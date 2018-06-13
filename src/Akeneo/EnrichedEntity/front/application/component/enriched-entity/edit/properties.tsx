@@ -6,6 +6,7 @@ import { State } from 'akeneoenrichedentity/application/reducer/enriched-entity/
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import Form from 'akeneoenrichedentity/application/component/enriched-entity/edit/form';
+import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrumb';
 import { saveEditForm } from 'akeneoenrichedentity/application/action/enriched-entity/form';
 
 interface PropertiesState {
@@ -60,11 +61,15 @@ class Properties extends React.Component<PropertiesProps> {
               <div>
                 <div className="AknTitleContainer-line">
                   <div className="AknTitleContainer-breadcrumbs">
-                    <div className="AknBreadcrumb">
-                      <a href="#" className="AknBreadcrumb-item AknBreadcrumb-item--routable breadcrumb-tab" data-code="pim-menu-entities">
-                        {__('pim_enriched_entity.enriched_entity.title')}
-                      </a>
-                    </div>
+                    <Breadcrumb items={[
+                      {
+                        action: {
+                          type: 'redirect',
+                          route: 'akeneo_enriched_entities_enriched_entities_edit'
+                        },
+                        label: __('pim_enriched_entity.enriched_entity.title')
+                      }
+                    ]}/>
                   </div>
                   <div className="AknTitleContainer-buttonsContainer">
                     <div className="user-menu">
