@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
@@ -33,6 +34,9 @@ class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implemen
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $cachedLocaleRepository;
+
     /**
      * @param TokenStorageInterface         $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
@@ -41,11 +45,13 @@ class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implemen
     public function __construct(
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,  //@TODO: @merge remove at next major version and use cached repo
+        IdentifiableObjectRepositoryInterface $cachedLocaleRepository = null
     ) {
         parent::__construct($tokenStorage, $authorizationChecker);
 
         $this->localeRepository = $localeRepository;
+        $this->cachedLocaleRepository = $cachedLocaleRepository;
     }
 
     /**
@@ -71,10 +77,12 @@ class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implemen
             throw new \LogicException('This filter only handles objects of type "ValueInterface"');
         }
 
+        $localeRepository = $this->cachedLocaleRepository ?: $this->localeRepository;
+
         if ($value->getAttribute()->isLocalizable() &&
             !$this->authorizationChecker->isGranted(
                 Attributes::VIEW_ITEMS,
-                $this->localeRepository->findOneByIdentifier($value->getLocale())
+                $localeRepository->findOneByIdentifier($value->getLocale())
             )
         ) {
             return true;
@@ -85,10 +93,10 @@ class ProductValueLocaleRightFilter extends AbstractAuthorizationFilter implemen
 
             $authorizedLocaleCodes = array_filter(
                 $localeCodes,
-                function ($localeCode) {
+                function ($localeCode) use ($localeRepository) {
                     return $this->authorizationChecker->isGranted(
                         Attributes::VIEW_ITEMS,
-                        $this->localeRepository->findOneByIdentifier($localeCode)
+                        $localeRepository->findOneByIdentifier($localeCode)
                     );
                 }
             );

@@ -1,3 +1,7 @@
+# 2.2.x
+
+- PIM-7384: Fix Memory leak on Quick export
+
 # 2.2.7 (2018-05-31)
 
 # 2.2.6 (2018-05-24)
