@@ -1,6 +1,21 @@
 const Sidebar = async(nodeElement, createElementDecorator, page) => {
-    const getCollapseButton = async () => {
-        return await nodeElement.$('.AknColumn-collapseButton');
+    const collapse = async () => {
+        // As the button doesn't have any size, we need to make it clickable by giving him a size
+        await page.evaluate((sidebar) => {
+            const button = sidebar.querySelector('.AknColumn-collapseButton');
+
+            button.style.width = '100px';
+            button.style.height = '100px';
+        }, nodeElement);
+
+        const button = await nodeElement.$('.AknColumn-collapseButton');
+        await button.click();
+    };
+
+    const isCollapsed = async () => {
+        await page.waitFor('.AknColumn--collapsed');
+
+        return true;
     };
 
     const getTabsCode = async () => {
@@ -12,11 +27,12 @@ const Sidebar = async(nodeElement, createElementDecorator, page) => {
     };
 
     const getActiveTabCode = async () => {
-        const activeLink = nodeElement.$('.AknColumn-navigationLink--active');
-        return await activeLink.getAttribute('data-tab');
+        return await page.evaluate((sidebar) => {
+            return sidebar.querySelector('.AknColumn-navigationLink--active').dataset.tab;
+        }, nodeElement);
     };
 
-    return {getCollapseButton, getTabsCode, getActiveTabCode}
+    return {collapse, getTabsCode, getActiveTabCode, isCollapsed}
 };
 
 module.exports = Sidebar;
