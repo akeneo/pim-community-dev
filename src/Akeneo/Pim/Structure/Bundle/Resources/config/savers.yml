@@ -1,0 +1,6 @@
+services:
+    pim_catalog.saver.attribute:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
