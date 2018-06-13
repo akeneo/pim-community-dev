@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber;
-use Pim\Component\Catalog\FamilyVariant\AddUniqueAttributes;
+use Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;

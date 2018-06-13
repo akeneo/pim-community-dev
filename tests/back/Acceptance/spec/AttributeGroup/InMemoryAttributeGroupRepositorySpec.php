@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 
 class InMemoryAttributeGroupRepositorySpec extends ObjectBehavior
 {

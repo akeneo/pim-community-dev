@@ -2,18 +2,18 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Factory\FamilyFactory;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
-use Pim\Component\Catalog\Updater\FamilyUpdater;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,7 +88,7 @@ class FamilyController
      * @param ValidatorInterface         $validator
      * @param SecurityFacade             $securityFacade
      * @param FamilyFactory              $familyFactory
-     * @param NormalizerInterface          $constraintViolationNormalizer
+     * @param NormalizerInterface        $constraintViolationNormalizer
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,

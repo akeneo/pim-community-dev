@@ -21,7 +21,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Pim\Component\Connector\Job\ComputeDataRelatedToFamilyVariantsTasklet;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

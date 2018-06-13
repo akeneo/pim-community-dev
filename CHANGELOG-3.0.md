@@ -10,6 +10,20 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyVariantRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyVariantRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository`
+- Move `Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\FamilyRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\AttributeRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeGroupRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeGroupRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes`
+- Move `Pim\Component\Catalog\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface` to `Akeneo\Pim\Structure\Component\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface`
+- Move `Pim\Component\Catalog\FamilyVariant\AddUniqueAttributes` to `Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes`
+- Move `Pim\Component\Catalog\Factory\FamilyFactory` to `Akeneo\Pim\Structure\Component\Factory\FamilyFactory`
+- Move `Pim\Component\Catalog\Factory\AttributeRequirementFactory` to `Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory`
+- Move `Pim\Component\Catalog\Factory\AttributeFactory` to `Akeneo\Pim\Structure\Component\Factory\AttributeFactory`
 - Move `Pim\Component\Catalog\Validator\Constraints\ActivatedLocale` to `Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale`
 - Move `Pim\Component\Catalog\Validator\Constraints\Locale` to `Akeneo\Channel\Component\Validator\Constraint\Locale`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository`
@@ -143,3 +157,29 @@
 - Move `Pim\Component\Catalog\Model\AttributeTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface`
 - Move `Pim\Component\Catalog\Model\VariantAttributeSet` to `Akeneo\Pim\Structure\Component\Model\VariantAttributeSet`
 - Move `Pim\Component\Catalog\Model\VariantAttributeSetInterface` to `Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface`
+- Move `Pim\Component\Catalog\Updater\AttributeUpdater` to `Akeneo\Pim\Structure\Component\Updater\AttributeUpdater`
+- Move `Pim\Component\Catalog\Updater\AttributeOptionUpdater` to `Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater`
+- Move `Pim\Component\Catalog\Updater\FamilyUpdater` to `Akeneo\Pim\Structure\Component\Updater\FamilyUpdater`
+- Move `Akeneo\Tool\Component\Api\Updater\FamilyVariantUpdater` to `Akeneo\Pim\Structure\Component\Updater\ExternalApi\FamilyVariantUpdater`
+- Move `Pim\Component\Catalog\Updater\FamilyVariantUpdater` to `Akeneo\Pim\Structure\Component\Updater\FamilyVariantUpdater`
+- Move `Akeneo\Tool\Component\Api\Normalizer\AttributeGroupNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeGroupNormalizer`
+- Move `Akeneo\Tool\Component\Api\Normalizer\AttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeNormalizer`
+- Move `Akeneo\Tool\Component\Api\Normalizer\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeOptionNormalizer`
+- Move `Akeneo\Tool\Component\Api\Normalizer\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\FamilyNormalizer`
+- Move `Akeneo\Tool\Component\Api\Normalizer\FamilyVariantNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\FamilyVariantNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Indexing\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Indexing\FamilyNormalizer`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\AttributeGroupNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeGroupNormalizer`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeNormalizer`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionNormalizer`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\FamilyNormalizer`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\FamilyVariantNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\FamilyVariantNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\AttributeGroupNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeGroupNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\AttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeOptionNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\FamilyVariantNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\FamilyVariantNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Storage\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Storage\AttributeOptionNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeGroupNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeGroupNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeOptionNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\FamilyNormalizer`

@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
 
 class InMemoryFamilyRepositorySpec extends ObjectBehavior

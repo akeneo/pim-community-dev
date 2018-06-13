@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Enrich\Converter\EnrichToStandard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 class ValueConverterSpec extends ObjectBehavior
 {

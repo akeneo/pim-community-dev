@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Pim\Component\Catalog\Updater\AttributeGroupUpdater;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 

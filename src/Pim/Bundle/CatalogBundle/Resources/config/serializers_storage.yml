@@ -8,7 +8,6 @@ parameters:
     pim_catalog.normalizer.storage.product.metric.class: Pim\Component\Catalog\Normalizer\Storage\Product\MetricNormalizer
     pim_catalog.normalizer.storage.datetime.class: Pim\Component\Catalog\Normalizer\Storage\DateTimeNormalizer
     pim_catalog.normalizer.storage.file.class: Pim\Component\Catalog\Normalizer\Storage\FileNormalizer
-    pim_catalog.normalizer.storage.attribute_option.class: Pim\Component\Catalog\Normalizer\Storage\AttributeOptionNormalizer
 services:
     pim_catalog.normalizer.storage.product:
         class: '%pim_catalog.normalizer.storage.product.class%'
@@ -74,9 +73,3 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_catalog.normalizer.storage.attribute_option:
-        class: '%pim_catalog.normalizer.storage.attribute_option.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.attribute_option'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }

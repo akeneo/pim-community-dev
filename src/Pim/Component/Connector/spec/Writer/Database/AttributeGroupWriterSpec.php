@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Pim\Component\Connector\Writer\Database\AttributeGroupWriter;
 
 class AttributeGroupWriterSpec extends ObjectBehavior

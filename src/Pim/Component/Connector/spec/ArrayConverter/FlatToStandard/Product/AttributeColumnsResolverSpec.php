@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 
 class AttributeColumnsResolverSpec extends ObjectBehavior
