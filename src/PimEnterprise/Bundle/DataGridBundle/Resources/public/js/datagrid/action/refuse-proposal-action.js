@@ -46,7 +46,7 @@ define(
                 const productDraftType = this.model.get('document_type');
                 const id = this.model.get('proposal_id');
 
-                return Router.generate('pimee_workflow_' + productDraftType + '_rest_reject', { id });
+                return Router.generate('pimee_workflow_' + productDraftType + '_rest_refuse', { id });
             },
 
             /**
