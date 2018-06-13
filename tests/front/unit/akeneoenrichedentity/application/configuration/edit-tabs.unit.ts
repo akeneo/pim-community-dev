@@ -1,5 +1,4 @@
 import {EditTabsProvider} from 'akeneoenrichedentity/application/configuration/edit-tabs';
-import {Missconfiguration} from 'akeneoenrichedentity/application/configuration/error';
 
 jest.mock('require-context', name => {});
 
@@ -16,7 +15,7 @@ describe('akeneo > enriched entity > application > configuration --- edit-tabs',
     expect(tabProvider.getDefaultTab()).toEqual('my-default-tab');
   });
 
-  test('I get a Missconfiguration exception if the default tab is not well configured', () => {
+  test('I get a SibebarMissConfigurationError exception if the default tab is not well configured', () => {
     expect.assertions(1);
     const tabProvider = EditTabsProvider.create(
       {
@@ -55,7 +54,7 @@ config:
     expect(tabProvider.getTabs()).toEqual([{code: 'first', label: 'First tab'}]);
   });
 
-  test('I get a Missconfiguration exception if the tabs are not well configured', () => {
+  test('I get a SibebarMissConfigurationError exception if the tabs are not well configured', () => {
     expect.assertions(1);
     const tabProvider = EditTabsProvider.create(
       {
@@ -103,7 +102,7 @@ config:
     expect.assertions(2);
   });
 
-  test('I get a Missconfiguration exception if the view is not well configured', async () => {
+  test('I get a SibebarMissConfigurationError exception if the view is not well configured', async () => {
     const tabProvider = EditTabsProvider.create(
       {
         tabs: {},

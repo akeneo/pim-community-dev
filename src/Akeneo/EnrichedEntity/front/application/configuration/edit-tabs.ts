@@ -1,7 +1,8 @@
 import * as React from 'react';
 const requireContext = require('require-context');
 import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
-import {Missconfiguration} from 'akeneoenrichedentity/application/configuration/error';
+
+class SibebarMissConfigurationError extends Error {}
 
 interface EditTabConfiguration {
   [code: string]: {
@@ -41,7 +42,7 @@ config:
                     view: your_view_path_here
       `;
 
-      throw new Missconfiguration(
+      throw new SibebarMissConfigurationError(
         `Cannot get the tabs configured. The configuration path should be ${confPath}?`
       );
     }
@@ -62,7 +63,7 @@ config:
             default_tab: tab-code
       `;
 
-      throw new Missconfiguration(
+      throw new SibebarMissConfigurationError(
         `Cannot get the default tab. The configuration path should be ${confPath}?`
       );
     }
@@ -85,7 +86,7 @@ config:
                     view: your_view_path_here
       `;
 
-      throw new Missconfiguration(
+      throw new SibebarMissConfigurationError(
         `Cannot load view configuration for tab "${
           code
           }". The configuration path should be ${confPath}?`
@@ -103,7 +104,7 @@ config:
     const module = await this.requireContext(`${path}`);
 
     if (typeof module === 'undefined') {
-      throw new Missconfiguration(
+      throw new SibebarMissConfigurationError(
         `The module "${path}" does not exists. You may have an error in your filter configuration file.`
       );
     }

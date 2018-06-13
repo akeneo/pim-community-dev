@@ -50,7 +50,7 @@ module.exports = async function (cucumber) {
   });
 
   Then('the user should see the sidebar collapsed', async function () {
-      await this.page.waitFor('.AknColumn--collapsed:defined');
+      await this.page.waitFor('.AknColumn--collapsed');
   });
 
   Then('the user should see the sidebar with the configured tabs', async function () {
