@@ -16,7 +16,6 @@ describe('akeneo > enriched entity > application > configuration --- edit-tabs',
   });
 
   test('I get a SibebarMissConfigurationError exception if the default tab is not well configured', () => {
-    expect.assertions(1);
     const tabProvider = EditTabsProvider.create(
       {
         tabs: {},
@@ -55,7 +54,6 @@ config:
   });
 
   test('I get a SibebarMissConfigurationError exception if the tabs are not well configured', () => {
-    expect.assertions(1);
     const tabProvider = EditTabsProvider.create(
       {
         default_tab: 'my-default-tab',
