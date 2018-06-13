@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
+use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -61,8 +62,8 @@ class AssociatedProductDatasource extends ProductDatasource
             return ['totalRecords' => 0, 'data' => []];
         }
 
-        $associatedProductsIdentifiers = $this->getAssociatedProductIdentifiers($association);
-        $associatedProductModelsIdentifiers = $this->getAssociatedProductModelIdentifiers($association);
+        $associatedProductsIds = $this->getAssociatedProductIds($association);
+        $associatedProductModelsIds = $this->getAssociatedProductModelIds($association);
 
         $limit = (int)$this->getConfiguration(PagerExtension::PER_PAGE_PARAM, false);
         $locale = $this->getConfiguration('locale_code');
@@ -71,7 +72,7 @@ class AssociatedProductDatasource extends ProductDatasource
             (int) $this->getConfiguration('from', false) : 0;
 
         $associatedProducts = $this->getAssociatedProducts(
-            $associatedProductsIdentifiers,
+            $associatedProductsIds,
             $limit,
             $from,
             $locale,
@@ -81,9 +82,9 @@ class AssociatedProductDatasource extends ProductDatasource
         $productModelLimit = $limit - count($associatedProducts);
         $associatedProductModels = [];
         if ($productModelLimit > 0) {
-            $productModelFrom = $from - count($associatedProductsIdentifiers) + count($associatedProducts);
+            $productModelFrom = $from - count($associatedProductsIds) + count($associatedProducts);
             $associatedProductModels = $this->getAssociatedProductModels(
-                $associatedProductModelsIdentifiers,
+                $associatedProductModelsIds,
                 $productModelLimit,
                 max($productModelFrom, 0),
                 $locale,
@@ -91,7 +92,7 @@ class AssociatedProductDatasource extends ProductDatasource
             );
         }
 
-        $rows = ['totalRecords' => count($associatedProductsIdentifiers) + count($associatedProductModelsIdentifiers)];
+        $rows = ['totalRecords' => count($associatedProductsIds) + count($associatedProductModelsIds)];
         $rows['data'] = array_merge($associatedProducts, $associatedProductModels);
 
         return $rows;
@@ -102,14 +103,14 @@ class AssociatedProductDatasource extends ProductDatasource
      *
      * @return string[]
      */
-    protected function getAssociatedProductIdentifiers(AssociationInterface $association): array
+    protected function getAssociatedProductIds(AssociationInterface $association): array
     {
-        $identifiers = [];
+        $ids = [];
         foreach ($association->getProducts() as $associatedProduct) {
-            $identifiers[] = $associatedProduct->getIdentifier();
+            $ids[] = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $associatedProduct->getId());
         }
 
-        return $identifiers;
+        return $ids;
     }
 
     /**
@@ -117,18 +118,18 @@ class AssociatedProductDatasource extends ProductDatasource
      *
      * @return string[]
      */
-    protected function getAssociatedProductModelIdentifiers(AssociationInterface $association): array
+    protected function getAssociatedProductModelIds(AssociationInterface $association): array
     {
-        $identifiers = [];
+        $ids = [];
         foreach ($association->getProductModels() as $associatedProduct) {
-            $identifiers[] = $associatedProduct->getCode();
+            $ids[] = IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $associatedProduct->getId());
         }
 
-        return $identifiers;
+        return $ids;
     }
 
     /**
-     * @param array  $associatedProductsIdentifiers
+     * @param array  $associatedProductsIds
      * @param int    $limit
      * @param int    $from
      * @param string $locale
@@ -137,14 +138,14 @@ class AssociatedProductDatasource extends ProductDatasource
      * @return array
      */
     protected function getAssociatedProducts(
-        array $associatedProductsIdentifiers,
+        array $associatedProductsIds,
         $limit,
         $from,
         $locale,
         $scope
     ) {
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
-        $pqb->addFilter('identifier', Operators::IN_LIST, $associatedProductsIdentifiers);
+        $pqb->addFilter('id', Operators::IN_LIST, $associatedProductsIds);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
         $products = $pqb->execute();
 
@@ -152,7 +153,7 @@ class AssociatedProductDatasource extends ProductDatasource
     }
 
     /**
-     * @param array  $associatedProductModelsIdentifiers
+     * @param array  $associatedProductModelsIds
      * @param int    $limit
      * @param int    $from
      * @param string $locale
@@ -161,14 +162,14 @@ class AssociatedProductDatasource extends ProductDatasource
      * @return array
      */
     protected function getAssociatedProductModels(
-        array $associatedProductModelsIdentifiers,
+        array $associatedProductModelsIds,
         $limit,
         $from,
         $locale,
         $scope
     ) {
         $pqb = $this->createQueryBuilder($limit, $from, $locale, $scope);
-        $pqb->addFilter('identifier', Operators::IN_LIST, $associatedProductModelsIdentifiers);
+        $pqb->addFilter('id', Operators::IN_LIST, $associatedProductModelsIds);
         $pqb->addFilter('entity_type', Operators::EQUALS, ProductModelInterface::class);
         $products = $pqb->execute();
 
