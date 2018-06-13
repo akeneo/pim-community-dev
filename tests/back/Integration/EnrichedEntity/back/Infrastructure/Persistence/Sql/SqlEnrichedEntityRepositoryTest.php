@@ -35,11 +35,12 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_enriched_entity_and_returns_it() {
+    public function it_saves_enriched_entity_and_returns_it()
+    {
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
         $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
 
-        $this->repository->add($enrichedEntity);
+        $this->repository->save($enrichedEntity);
 
         $enrichedEntityFound = $this->repository->findOneByIdentifier($identifier);
         $this->assertEnrichedEntity($enrichedEntity, $enrichedEntityFound);
@@ -57,7 +58,7 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_all_the_enriched_entities_added()
+    public function it_returns_all_the_enriched_entities_saveed()
     {
         $identifier1 = EnrichedEntityIdentifier::fromString('designer');
         $enrichedEntity1 = EnrichedEntity::create($identifier1, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
@@ -66,9 +67,9 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
         $identifier3 = EnrichedEntityIdentifier::fromString('other');
         $enrichedEntity3 = EnrichedEntity::create($identifier3, []);
 
-        $this->repository->add($enrichedEntity1);
-        $this->repository->add($enrichedEntity2);
-        $this->repository->add($enrichedEntity3);
+        $this->repository->save($enrichedEntity1);
+        $this->repository->save($enrichedEntity2);
+        $this->repository->save($enrichedEntity3);
         $enrichedEntitiesFound = $this->repository->all();
 
         $this->assertEnrichedEntityList([$enrichedEntity1, $enrichedEntity2, $enrichedEntity3], $enrichedEntitiesFound);
@@ -79,19 +80,20 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
      */
     public function it_updates_an_enriched_entity()
     {
-        $this->markTestIncomplete(
-            'Usecase was not tested. Not sure a method such as "update" should exist when "add" works equally ?'
-        );
-    }
+        $identifier = EnrichedEntityIdentifier::fromString('identifier');
+        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
+        $this->repository->save($enrichedEntity);
 
-    /**
-     * @test
-     */
-    public function it_throws_when_updating_an_enriched_entity_not_found()
-    {
-        $this->markTestIncomplete(
-            'Usecase was not tested. Not sure a method such as "update" should exist when "add" works equally ?'
+        $enrichedEntity->updateLabels(
+            LabelCollection::fromArray([
+                'en_US' => 'Designer',
+                'fr_FR' => 'Styliste',
+            ])
         );
+        $this->repository->save($enrichedEntity);
+
+        $enrichedEntityFound = $this->repository->findOneByIdentifier($identifier);
+        $this->assertEnrichedEntity($enrichedEntity, $enrichedEntityFound);
     }
 
     /**
@@ -123,16 +125,19 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
      * @param $enrichedEntityFound
      *
      */
-    private function assertEnrichedEntity(EnrichedEntity $enrichedEntityExpected, EnrichedEntity $enrichedEntityFound): void
-    {
+    private function assertEnrichedEntity(
+        EnrichedEntity $enrichedEntityExpected,
+        EnrichedEntity $enrichedEntityFound
+    ): void {
         $this->assertTrue($enrichedEntityExpected->equals($enrichedEntityFound));
         $labelCodesExpected = $enrichedEntityExpected->getLabelCodes();
         $labelCodesFound = $enrichedEntityFound->getLabelCodes();
         sort($labelCodesExpected);
         sort($labelCodesFound);
         $this->assertSame($labelCodesExpected, $labelCodesFound);
-        foreach($enrichedEntityExpected->getLabelCodes() as $localeCode) {
-            $this->assertEquals($enrichedEntityExpected->getLabel($localeCode), $enrichedEntityFound->getLabel($localeCode));
+        foreach ($enrichedEntityExpected->getLabelCodes() as $localeCode) {
+            $this->assertEquals($enrichedEntityExpected->getLabel($localeCode),
+                $enrichedEntityFound->getLabel($localeCode));
         }
     }
 

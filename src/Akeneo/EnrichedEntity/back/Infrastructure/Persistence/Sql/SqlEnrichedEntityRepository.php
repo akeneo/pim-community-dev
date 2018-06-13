@@ -29,13 +29,21 @@ class SqlEnrichedEntityRepository implements EnrichedEntityRepository
         $this->sqlConnection = $sqlConnection;
     }
 
-    public function add(EnrichedEntity $enrichedEntity): void
+    /**
+     * Depending on the database table state, the sql query "REPLACE INTO ... " might affect one row (the insert use
+     * case) or two rows (the update use case)
+     * @see https://dev.mysql.com/doc/refman/8.0/en/mysql-affected-rows.html
+     *
+     * @throws \RuntimeException
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function save(EnrichedEntity $enrichedEntity): void
     {
         $serializedLabels = $this->getSerializedLabels($enrichedEntity);
         $insert = <<<SQL
         REPLACE INTO akeneo_enriched_entity_enriched_entity (identifier, labels) VALUES (:identifier, :labels);
 SQL;
-        $statement = $this->sqlConnection->executeQuery(
+        $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
                 'identifier' => (string) $enrichedEntity->getIdentifier(),
@@ -43,37 +51,8 @@ SQL;
             ]
         );
 
-        if ($statement->rowCount() !== 1) {
-            throw new \LogicException(
-                sprintf('Expected to add one enriched entity. "%d" added', $statement->rowCount())
-            );
-        }
-    }
-
-    /**
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \RuntimeException
-     */
-    public function update(EnrichedEntity $enrichedEntity): void
-    {
-        $serializedLabels = $this->getSerializedLabels($enrichedEntity);
-        $update = <<<SQL
-        UPDATE akeneo_enriched_entity_enriched_entity
-        SET labels = :labels
-        WHERE identifier = :identifier;
-SQL;
-        $statement = $this->sqlConnection->executeQuery(
-            $update,
-            [
-                'identifier' => (string) $enrichedEntity->getIdentifier(),
-                'labels' => $serializedLabels
-            ]
-        );
-
-        if ($statement->rowCount() !== 1) {
-            throw new \RuntimeException(
-                sprintf('Expected to update one enriched entity. "%d" updated', $statement->rowCount())
-            );
+        if ($affectedRows === 0) {
+            throw new \RuntimeException('Expected to save one enriched entity, but none was saved');
         }
     }
 
@@ -89,6 +68,7 @@ SQL;
             ['identifier' => (string) $identifier]
         );
         $result = $statement->fetch();
+        $statement->closeCursor();
 
         if (!$result) {
             throw EntityNotFoundException::withIdentifier(EnrichedEntity::class, (string) $identifier);
@@ -105,6 +85,7 @@ SQL;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
         $results = $statement->fetchAll();
+        $statement->closeCursor();
 
         $enrichedEntities = [];
         foreach ($results as $result) {

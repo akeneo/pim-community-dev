@@ -60,7 +60,7 @@ final class EnrichedEntityDetailsContext implements Context
                 EnrichedEntityIdentifier::fromString($identifier),
                 json_decode($data['labels'], true)
             );
-            $this->enrichedEntityRepository->add($enrichedEntity);
+            $this->enrichedEntityRepository->save($enrichedEntity);
         }
     }
 

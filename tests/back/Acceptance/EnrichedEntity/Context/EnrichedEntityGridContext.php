@@ -54,7 +54,7 @@ final class EnrichedEntityGridContext implements Context
                 EnrichedEntityIdentifier::fromString($identifier),
                 []
             );
-            $this->enrichedEntityRepository->add($enrichedEntity);
+            $this->enrichedEntityRepository->save($enrichedEntity);
         }
     }
 
@@ -85,7 +85,7 @@ final class EnrichedEntityGridContext implements Context
                 EnrichedEntityIdentifier::fromString($identifier),
                 []
             );
-            $this->enrichedEntityRepository->add($enrichedEntity);
+            $this->enrichedEntityRepository->save($enrichedEntity);
         }
     }
 
