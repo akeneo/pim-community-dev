@@ -1,4 +1,4 @@
-Feature: Show an enriched entity details
+Feature: Show enriched entity
   In order to see the details of an enriched entity
   As a user
   I want see the details of an enriched entity

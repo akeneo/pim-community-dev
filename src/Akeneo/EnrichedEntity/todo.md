@@ -1,5 +1,3 @@
-TODO:
-
 - remove `back` from the php namespace
 - See if it's possible to have the routing declared only in our bundle (we will see later with black hawks how to do it)
 - Application/EnrichedEntity/Show/ShowEnrichedEntityHandler should handle only one command it should maybe return only a ReadModel
@@ -12,6 +10,7 @@ TODO:
 - What to do in a show command handler if the entity is not found? Throw an exception? null?
 - Should we use "list" or "index"? Should we use "get" or "show"? In a lot of places we use one or the other. Could be nice to choose before it's getting too messy
 - add normalizer for enriched entity
+- use decorator for acceptance tests front
 
 DONE:
 
