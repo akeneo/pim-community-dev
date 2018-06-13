@@ -67,6 +67,6 @@ module.exports = async function (cucumber) {
             () => document.querySelector('.AknColumn-navigationLink--active').getAttribute('data-tab')
         );
 
-        await this.page.waitFor(`#${activeTab}`);
+        await this.page.waitFor(`[data-tab=${activeTab}]`);
     });
 };

@@ -53,7 +53,7 @@ class Properties extends React.Component<PropertiesProps> {
 
   render() {
     return(
-      <div className="AknDefault-mainContent" id={this.props.code}>
+      <div className="AknDefault-mainContent" data-tab={this.props.code}>
         <header className="AknTitleContainer navigation">
           <div className="AknTitleContainer-line">
             <div className="AknTitleContainer-imageContainer">
