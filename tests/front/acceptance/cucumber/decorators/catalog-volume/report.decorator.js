@@ -1,7 +1,7 @@
 const Header = require('../common/header.decorator');
 const Volume = require('./volume.decorator');
 
-const Report = async (nodeElement, createElementDecorator) => {
+const Report = async (nodeElement, createElementDecorator, parent) => {
   const children = {
     'Header':  {
       selector: '.AknTitleContainer',
@@ -14,11 +14,11 @@ const Report = async (nodeElement, createElementDecorator) => {
     }
   };
 
-  const getChildren = createElementDecorator(children, nodeElement);
-  const getHeader = async () => await getChildren('Header');
+  const getChildren = createElementDecorator(children);
+  const getHeader = async () => await getChildren(parent, 'Header');
 
   const getVolumeByType = async (typeName) => {
-    let volumes = await Promise.all(await getChildren('Volume'));
+    let volumes = await Promise.all(await getChildren(parent, 'Volume'));
 
     volumes = await Promise.all(volumes.map(async (volume) => {
       return { type: await volume.getType(), volume };
