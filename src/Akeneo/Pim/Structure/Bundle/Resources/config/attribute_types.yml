@@ -1,6 +1,4 @@
 parameters:
-    pim_catalog.registry.attribute_type.class:         Pim\Component\Catalog\AttributeTypeRegistry
-
     pim_catalog.attribute_type.identifier.class:       Pim\Bundle\CatalogBundle\AttributeType\IdentifierType
     pim_catalog.attribute_type.text.class:             Pim\Bundle\CatalogBundle\AttributeType\TextType
     pim_catalog.attribute_type.textarea.class:         Pim\Bundle\CatalogBundle\AttributeType\TextAreaType
@@ -16,7 +14,7 @@ parameters:
 
 services:
     pim_catalog.registry.attribute_type:
-        class: '%pim_catalog.registry.attribute_type.class%'
+        class: 'Akeneo\Pim\Structure\Component\AttributeTypeRegistry'
 
     pim_catalog.attributetype.identifier:
         class: '%pim_catalog.attribute_type.identifier.class%'

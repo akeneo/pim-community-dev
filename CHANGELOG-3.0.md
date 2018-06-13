@@ -193,5 +193,7 @@
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeOptionController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyVariantController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyVariantController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeTypeController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeTypeController`
+- Move `Pim\Component\Catalog\AttributeTypeRegistry` to `Akeneo\Pim\Structure\Component\AttributeTypeRegistry`
 - Remove class `Pim\Bundle\EnrichBundle\Controller\FamilyController`
 - Remove class `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController`

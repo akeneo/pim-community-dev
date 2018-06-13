@@ -171,3 +171,5 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Cont
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Controller\\Rest\\AttributeOptionController/Akeneo\\Pim\\Structure\\Bundle\\Controller\\InternalApi\\AttributeOptionController/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Controller\\Rest\\FamilyController/Akeneo\\Pim\\Structure\\Bundle\\Controller\\InternalApi\\FamilyController/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Controller\\Rest\\FamilyVariantController/Akeneo\\Pim\\Structure\\Bundle\\Controller\\InternalApi\\FamilyVariantController/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Controller\\Rest\\AttributeTypeController/Akeneo\\Pim\\Structure\\Bundle\\Controller\\InternalApi\\AttributeTypeController/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\AttributeTypeRegistry/Akeneo\\Pim\\Structure\\Component\\AttributeTypeRegistry/g'

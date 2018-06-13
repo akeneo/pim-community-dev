@@ -7,7 +7,6 @@ parameters:
     pim_enrich.controller.association_type.class:             Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
     pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
     pim_enrich.controller.rest.association_type.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController
-    pim_enrich.controller.rest.attribute_type.class:          Pim\Bundle\EnrichBundle\Controller\Rest\AttributeTypeController
     pim_enrich.controller.rest.category.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CategoryController
     pim_enrich.controller.rest.currency.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CurrencyController
     pim_enrich.controller.rest.form_extension.class:          Pim\Bundle\EnrichBundle\Controller\Rest\FormExtensionController
@@ -21,7 +20,6 @@ parameters:
     pim_enrich.controller.rest.product_model_category.class:  Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelCategoryController
     pim_enrich.controller.rest.product_comment.class:         Pim\Bundle\EnrichBundle\Controller\Rest\ProductCommentController
     pim_enrich.controller.rest.versioning.class:              Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController
-    pim_enrich.controller.rest.attribute_option.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController
     pim_enrich.controller.rest.job_instance.class:            Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController
     pim_enrich.controller.rest.job_execution.class:           Pim\Bundle\EnrichBundle\Controller\Rest\JobExecutionController
     pim_enrich.controller.rest.mass_edit.class:               Pim\Bundle\EnrichBundle\Controller\Rest\MassEditController
@@ -147,11 +145,6 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.factory.group_type'
             - '@pim_enrich.normalizer.violation'
-
-    pim_enrich.controller.rest.attribute_type:
-        class: '%pim_enrich.controller.rest.attribute_type.class%'
-        arguments:
-            - '@pim_catalog.registry.attribute_type'
 
     pim_enrich.controller.rest.category:
         class: '%pim_enrich.controller.rest.category.class%'

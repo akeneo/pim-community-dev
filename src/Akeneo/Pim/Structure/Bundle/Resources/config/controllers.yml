@@ -159,3 +159,8 @@ services:
             - '@pim_catalog.repository.attribute_option'
             - '@pim_enrich.repository.attribute_option.search'
             - '@pim_enrich.normalizer.structured.attribute_option'
+
+    pim_enrich.controller.rest.attribute_type:
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeTypeController'
+        arguments:
+            - '@pim_catalog.registry.attribute_type'

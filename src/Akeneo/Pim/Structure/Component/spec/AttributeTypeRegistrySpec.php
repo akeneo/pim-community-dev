@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog;
+namespace spec\Akeneo\Pim\Structure\Component;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypeInterface;

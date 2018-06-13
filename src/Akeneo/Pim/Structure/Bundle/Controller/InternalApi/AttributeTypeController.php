@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller\Rest;
+namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 
-use Pim\Component\Catalog\AttributeTypeRegistry;
+use Akeneo\Pim\Structure\Component\AttributeTypeRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

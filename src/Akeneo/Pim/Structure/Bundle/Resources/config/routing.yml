@@ -32,6 +32,10 @@ internal_api_attribute_option:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute_option.yml'
     prefix: /configuration/attribute-option
 
+internal_api_attribute_type:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute_type.yml'
+    prefix: /rest/attribute-type
+
 ### Front routes
 front_routes:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/front.yml'

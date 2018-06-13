@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Component\Catalog;
+namespace Akeneo\Pim\Structure\Component;
+
+use Pim\Component\Catalog\AttributeTypeInterface;
 
 /**
  * The attribute type registry
