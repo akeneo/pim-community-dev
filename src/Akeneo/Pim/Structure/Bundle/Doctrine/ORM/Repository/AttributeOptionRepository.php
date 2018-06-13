@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Repository for AttributeOption entity

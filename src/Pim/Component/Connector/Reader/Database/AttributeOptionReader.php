@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Connector\Reader\Database;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 
 /**
  * AttributeOption reader sorted by attribute and sort order.
