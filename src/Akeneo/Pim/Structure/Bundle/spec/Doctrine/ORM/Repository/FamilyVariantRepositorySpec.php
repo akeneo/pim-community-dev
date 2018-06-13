@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyVariantRepository;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyVariantRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Prophecy\Argument;
 
 class FamilyVariantRepositorySpec extends ObjectBehavior

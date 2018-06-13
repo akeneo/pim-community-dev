@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Repository;
+namespace Akeneo\Pim\Structure\Component\Repository;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

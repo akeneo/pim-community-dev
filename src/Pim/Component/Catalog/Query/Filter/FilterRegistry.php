@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Query\Filter;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * Aims to register and retrieve filters usable on product query builder

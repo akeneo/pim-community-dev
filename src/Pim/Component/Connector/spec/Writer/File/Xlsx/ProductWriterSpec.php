@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Pim\Component\Connector\Writer\File\FlatItemBuffer;

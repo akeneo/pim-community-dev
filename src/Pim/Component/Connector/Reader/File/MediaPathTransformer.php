@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Reader\File;
 
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
  * Transforms media relative path to absolute path

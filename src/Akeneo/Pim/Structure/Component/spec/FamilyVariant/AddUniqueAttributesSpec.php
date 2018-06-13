@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\FamilyVariant;
+namespace spec\Akeneo\Pim\Structure\Component\FamilyVariant;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\FamilyVariant\AddUniqueAttributes;
+use Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

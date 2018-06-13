@@ -6,6 +6,20 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\FamilyVariantRepository/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\Repository\\FamilyVariantRepository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\FamilyRepository/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\Repository\\FamilyRepository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\AttributeRepository/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\Repository\\AttributeRepository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\FamilyVariantRepositoryInterface/Akeneo\\Pim\\Structure\\Component\\Repository\\FamilyVariantRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\FamilyRepositoryInterface/Akeneo\\Pim\\Structure\\Component\\Repository\\FamilyRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\AttributeRepositoryInterface/Akeneo\\Pim\\Structure\\Component\\Repository\\AttributeRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\AttributeGroupRepositoryInterface/Akeneo\\Pim\\Structure\\Component\\Repository\\AttributeGroupRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\AttributeGroupRepository/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\Repository\\AttributeGroupRepository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Query\\FamilyVariantsByAttributeAxes/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\Query\\FamilyVariantsByAttributeAxes/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\FamilyVariant\\Query\\FamilyVariantsByAttributeAxesInterface/Akeneo\\Pim\\Structure\\Component\\FamilyVariant\\Query\\FamilyVariantsByAttributeAxesInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\FamilyVariant\\AddUniqueAttributes/Akeneo\\Pim\\Structure\\Component\\FamilyVariant\\AddUniqueAttributes/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\FamilyFactory/Akeneo\\Pim\\Structure\\Component\\Factory\\FamilyFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\AttributeRequirementFactory/Akeneo\\Pim\\Structure\\Component\\Factory\\AttributeRequirementFactory/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Factory\\AttributeFactory/Akeneo\\Pim\\Structure\\Component\\Factory\\AttributeFactory/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeGroup/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AttributeGroupInterface/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeGroupInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeGroupTranslation/g'

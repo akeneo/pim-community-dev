@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory;
+namespace spec\Akeneo\Pim\Structure\Component\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -15,7 +15,7 @@ class AttributeRequirementFactorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Factory\AttributeRequirementFactory');
+        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory');
     }
 
     function it_creates_a_required_attribute_requirement(

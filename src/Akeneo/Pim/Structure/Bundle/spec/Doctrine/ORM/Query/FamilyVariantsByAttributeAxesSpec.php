@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
+namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes;
-use Pim\Component\Catalog\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes;
+use Akeneo\Pim\Structure\Component\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface;
 
 class FamilyVariantsByAttributeAxesSpec extends ObjectBehavior
 {

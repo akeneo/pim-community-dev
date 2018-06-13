@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Standard;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 class AttributeGroupNormalizerSpec extends ObjectBehavior
 {

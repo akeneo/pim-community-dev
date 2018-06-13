@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
@@ -28,7 +28,7 @@ class FamilyRepositorySpec extends ObjectBehavior
 
     function it_is_a_family_repository()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Repository\FamilyRepositoryInterface');
+        $this->shouldImplement('Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface');
     }
 
     function it_checks_if_family_has_attribute($em, QueryBuilder $queryBuilder, AbstractQuery $query)
