@@ -7,13 +7,6 @@ parameters:
     pim_catalog.synchronizer.product_unique_data.class:    Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
 
 services:
-    pim_catalog.saver.group_type:
-        class: '%pim_catalog.saver.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pim_catalog.model.group_type.interface%'
-
     pim_catalog.saver.product:
         class: '%pim_catalog.saver.product.class%'
         arguments:
@@ -46,33 +39,12 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '%pim_catalog.entity.product.class%'
 
-    pim_catalog.saver.family_variant:
-        class: '%pim_catalog.saver.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pim_catalog.model.family_variant.interface%'
-
     pim_catalog.saver.association_type:
         class: '%pim_catalog.saver.base.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pim_catalog.model.association_type.interface%'
-
-    pim_catalog.saver.attribute_group:
-        class: '%pim_catalog.saver.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pim_catalog.model.attribute_group.interface%'
-
-    pim_catalog.saver.attribute_option:
-        class: '%pim_catalog.saver.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pim_catalog.model.attribute_option.interface%'
 
     pim_catalog.saver.category:
         class: '%pim_catalog.saver.base.class%'
