@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\OptionFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;

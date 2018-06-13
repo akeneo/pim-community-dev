@@ -22,7 +22,7 @@ class AjaxEntityTransformerTest extends TestCase
     protected function setUp()
     {
         $this->repository = $this->createMock(
-            'Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository'
+            'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository'
         );
 
         $this->repository->expects($this->any())

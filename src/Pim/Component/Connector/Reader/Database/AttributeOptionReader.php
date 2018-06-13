@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\Reader\Database;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 
 /**
  * AttributeOption reader sorted by attribute and sort order.
@@ -23,7 +23,7 @@ class AttributeOptionReader extends AbstractReader implements
     protected $repository;
 
     /**
-     * @param AttributeOptionRepositoryInterface $repository
+     * @param \Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface $repository
      */
     public function __construct(AttributeOptionRepositoryInterface $repository)
     {

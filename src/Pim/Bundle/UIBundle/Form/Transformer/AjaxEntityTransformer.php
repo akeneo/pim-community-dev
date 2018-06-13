@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UIBundle\Form\Transformer;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
