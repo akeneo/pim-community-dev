@@ -4,3 +4,10 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
+
+    pim_catalog.saver.family:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.completeness'
+            - '@event_dispatcher'

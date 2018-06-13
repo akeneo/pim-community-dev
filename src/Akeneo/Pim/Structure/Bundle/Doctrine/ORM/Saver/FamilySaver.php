@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
+namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;

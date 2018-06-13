@@ -3,7 +3,6 @@ parameters:
     pim_catalog.saver.product.class:                       Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver
     pim_catalog.saver.group_options_resolver.class:        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSavingOptionsResolver
     pim_catalog.saver.group.class:                         Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
-    pim_catalog.saver.family.class:                        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver
     pim_catalog.saver.product_model_descendants.class:     Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductModelDescendantsSaver
     pim_catalog.synchronizer.product_unique_data.class:    Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
 
@@ -46,13 +45,6 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '%pim_catalog.entity.product.class%'
-
-    pim_catalog.saver.family:
-        class: '%pim_catalog.saver.family.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.completeness'
-            - '@event_dispatcher'
 
     pim_catalog.saver.family_variant:
         class: '%pim_catalog.saver.base.class%'
