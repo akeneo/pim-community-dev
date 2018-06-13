@@ -23,7 +23,7 @@ class AttributeOptionReader extends AbstractReader implements
     protected $repository;
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface $repository
+     * @param AttributeOptionRepositoryInterface $repository
      */
     public function __construct(AttributeOptionRepositoryInterface $repository)
     {

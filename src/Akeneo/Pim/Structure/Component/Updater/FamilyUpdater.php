@@ -47,19 +47,19 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /** @var AttributeRequirementFactory */
     protected $attrRequiFactory;
 
-    /** @var \Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface */
+    /** @var AttributeRequirementRepositoryInterface */
     protected $requirementRepo;
 
     /** @var TranslatableUpdater */
     protected $translatableUpdater;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface                                              $familyRepository
-     * @param AttributeRepositoryInterface                                                       $attributeRepository
-     * @param ChannelRepositoryInterface                                                         $channelRepository
-     * @param AttributeRequirementFactory                                                        $attrRequiFactory
-     * @param \Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface $requirementRepo
-     * @param TranslatableUpdater                                                                $translatableUpdater
+     * @param IdentifiableObjectRepositoryInterface   $familyRepository
+     * @param AttributeRepositoryInterface            $attributeRepository
+     * @param ChannelRepositoryInterface              $channelRepository
+     * @param AttributeRequirementFactory             $attrRequiFactory
+     * @param AttributeRequirementRepositoryInterface $requirementRepo
+     * @param TranslatableUpdater                     $translatableUpdater
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,

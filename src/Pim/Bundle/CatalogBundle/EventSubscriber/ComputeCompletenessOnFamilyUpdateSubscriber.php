@@ -38,11 +38,11 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
     private $attributeRequirementRepository;
 
     /**
-     * @param TokenStorageInterface                                                              $tokenStorage
-     * @param JobLauncherInterface                                                               $jobLauncher
-     * @param IdentifiableObjectRepositoryInterface                                              $jobInstanceRepository
-     * @param \Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface $attributeRequirementRepository
-     * @param string                                                                             $jobName
+     * @param TokenStorageInterface                   $tokenStorage
+     * @param JobLauncherInterface                    $jobLauncher
+     * @param IdentifiableObjectRepositoryInterface   $jobInstanceRepository
+     * @param AttributeRequirementRepositoryInterface $attributeRequirementRepository
+     * @param string                                  $jobName
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
