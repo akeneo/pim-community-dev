@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\Command;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
@@ -62,7 +63,7 @@ class RemoveWrongValuesOnVariantProductsCommand extends ContainerAwareCommand
 
         $productsToClean = [];
         foreach ($variantProducts as $variantProduct) {
-            if (!$variantProduct->isVariant()) {
+            if ($variantProduct instanceof ProductInterface && !$variantProduct->isVariant()) {
                 continue;
             }
             $productsToClean[] = $variantProduct instanceof ProductModelInterface ? $variantProduct->getCode() : $variantProduct->getIdentifier();
