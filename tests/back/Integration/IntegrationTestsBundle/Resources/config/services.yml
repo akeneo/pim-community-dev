@@ -44,6 +44,9 @@ services:
         arguments:
             - '@router'
 
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
+        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryFindRecordDetails
+
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
         class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryEnrichedEntityRepository
 

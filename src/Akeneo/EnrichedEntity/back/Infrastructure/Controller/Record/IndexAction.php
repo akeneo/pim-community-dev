@@ -52,6 +52,9 @@ class IndexAction
         ]);
     }
 
+    /**
+     * @throws NotFoundHttpException
+     */
     private function getEnrichedEntityIdentifierOr404(string $identifier): EnrichedEntityIdentifier
     {
         try {

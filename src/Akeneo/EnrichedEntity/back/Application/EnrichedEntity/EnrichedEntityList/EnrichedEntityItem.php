@@ -29,7 +29,7 @@ class EnrichedEntityItem
     /** @var array */
     public $labels;
 
-    public static function fromEntity(EnrichedEntity $enrichedEntity): self
+    public static function fromEnrichedEntity(EnrichedEntity $enrichedEntity): self
     {
         $new = new self();
         $new->identifier = (string) $enrichedEntity->getIdentifier();

@@ -9,21 +9,22 @@ use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentif
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntity;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetails;
+use Akeneo\EnrichedEntity\back\Domain\Query\RecordDetails;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordItem;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class SqlFindRecordItemsForEnrichedEntityTest extends TestCase
+class SqlFindRecordDetailsTest extends TestCase
 {
-    /** @var FindRecordItemsForEnrichedEntity */
-    private $findRecordsForEnrichedEntity;
+    /** @var FindRecordDetails */
+    private $findRecordDetailsQuery;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->findRecordsForEnrichedEntity = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity');
+        $this->findRecordDetailsQuery = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_details');
         $this->resetDB();
         $this->loadEnrichedEntityAndRecords();
     }
@@ -31,30 +32,31 @@ class SqlFindRecordItemsForEnrichedEntityTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_array_when_there_is_no_records_corresponding_to_the_identifier()
+    public function it_returns_null_when_there_is_no_records()
     {
-        $this->assertEmpty(($this->findRecordsForEnrichedEntity)(EnrichedEntityIdentifier::fromString('unknown_enriched_entity')));
+        $this->assertNull(($this->findRecordDetailsQuery)(
+                EnrichedEntityIdentifier::fromString('unknown_enriched_entity'),
+                RecordIdentifier::fromString('unknown_record_identifier')
+            )
+        );
     }
 
     /**
      * @test
      */
-    public function it_returns_all_the_records_for_an_enriched_entity()
+    public function it_returns_the_record_details()
     {
-        $recordItems = ($this->findRecordsForEnrichedEntity)(EnrichedEntityIdentifier::fromString('designer'));
+        $actualStarck = ($this->findRecordDetailsQuery)(
+            EnrichedEntityIdentifier::fromString('designer'),
+            RecordIdentifier::fromString('starck')
+        );
 
-        $starck = new RecordItem();
-        $starck->identifier = RecordIdentifier::fromString('starck');
-        $starck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $starck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
+        $expectedStarck = new RecordDetails();
+        $expectedStarck->identifier = RecordIdentifier::fromString('starck');
+        $expectedStarck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $expectedStarck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
 
-        $coco = new RecordItem();
-        $coco->identifier = RecordIdentifier::fromString('coco');
-        $coco->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $coco->labels = LabelCollection::fromArray(['fr_FR' => 'Coco Chanel']);
-
-        $this->assertRecordItem($starck, $recordItems[0]);
-        $this->assertRecordItem($coco, $recordItems[1]);
+        $this->assertRecordDetails($expectedStarck, $actualStarck);
     }
 
     /**
@@ -104,22 +106,17 @@ SQL;
         );
     }
 
-    private function assertRecordItem(RecordItem $expected, RecordItem $actual): void
+    private function assertRecordDetails(RecordDetails $expected, RecordDetails $actual)
     {
-        $this->assertTrue($expected->identifier->equals($actual->identifier), 'Record identifiers are not equal');
-        $this->assertEquals(
-            $expected->enrichedEntityIdentifier,
-            $actual->enrichedEntityIdentifier,
-            'Enriched entity identifier are not the same'
-        );
+        $this->assertEquals($expected->identifier, $actual->identifier);
+        $this->assertEquals($expected->enrichedEntityIdentifier, $actual->enrichedEntityIdentifier);
         $expectedLabels = $this->normalizeLabels($expected->labels);
         $actualLabels = $this->normalizeLabels($actual->labels);
         $this->assertEmpty(
             array_merge(
                 array_diff($expectedLabels, $actualLabels),
                 array_diff($actualLabels, $expectedLabels)
-            ),
-            'Labels for the record item are not the same'
+            )
         );
     }
 

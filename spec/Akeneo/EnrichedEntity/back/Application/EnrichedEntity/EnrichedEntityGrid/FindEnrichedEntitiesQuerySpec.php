@@ -31,7 +31,7 @@ class FindEnrichedEntitiesQuerySpec extends ObjectBehavior
         $enrichedEntity->getLabel('en_US')->willReturn('Designer');
 
         $repository->all()->willReturn([$enrichedEntity]);
-        $enrichedEntityItem = EnrichedEntityItem::fromEntity($enrichedEntity->getWrappedObject());
+        $enrichedEntityItem = EnrichedEntityItem::fromEnrichedEntity($enrichedEntity->getWrappedObject());
 
         $this->__invoke()->shouldBeEnrichedEntityItems([$enrichedEntityItem]);
     }
