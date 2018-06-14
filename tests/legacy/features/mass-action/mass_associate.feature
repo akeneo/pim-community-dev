@@ -35,6 +35,12 @@ Feature: Associate many products at once
     Then the product "1111111240" should have the following associations:
       | type   | products              |
       | X_SELL | 1111111292,1111111304 |
+    When I am on the "1111111171" product page
+    And I visit the "History" column tab
+    Then there should be 2 update
+    And I should see history:
+      | version | property        | before | value                 | date |
+      | 2       | X_SELL-products |        | 1111111292,1111111304 | now  |
 
   Scenario: Mass associate products to product models
     When I sort by "ID" value ascending
