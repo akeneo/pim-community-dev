@@ -95,7 +95,7 @@ extensions:
         aclResourceId: pim_enrich_product_category_list
         config:
             gridName: product-grid
-            categoryTreeName: pim_enrich_categorytree
+            categoryTreeName: pim_enrich_product_grid_category_tree
 
     pim-product-index-category-tree-done:
         module: pim/grid/category-tree-done
