@@ -3,7 +3,7 @@ Feature: List enriched entities
   As a user
   I want see a list of enriched entities
 
-#  @acceptance-front @acceptance-back
+  @acceptance-front @acceptance-back
   Scenario: List existing enriched entities
     Given the following enriched entities to list:
       | identifier |
@@ -14,7 +14,7 @@ Feature: List enriched entities
     And the user gets an enriched entity "designer"
     And the user gets an enriched entity "sofa"
 
-#  @acceptance-front @acceptance-back
+  @acceptance-front @acceptance-back
   Scenario: Shows an empty list if there is no enriched entity
     When the user asks for the enriched entity list
     Then there is no enriched entity

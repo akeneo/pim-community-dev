@@ -3,7 +3,7 @@ Feature: Monitor catalog volume
   As an administrator user
   I want to monitor the volume of asset category trees
 
-#  @acceptance-back
+  @acceptance-back
   Scenario: Monitor the number of asset category trees
     Given a catalog with 3 asset category trees
     When the administrator user asks for the catalog volume monitoring report

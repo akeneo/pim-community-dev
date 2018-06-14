@@ -1,7 +1,5 @@
-const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
-
 module.exports = async function (cucumber) {
-  const { Given, Then, When } = cucumber;
+  const { When } = cucumber;
   const assert = require('assert');
 
   When('the user asks for the enriched entity {string}', async function (identifier) {
