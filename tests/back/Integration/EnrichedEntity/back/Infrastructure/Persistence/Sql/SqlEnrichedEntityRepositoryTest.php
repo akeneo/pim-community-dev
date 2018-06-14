@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\InMemory;
+namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
@@ -35,7 +35,7 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_saves_enriched_entity_and_returns_it()
+    public function it_saves_an_enriched_entity_and_returns_it()
     {
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
         $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
@@ -58,14 +58,20 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_all_the_enriched_entities_saveed()
+    public function it_returns_all_the_enriched_entities_saved()
     {
-        $identifier1 = EnrichedEntityIdentifier::fromString('designer');
-        $enrichedEntity1 = EnrichedEntity::create($identifier1, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
-        $identifier2 = EnrichedEntityIdentifier::fromString('fabricant');
-        $enrichedEntity2 = EnrichedEntity::create($identifier2, ['en_US' => 'Manufacturer', 'fr_FR' => 'Fabricant']);
-        $identifier3 = EnrichedEntityIdentifier::fromString('other');
-        $enrichedEntity3 = EnrichedEntity::create($identifier3, []);
+        $enrichedEntity1 = EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString('designer'),
+            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']
+        );
+        $enrichedEntity2 = EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString('fabricant'),
+            ['en_US' => 'Manufacturer', 'fr_FR' => 'Fabricant']
+        );
+        $enrichedEntity3 = EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString('other'),
+            []
+        );
 
         $this->repository->save($enrichedEntity1);
         $this->repository->save($enrichedEntity2);

@@ -60,8 +60,18 @@ class Record
             $this->enrichedEntityIdentifier->equals($record->enrichedEntityIdentifier);
     }
 
-    public function getTranslation(string $localeCode): ?string
+    public function getLabel(string $localeCode): ?string
     {
         return $this->labelCollection->getLabel($localeCode);
+    }
+
+    public function getLabelCodes(): array
+    {
+        return $this->labelCollection->getLocaleCodes();
+    }
+
+    public function updateLabels(LabelCollection $labelCollection): void
+    {
+        $this->labelCollection = $labelCollection;
     }
 }

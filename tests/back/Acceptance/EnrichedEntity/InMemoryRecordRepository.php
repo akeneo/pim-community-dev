@@ -16,12 +16,12 @@ class InMemoryRecordRepository implements RecordRepository
 {
     protected $records = [];
 
-    public function add(Record $record): void
+    public function save(Record $record): void
     {
         $this->records[(string) $record->getIdentifier()] = $record;
     }
 
-    public function findOneByIdentifier(RecordIdentifier $identifier): ?Record
+    public function getByIdentifier(RecordIdentifier $identifier): ?Record
     {
         return $this->records[(string) $identifier] ?? null;
     }

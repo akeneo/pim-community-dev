@@ -33,6 +33,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_enrichedentity.infrastructure.persistence.record:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlRecordRepository'
+        arguments:
+            - '@database_connection'
+
     akeneo_enrichedentity.application.enriched_entity.enriched_entity_details.find_enriched_entity_query:
         class: 'Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\FindEnrichedEntityQuery'
         arguments:
