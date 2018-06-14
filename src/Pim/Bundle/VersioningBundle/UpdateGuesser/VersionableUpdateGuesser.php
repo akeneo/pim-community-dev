@@ -5,6 +5,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
+use Pim\Component\Catalog\Model\AssociationInterface;
 
 /**
  * Fields update guesser
@@ -51,6 +52,8 @@ class VersionableUpdateGuesser implements UpdateGuesserInterface
             in_array(ClassUtils::getClass($entity), $this->versionableEntities)
         ) {
             $pendings[] = $entity;
+        } elseif ($entity instanceof AssociationInterface) {
+            $pendings[] = $entity->getOwner();
         }
 
         return $pendings;
