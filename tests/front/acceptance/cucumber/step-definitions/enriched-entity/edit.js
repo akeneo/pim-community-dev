@@ -1,6 +1,21 @@
+const Properties = require('../../decorators/enriched-entity/edit/properties.decorator');
+
+const {
+    decorators: { createElementDecorator }
+} = require('../../test-helpers.js');
+
 module.exports = async function (cucumber) {
   const { When } = cucumber;
   const assert = require('assert');
+
+  const config = {
+      'Properties': {
+          selector: '.AknDefault-mainContent',
+          decorator: Properties
+      }
+  };
+
+  const getElement = createElementDecorator(config);
 
   When('the user asks for the enriched entity {string}', async function (identifier) {
     await this.page.evaluate(async (identifier) => {
@@ -10,23 +25,23 @@ module.exports = async function (cucumber) {
         await document.getElementById('app').appendChild(controller.el);
     }, identifier);
 
+
     await this.page.waitFor('.object-attributes');
+    const properties = await (await getElement(this.page, 'Properties'));
+    const isLoaded =  await properties.isLoaded();
+
+    assert.equal(isLoaded, true);
   });
 
   When('the user gets the enriched entity {string} with label {string}', async function (
     expectedIdentifier,
     expectedLabel
   ) {
-    await this.page.waitForSelector('.AknTextField[name="identifier"]');
-    const identifier = await this.page.$('.AknTextField[name="identifier"]');
-    const identifierProperty = await identifier.getProperty('value');
-    const identifierValue = await identifierProperty.jsonValue();
+    const properties = await (await getElement(this.page, 'Properties'));
+    const identifierValue = await properties.getIdentifier();
     assert.equal(identifierValue, expectedIdentifier);
 
-    await this.page.waitForSelector('.AknTextField[name="label"]');
-    const label = await this.page.$('.AknTextField[name="label"]');
-    const labelProperty = await label.getProperty('value');
-    const labelValue = await labelProperty.jsonValue();
+    const labelValue = await properties.getLabel();
     assert.equal(labelValue, expectedLabel);
   });
 };

@@ -1,4 +1,4 @@
-const Sidebar = require('../../decorators/enriched-entity/sidebar.decorator');
+const Sidebar = require('../../decorators/enriched-entity/app/sidebar.decorator');
 
 const {
     decorators: { createElementDecorator }
@@ -30,7 +30,9 @@ module.exports = async function (cucumber) {
 
     Then('the user should see the sidebar collapsed', async function () {
         const sidebar = await (await getElement(this.page, 'Sidebar'));
-        await sidebar.isCollapsed();
+        const isCollapsed = await sidebar.isCollapsed();
+
+        assert.strictEqual(isCollapsed, true);
     });
 
     Then('the user should see the sidebar with the configured tabs', async function () {
