@@ -3,6 +3,7 @@
 ## Improve Julia's experience
 
 - PIM-7405: As Julia, I would like to order the assets linked to the products in the asset collection in the product form
+- PIM-7397: Add asset collection preview on the product edit form
 
 ## BC Breaks
 
@@ -41,4 +42,5 @@
 - AOB-62: Rename `PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectProductForProductDraftSubscriber` into `PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectEntityWithValuesForProductDraftSubscriber`
 
 ## New jobs
+
 Be sure to run the following command `bin/console pim:installer:grant-backend-processes-accesses --env=prod` to add missing job profile accesses.

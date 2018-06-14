@@ -51,6 +51,13 @@ pimee_product_asset_thumbnail:
     requirements:
         id: '[0-9]+'
 
+pimee_product_asset_original:
+    path: /{code}/original/{channelCode}/{localeCode}
+    defaults: { _controller: pimee_product_asset.controller.product_asset:originalAction, localeCode: null }
+    methods: [GET]
+    requirements:
+        id: '[0-9]+'
+
 pimee_product_asset_rest_index:
     path: /rest/
     defaults: { _controller: pimee_product_asset.controller.rest.product_asset:indexAction, _format: json }

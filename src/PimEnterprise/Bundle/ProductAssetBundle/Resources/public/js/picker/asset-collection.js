@@ -13,6 +13,7 @@ define(
         'oro/translator',
         'backbone',
         'pimee/template/picker/asset-collection',
+        'pimee/template/picker/asset-collection-preview',
         'pim/fetcher-registry',
         'pim/form-builder',
         'routing',
@@ -23,6 +24,7 @@ define(
         __,
         Backbone,
         template,
+        templateModal,
         FetcherRegistry,
         FormBuilder,
         Routing
@@ -33,8 +35,10 @@ define(
             context: {},
             template: _.template(template),
             events: {
-                'click .add-asset': 'updateAssets'
+                'click .add-asset': 'updateAssets',
+                'click .asset-thumbnail-item': 'updateAssetsFromPreview'
             },
+            modalTemplate: _.template(templateModal),
 
             /**
              * {@inheritdoc}
@@ -159,6 +163,115 @@ define(
                         deferred.resolve(assets);
                     });
                 });
+
+                return deferred.promise();
+            },
+
+            /**
+             * Launch the asset picker and set the assets after update
+             *
+             * @param {Event} clickEvent
+             */
+            updateAssetsFromPreview: function (clickEvent) {
+                const currentAssetCode = $(clickEvent.currentTarget).closest('.asset-thumbnail-item').data('asset');
+
+                this.openPreviewModal(currentAssetCode).then(function (assets) {
+                    this.data = assets;
+
+                    this.trigger('collection:change', assets);
+                    this.render();
+                }.bind(this));
+            },
+
+            /**
+             * Opens a modal to show the preview
+             *
+             * @param {Event} currentAssetCode
+             */
+            openPreviewModal(currentAssetCode) {
+                const deferred = $.Deferred();
+
+                FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(function (assets) {
+                    const modal = new Backbone.BootstrapModal({
+                        className: 'modal modal--fullPage modal--topButton',
+                        modalOptions: {
+                            backdrop: 'static',
+                            keyboard: false
+                        },
+                        allowCancel: true,
+                        okCloses: false,
+                        template: this.modalTemplate,
+                        assets: assets,
+                        locale: this.context.locale,
+                        scope: this.context.scope,
+                        content: '',
+                        thumbnailFilter: 'thumbnail',
+                        assetCollectionPreviewTitle: __('pimee_product_asset.form.product.asset.preview_title'),
+                        downloadLabel: __('pimee_product_asset.form.product.asset.download'),
+                        removeLabel: __('pimee_product_asset.form.product.asset.remove')
+                    });
+                    modal.open();
+
+                    const navigateToItem = function (assetThumbnail) {
+                        modal.$('.asset-thumbnail-item').addClass('AknAssetCollectionField-listItem--transparent');
+                        assetThumbnail.removeClass('AknAssetCollectionField-listItem--transparent');
+                        modal.$('.main-preview').attr('src', '');
+                        modal.$('.main-preview').attr('src', assetThumbnail.data('url'));
+                        modal.$('.buttons').stop(true, true).animate({
+                            scrollLeft: assetThumbnail.position().left
+                            - (modal.$('.buttons').width() - 140) / 2
+                        }, 400);
+                        modal.$('.description').html(assetThumbnail.data('description'));
+                        modal.$('.download').attr('href', assetThumbnail.data('url'));
+                    };
+                    const navigateToNeighbor = function (side, isCurrentElementDestroyed) {
+                        let thumbnails = modal.$('.asset-thumbnail-item');
+                        let clickedIndex = null;
+                        thumbnails.each(function (i, thumbnail) {
+                            if (!($(thumbnail).hasClass('AknAssetCollectionField-listItem--transparent'))) {
+                                clickedIndex = i;
+                            }
+                        });
+                        if (isCurrentElementDestroyed === true) {
+                            $(thumbnails[clickedIndex]).remove();
+                            thumbnails = modal.$('.asset-thumbnail-item');
+                            if (clickedIndex === 0) {
+                                clickedIndex++;
+                            }
+                        }
+                        navigateToItem($(thumbnails[(clickedIndex + side + thumbnails.length) % thumbnails.length]));
+                    };
+
+                    modal.$('.AknAssetCollectionField-listItem').click(function () {
+                        navigateToItem($(this));
+                    });
+
+                    modal.$('.browse-left').click(function () {
+                        navigateToNeighbor(-1, false);
+                    });
+
+                    modal.$('.browse-right').click(function () {
+                        navigateToNeighbor(1, false);
+                    });
+
+                    modal.$('.remove').click(function (e) {
+                        e.stopPropagation();
+                        navigateToNeighbor(-1, true);
+                    });
+
+                    modal.on('cancel', function () {
+                        const thumbnails = modal.$('.asset-thumbnail-item');
+                        let assetCodes = [];
+                        thumbnails.each(function (i, thumbnail) {
+                            assetCodes.push($(thumbnail).data('asset'))
+                        });
+                        modal.close();
+
+                        deferred.resolve(assetCodes);
+                    }.bind(this));
+
+                    navigateToItem(modal.$('.asset-thumbnail-item[data-asset="' + currentAssetCode + '"]'));
+                }.bind(this));
 
                 return deferred.promise();
             }

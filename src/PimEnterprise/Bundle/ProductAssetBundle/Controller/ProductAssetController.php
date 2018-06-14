@@ -65,6 +65,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ProductAssetController extends Controller
 {
+    private const DEFAULT_IMAGE_PATH = '/bundles/pimui/images/Default-picture.svg';
+
     /** @var AssetRepositoryInterface */
     protected $assetRepository;
 
@@ -559,6 +561,40 @@ class ProductAssetController extends Controller
      */
     public function thumbnailAction(Request $request, $code, $filter, $channelCode, $localeCode = null)
     {
+        return $this->fileController->showAction(
+            $request,
+            urlencode($this->getFileName($code, $channelCode, $localeCode)),
+            $filter
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     * @param string  $channelCode
+     * @param string  $localeCode
+     *
+     * @return Response
+     */
+    public function originalAction(Request $request, $code, $channelCode, $localeCode = null): Response
+    {
+        $filename = $this->getFileName($code, $channelCode, $localeCode);
+        if (FileController::DEFAULT_IMAGE_KEY === $filename) {
+            return new RedirectResponse(self::DEFAULT_IMAGE_PATH, 301);
+        }
+
+        return $this->fileController->downloadAction(urlencode($filename));
+    }
+
+    /**
+     * @param string $code
+     * @param string $channelCode
+     * @param string $localeCode
+     *
+     * @return string
+     */
+    private function getFileName($code, $channelCode, $localeCode = null): string
+    {
         $asset = $this->findProductAssetByCodeOr404($code);
         $filename = FileController::DEFAULT_IMAGE_KEY;
 
@@ -573,7 +609,7 @@ class ProductAssetController extends Controller
             }
         }
 
-        return $this->fileController->showAction($request, urlencode($filename), $filter);
+        return $filename;
     }
 
     /**
