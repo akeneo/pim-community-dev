@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7423: Fix rules not applied on every product if rule action affects the conditions
+- PIM-7444: Add label for attributes tab on PEF with view permissions
 
 # 2.0.27 (2018-06-13)
 
