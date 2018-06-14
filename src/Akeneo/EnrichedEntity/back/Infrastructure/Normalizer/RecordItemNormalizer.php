@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Normalizer;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\EnrichedEntityDetails;
+use Akeneo\EnrichedEntity\back\Domain\Query\RecordItem;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityDetailsNormalizer implements NormalizerInterface
+class RecordItemNormalizer implements NormalizerInterface
 {
     /** @var string[] */
     private $supportedFormats = ['internal_api'];
@@ -28,16 +28,17 @@ class EnrichedEntityDetailsNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param EnrichedEntityDetails $enrichedEntityDetails
+     * @param RecordItem $recordItem
      */
-    public function normalize($enrichedEntityDetails, $format = null, array $context = []): array
+    public function normalize($recordItem, $format = null, array $context = []): array
     {
-        $normalizedEnrichedEntity = [
-            'identifier' => $enrichedEntityDetails->identifier,
-            'labels'     => $enrichedEntityDetails->labels
+        $normalizedRecordItem = [
+            'identifier'                 => $recordItem->identifier,
+            'enriched_entity_identifier' => $recordItem->enrichedEntityIdentifier,
+            'labels'                     => $recordItem->labels,
         ];
 
-        return $normalizedEnrichedEntity;
+        return $normalizedRecordItem;
     }
 
     /**
@@ -45,6 +46,6 @@ class EnrichedEntityDetailsNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof EnrichedEntityDetails && in_array($format, $this->supportedFormats);
+        return $data instanceof RecordItem && in_array($format, $this->supportedFormats);
     }
 }

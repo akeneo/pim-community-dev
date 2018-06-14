@@ -28,13 +28,13 @@ class EnrichedEntityItemNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param EnrichedEntityItem $enrichedEntityItem
+     * @param EnrichedEntityItem $enrichedEntityDetails
      */
-    public function normalize($enrichedEntityItem, $format = null, array $context = []): array
+    public function normalize($enrichedEntityDetails, $format = null, array $context = []): array
     {
         $normalizedEnrichedEntity = [
-            'identifier' => $enrichedEntityItem->identifier,
-            'labels'     => $enrichedEntityItem->labels
+            'identifier' => $enrichedEntityDetails->identifier,
+            'labels'     => $enrichedEntityDetails->labels
         ];
 
         return $normalizedEnrichedEntity;
