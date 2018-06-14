@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7445: fix product asset view template for view permissions
 - PIM-7423: Fix rules not applied on every product if rule action affects the conditions
 
 # 2.0.27 (2018-06-13)

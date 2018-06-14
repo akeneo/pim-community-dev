@@ -1,16 +1,16 @@
-<div class="row-fluid variations">
+<div class="AknWidget row-fluid variations">
     <h3>
         {% if referenceModel.locale %}
             {{ referenceModel.locale.code|flag }}
         {% endif %}
     </h3>
 
-    <ul>
-        <li>
-            <div class="row-fluid reference">
-                <h4>{{ 'pimee_product_asset.enrich_asset.view.reference'|trans }}</h4>
 
-                <div class="row-fluid">
+    <div>
+            <div class="AknWidget row-fluid reference">
+                <div class="AknWidget-header">{{ 'pimee_product_asset.enrich_asset.view.reference'|trans }}</div>
+
+                <div class="AknWidget-content row-fluid">
                     {% if referenceModel.fileInfo %}
                         {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_core.html.twig' %}
                     {% else %}
@@ -18,11 +18,11 @@
                     {% endif %}
                 </div>
             </div>
-        </li>
-
+    </div>
+    <ul>
         {% for variation in referenceModel.variations %}
             {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_view.html.twig' with {'variationModel': variation} %}
         {% endfor %}
-
     </ul>
 </div>
+
