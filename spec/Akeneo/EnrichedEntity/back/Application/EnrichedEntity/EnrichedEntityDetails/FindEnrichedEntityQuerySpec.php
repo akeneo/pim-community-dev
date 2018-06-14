@@ -3,9 +3,11 @@
 namespace spec\Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails;
 
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\EnrichedEntityDetails;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\FindEnrichedEntityQuery;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
 use PhpSpec\ObjectBehavior;
 
 class FindEnrichedEntityQuerySpec extends ObjectBehavior
@@ -17,7 +19,7 @@ class FindEnrichedEntityQuerySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\FindEnrichedEntityQuery::class);
+        $this->shouldHaveType(FindEnrichedEntityQuery::class);
     }
 
     function it_returns_an_enriched_entity_given_its_identifier(
@@ -29,19 +31,19 @@ class FindEnrichedEntityQuerySpec extends ObjectBehavior
         $enrichedEntity->getLabelCodes()->willReturn(['fr_FR', 'en_US']);
         $enrichedEntity->getLabel('fr_FR')->willReturn('Concepteur');
         $enrichedEntity->getLabel('en_US')->willReturn('Designer');
-        $repository->findOneByIdentifier($identifier)->willReturn($enrichedEntity);
+        $repository->getByIdentifier($identifier)->willReturn($enrichedEntity);
 
         $expectedDetails = EnrichedEntityDetails::fromEntity($enrichedEntity->getWrappedObject());
         $this->__invoke('designer')->shouldHaveTheEnrichedEntityDetails($expectedDetails);
     }
 
-    function it_returns_null_if_there_enriched_entity_does_not_exist_for_the_given_identifier(
+    function it_returns_throws_if_there_enriched_entity_does_not_exist_for_the_given_identifier(
         $repository
     ) {
         $identifier = EnrichedEntityIdentifier::fromString('sofa');
-        $repository->findOneByIdentifier($identifier)->willReturn(null);
+        $repository->getByIdentifier($identifier)->willThrow(EntityNotFoundException::class);
 
-        $this->__invoke($identifier)->shouldReturn(null);
+        $this->shouldThrow(EntityNotFoundException::class)->during('__invoke', ['sofa']);
     }
 
     function getMatchers()

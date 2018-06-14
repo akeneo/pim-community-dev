@@ -10,6 +10,7 @@ use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -59,7 +60,7 @@ final class EnrichedEntityDetailsContext implements Context
                 EnrichedEntityIdentifier::fromString($identifier),
                 json_decode($data['labels'], true)
             );
-            $this->enrichedEntityRepository->add($enrichedEntity);
+            $this->enrichedEntityRepository->save($enrichedEntity);
         }
     }
 
@@ -85,15 +86,6 @@ final class EnrichedEntityDetailsContext implements Context
 
         Assert::assertEquals($expectedIdentifier, $this->entityFound->identifier);
         $this->assertLabel($this->entityFound, $expectedLabel);
-    }
-
-    /**
-     * @Then /^there is no enriched entity found for this identifier$/
-     */
-    public function thereIsNoEnrichedEntityFoundForThisIdentifier(): void
-    {
-        $errorMessage = sprintf('An entity with identifier "%s" was found', $this->expectedIdentifier);
-        Assert::assertNull($this->entityFound, $errorMessage);
     }
 
     /**

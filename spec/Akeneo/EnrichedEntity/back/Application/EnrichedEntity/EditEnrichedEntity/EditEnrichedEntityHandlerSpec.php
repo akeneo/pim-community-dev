@@ -31,13 +31,13 @@ class EditEnrichedEntityHandlerSpec extends ObjectBehavior
         $editEnrichedEntityCommand->identifier = 'designer';
         $editEnrichedEntityCommand->labels = ['fr_FR' => 'Concepteur', 'en_US' => 'Designer'];
 
-        $repository->findOneByIdentifier(Argument::type(EnrichedEntityIdentifier::class))
+        $repository->getByIdentifier(Argument::type(EnrichedEntityIdentifier::class))
             ->willReturn($enrichedEntity);
 
         $enrichedEntity->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 
-        $repository->update($enrichedEntity)->shouldBeCalled();
+        $repository->save($enrichedEntity)->shouldBeCalled();
 
         $this->__invoke($editEnrichedEntityCommand);
     }

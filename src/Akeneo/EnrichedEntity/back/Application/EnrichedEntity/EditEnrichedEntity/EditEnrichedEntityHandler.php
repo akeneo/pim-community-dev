@@ -44,9 +44,9 @@ class EditEnrichedEntityHandler
         $identifier = EnrichedEntityIdentifier::fromString($editEnrichedEntityCommand->identifier);
         $labelCollection = LabelCollection::fromArray($editEnrichedEntityCommand->labels);
 
-        $enrichedEntity = $this->enrichedEntityRepository->findOneByIdentifier($identifier);
+        $enrichedEntity = $this->enrichedEntityRepository->getByIdentifier($identifier);
         $enrichedEntity->updateLabels($labelCollection);
-        $this->enrichedEntityRepository->update($enrichedEntity);
+        $this->enrichedEntityRepository->save($enrichedEntity);
 
         return $enrichedEntity;
     }
