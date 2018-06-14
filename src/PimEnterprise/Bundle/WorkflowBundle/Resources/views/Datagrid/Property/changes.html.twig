@@ -20,7 +20,7 @@
                 %}
                 <table
                     class="AknGrid AknGrid--condensed proposal-changes{% if not canReview %} readonly{% endif %}"
-                    data-product="{{ record.getValue('product').identifier }}"
+                    data-product="{{ record.getValue('search_id') }}"
                     data-document-type="{{ record.getValue('document_type') }}"
                     data-scope="{{ change.scope }}"
                     data-locale="{{ change.locale }}"
