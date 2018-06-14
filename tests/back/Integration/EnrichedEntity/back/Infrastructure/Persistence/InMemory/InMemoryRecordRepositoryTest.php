@@ -32,15 +32,15 @@ class InMemoryRecordRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_record_and_returns_it()
+    public function it_save_a_record_and_returns_it()
     {
         $identifier = RecordIdentifier::fromString('record_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $record = Record::create($identifier, $enrichedEntityIdentifier, []);
 
-        $this->recordRepository->add($record);
+        $this->recordRepository->save($record);
 
-        $enrichedEntityFound = $this->recordRepository->findOneByIdentifier($identifier);
+        $enrichedEntityFound = $this->recordRepository->getByIdentifier($identifier);
         $this->assertTrue($record->equals($enrichedEntityFound));
     }
 
@@ -49,7 +49,7 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_returns_null_if_the_identifier_is_not_found()
     {
-        $enrichedEntity = $this->recordRepository->findOneByIdentifier(RecordIdentifier::fromString('unknown_identifier'));
+        $enrichedEntity = $this->recordRepository->getByIdentifier(RecordIdentifier::fromString('unknown_identifier'));
         $this->assertNull($enrichedEntity);
     }
 
@@ -65,8 +65,8 @@ class InMemoryRecordRepositoryTest extends TestCase
         $identifier2 = RecordIdentifier::fromString('identifier2');
         $record2 = Record::create($identifier2, $enrichedEntityIdentifier, []);
 
-        $this->recordRepository->add($record1);
-        $this->recordRepository->add($record2);
+        $this->recordRepository->save($record1);
+        $this->recordRepository->save($record2);
         $recordFound = $this->recordRepository->all();
 
         $this->assertRecordList([$record1, $record2], $recordFound);
