@@ -23,7 +23,6 @@ use Symfony\Component\Finder\Finder;
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Installer implements EventSubscriberInterface
 {
@@ -113,7 +112,7 @@ REPLACE INTO `akeneo_enriched_entity_record` (`identifier`, `enriched_entity_ide
 VALUES
   ('starck', 'designer', '{"en_US": "Starck"}', '{"name": "Tony Stark"}'),
   ('bob', 'designer', '{"en_US": "Sponge Bob", "fr_FR": "Bob l\'éponge"}','{"name": "Bob the Builder"}'),
-  ('cogip', 'brand', '{"fr_FR": "Cogip"}','{"country": "France"}'),
+  ('cogip', 'brand', '{"fr_FR": "Cogip"}','{"country": "France"}');
 SQL;
 
         $this->dbal->exec($sql);
