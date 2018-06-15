@@ -64,7 +64,7 @@ class ProductController
     /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
 
-    /** @var \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
@@ -122,18 +122,18 @@ class ProductController
     protected $addParent;
 
     /**
-     * @param ProductQueryBuilderFactoryInterface                                                 $searchAfterPqbFactory
-     * @param NormalizerInterface                                                                 $normalizer
-     * @param IdentifiableObjectRepositoryInterface                                               $channelRepository
-     * @param QueryParametersCheckerInterface                                                     $queryParametersChecker
-     * @param \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface $attributeRepository
-     * @param IdentifiableObjectRepositoryInterface                                               $productRepository
-     * @param PaginatorInterface                                                                  $offsetPaginator
-     * @param PaginatorInterface                                                                  $searchAfterPaginator
-     * @param ParameterValidatorInterface                                                         $parameterValidator
-     * @param ValidatorInterface                                                                  $productValidator
-     * @param ProductBuilderInterface                                                             $productBuilder
-     * @param RemoverInterface                                                                    $remover
+     * @param ProductQueryBuilderFactoryInterface   $searchAfterPqbFactory
+     * @param NormalizerInterface                   $normalizer
+     * @param IdentifiableObjectRepositoryInterface $channelRepository
+     * @param QueryParametersCheckerInterface       $queryParametersChecker
+     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param PaginatorInterface                    $offsetPaginator
+     * @param PaginatorInterface                    $searchAfterPaginator
+     * @param ParameterValidatorInterface           $parameterValidator
+     * @param ValidatorInterface                    $productValidator
+     * @param ProductBuilderInterface               $productBuilder
+     * @param RemoverInterface                      $remover
      * @param ObjectUpdaterInterface                $updater
      * @param SaverInterface                        $saver
      * @param UrlGeneratorInterface                 $router

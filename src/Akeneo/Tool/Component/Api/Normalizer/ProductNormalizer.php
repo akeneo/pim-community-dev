@@ -20,16 +20,16 @@ class ProductNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $productNormalizer;
 
-    /** @var \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var RouterInterface */
     protected $router;
 
     /**
-     * @param NormalizerInterface                                                                 $productNormalizer
-     * @param \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface $attributeRepository
-     * @param RouterInterface                                                                     $router
+     * @param NormalizerInterface          $productNormalizer
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param RouterInterface              $router
      */
     public function __construct(
         NormalizerInterface $productNormalizer,

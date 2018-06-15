@@ -69,16 +69,16 @@ class AttributeController
     protected $apiConfiguration;
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface $repository
-     * @param NormalizerInterface                                                                 $normalizer
-     * @param SimpleFactoryInterface                                                              $factory
-     * @param ObjectUpdaterInterface                                                              $updater
-     * @param ValidatorInterface                                                                  $validator
-     * @param SaverInterface                                                                      $saver
-     * @param RouterInterface                                                                     $router
-     * @param PaginatorInterface                                                                  $paginator
-     * @param ParameterValidatorInterface                                                         $parameterValidator
-     * @param StreamResourceResponse                                                              $partialUpdateStreamResource
+     * @param AttributeRepositoryInterface $repository
+     * @param NormalizerInterface          $normalizer
+     * @param SimpleFactoryInterface       $factory
+     * @param ObjectUpdaterInterface       $updater
+     * @param ValidatorInterface           $validator
+     * @param SaverInterface               $saver
+     * @param RouterInterface              $router
+     * @param PaginatorInterface           $paginator
+     * @param ParameterValidatorInterface  $parameterValidator
+     * @param StreamResourceResponse       $partialUpdateStreamResource
      * @param array                        $apiConfiguration
      */
     public function __construct(

@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeOptionController
 {
-    /** @var \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var ApiResourceRepositoryInterface */
@@ -77,15 +77,15 @@ class AttributeOptionController
     protected $supportedAttributeTypes;
 
     /**
-     * @param \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface $attributeRepository
-     * @param ApiResourceRepositoryInterface                                                      $attributeOptionsRepository
-     * @param NormalizerInterface                                                                 $normalizer
-     * @param SimpleFactoryInterface                                                              $factory
-     * @param ObjectUpdaterInterface                                                              $updater
-     * @param ValidatorInterface                                                                  $validator
-     * @param SaverInterface                                                                      $saver
-     * @param RouterInterface                                                                     $router
-     * @param PaginatorInterface                                                                  $paginator
+     * @param AttributeRepositoryInterface   $attributeRepository
+     * @param ApiResourceRepositoryInterface $attributeOptionsRepository
+     * @param NormalizerInterface            $normalizer
+     * @param SimpleFactoryInterface         $factory
+     * @param ObjectUpdaterInterface         $updater
+     * @param ValidatorInterface             $validator
+     * @param SaverInterface                 $saver
+     * @param RouterInterface                $router
+     * @param PaginatorInterface             $paginator
      * @param ParameterValidatorInterface    $parameterValidator
      * @param StreamResourceResponse         $partialUpdateStreamResource
      * @param array                          $apiConfiguration

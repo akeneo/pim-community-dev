@@ -23,7 +23,9 @@ class AttributeGroupRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupRepository');
+        $this->shouldHaveType(
+            'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupRepository'
+        );
     }
 
     function it_provides_translated_data()
