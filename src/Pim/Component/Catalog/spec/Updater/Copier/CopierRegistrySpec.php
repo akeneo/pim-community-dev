@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface;
 use Pim\Component\Catalog\Updater\Copier\FieldCopierInterface;
 

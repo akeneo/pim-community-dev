@@ -10,12 +10,7 @@ parameters:
     pim_catalog.normalizer.standard.datetime.class: Pim\Component\Catalog\Normalizer\Standard\DateTimeNormalizer
     pim_catalog.normalizer.standard.file.class: Pim\Component\Catalog\Normalizer\Standard\FileNormalizer
     pim_catalog.normalizer.standard.association_type.class: Pim\Component\Catalog\Normalizer\Standard\AssociationTypeNormalizer
-    pim_catalog.normalizer.standard.attribute.class: Pim\Component\Catalog\Normalizer\Standard\AttributeNormalizer
-    pim_catalog.normalizer.standard.attribute_group.class: Pim\Component\Catalog\Normalizer\Standard\AttributeGroupNormalizer
-    pim_catalog.normalizer.standard.attribute_option.class: Pim\Component\Catalog\Normalizer\Standard\AttributeOptionNormalizer
     pim_catalog.normalizer.standard.category.class: Pim\Component\Catalog\Normalizer\Standard\CategoryNormalizer
-    pim_catalog.normalizer.standard.family.class: Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer
-    pim_catalog.normalizer.standard.family_variant.class: Pim\Component\Catalog\Normalizer\Standard\FamilyVariantNormalizer
     pim_catalog.normalizer.standard.group.class: Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer
     pim_catalog.normalizer.standard.group_type.class: Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer
     pim_catalog.normalizer.standard.translation.class: Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer
@@ -92,46 +87,8 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_catalog.normalizer.standard.attribute:
-        class: '%pim_catalog.normalizer.standard.attribute.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.translation'
-            - '@pim_catalog.normalizer.standard.datetime'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_catalog.normalizer.standard.attribute_group:
-        class: '%pim_catalog.normalizer.standard.attribute_group.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.translation'
-            - '@pim_catalog.repository.attribute'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_catalog.normalizer.standard.attribute_option:
-        class: '%pim_catalog.normalizer.standard.attribute_option.class%'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
     pim_catalog.normalizer.standard.category:
         class: '%pim_catalog.normalizer.standard.category.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.translation'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_catalog.normalizer.standard.family:
-        class: '%pim_catalog.normalizer.standard.family.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.translation'
-            - '@pim_catalog.filter.chained'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.attribute_requirement'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_catalog.normalizer.standard.family_variant:
-        class: '%pim_catalog.normalizer.standard.family_variant.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
         tags:

@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Repository\AttributeGroupRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>

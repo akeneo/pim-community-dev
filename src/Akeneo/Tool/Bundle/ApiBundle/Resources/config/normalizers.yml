@@ -4,12 +4,8 @@ parameters:
     pim_api.normalizer.collection.class: Akeneo\Tool\Component\Api\Normalizer\CollectionNormalizer
     pim_api.normalizer.product.class: Akeneo\Tool\Component\Api\Normalizer\ProductNormalizer
     pim_api.normalizer.product_model.class: Pim\Component\Api\Normalizer\ProductModelNormalizer
-    pim_api.normalizer.family.class: Akeneo\Tool\Component\Api\Normalizer\FamilyNormalizer
-    pim_api.normalizer.family_variant.class: Akeneo\Tool\Component\Api\Normalizer\FamilyVariantNormalizer
     pim_api.normalizer.category.class: Akeneo\Tool\Component\Api\Normalizer\CategoryNormalizer
-    pim_api.normalizer.attribute.class: Akeneo\Tool\Component\Api\Normalizer\AttributeNormalizer
-    pim_api.normalizer.attribute_option.class: Akeneo\Tool\Component\Api\Normalizer\AttributeOptionNormalizer
-    pim_api.normalizer.attribute_group.class: Akeneo\Tool\Component\Api\Normalizer\AttributeGroupNormalizer
+    pim_api.normalizer.attribute_group.class: Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeGroupNormalizer
     pim_api.normalizer.file.class: Akeneo\Tool\Component\Api\Normalizer\FileNormalizer
     pim_api.normalizer.association_type.class: Akeneo\Tool\Component\Api\Normalizer\AssociationTypeNormalizer
 
@@ -60,45 +56,10 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_api.normalizer.family:
-        class: '%pim_api.normalizer.family.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.family'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_api.normalizer.family_variant:
-        class: '%pim_api.normalizer.family_variant.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.family_variant'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
     pim_api.normalizer.category:
         class: '%pim_api.normalizer.category.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.category'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_api.normalizer.attribute:
-        class: '%pim_api.normalizer.attribute.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.attribute'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_api.normalizer.attribute_option:
-        class: '%pim_api.normalizer.attribute_option.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.attribute_option'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_api.normalizer.attribute_group:
-        class: '%pim_api.normalizer.attribute_group.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.attribute_group'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

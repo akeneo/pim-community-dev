@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\FamilyRequirements;
 use Prophecy\Argument;

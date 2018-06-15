@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Enrich\Converter\EnrichToStandard;
 
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 
 /**

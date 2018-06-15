@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Localization\Localizer;
 use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Localization\Localizer\LocalizerRegistryInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 

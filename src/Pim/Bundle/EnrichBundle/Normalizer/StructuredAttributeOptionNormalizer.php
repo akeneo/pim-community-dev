@@ -3,10 +3,11 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionNormalizer as BaseAttributeOptionNormalizer;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionNormalizer as BaseAttributeOptionNormalizer;
 
 /**
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>

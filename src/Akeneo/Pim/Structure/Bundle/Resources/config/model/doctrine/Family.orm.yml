@@ -2,7 +2,7 @@ Akeneo\Pim\Structure\Component\Model\Family:
     type: entity
     table: pim_catalog_family
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository
+    repositoryClass: Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository
     fields:
         id:
             type: integer
