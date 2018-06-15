@@ -7,9 +7,9 @@ import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/en
 import createStore from 'akeneoenrichedentity/infrastructure/store';
 import enrichedEntityReducer from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
-import { enrichedEntityReceived } from 'akeneoenrichedentity/domain/event/show.ts';
+import { enrichedEntityReceived } from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
 import { catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged } from 'akeneoenrichedentity/domain/event/user';
-import { setUpSidebar } from "akeneoenrichedentity/application/action/enriched-entity/sidebar";
+import { setUpSidebar } from 'akeneoenrichedentity/application/action/enriched-entity/sidebar';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');

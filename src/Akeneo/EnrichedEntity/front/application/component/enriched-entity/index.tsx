@@ -85,6 +85,7 @@ const enrichedEntityListView = ({ grid, context, events }: StateProps & Dispatch
               onRedirectToEnrichedEntity={events.onRedirectToEnrichedEntity}
               locale={context.locale}
               enrichedEntities={grid.enrichedEntities}
+              isLoading={grid.isLoading}
             />
           </div>
         </div>

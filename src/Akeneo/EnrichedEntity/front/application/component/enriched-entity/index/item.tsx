@@ -1,29 +1,37 @@
-import * as React from 'react';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import { getImageShowUrl } from 'akeneoenrichedentity/tools/media-url-generator';
-const router = require('pim/router');
+import * as React from "react";
+import EnrichedEntity from "akeneoenrichedentity/domain/model/enriched-entity/enriched-entity";
+import { getImageShowUrl } from "akeneoenrichedentity/tools/media-url-generator";
+const router = require("pim/router");
 
 export default ({
   enrichedEntity,
   locale,
   isLoading = false,
-  onRedirectToEnrichedEntity,
-}: {enrichedEntity: EnrichedEntity; locale: string; isLoading?:boolean, position: number} &
-{
+  onRedirectToEnrichedEntity
+}: {
+  enrichedEntity: EnrichedEntity;
+  locale: string;
+  isLoading?: boolean;
+  position: number;
+} & {
   onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void;
 }) => {
-  const path = '' !== enrichedEntity.getIdentifier().stringValue() ?
-    `#${router.generate('akeneo_enriched_entities_enriched_entities_edit', {
-      identifier: enrichedEntity.getIdentifier().stringValue(),
-    })}` : '';
+  const path =
+    "" !== enrichedEntity.getIdentifier().stringValue()
+      ? `#${router.generate("akeneo_enriched_entities_enriched_entities_edit", {
+          identifier: enrichedEntity.getIdentifier().stringValue()
+        })}`
+      : "";
 
   return (
     <a
       href={path}
       title={enrichedEntity.getLabel(locale)}
-      className={`AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder ${isLoading ? 'AknLoadingPlaceHolder' : ''}`}
+      className={`AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder ${
+        isLoading ? "AknLoadingPlaceHolder" : ""
+      }`}
       data-identifier={enrichedEntity.getIdentifier().stringValue()}
-      onClick={(event) => {
+      onClick={event => {
         event.preventDefault();
 
         onRedirectToEnrichedEntity(enrichedEntity);
@@ -33,11 +41,11 @@ export default ({
     >
       <span
         className="AknGrid-fullImage"
-        style={{backgroundImage: `url("${getImageShowUrl(null, 'thumbnail')}")`}}
+        style={{
+          backgroundImage: `url("${getImageShowUrl(null, "thumbnail")}")`
+        }}
       />
-      <span className="AknGrid-title">
-        {enrichedEntity.getLabel(locale)}
-      </span>
+      <span className="AknGrid-title">{enrichedEntity.getLabel(locale)}</span>
       <span className="AknGrid-subTitle">
         {enrichedEntity.getIdentifier().stringValue()}
       </span>
@@ -48,4 +56,3 @@ export default ({
     </a>
   );
 };
-

@@ -45,7 +45,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
     const enrichedEntity: EnrichedEntity = createEnrichedEntity(identifier, labelCollection);
 
     const newState = reducer.enrichedEntity(state, {
-      type: 'ENRICHED_ENTITY_UPDATED',
+      type: 'ENRICHED_ENTITY_SAVED',
       enrichedEntity: enrichedEntity,
     });
 

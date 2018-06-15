@@ -50,48 +50,43 @@ export default class EditForm extends React.Component<FormProps> {
 
   render(): JSX.Element | JSX.Element[] {
     return (
-      <div className="AknSubsection">
-        <header className="AknSubsection-title AknSubsection-title--blockDown">
-            <span className="group-label">{__('pim_enriched_entity.enriched_entity.properties.title')}</span>
-        </header>
-        <div>
-          <div className="AknComparableFields field-container">
-            <div className="akeneo-text-field AknComparableFields-item AknFieldContainer original-field edit">
-              <div className="AknFieldContainer-header">
-                <label className="AknFieldContainer-label AknFieldContainer-label--grey">
-                  <span className="badge-elements-container"></span>
-                  {__('pim_enriched_entity.enriched_entity.properties.identifier')}
-                  <span className="label-elements-container"></span>
-                </label>
-              </div>
-              <div className="AknFieldContainer-inputContainer field-input">
-                <input
-                  type="text"
-                  name="identifier"
-                  className="AknTextField AknTextField--withDashedBottomBorder AknTextField--disabled"
-                  value={this.state.identifier}
-                  onChange={this.handleChange}
-                />
-              </div>
+      <div>
+        <div className="AknComparableFields field-container">
+          <div className="akeneo-text-field AknComparableFields-item AknFieldContainer original-field edit">
+            <div className="AknFieldContainer-header">
+              <label className="AknFieldContainer-label AknFieldContainer-label--grey">
+                <span className="badge-elements-container"></span>
+                {__('pim_enriched_entity.enriched_entity.properties.identifier')}
+                <span className="label-elements-container"></span>
+              </label>
+            </div>
+            <div className="AknFieldContainer-inputContainer field-input">
+              <input
+                type="text"
+                name="identifier"
+                className="AknTextField AknTextField--withDashedBottomBorder AknTextField--disabled"
+                value={this.state.identifier}
+                onChange={this.handleChange}
+              />
             </div>
           </div>
-          <div className="AknComparableFields field-container">
-            <div className="akeneo-text-field AknComparableFields-item AknFieldContainer original-field edit">
-              <div className="AknFieldContainer-header">
-                <label className="AknFieldContainer-label AknFieldContainer-label--grey">
-                  {__('pim_enriched_entity.enriched_entity.properties.label')}
-                </label>
-              </div>
-              <div className="AknFieldContainer-inputContainer field-input">
-                <input
-                  type="text"
-                  name="label"
-                  className="AknTextField AknTextField--withBottomBorder"
-                  value={this.state.label}
-                  onChange={this.handleChange}
-                />
-                <Flag locale={this.props.locale} displayLanguage={false} />
-              </div>
+        </div>
+        <div className="AknComparableFields field-container">
+          <div className="akeneo-text-field AknComparableFields-item AknFieldContainer original-field edit">
+            <div className="AknFieldContainer-header">
+              <label className="AknFieldContainer-label AknFieldContainer-label--grey">
+                {__('pim_enriched_entity.enriched_entity.properties.label')}
+              </label>
+            </div>
+            <div className="AknFieldContainer-inputContainer field-input">
+              <input
+                type="text"
+                name="label"
+                className="AknTextField AknTextField--withBottomBorder"
+                value={this.state.label}
+                onChange={this.handleChange}
+              />
+              <Flag locale={this.props.locale} displayLanguage={false} />
             </div>
           </div>
         </div>
