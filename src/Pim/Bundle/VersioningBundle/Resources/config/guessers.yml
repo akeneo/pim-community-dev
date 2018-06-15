@@ -5,6 +5,7 @@ parameters:
     pim_versioning.update_guesser.contains_products.class: Pim\Bundle\VersioningBundle\UpdateGuesser\ContainsProductsUpdateGuesser
     pim_versioning.update_guesser.translations.class:      Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser
     pim_versioning.update_guesser.versionable.class:       Pim\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser
+    pim_versioning.update_guesser.associations.class:      Pim\Bundle\VersioningBundle\UpdateGuesser\AssociationsUpdateGuesser
 
 services:
     pim_versioning.update_guesser.attribute_group:
@@ -31,6 +32,13 @@ services:
 
     pim_versioning.update_guesser.versionable:
         class: '%pim_versioning.update_guesser.versionable.class%'
+        arguments:
+            - '%pim_versioning.versionable_entities%'
+        tags:
+            - { name: pim_versioning.update_guesser }
+
+    pim_versioning.update_guesser.associations:
+        class: '%pim_versioning.update_guesser.associations.class%'
         arguments:
             - '%pim_versioning.versionable_entities%'
         tags:

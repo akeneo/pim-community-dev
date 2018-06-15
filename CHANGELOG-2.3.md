@@ -18,6 +18,7 @@
 - PIM-7308: As Julia, I would like to bulk add product models associations if product models are selected.
 - PIM-7001: Don't display remove button on an association if it comes from inheritance
 - PIM-7390: In the Product Edit Form, we now keep the context of attributes filter (missing, all, level specific...)
+- PIM-7430: mass associate generate new product version
 
 ## Technical improvements
 
