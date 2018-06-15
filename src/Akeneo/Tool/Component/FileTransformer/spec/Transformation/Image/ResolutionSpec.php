@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\Component\FileTransformer\Transformation\Image;
+namespace spec\Akeneo\Tool\Component\FileTransformer\Transformation\Image;
 
-use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
-use Akeneo\Component\FileTransformer\Transformation\AbstractTransformation;
-use Akeneo\Component\FileTransformer\Transformation\Image\ImageMagickLauncher;
+use Akeneo\Tool\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
+use Akeneo\Tool\Component\FileTransformer\Transformation\AbstractTransformation;
+use Akeneo\Tool\Component\FileTransformer\Transformation\Image\ImageMagickLauncher;
 use PhpSpec\ObjectBehavior;
 
 class ResolutionSpec extends ObjectBehavior
