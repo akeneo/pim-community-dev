@@ -95,3 +95,9 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.family.class%'
+
+    pim_enrich.repository.family_variant:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyVariantRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family_variant.class%'
