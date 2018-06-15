@@ -3,9 +3,9 @@ extensions:
        module: pim/form/common/creation/modal
        config:
            labels:
-               title: pim_enrich.entity.product_model.create_popin.title
+               title: pim_enrich.entity.product_model.module.create.title
                subTitle: pim_enrich.entity.product.plural_label
-               content: pim_enrich.entity.product_model.create_popin.content
+               content: pim_enrich.entity.product_model.module.create.content
            picture: illustrations/Product-model.svg
            successMessage: pim_enrich.entity.product_model.flash.create.success
            editRoute: pim_enrich_product_model_edit
@@ -40,7 +40,7 @@ extensions:
         position: 30
         config:
             fieldName: family_variant
-            label: pim_enrich.form.product_model.family_variant
+            label: pim_enrich.entity.product_model.property.family_variant
             required: true
             loadUrl: pim_enrich_family_variant_rest_index
             placeholder: pim_enrich.entity.product.module.create.choose_family_variant

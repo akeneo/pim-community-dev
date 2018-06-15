@@ -165,7 +165,7 @@ define(
                                 }
 
                                 const footer = this.templateAddChild({
-                                    label: __('pim_enrich.entity.product_model.add_child.create')
+                                    label: __('pim_enrich.entity.product_model.module.variant_axis.create')
                                 });
 
                                 $('#select2-drop')
@@ -264,8 +264,8 @@ define(
              */
             submitForm: function (isVariantProduct, formModal) {
                 const message = isVariantProduct
-                    ? __('pim_enrich.form.product_model.flash.variant_product_added')
-                    : __('pim_enrich.form.product_model.flash.product_model_added');
+                    ? __('pim_enrich.entity.product_model.flash.create.variant_product_added')
+                    : __('pim_enrich.entity.product_model.flash.create.product_model_added');
 
                 const route = isVariantProduct
                     ? 'pim_enrich_product_rest_create'

@@ -23,6 +23,9 @@
 #                complex_field:
 #                    label: Field name
 #                    choose: Choose a field name
+#            module:
+#                module_name:
+#                    key: message
 
 pim_common:
     actions: Actions
@@ -163,142 +166,148 @@ alert:
     session_storage:
         not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
 
-pim_enrich:
-    entity:
-        fallback:
-            flash:
-                generic_error: An error occured
-                update:
-                    fail: Update failed
-                    success: Successfully updated
-                delete:
-                    fail: Cannot delete this item
-                    success: Item successfully removed
+pim_enrich.entity.fallback:
+    flash:
+        generic_error: An error occured
+        update:
+            fail: Update failed
+            success: Successfully updated
+        delete:
+            fail: Cannot delete this item
+            success: Item successfully removed
 
-        product:
-            label: product
-            uppercase_label: Product
-            plural_label: Products
-            flash:
-                update:
-                    success: Product successfully updated.
-                    fail: The product could not be updated.
-                    fields_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
-                    already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
-                    file_upload: An error occured during the file upload
-                delete:
-                    success: Product successfully deleted.
-                    fail: The product could not be deleted.
-                create:
-                    success: Product successfully created
-                    fail: No attribute is configured as a product identifier or you don't have the rights to edit it.
-            page_title:
-                index: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
-            module:
-                create:
-                    subtitle: Create product
-                    title: Select your action
-                    choose_family: Choose a family
-                    choose_family_variant: Choose a family variant
-                variant_navigation:
-                    common: Common
-                status:
-                    enabled: Enabled
-                    disabled: Disabled
-                download_pdf:
-                    label: PDF
-                copy:
-                    label: Compare / Translate
-                    select: Select
-                    all_visible: All visible
-                    copy: Copy
-                history:
-                    version: Version
-                    author: Author
-                    logged_at: Logged at
-                    from: From
-                    modified: Modified
-                    old_value: Old value
-                    new_value: New value
-                meta:
-                    updated: Last update
-                    family_variant: Variant
-                    groups: Groups
-                show_group:
-                    title: Group {{ group }}
-                    view_group: View group
-                    more_products: '{{ count }} more products...'
-                attribute:
-                    remove_optional: Remove this attribute
-                    locale_specific: This locale specific field is not available in this locale
-                    locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
-                    media_upload: Drag and drop to upload or click here
-                    to_fill_count: "{1}1 missing required attribute|]1, Inf [{{ count }} missing required attributes"
-                completeness:
-                    title: Completeness
-                    complete: Complete
-                    no_family: No family defined. Please define a family to calculate the completeness of this product.
-                    no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
-                    missing_values: "{1}1 missing value|] 1, Inf [{{ count }} missing values"
-                sequential_edit:
-                    item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
-                    empty: Your selection is empty, please change your search criteria
-                associations:
-                    title: Associations
-                    none_exist: No association types exist.
-                    show_products: Display products
-                    show_groups: Display groups
-                    number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
-                    association_type_selector: Association type
-                    target: Target
-                    manage: Add {{ associationType }} associations
-                    manage_description: Select the products you want to associate with the current product
-                    add_associations: Add associations
-                add_attribute:
-                    no_available_attributes: There are no more attributes to add
-                    attributes_selected: "{{ itemsCount }} attribute(s) selected"
-                attribute_filter:
-                    display: Display
-                    all: All attributes
-                    missing_required: All missing required attributes
-                    at_this_level: All level specific attributes
-                sequential_edit:
-                    save_and_next: Save and next
-                    save_and_finish: Save and finish
-                change_family:
-                    title: Change the product family
-                    merge_attributes: Current attributes will be merged with the ones in the new family.
-                    keep_attributes: No attributes will be removed.
-                    change_family_to: Change the family to
-                    empty_selection: Choose a family
+pim_enrich.entity.product:
+    label: product
+    uppercase_label: Product
+    plural_label: Products
+    flash:
+        update:
+            success: Product successfully updated.
+            fail: The product could not be updated.
+            fields_not_ready: "The product cannot be saved right now. The following fields are not ready: {{ fields }}"
+            already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
+            file_upload: An error occured during the file upload
+        delete:
+            success: Product successfully deleted.
+            fail: The product could not be deleted.
+        create:
+            success: Product successfully created
+            fail: No attribute is configured as a product identifier or you don't have the rights to edit it.
+    page_title:
+        index: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
+    module:
+        create:
+            subtitle: Create product
+            title: Select your action
+            choose_family: Choose a family
+            choose_family_variant: Choose a family variant
+        variant_navigation:
+            common: Common
+        status:
+            enabled: Enabled
+            disabled: Disabled
+        download_pdf:
+            label: PDF
+        copy:
+            label: Compare / Translate
+            select: Select
+            all_visible: All visible
+            copy: Copy
+        history:
+            version: Version
+            author: Author
+            logged_at: Logged at
+            from: From
+            modified: Modified
+            old_value: Old value
+            new_value: New value
+        meta:
+            updated: Last update
+            family_variant: Variant
+            groups: Groups
+        show_group:
+            title: Group {{ group }}
+            view_group: View group
+            more_products: '{{ count }} more products...'
+        attribute:
+            remove_optional: Remove this attribute
+            locale_specific: This locale specific field is not available in this locale
+            locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
+            media_upload: Drag and drop to upload or click here
+            to_fill_count: "{1}1 missing required attribute|]1, Inf [{{ count }} missing required attributes"
+        completeness:
+            title: Completeness
+            complete: Complete
+            no_family: No family defined. Please define a family to calculate the completeness of this product.
+            no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
+            missing_values: "{1}1 missing value|] 1, Inf [{{ count }} missing values"
+        sequential_edit:
+            item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
+            empty: Your selection is empty, please change your search criteria
+        associations:
+            title: Associations
+            none_exist: No association types exist.
+            show_products: Display products
+            show_groups: Display groups
+            number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
+            association_type_selector: Association type
+            target: Target
+            manage: Add {{ associationType }} associations
+            manage_description: Select the products you want to associate with the current product
+            add_associations: Add associations
+        add_attribute:
+            no_available_attributes: There are no more attributes to add
+            attributes_selected: "{{ itemsCount }} attribute(s) selected"
+        attribute_filter:
+            display: Display
+            all: All attributes
+            missing_required: All missing required attributes
+            at_this_level: All level specific attributes
+        sequential_edit:
+            save_and_next: Save and next
+            save_and_finish: Save and finish
+        change_family:
+            title: Change the product family
+            merge_attributes: Current attributes will be merged with the ones in the new family.
+            keep_attributes: No attributes will be removed.
+            change_family_to: Change the family to
+            empty_selection: Choose a family
 
-        product_model:
-            label: product model
-            uppercase_label: Product model
-            plural_label: Product models
-            flash:
-                create:
-                    success: Product model successfully created
-                update:
-                    success: Product model successfully updated. The completeness of its variant products will be recalculated.
-                    fail: The product model could not be updated.
-                    fields_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
-                delete:
-                    success: Product model successfully deleted.
-                    fail: Cannot delete this product model
-            choose: Choose a product model
-            create_popin:
-                title: Create a product model
-                content: A product model gathers variant products and eases the enrichment of their common properties.
+pim_enrich.entity.product_model:
+    label: product model
+    uppercase_label: Product model
+    plural_label: Product models
+    flash:
+        create:
+            success: Product model successfully created
+            product_model_added: Product model successfully added to the product model
+            variant_product_added: Variant product successfully added to the product model
+        update:
+            success: Product model successfully updated. The completeness of its variant products will be recalculated.
+            fail: The product model could not be updated.
+            fields_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
+        delete:
+            success: Product model successfully deleted.
+            fail: Cannot delete this product model
+    choose: Choose a product model
+    property:
+        family_variant: Variant
+    module:
+        create:
+            title: Create a product model
+            content: A product model gathers variant products and eases the enrichment of their common properties.
+        attribute:
             read_only_parent_attribute_from_common: This attribute can be updated in the common attributes.
             read_only_parent_attribute_from_model: "This attribute can be updated in the attributes by {{ axes }}"
-            variant_axis: Variant axis
-            add_child:
-                create: Add new
-                create_label: "Add a new {{ axes }}"
-                fields:
-                    required_label: (variant axis)
+        variant_axis:
+            label: (variant axis)
+            create: Add new
+            create_label: "Add a new {{ axes }}"
+        completeness:
+            variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, +Inf]{{ complete }} / {{ total }} variant products"
 
+pim_enrich:
+    entity:
         association_type:
             label: association type
             flash:
@@ -540,13 +549,6 @@ pim_enrich:
             updated: There are unsaved changes.
     form:
         required: (required)
-        product_model:
-            complete_variant_product: variant product
-            complete_variant_products: variant products
-            family_variant: Variant
-            flash:
-                product_model_added: Product model successfully added to the product model
-                variant_product_added: Variant product successfully added to the product model
         channel:
             tab:
                 properties:

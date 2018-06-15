@@ -53,7 +53,7 @@ define(
              * @param {Object} field
              */
             updateFieldElements: function (field) {
-                const message = '(' + __('pim_enrich.entity.product_model.variant_axis') + ')';
+                const message = __('pim_enrich.entity.product_model.module.variant_axis.label');
                 const element = '<span class="">' + message + '</span>';
 
                 field.addElement('label', 'variant_axis', element);
