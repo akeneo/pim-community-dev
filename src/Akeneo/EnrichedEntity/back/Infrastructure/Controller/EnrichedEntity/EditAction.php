@@ -12,8 +12,9 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\back\Infrastructure\Validation\EnrichedEntity\EnrichedEntityEditCommandValidator;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\FindEnrichedEntityQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,8 +34,11 @@ class EditAction
     /** @var EditEnrichedEntityHandler */
     private $editEnrichedEntityHandler;
 
+    /** @var FindEnrichedEntityQuery */
+    private $findEnrichedEntityQuery;
+
     /** @var NormalizerInterface */
-    private $enrichedEntityNormalizer;
+    private $enrichedEntityDetailsNormalizer;
 
     /** @var Serializer */
     private $serializer;
@@ -42,20 +46,16 @@ class EditAction
     /** @var ValidatorInterface */
     private $validator;
 
-    /**
-     * @param EditEnrichedEntityHandler $editEnrichedEntityHandler
-     * @param NormalizerInterface       $enrichedEntityNormalizer
-     * @param Serializer                $serializer
-     * @param ValidatorInterface        $validator
-     */
     public function __construct(
         EditEnrichedEntityHandler $editEnrichedEntityHandler,
-        NormalizerInterface $enrichedEntityNormalizer,
+        FindEnrichedEntityQuery $findEnrichedEntityQuery,
+        NormalizerInterface $enrichedEntityDetailsNormalizer,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
         $this->editEnrichedEntityHandler = $editEnrichedEntityHandler;
-        $this->enrichedEntityNormalizer  = $enrichedEntityNormalizer;
+        $this->findEnrichedEntityQuery = $findEnrichedEntityQuery;
+        $this->enrichedEntityDetailsNormalizer  = $enrichedEntityDetailsNormalizer;
         $this->serializer = $serializer;
         $this->validator = $validator;
     }
@@ -84,10 +84,11 @@ class EditAction
             return new JsonResponse(['errors' => json_encode($errors)], Response::HTTP_BAD_REQUEST);
         }
 
-        $enrichedEntity = ($this->editEnrichedEntityHandler)($command);
+        ($this->editEnrichedEntityHandler)($command);
+        $enrichedEntityDetails = ($this->findEnrichedEntityQuery)($command->identifier);
 
         return new JsonResponse(
-            $this->enrichedEntityNormalizer->normalize($enrichedEntity, 'internal_api')
+            $this->enrichedEntityDetailsNormalizer->normalize($enrichedEntityDetails, 'internal_api')
         );
     }
 }
