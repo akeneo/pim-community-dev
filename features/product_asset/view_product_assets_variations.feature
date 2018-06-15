@@ -15,4 +15,4 @@ Feature: View product assets variations
     And I fill in "Allowed to edit assets" with "" on the current page
     And I save the category
     When I am on the "bridge" asset page
-    Then I should see the text "Product asset / bridge"
+    Then I should see the text "Bridge"
