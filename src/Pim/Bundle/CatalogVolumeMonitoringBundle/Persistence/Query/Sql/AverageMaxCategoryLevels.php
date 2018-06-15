@@ -41,8 +41,8 @@ class AverageMaxCategoryLevels implements AverageMaxQuery
     {
         $sql = <<<SQL
         SELECT 	
-    	MAX(lvl) as max,
-    	CEIL(AVG(lvl)) as average 
+          MAX(lvl) as max,
+    	  CEIL(AVG(lvl)) as average 
         FROM pim_catalog_category;
 SQL;
         $result = $this->connection->query($sql)->fetch();

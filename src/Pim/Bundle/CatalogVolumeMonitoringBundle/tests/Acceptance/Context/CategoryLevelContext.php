@@ -58,36 +58,4 @@ final class CategoryLevelContext implements Context
 
         Assert::eq($maxOfCategoryLevels, $volumes['average_max_category_levels']['value']['max']);
     }
-
-    /**
-     * @Then the report returns that the average of category levels is :avgOfCategoryLevels
-     *
-     * @param int $avgOfCategoryLevels
-     */
-    public function theReportReturnsThatTheAverageOfCategoryLevelsIs(int $avgOfCategoryLevels): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::eq($avgOfCategoryLevels, $volumes['average_max_category_levels']['value']['average']);
-    }
-
-    /**
-     * @Then the report warns the users that the number of category levels is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberOfCategoryLevelsIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['average_max_category_levels']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of category levels is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberOfCategoryLevelsIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['average_max_category_levels']['has_warning']);
-    }
 }

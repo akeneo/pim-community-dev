@@ -1,7 +1,7 @@
-Feature: System Info
-  In order to gather statistics to better know the usage of the PIM
-  As an akeneo member to gather statistics
-  I want to monitor volumes in system information
+Feature: Volume statistics of the customers
+  In order to better know the usage of the PIM
+  As Akeneo Company
+  I want to monitor anonymously volumes of the customers
 
   @acceptance-back
   Scenario: Gather customers statistics about the number of channels
@@ -59,7 +59,7 @@ Feature: System Info
 
   @acceptance-back
   Scenario: Gather customers statistics about the maximum of categories in one category
-    Given a catalog with 8 category in one category
+    Given a catalog with 8 categories in one category
     When statistics of the customer's catalog are collected
     Then Akeneo statistics engine stores a maximum of 8 categories in one category for this customer
 

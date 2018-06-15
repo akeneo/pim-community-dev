@@ -57,24 +57,4 @@ final class UserContext implements Context
 
         Assert::eq($numberOfUsers, $volumes['count_users']['value']);
     }
-
-    /**
-     * @Then the report warns the users that the number of users is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['count_users']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of users is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['count_users']['has_warning']);
-    }
 }

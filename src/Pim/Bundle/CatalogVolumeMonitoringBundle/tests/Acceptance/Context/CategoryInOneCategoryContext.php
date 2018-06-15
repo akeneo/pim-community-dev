@@ -28,7 +28,7 @@ final class CategoryInOneCategoryContext implements Context
     }
 
     /**
-     * @Given a catalog with :maxOfCategoryInOneCategory category in one category
+     * @Given a catalog with :maxOfCategoryInOneCategory categories in one category
      *
      * @param int $maxOfCategoryInOneCategory
      */
@@ -57,37 +57,5 @@ final class CategoryInOneCategoryContext implements Context
         $volumes = $this->reportContext->getVolumes();
 
         Assert::eq($maxOfCategoryInOneCategory, $volumes['average_max_category_in_one_category']['value']['max']);
-    }
-
-    /**
-     * @Then the report returns that the average number of categories in one category is :avgOfCategoryInOneCategory
-     *
-     * @param int $avgOfCategoryInOneCategory
-     */
-    public function theReportReturnsThatTheAverageOfCategoryInOneCategoryIs(int $avgOfCategoryInOneCategory): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::eq($avgOfCategoryInOneCategory, $volumes['average_max_category_in_one_category']['value']['average']);
-    }
-
-    /**
-     * @Then the report warns the users that the number of category in one category is high
-     */
-    public function theReportWarnsTheUsersThatTheNumberOfCategoryInOneCategoryIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::true($volumes['average_max_category_in_one_category']['has_warning']);
-    }
-
-    /**
-     * @Then the report does not warn the users that the number of category in one category is high
-     */
-    public function theReportDoesNotWarnTheUsersThatTheNumberOfCategoryInOneCategoryIsHigh(): void
-    {
-        $volumes = $this->reportContext->getVolumes();
-
-        Assert::false($volumes['average_max_category_in_one_category']['has_warning']);
     }
 }

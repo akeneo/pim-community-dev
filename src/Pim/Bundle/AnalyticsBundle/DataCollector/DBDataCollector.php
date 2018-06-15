@@ -74,7 +74,6 @@ class DBDataCollector implements DataCollectorInterface
      * @param CountQuery      $userCountQuery
      * @param CountQuery      $productModelCountQuery
      * @param CountQuery      $variantProductCountQuery
-     * @param CountQuery      $familyVariantCountQuery
      * @param CountQuery      $categoryCountQuery
      * @param CountQuery      $categoryTreeCountQuery
      * @param AverageMaxQuery $categoriesInOneCategoryAverageMax
@@ -90,7 +89,6 @@ class DBDataCollector implements DataCollectorInterface
         CountQuery        $userCountQuery,
         CountQuery        $productModelCountQuery,
         CountQuery        $variantProductCountQuery,
-        CountQuery        $familyVariantCountQuery,
         CountQuery        $categoryCountQuery,
         CountQuery        $categoryTreeCountQuery,
         AverageMaxQuery   $categoriesInOneCategoryAverageMax,

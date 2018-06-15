@@ -2,11 +2,7 @@
 
 namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
-use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountCategoryInterface;
-use Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountProductValueInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes;
@@ -22,7 +18,6 @@ class DBDataCollectorSpec extends ObjectBehavior
         CountQuery        $userCountQuery,
         CountQuery        $productModelCountQuery,
         CountQuery        $variantProductCountQuery,
-        CountQuery        $familyVariantCountQuery,
         CountQuery        $categoryCountQuery,
         CountQuery        $categoryTreeCountQuery,
         AverageMaxQuery   $categoriesInOneCategoryAverageMax,
@@ -38,7 +33,6 @@ class DBDataCollectorSpec extends ObjectBehavior
             $userCountQuery,
             $productModelCountQuery,
             $variantProductCountQuery,
-            $familyVariantCountQuery,
             $categoryCountQuery,
             $categoryTreeCountQuery,
             $categoriesInOneCategoryAverageMax,
@@ -62,7 +56,6 @@ class DBDataCollectorSpec extends ObjectBehavior
         $userCountQuery,
         $productModelCountQuery,
         $variantProductCountQuery,
-        $familyVariantCountQuery,
         $categoryCountQuery,
         $categoryTreeCountQuery,
         $categoriesInOneCategoryAverageMax,
@@ -91,7 +84,6 @@ class DBDataCollectorSpec extends ObjectBehavior
                 "nb_products"           => 1121,
                 'nb_product_models'     => 123,
                 'nb_variant_products'   => 89,
-                'nb_family_variants'    => 2,
                 "nb_families"           => 14,
                 "nb_users"              => 5,
                 'nb_categories'         => 250,
