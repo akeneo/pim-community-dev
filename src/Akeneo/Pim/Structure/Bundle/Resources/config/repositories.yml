@@ -63,3 +63,9 @@ services:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.attribute.class%'
+
+    pim_enrich.repository.attribute_group.search:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupSearchableRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.attribute_group.class%'
