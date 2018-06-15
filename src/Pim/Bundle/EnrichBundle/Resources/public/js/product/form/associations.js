@@ -124,7 +124,7 @@ define(
                 this.trigger('tab:register', {
                     code: (undefined === this.config.tabCode) ? this.code : this.config.tabCode,
                     isVisible: this.isVisible.bind(this),
-                    label: __('pim_enrich.form.product.tab.associations.title')
+                    label: __('pim_enrich.entity.product.module.associations.title')
                 });
 
                 _.each(this.datagrids, function (datagrid) {
@@ -183,7 +183,7 @@ define(
                                 associationTypes,
                                 {code: this.getCurrentAssociationType()}
                             ),
-                            addAssociationsLabel: __('pim_enrich.form.product.tab.associations.add_associations'),
+                            addAssociationsLabel: __('pim_enrich.entity.product.module.associations.add_associations'),
                             addAssociationVisible: this.isAddAssociationsVisible(),
                             datagridName: this.config.datagridName
                         })
@@ -215,16 +215,16 @@ define(
                     this.$('.tab-content').prepend(
                         this.panesTemplate({
                             __: __,
-                            label: __('pim_enrich.form.product.tab.associations.association_type_selector'),
+                            label: __('pim_enrich.entity.product.module.associations.association_type_selector'),
                             locale: UserContext.get('catalogLocale'),
                             associationTypes: associationTypes,
                             currentAssociationType: this.getCurrentAssociationType(),
                             currentAssociationTarget: this.getCurrentAssociationTarget(),
                             numberAssociationLabelKey:
-                                'pim_enrich.form.product.tab.associations.info.number_of_associations',
-                            targetLabel: __('pim_enrich.form.product.tab.associations.target'),
-                            showProductsLabel: __('pim_enrich.form.product.tab.associations.info.show_products'),
-                            showGroupsLabel: __('pim_enrich.form.product.tab.associations.info.show_groups')
+                                'pim_enrich.entity.product.module.associations.number_of_associations',
+                            targetLabel: __('pim_enrich.entity.product.module.associations.target'),
+                            showProductsLabel: __('pim_enrich.entity.product.module.associations.show_products'),
+                            showGroupsLabel: __('pim_enrich.entity.product.module.associations.show_groups')
                         })
                     );
                 }.bind(this));
@@ -665,7 +665,7 @@ define(
                         .getFetcher('association-type')
                         .fetch(this.getCurrentAssociationType())
                         .then((associationType) => {
-                            form.setCustomTitle(__('pim_enrich.form.product.tab.associations.manage', {
+                            form.setCustomTitle(__('pim_enrich.entity.product.module.associations.manage', {
                                 associationType: associationType.labels[UserContext.get('catalogLocale')]
                             }));
 

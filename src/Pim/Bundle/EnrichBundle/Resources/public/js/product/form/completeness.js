@@ -39,7 +39,7 @@ define(
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
-                    label: __('pim_enrich.form.product.panel.completeness.title')
+                    label: __('pim_enrich.entity.product.module.completeness.title')
                 });
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
@@ -75,10 +75,10 @@ define(
                                 locales: locales,
                                 catalogLocale: UserContext.get('catalogLocale'),
                                 hasFamilyChanged: this.getFormData().family !== this.initialFamily,
-                                missingValuesKey: 'pim_enrich.form.product.panel.completeness.missing_values',
-                                noFamilyLabel: __('pim_enrich.form.product.panel.completeness.info.no_family'),
+                                missingValuesKey: 'pim_enrich.entity.product.module.completeness.missing_values',
+                                noFamilyLabel: __('pim_enrich.entity.product.module.completeness.no_family'),
                                 noCompletenessLabel:
-                                    __('pim_enrich.form.product.panel.completeness.info.no_completeness')
+                                    __('pim_enrich.entity.product.module.completeness.no_completeness')
                             })
                         );
                         this.delegateEvents();

@@ -53,7 +53,7 @@ define(
             modalTemplate: _.template(modalTemplate),
 
             events: {
-                'click a[data-group]': 'displayModal'
+                'click .product-group': 'displayModal'
             },
 
             /**
@@ -79,7 +79,7 @@ define(
                     if (groups.length) {
                         this.$el.html(
                             this.template({
-                                label: __('pim_enrich.entity.product.meta.groups.title'),
+                                label: __('pim_enrich.entity.product.module.meta.groups'),
                                 groups: groups
                             })
                         );
@@ -142,10 +142,10 @@ define(
                         loadingMask.remove();
                         this.groupModal = new Backbone.BootstrapModal({
                             allowCancel: true,
-                            okText: __('pim_enrich.entity.product.meta.groups.modal.view_group'),
+                            okText: __('pim_enrich.entity.product.module.show_group.view_group'),
                             cancelText: __('pim_common.cancel'),
                             title: __(
-                                'pim_enrich.entity.product.meta.groups.modal.title',
+                                'pim_enrich.entity.product.module.show_group.title',
                                 { group: i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code) }
                             ),
                             content: this.modalTemplate({

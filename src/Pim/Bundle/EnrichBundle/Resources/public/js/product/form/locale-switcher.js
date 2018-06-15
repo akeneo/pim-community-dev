@@ -80,7 +80,7 @@ define(
                                 i18n: i18n,
                                 displayInline: this.displayInline,
                                 displayLabel: this.displayLabel,
-                                label: __('pim_enrich.entity.locale.label')
+                                label: __('pim_enrich.entity.locale.uppercase_label')
                             })
                         );
                         this.delegateEvents();

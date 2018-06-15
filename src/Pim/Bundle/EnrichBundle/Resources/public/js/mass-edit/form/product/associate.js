@@ -84,8 +84,8 @@ define(
                             ),
                             locale: UserContext.get('uiLocale'),
                             i18n,
-                            label: __('pim_enrich.form.product.tab.associations.association_type_selector'),
-                            addAssociationsLabel: __('pim_enrich.form.product.tab.associations.add_associations')
+                            label: __('pim_enrich.entity.product.module.associations.association_type_selector'),
+                            addAssociationsLabel: __('pim_enrich.entity.product.module.associations.add_associations')
                         }));
                         this.delegateEvents();
                     });
@@ -245,7 +245,7 @@ define(
                         .getFetcher('association-type')
                         .fetch(this.getCurrentAssociationTypeCode())
                         .then((associationType) => {
-                            form.setCustomTitle(__('pim_enrich.form.product.tab.associations.manage', {
+                            form.setCustomTitle(__('pim_enrich.entity.product.module.associations.manage', {
                                 associationType: associationType.labels[UserContext.get('catalogLocale')]
                             }));
 

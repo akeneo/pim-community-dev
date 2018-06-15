@@ -31,7 +31,7 @@ extensions:
             required: true
             label: pim_enrich.entity.family.uppercase_label
             choiceRoute: pim_enrich_family_index_get_variants
-            placeholder: pim_enrich.entity.product.create_popin.labels.family
+            placeholder: pim_enrich.entity.product.module.create.choose_family
 
     pim-product-model-create-variant:
         module: pim/product-model/form/creation/variant
@@ -43,4 +43,4 @@ extensions:
             label: pim_enrich.form.product_model.family_variant
             required: true
             loadUrl: pim_enrich_family_variant_rest_index
-            placeholder: pim_enrich.entity.product.create_popin.labels.family_variant
+            placeholder: pim_enrich.entity.product.module.create.choose_family_variant

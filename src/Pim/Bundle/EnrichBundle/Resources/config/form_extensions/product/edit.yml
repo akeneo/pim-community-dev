@@ -63,7 +63,7 @@ extensions:
         targetZone: bottom
         position: 10
         config:
-            label: pim_enrich.entity.product.meta.infos
+            label: pim_menu.navigation.product_infos
 
     pim-product-edit-form-column-tabs:
         module: pim/form/common/column-tabs
@@ -184,7 +184,7 @@ extensions:
         targetZone: meta
         position: 100
         config:
-            label: pim_enrich.entity.product.meta.updated
+            label: pim_enrich.entity.product.module.meta.updated
             labelBy: pim_common.by
 
     pim-product-edit-form-groups:

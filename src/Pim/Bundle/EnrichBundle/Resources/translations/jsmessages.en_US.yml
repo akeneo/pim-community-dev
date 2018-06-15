@@ -61,6 +61,10 @@ pim_common:
     previous: Previous
     properties: Properties
     save: Save
+    select2:
+        search: Search...
+        no_match: No matches found
+        load_more: Loading more results...
     status: Status
     to: to
     type: Type
@@ -145,6 +149,8 @@ pim_datagrid:
         associated_product:
             hint: There are no associated products
             subHint: 'Click on the button "Add associations" to associate this product'
+    filters:
+        label: Filters
 
 error:
     exception: Oh snap! A {{ status_code }} error occured...
@@ -188,54 +194,83 @@ pim_enrich:
                     fail: No attribute is configured as a product identifier or you don't have the rights to edit it.
             page_title:
                 index: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
-            subTitle: Create product
-            modalTitle: Select your action
-            filters: Filters
-            common: Common
-            btn:
-                enabled: Enabled
-                disabled: Disabled
-                download_pdf: PDF
-                compare_translate: Compare / Translate
-            history:
-                version: Version
-                author: Author
-                logged_at: Logged at
-                from: From
-                modified: Modified
-                old_value: Old value
-                new_value: New value
-            meta:
-                infos: Product infos
-                updated: Last update
-                family_variant:
-                    title: Variant
-                groups:
-                    title: Groups
-                    modal:
-                        title: Group {{ group }}
-                        view_group: View group
-                        more_products: '{{ count }} more products...'
-            copy:
-                select: Select
-                all_visible: All visible
-                copy: Copy
-            optional_attribute:
-                remove: Remove this attribute
-            locale_specific_attribute:
-                unavailable: This locale specific field is not available in this locale
-            localizable:
-                channel_locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
-            media:
-                upload: Drag and drop to upload or click here
-            create_popin:
-                labels:
-                    family: Choose a family
-                    family_variant: Choose a family variant
-            completeness: Complete
-            sequential_edit:
-                item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
-                empty: Your selection is empty, please change your search criteria
+            module:
+                create:
+                    subtitle: Create product
+                    title: Select your action
+                    choose_family: Choose a family
+                    choose_family_variant: Choose a family variant
+                variant_navigation:
+                    common: Common
+                status:
+                    enabled: Enabled
+                    disabled: Disabled
+                download_pdf:
+                    label: PDF
+                copy:
+                    label: Compare / Translate
+                    select: Select
+                    all_visible: All visible
+                    copy: Copy
+                history:
+                    version: Version
+                    author: Author
+                    logged_at: Logged at
+                    from: From
+                    modified: Modified
+                    old_value: Old value
+                    new_value: New value
+                meta:
+                    updated: Last update
+                    family_variant: Variant
+                    groups: Groups
+                show_group:
+                    title: Group {{ group }}
+                    view_group: View group
+                    more_products: '{{ count }} more products...'
+                attribute:
+                    remove_optional: Remove this attribute
+                    locale_specific: This locale specific field is not available in this locale
+                    locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
+                    media_upload: Drag and drop to upload or click here
+                    to_fill_count: "{1}1 missing required attribute|]1, Inf [{{ count }} missing required attributes"
+                completeness:
+                    title: Completeness
+                    complete: Complete
+                    no_family: No family defined. Please define a family to calculate the completeness of this product.
+                    no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
+                    missing_values: "{1}1 missing value|] 1, Inf [{{ count }} missing values"
+                sequential_edit:
+                    item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
+                    empty: Your selection is empty, please change your search criteria
+                associations:
+                    title: Associations
+                    none_exist: No association types exist.
+                    show_products: Display products
+                    show_groups: Display groups
+                    number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
+                    association_type_selector: Association type
+                    target: Target
+                    manage: Add {{ associationType }} associations
+                    manage_description: Select the products you want to associate with the current product
+                    add_associations: Add associations
+                add_attribute:
+                    no_available_attributes: There are no more attributes to add
+                    attributes_selected: "{{ itemsCount }} attribute(s) selected"
+                attribute_filter:
+                    display: Display
+                    all: All attributes
+                    missing_required: All missing required attributes
+                    at_this_level: All level specific attributes
+                sequential_edit:
+                    save_and_next: Save and next
+                    save_and_finish: Save and finish
+                change_family:
+                    title: Change the product family
+                    merge_attributes: Current attributes will be merged with the ones in the new family.
+                    keep_attributes: No attributes will be removed.
+                    change_family_to: Change the family to
+                    empty_selection: Choose a family
 
         product_model:
             label: product model
@@ -459,6 +494,7 @@ pim_enrich:
 
         attribute_group:
             label: attribute group
+            uppercase_label: Attribute group
             plural_label: Attribute groups
             flash:
                 update:
@@ -511,58 +547,6 @@ pim_enrich:
             flash:
                 product_model_added: Product model successfully added to the product model
                 variant_product_added: Variant product successfully added to the product model
-        product:
-            tab:
-                associations:
-                    title: Associations
-                    info:
-                        none_exist: No association types exist.
-                        show_products: Display products
-                        show_groups: Display groups
-                        number_of_associations: "{{ productCount }} product(s), {{ productModelCount }} product model(s) and {{ groupCount }} group(s)"
-                    association_type_selector: Association type
-                    target: Target
-                    manage: Add {{ associationType }} associations
-                    manage_description: Select the products you want to associate with the current product
-                    add_associations: Add associations
-                attributes:
-                    info:
-                        search_attributes: Search...
-                        no_available_attributes: There are no more attributes to add
-                        attributes_selected: "{{ itemsCount }} attribute(s) selected"
-                        no_match: No matches found
-                        load_more: Loading more results...
-                    attribute_group_selector: Attribute group
-                    attribute_group.to_fill_count: "{1}1 missing required attribute|]1, Inf [{{ count }} missing required attributes"
-                    attribute_filter:
-                        display: Display
-                        all: All attributes
-                        missing_required: All missing required attributes
-                        at_this_level: All level specific attributes
-            panel:
-                completeness:
-                    title: Completeness
-                    info:
-                        no_family: No family defined. Please define a family to calculate the completeness of this product.
-                        no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
-                    missing_values: "{1}1 missing value|] 1, Inf [{{ count }} missing values"
-            sequential_edit:
-                info:
-                    previous: Skip back to {{ product }} without saving.
-                    next: Skip to {{ product }} without saving.
-                btn:
-                    save_and_next: Save and next
-                    save_and_finish: Save and finish
-            change_family:
-                modal:
-                    title:            Change the product family
-                    merge_attributes: Current attributes will be merged with the ones in the new family.
-                    keep_attributes:  No attributes will be removed.
-                    change_family_to: Change the family to
-                    empty_selection:  Choose a family
-            mass_edit:
-                select_attributes: Select attributes
-                select: Select
         channel:
             tab:
                 properties:
@@ -605,12 +589,6 @@ pim_enrich:
                         type: Type
                         scopable: Scopable
                         localizable: Localizable
-        common:
-            tab:
-                attributes:
-                    info:
-                        search_attributes: Search...
-                        no_available_attributes: There are no more attributes to add
         mass_edit:
             family:
                 attributes:
@@ -747,6 +725,8 @@ pim_enrich:
                 launched:
                     label: The bulk action "{{ operation }}" has been launched. You will be notified when it is done.
             operation:
+                common:
+                    select_attributes: Select attributes
                 change_status:
                     label: Change status
                     label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
@@ -903,6 +883,7 @@ pim_menu:
         user: Users management navigation
         settings: Settings navigation
         product: Product navigation
+        product_infos: Product infos
 
     user:
         logout: Logout

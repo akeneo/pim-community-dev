@@ -9,7 +9,7 @@ extensions:
             required: true
             label: pim_enrich.entity.product.meta.family.title
             choiceRoute: pim_enrich_family_index_get_variants
-            placeholder: pim_enrich.entity.product.create_popin.labels.family
+            placeholder: pim_enrich.entity.product.module.create.choose_family
 
     pim-mass-product-edit-configure-change-parent-product-model-variant:
         module: pim/mass-edit-form/product/variant-field
@@ -21,7 +21,7 @@ extensions:
             label: pim_enrich.form.product_model.family_variant
             required: true
             loadUrl: pim_enrich_family_variant_rest_index
-            placeholder: pim_enrich.entity.product.create_popin.labels.family_variant
+            placeholder: pim_enrich.entity.product.module.create.choose_family_variant
 
     pim-mass-product-edit-configure-change-parent-product-model-product-model:
         module: pim/mass-edit-form/product/product-model-field

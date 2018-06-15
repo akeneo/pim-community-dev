@@ -81,7 +81,7 @@ define(
 
                 this.$el.html(
                     this.template({
-                        commonLabel: __('pim_enrich.entity.product.common'),
+                        commonLabel: __('pim_enrich.entity.product.module.variant_navigation.common'),
                         currentLocale: catalogLocale,
                         entity: entity,
                         navigation: entity.meta.variant_navigation

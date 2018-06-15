@@ -62,7 +62,7 @@ define(
 
                 this.$el.html(
                     this.template({
-                        title: __('pim_enrich.entity.product.meta.family_variant.title'),
+                        title: __('pim_enrich.entity.product.module.meta.family_variant'),
                         familyVariantLabel: label
                     })
                 );

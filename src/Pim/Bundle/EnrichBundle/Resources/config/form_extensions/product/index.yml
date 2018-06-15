@@ -58,8 +58,8 @@ extensions:
         targetZone: buttons
         config:
             buttonTitle: pim_common.create
-            modalTitle: pim_enrich.entity.product.modalTitle
-            subTitle: pim_enrich.entity.product.subTitle
+            modalTitle: pim_enrich.entity.product.module.create.title
+            subTitle: pim_enrich.entity.product.module.create.subtitle
             choices:
                 create-product:
                     form: pim-product-create-modal
