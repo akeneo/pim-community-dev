@@ -173,6 +173,8 @@ acceptance:
                 - test.catalog_volume_limits.variant_product_context
                 - test.catalog_volume_limits.product_model_context
                 - test.catalog_volume_limits.product_value_context
+                - test.catalog.product_creation.context
+                - test.catalog.product_validation.context
             filters:
                 tags: '@acceptance-back'
     extensions:

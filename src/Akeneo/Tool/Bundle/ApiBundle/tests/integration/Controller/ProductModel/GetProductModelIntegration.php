@@ -80,6 +80,9 @@ class GetProductModelIntegration extends ApiTestCase
             'updated' => '2017-10-02T15:03:55+02:00',
             'associations'  => [
                 'X_SELL' => ['groups' => [], 'products' => ['biker-jacket-leather-m'], 'product_models' => ['model-biker-jacket-polyester']],
+                'PACK' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []]
             ]
         ];
         $client = $this->createAuthenticatedClient();
@@ -87,7 +90,7 @@ class GetProductModelIntegration extends ApiTestCase
         $client->request('GET', 'api/rest/v1/product-models/model-biker-jacket-leather');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertResponse($response, $standardProductModel);
     }
 
@@ -98,7 +101,7 @@ class GetProductModelIntegration extends ApiTestCase
         $client->request('GET', 'api/rest/v1/product-models/model-bayqueur-jaquette');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        Assert::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
     protected function addAssociationsToProductModel($productModelCode)
@@ -121,6 +124,10 @@ class GetProductModelIntegration extends ApiTestCase
         $association->addProduct(
             $this->get('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-m')
         );
+
+        $missingAssociationAdder = $this->get('pim_catalog.association.missing_association_adder');
+        $missingAssociationAdder->addMissingAssociations($productModel);
+
         $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
 
         Assert::assertCount(0, $errors);
@@ -147,6 +154,6 @@ class GetProductModelIntegration extends ApiTestCase
         NormalizedProductCleaner::clean($expected);
         NormalizedProductCleaner::clean($result);
 
-        $this->assertSame($expected, $result);
+        Assert::assertSame($expected, $result);
     }
 }

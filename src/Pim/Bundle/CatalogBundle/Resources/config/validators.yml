@@ -410,3 +410,17 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_product_validator }
 
+    pim_catalog.validator.constraint.unique_product_entity:
+        class: 'Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductEntityValidator'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.validator.unique_value_set'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_product_validator_entity }
+
+    pim_catalog.validator.constraint.unique_product_model_entity:
+        class: 'Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductModelEntityValidator'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_unique_product_model_validator_entity }

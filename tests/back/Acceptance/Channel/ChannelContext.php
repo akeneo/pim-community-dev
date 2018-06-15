@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Test\Acceptance\Channel;
 
 use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
-use Akeneo\Test\Common\Builder\EntityBuilder;
 use Akeneo\Test\Acceptance\Common\ListOfCodes;
 use Akeneo\Test\Acceptance\Currency\InMemoryCurrencyRepository;
 use Akeneo\Test\Acceptance\Locale\InMemoryLocaleRepository;
+use Akeneo\Test\Common\EntityBuilder;
 use Behat\Behat\Context\Context;
 
 final class ChannelContext implements Context

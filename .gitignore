@@ -40,7 +40,6 @@ behat.yml
 /phpspec.yml
 uploads_test/
 .phpspec/*.tpl
-composer.lock
 .php_cs.cache
 /node_modules
 npm-debug.log

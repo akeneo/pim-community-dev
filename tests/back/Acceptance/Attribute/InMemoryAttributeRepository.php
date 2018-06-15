@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Akeneo\Test\Acceptance\Attribute;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>
@@ -168,7 +169,11 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
      */
     public function getIdentifier()
     {
-        throw new NotImplementedException(__METHOD__);
+        $attribute = $this->attributes->filter(function (AttributeInterface $attribute): bool {
+            return  $attribute->getType() === AttributeTypes::IDENTIFIER;
+        })->first();
+
+        return false !== $attribute ? $attribute : null;
     }
 
     /**

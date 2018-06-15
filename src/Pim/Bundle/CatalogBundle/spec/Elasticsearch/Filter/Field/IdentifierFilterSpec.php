@@ -25,8 +25,7 @@ class IdentifierFilterSpec extends ObjectBehavior
                 '=',
                 '!=',
                 'IN LIST',
-                'NOT IN LIST',
-                'EMPTY'
+                'NOT IN LIST'
             ]
         );
     }
@@ -51,8 +50,7 @@ class IdentifierFilterSpec extends ObjectBehavior
                 '=',
                 '!=',
                 'IN LIST',
-                'NOT IN LIST',
-                'EMPTY'
+                'NOT IN LIST'
             ]
 
         );

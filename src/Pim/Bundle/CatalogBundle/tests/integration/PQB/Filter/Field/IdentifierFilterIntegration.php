@@ -140,12 +140,6 @@ class IdentifierFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
     }
 
-    public function testOperatorIsEmpty()
-    {
-        $result = $this->executeFilter([['identifier', Operators::IS_EMPTY, 'baz']]);
-        $this->assert($result, []);
-    }
-
     /**
      * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException
      * @expectedExceptionMessage Property "identifier" expects a string as data, "array" given.
