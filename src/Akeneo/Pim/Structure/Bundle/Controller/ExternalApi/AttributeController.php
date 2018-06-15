@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
-use Akeneo\Tool\Component\Api\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -69,16 +69,16 @@ class AttributeController
     protected $apiConfiguration;
 
     /**
-     * @param AttributeRepositoryInterface $repository
-     * @param NormalizerInterface          $normalizer
-     * @param SimpleFactoryInterface       $factory
-     * @param ObjectUpdaterInterface       $updater
-     * @param ValidatorInterface           $validator
-     * @param SaverInterface               $saver
-     * @param RouterInterface              $router
-     * @param PaginatorInterface           $paginator
-     * @param ParameterValidatorInterface  $parameterValidator
-     * @param StreamResourceResponse       $partialUpdateStreamResource
+     * @param \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface $repository
+     * @param NormalizerInterface                                                                 $normalizer
+     * @param SimpleFactoryInterface                                                              $factory
+     * @param ObjectUpdaterInterface                                                              $updater
+     * @param ValidatorInterface                                                                  $validator
+     * @param SaverInterface                                                                      $saver
+     * @param RouterInterface                                                                     $router
+     * @param PaginatorInterface                                                                  $paginator
+     * @param ParameterValidatorInterface                                                         $parameterValidator
+     * @param StreamResourceResponse                                                              $partialUpdateStreamResource
      * @param array                        $apiConfiguration
      */
     public function __construct(

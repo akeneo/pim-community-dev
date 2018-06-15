@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
-use Akeneo\Tool\Component\Api\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeOptionController
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var ApiResourceRepositoryInterface */
@@ -77,15 +77,15 @@ class AttributeOptionController
     protected $supportedAttributeTypes;
 
     /**
-     * @param AttributeRepositoryInterface   $attributeRepository
-     * @param ApiResourceRepositoryInterface $attributeOptionsRepository
-     * @param NormalizerInterface            $normalizer
-     * @param SimpleFactoryInterface         $factory
-     * @param ObjectUpdaterInterface         $updater
-     * @param ValidatorInterface             $validator
-     * @param SaverInterface                 $saver
-     * @param RouterInterface                $router
-     * @param PaginatorInterface             $paginator
+     * @param \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface $attributeRepository
+     * @param ApiResourceRepositoryInterface                                                      $attributeOptionsRepository
+     * @param NormalizerInterface                                                                 $normalizer
+     * @param SimpleFactoryInterface                                                              $factory
+     * @param ObjectUpdaterInterface                                                              $updater
+     * @param ValidatorInterface                                                                  $validator
+     * @param SaverInterface                                                                      $saver
+     * @param RouterInterface                                                                     $router
+     * @param PaginatorInterface                                                                  $paginator
      * @param ParameterValidatorInterface    $parameterValidator
      * @param StreamResourceResponse         $partialUpdateStreamResource
      * @param array                          $apiConfiguration

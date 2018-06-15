@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
-use Akeneo\Tool\Component\Api\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Api\Security\PrimaryKeyEncrypter;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
@@ -64,7 +64,7 @@ class ProductController
     /** @var IdentifiableObjectRepositoryInterface */
     protected $channelRepository;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var IdentifiableObjectRepositoryInterface */
@@ -122,18 +122,18 @@ class ProductController
     protected $addParent;
 
     /**
-     * @param ProductQueryBuilderFactoryInterface   $searchAfterPqbFactory
-     * @param NormalizerInterface                   $normalizer
-     * @param IdentifiableObjectRepositoryInterface $channelRepository
-     * @param QueryParametersCheckerInterface       $queryParametersChecker
-     * @param AttributeRepositoryInterface          $attributeRepository
-     * @param IdentifiableObjectRepositoryInterface $productRepository
-     * @param PaginatorInterface                    $offsetPaginator
-     * @param PaginatorInterface                    $searchAfterPaginator
-     * @param ParameterValidatorInterface           $parameterValidator
-     * @param ValidatorInterface                    $productValidator
-     * @param ProductBuilderInterface               $productBuilder
-     * @param RemoverInterface                      $remover
+     * @param ProductQueryBuilderFactoryInterface                                                 $searchAfterPqbFactory
+     * @param NormalizerInterface                                                                 $normalizer
+     * @param IdentifiableObjectRepositoryInterface                                               $channelRepository
+     * @param QueryParametersCheckerInterface                                                     $queryParametersChecker
+     * @param \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface $attributeRepository
+     * @param IdentifiableObjectRepositoryInterface                                               $productRepository
+     * @param PaginatorInterface                                                                  $offsetPaginator
+     * @param PaginatorInterface                                                                  $searchAfterPaginator
+     * @param ParameterValidatorInterface                                                         $parameterValidator
+     * @param ValidatorInterface                                                                  $productValidator
+     * @param ProductBuilderInterface                                                             $productBuilder
+     * @param RemoverInterface                                                                    $remover
      * @param ObjectUpdaterInterface                $updater
      * @param SaverInterface                        $saver
      * @param UrlGeneratorInterface                 $router

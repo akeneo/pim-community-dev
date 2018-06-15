@@ -1,7 +1,8 @@
 <?php
 
-namespace Akeneo\Tool\Component\Api\Repository;
+namespace Akeneo\Pim\Structure\Component\Repository\ExternalApi;
 
+use Akeneo\Tool\Component\Api\Repository\PageableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**

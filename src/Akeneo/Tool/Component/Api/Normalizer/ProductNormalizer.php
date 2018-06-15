@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Component\Api\Normalizer;
 
 use Akeneo\Tool\Component\Api\Hal\Link;
-use Akeneo\Tool\Component\Api\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -20,16 +20,16 @@ class ProductNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $productNormalizer;
 
-    /** @var AttributeRepositoryInterface */
+    /** @var \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var RouterInterface */
     protected $router;
 
     /**
-     * @param NormalizerInterface          $productNormalizer
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param RouterInterface              $router
+     * @param NormalizerInterface                                                                 $productNormalizer
+     * @param \Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface $attributeRepository
+     * @param RouterInterface                                                                     $router
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
