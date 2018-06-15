@@ -223,7 +223,6 @@ pim_enrich.entity.product:
             new_value: New value
         meta:
             updated: Last update
-            family_variant: Variant
             groups: Groups
         show_group:
             title: Group {{ group }}
@@ -255,9 +254,6 @@ pim_enrich.entity.product:
             manage: Add {{ associationType }} associations
             manage_description: Select the products you want to associate with the current product
             add_associations: Add associations
-        add_attribute:
-            no_available_attributes: There are no more attributes to add
-            attributes_selected: "{{ itemsCount }} attribute(s) selected"
         attribute_filter:
             display: Display
             all: All attributes
@@ -326,6 +322,65 @@ pim_enrich.entity.channel:
         do_not_convert: Do not convert
         label_conversion_units: Pick a conversion unit for each metric attribute that will be used during product export
 
+pim_enrich.entity.family:
+    label: family
+    uppercase_label: Family
+    flash:
+        update:
+            success: Family successfully updated.
+            fail: An error occured during family update.
+            cant_remove_attribute_as_label: Cannot remove attribute used as label
+            cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
+            cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
+            fields_not_ready: "The family cannot be saved right now. The following fields are not ready: {{ fields }}"
+        create:
+            success: Family successfully created
+        delete:
+            success: Family successfully removed
+            fail: Cannot delete this family
+    property:
+        attribute_as_label: Attribute used as label
+        attribute_as_image: Attribute used as the main picture
+        empty_attribute_as_image: Not selected
+    page_title:
+        index: "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} families"
+    module:
+        attributes:
+            not_required_label: Not required
+            required_label: Required
+
+pim_enrich.entity.family_variant:
+    label: family variant
+    short_plural_label: Variants
+    short_label: Variant
+    flash:
+        update:
+            success: Family variant successfully updated. The products with variants will be updated with your changes.
+            fail: The family variant could not be updated.
+        create:
+            success: Family variant successfully created
+    module:
+        edit:
+            common_attributes: Common attributes
+            no_common_attributes: There is no common attributes
+            variant_axis_label: Variant axis
+            variant_attributes: Variant attributes
+            level_1: Variant attributes level one
+            level_2: Variant attributes level two
+            description: Drag & drop attributes to the selected variant level to have these attributes managed at the variant level.
+            attribute_remove: Remove attribute
+            attribute_group_remove: Remove attribute group
+            confirm_attribute_removal_title: Confirm remove of attributes
+            confirm_attribute_removal_message: By removing these attributes you will put them back in the common attributes of the family variant and remove the values from the variant products
+        create:
+            label: Add variant
+            title: Create a new family variant
+            description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
+            variant_levels: Variant levels
+            axis_level: "Variant axis level {{ level }}"
+        update_translations:
+            title: Update translations
+
 pim_enrich:
     entity:
         association_type:
@@ -357,51 +412,6 @@ pim_enrich:
                     fail: Cannot delete this group type
             page_title:
                 index: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} group types"
-
-        family:
-            label: family
-            uppercase_label: Family
-            flash:
-                update:
-                    success: Family successfully updated.
-                    fail: An error occured during family update.
-                    cant_remove_attribute_as_label: Cannot remove attribute used as label
-                    cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
-                    cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
-                    fields_not_ready: "The family cannot be saved right now. The following fields are not ready: {{ fields }}"
-                create:
-                    success: Family successfully created
-                delete:
-                    success: Family successfully removed
-                    fail: Cannot delete this family
-            page_title:
-                index: "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} families"
-            variant:
-                common:
-                    title: Common attributes
-                    empty: There is no common attributes
-                axis.label: Variant axis
-                level_1.label: Variant attributes level one
-                level_2.label: Variant attributes level two
-                add_variant: Add variant
-                create_label: Create a new family variant
-                create_description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
-                update_description: Drag & drop attributes to the selected variant level to have these attributes managed at the variant level.
-                levels: Variant levels
-                axis_level: Variant axis level
-                required: required
-                confirm_attribute_removal:
-                    title: Confirm remove of attributes
-                    message: By removing these attributes you will put them back in the common attributes of the family variant and remove the values from the variant products
-
-        family_variant:
-            label: family variant
-            flash:
-                update:
-                    success: Family variant successfully updated. The products with variants will be updated with your changes.
-                    fail: The family variant could not be updated.
-                create:
-                    success: Family variant successfully created
 
         attribute_option:
             flash:
@@ -494,6 +504,10 @@ pim_enrich:
                     regexp: Regular expression
                     url: URL
                 wysiwyg_enabled: Rich text editor enabled
+            module:
+                add_attribute:
+                    no_available_attributes: There are no more attributes to add
+                    attributes_selected: "{{ itemsCount }} attribute(s) selected"
             tab:
                 properties:
                     section:
@@ -517,6 +531,11 @@ pim_enrich:
                 delete:
                     success: Attribute group successfully removed
                     fail: Cannot delete this attribute group
+            module:
+                add_attribute_group:
+                    label: Add by groups
+                    no_attribute_groups_available: No attribute group available
+                    attributes_groups_selected: '{{ itemsCount }} group(s) selected'
 
         api_connection:
             flash:
@@ -554,27 +573,6 @@ pim_enrich:
             updated: There are unsaved changes.
     form:
         required: (required)
-        family:
-            tab:
-                properties:
-                    general: General
-                    attribute_as_label: Attribute used as label
-                    attribute_as_image: Attribute used as the main picture
-                    empty_attribute_as_image: Not selected
-                attributes:
-                    toolbox:
-                        select_attributes_by_groups: Add by groups
-                        attributes_groups_selected: '{{ itemsCount }} group(s) selected'
-                    not_required_label: Not required
-                    required_label: Required
-                variant:
-                    title: Variants
-        family_variant:
-            tab:
-                attributes:
-                    title: Variant attributes
-                labels:
-                    title: Label translations
         attribute_option:
             add_option_modal:
                 title: Add attribute option

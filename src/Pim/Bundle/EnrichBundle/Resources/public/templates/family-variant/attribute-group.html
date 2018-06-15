@@ -7,12 +7,12 @@
             <%- i18n.getLabel(attribute.labels, UserContext.get('catalogLocale'), attribute.code) %>
 
             <% if (axesAttributes.includes(attribute.code)) { %>
-            (<%- __('pim_enrich.entity.family.variant.axis.label') %>)
+            (<%- __('pim_enrich.entity.family_variant.module.edit.variant_axis_label') %>)
             <% } %>
             <% if (!lockedAttributes.includes(attribute.code) && 0 !== level) { %>
             <span
                 class="AknIconButton AknIconButton--small AknIconButton--delete AknButtonList-item delete-attribute"
-                title="<%- __('pim_enrich.entity.family.variant.attribute_remove') %>"
+                title="<%- __('pim_enrich.entity.family_variant.module.edit.attribute_remove') %>"
             ></span>
             <% } %>
         </li>

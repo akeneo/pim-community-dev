@@ -35,7 +35,7 @@ define(
              * {@inheritdoc}
              */
             render() {
-                this.$el.html(__('pim_enrich.entity.family.variant.add_variant'));
+                this.$el.html(__('pim_enrich.entity.family_variant.module.create.label'));
                 this.delegateEvents();
 
                 return BaseForm.prototype.render.apply(this, arguments);
