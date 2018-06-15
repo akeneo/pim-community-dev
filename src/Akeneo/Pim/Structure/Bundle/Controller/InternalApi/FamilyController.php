@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilySearchableRepository;
 use Pim\Component\Catalog\AttributeTypes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -42,7 +42,7 @@ class FamilyController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var FamilySearchableRepository */
+    /** @var \Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilySearchableRepository */
     protected $familySearchableRepo;
 
     /** @var FamilyFactory */
@@ -79,16 +79,16 @@ class FamilyController
     protected $constraintViolationNormalizer;
 
     /**
-     * @param FamilyRepositoryInterface  $familyRepository
-     * @param NormalizerInterface        $normalizer
-     * @param FamilySearchableRepository $familySearchableRepo
-     * @param FamilyUpdater              $updater
-     * @param SaverInterface             $saver
-     * @param RemoverInterface           $remover
-     * @param ValidatorInterface         $validator
-     * @param SecurityFacade             $securityFacade
-     * @param FamilyFactory              $familyFactory
-     * @param NormalizerInterface        $constraintViolationNormalizer
+     * @param FamilyRepositoryInterface                                                                   $familyRepository
+     * @param NormalizerInterface                                                                         $normalizer
+     * @param \Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilySearchableRepository $familySearchableRepo
+     * @param FamilyUpdater                                                                               $updater
+     * @param SaverInterface                                                                              $saver
+     * @param RemoverInterface                                                                            $remover
+     * @param ValidatorInterface                                                                          $validator
+     * @param SecurityFacade                                                                              $securityFacade
+     * @param FamilyFactory                                                                               $familyFactory
+     * @param NormalizerInterface                                                                         $constraintViolationNormalizer
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,

@@ -89,3 +89,9 @@ services:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.family.class%'
+
+    pim_enrich.repository.family.search:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilySearchableRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family.class%'
