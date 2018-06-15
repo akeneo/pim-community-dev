@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Upload\Processor;
+namespace PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

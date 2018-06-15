@@ -22,8 +22,8 @@ use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadToEntityWithValuesTasklet;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
-use PimEnterprise\Component\ProductAsset\Upload\Processor\AddAssetsTo;
-use PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadIntoEntityWithValuesProcessor;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetsTo;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoEntityWithValuesProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use Prophecy\Argument;
 

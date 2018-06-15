@@ -21,7 +21,7 @@ use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
-use PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 
 /**

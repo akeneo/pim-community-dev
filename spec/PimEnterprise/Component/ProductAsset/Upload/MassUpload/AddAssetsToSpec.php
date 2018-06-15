@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Component\ProductAsset\Upload\Processor;
+namespace spec\PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Upload\Processor\AddAssetsTo;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetsTo;
 
 class AddAssetsToSpec extends ObjectBehavior
 {

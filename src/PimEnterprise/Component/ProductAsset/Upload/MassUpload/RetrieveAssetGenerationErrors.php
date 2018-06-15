@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Upload\Processor;
+namespace PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 
 use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
@@ -25,17 +25,27 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-abstract class AbstractMassUploadProcessor
+class RetrieveAssetGenerationErrors
 {
     /** @var TranslatorInterface */
     protected $translator;
 
     /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
+     * Retrieves and translate the asset generation errors stored in the asset event.
+     *
      * @param AssetEvent $event
      *
      * @return string[]
      */
-    protected function retrieveGenerationEventErrors(AssetEvent $event): array
+    public function fromEvent(AssetEvent $event): array
     {
         $errors = [];
         $items = $event->getProcessedList();
@@ -64,10 +74,8 @@ abstract class AbstractMassUploadProcessor
                     $template = 'pimee_product_asset.enrich_variation.flash.transformation.error';
                     break;
             }
-            $errors[] = $this->translator->trans(
-                $template,
-                $parameters
-            );
+
+            $errors[] = $this->translator->trans($template, $parameters);
         }
 
         return $errors;

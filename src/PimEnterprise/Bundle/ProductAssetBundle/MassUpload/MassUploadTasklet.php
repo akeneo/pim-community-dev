@@ -15,7 +15,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\MassUpload;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;
-use PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 
 /**

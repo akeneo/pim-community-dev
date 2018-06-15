@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Component\ProductAsset\Upload\Processor;
+namespace spec\PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
@@ -26,7 +26,7 @@ use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException;
 use PimEnterprise\Component\ProductAsset\Upload\ParsedFilenameInterface;
-use PimEnterprise\Component\ProductAsset\Upload\Processor\AddImportedReferenceFIleToAsset;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddImportedReferenceFIleToAsset;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use Prophecy\Argument;
 

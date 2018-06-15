@@ -5,13 +5,13 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Upload\Processor;
+namespace PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
@@ -22,17 +22,11 @@ use PimEnterprise\Component\ProductAsset\Upload\ImporterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use PimEnterprise\Component\ProductAsset\Upload\UploadMessages;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Process mass uploaded files
- * For a given username :
- * - read all imported files
- * - create or update asset
- *
- * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class MassUploadProcessor extends AbstractMassUploadProcessor
+class MassUploadIntoEntityWithValuesProcessor
 {
     /** @var ImporterInterface */
     protected $importer;
@@ -46,46 +40,56 @@ class MassUploadProcessor extends AbstractMassUploadProcessor
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var RetrieveAssetGenerationErrors */
+    protected $retrieveAssetGenerationErrors;
+
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
+
+    /** @var AddAssetToEntityWithValues */
+    protected $addAssetToEntityWithValues;
 
     /**
      * @param ImporterInterface               $importer
      * @param AddImportedReferenceFIleToAsset $addImportedReferenceFIleToAsset
      * @param SaverInterface                  $assetSaver
      * @param EventDispatcherInterface        $eventDispatcher
-     * @param TranslatorInterface             $translator
+     * @param RetrieveAssetGenerationErrors   $assetGenerationErrors
      * @param ObjectDetacherInterface         $objectDetacher
+     * @param AddAssetToEntityWithValues      $addAssetToEntityWithValues
      */
     public function __construct(
         ImporterInterface $importer,
         AddImportedReferenceFIleToAsset $addImportedReferenceFIleToAsset,
         SaverInterface $assetSaver,
         EventDispatcherInterface $eventDispatcher,
-        TranslatorInterface $translator,
-        ObjectDetacherInterface $objectDetacher
+        RetrieveAssetGenerationErrors $assetGenerationErrors,
+        ObjectDetacherInterface $objectDetacher,
+        AddAssetToEntityWithValues $addAssetToEntityWithValues
     ) {
         $this->importer = $importer;
         $this->addImportedReferenceFIleToAsset = $addImportedReferenceFIleToAsset;
         $this->assetSaver = $assetSaver;
         $this->eventDispatcher = $eventDispatcher;
-        $this->translator = $translator;
+        $this->retrieveAssetGenerationErrors = $assetGenerationErrors;
         $this->objectDetacher = $objectDetacher;
+        $this->addAssetToEntityWithValues = $addAssetToEntityWithValues;
     }
 
     /**
      * Processes all imported uploaded files.
      *
      * @param UploadContext $uploadContext
+     * @param AddAssetsTo   $addAssetsTo
      *
      * @return ProcessedItemList
      */
-    public function process(UploadContext $uploadContext): ProcessedItemList
+    public function process(UploadContext $uploadContext, AddAssetsTo $addAssetsTo): ProcessedItemList
     {
         $processedFiles = new ProcessedItemList();
-
         $importedFiles = $this->importer->getImportedFiles($uploadContext);
 
+        $importedAssetCodes = [];
         foreach ($importedFiles as $file) {
             try {
                 $asset = $this->addImportedReferenceFIleToAsset->addFile($file);
@@ -94,7 +98,7 @@ class MassUploadProcessor extends AbstractMassUploadProcessor
                 $this->assetSaver->save($asset);
 
                 $event = $this->eventDispatcher->dispatch(AssetEvent::POST_UPLOAD_FILES, new AssetEvent($asset));
-                $errors = $this->retrieveGenerationEventErrors($event);
+                $errors = $this->retrieveAssetGenerationErrors->fromEvent($event);
 
                 if (count($errors) > 0) {
                     $processedFiles->addItem($file, ProcessedItem::STATE_SKIPPED, implode(PHP_EOL, $errors));
@@ -105,9 +109,19 @@ class MassUploadProcessor extends AbstractMassUploadProcessor
                 $processedFiles->addItem($file, ProcessedItem::STATE_ERROR, $e->getMessage(), $e);
             } finally {
                 if (isset($asset)) {
+                    $importedAssetCodes[] = $asset->getCode();
                     $this->objectDetacher->detach($asset);
                 }
             }
+        }
+
+        if (!empty($importedAssetCodes)) {
+            // TODO: manage validation errors
+            $this->addAssetToEntityWithValues->add(
+                $addAssetsTo->getEntityId(),
+                $addAssetsTo->getAttributeCode(),
+                $importedAssetCodes
+            );
         }
 
         return $processedFiles;
