@@ -8,9 +8,9 @@ use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
 
 interface RecordRepository
 {
-    public function add(Record $record): void;
+    public function save(Record $record): void;
 
-    public function findOneByIdentifier(RecordIdentifier $identifier): ?Record;
+    public function getByIdentifier(RecordIdentifier $identifier): ?Record;
 
     public function all(): array;
 }

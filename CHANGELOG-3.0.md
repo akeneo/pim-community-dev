@@ -151,3 +151,6 @@
 - Remove `PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle`
 - Remove `PimEnterprise\Bundle\PdfGeneratorBundle\DependencyInjection\PimEnterprisePdfGeneratorExtension`
 - Remove `PimEnterprise\Bundle\UIBundle\DependencyInjection\PimEnterpriseUIExtension`
+- Remove `PimEnterprise\Component\Catalog\Updater\AttributeUpdater`
+- Remove `PimEnterprise\Bundle\EnrichBundle\Normalizer\AttributeNormalizer`
+- Remove `PimEnterprise\Component\Catalog\Normalizer\Standard\AttributeNormalizer`

@@ -6,6 +6,7 @@ namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -16,16 +17,27 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
 {
     private $enrichedEntities = [];
 
-    public function add(EnrichedEntity $enrichedEntity): void
+    public function save(EnrichedEntity $enrichedEntity): void
     {
         $this->enrichedEntities[(string) $enrichedEntity->getIdentifier()] = $enrichedEntity;
     }
 
-    public function findOneByIdentifier(EnrichedEntityIdentifier $identifier): ?EnrichedEntity
+    /**
+     * {@inheritdoc}
+     */
+    public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
     {
-        return $this->enrichedEntities[(string) $identifier] ?? null;
+        $enrichedEntity = $this->enrichedEntities[(string) $identifier] ?? null;
+        if (null === $enrichedEntity) {
+            throw EntityNotFoundException::withIdentifier(EnrichedEntity::class, (string) $identifier);
+        }
+
+        return $enrichedEntity;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function all(): array
     {
         return array_values($this->enrichedEntities);

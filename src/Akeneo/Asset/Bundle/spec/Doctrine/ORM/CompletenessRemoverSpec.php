@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes as AssetAttributeTypes;
 use Akeneo\Asset\Bundle\Doctrine\ORM\CompletenessRemover;
 use Akeneo\Asset\Component\Model\AssetInterface;

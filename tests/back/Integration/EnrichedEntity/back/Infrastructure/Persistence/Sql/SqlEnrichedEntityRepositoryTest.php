@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\InMemory;
+namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -34,43 +35,71 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_enriched_entity_and_returns_it() {
+    public function it_saves_an_enriched_entity_and_returns_it()
+    {
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::define($identifier, LabelCollection::fromArray(['en_US' => 'Designer', 'fr_FR' => 'Concepteur']));
+        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
 
-        $this->repository->add($enrichedEntity);
+        $this->repository->save($enrichedEntity);
 
-        $enrichedEntityFound = $this->repository->findOneByIdentifier($identifier);
+        $enrichedEntityFound = $this->repository->getByIdentifier($identifier);
         $this->assertEnrichedEntity($enrichedEntity, $enrichedEntityFound);
     }
 
     /**
      * @test
      */
-    public function it_returns_null_if_the_identifier_is_not_found()
+    public function it_throws_if_the_identifier_is_not_found()
     {
-        $enrichedEntity = $this->repository->findOneByIdentifier(EnrichedEntityIdentifier::fromString('unknown_identifier'));
-        $this->assertNull($enrichedEntity);
+        $this->expectException(EntityNotFoundException::class);
+        $this->repository->getByIdentifier(EnrichedEntityIdentifier::fromString('unknown_identifier'));
     }
 
     /**
      * @test
      */
-    public function it_returns_all_the_enriched_entities_added()
+    public function it_returns_all_the_enriched_entities_saved()
     {
-        $identifier1 = EnrichedEntityIdentifier::fromString('designer');
-        $enrichedEntity1 = EnrichedEntity::define($identifier1, LabelCollection::fromArray(['en_US' => 'Designer', 'fr_FR' => 'Concepteur']));
-        $identifier2 = EnrichedEntityIdentifier::fromString('fabricant');
-        $enrichedEntity2 = EnrichedEntity::define($identifier2, LabelCollection::fromArray(['en_US' => 'Manufacturer', 'fr_FR' => 'Fabricant']));
-        $identifier3 = EnrichedEntityIdentifier::fromString('other');
-        $enrichedEntity3 = EnrichedEntity::define($identifier3, LabelCollection::fromArray([]));
+        $enrichedEntity1 = EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString('designer'),
+            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']
+        );
+        $enrichedEntity2 = EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString('fabricant'),
+            ['en_US' => 'Manufacturer', 'fr_FR' => 'Fabricant']
+        );
+        $enrichedEntity3 = EnrichedEntity::create(
+            EnrichedEntityIdentifier::fromString('other'),
+            []
+        );
 
-        $this->repository->add($enrichedEntity1);
-        $this->repository->add($enrichedEntity2);
-        $this->repository->add($enrichedEntity3);
+        $this->repository->save($enrichedEntity1);
+        $this->repository->save($enrichedEntity2);
+        $this->repository->save($enrichedEntity3);
         $enrichedEntitiesFound = $this->repository->all();
 
         $this->assertEnrichedEntityList([$enrichedEntity1, $enrichedEntity2, $enrichedEntity3], $enrichedEntitiesFound);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_an_enriched_entity()
+    {
+        $identifier = EnrichedEntityIdentifier::fromString('identifier');
+        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
+        $this->repository->save($enrichedEntity);
+
+        $enrichedEntity->updateLabels(
+            LabelCollection::fromArray([
+                'en_US' => 'Designer',
+                'fr_FR' => 'Styliste',
+            ])
+        );
+        $this->repository->save($enrichedEntity);
+
+        $enrichedEntityFound = $this->repository->getByIdentifier($identifier);
+        $this->assertEnrichedEntity($enrichedEntity, $enrichedEntityFound);
     }
 
     /**
@@ -102,16 +131,19 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
      * @param $enrichedEntityFound
      *
      */
-    private function assertEnrichedEntity(EnrichedEntity $enrichedEntityExpected, EnrichedEntity $enrichedEntityFound): void
-    {
+    private function assertEnrichedEntity(
+        EnrichedEntity $enrichedEntityExpected,
+        EnrichedEntity $enrichedEntityFound
+    ): void {
         $this->assertTrue($enrichedEntityExpected->equals($enrichedEntityFound));
         $labelCodesExpected = $enrichedEntityExpected->getLabelCodes();
         $labelCodesFound = $enrichedEntityFound->getLabelCodes();
         sort($labelCodesExpected);
         sort($labelCodesFound);
         $this->assertSame($labelCodesExpected, $labelCodesFound);
-        foreach($enrichedEntityExpected->getLabelCodes() as $localeCode) {
-            $this->assertEquals($enrichedEntityExpected->getLabel($localeCode), $enrichedEntityFound->getLabel($localeCode));
+        foreach ($enrichedEntityExpected->getLabelCodes() as $localeCode) {
+            $this->assertEquals($enrichedEntityExpected->getLabel($localeCode),
+                $enrichedEntityFound->getLabel($localeCode));
         }
     }
 

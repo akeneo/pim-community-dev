@@ -8,9 +8,15 @@ use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentif
 
 interface EnrichedEntityRepository
 {
-    public function add(EnrichedEntity $enrichedEntity): void;
+    public function save(EnrichedEntity $enrichedEntity): void;
 
-    public function findOneByIdentifier(EnrichedEntityIdentifier $identifier): ?EnrichedEntity;
+    /**
+     * @throws EntityNotFoundException
+     */
+    public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity;
 
+    /**
+     * @return EnrichedEntity[]
+     */
     public function all(): array;
 }

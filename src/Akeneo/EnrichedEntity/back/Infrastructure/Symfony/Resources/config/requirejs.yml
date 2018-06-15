@@ -3,6 +3,21 @@ config:
         pim/controller-registry:
             controllers:
                 akeneo_enriched_entities_enriched_entities_index:
-                    module: pim/controller/enriched-entity
+                    module: pim/controller/enriched-entity/list
+                akeneo_enriched_entities_enriched_entities_edit:
+                    module: pim/controller/enriched-entity/edit
+        akeneoenrichedentity/application/configuration/edit-tabs:
+            tabs:
+                pim-enriched-entity-edit-form-records:
+                    label: pim_enriched_entity.enriched_entity.tab.records
+                    view: akeneoenrichedentity/application/component/enriched-entity/edit/records
+                pim-enriched-entity-edit-form-attributes:
+                    label: pim_enriched_entity.enriched_entity.tab.attributes
+                    view: akeneoenrichedentity/application/component/enriched-entity/edit/attributes
+                pim-enriched-entity-edit-form-properties:
+                    label: pim_enriched_entity.enriched_entity.tab.properties
+                    view: akeneoenrichedentity/application/component/enriched-entity/edit/properties
+            default_tab: pim-enriched-entity-edit-form-properties
     paths:
-        pim/controller/enriched-entity: akeneoenrichedentity/infrastructure/controller/enriched-entity.tsx
+        pim/controller/enriched-entity/list: akeneoenrichedentity/infrastructure/controller/enriched-entity/list.tsx
+        pim/controller/enriched-entity/edit: akeneoenrichedentity/infrastructure/controller/enriched-entity/edit.tsx

@@ -6,6 +6,9 @@ suites:
     PimEnterprise:
         namespace: PimEnterprise
 
+    Akeneo:
+        namespace: Akeneo
+
     ## Asset
     AssetBundle:
         namespace: Akeneo\Asset\Bundle

@@ -1,47 +1,58 @@
 const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
-const {answerJson} = require('../../../../../../vendor/akeneo/pim-community-dev/tests/front/acceptance/cucumber/tools.js');
+
+const {
+    tools: { answerJson }
+} = require('../../test-helpers.js');
+
 module.exports = async function (cucumber) {
   const { Given, Then, When } = cucumber;
   const assert = require('assert');
 
-  Given('the following enriched entities:', function (enrichedEntities) {
-    debugger;
-    const enrichedEntityResponse = enrichedEntities.hashes().map(function (enrichedEntity) {
-      const enrichedEntityBuilder = new EnrichedEntityBuilder();
+  const givenEnrichedEntities = function (enrichedEntities) {
+      const enrichedEntityResponse = enrichedEntities.hashes().map(function (enrichedEntity) {
+          const enrichedEntityBuilder = new EnrichedEntityBuilder();
 
-      if (undefined !== enrichedEntity.identifier) {
-        enrichedEntityBuilder.withIdentifier(enrichedEntity.identifier);
-      }
-      if (undefined !== enrichedEntity.labels) {
-        enrichedEntityBuilder.withLabels(enrichedEntity.labels);
-      }
+          if (undefined !== enrichedEntity.identifier) {
+              enrichedEntityBuilder.withIdentifier(enrichedEntity.identifier);
+          }
+          if (undefined !== enrichedEntity.labels) {
+              enrichedEntityBuilder.withLabels(JSON.parse(enrichedEntity.labels));
+          }
 
-      return enrichedEntityBuilder.build();
-    });
+          return enrichedEntityBuilder.build();
+      });
 
-    this.page.on('request', request => {
-      if (request.url().includes('/rest/enriched_entity')) {
-        debugger;
-        answerJson(request, { items: enrichedEntityResponse, total: 1000 });
-      }
-    });
-  });
+      enrichedEntityResponse.forEach(enrichedEntity => {
+          this.page.on('request', request => {
+              if (`http://pim.com//rest/enriched_entity/${enrichedEntity.identifier}` === request.url()) {
+                  answerJson(request, enrichedEntity);
+              }
+          });
+      });
 
-  When('the user ask for the enriched entity list', async function () {
+      this.page.on('request', request => {
+          if ('http://pim.com//rest/enriched_entity' === request.url()) {
+              answerJson(request, { items: enrichedEntityResponse, total: 1000 });
+          }
+      });
+  };
+  Given('the following enriched entities to list:', givenEnrichedEntities);
+  Given('the following enriched entities to show:', givenEnrichedEntities);
+
+  When('the user asks for the enriched entity list', async function () {
     await this.page.evaluate(async () => {
-      debugger;
-      const Controller = require('pim/controller/enriched-entity');
+      const Controller = require('pim/controller/enriched-entity/list');
       const controller = new Controller();
-      controller.renderRoute()
+      controller.renderRoute();
       await document.getElementById('app').appendChild(controller.el);
     });
 
     await this.page.waitFor('.AknGridContainer');
   });
 
-  Then('the user get a selection of {int} items out of {int} items in total', async function (count, total) {
-    await this.page.waitForSelector('.AknGrid-bodyRow');
-    const rows = await this.page.$$('.AknGrid-bodyRow');
+  Then('the user gets a selection of {int} items out of {int} items in total', async function (count, total) {
+    await this.page.waitForSelector('.AknGrid-bodyRow:not(.AknLoadingPlaceHolder)');
+    const rows = await this.page.$$('.AknGrid-bodyRow:not(.AknLoadingPlaceHolder)');
     assert.equal(rows.length, count);
 
     const titleElement = await this.page.waitForSelector('.AknTitleContainer-title');
@@ -50,11 +61,16 @@ module.exports = async function (cucumber) {
     assert.equal(title.trim(), `${total} result${total > 1 ? 's' : ''}`);
   });
 
-  Then('I get an enriched entity {string}', async function (identifier) {
+  Then('the user gets an enriched entity {string}', async function (identifier) {
     await this.page.waitForSelector(`.AknGrid-bodyRow[data-identifier="${identifier}"]`);
   });
 
-  Then('the user ask for the next enriched entities', async function () {
+  Then('there is no enriched entity', async function () {
+    const rows = await this.page.$$('.AknGrid-bodyRow:not(.AknLoadingPlaceHolder)');
+    assert.equal(rows.length, 0);
+  });
+
+  Then('the user asks for the next enriched entities', async function () {
     this.page.evaluate(_ => {
       window.scrollBy(0, window.innerHeight);
     });

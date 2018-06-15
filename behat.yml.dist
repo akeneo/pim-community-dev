@@ -178,7 +178,8 @@ acceptance:
             paths:
                 - '%paths.base%/tests/features/enriched-entity'
             contexts_services:
-                - test.enriched_entity.show_enriched_entity.context
+                - test.enriched_entity.enriched_entity_grid.context
+                - test.enriched_entity.enriched_entity_details.context
             filters:
                 tags: '@acceptance-back'
         volume-monitoring:

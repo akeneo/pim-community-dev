@@ -6,8 +6,8 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -30,15 +30,20 @@ class SqlEnrichedEntityRepository implements EnrichedEntityRepository
     }
 
     /**
-     * @param EnrichedEntity $enrichedEntity
+     * Depending on the database table state, the sql query "REPLACE INTO ... " might affect one row (the insert use
+     * case) or two rows (the update use case)
+     * @see https://dev.mysql.com/doc/refman/8.0/en/mysql-affected-rows.html
+     *
+     * @throws \RuntimeException
+     * @throws \Doctrine\DBAL\DBALException
      */
-    public function add(EnrichedEntity $enrichedEntity): void
+    public function save(EnrichedEntity $enrichedEntity): void
     {
         $serializedLabels = $this->getSerializedLabels($enrichedEntity);
         $insert = <<<SQL
         REPLACE INTO akeneo_enriched_entity_enriched_entity (identifier, labels) VALUES (:identifier, :labels);
 SQL;
-        $statement = $this->sqlConnection->executeQuery(
+        $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
                 'identifier' => (string) $enrichedEntity->getIdentifier(),
@@ -46,19 +51,12 @@ SQL;
             ]
         );
 
-        if ($statement->rowCount() !== 1) {
-            throw new \LogicException(
-                sprintf('Expected to add one enriched entity. "%d" added', $statement->rowCount())
-            );
+        if ($affectedRows === 0) {
+            throw new \RuntimeException('Expected to save one enriched entity, but none was saved');
         }
     }
 
-    /**
-     * @param EnrichedEntityIdentifier $identifier
-     *
-     * @return EnrichedEntity
-     */
-    public function findOneByIdentifier(EnrichedEntityIdentifier $identifier): ?EnrichedEntity
+    public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity
     {
         $fetch = <<<SQL
         SELECT identifier, labels
@@ -70,17 +68,15 @@ SQL;
             ['identifier' => (string) $identifier]
         );
         $result = $statement->fetch();
+        $statement->closeCursor();
 
         if (!$result) {
-            return null;
+            throw EntityNotFoundException::withIdentifier(EnrichedEntity::class, (string) $identifier);
         }
 
-        return $this->hidrateEnrichedEntity($result['identifier'], $result['labels']);
+        return $this->hydrateEnrichedEntity($result['identifier'], $result['labels']);
     }
 
-    /**
-     * @return EnrichedEntity[]
-     */
     public function all(): array
     {
         $selectAllQuery = <<<SQL
@@ -89,42 +85,33 @@ SQL;
 SQL;
         $statement = $this->sqlConnection->executeQuery($selectAllQuery);
         $results = $statement->fetchAll();
+        $statement->closeCursor();
 
         $enrichedEntities = [];
         foreach ($results as $result) {
-            $enrichedEntities[] = $this->hidrateEnrichedEntity($result['identifier'], $result['labels']);
+            $enrichedEntities[] = $this->hydrateEnrichedEntity($result['identifier'], $result['labels']);
         }
 
         return $enrichedEntities;
     }
 
-    /**
-     * @param string $identifier
-     *
-     * @return EnrichedEntity
-     */
-    private function hidrateEnrichedEntity(string $identifier, string $normalizedLabels): EnrichedEntity
+    private function hydrateEnrichedEntity(string $identifier, string $normalizedLabels): EnrichedEntity
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = json_decode($normalizedLabels, true);
         $identifier = Type::getType(Type::STRING)->convertToPhpValue($identifier, $platform);
 
-        $enrichedEntity = EnrichedEntity::define(
+        $enrichedEntity = EnrichedEntity::create(
             EnrichedEntityIdentifier::fromString(
                 $identifier
             ),
-            LabelCollection::fromArray($labels)
+            $labels
         );
 
         return $enrichedEntity;
     }
 
-    /**
-     * @param EnrichedEntity $enrichedEntity
-     *
-     * @return array
-     */
     private function getSerializedLabels(EnrichedEntity $enrichedEntity): string
     {
         $labels = [];

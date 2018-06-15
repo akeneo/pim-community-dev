@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
