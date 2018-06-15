@@ -228,17 +228,20 @@ class GridHelper
             if ($product instanceof EntityWithFamilyVariantInterface) {
                 $parentProduct = $product->getParent();
                 if (null === $parentProduct) {
+                    $choices[$product->getLabel()] = $product->getId();
                     continue;
                 }
 
                 $familyVariant = $parentProduct->getFamilyVariant();
                 if (null === $familyVariant) {
+                    $choices[$product->getLabel()] = $product->getId();
                     continue;
                 }
 
                 $variationLevel = $product->getVariationLevel();
                 $variantAttributeSet = $familyVariant->getVariantAttributeSet($variationLevel);
                 if (null === $variantAttributeSet) {
+                    $choices[$product->getLabel()] = $product->getId();
                     continue;
                 }
 
