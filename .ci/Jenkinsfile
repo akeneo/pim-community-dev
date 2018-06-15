@@ -10,6 +10,7 @@ String launchEndToEndTests = "yes"
 String verboseOutputs = "yes"
 String slackChannel = ""
 String tag = "eu.gcr.io/akeneo-ci/pim-enterprise-dev:${env.BRANCH_NAME}"
+String composerCommand = "update"
 
 stage("Build") {
     milestone 1
@@ -27,6 +28,10 @@ stage("Build") {
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
             ])
 
+            if (ceBranch == userInput['ce_branch']) {
+                composerCommand = "install"
+            }
+
             ceBranch = userInput['ce_branch']
             ceOwner = userInput['ce_owner']
             legacyFeatures = userInput['legacyFeatures'].tokenize(',')
@@ -36,6 +41,7 @@ stage("Build") {
             launchEndToEndTests = userInput['launchEndToEndTests']
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
+
         }
     }
     milestone 2
@@ -52,7 +58,7 @@ stage("Build") {
             ])
         }
 
-        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag} ."
+        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composerCommand} ."
     }}
 }
 

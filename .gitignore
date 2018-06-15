@@ -33,7 +33,6 @@ behat.yml
 .php_cs.cache
 .phpspec/*.tpl
 composer.phar
-composer.lock
 /node_modules
 phpspec.yml
 npm-debug.log

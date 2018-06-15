@@ -3,10 +3,10 @@
         <%- _.__('pimee_product_asset.form.product.asset.manage') %>
     </span>
 </div>
-<ul class="AknAssetCollectionField-list <%- ('view' === editMode) ? 'AknAssetCollectionField-list--disabled' : '' %>">
+<ul class="AknAssetCollectionField-list<%- ('view' === editMode) ? ' AknAssetCollectionField-list--disabled' : '' %>">
     <% _.each(assets, function (asset) { %>
-        <li class="AknAssetCollectionField-listItem  <%- ('view' === editMode) ? 'AknAssetCollectionField-listItem--disabled' : '' %>" data-asset="<%- asset.code %>">
-            <div class="AknAssetCollectionField-assetThumbnail" style="background-image: url('<%- Routing.generate('pimee_product_asset_thumbnail', {
+        <li class="asset-thumbnail-item AknAssetCollectionField-listItem<%- ('view' === editMode) ? ' AknAssetCollectionField-listItem--disabled' : '' %>" data-asset="<%- asset.code %>">
+            <div class="AknAssetCollectionField-assetThumbnail asset-thumbnail" style="background-image: url('<%- Routing.generate('pimee_product_asset_thumbnail', {
                     code: asset.code,
                     filter: thumbnailFilter,
                     channelCode: scope,
