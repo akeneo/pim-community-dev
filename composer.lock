@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "062dcca61a712cbc0b8b5131863a0419",
+    "content-hash": "ece7b5c2825274798c227e974b4573c5",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -1561,7 +1561,7 @@
                     "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
                 },
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com"
                 }
             ],
@@ -5068,28 +5068,28 @@
     "packages-dev": [
         {
             "name": "akeneo/php-coupling-detector",
-            "version": "0.2.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/php-coupling-detector.git",
-                "reference": "b28567fd020441fdaf7554232335da19a1c4f0d1"
+                "reference": "61a638e92544f59d5d728b08a6fba2ecacc81cec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/php-coupling-detector/zipball/b28567fd020441fdaf7554232335da19a1c4f0d1",
-                "reference": "b28567fd020441fdaf7554232335da19a1c4f0d1",
+                "url": "https://api.github.com/repos/akeneo/php-coupling-detector/zipball/61a638e92544f59d5d728b08a6fba2ecacc81cec",
+                "reference": "61a638e92544f59d5d728b08a6fba2ecacc81cec",
                 "shasum": ""
             },
             "require": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "php": ">=5.3.6",
-                "symfony/console": "~2.3|~3.0",
-                "symfony/event-dispatcher": "~2.3|~3.0",
-                "symfony/filesystem": "~2.3|~3.0",
-                "symfony/finder": "~2.3|~3.0"
+                "friendsofphp/php-cs-fixer": "^2.1",
+                "php": "^7.1",
+                "symfony/console": "^3.0||^4.0",
+                "symfony/event-dispatcher": "^3.0||^4.0",
+                "symfony/filesystem": "^3.0||^4.0",
+                "symfony/finder": "^3.0||^4.0"
             },
             "require-dev": {
-                "phpspec/phpspec": "~2.3"
+                "phpspec/phpspec": "^3.0||^4.0"
             },
             "bin": [
                 "bin/php-coupling-detector"
@@ -5115,11 +5115,12 @@
                     "homepage": "http://www.akeneo.com"
                 },
                 {
-                    "name": "Julien Janvier <j.janvier@gmail.com>"
+                    "name": "Julien Janvier <j.janvier@gmail.com>",
+                    "homepage": "http://jjanvier.com"
                 }
             ],
-            "description": "PHP coupling detector",
-            "time": "2017-03-28T07:33:31+00:00"
+            "description": "Detect all the coupling issues of your project with respect to the coupling rules you have defined.",
+            "time": "2018-03-28T15:29:00+00:00"
         },
         {
             "name": "akeneo/phpspec-skip-example-extension",
@@ -7997,6 +7998,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "akeneo/php-coupling-detector": 20,
         "behat/mink-selenium2-driver": 20
     },
     "prefer-stable": false,
