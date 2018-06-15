@@ -234,6 +234,8 @@ pim_enrich.entity.product:
             locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
             media_upload: Drag and drop to upload or click here
             to_fill_count: "{1}1 missing required attribute|]1, Inf [{{ count }} missing required attributes"
+            add_attribute_option: Add attribute option
+            add_option: Add an option
         completeness:
             title: Completeness
             complete: Complete
@@ -381,6 +383,17 @@ pim_enrich.entity.family_variant:
         update_translations:
             title: Update translations
 
+pim_enrich.entity.attribute_option:
+    flash:
+        create:
+            success: Attribute option successfully created
+            fail: An error ocurred when trying to create the attribute option
+        update:
+            fail: Cannot save attribute option
+        delete:
+            fail: Error during deletion of the attribute option
+
+
 pim_enrich:
     entity:
         association_type:
@@ -412,16 +425,6 @@ pim_enrich:
                     fail: Cannot delete this group type
             page_title:
                 index: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} group types"
-
-        attribute_option:
-            flash:
-                create:
-                    success: Attribute option successfully created
-                    fail: An error ocurred when trying to create the attribute option
-                update:
-                    fail: Cannot save attribute option
-                delete:
-                    fail: Error during deletion of the attribute option
 
         group:
             label: Group
@@ -573,10 +576,6 @@ pim_enrich:
             updated: There are unsaved changes.
     form:
         required: (required)
-        attribute_option:
-            add_option_modal:
-                title: Add attribute option
-            add_option: Add an option
         attribute_group:
             tab:
                 attribute:
