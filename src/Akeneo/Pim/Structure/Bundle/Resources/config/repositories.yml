@@ -82,3 +82,10 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.attribute.class%'
+
+    pim_enrich.repository.family:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyRepository'
+        arguments:
+            - '@pim_user.context.user'
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family.class%'

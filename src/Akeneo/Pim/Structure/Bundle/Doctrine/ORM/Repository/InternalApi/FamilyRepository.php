@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\ORM\EntityManager;
