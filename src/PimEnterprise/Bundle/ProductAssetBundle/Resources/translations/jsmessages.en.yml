@@ -40,6 +40,8 @@ pimee_product_asset:
         success:
             new: A new asset will be created
             imported: Files imported for asset processing
+            need_refresh: <b>Asset import has been launched</b><br>
+                          To see imported assets in the product form, please refresh the product page as soon as you receive the import notification.
             canceled: Upload successfully canceled
             deleted: Uploaded file successfully deleted
         error:

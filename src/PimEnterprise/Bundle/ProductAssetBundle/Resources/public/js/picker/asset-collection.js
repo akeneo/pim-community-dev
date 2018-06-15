@@ -130,15 +130,15 @@ define(
                         importRoute: 'pimee_product_asset_mass_upload_and_add_to_rest_import'
                     };
 
-                    const inversedUriParts = this.el.baseURI.split('/').reverse(); // TODO do this better
-                    const attributeField = {
-                        entityId: inversedUriParts[0],
-                        entityType: inversedUriParts[1],
+                    const invertedUriParts = this.el.baseURI.split('/').reverse(); // TODO do this better
+                    const entity = {
+                        id: invertedUriParts[0],
+                        type: invertedUriParts[1],
                         attributeCode: this.$el.closest('[data-attribute]').data('attribute')
                     };
 
                     form.setRoutes(routes)
-                        .setAttributeField(attributeField)
+                        .setEntity(entity)
                         .setElement(this.$('.asset-mass-uploader'))
                         .render();
                 });

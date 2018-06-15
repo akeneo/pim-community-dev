@@ -53,9 +53,7 @@ define(
             rowTemplate: _.template(rowTemplate),
             cancelRedirectionRoute: '',
             importRoute: '',
-            entityType: '',
-            entityId: '',
-            entityAttribute: '',
+            entity: null,
 
             /**
              * Sets the various routes to use.
@@ -74,14 +72,12 @@ define(
             /**
              * Sets the type and ID of the entity the assets will be added to once uploaded.
              *
-             * @param {Object} attributeField
+             * @param {Object} entity
              *
              * @return {exports}
              */
-            setAttributeField(attributeField) {
-                this.entityType = attributeField.entityType;
-                this.entityId = attributeField.entityId;
-                this.attributeCode = attributeField.attributeCode;
+            setEntity(entity) {
+                this.entity = entity;
 
                 return this;
             },
@@ -330,22 +326,32 @@ define(
             importAll() {
                 $importButton.addClass('AknButton--disabled');
 
-                const route = '' !== this.entityType && '' !== this.entityId && '' !== this.attributeCode
+                const route = null !== this.entity
                     ? router.generate(this.importRoute, {
-                        entityType: this.entityType,
-                        entityId: this.entityId,
-                        attributeCode: this.attributeCode
+                        entityType: this.entity.type,
+                        entityId: this.entity.id,
+                        attributeCode: this.entity.attributeCode
                     })
                     : router.generate(this.importRoute);
 
                 $.get(route).done(response => {
-                    messenger.notify(
-                        'success',
-                        __('pimee_product_asset.mass_upload.success.imported')
-                    );
+                    const message = {};
+                    if (null === this.entity) {
+                        message.notification = 'success';
+                        message.content = 'pimee_product_asset.mass_upload.success.imported';
+                        message.flash = true;
+                    } else {
+                        message.info = 'success';
+                        message.content = 'pimee_product_asset.mass_upload.success.need_refresh';
+                        message.flash = false;
+                    }
 
+                    messenger.notify(message.notification, __(message.content), {flash: message.flash});
                     this.clearModal();
-                    router.redirectToRoute('pim_enrich_job_tracker_show', {id: response.jobId});
+
+                    if (null === this.entity) {
+                        router.redirectToRoute('pim_enrich_job_tracker_show', {id: response.jobId});
+                    }
                 }).fail(() => {
                     messenger.notify(
                         'error',
