@@ -17,6 +17,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
@@ -77,11 +78,8 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
      */
     public function build(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesDraftInterface
     {
-        if ($entityWithValues instanceof ProductInterface) {
-            $values = $entityWithValues->isVariant() ? $entityWithValues->getValuesForVariation() : $entityWithValues->getValues();
-        } else {
-            $values = $entityWithValues->getValues();
-        }
+        $values = $entityWithValues instanceof EntityWithFamilyVariantInterface ?
+            $entityWithValues->getValuesForVariation() : $entityWithValues->getValues();
 
         $newValues = $this->normalizer->normalize($values, 'standard');
         $originalValues = $this->getOriginalValues($entityWithValues);
