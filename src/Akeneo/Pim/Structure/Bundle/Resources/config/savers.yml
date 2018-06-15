@@ -12,13 +12,6 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
 
-    pim_catalog.saver.group_type:
-        class: '%pim_catalog.saver.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pim_catalog.model.group_type.interface%'
-
     pim_catalog.saver.family_variant:
         class: '%pim_catalog.saver.base.class%'
         arguments:

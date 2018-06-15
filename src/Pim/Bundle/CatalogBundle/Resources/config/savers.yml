@@ -7,6 +7,13 @@ parameters:
     pim_catalog.synchronizer.product_unique_data.class:    Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
 
 services:
+    pim_catalog.saver.group_type:
+        class: '%pim_catalog.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.group_type.interface%'
+
     pim_catalog.saver.product:
         class: '%pim_catalog.saver.product.class%'
         arguments:
