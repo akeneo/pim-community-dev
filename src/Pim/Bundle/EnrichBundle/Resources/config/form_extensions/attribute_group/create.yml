@@ -67,7 +67,7 @@ extensions:
         targetZone: accordion
         position: 100
         config:
-            sectionTitle: pim_enrich.form.channel.tab.properties.general
+            sectionTitle: pim_common.general_properties
             codeLabel: pim_common.code
 
     pim-attribute-group-create-form-properties-translation-section:

@@ -52,7 +52,7 @@ define([
                         currentCurrencies: this.getFormData().currencies,
                         currencies: currencies,
                         errors: this.getParent().getValidationErrorsForField('currencies'),
-                        label: __('pim_enrich.form.channel.tab.properties.currencies'),
+                        label: __('pim_enrich.entity.currency.plural_label'),
                         requiredLabel: __('pim_enrich.form.required')
                     }));
 

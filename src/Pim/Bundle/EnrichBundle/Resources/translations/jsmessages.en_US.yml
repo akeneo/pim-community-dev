@@ -306,6 +306,26 @@ pim_enrich.entity.product_model:
         completeness:
             variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, +Inf]{{ complete }} / {{ total }} variant products"
 
+pim_enrich.entity.channel:
+    label: channel
+    uppercase_label: Channel
+    flash:
+        update:
+            success: Channel successfully updated.
+            fail: The channel could not be updated.
+        create:
+            success: Channel successfully created.
+            fail: The channel could not be created.
+        delete:
+            success: Channel successfully removed
+            fail: Cannot delete this channel
+    page_title:
+        index: "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} channels"
+    property:
+        category_tree: Category tree
+        do_not_convert: Do not convert
+        label_conversion_units: Pick a conversion unit for each metric attribute that will be used during product export
+
 pim_enrich:
     entity:
         association_type:
@@ -337,22 +357,6 @@ pim_enrich:
                     fail: Cannot delete this group type
             page_title:
                 index: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} group types"
-
-        channel:
-            label: channel
-            uppercase_label: Channel
-            flash:
-                update:
-                    success: Channel successfully updated.
-                    fail: The channel could not be updated.
-                create:
-                    success: Channel successfully created.
-                    fail: The channel could not be created.
-                delete:
-                    success: Channel successfully removed
-                    fail: Cannot delete this channel
-            page_title:
-                index: "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} channels"
 
         family:
             label: family
@@ -537,6 +541,7 @@ pim_enrich:
             plural_label: Categories
 
         currency:
+            plural_label: Currencies
             page_title:
                 index: "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} currencies"
 
@@ -549,15 +554,6 @@ pim_enrich:
             updated: There are unsaved changes.
     form:
         required: (required)
-        channel:
-            tab:
-                properties:
-                    general: General
-                    currencies: Currencies
-                    category_tree: Category tree
-                    label_conversion_units: Pick a conversion unit for each metric attribute that will be used during product export
-                    conversion_unit:
-                        do_not_convert: Do not convert
         family:
             tab:
                 properties:
