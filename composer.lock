@@ -1,23 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b744caa32844e2741853ee60a7015ae0",
+    "content-hash": "e2f2e27b0358a2df7a7adf3b9d300591",
     "packages": [
         {
             "name": "akeneo/pim-community-dev",
-            "version": "2.3.x-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/pim-community-dev.git",
-                "reference": "f5e8179620e1f8af6aab0191a513807678944c3b"
+                "reference": "dab8722d7d0ba82ac39895414206341de5425575"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/pim-community-dev/zipball/f5e8179620e1f8af6aab0191a513807678944c3b",
-                "reference": "f5e8179620e1f8af6aab0191a513807678944c3b",
+                "url": "https://api.github.com/repos/akeneo/pim-community-dev/zipball/dab8722d7d0ba82ac39895414206341de5425575",
+                "reference": "dab8722d7d0ba82ac39895414206341de5425575",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "oro/user-bundle": "1.0-dev"
             },
             "require-dev": {
-                "akeneo/php-coupling-detector": "0.2.0",
+                "akeneo/php-coupling-detector": "dev-master",
                 "akeneo/phpspec-skip-example-extension": "2.0.*",
                 "behat/behat": "3.4.3",
                 "behat/gherkin": "4.5.1",
@@ -199,10 +199,10 @@
             ],
             "description": "Akeneo PIM, the future of catalog management is open!",
             "support": {
-                "source": "https://github.com/akeneo/pim-community-dev/tree/2.3",
+                "source": "https://github.com/akeneo/pim-community-dev/tree/master",
                 "issues": "https://github.com/akeneo/pim-community-dev/issues"
             },
-            "time": "2018-06-11T13:00:13+00:00"
+            "time": "2018-06-15T07:51:08+00:00"
         },
         {
             "name": "ass/xmlsecurity",
@@ -5299,28 +5299,28 @@
     "packages-dev": [
         {
             "name": "akeneo/php-coupling-detector",
-            "version": "0.2.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/php-coupling-detector.git",
-                "reference": "b28567fd020441fdaf7554232335da19a1c4f0d1"
+                "reference": "61a638e92544f59d5d728b08a6fba2ecacc81cec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/php-coupling-detector/zipball/b28567fd020441fdaf7554232335da19a1c4f0d1",
-                "reference": "b28567fd020441fdaf7554232335da19a1c4f0d1",
+                "url": "https://api.github.com/repos/akeneo/php-coupling-detector/zipball/61a638e92544f59d5d728b08a6fba2ecacc81cec",
+                "reference": "61a638e92544f59d5d728b08a6fba2ecacc81cec",
                 "shasum": ""
             },
             "require": {
-                "friendsofphp/php-cs-fixer": "^2.0",
-                "php": ">=5.3.6",
-                "symfony/console": "~2.3|~3.0",
-                "symfony/event-dispatcher": "~2.3|~3.0",
-                "symfony/filesystem": "~2.3|~3.0",
-                "symfony/finder": "~2.3|~3.0"
+                "friendsofphp/php-cs-fixer": "^2.1",
+                "php": "^7.1",
+                "symfony/console": "^3.0||^4.0",
+                "symfony/event-dispatcher": "^3.0||^4.0",
+                "symfony/filesystem": "^3.0||^4.0",
+                "symfony/finder": "^3.0||^4.0"
             },
             "require-dev": {
-                "phpspec/phpspec": "~2.3"
+                "phpspec/phpspec": "^3.0||^4.0"
             },
             "bin": [
                 "bin/php-coupling-detector"
@@ -5346,11 +5346,12 @@
                     "homepage": "http://www.akeneo.com"
                 },
                 {
-                    "name": "Julien Janvier <j.janvier@gmail.com>"
+                    "name": "Julien Janvier <j.janvier@gmail.com>",
+                    "homepage": "http://jjanvier.com"
                 }
             ],
-            "description": "PHP coupling detector",
-            "time": "2017-03-28T07:33:31+00:00"
+            "description": "Detect all the coupling issues of your project with respect to the coupling rules you have defined.",
+            "time": "2018-03-28T15:29:00+00:00"
         },
         {
             "name": "akeneo/phpspec-skip-example-extension",
@@ -8191,6 +8192,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "akeneo/pim-community-dev": 20,
+        "akeneo/php-coupling-detector": 20,
         "behat/mink-selenium2-driver": 20
     },
     "prefer-stable": false,
