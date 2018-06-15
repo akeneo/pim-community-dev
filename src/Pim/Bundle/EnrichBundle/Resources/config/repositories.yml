@@ -2,8 +2,6 @@ parameters:
     ## Searchable repositories
     pim_enrich.repository.family.search.class:           Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository
     pim_enrich.repository.family_variant.search.class:   Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantSearchableRepository
-    pim_enrich.repository.attribute.search.class:        Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository
-    pim_enrich.repository.attribute_option.search.class: Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeOptionSearchableRepository
 
     ## Default UI repositories
     pim_enrich.repository.category.class:                Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CategoryRepository
@@ -33,12 +31,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.family_variant.class%'
-
-    pim_enrich.repository.attribute.search:
-        class: '%pim_enrich.repository.attribute.search.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.attribute.class%'
 
     ## Default UI repositories
     pim_enrich.repository.category:
