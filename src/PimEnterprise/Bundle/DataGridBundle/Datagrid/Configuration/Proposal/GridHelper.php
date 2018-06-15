@@ -225,6 +225,8 @@ class GridHelper
     {
         foreach ($proposals as $proposal) {
             $product = $proposal->getProduct();
+            //TODO: be careful in 2.2 this interface will not distinguish variant from non variant.
+            //It will need to be replaced by $product->isVariant().
             if ($product instanceof EntityWithFamilyVariantInterface) {
                 $parentProduct = $product->getParent();
                 if (null === $parentProduct) {
