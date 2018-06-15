@@ -197,3 +197,9 @@
 - Move `Pim\Component\Catalog\AttributeTypeRegistry` to `Akeneo\Pim\Structure\Component\AttributeTypeRegistry`
 - Remove class `Pim\Bundle\EnrichBundle\Controller\FamilyController`
 - Remove class `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRequirementRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRequirementRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\AttributeSaver` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver`
+- Move `Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface`

@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Factory\Value\OptionValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
-use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Prophecy\Argument;
 
 class OptionValueFactorySpec extends ObjectBehavior

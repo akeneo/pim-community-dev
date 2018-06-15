@@ -25,7 +25,9 @@ class AjaxEntityTransformerFactoryTest extends TestCase
             ->method('getRepository')
             ->with($this->equalTo('class'))
             ->will(
-                $this->returnValue($this->createMock('Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository'))
+                $this->returnValue($this->createMock(
+                    'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository'
+                ))
             );
 
         $factory = new AjaxEntityTransformerFactory($doctrine, $transformerClass);

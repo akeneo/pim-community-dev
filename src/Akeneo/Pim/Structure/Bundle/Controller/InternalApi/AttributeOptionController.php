@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -16,7 +17,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeOptionSearchableRepository;
 use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType;
 use Pim\Component\Catalog\Manager\AttributeOptionsSorter;
-use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

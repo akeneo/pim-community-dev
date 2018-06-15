@@ -29,5 +29,6 @@ class AkeneoPimStructureExtension extends Extension
         $loader->load('services.yml');
         $loader->load('controllers.yml');
         $loader->load('attribute_types.yml');
+        $loader->load('savers.yml');
     }
 }

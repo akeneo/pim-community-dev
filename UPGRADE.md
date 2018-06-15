@@ -173,3 +173,8 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Cont
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Controller\\Rest\\FamilyVariantController/Akeneo\\Pim\\Structure\\Bundle\\Controller\\InternalApi\\FamilyVariantController/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Controller\\Rest\\AttributeTypeController/Akeneo\\Pim\\Structure\\Bundle\\Controller\\InternalApi\\AttributeTypeController/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\AttributeTypeRegistry/Akeneo\\Pim\\Structure\\Component\\AttributeTypeRegistry/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\AttributeOptionRepository/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\Repository\\AttributeOptionRepository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\AttributeSaver/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\Saver\\AttributeSaver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\FamilySaver/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\Saver\\FamilySaver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\AttributeRequirementRepositoryInterface/Akeneo\\Pim\\Structure\\Component\\Repository\\AttributeRequirementRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\AttributeOptionRepositoryInterface/Akeneo\\Pim\\Structure\\Component\\Repository\\AttributeOptionRepositoryInterface/g'

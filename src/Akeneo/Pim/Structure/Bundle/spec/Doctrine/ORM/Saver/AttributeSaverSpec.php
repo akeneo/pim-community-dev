@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
+namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver;
 
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;

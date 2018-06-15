@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\UIBundle\Controller;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
