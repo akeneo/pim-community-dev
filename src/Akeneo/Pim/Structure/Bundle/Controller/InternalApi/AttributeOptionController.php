@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\View\View as RestView;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeOptionSearchableRepository;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeOptionSearchableRepository;
 use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType;
 use Pim\Component\Catalog\Manager\AttributeOptionsSorter;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -74,16 +74,16 @@ class AttributeOptionController
     /**
      * @param NormalizerInterface                 $normalizer
      * @param EntityManager                       $entityManager
-     * @param FormFactoryInterface                $formFactory
-     * @param ViewHandlerInterface                $viewHandler
-     * @param AttributeOptionsSorter              $sorter
-     * @param SimpleFactoryInterface              $optionFactory
-     * @param SaverInterface                      $optionSaver
-     * @param RemoverInterface                    $optionRemover
-     * @param AttributeRepositoryInterface        $attributeRepository
-     * @param AttributeOptionRepositoryInterface  $attributeOptionRepository
-     * @param AttributeOptionSearchableRepository $attributeOptionSearchableRepo
-     * @param NormalizerInterface                 $structureNormalizer
+     * @param FormFactoryInterface                                                                                 $formFactory
+     * @param ViewHandlerInterface                                                                                 $viewHandler
+     * @param AttributeOptionsSorter                                                                               $sorter
+     * @param SimpleFactoryInterface                                                                               $optionFactory
+     * @param SaverInterface                                                                                       $optionSaver
+     * @param RemoverInterface                                                                                     $optionRemover
+     * @param AttributeRepositoryInterface                                                                         $attributeRepository
+     * @param AttributeOptionRepositoryInterface                                                                   $attributeOptionRepository
+     * @param \Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeOptionSearchableRepository $attributeOptionSearchableRepo
+     * @param NormalizerInterface                                                                                  $structureNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
