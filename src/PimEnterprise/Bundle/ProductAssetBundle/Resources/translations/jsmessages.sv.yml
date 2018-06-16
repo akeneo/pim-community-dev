@@ -8,6 +8,8 @@ pimee_product_asset:
           cancel: Avbryt
           confirm: Bekräfta
         title: Hantera tillgångar
+        download: Ladda ner
+        remove: Ta bort
     asset:
       not_empty: Koden krävs. Det kan inte vara tomt.
   enrich_asset:

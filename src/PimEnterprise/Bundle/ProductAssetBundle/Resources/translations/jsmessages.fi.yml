@@ -9,6 +9,8 @@ pimee_product_asset:
           confirm: Vahvista
         title: Hallinnoi resursseja
         description: Valitse assetit, jotka haluat liittää tuotteelle
+        download: Lataa
+        remove: Poista
     asset:
       not_empty: Koodi vaaditaan. Se ei voi olla tyhjä.
       alpha_numeric_plus_underscore: Koodi voi sisältää vain alfanumeerisia merkkejä tai alaviivoja.

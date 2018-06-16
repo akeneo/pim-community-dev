@@ -9,6 +9,8 @@ pimee_product_asset:
           confirm: Bekræft
         title: Administrer aktiver
         description: Vælge de aktiver, du vil vedhæfte til dit produkt
+        download: Hent
+        remove: Fjern
     asset:
       not_empty: Koden er påkrævet. Det kan ikke være tom.
       alpha_numeric_plus_underscore: Koden skal kun være alfanumeriske eller understreg.

@@ -8,6 +8,8 @@ pimee_product_asset:
           cancel: Poništi
           confirm: Potvrdi
         title: Upravljanje imovinom
+        download: Preuzimanje
+        remove: Ukloni
     asset:
       not_empty: Kod je potreban. Ne može biti prazan.
   enrich_asset:

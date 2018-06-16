@@ -9,6 +9,8 @@ pimee_product_asset:
           confirm: Conferma
         title: Gestisci asset
         description: Scegli gli asset che vuoi allegare al prodotto
+        download: Scarica
+        remove: Rimuovere
     asset:
       not_empty: Il codice è richiesto. Non può essere vuoto.
   enrich_asset:

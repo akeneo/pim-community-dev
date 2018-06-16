@@ -9,6 +9,8 @@ pimee_product_asset:
           confirm: 確認
         title: アセット管理
         description: 製品に添付するアセットを選択
+        download: ダウンロード
+        remove: 削除
     asset:
       not_empty: コードが必要です。それは空にできません。
   enrich_asset:
