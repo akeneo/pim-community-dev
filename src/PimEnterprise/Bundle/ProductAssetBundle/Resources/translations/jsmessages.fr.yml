@@ -9,6 +9,8 @@ pimee_product_asset:
           confirm: Confirmer
         title: Gérer les ressources
         description: Choisissez les ressources que vous souhaitez attacher à votre produit
+        download: Téléchargement
+        remove: Supprimer
     asset:
       not_empty: Code est requis. Le champ ne peut pas être vide.
       alpha_numeric_plus_underscore: Le code devrait être composé de caractères alphanumériques ou de tirets bas.

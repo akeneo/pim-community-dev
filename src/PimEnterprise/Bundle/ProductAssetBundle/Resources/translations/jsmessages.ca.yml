@@ -8,6 +8,8 @@ pimee_product_asset:
           cancel: Cancelar
           confirm: Confirmar
         title: Gestió de recursos
+        download: Descarregar
+        remove: Eliminar
     asset:
       not_empty: Codi obligatori. No es pot deixar buit.
   enrich_asset:

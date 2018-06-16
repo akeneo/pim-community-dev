@@ -8,6 +8,8 @@ pimee_product_asset:
           cancel: Отмена
           confirm: Подтверждение
         title: Управление активами
+        download: Скачать
+        remove: Удалить
     asset:
       not_empty: Код требуется. Он не может быть пустым.
   enrich_asset:

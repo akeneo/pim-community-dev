@@ -25,6 +25,8 @@ pimee_catalog_rule:
       "set_value": Arvo "%value%" viedään kenttään "%field%"
       "add": Arvo "%value%" lisätään kenttään "%field%"
       "remove": Arvo "%value%" poistetaan kentästä "%field%"
+    options:
+      include_children: ja alatasot
   condition:
     label: Jos %field% %operator% %value%
     operators:
