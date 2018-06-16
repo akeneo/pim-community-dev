@@ -354,6 +354,7 @@ pim_enrich:
         create_label: Luo uusi varianttiperhe
         create_description: Varianttiperheelle voit määrittää tuoterakenteen varianteille. Valitse ylläpidettävien varianttitulottuvuuksien määrä, valitse varianttiulottuvuuksien eri tasoilla käytetyt määrittävät attribuutit ja valitse sitten miten attribuutit on jaettu eri tasoille.
         update_description: Vedä ja pudota attribuutit valitulle tasolle, jotta niiden rikastaminen tapahtuu varianttien tasolla.
+        update_translation: Käännä variattiperheen nimi
         create: Luo
         cancel: Peruuta
         code: Koodi
@@ -594,6 +595,8 @@ pim_enrich:
           title: Historia
     family_variant:
       tab:
+        attributes:
+          title: Variantin attribuutit
         labels:
           title: Nimikkeiden käännökset
     attribute_option:
@@ -1077,10 +1080,13 @@ pim_enrich:
           label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> olemassa olevaan tuotemalliin|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> olemassa olevaan tuotemalliin"
           description: Valittu tuotemalli kokoaa tuotteet ja mahdollistaa niiden yhteisten attribuuttien rikastamisen.
         associate_to_product_and_product_model:
-          label: Luo assosiaatio tuotteisiin
+          label: Liitä
           label_count: "{1}Liitä <span class=\"AknFullPage-title--highlight\">1 tuote</span> tuotteisiin tai tuotemalleihin|] 1, Inf [Liitä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> tuotteisiin tai tuotemalleihin"
           description: Tuoteruudukossa valittuihin tuotteisiin luodaan valitsemasi tyyppinen assosiaatio niiltä tuotteilta tai tuotemalleilta, jotka seuraavaksi valitset
           validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
+        change_parent_product_model:
+          label: Vaihda ylätason tuotemalli
+          label_count: "{1}Vaihda <span class=\"AknFullPage-title--highlight\">1 tuotteen ylätason tuotemalli</span>|] 1, Inf [Vaihda <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen ylätason tuotemalli</span>"
     family:
       title: Perheiden massamuokkaus
       confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
@@ -1110,6 +1116,7 @@ page_title:
   pim_enrich_attributegroup_index: Attribuuttiryhmät
   pim_enrich_attributegroup_create: Attribuuttiryhmät | Luo
   pim_enrich_attributegroup_edit: Attribuuttiryhmä {{ group.label }} | Muokkaa
+  pim_enrich_catalog_volume_index: Katalogin koon seuranta
   pim_enrich_categorytree_index: Kategoriahierarkia
   pim_enrich_categorytree_create: Kategoriahierarkia | Luo
   pim_enrich_categorytree_edit: Kategoriahierarkia {{ category.label }} | Muokkaa
@@ -1151,6 +1158,10 @@ batch_jobs:
     label: Päivitä tuotteen arvo
     perform:
       label: Päivitä tuotteen arvo
+  add_to_group:
+    label: Lisää ryhmään
+    perform:
+      label: Lisää ryhmään
   edit_common_attributes:
     label: Muokkaa attribuutteja
     perform:
@@ -1168,9 +1179,9 @@ batch_jobs:
     perform:
       label: Poista kategorioista
   add_association:
-    label: Luo assosiaatio tuotteisiin
+    label: Liitä
     perform:
-      label: Luo assosiaatio tuotteisiin
+      label: Liitä
   add_to_existing_product_model:
     label: Lisää olemassaolevaan tuotemalliin
     perform:
@@ -1435,6 +1446,7 @@ pim_menu:
     import_history: Tuontihistoria
     import_profile: Tuontiprofiilit
     configuration: Kokoonpano
+    catalog_volume: Katalogin koon seuranta
     user_management: Käyttäjähallinta
     user: Käyttäjät
     user_group: Ryhmät
@@ -1455,11 +1467,20 @@ pim_notification:
   no_notifications: Ei ilmoituksia
   loading: Ladataan...
 catalog_volume:
+  product_values: "Sinulla on <span>{{values}}</span> tuotearvoa PIM:ssä! Keskiarvoisesti se on <span>{{average}}</span> arvoa tuotetta kohden! 💪"
+  product_values_description: 'Mitä enemmän tuotearvoja on, sitä arvokkaampi on PIM -järjestelmäsi ja sitä korkeampi on ROI! Katso lisätietoja <a href="#">täältä</a>'
   axis:
     count_products: Tuotteet
+    average_max_attributes_per_family: Attribuutteja tuoteperheellä
     count_channels: Kanavat
+    count_locales: Lokaatioita (aktivoidut)
+    count_scopable_attributes: Kanavakohtaisia attribuutteja
+    count_localizable_and_scopable_attributes: Lokalisoituja ja kanavakohtaisia attribuutteja
+    count_localizable_attributes: Lokalisoituja attribuutteja
     count_families: Perheet
     count_attributes: Attribuutit
+    average_max_options_per_attribute: Attribuuttioptioita
     count_categories: Kategoriat
     count_category_trees: Kategoriahierarkia
+    count_variant_products: Varianttituotteita
     count_product_models: Tuotemallit

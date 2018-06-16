@@ -820,10 +820,6 @@ batch_jobs:
     label: Retirer de la catégorie
     perform:
       label: Retirer de la catégorie
-  add_association:
-    label: Associer aux produits
-    perform:
-      label: Associer aux produits
   add_to_existing_product_model:
     label: Ajouter à un modèle de produit existant
     perform:

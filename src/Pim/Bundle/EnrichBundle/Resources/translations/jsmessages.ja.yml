@@ -150,7 +150,6 @@ pim_enrich:
     product:
       navigation: 製品操作
       infos: 製品情報
-      index_title: "] - Inf ファイル、1] {{ count }} 結果 |] 1、Inf [{{ count }} 結果"
       title: 商品
       locale: ロケール
       category: カテゴリ
@@ -486,7 +485,6 @@ pim_enrich:
           info:
             no_family: ファミリーが未定義です。この製品の完全性を計算するファミリーを定義してください。
             no_completeness: 商品のファミリーを変更しました。新しいファミリーの完全性を計算するために、まずは保存して下さい。
-          missing_values: "{1}1 欠測値 |]1、Inf [{{ count }} 欠測値"
         history:
           title: 履歴
       switch:
@@ -806,7 +804,6 @@ pim_enrich:
         attributes:
           title: 属性
           edit: 編集
-          label: "{0} すべての属性 |{1} 1つの属性の選択 |]1、Inf [{{ count }} 属性の選択"
           help: "エクスポートする製品情報を選択します。例: 技術的な属性のみ。"
           empty: 全ての属性がエクスポートされます
           modal:
@@ -930,10 +927,8 @@ pim_enrich:
         title: グローバル設定
   index:
     association_type:
-      title: "] - Inf ファイル、1] {{ count }} 関連付けの種類 |] 1、Inf [{{ count }} 関連型"
       create_btn: 関連タイプ作成
     import_profiles:
-      title: "] - Inf ファイル、1] {{ count }} インポート プロファイル |] 1、Inf [{{ count }} プロファイルのインポート"
       create_btn: インポート プロファイルを作成
       list: ジョブ選択
       create_popin:
@@ -943,10 +938,8 @@ pim_enrich:
     import_history:
       title: レポートのインポート
     group:
-      title: "] - Inf ファイル、1] {{ count }} グループ |] 1、Inf [{{ count }} グループ"
       create_btn: グループを作成
     export_profiles:
-      title: "] - Inf ファイル、1] {{ count }} エクスポートプロファイル |] 1、Inf [{{ count }} プロファイルのエクスポート"
       create_btn: エクスポート プロファイルを作成
       create_popin:
         title: 作成
@@ -955,38 +948,24 @@ pim_enrich:
     export_history:
       title: レポートのエクスポート
     family:
-      title: "] - Inf ファイル、1] {{ count }} ファミリー |] 1、Inf [{{ count }} ファミリー"
       create_btn: ファミリーを作成
     grouptype:
-      title: "] - Inf ファイル、1] {{ count }} グループタイプ |] 1、Inf [{{ count }} グループタイプ"
       create_btn: グループタイプ作成
-    currency:
-      title: "] - Inf ファイル、1] {{ count }} 通貨 |] 1、Inf [{{ count }} 通貨"
-    locale:
-      title: "] - Inf ファイル、1] {{ count }} ロケール |] 1、Inf [{{ count }} ロケール"
     user:
-      title: "] - Inf ファイル、1] {{ count }} ユーザ |] 1、Inf [{{ count }} ユーザ"
       create_btn: ユーザー作成
     user_role:
-      title: "] - Inf ファイル、1] {{ count }} ロール |] 1、Inf [{{ count }} ロール"
       create_btn: 権限を作成
     user_group:
-      title: "] - Inf ファイル、1] {{ count }} グループ |] 1、Inf [{{ count }} グループ"
       create_btn: グループを作成
-    process_tracker:
-      title: "] - Inf ファイル、1] {{ count }} オペレーション|] 1、Inf [{{ count }} オペレーション"
     channel:
-      title: "] - Inf ファイル、1] {{ count }} チャネル |] 1、Inf [{{ count }} チャネル"
       create_btn: チャンネルを作成します
     attribute:
-      title: "] - Inf ファイル、1] {{ count }} 属性 |] 1、Inf [{{ count }} 属性"
       create_btn: 属性を作成
       modal_title: 属性の種類を選択
     attribute_group:
       title: 属性グループ
       create_btn: 作成
     api_connection:
-      title: "] - Inf ファイル、1] {{ count }} APIコネクション|] 1、Inf [{{ count }} APIコネクション"
       create_btn: 作成
   mass_edit:
     next: 次
@@ -1013,28 +992,22 @@ pim_enrich:
       operation:
         change_status:
           label: ステータスの変更
-          label_count: "{1}ステータスを変更<span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ ステータスを変更 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
           description: 選択した製品は有効または無効になります。
           field: 有効にするには
         change_family:
           label: ファミリーの変更
-          label_count: "{1}ファミリーを変更<span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ ファミリーを変更 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
           description: 選択した製品のファミリーを選択したファミリーに変更します
           field: ファミリー
         add_to_group:
           label: グループに追加
-          label_count: "{1}追加 <span class=\"AknFullPage-title--highlight\"> 1 グループに</span> |]1、Inf [ 追加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} グループに</span>"
           description: 選択した製品を追加するグループを選択します
           field: グループ
         add_to_category:
           label: カテゴリーに追加
-          label_count: "{1}追加 <span class=\"AknFullPage-title--highlight\"> 1 カテゴリに</span> |]1、Inf [ 追加 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} カテゴリに</span>"
         move_to_category:
           label: カテゴリ間を移動
-          label_count: "{1}動かす <span class=\"AknFullPage-title--highlight\"> 1 カテゴリ間を</span> |]1、Inf [ 動かす <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} カテゴリを</span>"
         remove_from_category:
           label: カテゴリから削除
-          label_count: "{1}取り除く <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 取り除く <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
           description: 次のカテゴリから製品が削除されます。
     family:
       title: ファミリー一括操作
@@ -1055,7 +1028,6 @@ pim_enrich:
         set_requirements:
           label: 属性の要件を設定
           description: 以下の属性要件が選択したファミリーに適用されます
-          label_count: "{1}必須属性をセット<span class=\"AknFullPage-title--highlight\"> 1 ファミリー</span> |]1、Inf [必須属性をセット<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} ファミリー</span>"
 pim_enrich.error:
   exception.title: ああスナップ！ {{ status_code }} のエラーが発生しました。
   http:
