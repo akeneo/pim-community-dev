@@ -6,6 +6,7 @@ confirmation:
     attribute: Oletko varma, että haluat poistaa tämän attribuutin?
     attribute_group: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
     family: Oletko varma, että haluat poistaa tämän ryhmän?
+    family_variant: Oletko varma, että haluat poistaa tämän varianttiperheen?
     product: Oletko varma, että haluat poistaa tämän tuotteen?
     product_model: Oletko varma, että haluat poistaa tämän tuotemallin? Kaikki lapset, tuotemallit ja variantit poistetaan myös.
     channel: Oletko varma, että haluat poistaa tämän kanavan?
@@ -47,6 +48,8 @@ flash:
     removed: Attribuuttiryhmän poisto onnistui
   family:
     removed: Tuoteperhe poistettu
+  family_variant:
+    removed: Varianttiperhe onnistuneesti poistettu
   product:
     removed: Tuote poistettu
   product_model:
@@ -111,6 +114,7 @@ Classify the product: Luokittele tuote
 Delete the product: Poista tuote
 Change status: Muuta tuotteen tila
 Toggle status: Vaihda tuotteen tilaa
+mass_delete: Massapoisto
 pim:
   grid:
     mass_action:
@@ -250,6 +254,8 @@ pim_enrich:
         deletion_successful: Tuotemallin poisto onnistui.
         update_failed: Tuotemallia ei voitu päivittää.
         field_not_ready: "Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+      read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
+      read_only_parent_attribute_from_model: "Tätä attribuuttia voidaan muokata {{ axes }} attribuuteissa"
       variant_axis: Varianttiulottuvuus
       title: tuotemallit
       add_child:
@@ -468,6 +474,7 @@ pim_enrich:
             none_exist: Assosiaatiotyyppiä ei ole olemassa.
             show_products: Näytä tuotteet
             show_groups: Näytä ryhmät
+            number_of_associations: "{{ productCount }} tuotetta, {{ productModelCount }} tuotemallia ja {{ groupCount }} ryhmää"
           association_type_selector: Assosiaatiotyyppi
           target: Kohde
           manage: Lisää {{ associationType }} assosiaatiot
@@ -486,6 +493,7 @@ pim_enrich:
             load_more: Ladataan lisää tuloksia...
           attribute_group_selector: Attribuuttiryhmä
           attribute_group_all: Kaikki
+          attribute_group.to_fill_count: "{1}1 vaadittu attribuutti puuttuu|]1, Inf [{{ count }} vaadittua attribuuttia puuttuu"
           attribute_filter:
             display: Näytä
             all: Kaikki attribuutit
@@ -861,6 +869,8 @@ pim_enrich:
             ">=": Valmis ainakin yhdessä valituista lokaatioista
             "GREATER OR EQUALS THAN ON ALL LOCALES": Valmis kaikissa valituissa lokaatiossa
             LOWER THAN ON ALL LOCALES: Ei valmis kaikissa lokaatioissa
+            AT LEAST COMPLETE: Vähintään yksi variantti valmis valitulla lokaatiolla
+            ALL COMPLETE: Kaikki variantit valmiita valitulla lokaatiolla
           empty_selection: Valitse perhe
         category:
           title: Kategoria
@@ -1048,9 +1058,11 @@ pim_enrich:
         add_to_category:
           label: Lisää kategorioihin
           label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> to categories|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioihin"
+          description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa oleva liitokset säilytetään.
         move_to_category:
           label: Siirrä kategorioihin
           label_count: "{1}Siirrä <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioihin|] 1, Inf [Siirrä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioihin"
+          description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan.
         remove_from_category:
           label: Poista kategorioista
           label_count: "{1}Poista <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioista|] 1, Inf [Poista <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioista"
@@ -1059,6 +1071,11 @@ pim_enrich:
           label: Lisää olemassaolevaan tuotemalliin
           label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> olemassa olevaan tuotemalliin|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> olemassa olevaan tuotemalliin"
           description: Valittu tuotemalli kokoaa tuotteet ja mahdollistaa niiden yhteisten attribuuttien rikastamisen.
+        associate_to_product_and_product_model:
+          label: Luo assosiaatio tuotteisiin
+          label_count: "{1}Liitä <span class=\"AknFullPage-title--highlight\">1 tuote</span> tuotteisiin tai tuotemalleihin|] 1, Inf [Liitä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> tuotteisiin tai tuotemalleihin"
+          description: Tuoteruudukossa valittuihin tuotteisiin luodaan valitsemasi tyyppinen assosiaatio niiltä tuotteilta tai tuotemalleilta, jotka seuraavaksi valitset
+          validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
     family:
       title: Perheiden massamuokkaus
       confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
@@ -1133,6 +1150,22 @@ batch_jobs:
     label: Muokkaa attribuutteja
     perform:
       label: Muokkaa attribuutteja
+  add_to_category:
+    label: Lisää kategorioihin
+    perform:
+      label: Lisää kategorioihin
+  move_to_category:
+    label: Siirrä kategoriaan
+    perform:
+      label: Siirrä kategorioihin
+  remove_from_category:
+    label: Poista kategorioista
+    perform:
+      label: Poista kategorioista
+  add_association:
+    label: Luo assosiaatio tuotteisiin
+    perform:
+      label: Luo assosiaatio tuotteisiin
   add_to_existing_product_model:
     label: Lisää olemassaolevaan tuotemalliin
     perform:
