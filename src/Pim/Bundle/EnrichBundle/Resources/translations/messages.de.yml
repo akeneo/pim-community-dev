@@ -800,10 +800,6 @@ batch_jobs:
     label: Aus der Kategorie entfernen
     perform:
       label: Aus der Kategorie entfernen
-  add_association:
-    label: Mit Produkten verbinden
-    perform:
-      label: Mit Produkten verbinden
   set_attribute_requirements:
     label: Benötigte Attribute auswählen
     perform:

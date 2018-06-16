@@ -816,9 +816,9 @@ batch_jobs:
     perform:
       label: Poista kategorioista
   add_association:
-    label: Luo assosiaatio tuotteisiin
+    label: Liitä
     perform:
-      label: Luo assosiaatio tuotteisiin
+      label: Liitä
   add_to_existing_product_model:
     label: Lisää olemassaolevaan tuotemalliin
     perform:
@@ -845,6 +845,9 @@ batch_jobs:
       label: Tuoteruudukon kontekstin nopea vienti XLSX:nä
   delete_products_and_product_models:
     delete_products_and_product_models.label: Massapoista tuotteet
+  change_parent_product:
+    perform:
+      label: Vaihda ylätason tuotemalli
 mass_edit report:
   overview: Massamuokkaa vientejä
 job_tracker:

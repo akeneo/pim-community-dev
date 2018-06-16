@@ -53,7 +53,6 @@ pim_enrich:
       history.title: 履歴
   completeness:
     progress_bar.title: '%ratio%%完了(1件の必須項目)|%ratio%%完了(%count%件の必須項目)'
-    subtitle: '{0} 完了 |{1} 1件の欠測値|]1、Inf] %count%件の欠測値'
     missing_attributes: 不明な値|不明な値
     legend:
       locale_not_associated: このチャンネルに関連付けられていないロケール

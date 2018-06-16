@@ -1151,10 +1151,6 @@ batch_jobs:
     label: Aus der Kategorie entfernen
     perform:
       label: Aus der Kategorie entfernen
-  add_association:
-    label: Mit Produkten verbinden
-    perform:
-      label: Mit Produkten verbinden
   add_to_existing_product_model:
     label: Zu bestehendem Produktmodell hinzufügen
     perform:
