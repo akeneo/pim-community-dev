@@ -60,7 +60,6 @@ pimee_workflow:
     index: Hantera publicerade produkter
   product:
     permission:
-      label: Behörigheter
       own: Granska / publicera
       edit: Redigera
       view: Visa

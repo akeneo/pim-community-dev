@@ -1,7 +1,5 @@
 pim_title.locale:
   edit: "Alueelliset asetukset %locale.code% | Muokkaa"
-Permissions: Käyttöoikeudet
-pane.accordion.permissions: Käyttöoikeudet
 attribute group.permissions:
   view.label: Attribuuttien katselu sallittu
   view.help: Salli tuotteiden katselu tässä attribuuttiryhmässä
@@ -84,18 +82,16 @@ pimee_enrich:
   product:
     tab:
       proposal.title: Ehdotukset
-  category:
-    tab:
-      permission.title: Käyttöoikeudet
-  locale:
-    tab:
-      permission.title: Käyttöoikeudet
   channel:
     tab:
       asset_transformation.title: Resurssien muunnokset
   acl.product_ownership.title: Omistajuus
   attributes:
     empty: ei mitään
+  category:
+    tab:
+      permission:
+        title: Käyttöoikeudet
   groups:
     label: omistajaryhmät
     empty: ei mitään

@@ -1,7 +1,5 @@
 pim_title.locale:
   edit: "Landestandarder %locale.code% | Rediger"
-Permissions: Rettigheder
-pane.accordion.permissions: Rettigheder
 attribute group.permissions:
   view.label: Rettighed til at se attributter
   view.help: Rettighed til at se produkterne i denne attribut gruppe
@@ -84,18 +82,16 @@ pimee_enrich:
   product:
     tab:
       proposal.title: Forslag
-  category:
-    tab:
-      permission.title: Rettigheder
-  locale:
-    tab:
-      permission.title: Rettigheder
   channel:
     tab:
       asset_transformation.title: Aktiv transformationer
   acl.product_ownership.title: Ejerskab
   attributes:
     empty: ingen
+  category:
+    tab:
+      permission:
+        title: Rettigheder
   groups:
     label: ejer grupper
     empty: ingen

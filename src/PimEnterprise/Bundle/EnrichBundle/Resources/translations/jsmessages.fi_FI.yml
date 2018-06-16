@@ -16,9 +16,6 @@ pim_enrich:
   entity:
     attribute_label:
       pim_assets_collection: Resurssien keruu
-    attribute:
-      type:
-        pim_assets_collection: Resurssien keruu
 pim:
   grid:
     mass_action:
@@ -28,7 +25,6 @@ pimee_enrich:
     job_instance:
       tab:
         permission:
-          title: Käyttöoikeudet
           execute.label: Työprofiilin suorittaminen sallittu
           edit.label: Työprofiilin muokkaaminen sallittu
     channel:
@@ -155,7 +151,6 @@ pimee_enrich:
         height: '%value%px korkeus'
   mass_edit:
     cancel: Peruuta
-    confirm: Vahvista
     product:
       operation:
         publish:
@@ -184,6 +179,10 @@ pimee_enrich:
           field: Tunnisteet
         add_to_category:
           label: Luokittele assetit kategorioihin
+  category:
+    tab:
+      permission:
+        title: Käyttöoikeudet
 pim_menu:
   tab:
     asset: Resurssit

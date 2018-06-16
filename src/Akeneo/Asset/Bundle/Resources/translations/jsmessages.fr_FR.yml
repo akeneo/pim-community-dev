@@ -41,13 +41,6 @@ pimee_product_asset:
       invalid_locale: Les paramètres régionaux sont désactivés ou non valides
       exists: Un fichier ayant le même nom est déjà importé
       conflicts: Conflit de noms de fichiers
-    grid:
-      medias: medias
-      filename: nom du fichier
-      filetype: type de fichier
-      status: statut
-      progress: progression
-      actions: actions
     status:
       added: Ajouté
       queued: En attente
@@ -62,6 +55,12 @@ pimee_product_asset:
         success: Les ressources sélectionnées ont été supprimées.
         error: Une erreur s'est produite lors de la suppression des ressources sélectionnées, merci d'essayer à nouveau.
         empty_selection: Aucune ressource choisie
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Collection de ressources
 pim_dashboard:
   widget:
     last_operations:

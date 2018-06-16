@@ -56,9 +56,14 @@ pimee_catalog_rule:
 confirmation:
   remove:
     rule: Sind Sie sicher, dass Sie diese Regel löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Regel erfolgreich entfernt
 flash:
   rule:
-    removed: Regel erfolgreich entfernt
     impacted_product_count: Die Berechnung, der von dieser Regel betroffenen Produkte wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
     executed: Die Anwendung der Regel wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regeleinstellungen

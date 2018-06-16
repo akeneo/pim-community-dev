@@ -37,13 +37,6 @@ pimee_product_asset:
       invalid_locale: Språket är inaktiverat eller ogiltigt
       exists: En fil med samma namn har importerats redan
       conflicts: Fil namn konflikt
-    grid:
-      medias: medias
-      filename: filnamn
-      filetype: filtyp
-      status: status
-      progress: framsteg
-      actions: åtgärder
     status:
       added: Tillagd
       queued: Köad
@@ -57,6 +50,12 @@ pimee_product_asset:
         success: Valda tillgångar har tagits bort.
         error: Ett fel uppstod när de valda produkterna skulle tas bort, vänligen försök igen.
         empty_selection: Ingen tillgång som valts
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Tillgångar kollektion
 pim_dashboard:
   widget:
     last_operations:

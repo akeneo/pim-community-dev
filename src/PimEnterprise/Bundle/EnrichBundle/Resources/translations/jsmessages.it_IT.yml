@@ -17,8 +17,8 @@ pim_enrich:
     attribute_label:
       pim_assets_collection: Raccolta asset
     attribute:
-      type:
-        pim_assets_collection: Raccolta asset
+      property:
+        is_read_only: Sola lettura
   form:
     attribute:
       tab:
@@ -34,7 +34,6 @@ pimee_enrich:
     job_instance:
       tab:
         permission:
-          title: Autorizzazioni
           added: Al gruppo {{ group }} sarà concesso il permesso {{ permission }} per il profilo del job
           execute.label: Permetti l'esecuzione del profilo del job
           edit.label: Consentito modificare il profilo del job
@@ -162,7 +161,6 @@ pimee_enrich:
         height: '% value%px di altezza'
   mass_edit:
     cancel: Annulla
-    confirm: Conferma
     product:
       operation:
         publish:
@@ -192,6 +190,10 @@ pimee_enrich:
           field: Tag
         add_to_category:
           label: Classificare gli asset in categorie
+  category:
+    tab:
+      permission:
+        title: Autorizzazioni
 pim_menu:
   tab:
     asset: Asset

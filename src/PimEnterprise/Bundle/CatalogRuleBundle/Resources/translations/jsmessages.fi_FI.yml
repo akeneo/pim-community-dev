@@ -49,6 +49,10 @@ batch_jobs:
   csv_product_import_with_rules:
     label: Tuotteiden ja sääntöjen tuonti CSV-muodossa
     import.label: Tuotteiden tuonti
+  csv_product_model_import_with_rules:
+    label: Tuotemallien ja sääntöjen tuonti CSV-muodossa
   xlsx_product_import_with_rules:
     label: Tuotteiden ja sääntöjen tuonti XLSX-muodossa
     import.label: Tuotteiden tuonti
+  xlsx_product_model_import_with_rules:
+    label: Tuotemallien ja sääntöjen tuonti XLSX-muodossa

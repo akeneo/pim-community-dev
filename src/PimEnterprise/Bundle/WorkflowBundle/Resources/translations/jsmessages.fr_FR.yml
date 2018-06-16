@@ -7,8 +7,10 @@ Refuse selected: Rejeter les éléments sélectionnés
 pim_datagrid:
   no_entities:
     proposal: Il n'y a aucune proposition à réviser.
+    product_draft: Il n'y a aucun brouillon à réviser.
   no_results:
     proposal: Il n'y a aucune proposition à réviser. Tentez de modifier vos critères de recherche.
+    product_draft: Il n'y a aucun brouillon à réviser. Tentez de modifier vos critères de recherche.
 pimee_workflow:
   entity:
     published_product:

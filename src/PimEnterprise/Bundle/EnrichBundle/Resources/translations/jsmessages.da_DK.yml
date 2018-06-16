@@ -17,8 +17,8 @@ pim_enrich:
     attribute_label:
       pim_assets_collection: Aktiver samling
     attribute:
-      type:
-        pim_assets_collection: Aktiver samling
+      property:
+        is_read_only: Skrivebeskyttet
   form:
     attribute:
       tab:
@@ -34,7 +34,6 @@ pimee_enrich:
     job_instance:
       tab:
         permission:
-          title: Rettigheder
           added: Gruppe {{ group }} vil være tilladelse til at {{ permission }} jobprofil
           execute.label: Tilladt at udføre jobprofil
           edit.label: Tilladt at redigere jobprofil
@@ -163,7 +162,6 @@ pimee_enrich:
         height: '%value%px højde'
   mass_edit:
     cancel: Annuller
-    confirm: Bekræft
     product:
       operation:
         publish:
@@ -200,6 +198,10 @@ pimee_enrich:
           label: Klassificere produkter i kategorier
           description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
           label_count: "{1}Klassificer <span class=\"AknFullPage-title--highlight\"> 1 aktiv</span> på kategorier |] 1, Inf [klassificere <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} aktiver</span> på kategorier"
+  category:
+    tab:
+      permission:
+        title: Rettigheder
 pim_menu:
   tab:
     asset: Aktiver

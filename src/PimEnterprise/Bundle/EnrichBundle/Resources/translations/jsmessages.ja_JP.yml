@@ -17,8 +17,8 @@ pim_enrich:
     attribute_label:
       pim_assets_collection: アセットのコレクション
     attribute:
-      type:
-        pim_assets_collection: アセットのコレクション
+      property:
+        is_read_only: 読み取り専用
   form:
     attribute:
       tab:
@@ -34,7 +34,6 @@ pimee_enrich:
     job_instance:
       tab:
         permission:
-          title: パーミッション
           added: グループ {{ group }} は、{{ permission }} ジョブのプロファイルが許可されます。
           execute.label: ジョブプロファイルの実行を許可
           edit.label: ジョブプロファイルの編集を許可
@@ -163,7 +162,6 @@ pimee_enrich:
         height: '高さ %value%px'
   mass_edit:
     cancel: キャンセル
-    confirm: 確認
     product:
       operation:
         publish:
@@ -194,6 +192,10 @@ pimee_enrich:
           field: タグ
         add_to_category:
           label: アセットをカテゴリに分類
+  category:
+    tab:
+      permission:
+        title: パーミッション
 pim_menu:
   tab:
     asset: アセット

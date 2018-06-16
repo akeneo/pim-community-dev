@@ -1,7 +1,5 @@
 pim_title.locale:
   edit: "Impostazioni locali %locale.code% | Modifica"
-Permissions: Autorizzazioni
-pane.accordion.permissions: Autorizzazioni
 attribute group.permissions:
   view.label: Consentita la visualizzazione degli attributi
   view.help: Consenti di visualizzare i prodotti in questo gruppo di attributi
@@ -84,18 +82,16 @@ pimee_enrich:
   product:
     tab:
       proposal.title: Proposte
-  category:
-    tab:
-      permission.title: Autorizzazioni
-  locale:
-    tab:
-      permission.title: Autorizzazioni
   channel:
     tab:
       asset_transformation.title: Trasformazioni di asset
   acl.product_ownership.title: Proprietà
   attributes:
     empty: nessuno
+  category:
+    tab:
+      permission:
+        title: Autorizzazioni
   groups:
     label: gruppi del proprietario
     empty: nessuno

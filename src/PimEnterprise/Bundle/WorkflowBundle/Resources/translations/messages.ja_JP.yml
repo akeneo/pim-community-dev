@@ -60,7 +60,6 @@ pimee_workflow:
     index: 公開された製品を管理
   product:
     permission:
-      label: パーミッション
       own: レビュー/公開
       edit: 編集
       view: ビュー

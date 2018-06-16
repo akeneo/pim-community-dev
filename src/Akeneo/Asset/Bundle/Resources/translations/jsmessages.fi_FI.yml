@@ -36,13 +36,6 @@ pimee_product_asset:
       locale: Aseeti on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
       conflicts: Tiedostonimissä on konflikti
-    grid:
-      medias: mediat
-      filename: tiedostonimi
-      filetype: tiedostotyyppi
-      status: status
-      progress: edistyminen
-      actions: toiminnot
     status:
       added: Lisätty
       queued: Jonossa
@@ -53,6 +46,12 @@ pimee_product_asset:
     mass_action:
       delete:
         confirm_content: Oletko varma, että halut poistaa valitut assetit?
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Resurssien keruu
 pim_dashboard:
   widget:
     last_operations:

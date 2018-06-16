@@ -60,7 +60,6 @@ pimee_workflow:
     index: Administrer offentliggjorte produkter
   product:
     permission:
-      label: Rettigheder
       own: Gennemgå / offentliggøre
       edit: Redigér
       view: Se
