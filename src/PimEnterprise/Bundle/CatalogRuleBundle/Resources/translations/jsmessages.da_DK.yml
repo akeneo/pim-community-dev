@@ -56,9 +56,14 @@ pimee_catalog_rule:
 confirmation:
   remove:
     rule: Er du sikker på at du ønsker at slette denne regel? Det er ikke muligt at fortryde handlingen
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Rollen blev slettet
 flash:
   rule:
-    removed: Rollen blev slettet
     impacted_product_count: Massehandling til at beregne de berørte produkter for reglerne, der er blevet igangsat. Du får besked, når det er gennemført.
     executed: Regeludførelsen er blevet igangsat. Du får besked, når det er gennemført.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regler indstillinger

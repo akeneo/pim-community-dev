@@ -48,9 +48,14 @@ pimee_catalog_rule:
 confirmation:
   remove:
     rule: Är du säker du vill ta bort denna regel? Det går inte att ångra åtgärden
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Rollen har tagits bort
 flash:
   rule:
-    removed: Rollen har tagits bort
     impacted_product_count: Massåtgärd för att beräkna de påverkade produkterna för regler har lanserats. Du meddelas när det är gjort.
     executed: Regelkörning har lanserats. Du meddelas när det är gjort.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regler inställningar

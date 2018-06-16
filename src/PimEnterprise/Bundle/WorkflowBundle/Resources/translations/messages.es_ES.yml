@@ -60,7 +60,6 @@ pimee_workflow:
     index: Gestionar productos publicados
   product:
     permission:
-      label: Permisos
       own: Revisar / publicar
       edit: Editar
       view: Vista

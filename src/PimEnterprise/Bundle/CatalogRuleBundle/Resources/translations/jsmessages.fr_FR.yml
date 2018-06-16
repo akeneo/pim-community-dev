@@ -56,9 +56,14 @@ pimee_catalog_rule:
 confirmation:
   remove:
     rule: Êtes-vous sûr de vouloir supprimer cette règle ? Il est impossible d'annuler cette action
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Règle supprimée avec succès
 flash:
   rule:
-    removed: Règle supprimée avec succès
     impacted_product_count: Le calcul du nombre de produits affectés par les règles est en cours, vous serez notifié(e) lorsque cela sera terminé.
     executed: L'exécution des règles est en cours, vous serez notifié(e) lorsque la modification sera terminée.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Paramètres des règles

@@ -17,8 +17,8 @@ pim_enrich:
     attribute_label:
       pim_assets_collection: Tillgångar kollektion
     attribute:
-      type:
-        pim_assets_collection: Tillgångar kollektion
+      property:
+        is_read_only: Endast läsning
   form:
     attribute:
       tab:
@@ -30,7 +30,6 @@ pimee_enrich:
     job_instance:
       tab:
         permission:
-          title: Behörigheter
           added: Grupp {{ group }} kommer att få {{ permission }} jobbprofil
           execute.label: Tillåt att köra jobbprofil
           edit.label: Tillåt att redigera jobbprofil
@@ -155,7 +154,6 @@ pimee_enrich:
         height: '%value%px höjd'
   mass_edit:
     cancel: Avbryt
-    confirm: Bekräfta
     product:
       operation:
         publish:
@@ -174,6 +172,10 @@ pimee_enrich:
         add_tag:
           label: Lägg till taggar till tillgångar
           field: Taggar
+  category:
+    tab:
+      permission:
+        title: Behörigheter
 pim_menu:
   tab:
     asset: Tillgångar

@@ -38,13 +38,6 @@ pimee_product_asset:
       invalid_locale: Das Gebietsschema ist deaktiviert oder ungültig
       exists: Eine Datei mit dem gleichen Namen wurde bereits importiert
       conflicts: Konflikt der Dateinamen
-    grid:
-      medias: Medien
-      filename: Dateiname
-      filetype: Dateityp
-      status: Status
-      progress: Fortschritt
-      actions: Aktionen
     status:
       added: Hinzugefügt
       queued: In Warteschlange
@@ -58,6 +51,12 @@ pimee_product_asset:
         success: Ausgewählte Assets erfolgreich gelöscht.
         error: Es ist ein Fehler beim Löschen der ausgewählten Assets aufgetreten, bitte versuchen Sie es erneut.
         empty_selection: Keine Assets ausgewählt
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Sammlung von Assets
 pim_dashboard:
   widget:
     last_operations:

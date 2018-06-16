@@ -17,8 +17,8 @@ pim_enrich:
     attribute_label:
       pim_assets_collection: Colección de recursos
     attribute:
-      type:
-        pim_assets_collection: Colección de recursos
+      property:
+        is_read_only: Sólo lectura
   form:
     attribute:
       tab:
@@ -34,7 +34,6 @@ pimee_enrich:
     job_instance:
       tab:
         permission:
-          title: Permisos
           added: El grupo {{ group }} será autorizado a {{ permission }} el perfil de trabajo
           execute.label: Autorizado a ejecutar el perfil de trabajo
           edit.label: Autorizado a editar el perfil de trabajo
@@ -163,7 +162,6 @@ pimee_enrich:
         height: 'Alto px %value%'
   mass_edit:
     cancel: Cancelar
-    confirm: Confirmar
     product:
       operation:
         publish:
@@ -192,6 +190,10 @@ pimee_enrich:
           field: Etiquetas
         add_to_category:
           label: Clasificar los activos en categorías
+  category:
+    tab:
+      permission:
+        title: Permisos
 pim_menu:
   tab:
     asset: Recursos

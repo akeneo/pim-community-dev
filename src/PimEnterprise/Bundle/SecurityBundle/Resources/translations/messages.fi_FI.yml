@@ -7,7 +7,3 @@ pimee_enrich.groups.label: Omistajaryhmät
 job_profile.permissions:
   execute.label: Työprofiilin suorittaminen sallittu
   edit.label: Työprofiilin muokkaaminen sallittu
-pimee_import_export:
-  job_profile:
-    tab:
-      permission.title: Käyttöoikeudet
