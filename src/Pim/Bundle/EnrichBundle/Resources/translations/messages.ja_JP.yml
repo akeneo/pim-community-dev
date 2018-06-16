@@ -8,6 +8,8 @@ pim_common:
   created: 作成日時
   updated: 更新日時
   create: 作成
+  permissions: パーミッション
+  properties: プロパティ
 pim_enrich:
   create:
     attribute: 属性を作成

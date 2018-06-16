@@ -5,3 +5,14 @@ pim_title:
   oro_config_configuration_system: 設定
   pim_user_security_login: ログイン
   pim_user_reset_request: パスワードを忘れた
+pim_user_management:
+  entity:
+    user:
+      page_title:
+        index: "] - Inf ファイル、1] {{ count }} ユーザ |] 1、Inf [{{ count }} ユーザ"
+    role:
+      page_title:
+        index: "] - Inf ファイル、1] {{ count }} ロール |] 1、Inf [{{ count }} ロール"
+    group:
+      page_title:
+        index: "] - Inf ファイル、1] {{ count }} グループ |] 1、Inf [{{ count }} グループ"

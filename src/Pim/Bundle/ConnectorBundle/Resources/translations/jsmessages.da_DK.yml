@@ -102,7 +102,6 @@ batch_jobs:
     label: Produkt import fra XLSX
     import.label: Produkt import
   xlsx_product_model_import:
-    label: Produkt model import i XSLX
     import_product_model_descendants.label: Beregne underliggende produkt modeller
   xlsx_group_export:
     label: Gruppe eksport til XLSX

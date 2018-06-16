@@ -14,3 +14,4 @@ pim_datagrid:
       import: Tuonti
       export: Vienti
       mass_edit: Massamuokkaus
+      mass_delete: Massapoisto

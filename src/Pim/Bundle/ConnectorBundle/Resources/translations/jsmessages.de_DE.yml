@@ -89,7 +89,6 @@ batch_jobs:
     label: Produkt-Import aus XLSX-Datei
     import.label: Produkt import
   xlsx_product_model_import:
-    label: Produktmodell-Import aus XLSX-Datei
     import_product_model_descendants.label: Vererbungen der Produktmodelle berechnen
   xlsx_group_export:
     label: Gruppen-Export als XSLX-Datei

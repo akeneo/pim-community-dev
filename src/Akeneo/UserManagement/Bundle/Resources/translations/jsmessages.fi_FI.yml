@@ -5,3 +5,14 @@ pim_title:
   oro_config_configuration_system: Kokoonpano
   pim_user_security_login: Kirjaudu sisään
   pim_user_reset_request: Unohdin salasanani
+pim_user_management:
+  entity:
+    user:
+      page_title:
+        index: "[] -Inf, 1] {{ count }} käyttäjä |] 1, Inf [{{ count }} käyttäjää"
+    role:
+      page_title:
+        index: "[] -Inf, 1] {{ count }} rooli |] 1, Inf [{{ count }} roolia"
+    group:
+      page_title:
+        index: "] -Inf, 1] {{ count }} ryhmä|] 1, Inf [{{ count }} ryhmää"
