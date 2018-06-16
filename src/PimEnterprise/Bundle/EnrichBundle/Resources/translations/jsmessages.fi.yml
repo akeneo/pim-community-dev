@@ -181,6 +181,8 @@ pimee_enrich:
           description: Tuotteen julkaisu perutaan
           warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
     asset:
+      title: Assettien massatoiminnot
+      confirm: "{1}Olet muokkaamassa asettia seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet muokkaamassa {{ itemsCount }} assettia seuraavilla tiedoilla, ole hyvä ja vahvista."
       step:
         select:
           label: Valitse assetit
@@ -195,10 +197,13 @@ pimee_enrich:
         add_tag:
           label: Lisää tunnisteita asseteille
           description: Tunnisteita lisätään assetille.
+          label_count: "{1}Lisää tunnisteet <span class=\"AknFullPage-title--highlight\">1 assetille</span>|] 1, Inf [Lisää tunnisteet <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assetille</span>"
           field: Tunnisteet
           empty_selection: Valitse tunnisteet
         add_to_category:
           label: Luokittele assetit kategorioihin
+          description: Assetit liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan.
+          label_count: "{1}Luokittele <span class=\"AknFullPage-title--highlight\">1 assetti</span> kategorioihin|] 1, Inf [Luokittele <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assettia</span> kategorioihin"
           field: Kategoriat
 pim_menu:
   tab:
@@ -243,3 +248,5 @@ batch_jobs:
     export.label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
     perform:
       label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
+  add_attribute_value:
+    execute_rules.label: Sääntöjen suorittaminen
