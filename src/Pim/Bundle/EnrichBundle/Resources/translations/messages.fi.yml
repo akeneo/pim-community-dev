@@ -185,6 +185,8 @@ pim_enrich:
       edit_attributes: Muokkaa perheen attribuutteja
       remove: Poista tuoteperhe
       history: Tarkastele tuoteperheen historiaa
+    family_variant:
+      remove: Poista varianttiperhe
     attribute_group:
       index: Listaa attribuuttiryhmät
       create: Luo attribuuttiryhmä
@@ -241,6 +243,11 @@ pim_enrich:
     empty_value:
       reference_data_type:
         label: Valitse viite-datatyyppi
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Lokaatio on poistettu kanavalta. Puhdistamme parhaillaan siihen linkitettyjä valmiusasteita.
+        done: Kanavan lokaation poistaminen valmis.
 attribute:
   title: attribuutti
   edit: muokkaa attribuuttia
@@ -338,6 +345,7 @@ confirmation:
     attribute group: Oletko varma että haluat poistaa attribuuttiryhmän %name%?
     category: Oletko varma että haluat poistaa kategoian %name%?
     family: Oletko varma, että haluat poistaa tuoteryhmän %name%?
+    family_variant: Oletko varma, että haluat poistaa varianttiperheen %name%?
     product: Oletko varma, että haluat poistaa tuotteen %name%?
     group: Oletko varma, että haluat poistaa ryhmän %name%?
     group type: Oletko varma, että haluat poistaa ryhmätyypin %name%?
@@ -488,6 +496,7 @@ Useable as grid column: Käytettävissä ruudukko-sarakkeena
 Useable as grid filter: Käytettävissä ruudukossa
 Family: Perhe
 Image: Kuva
+Variant products: Varianttituotteet
 Available locales: Saatavilla olevat alueet
 Locale specific: Aluespesifi
 default: Oletusarvo
@@ -758,12 +767,18 @@ pim_mass_edit:
       error: <strong>%label%</strong>n pikavienti epäonnistui
       warning: <strong>%label%</strong>n pikavienti päättyi, joitakin varoituksia
       success: <strong>%label%</strong>n pikavienti päättyi
+    mass_delete:
+      error: Massapoisto <strong>%label%</strong> epäonnistui
+      warning: Massapoisto <strong>%label%</strong> päättyi varoituksin
+      success: Massapoisto <strong>%label%</strong> päättyi
 job_execution.summary:
   mass_edited: Massamuokattu
   skip: Ohitettu
   skipped_products: Ohitetut tuotteet
   skipped_attributes: Ohitetut attribuutit
   skipped_families: Ohitetut perheet
+  deleted_products: Poistetut tuotteet
+  deleted_product_models: Poistetut tuotemallit
 pim_mass_edit_execution_show: Massamuokkaa suoritteita | Tiedot
 edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
 update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
@@ -780,10 +795,30 @@ batch_jobs:
     label: Päivitä tuotteen arvo
     perform:
       label: Päivitä tuotteen arvo
+  add_attribute_value:
+    label: Lisää attribuutin arvoja
+    perform:
+      label: Lisää attribuutin arvoja
   edit_common_attributes:
     label: Muokkaa attribuutteja
     perform:
       label: Muokkaa attribuutteja
+  add_to_category:
+    label: Lisää kategorioihin
+    perform:
+      label: Lisää kategorioihin
+  move_to_category:
+    label: Siirrä kategoriaan
+    perform:
+      label: Siirrä kategoriaan
+  remove_from_category:
+    label: Poista kategorioista
+    perform:
+      label: Poista kategorioista
+  add_association:
+    label: Luo assosiaatio tuotteisiin
+    perform:
+      label: Luo assosiaatio tuotteisiin
   add_to_existing_product_model:
     label: Lisää olemassaolevaan tuotemalliin
     perform:
@@ -808,6 +843,8 @@ batch_jobs:
     quick_export.label: Tuoteruudukon kontekstin nopea vienti XLSX:nä
     perform:
       label: Tuoteruudukon kontekstin nopea vienti XLSX:nä
+  delete_products_and_product_models:
+    delete_products_and_product_models.label: Massapoista tuotteet
 mass_edit report:
   overview: Massamuokkaa vientejä
 job_tracker:
