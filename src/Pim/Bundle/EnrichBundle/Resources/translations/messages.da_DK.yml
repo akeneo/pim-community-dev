@@ -8,6 +8,8 @@ pim_common:
   created: Oprettet
   updated: Opdateret
   create: Opret
+  permissions: Rettigheder
+  properties: Egenskaber
 pim_enrich:
   create:
     attribute: opret attribut

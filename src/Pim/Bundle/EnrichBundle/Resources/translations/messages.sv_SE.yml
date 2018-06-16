@@ -8,6 +8,8 @@ pim_common:
   created: Skapat
   updated: Ändrad
   create: Skapa
+  permissions: Behörigheter
+  properties: Egenskaper
 pim_enrich:
   create:
     attribute: skapa attribut

@@ -1,14 +1,12 @@
 pim_common:
+  actions: Aktionen
   add: Hinzufügen
   add_attributes: Attribute hinzufügen
   all: Alle
   and: und
   apply: Anwenden
-  attributes: Attribute
-  attribute_groups: Attributgruppen
+  by: von
   cancel: Abbrechen
-  categories: Kategorien
-  channel: Ausgabekanal
   code: Code
   confirm: Bestätigen
   confirm_deletion: Löschen bestätigen
@@ -24,7 +22,6 @@ pim_common:
   label_translations: Feldbezeichner-Übersetzungen
   less_than: Weniger als
   loading: Lädt...
-  locales: Gebietsschemata
   more_than: Mehr als
   next: Vor
   "no": "Nein"
@@ -32,9 +29,9 @@ pim_common:
   not_available: N/A
   now: Jetzt
   ok: OK
+  permissions: Berechtigungen
   previous: Zurück
   properties: Eigenschaften
-  products: Produkte
   save: Speichern
   status: Status
   to: bis
@@ -57,20 +54,25 @@ pim_common:
     ENDS WITH: Endet mit
 confirmation:
   remove:
+    title: '{{ itemName }} löschen'
+    alternative_title: Entfernen bestätigen
     item: Möchten Sie dieses Element wirklich löschen?
     association_type: Möchten Sie diesen Verbindungstyp wirklich löschen?
     attribute: Möchten Sie dieses Attribut wirklich löschen?
+    attribute_from_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
+    attribute_from_product: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
     attribute_group: Möchten Sie diese Attributgruppe wirklich löschen?
     family: Möchten Sie diese Produktfamilie wirklich löschen?
     product: Möchten Sie dieses Produkt wirklich löschen?
     channel: Möchten Sie diesen Ausgabekanal wirklich löschen?
     group: Möchten Sie diese Gruppe wirklich löschen?
     group_type: Möchten Sie diesen Gruppentyp wirklich löschen?
-    import_profile: Möchten Sie dieses Importprofil wirklich löschen?
-    export_profile: Möchten Sie dieses Exportprofil wirklich löschen?
     user: Möchten Sie diesen Benutzer wirklich löschen?
     role: Möchten Sie diese Rolle wirklich löschen?
-    job_instance: Möchten Sie diesen Auftrag wirklich löschen?
+  leave: Möchten Sie diese Seite wirklich verlassen?
+  discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
+  cancel:
+    title: Änderung abbrechen
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -79,6 +81,7 @@ pim_datagrid:
       label: Schnell-Export
   mass_action:
     delete:
+      confirm_content: Sind Sie sicher, dass Sie die ausgewählten Produkte löschen möchten?
       success: Ausgewählte Produkte erfolgreich gelöscht.
       error: Es ist ein Fehler beim Löschen der ausgewählten Produkte aufgetreten, bitte versuchen Sie es erneut.
     quick_export:
@@ -96,88 +99,47 @@ pim_datagrid:
     delete_product: Produkt löschen
     change_status: Status ändern
     toggle_status: Status umschalten
-flash:
-  item:
-    removed: Element erfolgreich entfernt
-  association_type:
-    removed: Verbindungstyp erfolgreich gelöscht
-  attribute:
-    removed: Attribut erfolgreich entfernt
-  attribute_group:
-    removed: Attributgruppe erfolgreich entfernt
-  family:
-    removed: Produktfamilie erfolgreich entfernt
-  product:
-    removed: Produkt erfolgreich entfernt
-  channel:
-    removed: Ausgabekanal erfolgreich entfernt
-  group:
-    removed: Gruppe erfolgreich entfernt
-  group_type:
-    removed: Gruppentyp erfolgreich gelöscht
-  import profile:
-    removed: Importprofil erfolgreich entfernt
-  export profile:
-    removed: Exportprofil erfolgreich entfernt
-  user:
-    removed: Benutzer erfolgreich gelöscht
-  role:
-    removed: Rolle erfolgreich entfernt
-  job_instance:
-    removed: Auftrag erfolgreich gelöscht
+    other: Weitere Aktionen
 error:
-  common: Es ist ein Fehler aufgetreten
-  creating:
-    product: Es ist kein Attribut ist als Produktidentifikator konfiguriert oder Sie haben keine Rechte diesen zu bearbeiten.
-  removing:
-    item: Dieses Element kann nicht gelöscht werden
-    association_type: Dieser Verbindungstyp kann nicht gelöscht werden
-    attribute: Dieses Attribut kann nicht gelöscht werden
-    family: Diese Produktfamilie kann nicht gelöscht werden
-    product: Dieses Produkt kann nicht gelöscht werden
-    channel: Dieser Ausgabekanal kann nicht gelöscht werden
-    group: Diese Gruppe kann nicht gelöscht werden
-    group type: Dieser Gruppentyp kann nicht gelöscht werden
-    import profile: Dieses Importprofil kann nicht gelöscht werden
-    export profile: Dieses Exportprofil kann nicht gelöscht werden
-    user: Dieser Benutzer kann nicht gelöscht werden
-    role: Diese Rolle kann nicht gelöscht werden
-    attribute_option: Fehler beim Löschen der Attributoption
-  saving:
-    attribute_option: Attributoption kann nicht gespeichert werden
-    export_profile: Export-Profil kann nicht gespeichert werden. Bitte überprüfen Sie die Wert aller Filter
+  exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
+  forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
 alert:
   attribute_option:
     error_occured_during_submission: Während der Formularübertragung auf dem Server ist ein Fehler aufgetreten
     save_before_edit_other: Bitte speichern Sie die Änderungen in den anderen Zeilen bevor Sie diese bearbeiten
   session_storage:
     not_available: Ihr Webbrowser scheint nicht kompatibel mit sessionStorage zu sein. Bitte kontaktieren Sie Ihren Administrator
-confirm:
-  attribute_option:
-    cancel_edition_on_new_option_title: Änderung abbrechen
 pim_enrich:
-  item:
-    list:
-      delete.error: Fehler beim Löschen des Elementes
-    delete:
-      confirm.content: Sind Sie sicher, dass Sie {{ itemName }} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden
-      confirm.title: '{{ itemName }} löschen'
-  navigation:
-    link:
-      back_to_grid: Zurück zur Tabellenansicht
-    other_actions: Weitere Aktionen
   entity:
-    info:
-      update_failed: Update fehlgeschlagen
-      update_successful: Update erfolgreich
+    fallback:
+      flash:
+        generic_error: Es ist ein Fehler aufgetreten
+        update:
+          fail: Update fehlgeschlagen
+          success: Update erfolgreich
+        delete:
+          fail: Dieses Element kann nicht gelöscht werden
+          success: Element erfolgreich entfernt
     product:
-      navigation: Navigation Produkte
-      infos: Produktinformationen
-      title: Produkt
-      locale: Gebietsschema
-      category: Kategorie
+      label: Produkt
+      uppercase_label: Produkt
+      plural_label: Produkte
+      flash:
+        update:
+          success: Produkt erfolgreich aktualisiert.
+          fail: Das Produkt konnte nicht aktualisiert werden.
+          fields_not_ready: "Das Produkt kann gerade nicht gespeichert. Folgende Felder sind nicht bereit: {{ fields }}"
+          already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
+          file_upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
+        delete:
+          success: Produkt erfolgreich gelöscht.
+          fail: Das Produkt konnte nicht gelöscht werden.
+        create:
+          success: Produkt erfolgreich erstellt
+          fail: Es ist kein Attribut ist als Produktidentifikator konfiguriert oder Sie haben keine Rechte diesen zu bearbeiten.
       subTitle: Produkt anlegen
       filters: Filter
+      common: Allgemein
       btn:
         enabled: Aktiviert
         disabled: Deaktiviert
@@ -191,22 +153,9 @@ pim_enrich:
         modified: Bearbeitet
         old_value: Alter Wert
         new_value: Neuer Wert
-        actions: Aktionen
-      info:
-        deletion_successful: Produkt erfolgreich gelöscht.
-        deletion_failed: Das Produkt konnte nicht gelöscht werden.
-        update_successful: Produkt erfolgreich aktualisiert.
-        update_failed: Das Produkt konnte nicht aktualisiert werden.
-        field_not_ready: "Das Produkt kann gerade nicht gespeichert. Folgende Felder sind nicht bereit: {{ fields }}"
-        already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
-      error:
-        upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
       meta:
-        created_by: durch
-        updated_by: durch
+        infos: Produktinformationen
         updated: Letzte Aktualisierung
-        family:
-          title: Produktfamilie
         family_variant:
           title: Variante
         groups:
@@ -215,7 +164,6 @@ pim_enrich:
             title: Gruppe {{ group }}
             view_group: Gruppe ansehen
             more_products: '{{ count }} weitere Produkte...'
-        locale: Gebietsschema
       copy:
         select: Auswählen
         all_visible: Alle sichtbaren
@@ -229,127 +177,201 @@ pim_enrich:
       media:
         upload: Upload per Drag & Drop oder hier klicken
       create_popin:
-        type: Produkt
         labels:
           family: Wählen Sie eine Produktfamilie
-      message:
-        created: Produkt erfolgreich erstellt
       completeness: Vollständig
       sequential_edit:
+        item_limit: Nur die ersten 1000 Elemente dieser sequentiellen Bearbeitung werden angezeigt ({{ count }} ausgewählt)
         empty: Ihre Auswahl ist leer, bitte ändern Sie Ihre Suchparameter
     product_model:
-      info:
-        update_successful: Produktmodell erfolgreich aktualisiert. Die Vollständigkeit der Produktvarianten wird neu berechnet.
-        update_failed: Das Produktmodell konnte nicht aktualisiert werden.
-        field_not_ready: "Das Produktmodel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+      plural_label: Produktmodelle
+      flash:
+        update:
+          success: Produktmodell erfolgreich aktualisiert. Die Vollständigkeit der Produktvarianten wird neu berechnet.
+          fail: Das Produktmodell konnte nicht aktualisiert werden.
+          fields_not_ready: "Das Produktmodel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
       variant_axis: Variantenachse(n)
     association_type:
-      info:
-        deletion_successful: Verbindungstyp erfolgreich entfernt.
-        deletion_failed: Verbindungstyp konnte nicht entfernt werden.
-        update_successful: Verbindungstyp erfolgreich aktualisiert.
-        update_failed: Verbindungstyp konnte nicht aktualisiert werden.
-        field_not_ready: "Der Verbindungstyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
-      title: Verbindungstyp
-      message:
-        created: Verbindungstyp erfolgreich erstellt
+      label: Verbindungstyp
+      flash:
+        update:
+          success: Verbindungstyp erfolgreich aktualisiert.
+          fail: Verbindungstyp konnte nicht aktualisiert werden.
+          fields_not_ready: "Der Verbindungstyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+        create:
+          success: Verbindungstyp erfolgreich erstellt
+        delete:
+          success: Verbindungstyp erfolgreich gelöscht
+          fail: Dieser Verbindungstyp kann nicht gelöscht werden
     group_type:
-      info:
-        deletion_successful: Gruppentyp erfolgreich gelöscht.
-        deletion_failed: Gruppentyp konnte nicht gelöscht werden.
-        update_successful: Gruppentyp erfolgreich aktualisiert.
-        update_failed: Der Gruppentyp konnte nicht aktualisiert werden.
-        field_not_ready: "Der Gruppentyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
-      title: Gruppentyp
-      message:
-        created: Gruppentyp erfolgreich erstellt
+      label: Gruppentyp
+      flash:
+        update:
+          success: Gruppentyp erfolgreich aktualisiert.
+          fail: Der Gruppentyp konnte nicht aktualisiert werden.
+          fields_not_ready: "Der Gruppentyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+        create:
+          success: Gruppentyp erfolgreich erstellt
+        delete:
+          success: Gruppentyp erfolgreich gelöscht
+          fail: Dieser Gruppentyp kann nicht gelöscht werden
+      page_title:
+        index: "] -Inf, 1] {{ count }} Gruppentyp|] 1, Inf [{{ count }} Gruppentypen"
     channel:
-      info:
-        deletion_successful: Ausgabekanal erfolgreich entfernt.
-        deletion_failed: Ausgabekanal konnte nicht gelöscht werden.
-        update_successful: Ausgabekanal erfolgreich aktualisiert.
-        update_failed: Ausgabekanal konnte nicht aktualisiert werden.
-        create_successful: Ausgabekanal erfolgreich angelegt.
-        create_failed: Ausgabekanal konnte nicht angelegt werden.
-        field_not_ready: "Der Channel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+      label: Ausgabekanal
+      uppercase_label: Ausgabekanal
+      flash:
+        update:
+          success: Ausgabekanal erfolgreich aktualisiert.
+          fail: Ausgabekanal konnte nicht aktualisiert werden.
+        create:
+          success: Ausgabekanal erfolgreich angelegt.
+          fail: Ausgabekanal konnte nicht angelegt werden.
+        delete:
+          success: Ausgabekanal erfolgreich entfernt
+          fail: Dieser Ausgabekanal kann nicht gelöscht werden
     family:
-      title: Produktfamilie
-      info:
-        update_successful: Produktfamilie erfolgreich aktualisiert.
-        create_successful: Ausgabekanal erfolgreich angelegt.
-        update_failed: Beim Aktualisieren der Produktfamilie ist ein Fehler aufgetreten.
-        cant_remove_attribute_as_label: Das Attribut kann nicht entfernt werden, da es als Label verwendet wird
-        cant_remove_attribute_as_image: Attribute kann nicht entfernt werden, da es als Hauptbild verwendet wird
-        attribute_edit_permission_is_not_granted: Sie haben keine Berechtigungen um die Attribute der Produktfamilie zu bearbeiten
-      message:
-        created: Produktfamilie erfolgreich angelegt
+      label: Produktfamilie
+      uppercase_label: Produktfamilie
+      flash:
+        update:
+          success: Produktfamilie erfolgreich aktualisiert.
+          fail: Beim Aktualisieren der Produktfamilie ist ein Fehler aufgetreten.
+          cant_remove_attribute_as_label: Das Attribut kann nicht entfernt werden, da es als Label verwendet wird
+          cant_remove_attribute_as_image: Attribute kann nicht entfernt werden, da es als Hauptbild verwendet wird
+        create:
+          success: Produktfamilie erfolgreich angelegt
+        delete:
+          success: Produktfamilie erfolgreich entfernt
+          fail: Diese Produktfamilie kann nicht gelöscht werden
+      page_title:
+        index: "] -Inf, 1] {{ count }} Familie|] 1, Inf [{{ count }} Familien"
       variant:
         axis.label: Variantenachse(n)
+        add_variant: Variante hinzufügen
+        required: erforderlich
     attribute_option:
-      actions: Aktionen
+      flash:
+        create:
+          success: Attributoption erfolgreich erstellt
+          fail: Während des Erstellens der Attributoption ist ein Fehler aufgetreten
+        update:
+          fail: Attributoption kann nicht gespeichert werden
+        delete:
+          fail: Fehler beim Löschen der Attributoption
     group:
-      title: Gruppe
-      info:
-        deletion_successful: Gruppe erfolgreich gelöscht.
-        deletion_failed: Gruppe konnte nicht gelöscht werden.
-        update_successful: Gruppe erfolgreich aktualisiert.
-        update_failed: Die Gruppe konnte nicht aktualisiert werden.
-        field_not_ready: "Die Gruppe kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
-      message:
-        created: Gruppe erfolgreich erstellt
-    job_instance:
-      title: Job-Profil
-      info:
-        update_failed: Das Job-Profil konnte nicht aktualisiert werden.
-        update_successful: Das Job-Profil wurde erfolgreich aktualisiert.
+      label: Gruppe
+      flash:
+        update:
+          success: Gruppe erfolgreich aktualisiert.
+          fail: Die Gruppe konnte nicht aktualisiert werden.
+          fields_not_ready: "Die Gruppe kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}"
+        create:
+          success: Gruppe erfolgreich erstellt
+        delete:
+          success: Gruppe erfolgreich entfernt
+          fail: Diese Gruppe kann nicht gelöscht werden
+      page_title:
+        index: "] -Inf, 1] {{ count }} Gruppe|] 1, Inf [{{ count }} Gruppen"
     attribute:
-      info:
-        deletion_successful: Attribut erfolgreich gelöscht.
-        deletion_failed: Das Attribute konnte nicht gelöscht werden.
-        update_successful: Attribut erfolgreich aktualisiert.
-        update_failed: Das Attribut konnte nicht aktualisiert werden.
-        create_successful: Attribut erfolgreich erstellt.
-        create_failed: Das Attribut konnte nicht erstellt werden.
-      scopable: Wert je Ausgabekanal
-      type:
-        pim_catalog_identifier: Kennung
-        pim_catalog_text: Text
-        pim_catalog_textarea: Textbereich
-        pim_catalog_number: Nummer
-        pim_catalog_price_collection: Preis
-        pim_catalog_multiselect: Mehrfachauswahl
-        pim_catalog_simpleselect: Einfachauswahl
-        pim_catalog_file: Datei
-        pim_catalog_image: Abbildung
-        pim_catalog_boolean: "Ja/Nein"
-        pim_catalog_date: Datum
-        pim_catalog_metric: Maßeinheit
-        pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
-        pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
-      validation_rule:
-        email: E-Mail
-        regexp: Regulärer Ausdruck
-        url: URL
-      title: Attribut
+      label: Attribut
+      plural_label: Attribute
+      flash:
+        update:
+          success: Attribut erfolgreich aktualisiert.
+          fail: Das Attribut konnte nicht aktualisiert werden.
+        delete:
+          success: Attribut erfolgreich entfernt
+          fail: Dieses Attribut kann nicht gelöscht werden
+      property:
+        allowed_extensions: Zulässige Dateiendungen
+        auto_option_sorting: Automatische Sortierung der Optionen in alphabetischer Reihenfolge
+        available_locales: Verfügbare Gebietsschemata
+        date_max: Max. Datum
+        date_min: Min. Datum
+        decimals_allowed: Dezimalwerte erlaubt
+        default_metric_unit:
+          label: Standardmaßeinheit
+          choose: Wählen Sie eine Einheit
+        group:
+          label: Attributgruppe
+          choose: Wählen Sie die Attributgruppe
+        is_locale_specific: Gebietsschemaspezifisch
+        localizable: Wert je Gebietsschema
+        max_characters: Max. Zeichen
+        max_file_size: Maximale Dateigröße (MB)
+        metric_family:
+          label: Metrische Gruppe
+          choose: Wählen Sie eine Produktfamilie
+        minimum_input_length: Mindestlänge für Auto-Vervollständigung
+        negative_allowed: Negativwerte erlaubt
+        number_max: Max. Wert
+        number_min: Min. Wert
+        reference_data_name:
+          label: Referenzdatentyp
+          choose: Wählen Sie den Referenz-Datentyp
+        scopable: Wert je Ausgabekanal
+        type:
+          choose: Wählen Sie den Attributtyp aus
+          pim_catalog_identifier: Kennung
+          pim_catalog_text: Text
+          pim_catalog_textarea: Textbereich
+          pim_catalog_number: Nummer
+          pim_catalog_price_collection: Preis
+          pim_catalog_multiselect: Mehrfachauswahl
+          pim_catalog_simpleselect: Einfachauswahl
+          pim_catalog_file: Datei
+          pim_catalog_image: Abbildung
+          pim_catalog_boolean: "Ja/Nein"
+          pim_catalog_date: Datum
+          pim_catalog_metric: Maßeinheit
+          pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
+          pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
+        unique: Eindeutiger Wert
+        useable_as_grid_filter: Verwendbar in der Tabellenansicht
+        validation_regexp: Regulärer Ausdruck
+        validation_rule:
+          label: Validierungsregel
+          email: E-Mail
+          regexp: Regulärer Ausdruck
+          url: URL
+        wysiwyg_enabled: Rich-Text-Editor aktiviert
+      tab:
+        properties:
+          section:
+            common: Allgemeine Parameter
+            type_specific: Spezifische Parameter
+            validation: Validierungsparameter
+        choices:
+          title: Optionen
+      create:
+        create_btn: Attribut anlegen
     attribute_group:
-      info:
-        update_failed: Die Attributgruppe konnte nicht aktualisiert werden
-        update_successful: Attributgruppe erfolgreich aktualisiert
-  confirmation:
-    leave: Möchten Sie diese Seite wirklich verlassen?
-    discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
-    delete:
-      attribute: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
-      attribute_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
+      label: Attributgruppe
+      plural_label: Attributgruppen
+      flash:
+        update:
+          success: Attributgruppe erfolgreich aktualisiert
+          fail: Die Attributgruppe konnte nicht aktualisiert werden
+        delete:
+          success: Attributgruppe erfolgreich entfernt
+    locale:
+      label: Gebietsschema
+      uppercase_label: Gebietsschema
+      plural_label: Gebietsschemata
+    category:
+      label: Kategorie
+      uppercase_label: Kategorie
+      plural_label: Kategorien
+    currency:
+      page_title:
+        index: "] -Inf, 1] {{ count }} Währung|] 1, Inf [{{ count }} Währungen"
+    job_execution:
+      page_title:
+        index: "] -Inf, 1] {{ count }} Benutzer|] 1, Inf [{{ count }} Benutzer"
   info:
-    not_applicable: N/A
     entity:
       updated: Es gibt ungesicherte Änderungen.
-  error:
-    upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
-  alert:
-    not_allowed: Sie haben keine Berechtigung, diese Seite anzuzeigen
-    error_occured: Während des Ladens der Seite ist ein Fehler aufgetreten
   form:
     required: (erforderlich)
     product_model:
@@ -366,6 +388,8 @@ pim_enrich:
             show_groups: Gruppen anzeigen
           association_type_selector: Verbindungstyp
           target: Ziel
+          manage: Füge {{ associationType }} Assoziationen hinzu
+          add_associations: Assoziationen hinzufügen
         attributes:
           info:
             search_attributes: Suche...
@@ -378,6 +402,7 @@ pim_enrich:
             display: Anzeige
             all: Alle Attribute
             missing_required: Alle unvollständigen erforderlichen Attribute
+            at_this_level: Alle ebenenspezifischen Attribute
       panel:
         completeness:
           title: Vollständigkeit
@@ -399,8 +424,6 @@ pim_enrich:
           keep_attributes: Es werden keine Attribute entfernt.
           change_family_to: Produktfamilie ändern zu
           empty_selection: Wählen Sie eine Produktfamilie
-      flash:
-        attribute_deletion_error: Während des Löschens des Attributs ist ein Fehler aufgetreten
       mass_edit:
         select_attributes: Attribute auswählen
         select: Auswählen
@@ -426,10 +449,15 @@ pim_enrich:
             attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
           not_required_label: Nicht erforderlich
           required_label: Erforderlich
+        variant:
+          title: Varianten
+    family_variant:
+      tab:
+        attributes:
+          title: Variantenattribute
+        labels:
+          title: Feldbezeichner-Übersetzungen
     attribute_option:
-      flash:
-        option_created: Attributoption erfolgreich erstellt
-        error_creating_option: Während des Erstellens der Attributoption ist ein Fehler aufgetreten
       add_option_modal:
         title: Attributoption hinzufügen
       add_option: Auswahlmöglichkeit hinzufügen
@@ -444,142 +472,9 @@ pim_enrich:
     common:
       tab:
         attributes:
-          btn:
-            add_attributes: Attribute hinzufügen
           info:
             search_attributes: Suche...
             no_available_attributes: Es können keine weiteren Attribute hinzugefügt werden
-    job_execution:
-      title.details: Ausführungsdetails
-      refreshBtn.title: Aktualisieren
-      button:
-        show_profile.title: Profil anzeigen
-        download_log.title: Log herunterladen
-        download_file.title: Generierte Datei herunterladen
-        download_archive.title: Generiertes Archiv herunterladen
-      summary:
-        fetching: Sammle Daten zur Ausführung des Jobs...
-        warning: Warnung
-        header.step: Schritt
-        header.warnings: Warnungen
-        header.summary: Zusammenfassung
-        header.start: Start
-        header.end: Ende
-    job_instance:
-      fail:
-        launch: Das Job-Profil konnte nicht geladen werden. Bitte prüfen Sie, ob es korrekt ist und Sie den entsprechen Rechte besitzen.
-        save: Das Job-Profil konnte nicht gespeichert werden. Bitte prüfen Sie, ob Sie das Recht zum Editieren besitzen.
-      title:
-        import: Import-Profil
-        export: Export-Profil
-      button:
-        export.title: Jetzt exportieren
-        import.launch: Jetzt importieren
-        import.upload: Hochladen und jetzt importieren
-        import.upload_file: Datei hochladen
-      meta:
-        job: Auftrag
-        connector: Konnektor
-      subsection:
-        last_executions: Zuletzt ausgeführt
-      tab:
-        content:
-          title: Inhalt
-        properties:
-          decimal_separator:
-            title: Dezimaltrennzeichen
-            help: Wählen Sie ein Dezimaltrennzeichen
-          date_format:
-            title: Datumsformat
-            help: Bestimmen Sie das Format der Datumsfelder
-          file_path:
-            title: Dateipfad
-            help: Wo die generierte Datei im Dateisystem abgelegt wird
-          delimiter:
-            title: Trennzeichen
-            help: Einzelnes Zeichen, das als Feld-Trennzeichen verwendet wird
-          enclosure:
-            title: Zeichen zum Einschließen
-            help: Einzelnes Zeichen, von dem Felder eingeschlossen werden
-          with_header:
-            title: Mit Kopfzeile
-            help: Ob die Spaltenüberschrift ausgegeben wird oder nicht
-          with_media:
-            title: Exportieren von Dateien und Bildern
-            help: Ob Produktdateien und Bilder exportiert werden oder nicht
-          lines_per_file:
-            title: Anzahl Zeilen pro Datei
-            help: Definieren Sie die max. Anzahl Zeilen je Datei
-          upload_allowed:
-            title: Datei-Upload erlauben
-            help: Ob direktes Hochladen einer Datei erlaubt wird oder nicht
-          categories_column:
-            title: Kategorienspalte
-            help: Name der Kategorienspalte
-          escape:
-            title: Escape-Zeichen
-            help: Einzelnes Zeichen, das als Escape-Zeichen für Felder benutzt wird
-          family_column:
-            title: Produktfamilienspalte
-            help: Name der Produktfamilienspalte
-          groups_column:
-            title: Gruppenspalte
-            help: Name der Gruppenspalte
-          enabled:
-            title: Produkt aktivieren
-            help: Ob importierte Produkte aktiviert werden sollen oder nicht
-          enabled_comparison:
-            title: Werte vergleichen
-            help: Den Vergleich von originalen und importierten Werten aktivieren. Kann den Import beschleunigen, wenn die importierten Werte den originalen Werten sehr ähnlich sind
-          real_time_versioning:
-            title: Echtzeit Änderungsverfolgung
-            help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
-          family_variant_column:
-            title: Produktfamilie Varianten Spalte
-      file_path: Dateipfad
-    attribute:
-      meta:
-        created_by: von
-        updated: Letzte Aktualisierung
-        updated_by: von
-      tab:
-        properties:
-          section:
-            common: Allgemeine Parameter
-            type_specific: Spezifische Parameter
-            validation: Validierungsparameter
-          label:
-            allowed_extensions: Zulässige Dateiendungen
-            auto_option_sorting: Automatische Sortierung der Optionen in alphabetischer Reihenfolge
-            available_locales: Verfügbare Gebietsschemata
-            date_max: Max. Datum
-            date_min: Min. Datum
-            decimals_allowed: Dezimalwerte erlaubt
-            default_metric_unit: Standardmaßeinheit
-            group: Attributgruppe
-            is_locale_specific: Gebietsschemaspezifisch
-            localizable: Wert je Gebietsschema
-            max_characters: Max. Zeichen
-            max_file_size: Maximale Dateigröße (MB)
-            metric_family: Metrische Gruppe
-            minimum_input_length: Mindestlänge für Auto-Vervollständigung
-            negative_allowed: Negativwerte erlaubt
-            number_max: Max. Wert
-            number_min: Min. Wert
-            reference_data_name: Referenzdatentyp
-            scopable: Wert je Ausgabekanal
-            unique: Eindeutiger Wert
-            useable_as_grid_filter: Verwendbar in der Tabellenansicht
-            validation_regexp: Regulärer Ausdruck
-            validation_rule: Validierungsregel
-            wysiwyg_enabled: Rich-Text-Editor aktiviert
-          default_label:
-            default_metric_unit: Wählen Sie eine Einheit
-            group: Wählen Sie die Attributgruppe
-            metric_family: Wählen Sie eine Produktfamilie
-            reference_data_name: Wählen Sie den Referenz-Datentyp
-        choices:
-          title: Optionen
     mass_edit:
       family:
         attributes:
@@ -603,6 +498,7 @@ pim_enrich:
         locales:
           help: "Das Gebietsschema definiert die lokalisierten Produktwerte für den Export. Beispiel: Nur Produktinformationen in französischer Sprache."
         attributes:
+          label: "{0} alle Attribute |{1} ein Attribut ausgewählt |] 1, Inf [{{ count }} Attribute ausgewählt"
           help: "Wählen Sie die Produktinformationen die exportiert werden sollen. (z.B. alle technischen Attribute)"
           empty: Alle Attribute werden exportiert
           modal:
@@ -671,16 +567,12 @@ pim_enrich:
       list: Wählen Sie einen Auftrag
       message:
         created: Importprofil erfolgreich erstellt
-    import_history:
-      title: Importberichte
     group:
       create_btn: Gruppe anlegen
     export_profiles:
       create_btn: Exportprofil anlegen
       message:
         created: Exportprofil erfolgreich erstellt
-    export_history:
-      title: Exportberichte
     family:
       create_btn: Produktfamilie anlegen
     grouptype:
@@ -693,9 +585,6 @@ pim_enrich:
       create_btn: Gruppe anlegen
     channel:
       create_btn: Ausgabekanal anlegen
-    attribute:
-      create_btn: Attribut anlegen
-      modal_title: Wählen Sie den Attributtyp aus
   mass_edit:
     product:
       title: Massenbearbeitung Produkte
@@ -718,11 +607,12 @@ pim_enrich:
           field: Zu aktivieren
         change_family:
           description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
-          field: Produktfamilie
         add_to_group:
           label: Zu Gruppen hinzufügen
           description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
           field: Gruppen
+        add_to_category:
+          label: Zu Kategorien hinzufügen
         move_to_category:
           label: Zwischen Kategorien verschieben
         remove_from_category:
@@ -745,10 +635,6 @@ pim_enrich:
         set_requirements:
           label: Benötigte Attribute auswählen
           description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
-pim_enrich.error:
-  exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
-  http:
-    403: Sie haben keine Berechtigung, diese Seite anzuzeigen
 pim_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Attributgruppen
@@ -789,6 +675,8 @@ pim_menu:
     exports: Exporte
     settings: Einstellungen
     system: System
+    help:
+      title: Hilfe
   item:
     association_type: Verbindungstypen
     attribute_group: Attributgruppen
@@ -798,7 +686,6 @@ pim_menu:
     family: Produktfamilien
     group: Gruppen
     group_type: Gruppentypen
-    published_product: Veröffentlichte Produkte
     export_history: Export-Historie
     export_profile: Export-Profile
     import_history: Import-Historie
@@ -816,6 +703,7 @@ pim_menu:
     system: Navigation System
     user: Navigation Benutzerverwaltung
     settings: Navigation Einstellung
+    product: Navigation Produkte
   user:
     logout: Abmelden
     user_account: Mein Konto
@@ -829,24 +717,18 @@ batch_jobs:
   add_product_value:
     label: Produktwert hinzufügen
     perform.label: Produktwert hinzufügen
-  update_product_value:
-    label: Wert des Produkts aktualisieren
-    perform.label: Wert des Produkts aktualisieren
-  edit_common_attributes:
-    label: Attribute bearbeiten
-    perform.label: Attribute bearbeiten
-  set_attribute_requirements:
-    label: Benötigte Attribute auswählen
-    perform.label: Benötigte Attribute auswählen
-  csv_product_quick_export:
-    quick_export.label: CSV Produkt-Schnellexport
-    perform.label: CSV Produkt-Schnellexport
   csv_product_grid_context_quick_export:
     quick_export.label: CSV Produkt-Schnellexport kontextabhängig
     perform.label: CSV Produkt-Schnellexport kontextabhängig
-  xlsx_product_quick_export:
-    quick_export.label: XLSX Produkt-Schnellexport
-    perform.label: XLSX Produkt-Schnellexport
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: XLSX Produkt-Schnellexport kontextabhängig
-    perform.label: XLSX Produkt-Schnellexport kontextabhängig
+  csv_product_quick_export:
+    quick_export.label: CSV Produkt-Schnellexport
+    perform.label: CSV Produkt-Schnellexport
+  edit_common_attributes:
+    label: Attribute bearbeiten
+    perform.label: Attribute bearbeiten
+  update_product_value:
+    label: Wert des Produkts aktualisieren
+    perform.label: Wert des Produkts aktualisieren
+  set_attribute_requirements:
+    label: Benötigte Attribute auswählen
+    perform.label: Benötigte Attribute auswählen
