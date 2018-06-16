@@ -8,6 +8,8 @@ pim_common:
   created: Creado
   updated: Actualizado
   create: Crear
+  permissions: Permisos
+  properties: Propiedades
 pim_enrich:
   create:
     attribute: Crear atributo

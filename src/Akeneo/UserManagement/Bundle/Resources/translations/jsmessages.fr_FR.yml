@@ -16,3 +16,14 @@ pim_title:
   pim_user_reset_check_email: Réinitialisation de mot de passe | Email de vérification
   pim_user_group_create: 'Groupes | Création'
   pim_user_group_update: 'Groupes {{ group }} | Édition'
+pim_user_management:
+  entity:
+    user:
+      page_title:
+        index: "] -Inf, 1] {{ count }} utilisateur|] 1, Inf [{{ count }} utilisateurs"
+    role:
+      page_title:
+        index: "] -Inf, 1] {{ count }} rôle|] 1, Inf [{{ count }} rôles"
+    group:
+      page_title:
+        index: "] -Inf, 1] {{ count }} groupe|] 1, Inf [{{ count }} groupes"

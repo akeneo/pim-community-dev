@@ -5,3 +5,14 @@ pim_title:
   oro_config_configuration_system: Konfiguration
   pim_user_security_login: Login
   pim_user_reset_request: Glemt adgangskode
+pim_user_management:
+  entity:
+    user:
+      page_title:
+        index: "] -Inf, 1] {{ count }} brugeren |] 1, Inf [{{ count }} brugere"
+    role:
+      page_title:
+        index: "] -Inf, 1] {{ count }} rolle |] 1, Inf [{{ count }} roller"
+    group:
+      page_title:
+        index: "] -Inf, 1] {{ count }} group |] 1, Inf [{{ count }} grupper"

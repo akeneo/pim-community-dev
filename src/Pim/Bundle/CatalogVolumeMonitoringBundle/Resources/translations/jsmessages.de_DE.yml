@@ -1,10 +1,16 @@
 pim_catalog_volume:
   axis:
     count_products: Produkte
+    average_max_attributes_per_family: Attribute pro Produktfamilie
     count_channels: Ausgabekanäle
+    count_scopable_attributes: Ausgabekanalspezifisches Attribute
+    count_localizable_and_scopable_attributes: Lokalisierbare und ausgabekanalspezifische Attribute
+    count_localizable_attributes: Lokalisierbare Attribute
     count_families: Produktfamilien
     count_attributes: Attribute
+    average_max_options_per_attribute: Optionen nach Attributen
     count_categories: Kategorien
     count_category_trees: Kategorie-Strukturbäume
     count_variant_products: Produktvarianten
     count_product_models: Produktmodelle
+    warning: Wow! Sie haben mit dieser Achse das Limit erreicht! Zögern Sie nicht uns zu kontaktieren, falls Sie Hilfe benötigen.
