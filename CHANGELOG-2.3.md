@@ -1,3 +1,14 @@
+# 2.3.x
+
+## Better manage products with variants
+
+- AOB-139: Make Teamwork assistant project filtering work with product models.
+
+## BC Breaks
+
+- AOB-139: Change constructor of `PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`.
+- AOB-139: Rename method `PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepositoryInterface::findProductIds` to `findProductIdentifiers`.
+
 # 2.3.0-ALPHA2 (2018-06-07)
 
 ## Improve Julia's experience

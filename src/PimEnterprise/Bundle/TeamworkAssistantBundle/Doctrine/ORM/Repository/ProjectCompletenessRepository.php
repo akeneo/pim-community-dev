@@ -24,10 +24,10 @@ use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepo
 class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInterface
 {
     /** @var EntityManager */
-    protected $entityManager;
+    private $entityManager;
 
     /** @var TableNameMapper */
-    protected $tableNameMapper;
+    private $tableNameMapper;
 
     /**
      * @param EntityManager   $entityManager
@@ -79,7 +79,7 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
      *
      * @return array
      */
-    protected function findProductIdentifiersAsContributor(ProjectInterface $project, $status, $username)
+    private function findProductIdentifiersAsContributor(ProjectInterface $project, $status, $username)
     {
         $parameters = $this->buildQueryParameters($project, $username);
 
@@ -178,7 +178,7 @@ SQL;
      *
      * @return array
      */
-    protected function findProductIdentifiersAsOwner(ProjectInterface $project, $status)
+    private function findProductIdentifiersAsOwner(ProjectInterface $project, $status)
     {
         $parameters = [
             'locale_code' => $project->getLocale()->getCode(),
@@ -223,9 +223,9 @@ SQL;
 
         $connection = $this->entityManager->getConnection();
         $sql = $this->tableNameMapper->createQuery($sql);
-        $productIds = $connection->fetchAll($sql, $parameters);
+        $productIdentifiers = $connection->fetchAll($sql, $parameters);
 
-        return array_column($productIds, 'identifier');
+        return array_column($productIdentifiers, 'identifier');
     }
 
     /**
@@ -236,7 +236,7 @@ SQL;
      *
      * @return array
      */
-    protected function buildQueryParameters(ProjectInterface $project, $username = null)
+    private function buildQueryParameters(ProjectInterface $project, $username = null)
     {
         $parameters = [
             'project_id' => $project->getId(),
@@ -258,7 +258,7 @@ SQL;
      *
      * @return string
      */
-    protected function buildSqlQuery($username = null)
+    private function buildSqlQuery($username = null)
     {
         $sql =
 <<<SQL
