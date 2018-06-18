@@ -1,3 +1,9 @@
+# 2.2.x
+
+## Bug fixes
+
+- PIM-7442: Bulk actions ALL - count not taking variant products into account
+
 # 2.2.9 (2018-06-14)
 
 ## Bug fixes
