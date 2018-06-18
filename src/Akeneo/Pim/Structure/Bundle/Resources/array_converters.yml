@@ -13,3 +13,8 @@ services:
                 - 'decimals_allowed'
                 - 'negative_allowed'
                 - 'auto_option_sorting'
+
+    pim_connector.array_converter.flat_to_standard.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\AttributeGroup'
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
