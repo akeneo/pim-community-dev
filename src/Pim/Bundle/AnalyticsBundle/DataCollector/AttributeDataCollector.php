@@ -6,6 +6,7 @@ namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 use Akeneo\Component\Analytics\DataCollectorInterface;
 use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Pim\Bundle\AnalyticsBundle\Doctrine\Query;
+use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 
 /**
  * Collect data about attributes:
@@ -19,34 +20,34 @@ use Pim\Bundle\AnalyticsBundle\Doctrine\Query;
  */
 class AttributeDataCollector implements DataCollectorInterface
 {
-    /** @var CountableRepositoryInterface */
-    private $attributeRepository;
+    /** @var CountQuery */
+    private $attributeCountQuery;
 
-    /** @var Query\CountLocalizableAttribute */
-    private $countLocalizableAttribute;
+    /** @var CountQuery */
+    private $localizableAttributeCountQuery;
 
-    /** @var Query\CountScopableAttribute */
-    private $countScopableAttribute;
+    /** @var CountQuery */
+    private $scopableAttributeCountQuery;
 
-    /** @var Query\CountScopableAndLocalizableAttribute */
-    private $countScopableAndLocalizableAttribute;
+    /** @var CountQuery */
+    private $localizableAndScopableAttributeCountQuery;
 
     /**
-     * @param CountableRepositoryInterface               $attributeRepository
-     * @param Query\CountLocalizableAttribute            $countLocalizableAttribute
-     * @param Query\CountScopableAttribute               $countScopableAttribute
-     * @param Query\CountScopableAndLocalizableAttribute $countScopableAndLocalizableAttribute
+     * @param CountQuery        $attributeCountQuery
+     * @param CountQuery        $localizableAttributeCountQuery
+     * @param CountQuery        $scopableAttributeCountQuery
+     * @param CountQuery        $localizableAndScopableAttributeCountQuery
      */
     public function __construct(
-        CountableRepositoryInterface $attributeRepository,
-        Query\CountLocalizableAttribute $countLocalizableAttribute,
-        Query\CountScopableAttribute $countScopableAttribute,
-        Query\CountScopableAndLocalizableAttribute $countScopableAndLocalizableAttribute
+        CountQuery $attributeCountQuery,
+        CountQuery $localizableAttributeCountQuery,
+        CountQuery $scopableAttributeCountQuery,
+        CountQuery $localizableAndScopableAttributeCountQuery
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->countLocalizableAttribute = $countLocalizableAttribute;
-        $this->countScopableAttribute = $countScopableAttribute;
-        $this->countScopableAndLocalizableAttribute = $countScopableAndLocalizableAttribute;
+        $this->attributeCountQuery = $attributeCountQuery;
+        $this->localizableAttributeCountQuery = $localizableAttributeCountQuery;
+        $this->scopableAttributeCountQuery = $scopableAttributeCountQuery;
+        $this->localizableAndScopableAttributeCountQuery = $localizableAndScopableAttributeCountQuery;
     }
 
     /**
@@ -55,10 +56,10 @@ class AttributeDataCollector implements DataCollectorInterface
     public function collect(): array
     {
         $data = [
-            'nb_attributes' => $this->attributeRepository->countAll(),
-            'nb_scopable_attributes' => ($this->countScopableAttribute)(),
-            'nb_localizable_attributes' => ($this->countLocalizableAttribute)(),
-            'nb_scopable_localizable_attributes' => ($this->countScopableAndLocalizableAttribute)(),
+            'nb_attributes' => $this->attributeCountQuery->fetch()->getVolume(),
+            'nb_scopable_attributes' => $this->scopableAttributeCountQuery->fetch()->getVolume(),
+            'nb_localizable_attributes' => $this->localizableAttributeCountQuery->fetch()->getVolume(),
+            'nb_scopable_localizable_attributes' => $this->localizableAndScopableAttributeCountQuery->fetch()->getVolume(),
         ];
 
         return $data;
