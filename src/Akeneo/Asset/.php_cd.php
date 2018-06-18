@@ -57,7 +57,7 @@ $rules = [
         'Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface', // Related to the front end
         'Pim\Bundle\EnrichBundle\Flash\Message', // Related to the front end
-        'Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType',
+        'Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType',
         'Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor', // it should go in Akeneo\Tool
         'Pim\Bundle\UIBundle\Form\Type\SwitchType', // Related to the front end (symfony form type)
         'Pim\Bundle\UIBundle\Form\Type\AjaxEntityType', // Related to the front end (symfony form type)
