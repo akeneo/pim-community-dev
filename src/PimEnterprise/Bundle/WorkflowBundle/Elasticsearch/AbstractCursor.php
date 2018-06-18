@@ -111,25 +111,7 @@ abstract class AbstractCursor implements CursorInterface
         );
         $hydratedItems = array_merge($hydratedProducts, $hydratedProductModels);
 
-        $orderedItems = [];
-
-        foreach ($identifierResults->all() as $identifierResult) {
-            foreach ($hydratedItems as $hydratedItem) {
-                if ($hydratedItem instanceof ProductDraft &&
-                    $identifierResult->isProductDraftIdentifierEquals($hydratedItem->getIdentifier())
-                ) {
-                    $orderedItems[] = $hydratedItem;
-                    break;
-                } elseif ($hydratedItem instanceof ProductModelDraft &&
-                    $identifierResult->isProductModelDraftIdentifierEquals($hydratedItem->getIdentifier())
-                ) {
-                    $orderedItems[] = $hydratedItem;
-                    break;
-                }
-            }
-        }
-
-        return $orderedItems;
+        return $hydratedItems;
     }
 
     /**
