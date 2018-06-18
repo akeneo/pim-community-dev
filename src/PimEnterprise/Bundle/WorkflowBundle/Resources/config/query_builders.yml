@@ -94,26 +94,6 @@ services:
             - '@pimee_workflow.factory.product_proposal_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
 
-    pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory:
-        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
-        arguments:
-            - '%pim_catalog.query.product_query_builder.class%'
-            - '@pim_catalog.repository.attribute'
-            - '@pimee_workflow.query.filter.product_proposal_registry'
-            - '@pim_catalog.query.sorter.registry'
-            - '@pimee_workflow.factory.product_proposal_from_size_cursor'
-            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
-
-    pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory_with_permissions:
-        class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
-        decorates: pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory
-        decoration_inner_name: pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory.without_permission
-        arguments:
-            - '@pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory.without_permission'
-            - '@security.token_storage'
-            - '@pimee_security.repository.category_access'
-            - 'OWN_PRODUCTS'
-
     pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory:
         public: false
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
