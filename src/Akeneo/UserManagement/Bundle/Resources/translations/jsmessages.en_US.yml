@@ -27,10 +27,19 @@ pim_user_management:
     entity:
         user:
             page_title:
-                index: "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} users"
+                index: "]Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
+            module:
+                create:
+                    button: Create user
         role:
             page_title:
-                index: "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
+                index: "]Inf, 1] {{ count }} role|]1, Inf [{{ count }} roles"
+            module:
+                create:
+                    button: Create role
         group:
             page_title:
-                index: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
+                index: "]Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
+            module:
+                create:
+                    button: Create group

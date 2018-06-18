@@ -65,6 +65,6 @@ extensions:
         position: 100
         aclResourceId: pim_user_user_create
         config:
-            label: pim_enrich.index.user.create_btn
+            label: pim_user_management.entity.user.module.create.button
             route: pim_user_create
             buttonClass: AknButton AknButton--apply

@@ -194,7 +194,7 @@ pim_enrich.entity.product:
             success: Product successfully created
             fail: No attribute is configured as a product identifier or you don't have the rights to edit it.
     page_title:
-        index: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
+        index: "]-Inf, 1]{{ count }} result|]1, Inf[{{ count }} results"
     module:
         create:
             subtitle: Create product
@@ -241,7 +241,7 @@ pim_enrich.entity.product:
             complete: Complete
             no_family: No family defined. Please define a family to calculate the completeness of this product.
             no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
-            missing_values: "{1}1 missing value|] 1, Inf [{{ count }} missing values"
+            missing_values: "{1}1 missing value|]1, Inf [{{ count }} missing values"
         sequential_edit:
             item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
             empty: Your selection is empty, please change your search criteria
@@ -318,11 +318,14 @@ pim_enrich.entity.channel:
             success: Channel successfully removed
             fail: Cannot delete this channel
     page_title:
-        index: "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} channels"
+        index: "]Inf, 1] {{ count }} channel|]1, Inf [{{ count }} channels"
     property:
         category_tree: Category tree
         do_not_convert: Do not convert
         label_conversion_units: Pick a conversion unit for each metric attribute that will be used during product export
+    module:
+        create:
+            button: Create channel
 
 pim_enrich.entity.family:
     label: family
@@ -345,11 +348,13 @@ pim_enrich.entity.family:
         attribute_as_image: Attribute used as the main picture
         empty_attribute_as_image: Not selected
     page_title:
-        index: "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} families"
+        index: "]-Inf, 1]{{ count }} family|]1, Inf[{{ count }} families"
     module:
         attributes:
             not_required_label: Not required
             required_label: Required
+        create:
+            button: Create family
 
 pim_enrich.entity.family_variant:
     label: family variant
@@ -393,7 +398,6 @@ pim_enrich.entity.attribute_option:
         delete:
             fail: Error during deletion of the attribute option
 
-
 pim_enrich:
     entity:
         association_type:
@@ -409,7 +413,10 @@ pim_enrich:
                     success: Association type successfully removed
                     fail: Cannot delete this association type
             page_title:
-                index: "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} association types"
+                index: "]Inf, 1] {{ count }} association type|]1, Inf [{{ count }} association types"
+            module:
+                create:
+                    button: Create association type
 
         group_type:
             label: group type
@@ -424,7 +431,10 @@ pim_enrich:
                     success: Group type successfully removed
                     fail: Cannot delete this group type
             page_title:
-                index: "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} group types"
+                index: "]Inf, 1] {{ count }} group type|]1, Inf [{{ count }} group types"
+            module:
+                create:
+                    button: Create group type
 
         group:
             label: Group
@@ -439,7 +449,10 @@ pim_enrich:
                     success: Group successfully removed
                     fail: Cannot delete this group
             page_title:
-                index: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
+                index: "]Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
+            module:
+                create:
+                    button: Create group
 
         attribute:
             label: attribute
@@ -453,7 +466,7 @@ pim_enrich:
                     success: Attribute successfully removed
                     fail: Cannot delete this attribute
             page_title:
-                index: "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} attributes"
+                index: "]Inf, 1] {{ count }} attribute|]1, Inf [{{ count }} attributes"
             property:
                 allowed_extensions: Allowed extensions
                 auto_option_sorting: Sort automatically options by alphabetical order
@@ -548,14 +561,14 @@ pim_enrich:
                     success: API connection successfully revoked
                     fail: Cannot revoke this API connection
             page_title:
-                index: "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API connections"
+                index: "]Inf, 1] {{ count }} API connection|]1, Inf [{{ count }} API connections"
 
         locale:
             label: locale
             uppercase_label: Locale
             plural_label: Locales
             page_title:
-                index: "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
+                index: "]Inf, 1] {{ count }} locale|]1, Inf [{{ count }} locales"
 
         category:
             label: category
@@ -565,11 +578,11 @@ pim_enrich:
         currency:
             plural_label: Currencies
             page_title:
-                index: "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} currencies"
+                index: "]Inf, 1] {{ count }} currency|]1, Inf [{{ count }} currencies"
 
         job_execution:
             page_title:
-                index: "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operations"
+                index: "]Inf, 1] {{ count }} operation|]1, Inf [{{ count }} operations"
 
     info:
         entity:
@@ -675,36 +688,10 @@ pim_enrich:
     mass_edit_action:
         edit_common_attributes:
             description: Only the attributes belonging to the families of the selected products will be edited with the following data for the <span class="highlight">{{ locale }}</span> locale and the <span class="highlight">{{ channel }}</span> channel.
-    index:
-        association_type:
-            create_btn: Create association type
-        import_profiles:
-            create_btn: Create import profile
-            list:       Select a job
-            message:
-                created: Import profile successfully created
-        group:
-            create_btn: Create group
-        export_profiles:
-            create_btn: Create export profile
-            message:
-                created: Export profile successfully created
-        family:
-            create_btn: Create family
-        grouptype:
-            create_btn: Create group type
-        user:
-            create_btn: Create user
-        user_role:
-            create_btn: Create role
-        user_group:
-            create_btn: Create group
-        channel:
-            create_btn: Create channel
     mass_edit:
         product:
             title: Products bulk action
-            confirm: "{1}You are about to update a product with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} products with the following information, please confirm."
+            confirm: "{1}You are about to update a product with the following information, please confirm.|]1, Inf [You are about to update {{ itemsCount }} products with the following information, please confirm."
             step:
                 select:
                     label: Choose products
@@ -724,45 +711,45 @@ pim_enrich:
                     select_attributes: Select attributes
                 change_status:
                     label: Change status
-                    label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf [Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The selected products will be enabled or disabled.
                     field: To enable
                 edit_common:
                     label: Edit attributes values
-                    label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf [Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
                 add_attribute_value:
                     label: Add attributes values
-                    label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf [Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
                 change_family:
                     label: Change family
-                    label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The family of the selected products will be changed to the chosen family
                 add_to_group:
                     label: Add to groups
-                    label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
+                    label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|]1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
                     description: Select the groups in which to add the selected products
                     field: Groups
                 add_to_category:
                     label: Add to categories
-                    label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
+                    label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|]1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
                     description: The products will be classified into following categories, the existing classification is kept.
                 move_to_category:
                     label: Move between categories
-                    label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|] 1, Inf [Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
+                    label_count: "{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|]1, Inf [Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
                     description: The products will be classified into following categories, the existing classification is lost.
                 remove_from_category:
                     label: Remove from categories
-                    label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|] 1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
+                    label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|]1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
                     description: The products will be removed from the following categories.
                 add_to_existing_product_model:
                     label: Add to an existing product model
-                    label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
+                    label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|]1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
                     description: The product model selected will gather the products and allows the enrichment of their common properties.
                 associate_to_product_and_product_model:
                     label: Associate
-                    label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|] 1, Inf [Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
+                    label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
                     description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
                     validate: Please add association before going to the next step
                 change_parent_product_model:
@@ -771,7 +758,7 @@ pim_enrich:
                     description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
         family:
             title: Families bulk action
-            confirm: "{1}You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."
+            confirm: "{1}You are about to update a family with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} families with the following information, please confirm."
             step:
                 select:
                     label: Choose families
@@ -788,7 +775,7 @@ pim_enrich:
                 set_requirements:
                     label: Set attributes requirements
                     description: The following attributes requirements will be applied to the selected families
-                    label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
+                    label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|]1, Inf [Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
 
 # Page titles
 pim_title:
