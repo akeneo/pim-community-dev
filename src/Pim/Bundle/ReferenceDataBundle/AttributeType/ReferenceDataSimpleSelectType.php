@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType;
 
 /**
  * Reference data simple options (select) attribute type
