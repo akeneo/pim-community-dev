@@ -46,6 +46,7 @@ pim_common:
     delete: Delete
     done: Done
     edit: Edit
+    entity_updated: There are unsaved changes.
     from: From
     general_properties: General properties
     history: History
@@ -63,6 +64,7 @@ pim_common:
     permissions: Permissions
     previous: Previous
     properties: Properties
+    required_label: (required)
     save: Save
     select2:
         search: Search...
@@ -270,6 +272,9 @@ pim_enrich.entity.product:
             keep_attributes: No attributes will be removed.
             change_family_to: Change the family to
             empty_selection: Choose a family
+        basket:
+            title: Basket
+            empty_basket: Basket is empty
 
 pim_enrich.entity.product_model:
     label: product model
@@ -390,6 +395,7 @@ pim_enrich.entity.family_variant:
 
 pim_enrich.entity.attribute_option:
     flash:
+        short_uppercase_label: Options
         create:
             success: Attribute option successfully created
             fail: An error ocurred when trying to create the attribute option
@@ -398,216 +404,198 @@ pim_enrich.entity.attribute_option:
         delete:
             fail: Error during deletion of the attribute option
 
-pim_enrich:
-    entity:
-        association_type:
-            label: association type
-            flash:
-                update:
-                    success: Association type successfully updated.
-                    fail: The association type could not be updated.
-                    fields_not_ready: "The association type cannot be saved right now. The following fields are not ready: {{ fields }}"
-                create:
-                    success: Association type successfully created
-                delete:
-                    success: Association type successfully removed
-                    fail: Cannot delete this association type
-            page_title:
-                index: "]Inf, 1] {{ count }} association type|]1, Inf [{{ count }} association types"
-            module:
-                create:
-                    button: Create association type
+pim_enrich.entity.association_type:
+    label: association type
+    flash:
+        update:
+            success: Association type successfully updated.
+            fail: The association type could not be updated.
+            fields_not_ready: "The association type cannot be saved right now. The following fields are not ready: {{ fields }}"
+        create:
+            success: Association type successfully created
+        delete:
+            success: Association type successfully removed
+            fail: Cannot delete this association type
+    page_title:
+        index: "]Inf, 1] {{ count }} association type|]1, Inf [{{ count }} association types"
+    module:
+        create:
+            button: Create association type
 
-        group_type:
-            label: group type
-            flash:
-                update:
-                    success: Group type successfully updated.
-                    fail: The group type could not be updated.
-                    fields_not_ready: "The group type cannot be saved right now. The following fields are not ready: {{ fields }}"
-                create:
-                    success: Group type successfully created
-                delete:
-                    success: Group type successfully removed
-                    fail: Cannot delete this group type
-            page_title:
-                index: "]Inf, 1] {{ count }} group type|]1, Inf [{{ count }} group types"
-            module:
-                create:
-                    button: Create group type
+pim_enrich.entity.group_type:
+    label: group type
+    flash:
+        update:
+            success: Group type successfully updated.
+            fail: The group type could not be updated.
+            fields_not_ready: "The group type cannot be saved right now. The following fields are not ready: {{ fields }}"
+        create:
+            success: Group type successfully created
+        delete:
+            success: Group type successfully removed
+            fail: Cannot delete this group type
+    page_title:
+        index: "]Inf, 1] {{ count }} group type|]1, Inf [{{ count }} group types"
+    module:
+        create:
+            button: Create group type
 
+pim_enrich.entity.group:
+    label: Group
+    flash:
+        update:
+            success: Group successfully updated.
+            fail: The group could not be updated.
+            fields_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
+        create:
+            success: Group successfully created
+        delete:
+            success: Group successfully removed
+            fail: Cannot delete this group
+    page_title:
+        index: "]Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
+    module:
+        create:
+            button: Create group
+
+pim_enrich.entity.attribute:
+    label: attribute
+    plural_label: Attributes
+    flash:
+        update:
+            success: Attribute successfully updated.
+            fail: The attribute could not be updated.
+            fields_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
+        delete:
+            success: Attribute successfully removed
+            fail: Cannot delete this attribute
+    page_title:
+        index: "]Inf, 1] {{ count }} attribute|]1, Inf [{{ count }} attributes"
+    property:
+        allowed_extensions: Allowed extensions
+        auto_option_sorting: Sort automatically options by alphabetical order
+        available_locales: Available locales
+        date_max: Max date
+        date_min: Min date
+        decimals_allowed: Decimal values allowed
+        default_metric_unit:
+            label: Default metric unit
+            choose: Choose a unit
         group:
-            label: Group
-            flash:
-                update:
-                    success: Group successfully updated.
-                    fail: The group could not be updated.
-                    fields_not_ready: "The group cannot be saved right now. The following fields are not ready: {{ fields }}"
-                create:
-                    success: Group successfully created
-                delete:
-                    success: Group successfully removed
-                    fail: Cannot delete this group
-            page_title:
-                index: "]Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
-            module:
-                create:
-                    button: Create group
+            label: Attribute group
+            choose: Choose the attribute group
+        is_locale_specific: Locale specific
+        localizable: Value per locale
+        max_characters: Max characters
+        max_file_size: Max file size (MB)
+        metric_family:
+            label: Metric family
+            choose: Choose a family
+        minimum_input_length: Minimum length for autocompletion
+        name: Name
+        negative_allowed: Negative values allowed
+        number_max: Max number
+        number_min: Min number
+        reference_data_name:
+            label: Reference data type
+            choose: Choose the reference data type
+        scopable: Value per channel
+        type:
+            choose: Choose the attribute type
+            pim_catalog_identifier: Identifier
+            pim_catalog_text: Text
+            pim_catalog_textarea: Text Area
+            pim_catalog_number: Number
+            pim_catalog_price_collection: Price
+            pim_catalog_multiselect: Multi select
+            pim_catalog_simpleselect: Simple select
+            pim_catalog_file: File
+            pim_catalog_image: Image
+            pim_catalog_boolean: "Yes/No"
+            pim_catalog_date: Date
+            pim_catalog_metric: Metric
+            pim_reference_data_simpleselect: Reference data simple select
+            pim_reference_data_multiselect: Reference data multi select
+        unique: Unique value
+        useable_as_grid_filter: Usable in grid
+        validation_regexp: Regular expression
+        validation_rule:
+            label: Validation rule
+            email: E-mail
+            regexp: Regular expression
+            url: URL
+        wysiwyg_enabled: Rich text editor enabled
+    module:
+        add_attribute:
+            no_available_attributes: There are no more attributes to add
+            attributes_selected: "{{ itemsCount }} attribute(s) selected"
+        create:
+            create: Create attribute
+        edit:
+            common: General parameters
+            type_specific: Type specific parameters
+            validation: Validation parameters
 
-        attribute:
-            label: attribute
-            plural_label: Attributes
-            flash:
-                update:
-                    success: Attribute successfully updated.
-                    fail: The attribute could not be updated.
-                    fields_not_ready: "The attribute cannot be saved right now. The following fields are not ready: {{ fields }}"
-                delete:
-                    success: Attribute successfully removed
-                    fail: Cannot delete this attribute
-            page_title:
-                index: "]Inf, 1] {{ count }} attribute|]1, Inf [{{ count }} attributes"
-            property:
-                allowed_extensions: Allowed extensions
-                auto_option_sorting: Sort automatically options by alphabetical order
-                available_locales: Available locales
-                date_max: Max date
-                date_min: Min date
-                decimals_allowed: Decimal values allowed
-                default_metric_unit:
-                    label: Default metric unit
-                    choose: Choose a unit
-                group:
-                    label: Attribute group
-                    choose: Choose the attribute group
-                is_locale_specific: Locale specific
-                localizable: Value per locale
-                max_characters: Max characters
-                max_file_size: Max file size (MB)
-                metric_family:
-                    label: Metric family
-                    choose: Choose a family
-                minimum_input_length: Minimum length for autocompletion
-                negative_allowed: Negative values allowed
-                number_max: Max number
-                number_min: Min number
-                reference_data_name:
-                    label: Reference data type
-                    choose: Choose the reference data type
-                scopable: Value per channel
-                type:
-                    choose: Choose the attribute type
-                    pim_catalog_identifier: Identifier
-                    pim_catalog_text: Text
-                    pim_catalog_textarea: Text Area
-                    pim_catalog_number: Number
-                    pim_catalog_price_collection: Price
-                    pim_catalog_multiselect: Multi select
-                    pim_catalog_simpleselect: Simple select
-                    pim_catalog_file: File
-                    pim_catalog_image: Image
-                    pim_catalog_boolean: "Yes/No"
-                    pim_catalog_date: Date
-                    pim_catalog_metric: Metric
-                    pim_reference_data_simpleselect: Reference data simple select
-                    pim_reference_data_multiselect: Reference data multi select
-                unique: Unique value
-                useable_as_grid_filter: Usable in grid
-                validation_regexp: Regular expression
-                validation_rule:
-                    label: Validation rule
-                    email: E-mail
-                    regexp: Regular expression
-                    url: URL
-                wysiwyg_enabled: Rich text editor enabled
-            module:
-                add_attribute:
-                    no_available_attributes: There are no more attributes to add
-                    attributes_selected: "{{ itemsCount }} attribute(s) selected"
-            tab:
-                properties:
-                    section:
-                        common: General parameters
-                        type_specific: Type specific parameters
-                        validation: Validation parameters
-                choices:
-                    title: Options
-            create:
-                create_btn: Create attribute
+pim_enrich.entity.attribute_group:
+    label: attribute group
+    uppercase_label: Attribute group
+    plural_label: Attribute groups
+    flash:
+        update:
+            success: Attribute group successfully updated
+            fail: Attribute group could not be updated
+            fields_not_ready: "The attribute group cannot be saved right now. The following fields are not ready: {{ fields }}"
+        delete:
+            success: Attribute group successfully removed
+            fail: Cannot delete this attribute group
+    module:
+        add_attribute_group:
+            label: Add by groups
+            no_attribute_groups_available: No attribute group available
+            attributes_groups_selected: '{{ itemsCount }} group(s) selected'
 
-        attribute_group:
-            label: attribute group
-            uppercase_label: Attribute group
-            plural_label: Attribute groups
-            flash:
-                update:
-                    success: Attribute group successfully updated
-                    fail: Attribute group could not be updated
-                    fields_not_ready: "The attribute group cannot be saved right now. The following fields are not ready: {{ fields }}"
-                delete:
-                    success: Attribute group successfully removed
-                    fail: Cannot delete this attribute group
-            module:
-                add_attribute_group:
-                    label: Add by groups
-                    no_attribute_groups_available: No attribute group available
-                    attributes_groups_selected: '{{ itemsCount }} group(s) selected'
+pim_enrich.entity.api_connection:
+    flash:
+        create:
+            success: API connection successfully created
+        delete:
+            success: API connection successfully revoked
+            fail: Cannot revoke this API connection
+    page_title:
+        index: "]Inf, 1] {{ count }} API connection|]1, Inf [{{ count }} API connections"
 
-        api_connection:
-            flash:
-                create:
-                    success: API connection successfully created
-                delete:
-                    success: API connection successfully revoked
-                    fail: Cannot revoke this API connection
-            page_title:
-                index: "]Inf, 1] {{ count }} API connection|]1, Inf [{{ count }} API connections"
+pim_enrich.entity.locale:
+    label: locale
+    uppercase_label: Locale
+    plural_label: Locales
+    page_title:
+        index: "]Inf, 1] {{ count }} locale|]1, Inf [{{ count }} locales"
 
-        locale:
-            label: locale
-            uppercase_label: Locale
-            plural_label: Locales
-            page_title:
-                index: "]Inf, 1] {{ count }} locale|]1, Inf [{{ count }} locales"
+pim_enrich.entity.category:
+    label: category
+    uppercase_label: Category
+    plural_label: Categories
 
-        category:
-            label: category
-            uppercase_label: Category
-            plural_label: Categories
+pim_enrich.entity.currency:
+    plural_label: Currencies
+    page_title:
+        index: "]Inf, 1] {{ count }} currency|]1, Inf [{{ count }} currencies"
 
-        currency:
-            plural_label: Currencies
-            page_title:
-                index: "]Inf, 1] {{ count }} currency|]1, Inf [{{ count }} currencies"
+pim_enrich.entity.job_execution:
+    page_title:
+        index: "]Inf, 1] {{ count }} operation|]1, Inf [{{ count }} operations"
+    module:
+        create:
+            upload: Drop your {{ type }} file here, or click to browse disk
+        download:
+            archive: Download generated archive
+            output: Download generated files
+            input: Download read files
+            invalid_xlsx: Download invalid data
+            invalid_csv: Download invalid data
 
-        job_execution:
-            page_title:
-                index: "]Inf, 1] {{ count }} operation|]1, Inf [{{ count }} operations"
 
-    info:
-        entity:
-            updated: There are unsaved changes.
-    form:
-        required: (required)
-        attribute_group:
-            tab:
-                attribute:
-                    table:
-                        name: Name
-                        type: Type
-                        scopable: Scopable
-                        localizable: Localizable
-        mass_edit:
-            family:
-                attributes:
-                    toolbox:
-                        select_attributes_by_groups: Add by groups
-                        attributes_groups_selected: '{{ itemsCount }} group(s) selected'
-        basket:
-            title: Basket
-            empty_basket: Basket is empty
-    job:
-        upload: Drop your {{ type }} file here, or click to browse disk
+pim_enrich:
     export:
         product:
             data:
@@ -816,14 +804,6 @@ pim_title:
     pim_enrich_api_connection_create:      API connections | Create
     pim_enrich_mass_edit_action:           Mass Edit
     pim_analytics_system_info_index:       System information
-
-job_tracker:
-    download_archive:
-        archive: Download generated archive
-        output:  Download generated files
-        input:   Download read files
-        invalid_xlsx: Download invalid data
-        invalid_csv: Download invalid data
 
 pim_menu:
     tab:

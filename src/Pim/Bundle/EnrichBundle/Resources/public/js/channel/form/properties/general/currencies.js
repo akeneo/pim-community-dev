@@ -53,7 +53,7 @@ define([
                         currencies: currencies,
                         errors: this.getParent().getValidationErrorsForField('currencies'),
                         label: __('pim_enrich.entity.currency.plural_label'),
-                        requiredLabel: __('pim_enrich.form.required')
+                        requiredLabel: __('pim_common.required_label')
                     }));
 
                     this.$('.select2').select2().on('change', this.updateState.bind(this));

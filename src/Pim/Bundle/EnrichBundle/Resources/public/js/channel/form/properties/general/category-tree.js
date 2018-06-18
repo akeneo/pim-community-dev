@@ -64,7 +64,7 @@ define([
                         categories: categories,
                         catalogLocale: this.catalogLocale,
                         label: __('pim_enrich.entity.channel.property.category_tree'),
-                        requiredLabel: __('pim_enrich.form.required'),
+                        requiredLabel: __('pim_common.required_label'),
                         defaulValueLabel: __('pim_enrich.entity.channel.property.label_category_tree'),
                         errors: this.getParent().getValidationErrorsForField('category'),
                         i18n: i18n

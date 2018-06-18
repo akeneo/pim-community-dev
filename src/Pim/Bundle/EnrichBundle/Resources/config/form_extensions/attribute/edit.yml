@@ -107,7 +107,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.entity.attribute.tab.properties.section.common
+                sectionTitle: pim_enrich.entity.attribute.module.edit.common
                 dropZone: content
 
     pim-attribute-edit-form-properties-common-code:
@@ -186,7 +186,7 @@ extensions:
         targetZone: container
         position: 110
         config:
-            label: pim_enrich.entity.attribute.tab.choices.title
+            label: pim_enrich.entity.attribute_option.short_uppercase_label
             activeForTypes: [pim_catalog_multiselect, pim_catalog_simpleselect]
 
     pim-attribute-edit-form-choices-auto-sorting:

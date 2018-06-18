@@ -15,11 +15,11 @@ extensions:
         position: 170
         config:
             select2:
-                placeholder:      'pim_enrich.form.mass_edit.family.attributes.toolbox.select_attributes_by_groups'
+                placeholder:      'pim_enrich.entity.attribute_group.module.add_attribute_group.label'
                 title:            'pim_common.add'
                 buttonTitle:      'pim_common.add'
-                countTitle:       'pim_enrich.form.mass_edit.family.attributes.toolbox.attributes_groups_selected'
-                emptyText:        'pim_enrich.form.mass_edit.family.attributes.toolbox.no_attribute_groups_available'
+                countTitle:       'pim_enrich.entity.attribute_group.module.add_attribute_group.attributes_groups_selected'
+                emptyText:        'pim_enrich.entity.attribute_group.module.add_attribute_group.no_attribute_groups_available'
                 classes:          'pim-add-attributes-multiselect'
                 dropdownCssClass: 'add-attribute-group'
             resultsPerPage: 10

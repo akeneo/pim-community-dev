@@ -81,7 +81,7 @@ define([
                     catalogLocale: this.catalogLocale,
                     errors: this.getValidationErrorsForField('code'),
                     label: __(this.config.codeLabel),
-                    requiredLabel: __('pim_enrich.form.required')
+                    requiredLabel: __('pim_common.required_label')
                 }));
 
                 this.delegateEvents();

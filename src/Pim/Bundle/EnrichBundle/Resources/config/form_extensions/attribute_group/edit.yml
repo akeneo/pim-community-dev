@@ -122,7 +122,7 @@ extensions:
         config:
           sectionTitle: pim_common.general_properties
           codeLabel: pim_common.code
-          formRequired: pim_enrich.form.required
+          formRequired: pim_common.required_label
           inputField: pim_enrich_attribute_group_form_code
 
     pim-attribute-group-edit-form-properties-translation-section:

@@ -58,7 +58,7 @@ define([
                         currentLocales: this.getFormData().locales,
                         locales: locales,
                         label: __('pim_enrich.entity.locale.plural_label'),
-                        requiredLabel: __('pim_enrich.form.required'),
+                        requiredLabel: __('pim_common.required_label'),
                         errors: this.getParent().getValidationErrorsForField('locales')
                     }));
 

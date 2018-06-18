@@ -52,7 +52,7 @@ define([
                     value: this.getFormData().code,
                     errors: [],
                     label: __(this.config.label),
-                    requiredLabel: __('pim_enrich.form.required'),
+                    requiredLabel: __('pim_common.required_label'),
                     isRequired: true,
                     isReadOnly: true
                 }));

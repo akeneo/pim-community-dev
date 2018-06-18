@@ -104,7 +104,7 @@ extensions:
         config:
           sectionTitle: pim_common.general_properties
           codeLabel: pim_common.code
-          formRequired: pim_enrich.form.required
+          formRequired: pim_common.required_label
           inputField: pim_enrich_group_type_form_code
 
     pim-group-type-edit-form-properties-translation-section:

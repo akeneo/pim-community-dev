@@ -33,7 +33,7 @@ extensions:
         config:
             template: pim/template/form/tab/section
             templateParams:
-                sectionTitle: pim_enrich.entity.attribute.tab.properties.section.validation
+                sectionTitle: pim_enrich.entity.attribute.module.edit.validation
                 dropZone: content
 
     pim-attribute-identifier-form-validation-params-max-characters:
