@@ -16,6 +16,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
         - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis:
             groups: [UniqueAxis]
         - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
+        - Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributes: ~
 
     properties:
         identifier:
