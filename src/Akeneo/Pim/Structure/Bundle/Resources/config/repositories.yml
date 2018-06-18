@@ -101,3 +101,9 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.family_variant.class%'
+
+    pim_enrich.repository.family_variant.search:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyVariantSearchableRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family_variant.class%'
