@@ -1,5 +1,4 @@
 parameters:
-    pim_connector.array_converter.flat_to_standard.attribute_option.class:                        Pim\Component\Connector\ArrayConverter\FlatToStandard\AttributeOption
     pim_connector.array_converter.flat_to_standard.product.class:                                 Pim\Component\Connector\ArrayConverter\FlatToStandard\Product
     pim_connector.array_converter.flat_to_standard.product_model.class:                           Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel
     pim_connector.array_converter.flat_to_standard.product_value.class:                           Pim\Component\Connector\ArrayConverter\FlatToStandard\Value
@@ -75,12 +74,6 @@ services:
             - '@pim_connector.array_convertor.checker.fields_requirement'
             - []
             - []
-
-    pim_connector.array_converter.flat_to_standard.attribute_option:
-        class: '%pim_connector.array_converter.flat_to_standard.attribute_option.class%'
-        arguments:
-            - '@pim_catalog.repository.locale'
-            - '@pim_connector.array_convertor.checker.fields_requirement'
 
     pim_connector.array_converter.flat_to_standard.category:
         class: '%pim_connector.array_converter.flat_to_standard.category.class%'
