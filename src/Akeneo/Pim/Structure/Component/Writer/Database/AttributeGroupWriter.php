@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Writer\Database;
+namespace Akeneo\Pim\Structure\Component\Writer\Database;
 
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;

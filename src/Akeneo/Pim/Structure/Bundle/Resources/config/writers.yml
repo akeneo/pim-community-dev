@@ -1,0 +1,7 @@
+services:
+    pim_connector.writer.database.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Writer\Database\AttributeGroupWriter'
+        arguments:
+            - '@pim_catalog.saver.attribute_group'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_catalog.repository.attribute_group'
