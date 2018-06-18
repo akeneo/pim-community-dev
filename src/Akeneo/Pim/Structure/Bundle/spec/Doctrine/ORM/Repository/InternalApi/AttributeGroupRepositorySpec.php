@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
+namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
