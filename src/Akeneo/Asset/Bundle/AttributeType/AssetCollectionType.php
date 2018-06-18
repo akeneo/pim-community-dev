@@ -11,7 +11,7 @@
 
 namespace Akeneo\Asset\Bundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType;
 
 /**
  * Asset collection type
