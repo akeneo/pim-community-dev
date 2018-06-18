@@ -16,7 +16,6 @@ namespace spec\PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
@@ -24,14 +23,13 @@ use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Upload\ImporterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetsTo;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetToEntityWithValues;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddImportedReferenceFIleToAsset;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\BuildAsset;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoEntityWithValuesProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\RetrieveAssetGenerationErrors;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use PimEnterprise\Component\ProductAsset\Upload\UploadMessages;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -40,7 +38,7 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
 {
     function let(
         ImporterInterface $importer,
-        AddImportedReferenceFIleToAsset $addImportedReferenceFIleToAsset,
+        BuildAsset $buildAsset,
         SaverInterface $assetSaver,
         EventDispatcherInterface $eventDispatcher,
         RetrieveAssetGenerationErrors $retrieveAssetGenerationErrors,
@@ -49,7 +47,7 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
             $importer,
-            $addImportedReferenceFIleToAsset,
+            $buildAsset,
             $assetSaver,
             $eventDispatcher,
             $retrieveAssetGenerationErrors,
@@ -65,7 +63,7 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
 
     function it_mass_uploads_asset_files_for_existing_assets(
         $importer,
-        $addImportedReferenceFIleToAsset,
+        $buildAsset,
         $assetSaver,
         $eventDispatcher,
         $retrieveAssetGenerationErrors,
@@ -78,7 +76,7 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
         $addAssetTo = new AddAssetsTo(666, 'asset_collection');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $addImportedReferenceFIleToAsset->addFile($importedFile)->willReturn($asset);
+        $buildAsset->fromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(42);
         $asset->getCode()->willReturn('asset_code');
 
@@ -105,7 +103,7 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
 
     function it_mass_uploads_asset_files_for_new_assets(
         $importer,
-        $addImportedReferenceFIleToAsset,
+        $buildAsset,
         $assetSaver,
         $eventDispatcher,
         $retrieveAssetGenerationErrors,
@@ -118,7 +116,7 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
         $addAssetTo = new AddAssetsTo(666, 'asset_collection');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $addImportedReferenceFIleToAsset->addFile($importedFile)->willReturn($asset);
+        $buildAsset->fromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(null);
         $asset->getCode()->willReturn('asset_code');
 
@@ -145,7 +143,7 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
 
     function it_does_not_mass_upload_asset_files_if_there_are_errors_but_saves_the_asset_anyway(
         $importer,
-        $addImportedReferenceFIleToAsset,
+        $buildAsset,
         $assetSaver,
         $eventDispatcher,
         $retrieveAssetGenerationErrors,
@@ -158,7 +156,7 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
         $addAssetTo = new AddAssetsTo(666, 'asset_collection');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $addImportedReferenceFIleToAsset->addFile($importedFile)->willReturn($asset);
+        $buildAsset->fromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(42);
         $asset->getCode()->willReturn('asset_code');
 
@@ -185,7 +183,7 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
 
     function it_does_not_mass_upload_asset_files_if_an_exception_is_thrown_during_asset_creation(
         $importer,
-        $addImportedReferenceFIleToAsset,
+        $buildAsset,
         $assetSaver,
         $eventDispatcher,
         $retrieveAssetGenerationErrors,
@@ -199,7 +197,7 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
         $exception = new \Exception('A fatal error!');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $addImportedReferenceFIleToAsset->addFile($importedFile)->willThrow($exception);
+        $buildAsset->fromFile($importedFile)->willThrow($exception);
 
         $assetSaver->save(Argument::any())->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
@@ -214,6 +212,52 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
         $processedFiles->current()->getItem()->shouldReturn($importedFile);
         $processedFiles->current()->getState()->shouldReturn(ProcessedItem::STATE_ERROR);
         $processedFiles->current()->getReason()->shouldReturn('A fatal error!');
+        $processedFiles->current()->getException()->shouldReturn($exception);
+    }
+
+    function it_mass_uploads_asset_files_for_new_assets_without_adding_them_to_a_product(
+        $importer,
+        $buildAsset,
+        $assetSaver,
+        $eventDispatcher,
+        $retrieveAssetGenerationErrors,
+        $objectDetacher,
+        $addAssetToEntityWithValues,
+        \SplFileInfo $importedFile,
+        AssetInterface $asset
+    ) {
+        $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
+        $addAssetTo = new AddAssetsTo(666, 'asset_collection');
+
+        $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
+        $buildAsset->fromFile($importedFile)->willReturn($asset);
+        $asset->getId()->willReturn(null);
+        $asset->getCode()->willReturn('asset_code');
+
+        $assetSaver->save($asset)->shouldBeCalled();
+
+        $event = new AssetEvent($asset);
+        $eventDispatcher
+            ->dispatch(AssetEvent::POST_UPLOAD_FILES, Argument::type(AssetEvent::class))
+            ->willReturn($event);
+        $retrieveAssetGenerationErrors->fromEvent($event)->willReturn([]);
+
+        $objectDetacher->detach($asset)->shouldBeCalled();
+
+        $exception = new \InvalidArgumentException('Invalid product');
+        $addAssetToEntityWithValues->add(666, 'asset_collection', ['asset_code'])->willThrow($exception);
+
+        $processedFiles = $this->process($uploadContext, $addAssetTo);
+
+        $processedFiles->shouldBeAnInstanceOf(ProcessedItemList::class);
+        $processedFiles->count()->shouldReturn(2);
+        $processedFiles->current()->getItem()->shouldReturn($importedFile);
+        $processedFiles->current()->getState()->shouldReturn(ProcessedItem::STATE_SUCCESS);
+        $processedFiles->current()->getReason()->shouldReturn(UploadMessages::STATUS_NEW);
+        $processedFiles->next();
+        $processedFiles->current()->getItem()->shouldReturn($addAssetTo);
+        $processedFiles->current()->getState()->shouldReturn(ProcessedItem::STATE_ERROR);
+        $processedFiles->current()->getReason()->shouldReturn('Invalid product');
         $processedFiles->current()->getException()->shouldReturn($exception);
     }
 }

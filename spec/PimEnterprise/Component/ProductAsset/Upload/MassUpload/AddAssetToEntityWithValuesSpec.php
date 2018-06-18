@@ -21,6 +21,9 @@ use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetToEntityWithValues;
+use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -60,13 +63,13 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
 
         $entityWithValueUpdater->update($entityWithValues, [
             'values' => [
-                'asset_code' => [[
+                'asset_collection' => [[
                     'locale' => null,
                     'scope' => null,
                     'data' => ['asset_c', 'asset_a', 'asset_b'],
                 ]],
             ],
-        ]);
+        ])->shouldBeCalled();
 
         $validator->validate($entityWithValues)->willReturn($violations);
         $violations->count()->willReturn(0);
@@ -91,13 +94,42 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
 
         $entityWithValueUpdater->update($entityWithValues, [
             'values' => [
-                'asset_code' => [[
+                'asset_collection' => [[
                     'locale' => null,
                     'scope' => null,
                     'data' => ['asset_a', 'asset_b'],
                 ]],
             ],
-        ]);
+        ])->shouldBeCalled();
+
+        $validator->validate($entityWithValues)->willReturn($violations);
+        $violations->count()->willReturn(0);
+
+        $entityWithValueSaver->save($entityWithValues)->shouldBeCalled();
+
+        $this->add(42, 'asset_collection', ['asset_a', 'asset_b']);
+    }
+
+    function it_adds_assets_to_a_new_asset_collection(
+        $entityWithValueRepository,
+        $entityWithValueUpdater,
+        $validator,
+        $entityWithValueSaver,
+        EntityWithValuesInterface $entityWithValues,
+        ConstraintViolationListInterface $violations
+    ) {
+        $entityWithValueRepository->find(42)->willReturn($entityWithValues);
+        $entityWithValues->getValue('asset_collection')->willReturn(null);
+
+        $entityWithValueUpdater->update($entityWithValues, [
+            'values' => [
+                'asset_collection' => [[
+                    'locale' => null,
+                    'scope' => null,
+                    'data' => ['asset_a', 'asset_b'],
+                ]],
+            ],
+        ])->shouldBeCalled();
 
         $validator->validate($entityWithValues)->willReturn($violations);
         $violations->count()->willReturn(0);
@@ -115,7 +147,11 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
         EntityWithValuesInterface $entityWithValues,
         ReferenceDataCollectionValueInterface $previousValue,
         AssetInterface $assetC,
-        ConstraintViolationListInterface $violations
+        ConstraintViolationList $violations,
+        \IteratorAggregate $violationIteratorAggregate,
+        \Iterator $violationIterator,
+        ConstraintViolationInterface $violation1,
+        ConstraintViolationInterface $violation2
     ) {
         $entityWithValueRepository->find(42)->willReturn($entityWithValues);
         $entityWithValues->getValue('asset_collection')->willReturn($previousValue);
@@ -124,19 +160,44 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
 
         $entityWithValueUpdater->update($entityWithValues, [
             'values' => [
-                'asset_code' => [[
+                'asset_collection' => [[
                     'locale' => null,
                     'scope' => null,
                     'data' => ['asset_c', 'asset_a', 'asset_b'],
                 ]],
             ],
-        ]);
+        ])->shouldBeCalled();
 
         $validator->validate($entityWithValues)->willReturn($violations);
         $violations->count()->willReturn(1);
+        $violations->getIterator()->willReturn($violationIteratorAggregate);
+        $violationIteratorAggregate->getIterator()->willReturn($violationIterator);
+        $violationIterator->rewind()->shouldBeCalled();
+        $violationIterator->valid()->willReturn(true, true, false);
+        $violationIterator->current()->willReturn($violation1, $violation2);
+        $violationIterator->next()->shouldBeCalled();
 
-        $entityWithValueSaver->save($entityWithValues)->shouldNotBeCalled();
+        $violation1->getMessage()->willReturn('First product violation');
+        $violation2->getMessage()->willReturn('Second product violation');
 
-        $this->add(42, 'asset_collection', ['asset_a', 'asset_b']);
+        $message = 'First product violation' . PHP_EOL . 'Second product violation' . PHP_EOL;
+        $this
+            ->shouldThrow(new \InvalidArgumentException($message))
+            ->during('add', [42, 'asset_collection', ['asset_a', 'asset_b']]);
+
+        $entityWithValueSaver->save(Argument::any())->shouldNotHaveBeenCalled();
+    }
+
+    function it_does_not_add_assets_to_an_asset_collection_if_product_does_not_exist(
+        $entityWithValueRepository,
+        $entityWithValueSaver
+    ) {
+        $entityWithValueRepository->find(42)->willReturn(null);
+
+        $this
+            ->shouldThrow(new \InvalidArgumentException('Product with ID "42" does not exist.'))
+            ->during('add', [42, 'asset_collection', ['asset_a', 'asset_b']]);
+
+        $entityWithValueSaver->save(Argument::any())->shouldNotHaveBeenCalled();
     }
 }

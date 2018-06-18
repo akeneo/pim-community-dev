@@ -31,8 +31,8 @@ class MassUploadIntoEntityWithValuesProcessor
     /** @var ImporterInterface */
     protected $importer;
 
-    /** @var AddImportedReferenceFIleToAsset */
-    protected $addImportedReferenceFIleToAsset;
+    /** @var BuildAsset */
+    protected $buildAsset;
 
     /** @var SaverInterface */
     protected $assetSaver;
@@ -50,17 +50,17 @@ class MassUploadIntoEntityWithValuesProcessor
     protected $addAssetToEntityWithValues;
 
     /**
-     * @param ImporterInterface               $importer
-     * @param AddImportedReferenceFIleToAsset $addImportedReferenceFIleToAsset
-     * @param SaverInterface                  $assetSaver
-     * @param EventDispatcherInterface        $eventDispatcher
-     * @param RetrieveAssetGenerationErrors   $assetGenerationErrors
-     * @param ObjectDetacherInterface         $objectDetacher
-     * @param AddAssetToEntityWithValues      $addAssetToEntityWithValues
+     * @param ImporterInterface             $importer
+     * @param BuildAsset                    $buildAsset
+     * @param SaverInterface                $assetSaver
+     * @param EventDispatcherInterface      $eventDispatcher
+     * @param RetrieveAssetGenerationErrors $assetGenerationErrors
+     * @param ObjectDetacherInterface       $objectDetacher
+     * @param AddAssetToEntityWithValues    $addAssetToEntityWithValues
      */
     public function __construct(
         ImporterInterface $importer,
-        AddImportedReferenceFIleToAsset $addImportedReferenceFIleToAsset,
+        BuildAsset $buildAsset,
         SaverInterface $assetSaver,
         EventDispatcherInterface $eventDispatcher,
         RetrieveAssetGenerationErrors $assetGenerationErrors,
@@ -68,7 +68,7 @@ class MassUploadIntoEntityWithValuesProcessor
         AddAssetToEntityWithValues $addAssetToEntityWithValues
     ) {
         $this->importer = $importer;
-        $this->addImportedReferenceFIleToAsset = $addImportedReferenceFIleToAsset;
+        $this->buildAsset = $buildAsset;
         $this->assetSaver = $assetSaver;
         $this->eventDispatcher = $eventDispatcher;
         $this->retrieveAssetGenerationErrors = $assetGenerationErrors;
@@ -86,13 +86,13 @@ class MassUploadIntoEntityWithValuesProcessor
      */
     public function process(UploadContext $uploadContext, AddAssetsTo $addAssetsTo): ProcessedItemList
     {
-        $processedFiles = new ProcessedItemList();
+        $processedItems = new ProcessedItemList();
         $importedFiles = $this->importer->getImportedFiles($uploadContext);
 
         $importedAssetCodes = [];
         foreach ($importedFiles as $file) {
             try {
-                $asset = $this->addImportedReferenceFIleToAsset->addFile($file);
+                $asset = $this->buildAsset->fromFile($file);
                 $reason = null === $asset->getId() ? UploadMessages::STATUS_NEW : UploadMessages::STATUS_UPDATED;
 
                 $this->assetSaver->save($asset);
@@ -101,12 +101,12 @@ class MassUploadIntoEntityWithValuesProcessor
                 $errors = $this->retrieveAssetGenerationErrors->fromEvent($event);
 
                 if (count($errors) > 0) {
-                    $processedFiles->addItem($file, ProcessedItem::STATE_SKIPPED, implode(PHP_EOL, $errors));
+                    $processedItems->addItem($file, ProcessedItem::STATE_SKIPPED, implode(PHP_EOL, $errors));
                 } else {
-                    $processedFiles->addItem($file, ProcessedItem::STATE_SUCCESS, $reason);
+                    $processedItems->addItem($file, ProcessedItem::STATE_SUCCESS, $reason);
                 }
             } catch (\Exception $e) {
-                $processedFiles->addItem($file, ProcessedItem::STATE_ERROR, $e->getMessage(), $e);
+                $processedItems->addItem($file, ProcessedItem::STATE_ERROR, $e->getMessage(), $e);
             } finally {
                 if (isset($asset)) {
                     $importedAssetCodes[] = $asset->getCode();
@@ -116,14 +116,17 @@ class MassUploadIntoEntityWithValuesProcessor
         }
 
         if (!empty($importedAssetCodes)) {
-            // TODO: manage validation errors
-            $this->addAssetToEntityWithValues->add(
-                $addAssetsTo->getEntityId(),
-                $addAssetsTo->getAttributeCode(),
-                $importedAssetCodes
-            );
+            try {
+                $this->addAssetToEntityWithValues->add(
+                    $addAssetsTo->getEntityId(),
+                    $addAssetsTo->getAttributeCode(),
+                    $importedAssetCodes
+                );
+            } catch (\InvalidArgumentException $e) {
+                $processedItems->addItem($addAssetsTo, ProcessedItem::STATE_ERROR, $e->getMessage(), $e);
+            }
         }
 
-        return $processedFiles;
+        return $processedItems;
     }
 }

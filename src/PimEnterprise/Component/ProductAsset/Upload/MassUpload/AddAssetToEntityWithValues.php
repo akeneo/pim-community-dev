@@ -63,12 +63,16 @@ class AddAssetToEntityWithValues
         string $attributeCode,
         array $importedAssetCodes
     ): void {
-        // TODO manage null entity/value
-
         $entityWithValues = $this->entityWithValueRepository->find($entityId);
-        $previousValue = $entityWithValues->getValue($attributeCode);
+        if (null === $entityWithValues) {
+            throw new \InvalidArgumentException(sprintf(
+                'Product with ID "%d" does not exist.',
+                $entityId
+            ));
+        }
 
         $previousAssetCodes = [];
+        $previousValue = $entityWithValues->getValue($attributeCode);
         if (null !== $previousValue) {
             $previousAssetCodes = array_map(function (AssetInterface $asset) {
                 return $asset->getCode();
@@ -85,11 +89,14 @@ class AddAssetToEntityWithValues
             ],
         ]);
 
-        // TODO manage violations
-
         $violations = $this->validator->validate($entityWithValues);
         if (0 < $violations->count()) {
-            return;
+            $violationMessages = '';
+            foreach ($violations as $violation) {
+                $violationMessages .= $violation->getMessage() . PHP_EOL;
+            }
+
+            throw new \InvalidArgumentException($violationMessages);
         }
 
         $this->entityWithValueSaver->save($entityWithValues);

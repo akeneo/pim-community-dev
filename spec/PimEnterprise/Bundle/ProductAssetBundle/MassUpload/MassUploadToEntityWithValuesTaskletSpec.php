@@ -68,11 +68,105 @@ class MassUploadToEntityWithValuesTaskletSpec extends ObjectBehavior
             ProcessedItem::STATE_SUCCESS,
             'Reason for success'
         );
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('username');
+
+        $jobExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('entity_type')->willReturn('product');
+        $jobParameters->get('entity_id')->willReturn('42');
+        $jobParameters->get('attribute_code')->willReturn('asset_collection');
+
+        $massUploadToProductProcessor->process(
+            new UploadContext('/tmp/pim/file_storage', 'username'),
+            new AddAssetsTo(42, 'asset_collection')
+        )->willReturn($processedItemList);
+        $massUploadToProductModelProcessor->process(Argument::cetera())->shouldNotBeCalled();
+
+        $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('Reason for success')->shouldBeCalled();
+
+        $this->execute();
+    }
+
+    function it_mass_upload_files_into_a_product_model(
+        $stepExecution,
+        $massUploadToProductProcessor,
+        $massUploadToProductModelProcessor,
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
+    ) {
+        $processedItemList = new ProcessedItemList();
+        $processedItemList->addItem(
+            new \SplFileInfo('file_a.jpg'),
+            ProcessedItem::STATE_SUCCESS,
+            'Reason for success'
+        );
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('username');
+
+        $jobExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('entity_type')->willReturn('product-model');
+        $jobParameters->get('entity_id')->willReturn('42');
+        $jobParameters->get('attribute_code')->willReturn('asset_collection');
+
+        $massUploadToProductProcessor->process(Argument::cetera())->shouldNotBeCalled();
+        $massUploadToProductModelProcessor->process(
+            new UploadContext('/tmp/pim/file_storage', 'username'),
+            new AddAssetsTo(42, 'asset_collection')
+        )->willReturn($processedItemList);
+
+        $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('Reason for success')->shouldBeCalled();
+
+        $this->execute();
+    }
+
+    function it_skips_files_during_mass_upload(
+        $stepExecution,
+        $massUploadToProductProcessor,
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
+    ) {
+        $processedItemList = new ProcessedItemList();
         $processedItemList->addItem(
             new \SplFileInfo('file_b.jpg'),
             ProcessedItem::STATE_SKIPPED,
             'Reason to be skipped'
         );
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('username');
+
+        $jobExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('entity_type')->willReturn('product');
+        $jobParameters->get('entity_id')->willReturn('42');
+        $jobParameters->get('attribute_code')->willReturn('asset_collection');
+
+        $massUploadToProductProcessor->process(
+            new UploadContext('/tmp/pim/file_storage', 'username'),
+            new AddAssetsTo(42, 'asset_collection')
+        )->willReturn($processedItemList);
+
+        $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('variations_not_generated')->shouldBeCalled();
+        $stepExecution->addWarning(
+            'Reason to be skipped',
+            [],
+            new DataInvalidItem(['filename' => 'file_b.jpg'])
+        )->shouldBeCalled();
+
+        $this->execute();
+    }
+
+    function it_stops_the_mass_upload_in_case_of_errors_on_asset_generation(
+        $stepExecution,
+        $massUploadToProductProcessor,
+        JobExecution $jobExecution,
+        JobParameters $jobParameters
+    ) {
+        $processedItemList = new ProcessedItemList();
         $processedItemList->addItem(
             new \SplFileInfo('file_c.jpg'),
             ProcessedItem::STATE_ERROR,
@@ -92,41 +186,23 @@ class MassUploadToEntityWithValuesTaskletSpec extends ObjectBehavior
             new UploadContext('/tmp/pim/file_storage', 'username'),
             new AddAssetsTo(42, 'asset_collection')
         )->willReturn($processedItemList);
-        $massUploadToProductModelProcessor->process(Argument::cetera())->shouldNotBeCalled();
 
-        $stepExecution->incrementSummaryInfo('Reason for success')->shouldBeCalledTimes(1);
-        $stepExecution->incrementSummaryInfo('variations_not_generated')->shouldBeCalledTimes(1);
-        $stepExecution->addWarning(
-            'Reason to be skipped',
-            [],
-            new DataInvalidItem(['filename' => 'file_b.jpg'])
-        )->shouldBeCalledTimes(1);
-        $stepExecution->incrementSummaryInfo('error')->shouldBeCalledTimes(1);
-        $stepExecution->addError('Exception message')->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('error')->shouldBeCalled();
+        $stepExecution->addError('Exception message')->shouldBeCalled();
 
         $this->execute();
     }
 
-    function it_mass_upload_files_into_a_product_model(
+    function it_stops_the_mass_upload_in_case_of_errors_on_entity_with_values_validation(
         $stepExecution,
         $massUploadToProductProcessor,
-        $massUploadToProductModelProcessor,
         JobExecution $jobExecution,
         JobParameters $jobParameters
     ) {
         $processedItemList = new ProcessedItemList();
         $processedItemList->addItem(
-            new \SplFileInfo('file_a.jpg'),
-            ProcessedItem::STATE_SUCCESS,
-            'Reason for success'
-        );
-        $processedItemList->addItem(
-            new \SplFileInfo('file_b.jpg'),
-            ProcessedItem::STATE_SKIPPED,
-            'Reason to be skipped'
-        );
-        $processedItemList->addItem(
-            new \SplFileInfo('file_c.jpg'),
+            new AddAssetsTo(42, 'asset_collection'),
             ProcessedItem::STATE_ERROR,
             '',
             new \Exception('Exception message')
@@ -136,25 +212,18 @@ class MassUploadToEntityWithValuesTaskletSpec extends ObjectBehavior
         $jobExecution->getUser()->willReturn('username');
 
         $jobExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('entity_type')->willReturn('product-model');
+        $jobParameters->get('entity_type')->willReturn('product');
         $jobParameters->get('entity_id')->willReturn('42');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
-        $massUploadToProductProcessor->process(Argument::cetera())->shouldNotBeCalled();
-        $massUploadToProductModelProcessor->process(
+        $massUploadToProductProcessor->process(
             new UploadContext('/tmp/pim/file_storage', 'username'),
             new AddAssetsTo(42, 'asset_collection')
         )->willReturn($processedItemList);
 
-        $stepExecution->incrementSummaryInfo('Reason for success')->shouldBeCalledTimes(1);
-        $stepExecution->incrementSummaryInfo('variations_not_generated')->shouldBeCalledTimes(1);
-        $stepExecution->addWarning(
-            'Reason to be skipped',
-            [],
-            new DataInvalidItem(['filename' => 'file_b.jpg'])
-        )->shouldBeCalledTimes(1);
-        $stepExecution->incrementSummaryInfo('error')->shouldBeCalledTimes(1);
-        $stepExecution->addError('Exception message')->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('error')->shouldBeCalled();
+        $stepExecution->addError('Exception message')->shouldBeCalled();
 
         $this->execute();
     }

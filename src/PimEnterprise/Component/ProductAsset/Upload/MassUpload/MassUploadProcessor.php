@@ -36,8 +36,8 @@ class MassUploadProcessor
     /** @var ImporterInterface */
     protected $importer;
 
-    /** @var AddImportedReferenceFIleToAsset */
-    protected $addImportedReferenceFIleToAsset;
+    /** @var BuildAsset */
+    protected $buildAsset;
 
     /** @var SaverInterface */
     protected $assetSaver;
@@ -52,23 +52,23 @@ class MassUploadProcessor
     protected $objectDetacher;
 
     /**
-     * @param ImporterInterface               $importer
-     * @param AddImportedReferenceFIleToAsset $addImportedReferenceFIleToAsset
-     * @param SaverInterface                  $assetSaver
-     * @param EventDispatcherInterface        $eventDispatcher
-     * @param RetrieveAssetGenerationErrors   $retrieveAssetGenerationErrors
-     * @param ObjectDetacherInterface         $objectDetacher
+     * @param ImporterInterface             $importer
+     * @param BuildAsset                    $buildAsset
+     * @param SaverInterface                $assetSaver
+     * @param EventDispatcherInterface      $eventDispatcher
+     * @param RetrieveAssetGenerationErrors $retrieveAssetGenerationErrors
+     * @param ObjectDetacherInterface       $objectDetacher
      */
     public function __construct(
         ImporterInterface $importer,
-        AddImportedReferenceFIleToAsset $addImportedReferenceFIleToAsset,
+        BuildAsset $buildAsset,
         SaverInterface $assetSaver,
         EventDispatcherInterface $eventDispatcher,
         RetrieveAssetGenerationErrors $retrieveAssetGenerationErrors,
         ObjectDetacherInterface $objectDetacher
     ) {
         $this->importer = $importer;
-        $this->addImportedReferenceFIleToAsset = $addImportedReferenceFIleToAsset;
+        $this->buildAsset = $buildAsset;
         $this->assetSaver = $assetSaver;
         $this->eventDispatcher = $eventDispatcher;
         $this->retrieveAssetGenerationErrors = $retrieveAssetGenerationErrors;
@@ -89,7 +89,7 @@ class MassUploadProcessor
 
         foreach ($importedFiles as $file) {
             try {
-                $asset = $this->addImportedReferenceFIleToAsset->addFile($file);
+                $asset = $this->buildAsset->fromFile($file);
                 $reason = null === $asset->getId() ? UploadMessages::STATUS_NEW : UploadMessages::STATUS_UPDATED;
 
                 $this->assetSaver->save($asset);

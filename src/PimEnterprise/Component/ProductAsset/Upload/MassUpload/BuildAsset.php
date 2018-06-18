@@ -25,7 +25,7 @@ use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class AddImportedReferenceFIleToAsset
+class BuildAsset
 {
     /** @var UploadCheckerInterface */
     protected $uploadChecker;
@@ -80,7 +80,7 @@ class AddImportedReferenceFIleToAsset
      *
      * @return AssetInterface
      */
-    public function addFile(\SplFileInfo $file): AssetInterface
+    public function fromFile(\SplFileInfo $file): AssetInterface
     {
         $parsedFilename = $this->uploadChecker->getParsedFilename($file->getFilename());
         $this->uploadChecker->validateFilenameFormat($parsedFilename);
@@ -98,12 +98,12 @@ class AddImportedReferenceFIleToAsset
             $this->assetFactory->createReferences($asset, $isLocalized);
         }
 
-        $file = $this->fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);
+        $storedFile = $this->fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);
 
         $reference = $asset->getReference($locale);
 
         if (null !== $reference) {
-            $reference->setFileInfo($file);
+            $reference->setFileInfo($storedFile);
             $this->filesUpdater->resetAllVariationsFiles($reference, true);
         }
 

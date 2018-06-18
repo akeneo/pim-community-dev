@@ -23,6 +23,7 @@ use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
+use Prophecy\Argument;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -56,11 +57,50 @@ class MassUploadTaskletSpec extends ObjectBehavior
             ProcessedItem::STATE_SUCCESS,
             'Reason for success'
         );
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('username');
+        $processor->process(new UploadContext('/tmp/pim/file_storage', 'username'))->willReturn($processedItemList);
+
+        $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('Reason for success')->shouldBeCalled();
+
+        $this->execute();
+    }
+
+    function it_skips_files_during_mass_upload(
+        $stepExecution,
+        $processor,
+        JobExecution $jobExecution
+    ) {
+        $processedItemList = new ProcessedItemList();
         $processedItemList->addItem(
             new \SplFileInfo('file_b.jpg'),
             ProcessedItem::STATE_SKIPPED,
             'Reason to be skipped'
         );
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('username');
+        $processor->process(new UploadContext('/tmp/pim/file_storage', 'username'))->willReturn($processedItemList);
+
+        $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('variations_not_generated')->shouldBeCalled();
+        $stepExecution->addWarning(
+            'Reason to be skipped',
+            [],
+            new DataInvalidItem(['filename' => 'file_b.jpg'])
+        )->shouldBeCalled();
+
+        $this->execute();
+    }
+
+    function it_stops_the_mass_upload_in_case_of_errors(
+        $stepExecution,
+        $processor,
+        JobExecution $jobExecution
+    ) {
+        $processedItemList = new ProcessedItemList();
         $processedItemList->addItem(
             new \SplFileInfo('file_c.jpg'),
             ProcessedItem::STATE_ERROR,
@@ -72,15 +112,9 @@ class MassUploadTaskletSpec extends ObjectBehavior
         $jobExecution->getUser()->willReturn('username');
         $processor->process(new UploadContext('/tmp/pim/file_storage', 'username'))->willReturn($processedItemList);
 
-        $stepExecution->incrementSummaryInfo('Reason for success')->shouldBeCalledTimes(1);
-        $stepExecution->incrementSummaryInfo('variations_not_generated')->shouldBeCalledTimes(1);
-        $stepExecution->addWarning(
-            'Reason to be skipped',
-            [],
-            new DataInvalidItem(['filename' => 'file_b.jpg'])
-        )->shouldBeCalledTimes(1);
-        $stepExecution->incrementSummaryInfo('error')->shouldBeCalledTimes(1);
-        $stepExecution->addError('Exception message')->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('error')->shouldBeCalled();
+        $stepExecution->addError('Exception message')->shouldBeCalled();
 
         $this->execute();
     }

@@ -130,7 +130,7 @@ define(
                         importRoute: 'pimee_product_asset_mass_upload_and_add_to_rest_import'
                     };
 
-                    const invertedUriParts = this.el.baseURI.split('/').reverse(); // TODO do this better
+                    const invertedUriParts = this.el.baseURI.split('/').reverse();
                     const entity = {
                         id: invertedUriParts[0],
                         type: invertedUriParts[1],

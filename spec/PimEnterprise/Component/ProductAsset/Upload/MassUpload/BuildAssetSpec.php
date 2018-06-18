@@ -26,14 +26,14 @@ use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException;
 use PimEnterprise\Component\ProductAsset\Upload\ParsedFilenameInterface;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddImportedReferenceFIleToAsset;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\BuildAsset;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use Prophecy\Argument;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class AddImportedReferenceFIleToAssetSpec extends ObjectBehavior
+class BuildAssetSpec extends ObjectBehavior
 {
     function let(
         UploadCheckerInterface $uploadChecker,
@@ -55,7 +55,7 @@ class AddImportedReferenceFIleToAssetSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AddImportedReferenceFIleToAsset::class);
+        $this->shouldHaveType(BuildAsset::class);
     }
 
     function it_adds_an_imported_file_to_an_asset(
@@ -89,7 +89,7 @@ class AddImportedReferenceFIleToAssetSpec extends ObjectBehavior
         $filesUpdater->resetAllVariationsFiles($assetReference, true)->shouldBeCalled();
         $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
 
-        $this->addFile($file)->shouldReturn($asset);
+        $this->fromFile($file)->shouldReturn($asset);
     }
 
     function it_adds_an_imported_file_to_a_new_asset(
@@ -124,7 +124,7 @@ class AddImportedReferenceFIleToAssetSpec extends ObjectBehavior
         $filesUpdater->resetAllVariationsFiles($assetReference, true)->shouldBeCalled();
         $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
 
-        $this->addFile($file)->shouldReturn($asset);
+        $this->fromFile($file)->shouldReturn($asset);
     }
 
     function it_adds_an_imported_file_to_a_new_localized_asset(
@@ -160,7 +160,7 @@ class AddImportedReferenceFIleToAssetSpec extends ObjectBehavior
         $filesUpdater->resetAllVariationsFiles($assetReference, true)->shouldBeCalled();
         $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
 
-        $this->addFile($file)->shouldReturn($asset);
+        $this->fromFile($file)->shouldReturn($asset);
     }
 
     function it_does_not_add_an_imported_file_to_an_asset_without_reference(
@@ -192,7 +192,7 @@ class AddImportedReferenceFIleToAssetSpec extends ObjectBehavior
         $filesUpdater->resetAllVariationsFiles(Argument::cetera())->shouldNotBeCalled();
         $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
 
-        $this->addFile($file)->shouldReturn($asset);
+        $this->fromFile($file)->shouldReturn($asset);
     }
 
     function it_throws_an_exception_if_parsed_file_name_is_not_valid(
@@ -204,6 +204,6 @@ class AddImportedReferenceFIleToAssetSpec extends ObjectBehavior
         $uploadChecker->getParsedFilename('file_name.jpg')->willReturn($parsedFilename);
         $uploadChecker->validateFilenameFormat($parsedFilename)->willThrow(UploadException::class);
 
-        $this->shouldThrow(UploadException::class)->during('addFile', [$file]);
+        $this->shouldThrow(UploadException::class)->during('fromFile', [$file]);
     }
 }

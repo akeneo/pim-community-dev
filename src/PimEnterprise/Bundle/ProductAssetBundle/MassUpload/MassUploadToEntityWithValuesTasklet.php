@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\MassUpload;
 
+use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Connector\Step\TaskletInterface;
+use PimEnterprise\Component\ProductAsset\ProcessedItem;
+use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetsTo;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoEntityWithValuesProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
@@ -22,7 +26,7 @@ use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class MassUploadToEntityWithValuesTasklet extends AbstractMassUploadTasklet implements TaskletInterface
+class MassUploadToEntityWithValuesTasklet implements TaskletInterface
 {
     public const TASKLET_NAME = 'assets_mass_upload_and_add_to_product';
 
@@ -81,6 +85,44 @@ class MassUploadToEntityWithValuesTasklet extends AbstractMassUploadTasklet impl
         } elseif ('product-model' === $entityType) {
             $processedItems = $this->massUploadToProductModelProcessor->process($uploadContext, $addAssetsTo);
             $this->incrementSummaryInfo($processedItems, $this->stepExecution);
+        }
+    }
+
+    /**
+     * @param ProcessedItemList $processedItems
+     * @param StepExecution     $stepExecution
+     */
+    protected function incrementSummaryInfo(ProcessedItemList $processedItems, StepExecution $stepExecution): void
+    {
+        foreach ($processedItems as $item) {
+            $file = $item->getItem();
+
+            if (!$file instanceof \SplFileInfo && !$file instanceof AddAssetsTo) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a "\SplFileInfo", "%s" provided.',
+                        ClassUtils::getClass($file)
+                    )
+                );
+            }
+
+            switch ($item->getState()) {
+                case ProcessedItem::STATE_ERROR:
+                    $stepExecution->incrementSummaryInfo('error');
+                    $stepExecution->addError($item->getException()->getMessage());
+                    break;
+                case ProcessedItem::STATE_SKIPPED:
+                    $stepExecution->incrementSummaryInfo('variations_not_generated');
+                    $stepExecution->addWarning(
+                        $item->getReason(),
+                        [],
+                        new DataInvalidItem(['filename' => $file->getFilename()])
+                    );
+                    break;
+                default:
+                    $stepExecution->incrementSummaryInfo($item->getReason());
+                    break;
+            }
         }
     }
 }
