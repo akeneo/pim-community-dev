@@ -190,6 +190,7 @@ acceptance:
                 - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/volume-monitoring'
             contexts_services:
                 - test.catalog_volume_limits.report_context
+                - test.catalog_volume_limits.system_info_context
                 - test.catalog_volume_limits.attribute_per_family_context
                 - test.catalog_volume_limits.product_context
                 - test.catalog_volume_limits.channel_context
@@ -205,6 +206,9 @@ acceptance:
                 - test.catalog_volume_limits.variant_product_context
                 - test.catalog_volume_limits.product_model_context
                 - test.catalog_volume_limits.product_value_context
+                - test.catalog_volume_limits.user_context
+                - test.catalog_volume_limits.category_in_one_category_context
+                - test.catalog_volume_limits.category_level_context
                 - test.product_asset.asset_context
                 - test.product_asset.asset_category_context
                 - test.product_asset.asset_category_tree_context
