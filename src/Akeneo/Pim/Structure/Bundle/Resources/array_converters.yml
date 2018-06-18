@@ -51,3 +51,6 @@ services:
 
     pim_connector.array_converter.standard_to_flat.attribute_group:
         class: 'Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\AttributeGroup'
+
+    pim_connector.array_converter.standard_to_flat.family:
+        class: 'Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\Family'
