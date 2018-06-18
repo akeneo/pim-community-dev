@@ -15,21 +15,21 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Query\AuthorsDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Query\DraftAuthors;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthorDraftController
 {
-    /** @var AuthorsDraft */
-    private $authorsDraft;
+    /** @var DraftAuthors */
+    private $draftAuthors;
 
     /** @var UserContext */
     private $userContext;
 
-    public function __construct(AuthorsDraft $authorsDraft, UserContext $userContext)
+    public function __construct(DraftAuthors $draftAuthors, UserContext $userContext)
     {
-        $this->authorsDraft = $authorsDraft;
+        $this->draftAuthors = $draftAuthors;
         $this->userContext = $userContext;
     }
 
@@ -50,7 +50,7 @@ class AuthorDraftController
             $identifiers = explode(',', $request->query->get('identifiers'));
         }
 
-        $authors = $this->authorsDraft->findAuthors($request->query->get('search'), $page, $limit, $identifiers);
+        $authors = $this->draftAuthors->findAuthors($request->query->get('search'), $page, $limit, $identifiers);
 
         $normalized = [];
         foreach ($authors as $author) {
