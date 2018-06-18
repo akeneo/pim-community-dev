@@ -203,3 +203,14 @@
 - Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver`
 - Move `Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface`
 - Move `Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface`
+- Move `Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\AttributeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi\AttributeRepository`
+- Move `Pim\Component\Api\Repository\AttributeRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeOptionSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeOptionSearchableRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeSearchableRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilySearchableRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyVariantRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyVariantSearchableRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupSearchableRepository`
