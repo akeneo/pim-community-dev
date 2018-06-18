@@ -17,7 +17,8 @@ define(
         'pim/fetcher-registry',
         'pim/form-builder',
         'routing',
-        'backbone/bootstrap-modal'
+        'backbone/bootstrap-modal',
+        'pim/security-context'
     ], (
         $,
         _,
@@ -27,7 +28,9 @@ define(
         templateModal,
         FetcherRegistry,
         FormBuilder,
-        Routing
+        Routing,
+        BootstrapModal,
+        SecurityContext
     ) => {
         return Backbone.View.extend({
             className: 'AknAssetCollectionField',
@@ -208,7 +211,11 @@ define(
                         thumbnailFilter: 'thumbnail',
                         assetCollectionPreviewTitle: __('pimee_product_asset.form.product.asset.preview_title'),
                         downloadLabel: __('pimee_product_asset.form.product.asset.download'),
-                        removeLabel: __('pimee_product_asset.form.product.asset.remove')
+                        removeLabel: __('pimee_product_asset.form.product.asset.remove'),
+                        yesLabel: __('pimee_product_asset.form.product.asset.yes'),
+                        noLabel: __('pimee_product_asset.form.product.asset.no'),
+                        confirmLabel: __('pimee_product_asset.form.product.asset.assetRemoveConfirmationLabel'),
+                        canRemoveAsset: SecurityContext.isGranted('pimee_product_asset_remove_from_collection')
                     });
                     modal.open();
 
@@ -242,6 +249,15 @@ define(
                         navigateToItem($(thumbnails[(clickedIndex + side + thumbnails.length) % thumbnails.length]));
                     };
 
+                    const toggleRemoveConfirmation = (show) => {
+                        const hiddenClass = 'AknButtonList--hide'
+                        if (show) {
+                            modal.$('.remove-confirmation').removeClass(hiddenClass);
+                        } else {
+                            modal.$('.remove-confirmation').addClass(hiddenClass);
+                        }
+                    };
+
                     modal.$('.AknAssetCollectionField-listItem').click(function () {
                         navigateToItem($(this));
                     });
@@ -254,10 +270,21 @@ define(
                         navigateToNeighbor(1, false);
                     });
 
-                    modal.$('.remove').click(function (e) {
+                    modal.$('.remove').click((e) => {
+                        e.stopPropagation();
+                        toggleRemoveConfirmation(true)
+                    });
+
+                    modal.$('.remove-confirmation .close').on('click', (e) => {
+                        e.stopPropagation();
+                        toggleRemoveConfirmation(false)
+                    })
+
+                    modal.$('.remove-confirmation .confirm').on('click', (e) => {
                         e.stopPropagation();
                         navigateToNeighbor(-1, true);
-                    });
+                        toggleRemoveConfirmation(false)
+                    })
 
                     modal.on('cancel', function () {
                         const thumbnails = modal.$('.asset-thumbnail-item');
