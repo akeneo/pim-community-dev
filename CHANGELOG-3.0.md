@@ -214,3 +214,4 @@
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyVariantRepository`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyVariantSearchableRepository`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupSearchableRepository`
+- Move namespace `Pim\Bundle\CatalogBundle\AttributeType` to `Akeneo\Pim\Structure\Component\AttributeType`

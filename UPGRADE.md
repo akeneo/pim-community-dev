@@ -188,3 +188,4 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Doct
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Doctrine\\ORM\\Repository\\FamilyVariantRepository/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\Repository\\InternalApi\\FamilyVariantRepository/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Doctrine\\ORM\\Repository\\FamilyVariantSearchableRepository/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\Repository\\InternalApi\\FamilyVariantSearchableRepository/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Doctrine\\ORM\\Repository\\AttributeGroupSearchableRepository/Akeneo\\Pim\\Structure\\Bundle\\Doctrine\\ORM\\Repository\\InternalApi\\AttributeGroupSearchableRepository/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\AttributeType/Akeneo\\Pim\\Structure\\Component\\AttributeType/g'
