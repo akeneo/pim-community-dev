@@ -25,11 +25,15 @@ interface CompletenessGeneratorInterface
      * Generate completeness for a channel
      *
      * @param ChannelInterface $channel
+     *
+     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
      */
     public function generateMissingForChannel(ChannelInterface $channel);
 
     /**
      * Generate missing completenesses
+     *
+     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
      */
     public function generateMissing();
 }
