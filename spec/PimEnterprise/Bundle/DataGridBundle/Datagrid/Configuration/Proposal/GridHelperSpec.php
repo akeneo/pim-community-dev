@@ -2,10 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\ProductDraftGrantedAttributeProvider;
@@ -88,6 +92,52 @@ class GridHelperSpec extends ObjectBehavior
         ]);
     }
 
+    function it_provides_proposal_product_choices_when_product_is_variant(
+        $repository,
+        $tokenStorage,
+        TokenInterface $token,
+        UserInterface $user,
+        ProductDraftInterface $draft,
+        ProductSpecInterface $product,
+        ProductModelInterface $productModel,
+        FamilyVariantInterface $familyVariant,
+        AttributeInterface $color,
+        \Iterator $axisIterator,
+        ArrayCollection $axes
+    ) {
+        $token->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+
+        $product->getId()->willReturn(144);
+        $product->getParent()->willReturn($productModel);
+        $product->getLabel()->willReturn('Ice sword');
+
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+        $product->getVariationLevel()->willReturn(1);
+        $familyVariant->getVariantAttributeSet(1)->shouldBeCalled();
+        $familyVariant->getAxes()->willReturn($axes);
+
+        $axes->getIterator()->willReturn($axisIterator);
+        $axisIterator->valid()->willReturn(true, false);
+        $axisIterator->current()->willReturn($color);
+        $axisIterator->rewind()->shouldBeCalled();
+        $axisIterator->next()->shouldBeCalled();
+
+        $color->getCode()->willReturn('color');
+
+        $product->getValue('color')->willReturn('red');
+
+        $draft->getProduct()->willReturn($product);
+
+        $repository->findApprovableByUser($user)->willReturn([
+            $draft
+        ]);
+
+        $this->getProductChoices()->shouldReturn([
+            'Ice sword - red' => 144
+        ]);
+    }
+
     function it_provides_attribute_choices(
         $repository,
         $tokenStorage,
@@ -153,4 +203,8 @@ class GridHelperSpec extends ObjectBehavior
 
         $this->getAttributeChoices()->shouldReturn([]);
     }
+}
+
+interface ProductSpecInterface extends EntityWithFamilyVariantInterface, ProductInterface
+{
 }
