@@ -43,7 +43,7 @@ extensions:
         aclResourceId: pim_enrich_attribute_remove
         config:
             trans:
-                title: confirmation.remove.attribute
+                title: pim_enrich.entity.attribute.module.delete.confirm
                 subTitle: pim_enrich.entity.attribute.plural_label
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.attribute.flash.delete.success

@@ -54,7 +54,7 @@ define(
             initialize: function (meta) {
                 this.config = _.extend({}, {
                     trans: {
-                        title: 'confirmation.remove.item',
+                        title: 'pim_enrich.entity.fallback.module.delete.item',
                         content: 'pim_common.confirm_deletion',
                         success: 'pim_enrich.entity.fallback.flash.delete.success',
                         fail: 'pim_enrich.entity.fallback.flash.delete.error',

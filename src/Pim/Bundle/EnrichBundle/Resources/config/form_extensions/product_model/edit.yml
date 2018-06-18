@@ -97,7 +97,7 @@ extensions:
         position: 100
         config:
             trans:
-                title: confirmation.remove.product_model
+                title: pim_enrich.entity.product_model.module.delete.confirm
                 subTitle: pim_enrich.entity.product.plural_label_model
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.product_model.flash.delete.success

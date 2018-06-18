@@ -49,7 +49,7 @@ extensions:
         position: 90
         config:
             trans:
-                title: confirmation.remove.channel
+                title: pim_enrich.entity.channel.module.delete.confirm
                 subTitle: pim_menu.item.channel
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.channel.flash.delete.success

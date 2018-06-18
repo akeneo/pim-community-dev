@@ -49,7 +49,7 @@ extensions:
         position: 100
         config:
             trans:
-                title: confirmation.remove.family
+                title: pim_enrich.entity.family.module.delete.confirm
                 subTitle: pim_menu.item.family
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.family.flash.delete.success
@@ -208,9 +208,9 @@ extensions:
         config:
             label: pim_common.label
             confirmation:
-                title: confirmation.remove.alternative_title
+                title: pim_enrich.entity.fallback.module.delete.alternative_title
                 subTitle: pim_enrich.entity.attribute.plural_label
-                message: confirmation.remove.attribute_from_family
+                message: pim_enrich.entity.attribute.module.delete.confirm_from_family
                 buttonText: pim_common.remove
 
     pim-family-edit-form-variant:

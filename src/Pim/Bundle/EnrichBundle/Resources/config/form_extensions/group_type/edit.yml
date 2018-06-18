@@ -49,7 +49,7 @@ extensions:
         position: 100
         config:
             trans:
-                title: confirmation.remove.group_type
+                title: pim_enrich.entity.group_type.module.delete.confirm
                 subTitle: pim_menu.item.group_type
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.group_type.flash.delete.success

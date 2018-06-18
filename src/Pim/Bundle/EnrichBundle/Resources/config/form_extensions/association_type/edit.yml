@@ -49,7 +49,7 @@ extensions:
         position: 100
         config:
             trans:
-                title: confirmation.remove.association_type
+                title: pim_enrich.entity.association_type.module.delete.confirm
                 subTitle: pim_menu.item.association_type
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.association_type.flash.delete.success

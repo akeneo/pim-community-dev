@@ -49,7 +49,7 @@ extensions:
         position: 100
         config:
             trans:
-                title: confirmation.remove.attribute_group
+                title: pim_enrich.entity.attribute_group.module.delete.confirm
                 subTitle: pim_enrich.entity.attribute_group.plural_label
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.attribute_group.flash.delete.success
@@ -153,9 +153,9 @@ extensions:
             title: pim_enrich.entity.attribute.plural_label
             otherGroup: other
             confirmation:
-                title: confirmation.remove.alternative_title
+                title: pim_enrich.entity.fallback.module.delete.alternative_title
                 subTitle: pim_enrich.entity.attribute_group.plural_label
-                message: confirmation.remove.attribute_from_group
+                message: pim_enrich.entity.attribute.module.delete.confirm_from_group
                 buttonText: pim_common.remove
             removeAttributeACL: pim_enrich_attributegroup_remove_attribute
             addAttributeACL: pim_enrich_attributegroup_add_attribute

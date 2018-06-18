@@ -31,12 +31,18 @@ pim_user_management:
             module:
                 create:
                     button: Create user
+                delete:
+                    confirm: Are you sure you want to delete this user?
+
         role:
             page_title:
                 index: "]Inf, 1] {{ count }} role|]1, Inf [{{ count }} roles"
             module:
                 create:
                     button: Create role
+                delete:
+                    confirm: Are you sure you want to delete this role?
+
         group:
             page_title:
                 index: "]Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
