@@ -76,10 +76,6 @@ pim_enrich_product_history:
     type: action
     label: pim_enrich.acl.product.history
     group_name: pim_enrich.acl_group.product
-pim_enrich_product_asset_removal:
-    type: action
-    label: pim_enrich.acl.product.asset_removal
-    group_name: pim_enrich.acl_group.product
 
 # Product Model
 pim_enrich_product_model_create:
