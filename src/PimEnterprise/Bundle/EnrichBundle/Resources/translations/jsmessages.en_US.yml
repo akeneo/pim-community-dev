@@ -57,7 +57,7 @@ pimee_enrich:
 
     entity:
         product:
-            index_title: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
+            index_title: "]Inf, 1] {{ count }} result|]1, Inf [{{ count }} results"
             navigation: Published products
             history:
                 published: Published
@@ -172,17 +172,17 @@ pimee_enrich:
             operation:
                 publish:
                     label: Publish
-                    label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf [Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The products will be published
                     warning: The {{ itemsCount }} selected products will be published.
                 unpublish:
                     label: Unpublish
-                    label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf [Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The products will be unpublished
                     warning: The {{ itemsCount }} selected products will be unpublished.
         asset:
             title: Assets bulk action
-            confirm: "{1}You are about to update an asset with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} assets with the following information, please confirm."
+            confirm: "{1}You are about to update an asset with the following information, please confirm.|]1, Inf [You are about to update {{ itemsCount }} assets with the following information, please confirm."
             step:
                 select:
                     label: Choose assets
@@ -197,13 +197,13 @@ pimee_enrich:
                 add_tag:
                     label: Add tags to assets
                     description: Tags will be added to the assets.
-                    label_count: "{1}Add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|] 1, Inf [Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
+                    label_count: "{1}Add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|]1, Inf [Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
                     field: Tags
                     empty_selection: Please choose tags
                 add_to_category:
                     label: Classify assets in categories
                     description: The assets will be positioned into following categories, the existing placement will be lost.
-                    label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|] 1, Inf [Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
+                    label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|]1, Inf [Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
     category:
         tab:
             permission:
