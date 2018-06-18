@@ -24,6 +24,7 @@ services:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity\EditAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
+            - '@akeneo_enrichedentity.application.enriched_entity.enriched_entity_details.find_enriched_entity_query'
             - '@akeneo_enrichedentity.infrastructure.normalizer.enriched_entity_details'
             - '@serializer'
             - '@validator'
