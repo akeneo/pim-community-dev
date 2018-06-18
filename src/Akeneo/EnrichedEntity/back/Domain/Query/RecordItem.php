@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Domain\Query;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
 
 /**
  * Read model representing a record within the list.
@@ -23,12 +25,37 @@ use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
  */
 class RecordItem
 {
-    /** @var string */
+    public const IDENTIFIER = 'identifier';
+
+    public const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
+
+    public const LABELS = 'labels';
+
+    /** @var RecordIdentifier */
     public $identifier;
 
-    /** @var string */
+    /** @var EnrichedEntityIdentifier */
     public $enrichedEntityIdentifier;
 
-    /** @var array */
+    /** @var LabelCollection */
     public $labels;
+
+    public function normalize(): array
+    {
+        return [
+            self::IDENTIFIER                 => (string) $this->identifier,
+            self::ENRICHED_ENTITY_IDENTIFIER => (string) $this->enrichedEntityIdentifier,
+            self::LABELS                     => $this->normalizeLabels($this->labels)
+        ];
+    }
+
+    private function normalizeLabels(LabelCollection $labelCollection): array
+    {
+        $labels = [];
+        foreach ($this->labels->getLocaleCodes() as $localeCode) {
+            $labels[$localeCode] = $labelCollection->getLabel($localeCode);
+        }
+
+        return $labels;
+    }
 }

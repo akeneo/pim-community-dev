@@ -38,7 +38,6 @@ services:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\Record\IndexAction'
         arguments:
           - '@akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity'
-          - '@akeneo_enrichedentity.infrastructure.normalizer.record_item'
 
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlRecordRepository'
@@ -46,7 +45,7 @@ services:
             - '@database_connection'
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
-        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlFindRecordItemsForEnrichedEntityQuery'
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlFindRecordItemsForEnrichedEntity'
         arguments:
             - '@database_connection'
 
@@ -70,6 +69,3 @@ services:
 
     akeneo_enrichedentity.infrastructure.normalizer.enriched_entity_details:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Normalizer\EnrichedEntityDetailsNormalizer'
-
-    akeneo_enrichedentity.infrastructure.normalizer.record_item:
-        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Normalizer\RecordItemNormalizer'

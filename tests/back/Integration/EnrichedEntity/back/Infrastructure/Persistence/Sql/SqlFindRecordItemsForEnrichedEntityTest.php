@@ -6,16 +6,17 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntityQuery;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordItem;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 class SqlFindRecordItemsForEnrichedEntityTest extends TestCase
 {
-    /** @var FindRecordItemsForEnrichedEntityQuery */
+    /** @var FindRecordItemsForEnrichedEntity */
     private $findRecordsForEnrichedEntity;
 
     public function setUp()
@@ -44,14 +45,14 @@ class SqlFindRecordItemsForEnrichedEntityTest extends TestCase
         $recordItems = ($this->findRecordsForEnrichedEntity)(EnrichedEntityIdentifier::fromString('designer'));
 
         $starck = new RecordItem();
-        $starck->identifier = 'starck';
-        $starck->enrichedEntityIdentifier = 'designer';
-        $starck->labels = ['fr_FR' => 'Philippe Starck'];
+        $starck->identifier = RecordIdentifier::fromString('starck');
+        $starck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $starck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
 
         $coco = new RecordItem();
-        $coco->identifier = 'coco';
-        $coco->enrichedEntityIdentifier = 'designer';
-        $coco->labels = ['fr_FR' => 'Coco Chanel'];
+        $coco->identifier = RecordIdentifier::fromString('coco');
+        $coco->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $coco->labels = LabelCollection::fromArray(['fr_FR' => 'Coco Chanel']);
 
         $this->assertRecordItem($starck, $recordItems[0]);
         $this->assertRecordItem($coco, $recordItems[1]);
@@ -104,15 +105,32 @@ SQL;
         );
     }
 
-    private function assertRecordItem(RecordItem $expected, RecordItem $actual)
+    private function assertRecordItem(RecordItem $expected, RecordItem $actual): void
     {
-        $this->assertEquals($expected->identifier, $actual->identifier);
-        $this->assertEquals($expected->enrichedEntityIdentifier, $actual->enrichedEntityIdentifier);
+        $this->assertTrue($expected->identifier->equals($actual->identifier), 'Record identifiers are not equal');
+        $this->assertEquals(
+            $expected->enrichedEntityIdentifier,
+            $actual->enrichedEntityIdentifier,
+            'Enriched entity identifier are not the same'
+        );
+        $expectedLabels = $this->normalizeLabels($expected->labels);
+        $actualLabels = $this->normalizeLabels($actual->labels);
         $this->assertEmpty(
             array_merge(
-                array_diff($expected->labels, $actual->labels),
-                array_diff($actual->labels, $expected->labels)
-            )
+                array_diff($expectedLabels, $actualLabels),
+                array_diff($actualLabels, $expectedLabels)
+            ),
+            'Labels for the record item are not the same'
         );
+    }
+
+    private function normalizeLabels(LabelCollection $labelCollection): array
+    {
+        $labels = [];
+        foreach ($labelCollection->getLocaleCodes() as $localeCode) {
+            $labels[$localeCode] = $labelCollection->getLabel($localeCode);
+        }
+
+        return $labels;
     }
 }

@@ -15,7 +15,7 @@ namespace Akeneo\EnrichedEntity\back\Domain\Query;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
-interface FindRecordItemsForEnrichedEntityQuery
+interface FindRecordItemsForEnrichedEntity
 {
     /**
      * @return RecordItem[]

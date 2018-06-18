@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntityQuery;
+use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordItem;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -23,7 +25,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindRecordItemsForEnrichedEntityQuery implements FindRecordItemsForEnrichedEntityQuery
+class SqlFindRecordItemsForEnrichedEntity implements FindRecordItemsForEnrichedEntity
 {
     /** @var Connection */
     private $sqlConnection;
@@ -77,9 +79,9 @@ SQL;
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
 
         $recordItem = new RecordItem();
-        $recordItem->identifier = $identifier;
-        $recordItem->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-        $recordItem->labels = $labels;
+        $recordItem->identifier = RecordIdentifier::fromString($identifier);
+        $recordItem->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+        $recordItem->labels = LabelCollection::fromArray($labels);
 
         return $recordItem;
     }

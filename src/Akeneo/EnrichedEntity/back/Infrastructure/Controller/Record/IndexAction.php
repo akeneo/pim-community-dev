@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\Record;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntityQuery;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -28,18 +28,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class IndexAction
 {
-    /** @var FindRecordItemsForEnrichedEntityQuery */
+    /** @var FindRecordItemsForEnrichedEntity */
     private $findRecordItemsForEnrichedEntityQuery;
 
-    /** @var NormalizerInterface */
-    private $recordItemNormalizer;
-
     public function __construct(
-        FindRecordItemsForEnrichedEntityQuery $findRecordItemsForEnrichedEntityQuery,
-        NormalizerInterface $recordItemNormalizer
+        FindRecordItemsForEnrichedEntity $findRecordItemsForEnrichedEntityQuery
     ) {
         $this->findRecordItemsForEnrichedEntityQuery = $findRecordItemsForEnrichedEntityQuery;
-        $this->recordItemNormalizer = $recordItemNormalizer;
     }
 
     /**
@@ -72,7 +67,7 @@ class IndexAction
     private function normalizeEnrichedEntityItems(array $recordItems): array
     {
         return array_map(function (RecordItem $recordItem) {
-            return $this->recordItemNormalizer->normalize($recordItem, 'internal_api');
+            return $recordItem->normalize();
         }, $recordItems);
     }
 }
