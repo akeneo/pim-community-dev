@@ -19,22 +19,22 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Step\TaskletInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadToEntityWithValuesTasklet;
+use PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadIntoAssetCollectionTasklet;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetsTo;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoEntityWithValuesProcessor;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use Prophecy\Argument;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class MassUploadToEntityWithValuesTaskletSpec extends ObjectBehavior
+class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
 {
     function let(
-        MassUploadIntoEntityWithValuesProcessor $massUploadToProductProcessor,
-        MassUploadIntoEntityWithValuesProcessor $massUploadToProductModelProcessor,
+        MassUploadIntoAssetCollectionProcessor $massUploadToProductProcessor,
+        MassUploadIntoAssetCollectionProcessor $massUploadToProductModelProcessor,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -47,7 +47,7 @@ class MassUploadToEntityWithValuesTaskletSpec extends ObjectBehavior
 
     function it_is_a_mass_upload_to_product_tasklet()
     {
-        $this->shouldHaveType(MassUploadToEntityWithValuesTasklet::class);
+        $this->shouldHaveType(MassUploadIntoAssetCollectionTasklet::class);
     }
 
     function it_is_a_tasklet()

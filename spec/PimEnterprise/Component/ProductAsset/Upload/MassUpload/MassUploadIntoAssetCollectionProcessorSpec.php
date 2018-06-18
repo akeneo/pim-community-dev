@@ -24,7 +24,7 @@ use PimEnterprise\Component\ProductAsset\Upload\ImporterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetsTo;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetToEntityWithValues;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\BuildAsset;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoEntityWithValuesProcessor;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\RetrieveAssetGenerationErrors;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use PimEnterprise\Component\ProductAsset\Upload\UploadMessages;
@@ -34,7 +34,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
+class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
 {
     function let(
         ImporterInterface $importer,
@@ -58,7 +58,7 @@ class MassUploadIntoEntityWithValuesProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(MassUploadIntoEntityWithValuesProcessor::class);
+        $this->shouldHaveType(MassUploadIntoAssetCollectionProcessor::class);
     }
 
     function it_mass_uploads_asset_files_for_existing_assets(

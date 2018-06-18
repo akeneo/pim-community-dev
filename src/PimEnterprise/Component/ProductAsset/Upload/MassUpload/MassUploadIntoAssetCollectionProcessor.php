@@ -24,9 +24,16 @@ use PimEnterprise\Component\ProductAsset\Upload\UploadMessages;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
+ * Processes mass uploaded asset files.
+ *
+ * For a given username, it:
+ * - reads all files uploaded from the front end,
+ * - creates the corresponding assets,
+ * - adds them in the asset collection of a product or product model.
+ *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class MassUploadIntoEntityWithValuesProcessor
+class MassUploadIntoAssetCollectionProcessor
 {
     /** @var ImporterInterface */
     protected $importer;

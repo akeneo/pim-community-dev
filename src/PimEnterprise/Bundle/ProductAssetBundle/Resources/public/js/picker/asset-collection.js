@@ -127,7 +127,7 @@ define(
                 FormBuilder.build('pimee-asset-mass-upload').then(form => {
                     const routes = {
                         cancelRedirectionRoute: '',
-                        importRoute: 'pimee_product_asset_mass_upload_and_add_to_rest_import'
+                        importRoute: 'pimee_product_asset_mass_upload_into_asset_collection_rest_import'
                     };
 
                     const invertedUriParts = this.el.baseURI.split('/').reverse();

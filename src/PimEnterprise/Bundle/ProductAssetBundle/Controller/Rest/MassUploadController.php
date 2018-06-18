@@ -247,14 +247,14 @@ class MassUploadController
      *
      * @return Response
      */
-    public function importAndAddToAction(Request $request, $entityType, $entityId, $attributeCode)
+    public function importInAssetCollectionAction(Request $request, $entityType, $entityId, $attributeCode)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
         $result = $this->importer->import($this->getUploadContext());
-        $jobInstance = $this->jobInstanceRepo->findOneByIdentifier('apply_assets_mass_upload_and_add_to_product');
+        $jobInstance = $this->jobInstanceRepo->findOneByIdentifier('apply_assets_mass_upload_into_asset_collection');
         $user =  $this->tokenStorage->getToken()->getUser();
 
         $configuration = [

@@ -140,9 +140,9 @@ jobs:
         alias:     apply_assets_mass_upload
         label:     Process mass uploaded assets
         type:      mass_upload
-    apply_assets_mass_upload_and_add_to_product:
+    apply_assets_mass_upload_into_asset_collection:
         connector: Akeneo Product Asset Connector
-        alias:     apply_assets_mass_upload_and_add_to_product
+        alias:     apply_assets_mass_upload_into_asset_collection
         label:     Process mass uploaded assets and add to product
         type:      mass_upload
     xlsx_product_quick_export:

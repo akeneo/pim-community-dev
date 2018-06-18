@@ -20,36 +20,39 @@ use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetsTo;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoEntityWithValuesProcessor;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 
 /**
+ * Launches the asset upload processor to create assets from uploaded files
+ * and add them to a product or a product model.
+ *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class MassUploadToEntityWithValuesTasklet implements TaskletInterface
+class MassUploadIntoAssetCollectionTasklet implements TaskletInterface
 {
-    public const TASKLET_NAME = 'assets_mass_upload_and_add_to_product';
+    public const TASKLET_NAME = 'assets_mass_upload_into_asset_collection';
 
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var MassUploadIntoEntityWithValuesProcessor */
+    /** @var MassUploadIntoAssetCollectionProcessor */
     protected $massUploadToProductProcessor;
 
-    /** @var MassUploadIntoEntityWithValuesProcessor */
+    /** @var MassUploadIntoAssetCollectionProcessor */
     protected $massUploadToProductModelProcessor;
 
     /** @var string */
     protected $tmpStorageDir;
 
     /**
-     * @param MassUploadIntoEntityWithValuesProcessor $massUploadToProductProcessor
-     * @param MassUploadIntoEntityWithValuesProcessor $massUploadToProductModelProcessor
-     * @param string                                  $tmpStorageDir
+     * @param MassUploadIntoAssetCollectionProcessor $massUploadToProductProcessor
+     * @param MassUploadIntoAssetCollectionProcessor $massUploadToProductModelProcessor
+     * @param string                                 $tmpStorageDir
      */
     public function __construct(
-        MassUploadIntoEntityWithValuesProcessor $massUploadToProductProcessor,
-        MassUploadIntoEntityWithValuesProcessor $massUploadToProductModelProcessor,
+        MassUploadIntoAssetCollectionProcessor $massUploadToProductProcessor,
+        MassUploadIntoAssetCollectionProcessor $massUploadToProductModelProcessor,
         string $tmpStorageDir
     ) {
         $this->massUploadToProductProcessor = $massUploadToProductProcessor;

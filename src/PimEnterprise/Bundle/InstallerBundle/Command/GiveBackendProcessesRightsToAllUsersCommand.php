@@ -80,7 +80,7 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
             'approve_product_draft',
             'refuse_product_draft',
             'apply_assets_mass_upload',
-            'apply_assets_mass_upload_and_add_to_product',
+            'apply_assets_mass_upload_into_asset_collection',
             'csv_product_quick_export',
             'csv_product_grid_context_quick_export',
             'csv_published_product_quick_export',

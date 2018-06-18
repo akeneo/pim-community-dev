@@ -13,10 +13,19 @@
 
 ## BC Breaks
 
-- PIM-7407: Remove class parameters `pimee_product_asset.upload_context.class`, `pimee_product_asset.upload_checker.class`, `pimee_product_asset.upload_importer.class`, `pimee_product_asset.mass_upload_processor.class` and `pimee_product_asset.tasklet.class`
-- PIM-7407: Move class `PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor` to `PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor`
 - AOB-139: Change constructor of `PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`.
 - AOB-139: Rename method `PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepositoryInterface::findProductIds` to `findProductIdentifiers`.
+- PIM-7407: Remove class parameters `pimee_product_asset.upload_context.class`, `pimee_product_asset.upload_checker.class`, `pimee_product_asset.upload_importer.class`, `pimee_product_asset.mass_upload_processor.class` and `pimee_product_asset.tasklet.class`
+- PIM-7407: Move class `PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor` to `PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor`
+- PIM-7407: Change the constructor of `PimEnterprise\Component\ProductAsset\Upload\Processor\\MassUploadProcessor` to  remove
+    `PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException\UploadCheckerInterface`,
+    `PimEnterprise\Component\ProductAsset\Factory\AssetFactory`,
+    `PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface`,
+    `PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface`,
+    `Akeneo\Component\FileStorage\File\FileStorerInterface`,
+    and `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`,
+    and add `PimEnterprise\Component\ProductAsset\Upload\MassUpload\BuildAsset` and `PimEnterprise\Component\ProductAsset\Upload\MassUpload\RetrieveAssetGenerationErrors` as new arguments.
+- PIM-7407: Rename service `pimee_product_asset.mass_upload.tasklet` into `pimee_product_asset.tasklet.mass_upload`
 
 ## Improve Julia's experience
 

@@ -125,6 +125,6 @@ Feature: Mass uploads assets
       | logo_akeneo-fr_FR.jpg |
     And I start assets mass upload
     And I import assets mass upload
-    And I wait for the "apply_assets_mass_upload_and_add_to_product" job to finish
+    And I wait for the "apply_assets_mass_upload_into_asset_collection" job to finish
     Then the product "basic_jacket" should have the following values:
       | gallery | akeneo, akeneo2, logo_akeneo |

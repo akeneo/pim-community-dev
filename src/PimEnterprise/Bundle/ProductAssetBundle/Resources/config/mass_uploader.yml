@@ -12,7 +12,7 @@ services:
             - '@pimee_product_asset.upload_checker'
             - '@akeneo_file_storage.file_storage.file.file_storer'
 
-    pimee_product_asset.mass_upload.imported_asset_reference_file:
+    pimee_product_asset.mass_upload.build_asset:
         class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\BuildAsset'
         arguments:
             - '@pimee_product_asset.upload_checker'
@@ -47,43 +47,43 @@ services:
         class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadProcessor'
         arguments:
             - '@pimee_product_asset.upload_importer'
-            - '@pimee_product_asset.mass_upload.imported_asset_reference_file'
+            - '@pimee_product_asset.mass_upload.build_asset'
             - '@pimee_product_asset.saver.asset'
             - '@event_dispatcher'
             - '@pimee_product_asset.mass_upload.retrieve_asset_generation_errors'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pimee_product_asset.mass_upload.processor.to_product:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoEntityWithValuesProcessor'
+    pimee_product_asset.mass_upload.processor.into_product:
+        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor'
         arguments:
             - '@pimee_product_asset.upload_importer'
-            - '@pimee_product_asset.mass_upload.imported_asset_reference_file'
+            - '@pimee_product_asset.mass_upload.build_asset'
             - '@pimee_product_asset.saver.asset'
             - '@event_dispatcher'
             - '@pimee_product_asset.mass_upload.retrieve_asset_generation_errors'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pimee_product_asset.mass_upload.add_asset_to_product'
 
-    pimee_product_asset.mass_upload.processor.to_product_model:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoEntityWithValuesProcessor'
+    pimee_product_asset.mass_upload.processor.into_product_model:
+        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor'
         arguments:
             - '@pimee_product_asset.upload_importer'
-            - '@pimee_product_asset.mass_upload.imported_asset_reference_file'
+            - '@pimee_product_asset.mass_upload.build_asset'
             - '@pimee_product_asset.saver.asset'
             - '@event_dispatcher'
             - '@pimee_product_asset.mass_upload.retrieve_asset_generation_errors'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pimee_product_asset.mass_upload.add_asset_to_product_model'
 
-    pimee_product_asset.mass_upload.tasklet:
+    pimee_product_asset.tasklet.mass_upload:
         class: 'PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet'
         arguments:
             - '@pimee_product_asset.mass_upload.processor'
             - '%tmp_storage_dir%'
 
-    pimee_product_asset.mass_upload_and_add_to_product.tasklet:
-        class: 'PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadToEntityWithValuesTasklet'
+    pimee_product_asset.tasklet.mass_upload_into_asset_collection:
+        class: 'PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadIntoAssetCollectionTasklet'
         arguments:
-            - '@pimee_product_asset.mass_upload.processor.to_product'
-            - '@pimee_product_asset.mass_upload.processor.to_product_model'
+            - '@pimee_product_asset.mass_upload.processor.into_product'
+            - '@pimee_product_asset.mass_upload.processor.into_product_model'
             - '%tmp_storage_dir%'

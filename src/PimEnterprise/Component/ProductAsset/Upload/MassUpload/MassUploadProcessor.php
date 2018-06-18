@@ -24,10 +24,11 @@ use PimEnterprise\Component\ProductAsset\Upload\UploadMessages;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Process mass uploaded files
- * For a given username :
- * - read all imported files
- * - create or update asset
+ * Processes mass uploaded asset files.
+ *
+ * For a given username, it:
+ * - reads all files uploaded from the front ends,
+ * - creates the corresponding asset.
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */

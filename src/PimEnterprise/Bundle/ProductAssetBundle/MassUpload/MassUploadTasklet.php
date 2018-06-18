@@ -23,7 +23,7 @@ use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 
 /**
- * Launch the asset upload processor to create/update assets from uploaded files
+ * Launches the asset upload processor to create assets from uploaded files.
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */

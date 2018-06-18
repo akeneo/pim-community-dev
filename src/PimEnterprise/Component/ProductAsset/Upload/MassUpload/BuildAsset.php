@@ -23,6 +23,8 @@ use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 
 /**
+ * Creates a new asset from an uploaded file.
+ *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class BuildAsset
@@ -70,8 +72,6 @@ class BuildAsset
     }
 
     /**
-     * Create or update asset reference from an uploaded file
-     *
      * @param \SplFileInfo $file
      *
      * @throws \Akeneo\Component\FileStorage\Exception\FileRemovalException

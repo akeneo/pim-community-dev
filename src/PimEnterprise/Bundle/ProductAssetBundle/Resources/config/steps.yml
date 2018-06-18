@@ -6,15 +6,15 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pimee_product_asset.mass_upload.tasklet'
+            - '@pimee_product_asset.tasklet.mass_upload'
 
-    pimee_product_asset.step.apply_assets_mass_upload_and_add_to_product.perform:
+    pimee_product_asset.step.apply_assets_mass_upload_into_asset_collection.perform:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pimee_product_asset.mass_upload_and_add_to_product.tasklet'
+            - '@pimee_product_asset.tasklet.mass_upload_into_asset_collection'
 
     # Import Asset steps ----------------------------------------------------------------------------------------------
     pimee_product_asset.step.yml_asset_channel_configuration.import:

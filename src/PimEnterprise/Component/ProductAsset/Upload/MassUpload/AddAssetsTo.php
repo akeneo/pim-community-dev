@@ -14,6 +14,10 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 
 /**
+ * This DTO is used to add newly uploaded assets to an asset collection field of a product or product model.
+ *
+ * It contains the ID of the product/product model and the attribute code of the asset collection.
+ *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 final class AddAssetsTo

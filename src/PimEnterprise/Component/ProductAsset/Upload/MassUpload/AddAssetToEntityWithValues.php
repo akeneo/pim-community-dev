@@ -20,6 +20,8 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
+ * Adds asset to a product or a product model, for a given attribute of type asset collection.
+ *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class AddAssetToEntityWithValues
