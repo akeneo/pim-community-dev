@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeOptionSearchableRepository;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
@@ -14,7 +15,6 @@ use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\View\View as RestView;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeOptionSearchableRepository;
 use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType;
 use Pim\Component\Catalog\Manager\AttributeOptionsSorter;
 use Symfony\Component\Form\FormFactoryInterface;

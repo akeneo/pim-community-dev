@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilySearchableRepository;
 use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -12,7 +13,6 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilySearchableRepository;
 use Pim\Component\Catalog\AttributeTypes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

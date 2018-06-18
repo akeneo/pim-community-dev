@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Component\Api\Normalizer;
 
-use Akeneo\Tool\Component\Api\Hal\Link;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\Api\Hal\Link;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
