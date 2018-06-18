@@ -35,7 +35,7 @@
     {{ form_start(form, {
         'action': path('pimee_enrich_locale_edit', { id: form.vars.value.id }),
         'attr': {
-            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-title': 'pim_enrich.entity.fallback.module.edit.leave'|trans,
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'locale.title'|trans })
         }
     }) }}

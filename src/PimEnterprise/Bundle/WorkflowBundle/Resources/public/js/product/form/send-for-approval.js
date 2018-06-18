@@ -31,8 +31,8 @@ define(
         return BaseForm.extend({
             className: 'btn-group',
             submitTemplate: _.template(submitTemplate),
-            confirmationMessage: __('pimee_enrich.entity.product_draft.confirmation.discard_changes'),
-            confirmationTitle: __('pimee_enrich.entity.product_draft.confirmation.discard_changes_title'),
+            confirmationMessage: __('pimee_enrich.entity.product_draft.pim_enrich.entity.fallback.module.edit.discard_changes'),
+            confirmationTitle: __('pimee_enrich.entity.product_draft.pim_enrich.entity.fallback.module.edit.discard_changes_title'),
             events: {
                 'click .submit-draft': 'onSubmitDraft'
             },
