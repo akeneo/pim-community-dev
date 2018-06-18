@@ -17,7 +17,8 @@ define(
         'pim/fetcher-registry',
         'pim/form-builder',
         'routing',
-        'backbone/bootstrap-modal'
+        'backbone/bootstrap-modal',
+        'pim/security-context'
     ], (
         $,
         _,
@@ -27,7 +28,9 @@ define(
         templateModal,
         FetcherRegistry,
         FormBuilder,
-        Routing
+        Routing,
+        BootstrapModal,
+        SecurityContext
     ) => {
         return Backbone.View.extend({
             className: 'AknAssetCollectionField',
@@ -208,7 +211,11 @@ define(
                         thumbnailFilter: 'thumbnail',
                         assetCollectionPreviewTitle: __('pimee_product_asset.form.product.asset.preview_title'),
                         downloadLabel: __('pimee_product_asset.form.product.asset.download'),
-                        removeLabel: __('pimee_product_asset.form.product.asset.remove')
+                        removeLabel: __('pimee_product_asset.form.product.asset.remove'),
+                        yesLabel: __('pimee_product_asset.form.product.asset.yes'),
+                        noLabel: __('pimee_product_asset.form.product.asset.no'),
+                        confirmLabel: __('pimee_product_asset.form.product.asset.assetRemoveConfirmationLabel'),
+                        canRemoveAsset: SecurityContext.isGranted('pimee_product_asset_remove_from_collection')
                     });
                     modal.open();
 
