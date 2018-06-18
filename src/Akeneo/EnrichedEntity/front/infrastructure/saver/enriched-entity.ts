@@ -1,5 +1,6 @@
 import Saver from 'akeneoenrichedentity/domain/saver/saver';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import enrichedEntityNormalizer from 'akeneoenrichedentity/infrastructure/normalizer/enriched-entity';
 import {postJSON} from 'akeneoenrichedentity/tools/fetch';
 import hydrator from 'akeneoenrichedentity/application/hydrator/enriched-entity';
 
@@ -17,10 +18,7 @@ export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
       routing.generate('akeneo_enriched_entities_enriched_entities_edit_rest', {
         identifier: enrichedEntity.getIdentifier().stringValue(),
       }),
-      {
-        identifier: enrichedEntity.getIdentifier().stringValue(),
-        labels: enrichedEntity.getLabelCollection().getLabels(),
-      }
+      enrichedEntityNormalizer.normalize(enrichedEntity)
     );
 
     return this.hydrator(backendEnrichedEntity);

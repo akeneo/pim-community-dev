@@ -1,4 +1,4 @@
-interface RawLabelCollection {
+export interface RawLabelCollection {
   [locale: string]: string;
 }
 
