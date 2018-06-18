@@ -10,7 +10,6 @@ parameters:
     pim_connector.array_converter.flat_to_standard.group_type.class:                              Pim\Component\Connector\ArrayConverter\FlatToStandard\GroupType
     pim_connector.array_converter.flat_to_standard.user.class:                                    Pim\Component\Connector\ArrayConverter\FlatToStandard\User
     pim_connector.array_converter.standard_to_flat.association_type.class:                        Pim\Component\Connector\ArrayConverter\StandardToFlat\AssociationType
-    pim_connector.array_converter.standard_to_flat.attribute.class:                               Pim\Component\Connector\ArrayConverter\StandardToFlat\Attribute
     pim_connector.array_converter.standard_to_flat.attribute_group.class:                         Pim\Component\Connector\ArrayConverter\StandardToFlat\AttributeGroup
     pim_connector.array_converter.standard_to_flat.attribute_option.class:                        Pim\Component\Connector\ArrayConverter\StandardToFlat\AttributeOption
     pim_connector.array_converter.standard_to_flat.category.class:                                Pim\Component\Connector\ArrayConverter\StandardToFlat\Category
@@ -174,20 +173,6 @@ services:
 
     pim_connector.array_converter.standard_to_flat.association_type:
         class: '%pim_connector.array_converter.standard_to_flat.association_type.class%'
-
-    pim_connector.array_converter.standard_to_flat.attribute:
-        class: '%pim_connector.array_converter.standard_to_flat.attribute.class%'
-        arguments:
-            -
-                - 'localizable'
-                - 'useable_as_grid_filter'
-                - 'unique'
-                - 'required'
-                - 'scopable'
-                - 'wysiwyg_enabled'
-                - 'decimals_allowed'
-                - 'negative_allowed'
-                - 'auto_option_sorting'
 
     pim_connector.array_converter.standard_to_flat.attribute_group:
         class: '%pim_connector.array_converter.standard_to_flat.attribute_group.class%'
