@@ -73,8 +73,7 @@ config:
 
   public async getView(code: string): Promise<typeof React.Component> {
     const viewPathIsNotWellConfigured =
-      undefined === this.configuration.tabs[code] ||
-      undefined === this.configuration.tabs[code].view;
+      undefined === this.configuration.tabs[code] || undefined === this.configuration.tabs[code].view;
 
     if (viewPathIsNotWellConfigured) {
       const confPath = `
@@ -87,9 +86,7 @@ config:
       `;
 
       throw new SibebarMissConfigurationError(
-        `Cannot load view configuration for tab "${
-          code
-          }". The configuration path should be ${confPath}?`
+        `Cannot load view configuration for tab "${code}". The configuration path should be ${confPath}?`
       );
     }
 

@@ -124,7 +124,9 @@ config:
                 first:
                     view: your_view_path_here
       `;
-      expect(error.message).toBe(`Cannot load view configuration for tab "first". The configuration path should be ${confPath}?`);
+      expect(error.message).toBe(
+        `Cannot load view configuration for tab "first". The configuration path should be ${confPath}?`
+      );
     }
   });
 });
