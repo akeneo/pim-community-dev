@@ -45,19 +45,22 @@ class ProductModelNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = []): array
+    public function normalize($productModel, $format = null, array $context = []): array
     {
-        $productModelStandard = $this->productModelNormalizer->normalize($product, 'standard', $context);
+        $productModelStandard = $this->productModelNormalizer->normalize($productModel, 'standard', $context);
 
         $mediaAttributeCodes = $this->attributeRepository->getMediaAttributeCodes();
         foreach ($productModelStandard['values'] as $attributeCode => $values) {
-            if (in_array($attributeCode, $mediaAttributeCodes)) {
+            // if $context['attributes'] is defined, returns only these attributes
+            if (isset($context['attributes']) && !in_array($attributeCode, $context['attributes'])) {
+                unset($productModelStandard['values'][$attributeCode]);
+            } elseif (in_array($attributeCode, $mediaAttributeCodes)) {
                 $productModelStandard['values'][$attributeCode] = $this->addDownloadLink($values);
             }
         }
 
         if (empty($productModelStandard['values'])) {
-            $productModelStandard['values'] = (object)$productModelStandard['values'];
+            $productModelStandard['values'] = (object) $productModelStandard['values'];
         }
 
         return $productModelStandard;

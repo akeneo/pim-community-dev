@@ -50,6 +50,29 @@
     transform: rotate(180deg);
   }
 
-  &-right {
+  &-confirmation {
+    flex-direction: column;
+    width: 180px;
+    position: absolute;
+    background: white;
+    z-index: 1;
+    top: 0;
+    padding: 20px 30px 10px 30px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+    left: -78px;
+
+    &-hide {
+      display: none;
+    }
+  }
+
+  &-confirmationText {
+    font-size: @AknFontSizeBigger;
+    margin-bottom: 20px;
+    color: @AknDarkBlue;
+    display: inline-block;
   }
 }

@@ -158,6 +158,7 @@ acceptance:
                 - 'tests/features/volume-monitoring'
             contexts_services:
                 - test.catalog_volume_limits.report_context
+                - test.catalog_volume_limits.system_info_context
                 - test.catalog_volume_limits.attribute_per_family_context
                 - test.catalog_volume_limits.product_context
                 - test.catalog_volume_limits.channel_context
@@ -175,6 +176,9 @@ acceptance:
                 - test.catalog_volume_limits.product_value_context
                 - test.catalog.product_creation.context
                 - test.catalog.product_validation.context
+                - test.catalog_volume_limits.user_context
+                - test.catalog_volume_limits.category_in_one_category_context
+                - test.catalog_volume_limits.category_level_context
             filters:
                 tags: '@acceptance-back'
     extensions:
