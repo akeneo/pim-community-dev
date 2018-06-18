@@ -214,7 +214,7 @@ class MassUploadProcessor
         if ($asset instanceof AssetInterface) {
             $codes = $this->assetRepository->findSimilarCodes($assetCode);
 
-            //Necessary because in_array function casts the haystack values into strings before applying the function
+            //Necessary because findSimilarCodes can return integers, and we want to perform a strict comparison
             array_walk($codes, function(&$item){
                 $item = (string) $item;
             });
