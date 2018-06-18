@@ -1,0 +1,5 @@
+services:
+    pim_connector.reader.database.attribute_option:
+        class: '%pim_connector.reader.database.atribute_option.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute_option'

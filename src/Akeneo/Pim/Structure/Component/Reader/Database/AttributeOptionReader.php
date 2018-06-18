@@ -1,11 +1,12 @@
 <?php
 
-namespace Pim\Component\Connector\Reader\Database;
+namespace Akeneo\Pim\Structure\Component\Reader\Database;
 
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Pim\Component\Connector\Reader\Database\AbstractReader;
 
 /**
  * AttributeOption reader sorted by attribute and sort order.
