@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\StandardToFlat\FamilyVariant;
+namespace spec\Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\FamilyVariant;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\StandardToFlat\FamilyVariant\FieldSplitter;
+use Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\FamilyVariant\FieldSplitter;
 
 class FieldSplitterSpec extends ObjectBehavior
 {
