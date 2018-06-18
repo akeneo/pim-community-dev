@@ -58,7 +58,7 @@ services:
             - '%pim_job_product_batch_size%'
             - 'pimee_workflow_product_proposal'
 
-    pim_catalog.factory.product_and_product_model_proposal_cursor:
+    pimee_workflow.factory.product_and_product_model_proposal_cursor:
         public: false
         class: '%pimee_workflow.elasticsearch.cursor_factory.class%'
         arguments:

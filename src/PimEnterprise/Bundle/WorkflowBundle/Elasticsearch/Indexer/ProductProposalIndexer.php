@@ -29,7 +29,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface, BulkRemoverInterface
 {
-    private const PRODUCT_IDENTIFIER_PREFIX = 'product_draft_';
+    public const PRODUCT_IDENTIFIER_PREFIX = 'product_draft_';
 
     /** @var NormalizerInterface */
     private $normalizer;

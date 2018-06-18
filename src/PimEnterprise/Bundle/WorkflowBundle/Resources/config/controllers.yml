@@ -107,5 +107,5 @@ services:
     pimee_workflow.controller.author_draft:
         class: '%pimee_workflow.controller.author_draft.class%'
         arguments:
-            - '@pimee_workflow.query.authors_draft'
+            - '@pimee_workflow.query.draft_authors'
             - '@pim_user.context.user'

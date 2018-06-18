@@ -16,6 +16,8 @@ namespace PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
+use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductProposalIndexer;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -45,7 +47,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
 
         $data = [];
 
-        $data[self::FIELD_ID] = 'product_draft_' . (string) $productProposal->getId();
+        $data[self::FIELD_ID] = ProductProposalIndexer::PRODUCT_IDENTIFIER_PREFIX . (string) $productProposal->getId();
 
         $product = $productProposal->getEntityWithValue();
         $data[self::FIELD_ENTITY_WITH_VALUES_IDENTIFIER] = $product->getIdentifier();
@@ -106,6 +108,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
      */
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof ProductInterface && ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX === $format;
+        return $data instanceof ProductDraft && ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX === $format;
     }
 }

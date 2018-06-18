@@ -18,7 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * Find all authors for all drafts (product & product model)
  */
-class AuthorsDraft
+class DraftAuthors
 {
     /** @var EntityManagerInterface */
     private $entityManager;

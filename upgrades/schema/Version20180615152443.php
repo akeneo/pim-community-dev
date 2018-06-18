@@ -8,19 +8,16 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Adds a new table and then reindex all drafts.
  */
 class Version20180615152443 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
-    const BATCH_SIZE = 1000;
+    const BATCH_SIZE = 500;
 
     /** @var int */
     protected $fromLimit = 0;
-
-    /** @var int */
-    protected $toLimit = 0;
 
     /**
      * @param Schema $schema
@@ -61,8 +58,6 @@ class Version20180615152443 extends AbstractMigration implements ContainerAwareI
 
             $this->connection->commit();
         }
-
-//        $this->disableMigrationWarning();
     }
 
     /**
@@ -80,24 +75,14 @@ class Version20180615152443 extends AbstractMigration implements ContainerAwareI
      */
     private function getNextProductDrafts()
     {
-        $this->fromLimit = $this->toLimit;
-        $this->toLimit += self::BATCH_SIZE;
-
         $selectDraftPattern =
             'SELECT draft.id as id FROM pimee_workflow_product_draft as draft LIMIT %s,%s';
 
-        $draftsStmt = $this->connection->query(sprintf($selectDraftPattern, $this->fromLimit, $this->toLimit));
+        $draftsStmt = $this->connection->query(sprintf($selectDraftPattern, $this->fromLimit, $this->fromLimit + self::BATCH_SIZE));
+        $this->fromLimit += self::BATCH_SIZE;
+
         $draftsStmt->execute();
 
         return 0 !== $draftsStmt->rowCount() ? $draftsStmt->fetchAll() : null;
-    }
-
-    /**
-     * Function that does a non altering operation on the DB using SQL to hide the doctrine warning stating that no
-     * sql query has been made to the db during the migration process.
-     */
-    private function disableMigrationWarning()
-    {
-        $this->addSql('SELECT * FROM oro_user LIMIT 1');
     }
 }

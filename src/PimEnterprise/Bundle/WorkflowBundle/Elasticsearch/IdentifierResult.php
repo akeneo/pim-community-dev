@@ -17,7 +17,7 @@ use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
 /**
  * Simple data holder for the results of an Elasticsearch search about products draft and product models draft.
  * The idea is to keep the identifier and its type correctly sorted.
- * Because we can have both a product and a product model with the same identifier.
+ * Because we can have both a product draft and a product model draft with the same identifier.
  * Copied from Pim\Bundle\CatalogBundle\Elasticsearch\IdentifierResult
  *
  * @internal

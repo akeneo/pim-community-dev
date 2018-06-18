@@ -2,35 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductModelProposal;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Event;
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\Product;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductModelProposalIndexer;
-use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
-use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

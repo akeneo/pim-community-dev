@@ -33,7 +33,7 @@ services:
         class: '%pim_datagrid.extension.mass_action.handler.mass_approve.class%'
         arguments:
             - '@event_dispatcher'
-            - '@pim_catalog.factory.product_and_product_model_proposal_cursor'
+            - '@pimee_workflow.factory.product_and_product_model_proposal_cursor'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_approve }
 
@@ -41,7 +41,7 @@ services:
         class: '%pim_datagrid.extension.mass_action.handler.mass_refuse.class%'
         arguments:
             - '@event_dispatcher'
-            - '@pim_catalog.factory.product_and_product_model_proposal_cursor'
+            - '@pimee_workflow.factory.product_and_product_model_proposal_cursor'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_refuse }
 

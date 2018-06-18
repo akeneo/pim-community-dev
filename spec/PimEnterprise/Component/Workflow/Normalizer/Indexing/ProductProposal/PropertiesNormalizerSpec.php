@@ -9,6 +9,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal\PropertiesNormalizer;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -27,7 +28,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(PropertiesNormalizer::class);
     }
 
-    function it_supports_product_proposal(ProductInterface $productProposal)
+    function it_supports_product_proposal(ProductDraft $productProposal)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
         $this->supportsNormalization(new \stdClass(), ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX)->shouldReturn(false);

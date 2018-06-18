@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\ProductModel;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductModelProposalNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -18,10 +19,10 @@ class ProductModelProposalIndexerSpec extends ObjectBehavior
         $this->beConstructedWith($normalizer, $productModelProposalClient, 'pimee_workflow_product_proposal');
     }
 
-    function it_index_product_model_proposal(
+    function it_indexes_product_model_proposal(
         $normalizer,
         $productModelProposalClient,
-        EntityWithValuesDraftInterface $productModelDraft
+        ProductModel $productModelDraft
     ) {
         $productModelDraftNormalized = [
             'id' => 1
