@@ -202,13 +202,22 @@ class MassUploadProcessor
 
         return $asset;
     }
-    
-    private function computeAssetCode(string $assetCode)
+
+    /**
+     * @param string $assetCode
+     * @return string
+     */
+    private function computeAssetCode(string $assetCode): string
     {
         $asset = $this->assetRepository->findOneByIdentifier($assetCode);
 
         if ($asset instanceof AssetInterface) {
             $codes = $this->assetRepository->findSimilarCodes($assetCode);
+
+            //Necessary because in_array function casts the haystack values into strings before applying the function
+            array_walk($codes, function(&$item){
+                $item = (string) $item;
+            });
 
             if (!empty($codes)) {
                 $nextId = 1;
