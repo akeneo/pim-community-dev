@@ -13,6 +13,7 @@ use Akeneo\EnrichedEntity\back\Domain\Repository\RecordRepository;
  */
 class InMemoryRecordRepository implements RecordRepository
 {
+    /** @var Record[] */
     protected $records = [];
 
     public function save(Record $record): void
@@ -23,10 +24,5 @@ class InMemoryRecordRepository implements RecordRepository
     public function getByIdentifier(RecordIdentifier $identifier): ?Record
     {
         return $this->records[(string) $identifier] ?? null;
-    }
-
-    public function all(): array
-    {
-        return array_values($this->records);
     }
 }

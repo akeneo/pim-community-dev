@@ -14,17 +14,17 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\FindEnrichedEntityQuery;
+use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityItem;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindEnrichedEntityDetailsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Edit enriched entity action
+ * Validate & save an enriched entity
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
@@ -34,11 +34,8 @@ class EditAction
     /** @var EditEnrichedEntityHandler */
     private $editEnrichedEntityHandler;
 
-    /** @var FindEnrichedEntityQuery */
-    private $findEnrichedEntityQuery;
-
-    /** @var NormalizerInterface */
-    private $enrichedEntityDetailsNormalizer;
+    /** @var FindEnrichedEntityDetailsInterface */
+    private $findOneEnrichedEntityItemQuery;
 
     /** @var Serializer */
     private $serializer;
@@ -48,24 +45,17 @@ class EditAction
 
     public function __construct(
         EditEnrichedEntityHandler $editEnrichedEntityHandler,
-        FindEnrichedEntityQuery $findEnrichedEntityQuery,
-        NormalizerInterface $enrichedEntityDetailsNormalizer,
+        FindEnrichedEntityDetailsInterface $findOneEnrichedEntityItemQuery,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
         $this->editEnrichedEntityHandler = $editEnrichedEntityHandler;
-        $this->findEnrichedEntityQuery = $findEnrichedEntityQuery;
-        $this->enrichedEntityDetailsNormalizer  = $enrichedEntityDetailsNormalizer;
+        $this->findOneEnrichedEntityItemQuery = $findOneEnrichedEntityItemQuery;
         $this->serializer = $serializer;
         $this->validator = $validator;
     }
 
-    /**
-     * Save an enriched entity
-     *
-     * @return Response
-     */
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -85,10 +75,9 @@ class EditAction
         }
 
         ($this->editEnrichedEntityHandler)($command);
-        $enrichedEntityDetails = ($this->findEnrichedEntityQuery)($command->identifier);
+        /** @var EnrichedEntityItem $enrichedEntityItem */
+        $enrichedEntityItem = ($this->findOneEnrichedEntityItemQuery)($command->identifier);
 
-        return new JsonResponse(
-            $this->enrichedEntityDetailsNormalizer->normalize($enrichedEntityDetails, 'internal_api')
-        );
+        return new JsonResponse($enrichedEntityItem->normalize());
     }
 }

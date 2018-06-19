@@ -9,21 +9,21 @@ use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentif
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntityInterface;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindEnrichedEntityItemsInterface;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordItem;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class SqlFindRecordItemsForEnrichedEntityTest extends TestCase
+class SqlFindEnrichedEntityItemsTest extends TestCase
 {
-    /** @var FindRecordItemsForEnrichedEntityInterface */
-    private $findRecordsForEnrichedEntity;
+    /** @var FindEnrichedEntityItemsInterface */
+    private $findEnrichedEntityItems;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->findRecordsForEnrichedEntity = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity');
+        $this->findEnrichedEntityItems = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity');
         $this->resetDB();
         $this->loadEnrichedEntityAndRecords();
     }
@@ -33,7 +33,7 @@ class SqlFindRecordItemsForEnrichedEntityTest extends TestCase
      */
     public function it_returns_an_empty_array_when_there_is_no_records_corresponding_to_the_identifier()
     {
-        $this->assertEmpty(($this->findRecordsForEnrichedEntity)(EnrichedEntityIdentifier::fromString('unknown_enriched_entity')));
+        $this->assertEmpty(($this->findEnrichedEntityItems)(EnrichedEntityIdentifier::fromString('unknown_enriched_entity')));
     }
 
     /**
@@ -41,7 +41,7 @@ class SqlFindRecordItemsForEnrichedEntityTest extends TestCase
      */
     public function it_returns_all_the_records_for_an_enriched_entity()
     {
-        $recordItems = ($this->findRecordsForEnrichedEntity)(EnrichedEntityIdentifier::fromString('designer'));
+        $recordItems = ($this->findEnrichedEntityItems)(EnrichedEntityIdentifier::fromString('designer'));
 
         $starck = new RecordItem();
         $starck->identifier = RecordIdentifier::fromString('starck');

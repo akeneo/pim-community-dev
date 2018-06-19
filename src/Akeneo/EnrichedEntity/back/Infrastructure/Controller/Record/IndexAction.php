@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\Record;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntity;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntityInterface;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Records index action
@@ -28,11 +27,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class IndexAction
 {
-    /** @var FindRecordItemsForEnrichedEntity */
+    /** @var FindRecordItemsForEnrichedEntityInterface */
     private $findRecordItemsForEnrichedEntityQuery;
 
     public function __construct(
-        FindRecordItemsForEnrichedEntity $findRecordItemsForEnrichedEntityQuery
+        FindRecordItemsForEnrichedEntityInterface $findRecordItemsForEnrichedEntityQuery
     ) {
         $this->findRecordItemsForEnrichedEntityQuery = $findRecordItemsForEnrichedEntityQuery;
     }
@@ -66,6 +65,8 @@ class IndexAction
 
     /**
      * @param RecordItem[] $recordItems
+     *
+     * @return array
      */
     private function normalizeEnrichedEntityItems(array $recordItems): array
     {

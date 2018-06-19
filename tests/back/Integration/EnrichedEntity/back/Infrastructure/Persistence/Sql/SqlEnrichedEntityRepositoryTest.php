@@ -28,14 +28,6 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_array_when_there_is_no_enriched_entity()
-    {
-        $this->assertEmpty($this->repository->all());
-    }
-
-    /**
-     * @test
-     */
     public function it_saves_an_enriched_entity_and_returns_it()
     {
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
@@ -59,32 +51,6 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_all_the_enriched_entities_saved()
-    {
-        $enrichedEntity1 = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('designer'),
-            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']
-        );
-        $enrichedEntity2 = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('fabricant'),
-            ['en_US' => 'Manufacturer', 'fr_FR' => 'Fabricant']
-        );
-        $enrichedEntity3 = EnrichedEntity::create(
-            EnrichedEntityIdentifier::fromString('other'),
-            []
-        );
-
-        $this->repository->save($enrichedEntity1);
-        $this->repository->save($enrichedEntity2);
-        $this->repository->save($enrichedEntity3);
-        $enrichedEntitiesFound = $this->repository->all();
-
-        $this->assertEnrichedEntityList([$enrichedEntity1, $enrichedEntity2, $enrichedEntity3], $enrichedEntitiesFound);
-    }
-
-    /**
-     * @test
-     */
     public function it_updates_an_enriched_entity()
     {
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
@@ -101,30 +67,6 @@ class SqlEnrichedEntityRepositoryTest extends TestCase
 
         $enrichedEntityFound = $this->repository->getByIdentifier($identifier);
         $this->assertEnrichedEntity($enrichedEntity, $enrichedEntityFound);
-    }
-
-    /**
-     * @param EnrichedEntity[] $enrichedEntitiesExpected
-     * @param EnrichedEntity[] $enrichedEntitiesFound
-     */
-    private function assertEnrichedEntityList($enrichedEntitiesExpected, $enrichedEntitiesFound): void
-    {
-        foreach ($enrichedEntitiesExpected as $enrichedEntityExpected) {
-            $isFound = false;
-            foreach ($enrichedEntitiesFound as $enrichedEntityFound) {
-                if ($enrichedEntityFound->equals($enrichedEntityExpected)) {
-                    $isFound = true;
-                    $this->assertEnrichedEntity($enrichedEntityExpected, $enrichedEntityFound);
-                }
-            }
-            $this->assertTrue(
-                $isFound,
-                sprintf(
-                    'The enriched entity with identifier "%s" was not found',
-                    (string) $enrichedEntityExpected->getIdentifier()
-                )
-            );
-        }
     }
 
     /**
