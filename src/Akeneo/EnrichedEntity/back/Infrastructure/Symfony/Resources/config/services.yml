@@ -34,8 +34,18 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_enrichedentity.infrastructure.action.record.index:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\Record\IndexAction'
+        arguments:
+          - '@akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity'
+
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlRecordRepository'
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlFindRecordItemsForEnrichedEntity'
         arguments:
             - '@database_connection'
 

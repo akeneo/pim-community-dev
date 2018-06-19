@@ -2,16 +2,23 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Normalizer;
 
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityList\EnrichedEntityItem;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class EnrichedEntityDetailsNormalizer implements NormalizerInterface
 {
@@ -21,13 +28,13 @@ class EnrichedEntityDetailsNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param EnrichedEntityItem $enrichedEntityItem
+     * @param EnrichedEntityDetails $enrichedEntityDetails
      */
-    public function normalize($enrichedEntityItem, $format = null, array $context = []): array
+    public function normalize($enrichedEntityDetails, $format = null, array $context = []): array
     {
         $normalizedEnrichedEntity = [
-            'identifier' => $enrichedEntityItem->identifier,
-            'labels'     => $enrichedEntityItem->labels
+            'identifier' => $enrichedEntityDetails->identifier,
+            'labels'     => $enrichedEntityDetails->labels
         ];
 
         return $normalizedEnrichedEntity;
