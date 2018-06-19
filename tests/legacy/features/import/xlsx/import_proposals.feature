@@ -29,11 +29,11 @@ Feature: Import proposals with XLSX files
     When I am on the proposals page
     Then the grid should contain 1 element
     And I should see the following proposals:
-      | product   | author                                | attribute   | locale | scope  | original | new            |
-      | my-jacket | xlsx_clothing_product_proposal_import | name        | en_US  |        |          | My jacket      |
-      | my-jacket | xlsx_clothing_product_proposal_import | description | en_US  | mobile |          | My desc        |
-      | my-jacket | xlsx_clothing_product_proposal_import | description | en_US  | tablet |          | My description |
-      | my-jacket | xlsx_clothing_product_proposal_import | comment     |        |        |          | First comment  |
+      | product   | author | attribute   | locale | scope  | original | new            |
+      | my-jacket | Mary   | name        | en_US  |        |          | My jacket      |
+      | my-jacket | Mary   | description | en_US  | mobile |          | My desc        |
+      | my-jacket | Mary   | description | en_US  | tablet |          | My description |
+      | my-jacket | Mary   | comment     |        |        |          | First comment  |
 
   Scenario: Import proposal with media
     Given I am logged in as "Mary"
@@ -46,7 +46,7 @@ Feature: Import proposals with XLSX files
     And I am logged in as "Julia"
     And I am on the proposals page
     Then I should see the following proposals:
-      | product   | author                                | attribute | original | new          |
-      | my-jacket | xlsx_clothing_product_proposal_import | side_view |          | jack_003.png |
+      | product   | author | attribute | original | new          |
+      | my-jacket | Mary   | side_view |          | jack_003.png |
     And I should see entity my-jacket2
     And I should see entity my-jacket3

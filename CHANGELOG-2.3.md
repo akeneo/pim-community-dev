@@ -2,6 +2,7 @@
 
 ## Better manage products with variants
 
+- AOB-58: Change signature of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor` constructor to add the `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - AOB-139: Make Teamwork assistant project filtering work with product models.
 
 ## BC Breaks

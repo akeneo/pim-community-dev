@@ -295,6 +295,18 @@ jobs:
             delimiter:          ;
             enclosure:          '"'
             enabled:            true
+    csv_product_model_proposal_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_model_proposal_import
+        label:     Demo CSV product model draft import
+        type:      import
+        configuration:
+            filePath:           /tmp/product_model_draft.csv
+            uploadAllowed:      true
+            delimiter:          ;
+            enclosure:          '"'
+            enabled:            true
+            familyVariantColumn: family_variant
     update_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     update_product_value
@@ -697,6 +709,16 @@ jobs:
             filePath:      /tmp/product_draft.xlsx
             uploadAllowed: true
             enabled:       true
+    xlsx_product_model_proposal_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_model_proposal_import
+        label:     Demo XLSX product model draft import
+        type:      import
+        configuration:
+            filePath:      /tmp/product_model_draft.xlsx
+            uploadAllowed: true
+            enabled:       true
+            familyVariantColumn: family_variant
     xlsx_category_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_category_import

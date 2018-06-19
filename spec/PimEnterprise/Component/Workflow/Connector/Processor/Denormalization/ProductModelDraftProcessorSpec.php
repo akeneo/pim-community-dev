@@ -9,6 +9,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ProductDraftProcessorSpec extends ObjectBehavior
+class ProductModelDraftProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $repository,
@@ -28,7 +29,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         DraftApplierInterface $productDraftApplier,
         EntityWithValuesDraftRepositoryInterface $productDraftRepo,
         StepExecution $stepExecution,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        AttributeFilterInterface $productModelAttributeFilter
     ) {
         $this->beConstructedWith(
             $repository,
@@ -37,7 +39,8 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             $productDraftBuilder,
             $productDraftApplier,
             $productDraftRepo,
-            $tokenStorage
+            $tokenStorage,
+            $productModelAttributeFilter
         );
         $this->setStepExecution($stepExecution);
     }
@@ -48,13 +51,14 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\Batch\Step\StepExecutionAwareInterface');
     }
 
-    function it_creates_a_proposal(
+    function it_creates_a_root_product_model_proposal(
         $repository,
         $updater,
         $validator,
         $productDraftBuilder,
         $stepExecution,
         $tokenStorage,
+        $productModelAttributeFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         EntityWithValuesDraftInterface $productDraft,
@@ -66,6 +70,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_TO_REVIEW)->willReturn($productDraft);
 
         $values = $this->getValues();
+        $productModelAttributeFilter->filter($values)->willReturn($values);
 
         $updater
             ->update($product, $values)
@@ -92,10 +97,10 @@ class ProductDraftProcessorSpec extends ObjectBehavior
     {
         $values = $this->getValues();
 
-        unset($values['identifier']);
+        unset($values['code']);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Column "identifier" is expected'))
+            ->shouldThrow(new \InvalidArgumentException('Column "code" is expected'))
             ->during(
                 'process',
                 [$values]
@@ -130,15 +135,16 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $productDraftBuilder,
         $stepExecution,
         $tokenStorage,
+        $productModelAttributeFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobExecution $jobExecution,
-        JobInstance $jobInstance,
         TokenInterface $token
     ) {
         $repository->findOneByIdentifier('my-sku')->willReturn($product);
 
         $values = $this->getValues();
+        $productModelAttributeFilter->filter($values)->willReturn($values);
 
         $updater
             ->update($product, $values)
@@ -162,7 +168,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
     function getValues()
     {
         return [
-            'identifier' => 'my-sku',
+            'code' => 'my-sku',
             'values' => [
                 'sku'          => [
                     [
