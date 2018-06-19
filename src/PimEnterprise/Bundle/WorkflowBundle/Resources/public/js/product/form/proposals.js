@@ -62,7 +62,7 @@ define(
                             false
                         );
                     }.bind(this),
-                    label: __('pimee_enrich.entity.product.tab.proposals.title')
+                    label: __('pim_menu.item.proposal')
                 });
 
                 this.datagrid = {
@@ -84,7 +84,7 @@ define(
 
                 messenger.notify(
                     'success',
-                    __('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
+                    __('pimee_enrich.entity.product_draft.flash.approve.success')
                 );
             },
 
@@ -96,7 +96,7 @@ define(
             onPostApproveError: function (message) {
                 messenger.notify(
                     'error',
-                    __('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {error: message})
+                    __('pimee_enrich.entity.product_draft.flash.approve.fail', {error: message})
                 );
             },
 
@@ -106,7 +106,7 @@ define(
             onPostRejectSuccess: function () {
                 messenger.notify(
                     'success',
-                    __('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
+                    __('pimee_enrich.entity.product_draft.flash.reject.success')
                 );
             },
 
@@ -116,7 +116,7 @@ define(
             onPostRemoveSuccess: function () {
                 messenger.notify(
                     'success',
-                    __('pimee_enrich.entity.product.tab.proposals.messages.remove.success')
+                    __('pimee_enrich.entity.product_draft.flash.remove.success')
                 );
             },
 

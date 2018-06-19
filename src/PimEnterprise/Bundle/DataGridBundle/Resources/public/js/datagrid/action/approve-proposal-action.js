@@ -56,8 +56,8 @@ define(
              */
             _handleAjax(action) {
                 var modalParameters = {
-                    title: __('pimee_enrich.entity.product_draft.modal.accept_proposal'),
-                    okText: __('pimee_enrich.entity.product_draft.modal.confirm'),
+                    title: __('pimee_enrich.entity.product_draft.module.proposal.accept'),
+                    okText: __('pimee_enrich.entity.product.module.approval.send'),
                     cancelText: __('pim_common.cancel')
                 };
 
@@ -80,7 +80,7 @@ define(
             _onAjaxSuccess(response) {
                 messenger.notify(
                     'success',
-                    __('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
+                    __('pimee_enrich.entity.product_draft.flash.approve.success')
                 );
 
                 mediator.trigger('pim_enrich:form:proposal:post_approve:success', response);
@@ -106,7 +106,7 @@ define(
 
                 messenger.notify(
                     'error',
-                    __('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {
+                    __('pimee_enrich.entity.product_draft.flash.approve.fail', {
                         error: jqXHR.responseJSON.message
                     })
                 );

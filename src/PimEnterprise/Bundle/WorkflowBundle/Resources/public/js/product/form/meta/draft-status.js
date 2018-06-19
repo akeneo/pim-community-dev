@@ -36,7 +36,7 @@ define(
 
                 if (!product.meta.is_owner) {
                     html = this.template({
-                        label: __('pimee_enrich.entity.product.meta.draft_status'),
+                        label: __('pimee_enrich.entity.product.module.meta.draft_status'),
                         draftStatus: this.getDraftStatus(product)
                     });
                 }
@@ -58,13 +58,13 @@ define(
 
                 switch (product.meta.draft_status) {
                     case 0:
-                        status = __('pimee_enrich.entity.product.meta.draft.in_progress');
+                        status = __('pimee_enrich.entity.product.module.meta.draft.in_progress');
                         break;
                     case 1:
-                        status = __('pimee_enrich.entity.product.meta.draft.sent_for_approval');
+                        status = __('pimee_enrich.entity.product.module.meta.draft.sent_for_approval');
                         break;
                     default:
-                        status = __('pimee_enrich.entity.product.meta.draft.working_copy');
+                        status = __('pimee_enrich.entity.product.module.meta.draft.working_copy');
                         break;
                 }
 

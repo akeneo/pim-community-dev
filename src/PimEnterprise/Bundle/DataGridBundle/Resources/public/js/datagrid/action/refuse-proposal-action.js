@@ -56,8 +56,8 @@ define(
              */
             _handleAjax(action) {
                 var modalParameters = {
-                    title: __('pimee_enrich.entity.product_draft.modal.reject_proposal'),
-                    okText: __('pimee_enrich.entity.product_draft.modal.confirm'),
+                    title: __('pimee_enrich.entity.product_draft.module.proposal.reject'),
+                    okText: __('pimee_enrich.entity.product.module.approval.send'),
                     cancelText: __('pim_common.cancel')
                 };
 
@@ -80,7 +80,7 @@ define(
             _onAjaxSuccess(product) {
                 messenger.notify(
                     'success',
-                    __('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
+                    __('pimee_enrich.entity.product_draft.flash.reject.success')
                 );
 
                 this.datagrid.collection.fetch();

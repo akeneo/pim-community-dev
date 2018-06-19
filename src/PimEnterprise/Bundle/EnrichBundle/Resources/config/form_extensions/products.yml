@@ -12,4 +12,4 @@ extensions:
         config:
             buttonClass: 'AknDropdown-menuLink'
             route: pimee_workflow_published_product_index
-            label: pimee_enrich.entity.product.navigation
+            label: pim_menu.navigation.published_products

@@ -22,9 +22,9 @@ define(
                 this.$el.html(
                     this.template({
                         subTitleLabel: __('pim_enrich.entity.product.plural_label'),
-                        titleLabel: __('pimee_enrich.entity.product_draft.modal.send_for_approval'),
+                        titleLabel: __('pimee_enrich.entity.product.module.approval.send'),
                         label: __('pimee_workflow.entity.proposal.modal.title'),
-                        characters: __('pimee_enrich.entity.product_draft.modal.characters')
+                        characters: __('pimee_enrich.entity.product.module.approval.comment_chars')
                     })
                 );
 
