@@ -37,6 +37,9 @@ class LargeAndOrderedListProductModelIntegration extends AbstractProductTestCase
         ksort($this->productModels, SORT_STRING);
     }
 
+    /**
+     * @group ce
+     */
     public function testPaginationAllProductModels()
     {
         $standardizedProductModels = [];
