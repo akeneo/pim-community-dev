@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7460: Fix locale flag for locales with two underscores like az_cyrl_AZ.
+- PIM-7441: cache result of $locales->findAll() to reduce by 1600x the time taken during asset mass upload
  
 # 2.0.28 (2018-06-26)
 
