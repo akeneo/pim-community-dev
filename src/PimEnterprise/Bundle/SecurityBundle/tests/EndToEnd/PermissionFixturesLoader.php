@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Psr\Container\ContainerInterface;

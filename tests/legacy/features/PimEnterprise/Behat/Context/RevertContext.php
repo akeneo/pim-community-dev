@@ -17,7 +17,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Behat\Behat\Context\Context;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\RevertBundle\Reverter\ProductReverter;
 
 /**

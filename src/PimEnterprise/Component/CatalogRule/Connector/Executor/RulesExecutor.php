@@ -17,7 +17,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInter
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Remover\ChainedProjectRemover;

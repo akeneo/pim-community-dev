@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
 /**

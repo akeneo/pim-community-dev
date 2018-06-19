@@ -11,7 +11,7 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\AssociationInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Publisher\Product\RelatedAssociationPublisher;
 use PimEnterprise\Component\Workflow\Publisher\PublisherInterface;

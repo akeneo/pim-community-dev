@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvent;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;

@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\Security\Authorization;
 
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity;

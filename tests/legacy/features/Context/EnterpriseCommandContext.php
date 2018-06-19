@@ -8,7 +8,7 @@ use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Command\ApproveProposalCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\CreateDraftCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;

@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
 use PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder;
 use Prophecy\Argument;

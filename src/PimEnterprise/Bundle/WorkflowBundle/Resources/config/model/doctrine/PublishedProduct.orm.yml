@@ -99,7 +99,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
                 version_id:
                     referencedColumnName: id
         originalProduct:
-            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             joinColumns:
                 original_product_id:
                     referencedColumnName: id

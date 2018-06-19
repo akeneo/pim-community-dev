@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\Workflow\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
