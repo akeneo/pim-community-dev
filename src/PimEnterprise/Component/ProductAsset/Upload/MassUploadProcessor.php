@@ -215,7 +215,7 @@ class MassUploadProcessor
             $codes = $this->assetRepository->findSimilarCodes($assetCode);
 
             //Necessary because findSimilarCodes can return integers, and we want to perform a strict comparison
-            array_walk($codes, function(&$item){
+            array_walk($codes, function (&$item) {
                 $item = (string) $item;
             });
 
