@@ -1,16 +1,20 @@
 import user, {UserState} from 'akeneoenrichedentity/application/reducer/user';
 import sidebar, {SidebarState} from 'akeneoenrichedentity/application/reducer/sidebar';
+import grid, {GridState} from 'akeneoenrichedentity/application/reducer/grid';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import Record from 'akeneoenrichedentity/domain/model/record/record';
 
 export interface State {
   user: UserState;
   sidebar: SidebarState;
+  grid: GridState<Record>;
   enrichedEntity: EnrichedEntity | null;
 }
 
 export default {
   user,
   sidebar,
+  grid,
   enrichedEntity: (
     state: EnrichedEntity | null = null,
     action: {type: string; enrichedEntity: EnrichedEntity}

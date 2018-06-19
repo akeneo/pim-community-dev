@@ -4,9 +4,13 @@ akeneo_enriched_entities_enriched_entities_index:
 akeneo_enriched_entities_enriched_entities_edit:
     path: '/enriched_entity/{identifier}'
 
+akeneo_enriched_entities_records_edit:
+    path: '/enriched_entity/{enrichedEntityIdentifier}/records/{identifier}'
+
 akeneo_enriched_entities_enriched_entities_index_rest:
     path: '/rest/enriched_entity'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.index }
+    methods: [GET]
 
 akeneo_enriched_entities_enriched_entities_get_rest:
     path: '/rest/enriched_entity/{identifier}'

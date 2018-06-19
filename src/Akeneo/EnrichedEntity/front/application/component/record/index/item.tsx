@@ -1,40 +1,41 @@
-import * as React from "react";
-import EnrichedEntity from "akeneoenrichedentity/domain/model/enriched-entity/enriched-entity";
-import { getImageShowUrl } from "akeneoenrichedentity/tools/media-url-generator";
-const router = require("pim/router");
+import * as React from 'react';
+import Record from 'akeneoenrichedentity/domain/model/record/record';
+import { getImageShowUrl } from 'akeneoenrichedentity/tools/media-url-generator';
+const router = require('pim/router');
 
 export default ({
-  enrichedEntity,
+  record,
   locale,
   isLoading = false,
-  onRedirectToEnrichedEntity
+  onRedirectToRecord
 }: {
-  enrichedEntity: EnrichedEntity;
+  record: Record;
   locale: string;
   isLoading?: boolean;
   position: number;
 } & {
-  onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void;
+  onRedirectToRecord: (record: Record) => void;
 }) => {
   const path =
-    "" !== enrichedEntity.getIdentifier().stringValue()
-      ? `#${router.generate("akeneo_enriched_entities_enriched_entities_edit", {
-          identifier: enrichedEntity.getIdentifier().stringValue()
+    '' !== record.getIdentifier().stringValue()
+      ? `#${router.generate('akeneo_enriched_entities_records_edit', {
+          enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
+          identifier: record.getIdentifier().stringValue()
         })}`
       : '';
 
   return (
     <a
       href={path}
-      title={enrichedEntity.getLabel(locale)}
+      title={record.getLabel(locale)}
       className={`AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder ${
         isLoading ? "AknLoadingPlaceHolder" : ""
       }`}
-      data-identifier={enrichedEntity.getIdentifier().stringValue()}
+      data-identifier={record.getIdentifier().stringValue()}
       onClick={event => {
         event.preventDefault();
 
-        onRedirectToEnrichedEntity(enrichedEntity);
+        onRedirectToRecord(record);
 
         return false;
       }}
@@ -45,9 +46,9 @@ export default ({
           backgroundImage: `url("${getImageShowUrl(null, "thumbnail")}")`
         }}
       />
-      <span className="AknGrid-title">{enrichedEntity.getLabel(locale)}</span>
+      <span className="AknGrid-title">{record.getLabel(locale)}</span>
       <span className="AknGrid-subTitle">
-        {enrichedEntity.getIdentifier().stringValue()}
+        {record.getIdentifier().stringValue()}
       </span>
       <span className="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox" />
       <span className="AknGrid-bodyCell AknGrid-bodyCell--actions">
