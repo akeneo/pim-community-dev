@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository as BaseAttributeSearchableRepository;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeSearchableRepository as BaseAttributeSearchableRepository;
 
 /**
  * Attribute searchable repository
