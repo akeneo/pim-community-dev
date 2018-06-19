@@ -49,16 +49,16 @@ services:
             - '%pim_catalog.entity.attribute.class%'
             - '@pim_catalog.repository.attribute'
 
-    ### Intenal API
+    ### Internal API
     pim_enrich.repository.attribute_group:
-        class: '\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeRepository'
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupRepository'
         arguments:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.attribute_group.class%'
 
     pim_enrich.repository.attribute:
-        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupRepository'
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeRepository'
         arguments:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'

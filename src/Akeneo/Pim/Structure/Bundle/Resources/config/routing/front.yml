@@ -1,3 +1,9 @@
+pim_enrich_attribute_index:
+    path: '/configuration/attribute'
+
+pim_enrich_attribute_create:
+    path: '/configuration/attribute/create'
+
 ### Used by the front application
 pim_enrich_attributegroup_edit:
     path: /configuration/attribute-group/{identifier}/edit
