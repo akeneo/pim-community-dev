@@ -16,12 +16,10 @@ const renderItem = (item: BreadcrumbItem, key: number) => {
   switch (item.action.type) {
     case 'redirect':
       return renderRedirect(item, key);
-      break;
     default:
-      throw new InvalidItemTypeError(`The action type "${item.action.type}" is not supported by the Breadcrumb component`)
-      break;
+      throw new InvalidItemTypeError(`The action type "${item.action.type}" is not supported by the Breadcrumb component`);
   }
-}
+};
 
 const renderRedirect = (item: BreadcrumbItem, key: number) => {
   const path = `#${router.generate(item.action.route, item.action.parameters ? item.action.parameters : {})}`;
