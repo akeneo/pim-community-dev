@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer;
 use Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;

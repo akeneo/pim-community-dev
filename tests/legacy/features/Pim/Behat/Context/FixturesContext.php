@@ -16,7 +16,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Debug;
 use Doctrine\Common\Util\Inflector;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * A context for creating entities

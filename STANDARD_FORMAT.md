@@ -495,7 +495,7 @@ The structure of the array is composed as below:
 
 Each element in the array "groups" represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*
 
-Each element in the array "products" represents the *identifier* of the *Pim\Component\Catalog\Model\ProductInterface*
+Each element in the array "products" represents the *identifier* of the *Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface*
 
 If an association type does not contain neither element in groups, nor element in products, it will not appear.
 

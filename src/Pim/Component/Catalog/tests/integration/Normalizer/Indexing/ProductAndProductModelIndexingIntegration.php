@@ -4,7 +4,7 @@ namespace tests\integration\Pim\Component\Catalog\Normalizer\Indexing;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;

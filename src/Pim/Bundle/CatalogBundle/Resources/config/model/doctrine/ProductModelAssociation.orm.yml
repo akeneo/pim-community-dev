@@ -45,7 +45,7 @@ Pim\Component\Catalog\Model\ProductModelAssociation:
                         referencedColumnName: id
                         onDelete: CASCADE
         products:
-            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             joinTable:
                 name: pim_catalog_association_product_model_to_product
                 joinColumns:

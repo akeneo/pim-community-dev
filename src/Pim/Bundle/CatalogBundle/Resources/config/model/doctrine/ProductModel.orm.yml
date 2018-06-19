@@ -58,7 +58,7 @@ Pim\Component\Catalog\Model\ProductModel:
                         onDelete: CASCADE
     oneToMany:
         products:
-            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             mappedBy: parent
         productModels:
             targetEntity: Pim\Component\Catalog\Model\ProductModelInterface

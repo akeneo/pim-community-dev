@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Prophecy\Argument;
 
 class ProductModelDescendantsIndexerSpec extends ObjectBehavior

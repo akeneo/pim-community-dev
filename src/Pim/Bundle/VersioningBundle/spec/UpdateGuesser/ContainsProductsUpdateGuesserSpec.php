@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class ContainsProductsUpdateGuesserSpec extends ObjectBehavior
 {

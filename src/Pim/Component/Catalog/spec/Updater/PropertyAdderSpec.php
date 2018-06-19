@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Updater\Adder\AdderRegistryInterface;
 use Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface;

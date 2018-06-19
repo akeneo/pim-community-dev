@@ -36,7 +36,7 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\ProductAssociation;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelAssociation;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -144,7 +144,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      *
      * @Given /^a "([^"]*)" user/
      */
@@ -281,7 +281,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $status
      * @param string $sku
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      *
      * @Given /^(?:an|a) (enabled|disabled) "([^"]*)" product$/
      */

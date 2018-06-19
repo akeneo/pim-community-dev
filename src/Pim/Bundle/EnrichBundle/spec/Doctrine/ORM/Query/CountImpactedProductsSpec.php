@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Doctrine\ORM\Query;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Query\CountImpactedProducts;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;

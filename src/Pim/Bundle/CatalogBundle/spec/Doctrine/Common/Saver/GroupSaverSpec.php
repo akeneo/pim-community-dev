@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Prophecy\Argument;

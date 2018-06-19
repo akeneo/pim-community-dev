@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\SelfAndAncestorFilter;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;

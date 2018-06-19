@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class LocalizableSubscriberSpec extends ObjectBehavior
 {

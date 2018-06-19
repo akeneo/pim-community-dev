@@ -18,7 +18,7 @@ use Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuild
 use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;

@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;

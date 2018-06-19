@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Pim\Component\Catalog\Model\CompletenessInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Calculates the completenesses for a provided product.

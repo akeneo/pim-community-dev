@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 

@@ -24,7 +24,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             orphanRemoval: false
     manyToMany:
         products:
-            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             mappedBy: groups
     oneToMany:
         translations:

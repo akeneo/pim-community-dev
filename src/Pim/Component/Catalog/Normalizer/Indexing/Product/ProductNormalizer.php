@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Product;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

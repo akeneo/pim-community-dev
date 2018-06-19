@@ -9,7 +9,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 
 class VariantNavigationNormalizerSpec extends ObjectBehavior

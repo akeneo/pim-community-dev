@@ -5,7 +5,7 @@ namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**

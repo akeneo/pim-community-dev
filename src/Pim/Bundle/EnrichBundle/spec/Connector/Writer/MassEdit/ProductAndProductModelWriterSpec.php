@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Prophecy\Argument;
 

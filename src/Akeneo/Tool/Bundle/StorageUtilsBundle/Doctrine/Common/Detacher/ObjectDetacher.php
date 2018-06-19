@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\PersistentCollection as ORMPersistentCollection;
 use Doctrine\ORM\UnitOfWork;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Detacher, detaches an object from its ObjectManager

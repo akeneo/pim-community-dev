@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Prophecy\Argument;

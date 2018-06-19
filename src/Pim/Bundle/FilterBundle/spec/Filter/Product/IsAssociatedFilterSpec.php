@@ -9,7 +9,7 @@ use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Component\Catalog\Model\AbstractAssociation;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -163,7 +163,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     }
 
     /**
-     * @param ProductInterface $product
+     * @param \Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface $product
      *
      * @return array
      */

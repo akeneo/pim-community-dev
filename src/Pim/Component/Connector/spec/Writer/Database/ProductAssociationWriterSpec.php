@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\AssociationInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class ProductAssociationWriterSpec extends ObjectBehavior
 {

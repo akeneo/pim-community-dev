@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

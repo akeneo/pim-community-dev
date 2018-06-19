@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\CompletenessInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>

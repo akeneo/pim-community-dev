@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\Collection;

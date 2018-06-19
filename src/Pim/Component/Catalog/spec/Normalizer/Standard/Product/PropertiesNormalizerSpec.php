@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Standard\Product;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;

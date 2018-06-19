@@ -6,7 +6,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\EntityWithFamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
 use Symfony\Component\Validator\Constraint;

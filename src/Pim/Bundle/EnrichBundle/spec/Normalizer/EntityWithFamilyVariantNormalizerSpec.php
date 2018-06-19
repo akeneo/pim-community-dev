@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;

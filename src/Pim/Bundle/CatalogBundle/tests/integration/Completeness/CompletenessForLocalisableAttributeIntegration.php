@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\CompletenessInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Checks that the completeness has been well calculated for localisable and locale specific attribute types.

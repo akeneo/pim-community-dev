@@ -12,7 +12,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 class IdentifierResultSpec extends ObjectBehavior

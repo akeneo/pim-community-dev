@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Exception;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Exception for missing product identifier

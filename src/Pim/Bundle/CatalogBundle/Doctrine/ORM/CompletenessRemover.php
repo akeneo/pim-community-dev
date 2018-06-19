@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer;
 use Pim\Component\Catalog\Completeness\CompletenessRemoverInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;

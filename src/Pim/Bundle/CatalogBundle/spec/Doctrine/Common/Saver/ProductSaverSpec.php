@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
 use Pim\Component\Catalog\Manager\CompletenessManager;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -90,7 +90,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager->persist(Argument::any())->shouldNotBeCalled();
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Expects a Pim\Component\Catalog\Model\ProductInterface, "stdClass" provided'))
+            ->shouldThrow(new \InvalidArgumentException('Expects a Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface, "stdClass" provided'))
             ->duringSave($otherObject);
     }
 

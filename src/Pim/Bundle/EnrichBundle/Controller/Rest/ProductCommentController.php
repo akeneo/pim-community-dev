@@ -10,7 +10,7 @@ use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
 use Pim\Bundle\CommentBundle\Form\Type\CommentType;
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

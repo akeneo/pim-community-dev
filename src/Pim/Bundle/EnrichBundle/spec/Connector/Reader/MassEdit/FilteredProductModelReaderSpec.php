@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductModelReader;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;

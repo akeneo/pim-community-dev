@@ -8,7 +8,7 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;

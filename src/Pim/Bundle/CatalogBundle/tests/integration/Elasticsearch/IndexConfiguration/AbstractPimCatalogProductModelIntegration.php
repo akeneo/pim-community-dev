@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**

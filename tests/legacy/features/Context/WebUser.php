@@ -16,7 +16,7 @@ use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**

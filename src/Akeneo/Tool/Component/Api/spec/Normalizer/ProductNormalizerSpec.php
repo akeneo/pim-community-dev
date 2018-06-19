@@ -5,7 +5,7 @@ namespace spec\Akeneo\Tool\Component\Api\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Normalizer\ProductNormalizer;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

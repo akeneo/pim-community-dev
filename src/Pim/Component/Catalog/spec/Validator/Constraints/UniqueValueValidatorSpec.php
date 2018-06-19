@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;

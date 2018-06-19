@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModel;
 
 /**

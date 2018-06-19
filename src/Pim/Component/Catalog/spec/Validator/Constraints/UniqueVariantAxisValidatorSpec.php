@@ -9,7 +9,7 @@ use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvide
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis;

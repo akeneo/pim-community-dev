@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+
 /**
  * Product. An entity with flexible values, completeness, categories, associations and much more...
  *
