@@ -1,0 +1,9 @@
+pimee_api_product_model_draft_get:
+    path: /product-models/{code}/draft
+    defaults: { _controller: pimee_api.controller.product_model_draft:getAction, _format: json }
+    methods: [GET]
+
+pimee_api_product_model_proposal_create:
+    path: /product-models/{code}/proposal
+    defaults: { _controller: pimee_api.controller.product_model_proposal:createAction, _format: json }
+    methods: [POST]

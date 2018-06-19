@@ -29,3 +29,7 @@ asset:
 asset-tag:
     resource: '@PimEnterpriseApiBundle/Resources/config/routing/asset_tag.yml'
     prefix: /rest/v1
+
+product_model:
+    resource: '@PimEnterpriseApiBundle/Resources/config/routing/product_model.yml'
+    prefix: /rest/v1
