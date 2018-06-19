@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetProductModelIntegration extends ApiTestCase
 {
+    /**
+     * @group ce
+     */
     public function testSuccessfullyGetProductModel()
     {
         $this->addAssociationsToProductModel('model-biker-jacket-leather');
