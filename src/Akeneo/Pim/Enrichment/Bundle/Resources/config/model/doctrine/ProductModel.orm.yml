@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\ProductModel:
+Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
     type: entity
     table: pim_catalog_product_model
     changeTrackingPolicy: DEFERRED_EXPLICIT

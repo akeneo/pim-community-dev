@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Pim\Component\Catalog\Model\ProductAssociation;
-use Pim\Component\Catalog\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Pim\Component\Catalog\Model\ProductModelAssociation;
 
 /**
@@ -21,7 +21,7 @@ class AssociationClassResolverSpec extends ObjectBehavior
     {
         $this->beConstructedWith([
             'Akeneo\Pim\Enrichment\Component\Product\Model\Product' => 'Pim\Component\Catalog\Model\ProductAssociation',
-            'Pim\Component\Catalog\Model\ProductModel'              => 'Pim\Component\Catalog\Model\ProductModelAssociation',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel' => 'Pim\Component\Catalog\Model\ProductModelAssociation',
         ]);
     }
 
