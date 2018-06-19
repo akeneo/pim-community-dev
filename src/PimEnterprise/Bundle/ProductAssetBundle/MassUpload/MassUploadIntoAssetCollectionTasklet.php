@@ -19,7 +19,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetsTo;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\EntityToAddAssetsInto;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 
@@ -80,27 +80,29 @@ class MassUploadIntoAssetCollectionTasklet implements TaskletInterface
 
         $jobParameters = $jobExecution->getJobParameters();
         $entityType = $jobParameters->get('entity_type');
-        $addAssetsTo = new AddAssetsTo((int)$jobParameters->get('entity_id'), $jobParameters->get('attribute_code'));
+        $addAssetsTo = new EntityToAddAssetsInto(
+            (int)$jobParameters->get('entity_id'),
+            $jobParameters->get('attribute_code')
+        );
 
         if ('product' === $entityType) {
-            $processedItems = $this->massUploadToProductProcessor->process($uploadContext, $addAssetsTo);
-            $this->incrementSummaryInfo($processedItems, $this->stepExecution);
+            $processedItems = $this->massUploadToProductProcessor->applyMassUpload($uploadContext, $addAssetsTo);
+            $this->incrementSummaryInfo($processedItems);
         } elseif ('product-model' === $entityType) {
-            $processedItems = $this->massUploadToProductModelProcessor->process($uploadContext, $addAssetsTo);
-            $this->incrementSummaryInfo($processedItems, $this->stepExecution);
+            $processedItems = $this->massUploadToProductModelProcessor->applyMassUpload($uploadContext, $addAssetsTo);
+            $this->incrementSummaryInfo($processedItems);
         }
     }
 
     /**
      * @param ProcessedItemList $processedItems
-     * @param StepExecution     $stepExecution
      */
-    protected function incrementSummaryInfo(ProcessedItemList $processedItems, StepExecution $stepExecution): void
+    protected function incrementSummaryInfo(ProcessedItemList $processedItems): void
     {
         foreach ($processedItems as $item) {
             $file = $item->getItem();
 
-            if (!$file instanceof \SplFileInfo && !$file instanceof AddAssetsTo) {
+            if (!$file instanceof \SplFileInfo && !$file instanceof EntityToAddAssetsInto) {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'Expects a "\SplFileInfo", "%s" provided.',
@@ -111,19 +113,19 @@ class MassUploadIntoAssetCollectionTasklet implements TaskletInterface
 
             switch ($item->getState()) {
                 case ProcessedItem::STATE_ERROR:
-                    $stepExecution->incrementSummaryInfo('error');
-                    $stepExecution->addError($item->getException()->getMessage());
+                    $this->stepExecution->incrementSummaryInfo('error');
+                    $this->stepExecution->addError($item->getException()->getMessage());
                     break;
                 case ProcessedItem::STATE_SKIPPED:
-                    $stepExecution->incrementSummaryInfo('variations_not_generated');
-                    $stepExecution->addWarning(
+                    $this->stepExecution->incrementSummaryInfo('variations_not_generated');
+                    $this->stepExecution->addWarning(
                         $item->getReason(),
                         [],
                         new DataInvalidItem(['filename' => $file->getFilename()])
                     );
                     break;
                 default:
-                    $stepExecution->incrementSummaryInfo($item->getReason());
+                    $this->stepExecution->incrementSummaryInfo($item->getReason());
                     break;
             }
         }

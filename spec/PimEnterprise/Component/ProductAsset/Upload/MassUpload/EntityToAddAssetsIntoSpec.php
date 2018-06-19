@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace spec\PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetsTo;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\EntityToAddAssetsInto;
 
-class AddAssetsToSpec extends ObjectBehavior
+class EntityToAddAssetsIntoSpec extends ObjectBehavior
 {
     function let()
     {
@@ -25,7 +25,7 @@ class AddAssetsToSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AddAssetsTo::class);
+        $this->shouldHaveType(EntityToAddAssetsInto::class);
     }
 
     function it_returns_an_entity_id()

@@ -70,16 +70,15 @@ class MassUploadTasklet implements TaskletInterface
         $username = $jobExecution->getUser();
         $uploadContext = new UploadContext($this->tmpStorageDir, $username);
 
-        $processedItems = $this->processor->process($uploadContext);
+        $processedItems = $this->processor->applyMassUpload($uploadContext);
 
-        $this->incrementSummaryInfo($processedItems, $this->stepExecution);
+        $this->incrementSummaryInfo($processedItems);
     }
 
     /**
      * @param ProcessedItemList $processedItems
-     * @param StepExecution     $stepExecution
      */
-    protected function incrementSummaryInfo(ProcessedItemList $processedItems, StepExecution $stepExecution): void
+    protected function incrementSummaryInfo(ProcessedItemList $processedItems): void
     {
         foreach ($processedItems as $item) {
             $file = $item->getItem();
@@ -95,19 +94,19 @@ class MassUploadTasklet implements TaskletInterface
 
             switch ($item->getState()) {
                 case ProcessedItem::STATE_ERROR:
-                    $stepExecution->incrementSummaryInfo('error');
-                    $stepExecution->addError($item->getException()->getMessage());
+                    $this->stepExecution->incrementSummaryInfo('error');
+                    $this->stepExecution->addError($item->getException()->getMessage());
                     break;
                 case ProcessedItem::STATE_SKIPPED:
-                    $stepExecution->incrementSummaryInfo('variations_not_generated');
-                    $stepExecution->addWarning(
+                    $this->stepExecution->incrementSummaryInfo('variations_not_generated');
+                    $this->stepExecution->addWarning(
                         $item->getReason(),
                         [],
                         new DataInvalidItem(['filename' => $file->getFilename()])
                     );
                     break;
                 default:
-                    $stepExecution->incrementSummaryInfo($item->getReason());
+                    $this->stepExecution->incrementSummaryInfo($item->getReason());
                     break;
             }
         }

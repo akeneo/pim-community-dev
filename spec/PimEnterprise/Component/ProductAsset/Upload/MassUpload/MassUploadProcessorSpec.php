@@ -83,7 +83,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
 
         $objectDetacher->detach($asset)->shouldBeCalled();
 
-        $processedFiles = $this->process($uploadContext);
+        $processedFiles = $this->applyMassUpload($uploadContext);
 
         $processedFiles->shouldBeAnInstanceOf(ProcessedItemList::class);
         $processedFiles->count()->shouldReturn(1);
@@ -118,7 +118,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
 
         $objectDetacher->detach($asset)->shouldBeCalled();
 
-        $processedFiles = $this->process($uploadContext);
+        $processedFiles = $this->applyMassUpload($uploadContext);
 
         $processedFiles->shouldBeAnInstanceOf(ProcessedItemList::class);
         $processedFiles->count()->shouldReturn(1);
@@ -153,7 +153,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
 
         $objectDetacher->detach($asset)->shouldBeCalled();
 
-        $processedFiles = $this->process($uploadContext);
+        $processedFiles = $this->applyMassUpload($uploadContext);
 
         $processedFiles->shouldBeAnInstanceOf(ProcessedItemList::class);
         $processedFiles->count()->shouldReturn(1);
@@ -182,7 +182,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $retrieveAssetGenerationErrors->fromEvent(Argument::any())->shouldNotBeCalled();
         $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
 
-        $processedFiles = $this->process($uploadContext);
+        $processedFiles = $this->applyMassUpload($uploadContext);
 
         $processedFiles->shouldBeAnInstanceOf(ProcessedItemList::class);
         $processedFiles->count()->shouldReturn(1);

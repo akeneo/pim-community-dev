@@ -20,7 +20,7 @@ namespace PimEnterprise\Component\ProductAsset\Upload\MassUpload;
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-final class AddAssetsTo
+final class EntityToAddAssetsInto
 {
     /** @var int */
     private $entityId;

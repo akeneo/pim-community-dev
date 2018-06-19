@@ -21,7 +21,7 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Upload\ImporterInterface;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetsTo;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\EntityToAddAssetsInto;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetToEntityWithValues;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\BuildAsset;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
@@ -73,7 +73,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         AssetInterface $asset
     ) {
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
-        $addAssetTo = new AddAssetsTo(666, 'asset_collection');
+        $addAssetTo = new EntityToAddAssetsInto(666, 'asset_collection');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
         $buildAsset->fromFile($importedFile)->willReturn($asset);
@@ -92,7 +92,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
 
         $addAssetToEntityWithValues->add(666, 'asset_collection', ['asset_code'])->shouldBeCalled();
 
-        $processedFiles = $this->process($uploadContext, $addAssetTo);
+        $processedFiles = $this->applyMassUpload($uploadContext, $addAssetTo);
 
         $processedFiles->shouldBeAnInstanceOf(ProcessedItemList::class);
         $processedFiles->count()->shouldReturn(1);
@@ -113,7 +113,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         AssetInterface $asset
     ) {
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
-        $addAssetTo = new AddAssetsTo(666, 'asset_collection');
+        $addAssetTo = new EntityToAddAssetsInto(666, 'asset_collection');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
         $buildAsset->fromFile($importedFile)->willReturn($asset);
@@ -132,7 +132,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
 
         $addAssetToEntityWithValues->add(666, 'asset_collection', ['asset_code'])->shouldBeCalled();
 
-        $processedFiles = $this->process($uploadContext, $addAssetTo);
+        $processedFiles = $this->applyMassUpload($uploadContext, $addAssetTo);
 
         $processedFiles->shouldBeAnInstanceOf(ProcessedItemList::class);
         $processedFiles->count()->shouldReturn(1);
@@ -153,7 +153,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         AssetInterface $asset
     ) {
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
-        $addAssetTo = new AddAssetsTo(666, 'asset_collection');
+        $addAssetTo = new EntityToAddAssetsInto(666, 'asset_collection');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
         $buildAsset->fromFile($importedFile)->willReturn($asset);
@@ -172,7 +172,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
 
         $addAssetToEntityWithValues->add(666, 'asset_collection', ['asset_code'])->shouldBeCalled();
 
-        $processedFiles = $this->process($uploadContext, $addAssetTo);
+        $processedFiles = $this->applyMassUpload($uploadContext, $addAssetTo);
 
         $processedFiles->shouldBeAnInstanceOf(ProcessedItemList::class);
         $processedFiles->count()->shouldReturn(1);
@@ -192,7 +192,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         \SplFileInfo $importedFile
     ) {
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
-        $addAssetTo = new AddAssetsTo(666, 'asset_collection');
+        $addAssetTo = new EntityToAddAssetsInto(666, 'asset_collection');
 
         $exception = new \Exception('A fatal error!');
 
@@ -205,7 +205,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
         $addAssetToEntityWithValues->add(Argument::class)->shouldNotBeCalled();
 
-        $processedFiles = $this->process($uploadContext, $addAssetTo);
+        $processedFiles = $this->applyMassUpload($uploadContext, $addAssetTo);
 
         $processedFiles->shouldBeAnInstanceOf(ProcessedItemList::class);
         $processedFiles->count()->shouldReturn(1);
@@ -227,7 +227,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         AssetInterface $asset
     ) {
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
-        $addAssetTo = new AddAssetsTo(666, 'asset_collection');
+        $addAssetTo = new EntityToAddAssetsInto(666, 'asset_collection');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
         $buildAsset->fromFile($importedFile)->willReturn($asset);
@@ -247,7 +247,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         $exception = new \InvalidArgumentException('Invalid product');
         $addAssetToEntityWithValues->add(666, 'asset_collection', ['asset_code'])->willThrow($exception);
 
-        $processedFiles = $this->process($uploadContext, $addAssetTo);
+        $processedFiles = $this->applyMassUpload($uploadContext, $addAssetTo);
 
         $processedFiles->shouldBeAnInstanceOf(ProcessedItemList::class);
         $processedFiles->count()->shouldReturn(2);

@@ -1,13 +1,19 @@
+parameters:
+    pimee_product_asset.upload_checker.class:        PimEnterprise\Component\ProductAsset\Upload\UploadChecker
+    pimee_product_asset.upload_importer.class:       PimEnterprise\Component\ProductAsset\Upload\Importer
+    pimee_product_asset.mass_upload_processor.class: PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadProcessor
+    pimee_product_asset.mass_upload.tasklet.class:   PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet
+
 services:
     pimee_product_asset.upload_checker:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\UploadChecker'
+        class: '%pimee_product_asset.upload_checker.class%'
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.locale'
 
     pimee_product_asset.upload_importer:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\Importer'
+        class: '%pimee_product_asset.upload_importer.class%'
         arguments:
             - '@pimee_product_asset.upload_checker'
             - '@akeneo_file_storage.file_storage.file.file_storer'
@@ -43,8 +49,8 @@ services:
             - '@pim_catalog.validator.product_model'
             - '@pim_catalog.saver.product_model'
 
-    pimee_product_asset.mass_upload.processor:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadProcessor'
+    pimee_product_asset.mass_upload_processor:
+        class: '%pimee_product_asset.mass_upload_processor.class%'
         arguments:
             - '@pimee_product_asset.upload_importer'
             - '@pimee_product_asset.mass_upload.build_asset'
@@ -75,10 +81,10 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pimee_product_asset.mass_upload.add_asset_to_product_model'
 
-    pimee_product_asset.tasklet.mass_upload:
-        class: 'PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet'
+    pimee_product_asset.mass_upload.tasklet:
+        class: '%pimee_product_asset.mass_upload.tasklet.class%'
         arguments:
-            - '@pimee_product_asset.mass_upload.processor'
+            - '@pimee_product_asset.mass_upload_processor'
             - '%tmp_storage_dir%'
 
     pimee_product_asset.tasklet.mass_upload_into_asset_collection:

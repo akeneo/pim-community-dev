@@ -83,7 +83,7 @@ class MassUploadProcessor
      *
      * @return ProcessedItemList
      */
-    public function process(UploadContext $uploadContext): ProcessedItemList
+    public function applyMassUpload(UploadContext $uploadContext): ProcessedItemList
     {
         $processedFiles = new ProcessedItemList();
         $importedFiles = $this->importer->getImportedFiles($uploadContext);

@@ -22,7 +22,7 @@ use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadIntoAssetCollectionTasklet;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetsTo;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\EntityToAddAssetsInto;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use Prophecy\Argument;
@@ -77,11 +77,11 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_id')->willReturn('42');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
-        $massUploadToProductProcessor->process(
+        $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new AddAssetsTo(42, 'asset_collection')
+            new EntityToAddAssetsInto(42, 'asset_collection')
         )->willReturn($processedItemList);
-        $massUploadToProductModelProcessor->process(Argument::cetera())->shouldNotBeCalled();
+        $massUploadToProductModelProcessor->applyMassUpload(Argument::cetera())->shouldNotBeCalled();
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('Reason for success')->shouldBeCalled();
@@ -111,10 +111,10 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_id')->willReturn('42');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
-        $massUploadToProductProcessor->process(Argument::cetera())->shouldNotBeCalled();
-        $massUploadToProductModelProcessor->process(
+        $massUploadToProductProcessor->applyMassUpload(Argument::cetera())->shouldNotBeCalled();
+        $massUploadToProductModelProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new AddAssetsTo(42, 'asset_collection')
+            new EntityToAddAssetsInto(42, 'asset_collection')
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -144,9 +144,9 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_id')->willReturn('42');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
-        $massUploadToProductProcessor->process(
+        $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new AddAssetsTo(42, 'asset_collection')
+            new EntityToAddAssetsInto(42, 'asset_collection')
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -182,9 +182,9 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_id')->willReturn('42');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
-        $massUploadToProductProcessor->process(
+        $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new AddAssetsTo(42, 'asset_collection')
+            new EntityToAddAssetsInto(42, 'asset_collection')
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -202,7 +202,7 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
     ) {
         $processedItemList = new ProcessedItemList();
         $processedItemList->addItem(
-            new AddAssetsTo(42, 'asset_collection'),
+            new EntityToAddAssetsInto(42, 'asset_collection'),
             ProcessedItem::STATE_ERROR,
             '',
             new \Exception('Exception message')
@@ -216,9 +216,9 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_id')->willReturn('42');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
-        $massUploadToProductProcessor->process(
+        $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new AddAssetsTo(42, 'asset_collection')
+            new EntityToAddAssetsInto(42, 'asset_collection')
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -245,9 +245,9 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobParameters->get('entity_id')->willReturn('42');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
-        $massUploadToProductProcessor->process(
+        $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new AddAssetsTo(42, 'asset_collection')
+            new EntityToAddAssetsInto(42, 'asset_collection')
         )->willReturn($processedItemList);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('execute');
