@@ -13,10 +13,10 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductProposal;
 
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductProposalIndexer;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -45,7 +45,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             StorageEvents::POST_SAVE => ['indexProductProposal', 300],
             StorageEvents::POST_SAVE_ALL => ['bulkIndexProductProposals', 300],
             StorageEvents::POST_REMOVE => ['deleteProductProposal', 300],
-            ProductDraftEvents::POST_REFUSE => ['deleteProductProposal', 300],
+            EntityWithValuesDraftEvents::POST_REFUSE => ['deleteProductProposal', 300],
         ];
     }
 
@@ -58,7 +58,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
     public function indexProductProposal(GenericEvent $event)
     {
         $productProposal = $event->getSubject();
-        if (!$productProposal instanceof EntityWithValuesDraftInterface) {
+        if (!$productProposal instanceof ProductDraft) {
             return;
         }
 
@@ -66,7 +66,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($productProposal instanceof EntityWithValuesDraftInterface) {
+        if ($productProposal instanceof ProductDraft) {
             $changesToReview = $productProposal->getChangesToReview();
             if (!empty($changesToReview['values'])) {
                 $productProposal->setChanges($changesToReview);
@@ -89,7 +89,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!current($productProposals) instanceof EntityWithValuesDraftInterface) {
+        if (!current($productProposals) instanceof ProductDraft) {
             return;
         }
 
@@ -122,7 +122,7 @@ class IndexProductProposalsSubscriber implements EventSubscriberInterface
     public function deleteProductProposal(GenericEvent $event)
     {
         $productProposal = $event->getSubject();
-        if (!$productProposal instanceof EntityWithValuesDraftInterface ||
+        if (!$productProposal instanceof ProductDraft ||
             $productProposal->getStatus() === EntityWithValuesDraftInterface::IN_PROGRESS) {
             return;
         }

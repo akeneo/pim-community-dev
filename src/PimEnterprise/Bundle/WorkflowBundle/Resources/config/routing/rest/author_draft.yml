@@ -1,0 +1,5 @@
+pimee_workflow_author_draft_rest:
+    path: /rest/author
+    defaults: { _controller: pimee_workflow.controller.author_draft:authorAction, _format: json }
+    requirements:
+        method: GET

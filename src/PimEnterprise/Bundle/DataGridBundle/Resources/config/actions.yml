@@ -9,7 +9,7 @@ services:
         class: '%oro_datagrid.extension.action.type.ajax.class%'
         shared: false
         tags:
-            - { name: oro_datagrid.extension.action.type, type: reject-proposal }
+            - { name: oro_datagrid.extension.action.type, type: refuse-proposal }
 
     pimee_datagrid.extension.action.type.remove_proposal:
         class: '%oro_datagrid.extension.action.type.ajax.class%'

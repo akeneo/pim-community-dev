@@ -11,14 +11,16 @@ define(
         'underscore',
         'oro/mediator',
         'oro/datagrid/ajax-action',
-        'pim/form-modal'
+        'pim/form-modal',
+        'routing'
     ],
     function (
         $,
         _,
         mediator,
         AjaxAction,
-        FormModal
+        FormModal,
+        Router
     ) {
         return AjaxAction.extend({
             /**
@@ -29,8 +31,18 @@ define(
             /**
              * {@inheritdoc}
              */
-            getMethod: function () {
+            getMethod() {
                 return 'POST';
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            getLink() {
+                const productDraftType = this.model.get('document_type');
+                const id = this.model.get('proposal_id');
+
+                return Router.generate('pimee_workflow_' + productDraftType + '_rest_remove', { id });
             },
 
             /**
@@ -38,7 +50,7 @@ define(
              *
              * {@inheritdoc}
              */
-            _handleAjax: function (action) {
+            _handleAjax(action) {
                 var modalParameters = {
                     title: _.__('pimee_enrich.entity.product_draft.modal.remove_proposal'),
                     okText: _.__('pimee_enrich.entity.product_draft.modal.confirm'),
@@ -61,7 +73,7 @@ define(
              *
              * @param product
              */
-            _onAjaxSuccess: function (product) {
+            _onAjaxSuccess(product) {
                 this.datagrid.collection.fetch();
 
                 mediator.trigger('pim_enrich:form:proposal:post_remove:success', product);
@@ -74,7 +86,7 @@ define(
              *
              * @return {Promise}
              */
-            validateForm: function (form) {
+            validateForm(form) {
                 var comment = form.getFormData().comment;
                 this.actionParameters.comment = _.isUndefined(comment) ? null : comment;
 
@@ -84,7 +96,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            getActionParameters: function () {
+            getActionParameters() {
                 return this.actionParameters;
             }
         });

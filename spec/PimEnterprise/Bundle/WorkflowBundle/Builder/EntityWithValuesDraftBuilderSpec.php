@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -74,7 +75,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ];
 
         $newValuesCollection->add($textValue);
-        $product->getValues()->willReturn($newValuesCollection);
+        $product->getValuesForVariation()->willReturn($newValuesCollection);
         $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
             'name' => [
                 ['data' => 'product', 'locale' => null, 'scope' => null]
@@ -135,7 +136,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $rawValues = [];
 
         $newValuesCollection->add($textValue);
-        $product->getValues()->willReturn($newValuesCollection);
+        $product->getValuesForVariation()->willReturn($newValuesCollection);
         $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
             'name' => [
                 ['data' => 'product', 'locale' => null, 'scope' => null]
@@ -194,7 +195,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ];
 
         $newValuesCollection->add($textValue);
-        $product->getValues()->willReturn($newValuesCollection);
+        $product->getValuesForVariation()->willReturn($newValuesCollection);
         $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
             'name' => [
                 ['data' => 'my product', 'locale' => null, 'scope' => null]
@@ -240,7 +241,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         ];
 
         $newValuesCollection->add($textValue);
-        $product->getValues()->willReturn($newValuesCollection);
+        $product->getValuesForVariation()->willReturn($newValuesCollection);
         $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
             'name' => [
                 ['data' => 'product', 'locale' => null, 'scope' => null]
@@ -319,6 +320,109 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $newTextValue->getData()->willReturn('product');
         $newTextValue->getScope()->willReturn(null);
         $newTextValue->getLocale()->willReturn(null);
+
+        $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($variantProduct, 'mary')->willReturn($productDraft);
+        $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
+        $productDraft->setChanges([
+            'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
+        ])->shouldBeCalled();
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
+
+        $this->build($variantProduct, 'mary')->shouldReturn($productDraft);
+    }
+
+    function it_builds_a_variant_product_draft_but_do_not_create_value_if_values_are_same_as_parent(
+        $normalizer,
+        $valueCollectionFactory,
+        $comparatorRegistry,
+        $attributeRepository,
+        $valueFactory,
+        $entityWithValuesDraftRepository,
+        ProductInterface $variantProduct,
+        AttributeInterface $textAttribute,
+        AttributeInterface $colorAttribute,
+        ValueInterface $textValue,
+        ValueInterface $newTextValue,
+        ValueInterface $colorValue,
+        ComparatorInterface $textComparator,
+        ComparatorInterface $colorComparator,
+        EntityWithValuesDraftInterface $productDraft,
+        ValueCollectionInterface $newValuesCollection,
+        ValueCollectionInterface $originalValuesCollection,
+        ProductModelInterface $parent
+    ) {
+        $variantProduct->isVariant()->willReturn(true);
+        $variantProduct->getParent()->willReturn($parent);
+        $parent->getRawValues()->willReturn([
+            'color' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'purple'
+                ]
+            ]
+        ]);
+        $variantProduct->getParent()->willReturn(null);
+
+        $rawValues = [
+            'name' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'my product'
+                ]
+            ],
+            'color' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'purple'
+                ]
+            ]
+        ];
+
+        $newValuesCollection->add($textValue);
+        $newValuesCollection->add($colorValue);
+        $variantProduct->getValuesForVariation()->willReturn($newValuesCollection);
+        $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'product', 'locale' => null, 'scope' => null]
+            ],
+            'color' => [
+                ['data' => 'blue', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $variantProduct->getRawValues()->willReturn($rawValues);
+        $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($originalValuesCollection);
+        $normalizer->normalize($originalValuesCollection, 'standard')->willReturn([
+            'name' => [
+                ['data' => 'my product', 'locale' => null, 'scope' => null]
+            ],
+            'color' => [
+                ['data' => 'blue', 'locale' => null, 'scope' => null]
+            ]
+        ]);
+
+        $textAttribute->getCode()->willReturn('name');
+        $textAttribute->getType()->willReturn('text');
+        $textAttribute->isUnique()->willReturn(false);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($textAttribute);
+        $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
+        $textComparator->compare(
+            ['data' => 'product', 'locale' => null, 'scope' => null],
+            ['data' => 'my product', 'locale' => null, 'scope' => null]
+        )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
+
+        $valueFactory->create($textAttribute, null, null, 'product')->willReturn($newTextValue);
+        $newTextValue->getAttribute()->willReturn($textAttribute);
+        $newTextValue->getData()->willReturn('product');
+        $newTextValue->getScope()->willReturn(null);
+        $newTextValue->getLocale()->willReturn(null);
+
+        $colorAttribute->getCode()->willReturn('color');
+        $colorAttribute->getType()->willReturn('simpleselect');
+        $colorAttribute->isUnique()->willReturn(false);
+        $attributeRepository->findOneByIdentifier('color')->willReturn($colorAttribute);
+        $comparatorRegistry->getAttributeComparator('simpleselect')->willReturn($colorComparator);
+        $colorComparator->compare(
+            ['data' => 'blue', 'locale' => null, 'scope' => null],
+            ['data' => 'blue', 'locale' => null, 'scope' => null]
+        )->willReturn(null);
 
         $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($variantProduct, 'mary')->willReturn($productDraft);
         $productDraft->setValues(new ValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();

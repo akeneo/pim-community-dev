@@ -7,9 +7,11 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction;
+use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -28,11 +30,15 @@ class MassRefuseActionHandlerSpec extends ObjectBehavior
         DatasourceSpecInterface $datasource,
         EditMassAction $massAction,
         ProductQueryBuilderInterface $pqb,
-        EntityWithValuesDraftInterface $productDraft1,
-        EntityWithValuesDraftInterface $productDraft2,
-        EntityWithValuesDraftInterface $productDraft3
+        ProductDraft $productDraft1,
+        ProductDraft $productDraft2,
+        ProductDraft $productDraft3,
+        ProductModelDraft $productModelDraft
     ) {
-        $objectIds = [1, 2, 3];
+        $objectIds = [
+            'product_draft_ids'       => [1, 2, 3],
+            'product_model_draft_ids' => [1],
+        ];
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_REFUSE_PRE_HANDLER,
@@ -52,8 +58,9 @@ class MassRefuseActionHandlerSpec extends ObjectBehavior
         $productDraft1->getId()->willReturn(1);
         $productDraft2->getId()->willReturn(2);
         $productDraft3->getId()->willReturn(3);
+        $productModelDraft->getId()->willReturn(1);
 
-        $cursorFactory->createCursor([])->willReturn([$productDraft1, $productDraft2, $productDraft3]);
+        $cursorFactory->createCursor([])->willReturn([$productDraft1, $productDraft2, $productDraft3, $productModelDraft]);
 
         $this->handle($datagrid, $massAction)->shouldReturn($objectIds);
     }

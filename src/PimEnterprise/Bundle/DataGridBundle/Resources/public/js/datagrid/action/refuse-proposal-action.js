@@ -13,7 +13,8 @@ define(
         'oro/messenger',
         'oro/translator',
         'oro/datagrid/ajax-action',
-        'pim/form-modal'
+        'pim/form-modal',
+        'routing'
     ],
     function (
         $,
@@ -22,7 +23,8 @@ define(
         messenger,
         __,
         AjaxAction,
-        FormModal
+        FormModal,
+        Router
     ) {
         return AjaxAction.extend({
             /**
@@ -33,8 +35,18 @@ define(
             /**
              * {@inheritdoc}
              */
-            getMethod: function () {
+            getMethod() {
                 return 'POST';
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            getLink() {
+                const productDraftType = this.model.get('document_type');
+                const id = this.model.get('proposal_id');
+
+                return Router.generate('pimee_workflow_' + productDraftType + '_rest_refuse', { id });
             },
 
             /**
@@ -42,7 +54,7 @@ define(
              *
              * {@inheritdoc}
              */
-            _handleAjax: function (action) {
+            _handleAjax(action) {
                 var modalParameters = {
                     title: __('pimee_enrich.entity.product_draft.modal.reject_proposal'),
                     okText: __('pimee_enrich.entity.product_draft.modal.confirm'),
@@ -65,7 +77,7 @@ define(
              *
              * @param product
              */
-            _onAjaxSuccess: function (product) {
+            _onAjaxSuccess(product) {
                 messenger.notify(
                     'success',
                     __('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
@@ -83,7 +95,7 @@ define(
              *
              * @return {Promise}
              */
-            validateForm: function (form) {
+            validateForm(form) {
                 var comment = form.getFormData().comment;
                 this.actionParameters.comment = _.isUndefined(comment) ? null : comment;
 
@@ -93,7 +105,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            getActionParameters: function () {
+            getActionParameters() {
                 return this.actionParameters;
             }
         });

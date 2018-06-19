@@ -10,6 +10,7 @@ parameters:
     pimee_workflow.event_subscriber.product_draft.ensure_global_status.class:           PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\EnsureProductDraftGlobalStatusSubscriber
     pimee_workflow.subscriber.product_draft.exclude_deleted_attribute.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ORM\ExcludeDeletedAttributeSubscriber
     pimee_workflow.event_subscriber.index_product_proposals.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductProposal\IndexProductProposalsSubscriber
+    pimee_workflow.event_subscriber.index_product_model_proposals.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductModelProposal\IndexProductModelProposalsSubscriber
 
 services:
     ##
@@ -119,5 +120,12 @@ services:
         class: '%pimee_workflow.event_subscriber.index_product_proposals.class%'
         arguments:
             - '@pim_catalog.elasticsearch.product_proposal_indexer'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.index_product_model_proposals:
+        class: '%pimee_workflow.event_subscriber.index_product_model_proposals.class%'
+        arguments:
+            - '@pim_catalog.elasticsearch.product_model_proposal_indexer'
         tags:
             - { name: kernel.event_subscriber }

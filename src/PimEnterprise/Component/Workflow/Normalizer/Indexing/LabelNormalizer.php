@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -25,11 +27,13 @@ class LabelNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ValueInterface &&
-            AttributeTypes::BACKEND_TYPE_TEXT === $data->getAttribute()->getBackendType() &&
-            $format === ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX;
+            AttributeTypes::BACKEND_TYPE_TEXT === $data->getAttribute()->getBackendType() && (
+                $format === ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX ||
+                $format === ProductModelProposalNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_PROPOSAL_INDEX
+            );
     }
 
     /**
@@ -43,7 +47,7 @@ class LabelNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($proposalValue, $format = null, array $context = [])
+    public function normalize($proposalValue, $format = null, array $context = []): array
     {
         $locale = (null === $proposalValue->getLocale()) ? '<all_locales>' : $proposalValue->getLocale();
         $channel = (null === $proposalValue->getScope()) ? '<all_channels>' : $proposalValue->getScope();

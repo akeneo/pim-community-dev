@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -15,7 +17,9 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
@@ -24,7 +28,7 @@ use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryI
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Draft builder to have modifications on product values
+ * Draft builder to have modifications on entity with values
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
@@ -74,7 +78,9 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
      */
     public function build(EntityWithValuesInterface $entityWithValues, string $username): ?EntityWithValuesDraftInterface
     {
-        $values = $entityWithValues->isVariant() ? $entityWithValues->getValuesForVariation() : $entityWithValues->getValues();
+        $values = $entityWithValues instanceof EntityWithFamilyVariantInterface ?
+            $entityWithValues->getValuesForVariation() : $entityWithValues->getValues();
+
         $newValues = $this->normalizer->normalize($values, 'standard');
         $originalValues = $this->getOriginalValues($entityWithValues);
 
@@ -108,38 +114,30 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         }
 
         if (!empty($diff)) {
-            $productDraft = $this->getProductDraft($entityWithValues, $username);
-            $productDraft->setValues(new ValueCollection($values));
-            $productDraft->setChanges($diff);
-            $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
+            $entityWithValuesDraft = $this->getEntityWithValuesDraft($entityWithValues, $username);
+            $entityWithValuesDraft->setValues(new ValueCollection($values));
+            $entityWithValuesDraft->setChanges($diff);
+            $entityWithValuesDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT);
 
-            return $productDraft;
+            return $entityWithValuesDraft;
         }
 
         return null;
     }
 
-    /**
-     * @param EntityWithValuesInterface $entityWithValues
-     * @param string                    $username
-     *
-     * @return EntityWithValuesDraftInterface
-     */
-    protected function getProductDraft(EntityWithValuesInterface $entityWithValues, $username)
+    protected function getEntityWithValuesDraft(EntityWithValuesInterface $entityWithValues, string $username): EntityWithValuesDraftInterface
     {
-        if (null === $productDraft = $this->entityWithValuesDraftRepository->findUserEntityWithValuesDraft($entityWithValues, $username)) {
-            $productDraft = $this->factory->createEntityWithValueDraft($entityWithValues, $username);
+        if (null === $entityWithValuesDraft = $this->entityWithValuesDraftRepository->findUserEntityWithValuesDraft(
+                $entityWithValues,
+                $username
+            )) {
+            $entityWithValuesDraft = $this->factory->createEntityWithValueDraft($entityWithValues, $username);
         }
 
-        return $productDraft;
+        return $entityWithValuesDraft;
     }
 
-    /**
-     * @param EntityWithValuesInterface $entityWithValues
-     *
-     * @return array
-     */
-    protected function getOriginalValues(EntityWithValuesInterface $entityWithValues)
+    protected function getOriginalValues(EntityWithValuesInterface $entityWithValues): array
     {
         $rawValues = $entityWithValues->getRawValues();
         $originalValues = $this->valueCollectionFactory->createFromStorageFormat($rawValues);
@@ -147,14 +145,6 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
         return $this->normalizer->normalize($originalValues, 'standard');
     }
 
-    /**
-     * @param array       $originalValues
-     * @param string      $code
-     * @param null|string $locale
-     * @param null|string $channel
-     *
-     * @return array
-     */
     protected function getOriginalValue(array $originalValues, string $code, ?string $locale, ?string $channel): array
     {
         if (!isset($originalValues[$code])) {

@@ -32,6 +32,14 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_product_draft }
 
+    pimee_catalog.datasource.product_model_draft:
+        class: '%pimee_datagrid.datasource.product_draft.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_datagrid.datasource.result_record.hydrator.product_model_draft'
+        tags:
+            - { name: oro_datagrid.datasource, type: pimee_datasource_product_model_draft }
+
     pim_datagrid.datasource.rule:
         class: '%pim_datagrid.datasource.default.class%'
         arguments:
@@ -45,8 +53,8 @@ services:
     pim_catalog.datasource.proposal_product:
         class: '%pimee_datagrid.datasource.product_proposal.class%'
         arguments:
-            - '@pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory_with_permissions'
-            - '@pimee_workflow.normalizer.proposal_product'
+            - '@pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory_with_permissions'
+            - '@pim_serializer'
         calls:
             - [ setMassActionRepository, ['@pimee_workflow.repository.product_draft' ]]
         tags:

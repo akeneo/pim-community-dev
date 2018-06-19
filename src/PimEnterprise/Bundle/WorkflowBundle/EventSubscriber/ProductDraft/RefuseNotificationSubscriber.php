@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -28,8 +28,8 @@ class RefuseNotificationSubscriber extends AbstractProposalStateNotificationSubs
     public static function getSubscribedEvents()
     {
         return [
-            ProductDraftEvents::POST_REFUSE         => ['sendNotificationForRefusal', 10],
-            ProductDraftEvents::POST_PARTIAL_REFUSE => ['sendNotificationForPartialRefusal', 10]
+            EntityWithValuesDraftEvents::POST_REFUSE         => ['sendNotificationForRefusal', 10],
+            EntityWithValuesDraftEvents::POST_PARTIAL_REFUSE => ['sendNotificationForPartialRefusal', 10]
         ];
     }
 
