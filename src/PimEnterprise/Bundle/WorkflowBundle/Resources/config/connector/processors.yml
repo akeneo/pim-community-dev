@@ -1,9 +1,10 @@
 parameters:
-    pimee_workflow.processor.denormalization.entity_with_values_draft.class: PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\EntityWithValuesDraftProcessor
+    pimee_workflow.processor.denormalization.product_draft.class: PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor
+    pimee_workflow.processor.denormalization.product_model_draft.class: PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductModelDraftProcessor
 
 services:
     pimee_workflow.processor.denormalization.product_draft:
-        class: '%pimee_workflow.processor.denormalization.entity_with_values_draft.class%'
+        class: '%pimee_workflow.processor.denormalization.product_draft.class%'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.updater.product'
@@ -12,10 +13,9 @@ services:
             - '@pimee_workflow.applier.draft'
             - '@pimee_workflow.repository.product_draft'
             - '@security.token_storage'
-            - 'identifier'
 
     pimee_workflow.processor.denormalization.product_model_draft:
-        class: '%pimee_workflow.processor.denormalization.entity_with_values_draft.class%'
+        class: '%pimee_workflow.processor.denormalization.product_model_draft.class%'
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.updater.product_model'
@@ -24,7 +24,7 @@ services:
             - '@pimee_workflow.applier.draft'
             - '@pimee_workflow.repository.product_model_draft'
             - '@security.token_storage'
-            - 'code'
+            - '@pim_connector.processor.attribute_filter.product_model'
 
     pimee_workflow.processor.normalization.published_product:
         class: '%pim_connector.processor.normalization.product.class%'

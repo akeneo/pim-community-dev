@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class EntityWithValuesDraftProcessorSpec extends ObjectBehavior
+class ProductDraftProcessorSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $repository,
@@ -37,8 +37,7 @@ class EntityWithValuesDraftProcessorSpec extends ObjectBehavior
             $productDraftBuilder,
             $productDraftApplier,
             $productDraftRepo,
-            $tokenStorage,
-            'identifier'
+            $tokenStorage
         );
         $this->setStepExecution($stepExecution);
     }
