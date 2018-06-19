@@ -819,7 +819,7 @@ Its standard format would be the following:
 | type          | data structure | data example           | notes                                                                                            |
 | ------------- | -------------- | ---------------------- | ------------------------------------------------------------------------------------------------ |
 | family_variant| string         | `"familyVariantA"`     | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface*             |
-| parent        | string         | `"fooProductModel"`    | it represents the *code* of the *Pim\Component\Catalog\Model\ProductModelInterface*              |
+| parent        | string         | `"fooProductModel"`    | it represents the *code* of the *Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface*              |
 
 ## Product model
 
@@ -856,7 +856,7 @@ Its standard format would be the following:
 | code          | string         | `"bar"`                                                                   | it's the identifier of the product model                                                         |
 | family        | string         | `"familyA"`                                                               | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyInterface*                    |
 | family_variant| string         | `"familyVariantA1"`                                                       | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface*             |
-| parent        | string         | `"fooProductModel"`                                                       | it represents the *code* of the *Pim\Component\Catalog\Model\ProductModelInterface*              |
+| parent        | string         | `"fooProductModel"`                                                       | it represents the *code* of the *Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface*              |
 | groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
 | categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Tool\Component\Classification\Model\CategoryInterface* |
 | values        | array          |                                                                           | see below                                                                                        |

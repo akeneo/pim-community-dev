@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductModelIndexer;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Prophecy\Argument;

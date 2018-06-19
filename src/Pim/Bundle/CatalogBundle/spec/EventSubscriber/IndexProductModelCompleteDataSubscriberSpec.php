@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelCompleteDataSubscriber;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

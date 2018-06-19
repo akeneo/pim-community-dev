@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\ProductAndProductModel\Query;
 
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Find data used by the datagrid completeness filter. We need to know if a product model has at least one

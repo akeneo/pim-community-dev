@@ -22,7 +22,7 @@ Pim\Component\Catalog\Model\ProductModelAssociation:
                     nullable: false
                     onDelete: CASCADE
         owner:
-            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
             inversedBy: associations
             cascade:
                 - detach
@@ -58,7 +58,7 @@ Pim\Component\Catalog\Model\ProductModelAssociation:
                         onDelete: CASCADE
 
         productModels:
-            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
             joinTable:
                 name: pim_catalog_association_product_model_to_product_model
                 joinColumns:

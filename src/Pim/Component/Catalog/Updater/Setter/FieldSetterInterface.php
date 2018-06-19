@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Setter;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Sets a field in a product

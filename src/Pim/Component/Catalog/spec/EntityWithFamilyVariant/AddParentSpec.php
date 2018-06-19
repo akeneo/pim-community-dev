@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
