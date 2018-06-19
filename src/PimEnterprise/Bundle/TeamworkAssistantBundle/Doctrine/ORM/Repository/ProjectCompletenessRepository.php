@@ -24,10 +24,10 @@ use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepo
 class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInterface
 {
     /** @var EntityManager */
-    protected $entityManager;
+    private $entityManager;
 
     /** @var TableNameMapper */
-    protected $tableNameMapper;
+    private $tableNameMapper;
 
     /**
      * @param EntityManager   $entityManager
@@ -54,17 +54,17 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
     /**
      * {@inheritdoc}
      */
-    public function findProductIds(ProjectInterface $project, $status, $username)
+    public function findProductIdentifiers(ProjectInterface $project, $status, $username)
     {
         switch ($status) {
             case ProjectCompletenessFilter::CONTRIBUTOR_TODO:
             case ProjectCompletenessFilter::CONTRIBUTOR_IN_PROGRESS:
             case ProjectCompletenessFilter::CONTRIBUTOR_DONE:
-                return $this->findProductIdsAsContributor($project, $status, $username);
+                return $this->findProductIdentifiersAsContributor($project, $status, $username);
             case ProjectCompletenessFilter::OWNER_TODO:
             case ProjectCompletenessFilter::OWNER_IN_PROGRESS:
             case ProjectCompletenessFilter::OWNER_DONE:
-                return $this->findProductIdsAsOwner($project, $status);
+                return $this->findProductIdentifiersAsOwner($project, $status);
             default:
                 return [];
         }
@@ -79,7 +79,7 @@ class ProjectCompletenessRepository implements ProjectCompletenessRepositoryInte
      *
      * @return array
      */
-    protected function findProductIdsAsContributor(ProjectInterface $project, $status, $username)
+    private function findProductIdentifiersAsContributor(ProjectInterface $project, $status, $username)
     {
         $parameters = $this->buildQueryParameters($project, $username);
 
@@ -111,7 +111,7 @@ WHERE `user`.`username` = :username
 ATTRIBUTE_GROUP_FILTER;
 
         $sql = <<<SQL
-SELECT `completeness_per_attribute_group`.`product_id`
+SELECT `product`.`identifier`
 FROM (
     SELECT DISTINCT `project_product`.`product_id`
     FROM `@pimee_teamwork_assistant.project_product@` AS `project_product`
@@ -130,12 +130,15 @@ FROM (
     )
 ) AS `product_selection`
 
+INNER JOIN `@pim_catalog.entity.product@` AS `product`
+    ON `product`.`id` = `product_selection`.`product_id`
+
 INNER JOIN `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
     ON `completeness_per_attribute_group`.`product_id` = `product_selection`.`product_id`
     AND `completeness_per_attribute_group`.`channel_id` = :channel_id
     AND `completeness_per_attribute_group`.`locale_id` = :locale_id
 $filterByAttributeGroupPermissions
-GROUP BY `completeness_per_attribute_group`.`product_id`
+GROUP BY `product`.`identifier`
 SQL;
 
         // Todo
@@ -162,9 +165,9 @@ SQL;
 
         $connection = $this->entityManager->getConnection();
         $sql = $this->tableNameMapper->createQuery($sql);
-        $productIds = $connection->fetchAll($sql, $parameters);
+        $productIdentifiers = $connection->fetchAll($sql, $parameters);
 
-        return array_column($productIds, 'product_id');
+        return array_column($productIdentifiers, 'identifier');
     }
 
     /**
@@ -175,7 +178,7 @@ SQL;
      *
      * @return array
      */
-    protected function findProductIdsAsOwner(ProjectInterface $project, $status)
+    private function findProductIdentifiersAsOwner(ProjectInterface $project, $status)
     {
         $parameters = [
             'locale_code' => $project->getLocale()->getCode(),
@@ -183,15 +186,17 @@ SQL;
         ];
 
         $sql = <<<SQL
-SELECT `completeness_per_attribute_group`.`product_id`
-FROM `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
+SELECT `product`.`identifier`
+FROM `@pim_catalog.entity.product@` AS `product`
+INNER JOIN `@pimee_teamwork_assistant.completeness_per_attribute_group@` AS `completeness_per_attribute_group`
+    ON `product`.`id` = `completeness_per_attribute_group`.`product_id`
 INNER JOIN `@pim_catalog.entity.channel@` AS `channel`
 	ON `completeness_per_attribute_group`.`channel_id` = `channel`.`id`
 INNER JOIN `@pim_catalog.entity.locale@` AS `locale`
 	ON `completeness_per_attribute_group`.`locale_id` = `locale`.`id`
 AND `channel`.`code` = :channel_code
 AND `locale`.`code` = :locale_code
-GROUP BY `completeness_per_attribute_group`.`product_id`
+GROUP BY `product`.`identifier`
 SQL;
 
         // Todo
@@ -218,9 +223,9 @@ SQL;
 
         $connection = $this->entityManager->getConnection();
         $sql = $this->tableNameMapper->createQuery($sql);
-        $productIds = $connection->fetchAll($sql, $parameters);
+        $productIdentifiers = $connection->fetchAll($sql, $parameters);
 
-        return array_column($productIds, 'product_id');
+        return array_column($productIdentifiers, 'identifier');
     }
 
     /**
@@ -231,7 +236,7 @@ SQL;
      *
      * @return array
      */
-    protected function buildQueryParameters(ProjectInterface $project, $username = null)
+    private function buildQueryParameters(ProjectInterface $project, $username = null)
     {
         $parameters = [
             'project_id' => $project->getId(),
@@ -253,7 +258,7 @@ SQL;
      *
      * @return string
      */
-    protected function buildSqlQuery($username = null)
+    private function buildSqlQuery($username = null)
     {
         $sql =
 <<<SQL
