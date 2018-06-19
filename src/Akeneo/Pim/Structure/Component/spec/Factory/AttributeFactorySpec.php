@@ -9,7 +9,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypeRegistry;
 class AttributeFactorySpec extends ObjectBehavior
 {
     const ATTRIBUTE_CLASS = 'Akeneo\Pim\Structure\Component\Model\Attribute';
-    const PRODUCT_CLASS = 'Pim\Component\Catalog\Model\Product';
+    const PRODUCT_CLASS = 'Akeneo\Pim\Enrichment\Component\Product\Model\Product';
 
     function let(AttributeTypeRegistry $registry)
     {

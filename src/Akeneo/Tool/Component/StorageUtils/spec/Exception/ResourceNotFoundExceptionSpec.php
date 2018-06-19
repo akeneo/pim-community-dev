@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Component\StorageUtils\Exception;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\ResourceNotFoundException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Prophecy\Argument;
 
 class ResourceNotFoundExceptionSpec extends ObjectBehavior

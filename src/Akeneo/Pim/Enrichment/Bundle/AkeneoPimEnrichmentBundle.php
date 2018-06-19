@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle;
 
-use Akeneo\Channel\Bundle\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
-use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -22,5 +20,16 @@ class AkeneoPimEnrichmentBundle extends Bundle
      */
     public function build(ContainerBuilder $container): void
     {
+        $productMappings = [
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Pim\Enrichment\Component\Product\Model'
+        ];
+
+        $container->addCompilerPass(
+            DoctrineOrmMappingsPass::createYamlMappingDriver(
+                $productMappings,
+                ['doctrine.orm.entity_manager'],
+                false
+            )
+        );
     }
 }

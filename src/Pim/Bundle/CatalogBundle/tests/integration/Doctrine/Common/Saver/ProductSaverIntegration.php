@@ -4,7 +4,7 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Statement;
-use Pim\Component\Catalog\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Model\ProductModelInterface;

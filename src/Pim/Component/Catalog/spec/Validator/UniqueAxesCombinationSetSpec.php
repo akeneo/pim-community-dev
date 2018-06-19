@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
-use Pim\Component\Catalog\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
 use Pim\Component\Catalog\Value\ScalarValue;

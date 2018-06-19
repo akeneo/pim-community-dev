@@ -9,7 +9,7 @@ class ProductMassActionRepositorySpec extends ObjectBehavior
 {
     function let(EntityManager $em)
     {
-        $name = 'Pim\Component\Catalog\Model\Product';
+        $name = 'Akeneo\Pim\Enrichment\Component\Product\Model\Product';
         $this->beConstructedWith($em, $name);
     }
 

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\fixture;
 
-use Pim\Component\Catalog\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
