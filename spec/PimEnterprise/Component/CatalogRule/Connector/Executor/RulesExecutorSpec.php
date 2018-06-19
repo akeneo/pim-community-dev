@@ -9,8 +9,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInter
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
-use PimEnterprise\Component\CatalogRule\Repository\ProductModelDescendantRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Prophecy\Argument;
 
 class RulesExecutorSpec extends ObjectBehavior

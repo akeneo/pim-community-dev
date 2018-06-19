@@ -16,8 +16,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterfac
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
