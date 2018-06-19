@@ -5,7 +5,7 @@ namespace PimEnterprise\Component\Catalog\tests\integration\Security;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
