@@ -62,7 +62,7 @@ Feature: Edit a product with localized attributes
     And I fill in the following information:
       | Langue de l'interface | anglais (États-Unis) |
     And I save the user
-    And I should not see the text "There are unsaved changes."
+    And I should see the text "System Navigation"
     And I am on the "foo" product page
     Then the field Date should contain "05/28/2015"
 

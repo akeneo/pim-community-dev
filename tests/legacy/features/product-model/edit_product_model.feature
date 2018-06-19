@@ -46,7 +46,7 @@ Feature: Edit a product model
     Given I am logged in as "Mary"
     And I edit the "apollon_blue" product model
     And I visit the "Product" group
-    Then the field Color (Variant axis) should be read only
+    Then the field Color (variant axis) should be read only
     And I should see the text "Color (Variant axis)"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6861

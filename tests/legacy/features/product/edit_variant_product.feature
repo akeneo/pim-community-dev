@@ -44,5 +44,5 @@ Feature: Edit a variant product
     Given I am logged in as "Mary"
     And I edit the "1111111119" product
     And I visit the "Product" group
-    Then the field Size (Variant axis) should be read only
-    And I should see the text "Size (Variant axis)"
+    Then the field Size (variant axis) should be read only
+    And I should see the text "Size (variant axis)"

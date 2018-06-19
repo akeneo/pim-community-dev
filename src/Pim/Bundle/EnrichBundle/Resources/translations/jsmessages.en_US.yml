@@ -213,7 +213,7 @@ pim_enrich.entity.product:
             more_products: '{{ count }} more products...'
         attribute:
             remove_optional: Remove this attribute
-            locale_specific: This locale specific field is not available in this locale
+            locale_specific_unavailable: This locale specific field is not available in this locale
             locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
             media_upload: Drag and drop to upload or click here
             to_fill_count: "{1}1 missing required attribute|]1, Inf[{{ count }} missing required attributes"
@@ -228,6 +228,8 @@ pim_enrich.entity.product:
         sequential_edit:
             item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
             empty: Your selection is empty, please change your search criteria
+            save_and_next: Save and next
+            save_and_finish: Save and finish
         associations:
             title: Associations
             none_exist: No association types exist.
@@ -244,9 +246,6 @@ pim_enrich.entity.product:
             all: All attributes
             missing_required: All missing required attributes
             at_this_level: All level specific attributes
-        sequential_edit:
-            save_and_next: Save and next
-            save_and_finish: Save and finish
         change_family:
             title: Change the product family
             merge_attributes: Current attributes will be merged with the ones in the new family.
@@ -286,9 +285,10 @@ pim_enrich.entity.product_model:
             read_only_parent_attribute_from_common: This attribute can be updated in the common attributes.
             read_only_parent_attribute_from_model: "This attribute can be updated in the attributes by {{ axes }}"
         variant_axis:
-            label: (variant axis)
+            label: 'variant axis'
             create: Add new
             create_label: "Add a new {{ axes }}"
+            required_label: '(variant axis)'
         completeness:
             variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }} / {{ total }} variant products"
         delete:
@@ -384,8 +384,8 @@ pim_enrich.entity.family_variant:
             title: Update translations
 
 pim_enrich.entity.attribute_option:
+    short_uppercase_label: Options
     flash:
-        short_uppercase_label: Options
         create:
             success: Attribute option successfully created
             fail: An error ocurred when trying to create the attribute option
@@ -530,7 +530,7 @@ pim_enrich.entity.attribute:
             no_available_attributes: There are no more attributes to add
             attributes_selected: "{{ itemsCount }} attribute(s) selected"
         create:
-            create: Create attribute
+            button: Create attribute
         edit:
             common: General parameters
             type_specific: Type specific parameters
@@ -687,7 +687,7 @@ pim_enrich.mass_edit.product:
             label: Choose products
         choose:
             title: Products bulk actions
-            label_count: "] 0n Inf[Select your action"
+            label_count: "]0, Inf[Select your action"
         configure:
             label: Configure
         confirm:
@@ -738,13 +738,14 @@ pim_enrich.mass_edit.product:
             label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
             description: The product model selected will gather the products and allows the enrichment of their common properties.
         associate_to_product_and_product_model:
-            label: Associate to products
+            label: Associate
             label_count: "{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
             description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
+            validate: Please add association before going to the next step
         change_parent_product_model:
             label: Change the parent product model
             label_count: "{1}Change parent product model of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Change parent product model of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
-            description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.            validate: Please add association before going to the next step
+            description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 
 pim_enrich.mass_edit.family:
     title: Families bulk action
@@ -754,7 +755,7 @@ pim_enrich.mass_edit.family:
             label: Choose families
         choose:
             title: Families bulk actions
-            label_count: "] 0n Inf[Select your action"
+            label_count: "]0, Inf[Select your action"
         configure:
             label: Configure
         confirm:

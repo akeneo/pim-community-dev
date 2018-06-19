@@ -92,7 +92,7 @@ define(
              */
             badgeLabel: function (completeProducts, totalProducts) {
                 return __(
-                    'pim_enrich.entity.product_model.completeness.variant_product',
+                    'pim_enrich.entity.product_model.module.completeness.variant_product',
                     { complete: completeProducts, total: totalProducts },
                     completeProducts
                 );

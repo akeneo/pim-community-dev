@@ -182,9 +182,8 @@ define(
                         );
 
                         if (isAxis) {
-                            newFormMeta
-                                .config
-                                .requiredLabel = 'pim_enrich.entity.product_model.module.variant_axis.fields.required_label';
+                            newFormMeta.config.requiredLabel =
+                                'pim_enrich.entity.product_model.module.variant_axis.required_label';
                         }
 
                         return FormBuilder.buildForm(newFormMeta);

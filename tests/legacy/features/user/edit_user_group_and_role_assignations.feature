@@ -36,6 +36,7 @@ Feature: Edit a user groups and roles
     And I check "User"
     And I save the user
     Then the "User" checkbox should be checked
+    And I should see the text "Administrator"
     And the "Administrator" checkbox should be checked
     When I edit the "admin" user
     Then I should not see the text "There are unsaved changes."

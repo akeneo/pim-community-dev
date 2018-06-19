@@ -6,7 +6,7 @@ config:
             backRoute: pim_enrich_product_index
             launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
             launchedLabel: pim_enrich.mass_edit.product.step.launched.label
-            confirmLabel: pim_enrich.entity.role.product_model.delete.confirm_products_and_product_models
+            confirmLabel: pim_enrich.entity.product_model.module.delete.confirm_for_products_and_product_models
         pim/fetcher-registry:
             fetchers:
                 datagrid-view:

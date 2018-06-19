@@ -50,7 +50,7 @@ define(
              * @param {Object} field
              */
             updateFieldElements: function (field) {
-                var message = __('pim_enrich.entity.product.module.attribute.locale_specific.unavailable');
+                var message = __('pim_enrich.entity.product.module.attribute.locale_specific_unavailable');
                 var element = '<span class="AknFieldContainer-unavailable">' + message + '</span>';
 
                 field.addElement(
