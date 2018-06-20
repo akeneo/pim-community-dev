@@ -86,6 +86,15 @@ pimee_product_asset_mass_upload_rest_import:
     defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:importAction, _format: json }
     methods: [GET]
 
+pimee_product_asset_mass_upload_into_asset_collection_rest_import:
+    path: /rest/mass-upload/import-and-add-to/{entityType}/{entityId}/{attributeCode}
+    defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:importInAssetCollectionAction, _format: json }
+    methods: [GET]
+    requirements:
+        entityType: '[a-zA-Z0-9_]+'
+        entityId: \d+
+        attributeCode: '[a-zA-Z0-9_]+'
+
 pimee_product_asset_mass_upload_rest_list:
     path: /rest/mass-upload
     defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:listAction, _format: json }

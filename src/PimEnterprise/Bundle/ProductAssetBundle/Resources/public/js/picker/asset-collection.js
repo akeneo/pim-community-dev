@@ -39,7 +39,8 @@ define(
             template: _.template(template),
             events: {
                 'click .add-asset': 'updateAssets',
-                'click .asset-thumbnail-item': 'updateAssetsFromPreview'
+                'click .asset-thumbnail-item': 'updateAssetsFromPreview',
+                'click .upload-assets': 'uploadAssets'
             },
             modalTemplate: _.template(templateModal),
 
@@ -116,6 +117,30 @@ define(
 
                     this.trigger('collection:change', assets);
                     this.render();
+                });
+            },
+
+            /**
+             * Open the modal to mass upload assets.
+             */
+            uploadAssets() {
+                FormBuilder.build('pimee-asset-mass-upload').then(form => {
+                    const routes = {
+                        cancelRedirectionRoute: '',
+                        importRoute: 'pimee_product_asset_mass_upload_into_asset_collection_rest_import'
+                    };
+
+                    const invertedUriParts = this.el.baseURI.split('/').reverse();
+                    const entity = {
+                        id: invertedUriParts[0],
+                        type: invertedUriParts[1],
+                        attributeCode: this.$el.closest('[data-attribute]').data('attribute')
+                    };
+
+                    form.setRoutes(routes)
+                        .setEntity(entity)
+                        .setElement(this.$('.asset-mass-uploader'))
+                        .render();
                 });
             },
 
@@ -252,7 +277,7 @@ define(
                     };
 
                     const toggleRemoveConfirmation = (show) => {
-                        const hiddenClass = 'AknButtonList--hide'
+                        const hiddenClass = 'AknButtonList--hide';
                         if (show) {
                             modal.$('.remove-confirmation').removeClass(hiddenClass);
                         } else {
@@ -274,25 +299,25 @@ define(
 
                     modal.$('.remove').click((e) => {
                         e.stopPropagation();
-                        toggleRemoveConfirmation(true)
+                        toggleRemoveConfirmation(true);
                     });
 
                     modal.$('.remove-confirmation .close').on('click', (e) => {
                         e.stopPropagation();
-                        toggleRemoveConfirmation(false)
-                    })
+                        toggleRemoveConfirmation(false);
+                    });
 
                     modal.$('.remove-confirmation .confirm').on('click', (e) => {
                         e.stopPropagation();
                         navigateToNeighbor(-1, true);
-                        toggleRemoveConfirmation(false)
-                    })
+                        toggleRemoveConfirmation(false);
+                    });
 
                     modal.on('cancel', function () {
                         const thumbnails = modal.$('.asset-thumbnail-item');
                         let assetCodes = [];
                         thumbnails.each(function (i, thumbnail) {
-                            assetCodes.push($(thumbnail).data('asset'))
+                            assetCodes.push($(thumbnail).data('asset'));
                         });
                         modal.close();
 
