@@ -180,20 +180,14 @@ class CountImpactedProductsIntegration extends TestCase
     {
         $pqbFilters = [
             [
-                'field' => 'parent',
+                'field'    => 'parent',
                 'operator' => 'IN',
-                'value' => ['venus'],
-                'context' => [
-                    'locale' => 'en_US',
-                    'scope'  => 'ecommerce',
-                    'limit'  => 25,
-                    'from'   => 0,
-                    'field'  => 'color',
-                ],
-                'type' => 'field',
+                'value'    => ['venus'],
+                'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce', 'limit' => 25, 'from' => 0],
+                'type'     => 'field',
             ],
         ];
-        $this->assertProductsCountInSelection($pqbFilters, 12);
+        $this->assertProductsCountInSelection($pqbFilters, 3);
     }
 
     /**
