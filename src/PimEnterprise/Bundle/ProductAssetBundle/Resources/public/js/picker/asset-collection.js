@@ -219,7 +219,6 @@ define(
                         confirmLabel: __('pimee_product_asset.form.product.asset.assetRemoveConfirmationLabel'),
                         canRemoveAsset: aclGranted && 'view' !== editMode
                     });
-                    console.log('editMode', editMode)
                     modal.open();
 
                     const navigateToItem = function (assetThumbnail) {
