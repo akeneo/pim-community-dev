@@ -1,0 +1,45 @@
+services:
+    pim_catalog.validator.constraint.family_requirements:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyRequirementsValidator'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.channel'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_requirements_validator }
+
+    pim_catalog.validator.constraint.family_attribute_as_label:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsLabelValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_attribute_as_label_validator }
+
+    pim_catalog.validator.constraint.family_attribute_as_image:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsImageValidator'
+        arguments:
+            - [ 'pim_catalog_image' ]
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_attribute_as_image_validator }
+
+    pim_catalog.validator.constraint.immutable_family_variant_axes:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_immutable_variant_axes_validator }
+
+    pim_catalog.validator.constraint.immutable_variant_axis_values:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValuesValidator'
+        arguments:
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_catalog.factory.value_collection'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_immutable_variant_axis_values_validator }
+
+    pim_catalog.validator.constraint.family_attribute_used_as_axis:
+        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxisValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_attribute_used_as_axis }
+
+
+
+
+

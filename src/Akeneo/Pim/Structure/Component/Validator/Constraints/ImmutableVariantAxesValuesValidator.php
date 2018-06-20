@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Validator\Constraints;
+namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValues;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;

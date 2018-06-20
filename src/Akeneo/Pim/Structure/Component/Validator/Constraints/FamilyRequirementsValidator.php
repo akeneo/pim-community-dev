@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Validator\Constraints;
+namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

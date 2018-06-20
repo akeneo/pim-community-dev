@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Validator\Constraints;
+namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabel;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsLabel;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;

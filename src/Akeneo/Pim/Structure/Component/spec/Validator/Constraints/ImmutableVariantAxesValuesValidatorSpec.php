@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Validator\Constraints;
+namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\UnitOfWork;
@@ -14,8 +14,8 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;
-use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValues;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValuesValidator;
 use Pim\Component\Catalog\Validator\Constraints\VariantProductParent;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintValidator;
