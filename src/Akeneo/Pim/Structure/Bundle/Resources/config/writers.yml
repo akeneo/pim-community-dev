@@ -1,0 +1,112 @@
+services:
+    pim_connector.writer.database.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Writer\Database\AttributeGroupWriter'
+        arguments:
+            - '@pim_catalog.saver.attribute_group'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_catalog.repository.attribute_group'
+
+    pim_connector.writer.database.attribute_option:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_catalog.saver.attribute_option'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.database.family:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_catalog.saver.family'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.database.family_variant:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_catalog.saver.family_variant'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.database.attribute:
+        class: '%pim_connector.writer.database.class%'
+        arguments:
+            - '@pim_catalog.saver.attribute'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_connector.writer.file.csv_attribute:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.attribute'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.csv_family:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.family'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.csv_family_variant:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.family_variant'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.family_variant.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.csv_attribute_group:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.attribute_group'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.xlsx_family:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.family'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.xlsx_family_variant:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.family_variant'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.family_variant.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.xlsx_attribute_option:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.attribute_option'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.xlsx_attribute_group:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.attribute_group'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.family_variant.column_sorter:
+        class: '%pim_connector.writer.file.default.column_sorter.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.family_variant.field_splitter'
+            - ['code','family','label','variant-axes','variant-attributes']
+
+    pim_connector.writer.file.family_variant.flat_item_buffer_flusher:
+        class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
+        arguments:
+             - '@pim_connector.writer.file.family_variant.column_sorter'
+
+    pim_connector.writer.file.csv_attribute_option:
+        class: '%pim_connector.writer.file.csv.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.attribute_option'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
+
+    pim_connector.writer.file.xlsx_attribute:
+        class: '%pim_connector.writer.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.attribute'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.flat_item_buffer_flusher'
