@@ -196,7 +196,7 @@ class GroupTypeController
      *
      * @throws NotFoundHttpException
      *
-     * @return \Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeInterface
+     * @return GroupTypeInterface
      */
     protected function getGroupTypeOr404($code)
     {
