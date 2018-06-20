@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
@@ -23,4 +24,8 @@ class GridHelperSpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf(GridHelper::class);
     }
+}
+
+interface ProductSpecInterface extends EntityWithFamilyVariantInterface, ProductInterface
+{
 }
