@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Value;
+namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AbstractValue;

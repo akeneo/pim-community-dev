@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Factory\Value\PriceCollectionValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\PriceCollection;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Prophecy\Argument;
 
 class PriceCollectionValueFactorySpec extends ObjectBehavior

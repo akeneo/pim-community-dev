@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Value\MediaValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValueInterface;
 
 class FileNormalizerSpec extends ObjectBehavior
 {

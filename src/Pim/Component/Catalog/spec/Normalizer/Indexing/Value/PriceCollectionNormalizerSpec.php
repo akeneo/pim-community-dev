@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\Value\PriceCollectionNormalizer;
-use Pim\Component\Catalog\Value\PriceCollectionValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PriceCollectionNormalizerSpec extends ObjectBehavior

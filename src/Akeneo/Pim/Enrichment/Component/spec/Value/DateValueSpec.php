@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Value;
+namespace spec\Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

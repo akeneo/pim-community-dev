@@ -1,29 +1,35 @@
 <?php
 
-namespace Pim\Component\Catalog\Value;
+namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AbstractValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
- * Product value for "pim_catalog_date" attribute types
+ * Product value for attribute types:
+ *   - pim_catalog_identifier
+ *   - pim_catalog_text
+ *   - pim_catalog_textarea
+ *   - pim_catalog_boolean
+ *   - pim_catalog_number
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateValue extends AbstractValue implements DateValueInterface
+class ScalarValue extends AbstractValue implements ValueInterface
 {
-    /** @var \DateTime */
+    /** @var string */
     protected $data;
 
     /**
      * @param AttributeInterface $attribute
      * @param string             $channel
      * @param string             $locale
-     * @param \DateTime|null     $data
+     * @param mixed              $data
      */
-    public function __construct(AttributeInterface $attribute, $channel, $locale, \DateTime $data = null)
+    public function __construct(AttributeInterface $attribute, $channel, $locale, $data)
     {
         $this->setAttribute($attribute);
         $this->setScope($channel);
@@ -33,7 +39,7 @@ class DateValue extends AbstractValue implements DateValueInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getData()
     {
@@ -45,6 +51,6 @@ class DateValue extends AbstractValue implements DateValueInterface
      */
     public function __toString()
     {
-        return null !== $this->data ? $this->data->format('Y-m-d') : '';
+        return (string) $this->data;
     }
 }

@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Factory\MetricFactory;
 use Pim\Component\Catalog\Factory\Value\MetricValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Prophecy\Argument;
 
 class MetricValueFactorySpec extends ObjectBehavior

@@ -40,7 +40,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Pim\Component\Catalog\Value\OptionValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;

@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\Value\MetricNormalizer;
-use Pim\Component\Catalog\Value\MetricValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MetricNormalizerSpec extends ObjectBehavior

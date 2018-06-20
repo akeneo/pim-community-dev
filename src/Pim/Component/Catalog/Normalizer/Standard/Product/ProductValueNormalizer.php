@@ -4,8 +4,8 @@ namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
 use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Pim\Component\Catalog\Value\OptionsValueInterface;
-use Pim\Component\Catalog\Value\PriceCollectionValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;

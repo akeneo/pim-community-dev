@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\File\FileFetcherInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Value\MediaValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValueInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 
 /**
