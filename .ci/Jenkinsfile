@@ -268,7 +268,7 @@ stage("Test") {
         clearTemplateNames()
         def uuid = UUID.randomUUID().toString()
         podTemplate(label: "cleanup-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "pgoogle/cloud-sdk:198.0.0", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
+            containerTemplate(name: "docker", image: "google/cloud-sdk:203.0.0", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
         ]) {
             node("cleanup-" + uuid) {
                 container("docker") {
