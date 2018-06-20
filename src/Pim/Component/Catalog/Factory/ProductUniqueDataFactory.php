@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
