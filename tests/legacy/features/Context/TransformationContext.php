@@ -4,7 +4,7 @@ namespace Context;
 
 use Pim\Behat\Context\PimContext;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 
 /**
  * Context for data transformations

@@ -42,7 +42,7 @@ Pim\Component\Catalog\Model\Completeness:
                     onDelete: CASCADE
                     nullable: false
         product:
-            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             inversedBy: completenesses
             joinColumns:
                 product_id:

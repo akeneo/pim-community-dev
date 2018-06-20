@@ -16,7 +16,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;

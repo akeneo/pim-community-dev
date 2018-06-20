@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\HttpFoundation\Response;

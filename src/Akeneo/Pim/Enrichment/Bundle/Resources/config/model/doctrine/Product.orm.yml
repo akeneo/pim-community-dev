@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\Product:
+Akeneo\Pim\Enrichment\Component\Product\Model\Product:
     type: entity
     table: pim_catalog_product
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -32,7 +32,7 @@ Pim\Component\Catalog\Model\Product:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
         parent:
-            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
             inversedBy: products
             joinColumns:
                 product_model_id:

@@ -6,7 +6,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Aims to inject selected locale into loaded product

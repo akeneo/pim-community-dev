@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Comparator\Filter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Comparator\ComparatorInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductAssociationFilterSpec extends ObjectBehavior

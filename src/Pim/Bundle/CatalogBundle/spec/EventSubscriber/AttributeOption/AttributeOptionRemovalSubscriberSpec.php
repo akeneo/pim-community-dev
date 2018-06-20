@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory;
 use Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption\AttributeOptionRemovalSubscriber;
 use Akeneo\Pim\Structure\Component\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Prophecy\Argument;

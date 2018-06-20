@@ -6,7 +6,7 @@ Pim\Component\Catalog\Model\Product:
         - api
     constraints:
         - Pim\Component\Catalog\Validator\Constraints\UniqueEntity:
-            entityClass: Pim\Component\Catalog\Model\ProductInterface
+            entityClass: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyFamily:
             groups:
               - api

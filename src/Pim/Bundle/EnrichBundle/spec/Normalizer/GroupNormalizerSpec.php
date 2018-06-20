@@ -10,7 +10,7 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Prophecy\Promise\ReturnPromise;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

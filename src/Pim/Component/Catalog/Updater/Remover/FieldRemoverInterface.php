@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog\Updater\Remover;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Remove a data from a product field

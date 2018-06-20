@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Filling in non required attributes should not have any impact on the completeness results.

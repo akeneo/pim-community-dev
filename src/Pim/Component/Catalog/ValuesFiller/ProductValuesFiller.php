@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\ValuesFiller;
 
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Values filler for Products.

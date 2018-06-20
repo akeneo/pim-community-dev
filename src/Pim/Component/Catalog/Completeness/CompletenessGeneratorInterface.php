@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Completeness;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Completeness generator interface.

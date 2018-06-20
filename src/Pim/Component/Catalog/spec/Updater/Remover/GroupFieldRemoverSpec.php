@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 class GroupFieldRemoverSpec extends ObjectBehavior

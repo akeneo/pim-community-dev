@@ -10,8 +10,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 abstract class AbstractExportTestCase extends TestCase
 {

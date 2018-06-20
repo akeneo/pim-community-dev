@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\tests\assert;
 
 use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Assert that the entity with values collection are correct.

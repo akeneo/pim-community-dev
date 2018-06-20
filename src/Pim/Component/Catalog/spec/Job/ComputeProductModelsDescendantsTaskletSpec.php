@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 
 class ComputeProductModelsDescendantsTaskletSpec extends ObjectBehavior

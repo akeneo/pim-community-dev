@@ -6,8 +6,8 @@ namespace Pim\Component\Catalog\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * This service checks if an attribute of an entity with family is editable.

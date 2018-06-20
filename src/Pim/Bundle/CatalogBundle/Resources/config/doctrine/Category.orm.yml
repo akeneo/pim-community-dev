@@ -74,6 +74,6 @@ Pim\Bundle\CatalogBundle\Entity\Category:
                 - treeParent
     manyToMany:
         products:
-            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             mappedBy: categories
             fetch: EXTRA_LAZY

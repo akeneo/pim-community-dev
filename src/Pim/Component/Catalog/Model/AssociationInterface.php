@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 

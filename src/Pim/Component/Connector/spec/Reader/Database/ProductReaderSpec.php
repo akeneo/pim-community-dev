@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;

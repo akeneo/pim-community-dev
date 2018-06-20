@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompleteness
 use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Checks that the completeness has been well calculated for price collection attribute type.

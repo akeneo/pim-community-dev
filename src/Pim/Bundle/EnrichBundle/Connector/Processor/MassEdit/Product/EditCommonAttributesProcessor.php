@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

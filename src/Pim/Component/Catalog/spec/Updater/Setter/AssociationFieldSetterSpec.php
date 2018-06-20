@@ -11,8 +11,8 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 class AssociationFieldSetterSpec extends ObjectBehavior
 {

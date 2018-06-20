@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Product;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

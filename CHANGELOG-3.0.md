@@ -10,6 +10,11 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Model\ProductModel` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel`
+- Move `Pim\Component\Catalog\Model\ProductModelInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface`
+- Move `Pim\Component\Catalog\Model\Product` to `Akeneo\Pim\Enrichment\Component\Product\Model\Product`
+- Move `Pim\Component\Catalog\Model\AbstractProduct` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct`
+- Move `Pim\Component\Catalog\Model\ProductInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyVariantRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyVariantRepository`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository`

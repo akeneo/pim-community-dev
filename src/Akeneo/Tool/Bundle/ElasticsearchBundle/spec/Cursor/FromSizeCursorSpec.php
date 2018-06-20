@@ -7,7 +7,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Cursor\FromSizeCursor;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class FromSizeCursorSpec extends ObjectBehavior
 {

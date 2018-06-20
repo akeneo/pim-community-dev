@@ -5,9 +5,9 @@ namespace spec\Pim\Component\Catalog\Association;
 use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
-use Pim\Component\Catalog\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Pim\Component\Catalog\Model\ProductAssociation;
-use Pim\Component\Catalog\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Pim\Component\Catalog\Model\ProductModelAssociation;
 
 /**
@@ -20,8 +20,8 @@ class AssociationClassResolverSpec extends ObjectBehavior
     public function let()
     {
         $this->beConstructedWith([
-            'Pim\Component\Catalog\Model\Product' => 'Pim\Component\Catalog\Model\ProductAssociation',
-            'Pim\Component\Catalog\Model\ProductModel' => 'Pim\Component\Catalog\Model\ProductModelAssociation',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\Product' => 'Pim\Component\Catalog\Model\ProductAssociation',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel' => 'Pim\Component\Catalog\Model\ProductModelAssociation',
         ]);
     }
 

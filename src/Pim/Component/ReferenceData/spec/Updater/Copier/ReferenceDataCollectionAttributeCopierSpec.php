@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;

@@ -4,7 +4,7 @@ namespace Pim\Bundle\AnalyticsBundle\Doctrine\Query;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Count the number of variant products

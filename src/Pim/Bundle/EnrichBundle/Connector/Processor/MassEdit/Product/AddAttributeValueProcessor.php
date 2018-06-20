@@ -9,7 +9,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\EntityWithFamilyVariant\CheckAttributeEditable;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

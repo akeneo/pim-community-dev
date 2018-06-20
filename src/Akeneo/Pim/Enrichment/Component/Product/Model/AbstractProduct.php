@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
+namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -10,6 +11,17 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategory
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\AttributeTypes;
+use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Abstract product

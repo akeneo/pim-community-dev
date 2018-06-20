@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\PdfGeneratorBundle\Renderer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class RendererRegistrySpec extends ObjectBehavior
 {

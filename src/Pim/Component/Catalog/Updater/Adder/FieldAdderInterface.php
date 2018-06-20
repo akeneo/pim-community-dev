@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog\Updater\Adder;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Adds a data into a product's field

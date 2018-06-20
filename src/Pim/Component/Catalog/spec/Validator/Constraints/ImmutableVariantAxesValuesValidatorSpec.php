@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;
 use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator;
 use Pim\Component\Catalog\Validator\Constraints\VariantProductParent;

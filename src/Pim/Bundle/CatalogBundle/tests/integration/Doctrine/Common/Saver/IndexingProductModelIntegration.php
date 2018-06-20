@@ -5,7 +5,7 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Test product models have been correctly indexed after being saved.

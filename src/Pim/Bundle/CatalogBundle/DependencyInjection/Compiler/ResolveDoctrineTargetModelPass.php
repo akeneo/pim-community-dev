@@ -26,8 +26,6 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'Pim\Component\Catalog\Model\GroupInterface'                     => 'pim_catalog.entity.group.class',
             'Pim\Component\Catalog\Model\GroupTypeInterface'                 => 'pim_catalog.entity.group_type.class',
             'Pim\Component\Catalog\Model\CompletenessInterface'              => 'pim_catalog.entity.completeness.class',
-            'Pim\Component\Catalog\Model\ProductInterface'                   => 'pim_catalog.entity.product.class',
-            'Pim\Component\Catalog\Model\ProductModelInterface'              => 'pim_catalog.entity.product_model.class',
             'Pim\Component\Catalog\Model\ProductUniqueDataInterface'         => 'pim_catalog.entity.product_unique_data.class',
             'Pim\Component\Catalog\Model\CategoryInterface'                  => 'pim_catalog.entity.category.class',
             'Pim\Component\Catalog\Model\CategoryTranslationInterface'       => 'pim_catalog.entity.category_translation.class',

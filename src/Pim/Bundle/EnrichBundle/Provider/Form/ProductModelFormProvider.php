@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Provider\Form;
 
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Form provider for product model

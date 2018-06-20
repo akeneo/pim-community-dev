@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Set the parent to a variant product

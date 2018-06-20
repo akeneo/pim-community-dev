@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\Completeness;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

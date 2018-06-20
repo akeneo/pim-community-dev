@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;

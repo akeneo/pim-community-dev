@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Prophecy\Argument;
 
 class CategoryUpdaterSpec extends ObjectBehavior

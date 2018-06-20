@@ -3,8 +3,8 @@
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 

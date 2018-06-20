@@ -18,7 +18,7 @@ Pim\Component\Catalog\Model\ProductUniqueData:
                 - raw_data
     manyToOne:
         product:
-            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             inversedBy: uniqueData
             joinColumns:
                 product_id:

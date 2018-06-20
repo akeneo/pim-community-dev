@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Connector\Writer\Database\ProductModelWriter;
 use PhpSpec\ObjectBehavior;
 

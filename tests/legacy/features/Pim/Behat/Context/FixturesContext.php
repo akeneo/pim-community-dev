@@ -16,7 +16,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Debug;
 use Doctrine\Common\Util\Inflector;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * A context for creating entities
@@ -47,7 +47,7 @@ class FixturesContext extends PimContext
         'UserGroup'        => 'Akeneo\UserManagement\Component\Model\Group',
         'Locale'           => Locale::class,
         'GroupType'        => 'PimCatalogBundle:GroupType',
-        'Product'          => 'Pim\Component\Catalog\Model\Product',
+        'Product'          => 'Akeneo\Pim\Enrichment\Component\Product\Model\Product',
         'ProductGroup'     => 'Pim\Bundle\CatalogBundle\Entity\Group',
     ];
 

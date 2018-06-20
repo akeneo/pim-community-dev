@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
