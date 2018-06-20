@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
 use PimEnterprise\Component\Workflow\Event\PublishedProductEvent;
 use PimEnterprise\Component\Workflow\Event\PublishedProductEvents;

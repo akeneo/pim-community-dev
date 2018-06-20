@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

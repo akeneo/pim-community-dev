@@ -15,7 +15,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\TableNameMapper;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface;

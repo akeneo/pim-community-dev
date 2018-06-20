@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Updater\GrantedProductModelUpdater;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;

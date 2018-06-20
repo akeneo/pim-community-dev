@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\TeamworkAssistant\Calculator;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\TeamworkAssistant\Repository\AttributePermissionRepositoryInterface;

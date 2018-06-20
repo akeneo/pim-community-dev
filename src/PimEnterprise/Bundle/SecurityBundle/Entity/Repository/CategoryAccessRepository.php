@@ -19,7 +19,7 @@ use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\User\UserInterface;
 

@@ -28,7 +28,7 @@ $rules = [
         // TODO: We should use id instead of reference
         'Akeneo\Channel\Component\Model\LocaleInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Pim\Component\Catalog\Model\ProductInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
         // TODO: Do we need these dependencies?

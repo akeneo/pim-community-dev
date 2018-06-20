@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\PublishedProduct\Ex
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class AbstractPublishedProductExportTestCase extends TestCase
 {

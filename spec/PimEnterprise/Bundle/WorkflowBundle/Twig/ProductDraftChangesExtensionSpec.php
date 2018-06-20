@@ -2,10 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model;
@@ -53,7 +52,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $attributePresenter,
         $valuePresenter,
         Model\ValueInterface $value,
-        Model\ProductInterface $product,
+        ProductInterface $product,
         EntityWithValuesDraftInterface $productDraft
     ) {
         $productDraft->getEntityWithValue()->willReturn($product);
@@ -76,7 +75,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $attributePresenter,
         $valuePresenter,
         Model\ValueInterface $value,
-        Model\ProductInterface $product,
+        ProductInterface $product,
         PresenterInterface $presenter,
         EntityWithValuesDraftInterface $productDraft
     ) {
@@ -105,7 +104,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $attributePresenter,
         $valuePresenter,
         Model\ValueInterface $value,
-        Model\ProductInterface $product,
+        ProductInterface $product,
         PresenterInterface $presenter,
         EntityWithValuesDraftInterface $productDraft
     ) {
@@ -133,7 +132,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $attributePresenter,
         $valuePresenter,
         Model\ValueInterface $value,
-        Model\ProductInterface $product,
+        ProductInterface $product,
         PresenterInterface $presenter,
         \Twig_Environment $twig,
         EntityWithValuesDraftInterface $productDraft

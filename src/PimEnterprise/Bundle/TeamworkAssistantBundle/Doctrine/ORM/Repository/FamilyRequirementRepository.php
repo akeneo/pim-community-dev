@@ -16,7 +16,7 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
 
 /**

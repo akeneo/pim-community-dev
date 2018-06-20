@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\Security\Normalizer\Authorization;
 
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Normalizer\Authorization\ProductModelNormalizer;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

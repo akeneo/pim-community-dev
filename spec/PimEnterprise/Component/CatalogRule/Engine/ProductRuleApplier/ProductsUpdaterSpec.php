@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;

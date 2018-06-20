@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\Workflow\Model;
 
 use Akeneo\Tool\Component\Versioning\Model\Version;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Published product interface

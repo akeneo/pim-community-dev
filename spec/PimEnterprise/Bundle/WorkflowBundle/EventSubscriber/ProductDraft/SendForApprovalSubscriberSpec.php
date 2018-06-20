@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;

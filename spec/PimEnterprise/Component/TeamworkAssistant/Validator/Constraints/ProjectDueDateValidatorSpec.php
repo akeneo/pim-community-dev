@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDate;
 use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDateValidator;

@@ -18,7 +18,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException;
