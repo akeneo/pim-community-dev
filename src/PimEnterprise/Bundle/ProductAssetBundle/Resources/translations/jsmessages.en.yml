@@ -3,6 +3,7 @@ pimee_product_asset:
         product:
             asset:
                 manage: Manage assets
+                upload: Upload
                 manage_asset:
                     title: Manage assets
                     cancel: Cancel

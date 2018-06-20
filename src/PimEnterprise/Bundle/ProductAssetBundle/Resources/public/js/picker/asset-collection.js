@@ -277,7 +277,7 @@ define(
                     };
 
                     const toggleRemoveConfirmation = (show) => {
-                        const hiddenClass = 'AknButtonList--hide'
+                        const hiddenClass = 'AknButtonList--hide';
                         if (show) {
                             modal.$('.remove-confirmation').removeClass(hiddenClass);
                         } else {
@@ -299,25 +299,25 @@ define(
 
                     modal.$('.remove').click((e) => {
                         e.stopPropagation();
-                        toggleRemoveConfirmation(true)
+                        toggleRemoveConfirmation(true);
                     });
 
                     modal.$('.remove-confirmation .close').on('click', (e) => {
                         e.stopPropagation();
-                        toggleRemoveConfirmation(false)
-                    })
+                        toggleRemoveConfirmation(false);
+                    });
 
                     modal.$('.remove-confirmation .confirm').on('click', (e) => {
                         e.stopPropagation();
                         navigateToNeighbor(-1, true);
-                        toggleRemoveConfirmation(false)
-                    })
+                        toggleRemoveConfirmation(false);
+                    });
 
                     modal.on('cancel', function () {
                         const thumbnails = modal.$('.asset-thumbnail-item');
                         let assetCodes = [];
                         thumbnails.each(function (i, thumbnail) {
-                            assetCodes.push($(thumbnail).data('asset'))
+                            assetCodes.push($(thumbnail).data('asset'));
                         });
                         modal.close();
 
