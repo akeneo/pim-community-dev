@@ -310,7 +310,7 @@ class ProductSpec extends ObjectBehavior
         AttributeInterface $attributeAsLabel,
         ValueCollectionInterface $values,
         ValueInterface $nameValue,
-        \Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface $identifier
+        ValueInterface $identifier
     ) {
         $identifier->getData()->willReturn('shovel');
         $identifier->getAttribute()->willReturn($attributeAsLabel);

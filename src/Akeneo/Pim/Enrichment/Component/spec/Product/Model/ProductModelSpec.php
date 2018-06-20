@@ -193,7 +193,7 @@ class ProductModelSpec extends ObjectBehavior
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
         ValueCollectionInterface $values,
-        \Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface $nameValue
+        ValueInterface $nameValue
     ) {
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
