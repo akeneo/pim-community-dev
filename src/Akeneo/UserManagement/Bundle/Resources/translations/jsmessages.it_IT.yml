@@ -5,3 +5,14 @@ pim_title:
   oro_config_configuration_system: Configurazione
   pim_user_security_login: Login
   pim_user_reset_request: Password Dimenticata
+pim_user_management:
+  entity:
+    user:
+      page_title:
+        index: "] -Inf, 1] {{ count }} utente|] 1, Inf [{{ count }} utenti"
+    role:
+      page_title:
+        index: "] -Inf, 1] {{ count }} ruolo|] 1, Inf [{{ count }} ruoli"
+    group:
+      page_title:
+        index: "] -Inf, 1] {{ count }} gruppo|] 1, Inf [{{ count }} gruppi"

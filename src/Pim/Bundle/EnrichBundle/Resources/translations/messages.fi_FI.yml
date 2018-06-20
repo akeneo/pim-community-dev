@@ -8,6 +8,8 @@ pim_common:
   created: Luotu
   updated: Päivitetty
   create: Luo
+  permissions: Käyttöoikeudet
+  properties: Ominaisuudet
 pim_enrich:
   create:
     attribute: luo attribuutti
@@ -347,12 +349,18 @@ pim_mass_edit:
       error: <strong>%label%</strong>n pikavienti epäonnistui
       warning: <strong>%label%</strong>n pikavienti päättyi, joitakin varoituksia
       success: <strong>%label%</strong>n pikavienti päättyi
+    mass_delete:
+      error: Massapoisto <strong>%label%</strong> epäonnistui
+      warning: Massapoisto <strong>%label%</strong> päättyi varoituksin
+      success: Massapoisto <strong>%label%</strong> päättyi
 job_execution.summary:
   mass_edited: Massamuokattu
   skip: Ohitettu
   skipped_products: Ohitetut tuotteet
   skipped_attributes: Ohitetut attribuutit
   skipped_families: Ohitetut perheet
+  deleted_products: Poistetut tuotteet
+  deleted_product_models: Poistetut tuotemallit
 pim_mass_edit_execution_show: Massamuokkaa suoritteita | Tiedot
 edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa attribuutteja
 update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
