@@ -89,7 +89,7 @@ $rules = [
         // TODO: We should use id instead of reference
         'Akeneo\Channel\Component\Model\LocaleInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Pim\Component\Catalog\Model\ValueInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
         // TODO: we should not repository from the other BC
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
