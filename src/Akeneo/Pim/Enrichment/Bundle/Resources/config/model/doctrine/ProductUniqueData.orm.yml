@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\ProductUniqueData:
+Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueData:
     type: entity
     table: pim_catalog_product_unique_data
     changeTrackingPolicy: DEFERRED_EXPLICIT

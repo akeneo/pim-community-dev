@@ -87,7 +87,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
                 - refresh
                 - detach
         uniqueData:
-            targetEntity: Pim\Component\Catalog\Model\ProductUniqueDataInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface
             orphanRemoval: true
             mappedBy: product
             cascade:
