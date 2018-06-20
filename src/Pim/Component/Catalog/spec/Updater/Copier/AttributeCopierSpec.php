@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

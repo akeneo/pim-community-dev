@@ -9,7 +9,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
-use Pim\Component\Catalog\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 
 class UniqueAxesCombinationSetSpec extends ObjectBehavior
 {

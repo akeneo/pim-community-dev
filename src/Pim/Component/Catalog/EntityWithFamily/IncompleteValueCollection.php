@@ -6,7 +6,7 @@ namespace Pim\Component\Catalog\EntityWithFamily;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * A collection of incomplete values depending on an entity with a family
@@ -39,7 +39,7 @@ class IncompleteValueCollection implements \Countable, \IteratorAggregate
         foreach ($values as $value) {
             if (!$value instanceof ValueInterface) {
                 throw new \InvalidArgumentException(
-                    'Expected an instance of "Pim\Component\Catalog\Model\ValueInterface".'
+                    'Expected an instance of "Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface".'
                 );
             }
 

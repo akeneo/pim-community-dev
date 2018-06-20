@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Factory\ValueCollectionFactory;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 

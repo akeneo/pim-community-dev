@@ -2,11 +2,11 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Value;
 
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
-use Pim\Component\Catalog\Value\MediaValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

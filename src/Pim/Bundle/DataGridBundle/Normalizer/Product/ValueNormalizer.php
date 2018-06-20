@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer\Product;
 
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

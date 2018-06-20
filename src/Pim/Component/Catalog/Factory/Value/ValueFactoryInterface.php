@@ -2,7 +2,7 @@
 namespace Pim\Component\Catalog\Factory\Value;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * Factory that creates product values.

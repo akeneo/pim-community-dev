@@ -152,7 +152,7 @@ The following values data, that represents decimal values are represented with s
 
 * metric (class *Pim\Component\Catalog\Model\MetricInterface*)
 * price (class *Pim\Component\Catalog\Model\ProductPriceInterface*)
-* number (class *Pim\Component\Catalog\Model\ValueInterface*)
+* number (class *Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface*)
 
 When the `decimal_allowed` attribute property is set to true, they are represented with integers in the standard format.
 

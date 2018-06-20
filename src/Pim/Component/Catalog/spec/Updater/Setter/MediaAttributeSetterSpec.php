@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
 
 class MediaAttributeSetterSpec extends ObjectBehavior

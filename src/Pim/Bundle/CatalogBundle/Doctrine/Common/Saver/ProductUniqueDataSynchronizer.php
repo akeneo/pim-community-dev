@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Factory\ProductUniqueDataFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * Synchronize the $uniqueData persistent collection of the product with the unique values of the product.

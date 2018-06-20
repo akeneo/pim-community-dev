@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Factory\Value\OptionValueFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface;
 use Prophecy\Argument;
 

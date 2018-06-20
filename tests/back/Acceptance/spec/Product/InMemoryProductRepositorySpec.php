@@ -11,7 +11,7 @@ use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Component\Catalog\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Prophecy\Argument;
 
 class InMemoryProductRepositorySpec extends ObjectBehavior

@@ -7,7 +7,7 @@ use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class RequiredValueCollectionSpec extends ObjectBehavior
 {

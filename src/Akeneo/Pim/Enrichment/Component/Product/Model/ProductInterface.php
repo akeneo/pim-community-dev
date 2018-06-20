@@ -18,7 +18,6 @@ use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductUniqueDataInterface;
 use Pim\Component\Catalog\Model\ScopableInterface;
 use Pim\Component\Catalog\Model\TimestampableInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Product interface

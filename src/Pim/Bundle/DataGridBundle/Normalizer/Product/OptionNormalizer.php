@@ -3,7 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Normalizer\Product;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Value\OptionValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

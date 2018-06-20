@@ -6,7 +6,7 @@ namespace Pim\Component\Catalog\EntityWithFamily;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AbstractValue;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * A required value is the translation of the attribute requirements

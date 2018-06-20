@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 

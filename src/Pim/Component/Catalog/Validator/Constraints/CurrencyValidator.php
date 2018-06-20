@@ -6,7 +6,7 @@ use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
