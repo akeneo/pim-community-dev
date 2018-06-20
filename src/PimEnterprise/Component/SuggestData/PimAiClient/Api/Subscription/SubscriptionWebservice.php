@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\SuggestData\PimAiClient\Api\Subscription;
 
 use GuzzleHttp\ClientInterface;
-use PimEnterprise\Component\SuggestData\PimAiClient\UriGenerator;
 use PimEnterprise\Component\SuggestData\PimAiClient\Api\ApiResponse;
+use PimEnterprise\Component\SuggestData\PimAiClient\UriGenerator;
 use PimEnterprise\Component\SuggestData\Product\ProductCode;
 use PimEnterprise\Component\SuggestData\Product\ProductCodeCollection;
 

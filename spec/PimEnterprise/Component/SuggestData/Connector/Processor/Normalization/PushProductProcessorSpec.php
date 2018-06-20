@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\SuggestData\Connector\Processor\Normalization;
 
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\SuggestData\Connector\Processor\Normalization\PushProductProcessor;

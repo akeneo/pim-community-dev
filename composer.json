@@ -40,8 +40,7 @@
     },
     "require": {
         "akeneo/pim-community-dev": "dev-suggest-data",
-        "phpspec/php-diff": "1.0.2",
-        "akeneo/pim-ai-api-php-client": "dev-master"
+        "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
         "akeneo/phpspec-skip-example-extension": "2.0.*",
@@ -74,11 +73,6 @@
         "pim-community-dev": {
             "type": "vcs",
             "url": "https://github.com/akeneo/pim-community-dev.git",
-            "branch": "master"
-        },
-        "pim-ai-client": {
-            "type": "vcs",
-            "url": "https://github.com/fitn/pimai-client-poc.git",
             "branch": "master"
         }
     },

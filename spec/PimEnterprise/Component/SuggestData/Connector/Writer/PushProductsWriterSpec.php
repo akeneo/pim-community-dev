@@ -2,12 +2,18 @@
 
 namespace spec\PimEnterprise\Component\SuggestData\Connector\Writer;
 
-use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory;
 use PimEnterprise\Component\SuggestData\Connector\Writer\PushProductsWriter;
 
 class PushProductsWriterSpec extends ObjectBehavior
 {
+    public function let(DataProviderFactory $dataProviderFactory)
+    {
+        $this->beConstructedWith($dataProviderFactory, 100);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(PushProductsWriter::class);

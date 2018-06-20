@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\SuggestData\Connector\Writer;
 
-use Akeneo\Component\Batch\Item\FlushableInterface;
-use Akeneo\Component\Batch\Item\ItemWriterInterface;
+use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\DataProviderAdapterInterface;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory;
 use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataCollection;

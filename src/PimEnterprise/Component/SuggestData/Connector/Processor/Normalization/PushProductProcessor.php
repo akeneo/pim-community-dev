@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\SuggestData\Connector\Processor\Normalization;
 
-use Akeneo\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -18,7 +18,6 @@ class PushProductProcessor implements ItemProcessorInterface
      */
     public function process($item): ProductInterface
     {
-
         return $item;
     }
 }
