@@ -9,6 +9,7 @@ use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentif
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -29,7 +30,7 @@ class IndexActionTest extends TestCase
         $this->loadFixtures();
         $this->client = $this
             ->getFromTestContainer('akeneo_ee_integration_tests.helper.authenticated_client_factory')
-            ->logIn('admin');
+            ->logIn('julia');
         $this->webClientHelper = $this->getFromTestContainer('akeneo_ee_integration_tests.helper.web_client_helper');
     }
 
@@ -108,5 +109,9 @@ class IndexActionTest extends TestCase
                 ]
             )
         );
+
+        $user = new User();
+        $user->setUsername('julia');
+        $this->getFromTestContainer('pim_user.repository.user')->save($user);
     }
 }
