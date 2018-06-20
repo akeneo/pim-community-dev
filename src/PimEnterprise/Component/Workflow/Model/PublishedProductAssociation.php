@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\Workflow\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\AbstractAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation;
 
 /**
  * Association entity

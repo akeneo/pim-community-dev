@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\Workflow\Model;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 
 /**
  * Published product association interface
