@@ -81,7 +81,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                           {
                             action: {
                               type: 'redirect',
-                              route: 'akeneo_enriched_entities_enriched_entities_edit'
+                              route: 'akeneo_enriched_entities_enriched_entity_edit'
                             },
                             label: __('pim_enriched_entity.enriched_entity.title')
                           }

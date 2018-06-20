@@ -11,7 +11,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
 
   it('It search for enriched entities', async () => {
     page.on('request', interceptedRequest => {
-      if ('http://pim.com//rest/enriched_entity' === interceptedRequest.url() &&
+      if ('http://pim.com/rest/enriched_entity' === interceptedRequest.url() &&
         'GET' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
@@ -38,7 +38,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
 
   it('It fetches one enriched entity', async () => {
     page.on('request', interceptedRequest => {
-      if ('http://pim.com//rest/enriched_entity/sofa' === interceptedRequest.url() &&
+      if ('http://pim.com/rest/enriched_entity/sofa' === interceptedRequest.url() &&
         'GET' === interceptedRequest.method()
       ) {
         const enrichedEntity = (new EnrichedEntityBuilder())

@@ -12,7 +12,12 @@ export const validateKeys = (object: any, keys: string[]) => {
   const invalidKeys = keys.filter((key: string) => undefined === object[key]);
 
   if (0 !== invalidKeys.length) {
-    throw new InvalidRawObjectError('The provided raw enriched entity seems to be malformed.', keys, invalidKeys, object);
+    throw new InvalidRawObjectError(
+      'The provided raw enriched entity seems to be malformed.',
+      keys,
+      invalidKeys,
+      object
+    );
   }
 };
 

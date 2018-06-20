@@ -25,20 +25,12 @@ interface DispatchProps {
 
 const records = ({context, grid, events}: StateProps & DispatchProps) => {
   return(
-    <div className="tab-container tab-content">
-      <div className="tabbable object-attributes">
-        <div className="tab-content">
-          <div className="tab-pane active object-values">
-            <Table
-              onRedirectToRecord={events.onRedirectToRecord}
-              locale={context.locale}
-              records={grid.records}
-              isLoading={grid.isLoading}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+    <Table
+      onRedirectToRecord={events.onRedirectToRecord}
+      locale={context.locale}
+      records={grid.records}
+      isLoading={grid.isLoading}
+    />
   );
 }
 

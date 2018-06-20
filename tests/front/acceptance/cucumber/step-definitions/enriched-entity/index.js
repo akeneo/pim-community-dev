@@ -35,14 +35,14 @@ module.exports = async function (cucumber) {
 
     enrichedEntityResponse.forEach(enrichedEntity => {
       this.page.on('request', request => {
-        if (`http://pim.com//rest/enriched_entity/${enrichedEntity.identifier}` === request.url()) {
+        if (`http://pim.com/rest/enriched_entity/${enrichedEntity.identifier}` === request.url()) {
           answerJson(request, enrichedEntity);
         }
       });
     });
 
     this.page.on('request', request => {
-      if ('http://pim.com//rest/enriched_entity' === request.url()) {
+      if ('http://pim.com/rest/enriched_entity' === request.url()) {
         answerJson(request, { items: enrichedEntityResponse, total: 1000 });
       }
     });

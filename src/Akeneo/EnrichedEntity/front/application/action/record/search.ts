@@ -11,16 +11,21 @@ const stateToQuery = async (state: State): Promise<Query> => {
     locale: undefined === state.user.uiLocale ? '' : state.user.uiLocale,
     limit: state.grid.query.limit,
     page: state.grid.query.page,
-    filters: [],
+    filters: [
+      {
+        field: 'enriched_entity',
+        operator: '=',
+        value: null !== state.enrichedEntity ? state.enrichedEntity.getIdentifier().stringValue() : '',
+        context: {},
+      },
+    ],
   };
 };
 
-const fetchResults = (fetcher: RecordFetcher) => async (
-  query: Query
-): Promise<{enrichedEntities: Record[]; total: number}> => {
+const fetchResults = (fetcher: RecordFetcher) => async (query: Query): Promise<{items: Record[]; total: number}> => {
   const {items, total} = await fetcher.search(query);
 
-  return {enrichedEntities: items, total};
+  return {items, total};
 };
 
 const updateResultsWithFetcher = (fetcher: RecordFetcher) =>
@@ -42,10 +47,10 @@ const updateResultsWithFetcher = (fetcher: RecordFetcher) =>
       }
 
       const query = await stateToQuery(state);
-      const {enrichedEntities, total} = await fetchResults(fetcher)(query);
+      const {items, total} = await fetchResults(fetcher)(query);
 
       if (requestCount === currentRequestCount) {
-        dispatch(dataReceived<Record>(enrichedEntities, total, append));
+        dispatch(dataReceived<Record>(items, total, append));
         dispatch(stopLoading());
       }
     };

@@ -16,10 +16,10 @@ const stateToQuery = async (state: State): Promise<Query> => {
 
 const fetchResults = (fetcher: Fetcher<EnrichedEntity>) => async (
   query: Query
-): Promise<{enrichedEntities: EnrichedEntity[]; total: number}> => {
+): Promise<{items: EnrichedEntity[]; total: number}> => {
   const {items, total} = await fetcher.search(query);
 
-  return {enrichedEntities: items, total};
+  return {items: items, total};
 };
 
 const updateResultsWithFetcher = (fetcher: Fetcher<EnrichedEntity>) =>
@@ -41,10 +41,10 @@ const updateResultsWithFetcher = (fetcher: Fetcher<EnrichedEntity>) =>
       }
 
       const query = await stateToQuery(state);
-      const {enrichedEntities, total} = await fetchResults(fetcher)(query);
+      const {items, total} = await fetchResults(fetcher)(query);
 
       if (requestCount === currentRequestCount) {
-        dispatch(dataReceived<EnrichedEntity>(enrichedEntities, total, append));
+        dispatch(dataReceived<EnrichedEntity>(items, total, append));
         dispatch(stopLoading());
       }
     };

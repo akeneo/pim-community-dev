@@ -18,7 +18,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
       }).build();
 
     page.on('request', interceptedRequest => {
-      if ('http://pim.com//rest/enriched_entity/sofa' === interceptedRequest.url() &&
+      if ('http://pim.com/rest/enriched_entity/sofa' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({

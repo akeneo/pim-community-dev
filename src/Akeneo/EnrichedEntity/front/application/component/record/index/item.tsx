@@ -18,20 +18,17 @@ export default ({
 }) => {
   const path =
     '' !== record.getIdentifier().stringValue()
-      ? `#${router.generate('akeneo_enriched_entities_records_edit', {
+      ? `#${router.generate('akeneo_enriched_entities_record_edit', {
           enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
           identifier: record.getIdentifier().stringValue()
         })}`
       : '';
 
   return (
-    <a
-      href={path}
-      title={record.getLabel(locale)}
-      className={`AknGrid-bodyRow AknGrid-bodyRow--thumbnail AknGrid-bodyRow--withoutTopBorder ${
+    <tr
+      className={`AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder ${
         isLoading ? "AknLoadingPlaceHolder" : ""
       }`}
-      data-identifier={record.getIdentifier().stringValue()}
       onClick={event => {
         event.preventDefault();
 
@@ -40,20 +37,44 @@ export default ({
         return false;
       }}
     >
-      <span
-        className="AknGrid-fullImage"
-        style={{
-          backgroundImage: `url("${getImageShowUrl(null, "thumbnail")}")`
-        }}
-      />
-      <span className="AknGrid-title">{record.getLabel(locale)}</span>
-      <span className="AknGrid-subTitle">
-        {record.getIdentifier().stringValue()}
-      </span>
-      <span className="AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox" />
-      <span className="AknGrid-bodyCell AknGrid-bodyCell--actions">
+      <td className="AknGrid-bodyCell">
+        <img className="AknGrid-image" src={getImageShowUrl(null, "thumbnail_small")} title="" />
+      </td>
+      <td className="AknGrid-bodyCell">
+        <a
+          href={path}
+          title={record.getLabel(locale)}
+          data-identifier={record.getIdentifier().stringValue()}
+          onClick={event => {
+            event.preventDefault();
+
+            onRedirectToRecord(record);
+
+            return false;
+          }}
+        >
+          {record.getLabel(locale)}
+        </a>
+      </td>
+      <td className="AknGrid-bodyCell">
+        <a
+          href={path}
+          title={record.getLabel(locale)}
+          data-identifier={record.getIdentifier().stringValue()}
+          onClick={event => {
+            event.preventDefault();
+
+            onRedirectToRecord(record);
+
+            return false;
+          }}
+        >
+          {record.getIdentifier().stringValue()}
+        </a>
+      </td>
+      <td className="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">
         <div className="AknButtonList AknButtonList--right" />
-      </span>
-    </a>
+      </td>
+    </tr>
   );
 };

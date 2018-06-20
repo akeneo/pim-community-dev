@@ -14,7 +14,7 @@ export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
 
   async save(enrichedEntity: EnrichedEntity): Promise<EnrichedEntity> {
     const backendEnrichedEntity = await postJSON(
-      routing.generate('akeneo_enriched_entities_enriched_entities_edit_rest', {
+      routing.generate('akeneo_enriched_entities_enriched_entity_edit_rest', {
         identifier: enrichedEntity.getIdentifier().stringValue(),
       }),
       enrichedEntity.normalize()

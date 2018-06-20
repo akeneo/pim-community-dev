@@ -11,7 +11,10 @@ const fetchResults = <Object>(fetcher: Fetcher<Object>) => async (
   return {enrichedEntities: items, total};
 };
 
-export const updateResultsWithFetcher = <Object>(fetcher: Fetcher<Object>, stateToQuery: (state: any) => Promise<Query>) =>
+export const updateResultsWithFetcher = <Object>(
+  fetcher: Fetcher<Object>,
+  stateToQuery: (state: any) => Promise<Query>
+) =>
   ((requestCount: number = 0) => {
     return (append: boolean = false): any => async (dispatch: any, getState: any): Promise<void> => {
       requestCount++;

@@ -18,7 +18,7 @@ export default ({
 }) => {
   const path =
     "" !== enrichedEntity.getIdentifier().stringValue()
-      ? `#${router.generate("akeneo_enriched_entities_enriched_entities_edit", {
+      ? `#${router.generate("akeneo_enriched_entities_enriched_entity_edit", {
           identifier: enrichedEntity.getIdentifier().stringValue()
         })}`
       : '';
