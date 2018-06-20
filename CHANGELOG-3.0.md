@@ -10,6 +10,10 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Model\CompletenessInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface`
+- Move `Pim\Component\Catalog\Model\AbstractCompleteness` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractCompleteness`
+- Move `Pim\Component\Catalog\Model\Completeness` to `Akeneo\Pim\Enrichment\Component\Product\Model\Completeness`
+- Move `Pim\Component\Catalog\Model\ValueInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface`
 - Move `Pim\Component\Catalog\Model\ProductModel` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel`
 - Move `Pim\Component\Catalog\Model\ProductModelInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface`
 - Move `Pim\Component\Catalog\Model\Product` to `Akeneo\Pim\Enrichment\Component\Product\Model\Product`

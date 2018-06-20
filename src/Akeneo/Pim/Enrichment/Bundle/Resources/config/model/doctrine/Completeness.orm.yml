@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\Completeness:
+Akeneo\Pim\Enrichment\Component\Product\Model\Completeness:
     type: entity
     table: pim_catalog_completeness
     changeTrackingPolicy: DEFERRED_EXPLICIT
