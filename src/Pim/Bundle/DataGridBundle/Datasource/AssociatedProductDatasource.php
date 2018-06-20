@@ -254,7 +254,7 @@ class AssociatedProductDatasource extends ProductDatasource
      * @param ProductInterface           $sourceProduct
      * @param mixed                      $associationTypeId
      *
-     * @return null|\Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface
+     * @return null|AssociationInterface
      */
     private function getAssociation(ProductInterface $sourceProduct, $associationTypeId): ?AssociationInterface
     {
