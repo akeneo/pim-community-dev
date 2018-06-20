@@ -2,7 +2,7 @@
 
 namespace Pim\Component\ReferenceData\Value;
 
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**

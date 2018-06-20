@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Filter;
 
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * Filter the values according to channel codes provided in options.

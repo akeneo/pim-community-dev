@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Value;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * Interface for options product value

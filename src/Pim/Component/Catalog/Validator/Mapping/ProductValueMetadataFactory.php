@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Validator\Mapping;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;

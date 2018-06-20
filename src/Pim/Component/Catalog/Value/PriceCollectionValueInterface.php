@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Value;
 
 use Pim\Component\Catalog\Model\PriceCollectionInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * Interface for price collection product value

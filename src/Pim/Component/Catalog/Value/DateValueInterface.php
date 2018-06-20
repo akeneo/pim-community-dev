@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Value;
 
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * Interface for date product value

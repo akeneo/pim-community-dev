@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * Product unique data repository. Please see {@see Pim\Component\Catalog\Model\ProductUniqueDataInterface}

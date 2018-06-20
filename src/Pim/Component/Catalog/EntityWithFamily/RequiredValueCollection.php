@@ -6,7 +6,7 @@ namespace Pim\Component\Catalog\EntityWithFamily;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * A collection of required values depending on the attribute requirements of a family.
@@ -36,7 +36,7 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
         foreach ($values as $value) {
             if (!$value instanceof ValueInterface) {
                 throw new \InvalidArgumentException(
-                    'Expected an instance of "Pim\Component\Catalog\Model\ValueInterface".'
+                    'Expected an instance of "Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface".'
                 );
             }
 

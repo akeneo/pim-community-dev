@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Value;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * Interface for media product value

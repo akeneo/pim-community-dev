@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Validator\Mapping;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\ConstraintGuesserInterface;
 use Pim\Component\Catalog\Validator\Mapping\ClassMetadataFactory;
 use Prophecy\Argument;
