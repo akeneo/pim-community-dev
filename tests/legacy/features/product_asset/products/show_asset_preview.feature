@@ -38,5 +38,6 @@ Feature: Show asset collection preview
   Scenario: Successfully delete item in the asset collection preview
     Given I click on the "chicagoskyline" asset thumbnail
     And I press the "Remove" button
+    And I press the "Yes" button
     And I close the asset collection preview
     Then I should not see the text "This is chicago!"
