@@ -20,6 +20,7 @@ define(
             config: {
                 filterModuleName: 'oro/datafilter/{{type}}-filter',
                 filterTypes: {
+                    identifier: 'identifier',
                     string: 'choice',
                     choice: 'select',
                     selectrow: 'select-row',
