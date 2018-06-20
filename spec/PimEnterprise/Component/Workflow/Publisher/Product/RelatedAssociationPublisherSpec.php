@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\Workflow\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;
