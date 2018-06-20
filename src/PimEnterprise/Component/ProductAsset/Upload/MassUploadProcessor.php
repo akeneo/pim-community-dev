@@ -180,13 +180,11 @@ class MassUploadProcessor
 
         $isLocalized = null !== $parsedFilename->getLocaleCode();
 
-        $asset = $this->assetRepository->findOneByIdentifier($parsedFilename->getAssetCode());
+        $assetCode = $this->computeAssetCode($parsedFilename->getAssetCode());
 
-        if (null === $asset) {
-            $asset = $this->assetFactory->create();
-            $asset->setCode($parsedFilename->getAssetCode());
-            $this->assetFactory->createReferences($asset, $isLocalized);
-        }
+        $asset = $this->assetFactory->create();
+        $asset->setCode($assetCode);
+        $this->assetFactory->createReferences($asset, $isLocalized);
 
         $file = $this->fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);
 
@@ -203,6 +201,35 @@ class MassUploadProcessor
         $this->filesUpdater->updateAssetFiles($asset);
 
         return $asset;
+    }
+
+    /**
+     * @param string $assetCode
+     * @return string
+     */
+    private function computeAssetCode(string $assetCode): string
+    {
+        $asset = $this->assetRepository->findOneByIdentifier($assetCode);
+
+        if ($asset instanceof AssetInterface) {
+            $codes = $this->assetRepository->findSimilarCodes($assetCode);
+
+            //Necessary because findSimilarCodes can return integers, and we want to perform a strict comparison
+            array_walk($codes, function (&$item) {
+                $item = (string) $item;
+            });
+
+            if (!empty($codes)) {
+                $nextId = 1;
+                while (in_array($assetCode . '_' . $nextId, $codes)) {
+                    $nextId++;
+                }
+                
+                $assetCode = sprintf('%s_%d', $assetCode, $nextId);
+            }
+        }
+        
+        return $assetCode;
     }
 
     /**

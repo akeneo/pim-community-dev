@@ -10,6 +10,10 @@
 - AOB-139: Change constructor of `PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`.
 - AOB-139: Rename method `PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepositoryInterface::findProductIds` to `findProductIdentifiers`.
 
+## Improve Julia's experience
+
+- PIM-7446: As Julia, if I mass upload an asset which has the same name than another asset in the PIM, I would like it to be well created.
+
 # 2.3.0-ALPHA2 (2018-06-07)
 
 ## Improve Julia's experience
