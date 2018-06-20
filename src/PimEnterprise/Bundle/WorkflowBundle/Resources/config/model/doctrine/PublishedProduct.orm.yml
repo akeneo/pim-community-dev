@@ -32,7 +32,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
         parent:
-            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
             inversedBy: products
             joinColumns:
                 product_model_id:

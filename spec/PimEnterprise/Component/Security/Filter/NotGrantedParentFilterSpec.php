@@ -6,7 +6,7 @@ namespace spec\PimEnterprise\Component\Security\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
 use PimEnterprise\Component\Security\Filter\NotGrantedParentFilter;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
