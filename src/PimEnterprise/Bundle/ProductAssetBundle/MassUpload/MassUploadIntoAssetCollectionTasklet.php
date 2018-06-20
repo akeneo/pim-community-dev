@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,36 +19,44 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadProcessor;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\EntityToAddAssetsInto;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 
 /**
- * Launches the asset upload processor to create assets from uploaded files.
+ * Launches the asset upload processor to create assets from uploaded files
+ * and add them to a product or a product model.
  *
- * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class MassUploadTasklet implements TaskletInterface
+class MassUploadIntoAssetCollectionTasklet implements TaskletInterface
 {
-    public const TASKLET_NAME = 'asset_mass_upload';
+    public const TASKLET_NAME = 'assets_mass_upload_into_asset_collection';
 
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var MassUploadProcessor */
-    protected $processor;
+    /** @var MassUploadIntoAssetCollectionProcessor */
+    protected $massUploadToProductProcessor;
+
+    /** @var MassUploadIntoAssetCollectionProcessor */
+    protected $massUploadToProductModelProcessor;
 
     /** @var string */
     protected $tmpStorageDir;
 
     /**
-     * @param MassUploadProcessor $processor
-     * @param string              $tmpStorageDir
+     * @param MassUploadIntoAssetCollectionProcessor $massUploadToProductProcessor
+     * @param MassUploadIntoAssetCollectionProcessor $massUploadToProductModelProcessor
+     * @param string                                 $tmpStorageDir
      */
     public function __construct(
-        MassUploadProcessor $processor,
+        MassUploadIntoAssetCollectionProcessor $massUploadToProductProcessor,
+        MassUploadIntoAssetCollectionProcessor $massUploadToProductModelProcessor,
         string $tmpStorageDir
     ) {
-        $this->processor = $processor;
+        $this->massUploadToProductProcessor = $massUploadToProductProcessor;
+        $this->massUploadToProductModelProcessor = $massUploadToProductModelProcessor;
         $this->tmpStorageDir = $tmpStorageDir;
     }
 
@@ -70,9 +78,20 @@ class MassUploadTasklet implements TaskletInterface
         $username = $jobExecution->getUser();
         $uploadContext = new UploadContext($this->tmpStorageDir, $username);
 
-        $processedItems = $this->processor->applyMassUpload($uploadContext);
+        $jobParameters = $jobExecution->getJobParameters();
+        $entityType = $jobParameters->get('entity_type');
+        $addAssetsTo = new EntityToAddAssetsInto(
+            (int)$jobParameters->get('entity_id'),
+            $jobParameters->get('attribute_code')
+        );
 
-        $this->incrementSummaryInfo($processedItems);
+        if ('product' === $entityType) {
+            $processedItems = $this->massUploadToProductProcessor->applyMassUpload($uploadContext, $addAssetsTo);
+            $this->incrementSummaryInfo($processedItems);
+        } elseif ('product-model' === $entityType) {
+            $processedItems = $this->massUploadToProductModelProcessor->applyMassUpload($uploadContext, $addAssetsTo);
+            $this->incrementSummaryInfo($processedItems);
+        }
     }
 
     /**
@@ -83,7 +102,7 @@ class MassUploadTasklet implements TaskletInterface
         foreach ($processedItems as $item) {
             $file = $item->getItem();
 
-            if (!$file instanceof \SplFileInfo) {
+            if (!$file instanceof \SplFileInfo && !$file instanceof EntityToAddAssetsInto) {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'Expects a "\SplFileInfo", "%s" provided.',

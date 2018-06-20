@@ -3,6 +3,7 @@ pimee_product_asset:
         product:
             asset:
                 manage: Manage assets
+                upload: Upload
                 manage_asset:
                     title: Manage assets
                     cancel: Cancel
@@ -40,6 +41,8 @@ pimee_product_asset:
         success:
             new: A new asset will be created
             imported: Files imported for asset processing
+            need_refresh: <b>Asset import has been launched</b><br>
+                          To see imported assets in the product form, please refresh the product page as soon as you receive the import notification.
             canceled: Upload successfully canceled
             deleted: Uploaded file successfully deleted
         error:
@@ -91,6 +94,9 @@ batch_jobs:
     apply_assets_mass_upload:
         label: Assets mass upload
         perform.label: Mass upload
+    apply_assets_mass_upload_into_asset_collection:
+        label: Assets mass upload and add to product
+        perform.label: Mass upload assets and add to product
     yml_asset_channel_configuration_import:
         label: Asset channel configuration import in Yaml
         validation.label: File validation
