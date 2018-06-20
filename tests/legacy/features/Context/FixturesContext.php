@@ -29,7 +29,7 @@ use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
@@ -2206,7 +2206,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $code
      * @param string $label
      *
-     * @return \Pim\Component\Catalog\Model\GroupTypeInterface
+     * @return GroupTypeInterface
      */
     protected function createGroupType($code, $label)
     {

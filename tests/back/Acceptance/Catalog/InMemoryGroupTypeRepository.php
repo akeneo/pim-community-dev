@@ -7,8 +7,8 @@ namespace Akeneo\Test\Acceptance\Catalog;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupType;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 
 /**

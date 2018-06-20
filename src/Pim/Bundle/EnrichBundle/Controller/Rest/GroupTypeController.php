@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Component\Catalog\Factory\GroupTypeFactory;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -196,7 +196,7 @@ class GroupTypeController
      *
      * @throws NotFoundHttpException
      *
-     * @return GroupTypeInterface
+     * @return \Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeInterface
      */
     protected function getGroupTypeOr404($code)
     {

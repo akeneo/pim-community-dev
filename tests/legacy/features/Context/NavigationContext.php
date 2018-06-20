@@ -9,7 +9,7 @@ use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\NavigationContext as BaseNavigationContext;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 

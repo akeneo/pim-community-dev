@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

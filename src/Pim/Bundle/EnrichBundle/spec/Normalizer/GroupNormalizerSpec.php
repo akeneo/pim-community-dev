@@ -9,7 +9,7 @@ use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderIn
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Prophecy\Promise\ReturnPromise;

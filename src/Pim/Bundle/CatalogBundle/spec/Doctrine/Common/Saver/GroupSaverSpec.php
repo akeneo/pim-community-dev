@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupType;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
