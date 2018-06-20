@@ -18,7 +18,7 @@ export const hydrator = (
 ) => (backendRecord: any): EnrichedEntity => {
   const expectedKeys = ['identifier', 'enriched_entity_identifier', 'labels'];
 
-  validateKeys(backendRecord, expectedKeys);
+  validateKeys(backendRecord, expectedKeys, 'The provided raw record seems to be malformed.');
 
   const identifier = createIdentifier(backendRecord.identifier);
   const enrichedEntityIdentifier = createEnrichedEntityIdentifier(backendRecord.enriched_entity_identifier);

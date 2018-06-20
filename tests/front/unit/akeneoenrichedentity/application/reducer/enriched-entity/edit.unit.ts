@@ -54,4 +54,21 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       labelCollection,
     });
   });
+
+  test('I can change values of an enriched entity', () => {
+    const state = {};
+    const identifier: Identifier = createIdentifier('designer_updated');
+    const labelCollection: LabelCollection = createLabelCollection({['en_US']: 'Designer Updated'});
+    const enrichedEntity: EnrichedEntity = createEnrichedEntity(identifier, labelCollection);
+
+    const newState = reducer.enrichedEntity(state, {
+      type: 'ENRICHED_ENTITY_UPDATED',
+      enrichedEntity,
+    });
+
+    expect(newState).toEqual({
+      identifier,
+      labelCollection,
+    });
+  });
 });
