@@ -2,8 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Pim\Component\Catalog\Model\AbstractAssociation;
-
 /**
  * Product association entity
  *

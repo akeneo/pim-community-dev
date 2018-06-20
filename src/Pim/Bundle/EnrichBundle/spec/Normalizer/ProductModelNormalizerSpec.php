@@ -12,7 +12,7 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
-use Pim\Component\Catalog\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

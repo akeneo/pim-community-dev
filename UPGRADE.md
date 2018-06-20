@@ -6,6 +6,12 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AbstractAssociation/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\AbstractAssociation/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AssociationInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\AssociationInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ProductModelAssociation/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ProductModelAssociation/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ProductModelAssociationInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ProductModelAssociationInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ProductAssociation/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ProductAssociation/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ProductAssociationInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ProductAssociationInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ProductUniqueDataInterface/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ProductUniqueDataInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AbstractProductUniqueData/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\AbstractProductUniqueData/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\ProductUniqueData/Akeneo\\Pim\\Enrichment\\Component\\Product\\Model\\ProductUniqueData/g'
