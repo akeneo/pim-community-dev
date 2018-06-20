@@ -8,7 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappi
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
+use Akeneo\Pim\Structure\Bundle\DependencyInjection\CompilerPass\RegisterAttributeTypePass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterComparatorsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterCompleteCheckerPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterFilterPass;
