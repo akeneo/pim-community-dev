@@ -31,22 +31,4 @@ class CompletenessManagerSpec extends ObjectBehavior
             $valueCompleteChecker
         );
     }
-
-    function it_generates_missing_completenesses_for_products(
-        ChannelInterface $channel,
-        $generator
-    )
-    {
-        $generator->generateMissingForProducts($channel, [])->shouldBeCalled();
-
-        $this->generateMissingForProducts($channel, []);
-    }
-}
-
-// @TODO @merge PIM-7348 - Remove when merged
-class CompletenessGenerator implements CompletenessGeneratorInterface {
-    public function generateMissingForProduct(ProductInterface $product) {}
-    public function generateMissingForChannel(ChannelInterface $channel) {}
-    public function generateMissing() {}
-    public function generateMissingForProducts(ChannelInterface $channel, array $filters) {}
 }
