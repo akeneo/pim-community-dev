@@ -19,7 +19,7 @@ parameters:
     pim_enrich.normalizer.datagrid_view.class:                     Pim\Bundle\EnrichBundle\Normalizer\DatagridViewNormalizer
     pim_enrich.normalizer.category.class:                          Pim\Bundle\EnrichBundle\Normalizer\CategoryNormalizer
     pim_enrich.normalizer.attribute_group.class:                   Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeGroupNormalizer
-    pim_enrich.normalizer.structured.attribute_option.class:       Pim\Bundle\EnrichBundle\Normalizer\StructuredAttributeOptionNormalizer
+    pim_enrich.normalizer.structured.attribute_option.class:       Akeneo\Pim\Structure\Component\Normalizer\InternalApi\StructuredAttributeOptionNormalizer
     pim_enrich.normalizer.entity_with_family_variant.class:        Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer
     pim_enrich.normalizer.variant_navigation.class:                Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer
     pim_enrich.normalizer.image.class:                             Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer

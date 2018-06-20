@@ -1,0 +1,49 @@
+pim_enrich_family_rest_create:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.family:createAction }
+    methods: [POST]
+
+pim_enrich_family_rest_index:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.family:indexAction }
+    methods: [GET]
+
+pim_enrich_family_index_get_variants:
+    path: /rest/variants
+    defaults: { _controller: pim_enrich.controller.rest.family:getWithVariantsAction }
+    methods: [GET]
+
+pim_enrich_family_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.family:getAction }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [GET]
+
+pim_enrich_family_rest_put:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.family:putAction }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [PUT]
+
+pim_enrich_family_rest_remove:
+    path: /rest/{code}
+    defaults: { _controller: pim_enrich.controller.rest.family:removeAction }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [DELETE]
+
+pim_enrich_family_variant_rest_get:
+    path: /rest/family_variant/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.family_variant:getAction }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [GET]
+
+pim_enrich_family_rest_get_available_axes:
+    path: /rest/{code}/available_axes
+    defaults: { _controller: pim_enrich.controller.rest.family:getAvailableAxesAction }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [GET]

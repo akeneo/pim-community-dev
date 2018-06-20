@@ -1,11 +1,3 @@
-attribute_group_front:
-    resource: '@PimEnrichBundle/Resources/config/routing/attribute_group/front.yml'
-    prefix: /configuration/attribute-group
-
-attribute_group_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/attribute_group/rest.yml'
-    prefix: /rest/attribute-group
-
 mass_edit_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/mass_edit/rest.yml'
     prefix: /rest/mass_edit
@@ -25,30 +17,6 @@ catalog_volume:
 currency:
     resource: '@PimEnrichBundle/Resources/config/routing/currency.yml'
     prefix: /configuration/currency
-
-family:
-    resource: '@PimEnrichBundle/Resources/config/routing/family.yml'
-    prefix: /configuration/family
-
-family_variant:
-    resource: '@PimEnrichBundle/Resources/config/routing/family_variant.yml'
-    prefix: /configuration/family-variant
-
-attribute_front:
-    resource: '@PimEnrichBundle/Resources/config/routing/attribute/front.yml'
-    prefix: /configuration/attribute
-
-attribute_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/attribute/rest.yml'
-    prefix: /rest/attribute
-
-attribute_type:
-    resource: '@PimEnrichBundle/Resources/config/routing/attribute_type/rest.yml'
-    prefix: /rest/attribute-type
-
-attribute_option:
-    resource: '@PimEnrichBundle/Resources/config/routing/attributeoption.yml'
-    prefix: /configuration/attribute-option
 
 category:
     resource: '@PimEnrichBundle/Resources/config/routing/category.yml'
