@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Model;
+namespace Akeneo\Pim\Enrichment\Component\Product\Model;
+
+use Pim\Component\Catalog\Model\AssociationInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

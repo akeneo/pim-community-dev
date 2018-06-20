@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Pim\Component\Catalog\Model\ProductAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Pim\Component\Catalog\Model\ProductModelAssociation;
 
@@ -20,7 +20,7 @@ class AssociationClassResolverSpec extends ObjectBehavior
     public function let()
     {
         $this->beConstructedWith([
-            'Akeneo\Pim\Enrichment\Component\Product\Model\Product' => 'Pim\Component\Catalog\Model\ProductAssociation',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\Product' => 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel' => 'Pim\Component\Catalog\Model\ProductModelAssociation',
         ]);
     }

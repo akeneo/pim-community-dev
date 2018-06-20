@@ -72,7 +72,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
                         onDelete: CASCADE
     oneToMany:
         associations:
-            targetEntity: Pim\Component\Catalog\Model\ProductAssociationInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociationInterface
             mappedBy: owner
             cascade:
                 - persist
