@@ -193,6 +193,8 @@ define(
              */
             openPreviewModal(currentAssetCode) {
                 const deferred = $.Deferred();
+                const editMode = this.context.editMode;
+                const aclGranted = SecurityContext.isGranted('pimee_product_asset_remove_from_collection');
 
                 FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(function (assets) {
                     const modal = new Backbone.BootstrapModal({
@@ -215,7 +217,7 @@ define(
                         yesLabel: __('pimee_product_asset.form.product.asset.yes'),
                         noLabel: __('pimee_product_asset.form.product.asset.no'),
                         confirmLabel: __('pimee_product_asset.form.product.asset.assetRemoveConfirmationLabel'),
-                        canRemoveAsset: SecurityContext.isGranted('pimee_product_asset_remove_from_collection')
+                        canRemoveAsset: aclGranted && 'view' !== editMode
                     });
                     modal.open();
 
