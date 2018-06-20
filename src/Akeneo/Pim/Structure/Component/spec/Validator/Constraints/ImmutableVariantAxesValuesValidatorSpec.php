@@ -14,8 +14,8 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValues;
-use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValuesValidator;
+use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;
+use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator;
 use Pim\Component\Catalog\Validator\Constraints\VariantProductParent;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -37,7 +37,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ImmutableVariantAxesValuesValidator::class);
+        $this->shouldHaveType(\Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator::class);
     }
 
     function it_is_a_constraint_validator()
@@ -47,7 +47,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_it_does_not_validate_an_entity_with_variant(
         UserInterface $entity,
-        ImmutableVariantAxesValues $constraint
+        \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [
             $entity,
@@ -68,7 +68,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
     function it_does_not_build_a_violation_if_the_entity_has_no_id(
         $context,
         ProductInterface $variantProduct,
-        ImmutableVariantAxesValues $constraint
+        \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues $constraint
     ) {
         $variantProduct->getId()->willReturn(null);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
@@ -79,7 +79,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
     function it_does_not_build_a_violation_if_the_entity_has_no_familyVariant(
         $context,
         ProductInterface $variantProduct,
-        ImmutableVariantAxesValues $constraint
+        \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues $constraint
     ) {
         $variantProduct->getId()->willReturn(42);
         $variantProduct->getFamilyVariant()->willReturn(null);
@@ -93,7 +93,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
         $attributesProvider,
         $valueCollectionFactory,
         ProductInterface $variantProduct,
-        ImmutableVariantAxesValues $constraint,
+        \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues $constraint,
         FamilyVariantInterface $familyVariant,
         AttributeInterface $sizeAttribute,
         AttributeInterface $colorAttribute,
@@ -141,12 +141,14 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
         $originalSizeValue->isEqual($newSizeValue)->willReturn(false);
         $originalColorValue->isEqual($newColorValue)->willReturn(false);
 
-        $context->buildViolation(ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
+        $context->buildViolation(
+            \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
             '%variant_axis%' => 'size',
             '%provided_value%' => '[m]',
         ])->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('attribute')->willReturn($constraintViolationBuilder);
-        $context->buildViolation(ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
+        $context->buildViolation(
+            \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
             '%variant_axis%' => 'color',
             '%provided_value%' => '[blue]',
         ])->willReturn($constraintViolationBuilder);

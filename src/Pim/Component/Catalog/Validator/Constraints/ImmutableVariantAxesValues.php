@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
+namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 

@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes;
 use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator;
-use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValues;
+use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -39,7 +39,7 @@ class ImmutableVariantAxesValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_it_does_not_validate_a_variant_attribute_set(
         \stdClass $entity,
-        ImmutableVariantAxesValues $constraint
+        \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [
             $entity,

@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValues;
+use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;
 use Symfony\Component\Validator\Constraint;
 
 class ImmutableVariantAxesValuesSpec extends ObjectBehavior

@@ -26,14 +26,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_immutable_variant_axes_validator }
 
-    pim_catalog.validator.constraint.immutable_variant_axis_values:
-        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValuesValidator'
-        arguments:
-            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
-            - '@pim_catalog.factory.value_collection'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_immutable_variant_axis_values_validator }
-
     pim_catalog.validator.constraint.family_attribute_used_as_axis:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxisValidator'
         tags:
