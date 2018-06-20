@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
-use Pim\Component\Catalog\Model\AbstractProductUniqueData;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductUniqueData;
 
 /**
  * Published product unique data.
