@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use PimEnterprise\Component\Workflow\Event\PublishedProductEvent;
 use PimEnterprise\Component\Workflow\Event\PublishedProductEvents;
 
