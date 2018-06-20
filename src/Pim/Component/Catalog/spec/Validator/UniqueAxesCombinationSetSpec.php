@@ -7,7 +7,7 @@ use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Component\Catalog\Exception\AlreadyExistingAxisValueCombinationException;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Pim\Component\Catalog\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
 use Pim\Component\Catalog\Value\ScalarValue;
 

@@ -6,7 +6,7 @@ namespace Pim\Component\Catalog\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>

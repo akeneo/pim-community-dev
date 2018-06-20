@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\DependencyInjection\CompilerPass;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\ChannelTranslationInterface;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
 /**
@@ -24,6 +22,9 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
      */
     protected function getParametersMapping(): array
     {
-        return [];
+        return [
+            ProductInterface::class => 'pim_catalog.entity.product.class',
+            ProductModelInterface::class => 'pim_catalog.entity.product_model.class',
+        ];
     }
 }

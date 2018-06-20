@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Updater\Adder\AdderRegistryInterface;
 use Pim\Component\Catalog\Updater\Adder\AttributeAdderInterface;
 use Pim\Component\Catalog\Updater\Adder\FieldAdderInterface;

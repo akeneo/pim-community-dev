@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Validator\Constraints\VariantProductParent;
 use Pim\Component\Catalog\Validator\Constraints\VariantProductParentValidator;
 use Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTree;

@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\ProductModel:
+Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
     type: entity
     table: pim_catalog_product_model
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -61,7 +61,7 @@ Pim\Component\Catalog\Model\ProductModel:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             mappedBy: parent
         productModels:
-            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
             mappedBy: parent
             orderBy:
                 left: ASC
@@ -74,7 +74,7 @@ Pim\Component\Catalog\Model\ProductModel:
                 - detach
     manyToOne:
         parent:
-            targetEntity: Pim\Component\Catalog\Model\ProductModelInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
             inversedBy: productModels
             joinColumns:
                 parent_id:
