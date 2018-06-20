@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationTypeRepository;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Component\Catalog\Model\AbstractAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;

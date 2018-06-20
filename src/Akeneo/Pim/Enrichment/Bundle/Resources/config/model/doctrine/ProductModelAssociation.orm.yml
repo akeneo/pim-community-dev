@@ -1,8 +1,7 @@
-Pim\Component\Catalog\Model\ProductAssociation:
+Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation:
     type: entity
-    table: pim_catalog_association
+    table: pim_catalog_product_model_association
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository
     fields:
         id:
             type: integer
@@ -23,7 +22,7 @@ Pim\Component\Catalog\Model\ProductAssociation:
                     nullable: false
                     onDelete: CASCADE
         owner:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
             inversedBy: associations
             cascade:
                 - detach
@@ -36,7 +35,7 @@ Pim\Component\Catalog\Model\ProductAssociation:
         groups:
             targetEntity: Pim\Component\Catalog\Model\GroupInterface
             joinTable:
-                name: pim_catalog_association_group
+                name: pim_catalog_association_product_model_to_group
                 joinColumns:
                     association_id:
                         referencedColumnName: id
@@ -48,7 +47,7 @@ Pim\Component\Catalog\Model\ProductAssociation:
         products:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             joinTable:
-                name: pim_catalog_association_product
+                name: pim_catalog_association_product_model_to_product
                 joinColumns:
                     association_id:
                         onDelete: CASCADE
@@ -61,7 +60,7 @@ Pim\Component\Catalog\Model\ProductAssociation:
         productModels:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
             joinTable:
-                name: pim_catalog_association_product_model
+                name: pim_catalog_association_product_model_to_product_model
                 joinColumns:
                     association_id:
                         onDelete: CASCADE

@@ -2,7 +2,7 @@ parameters:
     pim_catalog.model.product.interface:                Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
     pim_catalog.model.product_model.interface:          Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface
     pim_catalog.model.value.interface:                  Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface
-    pim_catalog.model.association.interface:            Pim\Component\Catalog\Model\AssociationInterface
+    pim_catalog.model.association.interface:            Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface
     pim_catalog.model.completeness.interface:           Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface
     pim_catalog.model.association_type.interface:       Pim\Component\Catalog\Model\AssociationTypeInterface
     pim_catalog.model.category.interface:               Pim\Component\Catalog\Model\CategoryInterface
