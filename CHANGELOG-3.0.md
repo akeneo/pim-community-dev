@@ -215,8 +215,10 @@
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeRepository`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeSearchableRepository`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyRepository`
-- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilySearchableRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchab CHANGELOG-1.3.mdleRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilySearchableRepository`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyVariantRepository`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyVariantSearchableRepository`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupSearchableRepository`
 - Move namespace `Pim\Bundle\CatalogBundle\AttributeType` to `Akeneo\Pim\Structure\Component\AttributeType`
+- Move `Pim\Bundle\CatalogBundle\Entity\GroupType` to `Akeneo\Pim\Enrichment\Component\Product\Model\GroupType`
+- Move `Pim\Component\Catalog\Model\GroupTypeInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeInterface`

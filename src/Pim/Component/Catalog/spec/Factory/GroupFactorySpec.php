@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Factory;
 
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 
 class GroupFactorySpec extends ObjectBehavior
