@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\DependencyInjection\CompilerPass;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeTranslationInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -45,6 +46,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             FamilyVariantTranslationInterface::class  => 'pim_catalog.entity.family_variant_translation.class',
             VariantAttributeSetInterface::class       => 'pim_catalog.entity.variant_attribute_set.class',
             GroupTypeInterface::class => 'pim_catalog.entity.group_type.class',
+            GroupTypeTranslationInterface::class => 'pim_catalog.entity.group_type_translation.class',
         ];
     }
 }

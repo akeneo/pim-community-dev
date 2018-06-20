@@ -222,3 +222,5 @@
 - Move namespace `Pim\Bundle\CatalogBundle\AttributeType` to `Akeneo\Pim\Structure\Component\AttributeType`
 - Move `Pim\Bundle\CatalogBundle\Entity\GroupType` to `Akeneo\Pim\Enrichment\Component\Product\Model\GroupType`
 - Move `Pim\Component\Catalog\Model\GroupTypeInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation` to `Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeTranslation`
+- Move `Pim\Component\Catalog\Model\GroupTypeTranslationInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeTranslationInterface`

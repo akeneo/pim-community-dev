@@ -157,7 +157,7 @@ class GroupType implements GroupTypeInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation';
+        return 'Akeneo\Pim\Enrichment\Component\Product\Model\GroupTypeTranslation';
     }
 
     /**
