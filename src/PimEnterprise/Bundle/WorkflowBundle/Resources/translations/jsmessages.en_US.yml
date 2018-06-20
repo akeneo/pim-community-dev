@@ -22,7 +22,7 @@ pimee_workflow:
             modal.title: Leave a comment (optional - 255 characters max.)
 
     proposal:
-        overview: "]Inf, 1] {{ count }} proposal|]1, Inf [{{ count }} proposals"
+        overview: "]-Inf, 1]{{ count }} proposal|]1, Inf[{{ count }} proposals"
         selected: proposals selected
         mass_action_group:
             review:

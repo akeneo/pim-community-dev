@@ -40,7 +40,9 @@ define(
                     $label.append(this.fileInfo({message: basename}));
                 } else {
                     $label.empty();
-                    $label.append(this.filePrompt({message: __('pim_enrich.entity.product.module.attribute.media_upload')}));
+                    $label.append(this.filePrompt({
+                        message: __('pim_enrich.entity.product.module.attribute.media_upload')
+                    }));
                 }
             },
 

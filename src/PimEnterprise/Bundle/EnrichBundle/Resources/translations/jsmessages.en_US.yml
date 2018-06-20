@@ -6,7 +6,8 @@ pim_enrich:
 
 pim_datagrid:
     mass_action:
-        asset_edit: Mass edit assets
+        mass_edit:
+            asset_edit: Mass edit assets
 
 pimee_enrich.entity.category:
     module:
@@ -28,7 +29,7 @@ pimee_enrich.entity.attribute group:
 
 pimee_enrich.entity.channel:
     module:
-        asset_transformations:
+        asset_transformation:
             title: Asset transformations
             not_found: No transformation found
             transformation: Transformation
@@ -75,10 +76,6 @@ pimee_enrich.entity.job_instance:
             edit: Allowed to edit job profile
             removed: The group {{ group }} will not be allowed to {{ permission }} job profile
 
-pimee_enrich.entity.published_product:
-    page_title:
-        index: "]-Inf, 1]{{ count }} published product|]1, Inf[{{ count }} published products"
-
 pimee_enrich.entity.product:
     module:
         history:
@@ -122,6 +119,8 @@ pimee_enrich.entity.published_product:
             fail: Failed to unpublish this product
         revert:
             success: Product successfully restored
+    page_title:
+        index: "]-Inf, 1]{{ count }} published product|]1, Inf[{{ count }} published products"
     module:
         publish:
             label: Publish
@@ -164,24 +163,24 @@ pimee_enrich.mass_edit.product:
     operation:
         publish:
             label: Publish
-            label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf [Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+            label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
             description: The products will be published
             warning: The {{ itemsCount }} selected products will be published.
         unpublish:
             label: Unpublish
-            label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf [Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+            label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
             description: The products will be unpublished
             warning: The {{ itemsCount }} selected products will be unpublished.
 
 pimee_enrich.mass_edit.asset:
     title: Assets bulk action
-    confirm: "{1}You are about to update an asset with the following information, please confirm.|]1, Inf [You are about to update {{ itemsCount }} assets with the following information, please confirm."
+    confirm: "{1}You are about to update an asset with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} assets with the following information, please confirm."
     step:
         select:
             label: Choose assets
         choose:
             title: Assets bulk actions
-            label_count: "] 0, Inf [Select your action"
+            label_count: "]0, Inf[Select your action"
         configure:
             label: Configure
         confirm:
@@ -190,13 +189,13 @@ pimee_enrich.mass_edit.asset:
         add_tag:
             label: Add tags to assets
             description: Tags will be added to the assets.
-            label_count: "{1}Add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|]1, Inf [Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
+            label_count: "{1}Add tags to <span class=\"AknFullPage-title--highlight\">1 asset</span>|]1, Inf[Add tags to <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span>"
             field: Tags
             empty_selection: Please choose tags
         add_to_category:
             label: Classify assets in categories
             description: The assets will be positioned into following categories, the existing placement will be lost.
-            label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|]1, Inf [Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
+            label_count: "{1}Classify <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|]1, Inf[Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} assets</span> to categories"
 
 pim_menu:
     navigation:
