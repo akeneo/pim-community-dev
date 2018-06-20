@@ -12,6 +12,9 @@ pimee_catalog_rule:
           no_yet_calculated: Ei vielä laskettu
       mass_edit_action:
         delete: Poista
+  actions:
+    options:
+      include_children: ja alatasot
   condition:
     operators:
       "STARTS WITH": alkaa

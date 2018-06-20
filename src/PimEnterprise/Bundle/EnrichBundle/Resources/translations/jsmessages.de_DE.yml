@@ -17,8 +17,8 @@ pim_enrich:
     attribute_label:
       pim_assets_collection: Sammlung von Assets
     attribute:
-      type:
-        pim_assets_collection: Sammlung von Assets
+      property:
+        is_read_only: Nur Lesezugriff
   form:
     attribute:
       tab:
@@ -34,7 +34,6 @@ pimee_enrich:
     job_instance:
       tab:
         permission:
-          title: Berechtigungen
           added: Die Gruppe {{ group }} wird das Recht haben Job-Profile zu {{ permission }}
           execute.label: Berechtigt Job-Profil auszuführen
           edit.label: Berechtigt Job-Profil zu bearbeiten
@@ -162,7 +161,6 @@ pimee_enrich:
         height: '%value%px Höhe'
   mass_edit:
     cancel: Abbrechen
-    confirm: Bestätigen
     product:
       operation:
         publish:
@@ -191,6 +189,10 @@ pimee_enrich:
           field: Stichworte
         add_to_category:
           label: Zuordnung von Assets in Kategorien
+  category:
+    tab:
+      permission:
+        title: Berechtigungen
 pim_menu:
   tab:
     asset: Assets

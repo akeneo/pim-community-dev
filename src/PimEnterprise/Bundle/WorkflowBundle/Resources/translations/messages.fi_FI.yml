@@ -39,7 +39,6 @@ pimee_workflow:
     index: Hallitse julkaistuja tuotteita
   product:
     permission:
-      label: Käyttöoikeudet
       own: Arvostele / julkaise
       edit: Muokkaa
       view: Näytä

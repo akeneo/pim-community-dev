@@ -2,6 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import __ from 'akeneoenrichedentity/tools/translator';
 import Table from 'akeneoenrichedentity/application/component/enriched-entity/index/table';
+import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrumb';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import {redirectToEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/router';
@@ -37,11 +38,15 @@ const enrichedEntityListView = ({ grid, context, events }: StateProps & Dispatch
             <div className="AknTitleContainer-mainContainer">
               <div className="AknTitleContainer-line">
                 <div className="AknTitleContainer-breadcrumbs">
-                  <div className="AknBreadcrumb">
-                    <a href="#" className="AknBreadcrumb-item AknBreadcrumb-item--routable breadcrumb-tab" data-code="pim-menu-entities">
-                      {__('pim_enriched_entity.enriched_entity.title')}
-                    </a>
-                  </div>
+                  <Breadcrumb items={[
+                    {
+                      action: {
+                        type: 'redirect',
+                        route: 'akeneo_enriched_entities_enriched_entities_edit'
+                      },
+                      label: __('pim_enriched_entity.enriched_entity.title')
+                    }
+                  ]}/>
                 </div>
                 <div className="AknTitleContainer-buttonsContainer">
                   <div className="AknTitleContainer-userMenu">

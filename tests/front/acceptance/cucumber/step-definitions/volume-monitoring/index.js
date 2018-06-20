@@ -22,9 +22,7 @@ module.exports = async function(cucumber) {
         }
     };
 
-    Before(async function() {
-        this.getElement = createElementDecorator(config, this.page);
-    });
+    getElement = createElementDecorator(config);
 
     Given('a catalog with {int} asset categories', async function(int) {
         await renderView(this.page, 'pim-catalog-volume-index', data);
@@ -32,7 +30,7 @@ module.exports = async function(cucumber) {
     });
 
     Then('the report returns that the number of asset categories is {int}', async function (int) {
-        const report = await (await this.getElement('Catalog volume report'));
+        const report = await (await getElement(this.page, 'Catalog volume report'));
         const volume = await report.getVolumeByType('count_asset_categories');
         const value = await volume.getValue();
         assert.equal(value, int);

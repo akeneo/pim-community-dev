@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityList\FindEnrichedEntitiesQuery;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand;
+use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
+use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -15,24 +19,80 @@ use Behat\Behat\Context\Context;
  */
 final class EditEnrichedEntityContext implements Context
 {
-    /** @var FindEnrichedEntitiesQuery */
-    private $findEnrichedEntitiesQuery;
-
     /** @var EnrichedEntityRepository */
     private $enrichedEntityRepository;
 
-    /** @var EnrichedEntity[] */
-    private $entitiesFound;
+    /** @var EditEnrichedEntityHandler */
+    private $editEnrichedEntityHandler;
 
     /**
-     * @param FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery
      * @param EnrichedEntityRepository  $enrichedEntityRepository
+     * @param EditEnrichedEntityHandler $editEnrichedEntityHandler
      */
     public function __construct(
-        FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery,
-        EnrichedEntityRepository $enrichedEntityRepository
+        EnrichedEntityRepository $enrichedEntityRepository,
+        EditEnrichedEntityHandler $editEnrichedEntityHandler
     ) {
-        $this->findEnrichedEntitiesQuery = $findEnrichedEntitiesQuery;
         $this->enrichedEntityRepository = $enrichedEntityRepository;
+        $this->editEnrichedEntityHandler = $editEnrichedEntityHandler;
+    }
+
+    /**
+     * @Given /^the following enriched entity:$/
+     */
+    public function theFollowingEnrichedEntity(TableNode $enrichedEntitieTable)
+    {
+        foreach ($enrichedEntitieTable->getHash() as $enrichedEntity) {
+            $this->enrichedEntityRepository->save(
+                EnrichedEntity::create(
+                    EnrichedEntityIdentifier::fromString($enrichedEntity['identifier']),
+                    json_decode($enrichedEntity['labels'], true)
+                )
+            );
+        }
+    }
+
+    /**
+     * @When /^the user updates the enriched entity "([^"]*)" with:$/
+     */
+    public function theUserUpdatesTheEnrichedEntityWith(string $identifier, TableNode $updateTable)
+    {
+        $updates = current($updateTable->getHash());
+        $command = new EditEnrichedEntityCommand();
+        $command->identifier = $identifier;
+        $command->labels = json_decode($updates['labels'], true);
+        ($this->editEnrichedEntityHandler)($command);
+    }
+
+    /**
+     * @Then /^the enriched entity "([^"]*)" should be:$/
+     */
+    public function theEnrichedEntityShouldBe(string $identifier, TableNode $enrichedEntityTable)
+    {
+        $expectedIdentifier = EnrichedEntityIdentifier::fromString($identifier);
+        $expectedInformation = current($enrichedEntityTable->getHash());
+        $actualEnrichedEntity = $this->enrichedEntityRepository->getByIdentifier($expectedIdentifier);
+        $this->assertSameLabels(
+            json_decode($expectedInformation['labels'], true),
+            $actualEnrichedEntity
+        );
+    }
+
+    private function assertSameLabels(array $expectedLabels, EnrichedEntity $actualEnrichedEntity)
+    {
+        $actualLabels = [];
+        foreach ($actualEnrichedEntity->getLabelCodes() as $labelCode) {
+            $actualLabels[$labelCode] = $actualEnrichedEntity->getLabel($labelCode);
+        }
+
+        $differences = array_merge(
+            array_diff($expectedLabels, $actualLabels),
+            array_diff($actualLabels, $expectedLabels)
+        );
+
+        Assert::isEmpty(
+            $differences,
+            sprintf('Expected labels "%s", but found %s', json_encode($expectedLabels), json_encode($actualLabels))
+        );
     }
 }

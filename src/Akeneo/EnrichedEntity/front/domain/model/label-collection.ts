@@ -1,4 +1,4 @@
-interface RawLabelCollection {
+export interface RawLabelCollection {
   [locale: string]: string;
 }
 
@@ -38,6 +38,10 @@ export default class LabelCollection {
     }
 
     return this.labels[locale];
+  }
+
+  public setLabel(locale: string, label: string): LabelCollection {
+    return LabelCollection.create({...this.labels, [locale]: label});
   }
 
   public getLabels(): RawLabelCollection {

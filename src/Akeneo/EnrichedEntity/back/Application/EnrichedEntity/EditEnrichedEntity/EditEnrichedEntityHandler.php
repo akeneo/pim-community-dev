@@ -26,28 +26,18 @@ class EditEnrichedEntityHandler
     /** @var EnrichedEntityRepository */
     private $enrichedEntityRepository;
 
-    /**
-     * @param EnrichedEntityRepository $enrichedEntityRepository
-     */
     public function __construct(EnrichedEntityRepository $enrichedEntityRepository)
     {
         $this->enrichedEntityRepository = $enrichedEntityRepository;
     }
 
-    /**
-     * @param EditEnrichedEntityCommand $editEnrichedEntityCommand
-     *
-     * @return EnrichedEntity
-     */
-    public function __invoke(EditEnrichedEntityCommand $editEnrichedEntityCommand): EnrichedEntity
+    public function __invoke(EditEnrichedEntityCommand $editEnrichedEntityCommand): void
     {
         $identifier = EnrichedEntityIdentifier::fromString($editEnrichedEntityCommand->identifier);
         $labelCollection = LabelCollection::fromArray($editEnrichedEntityCommand->labels);
 
-        $enrichedEntity = $this->enrichedEntityRepository->findOneByIdentifier($identifier);
+        $enrichedEntity = $this->enrichedEntityRepository->getByIdentifier($identifier);
         $enrichedEntity->updateLabels($labelCollection);
-        $this->enrichedEntityRepository->update($enrichedEntity);
-
-        return $enrichedEntity;
+        $this->enrichedEntityRepository->save($enrichedEntity);
     }
 }

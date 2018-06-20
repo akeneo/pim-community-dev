@@ -45,4 +45,14 @@ describe('akeneo > enriched entity > domain > model --- enriched entity', () => 
   test('I can get the collection of labels', () => {
     expect(createEnrichedEntity(michelIdentifier, michelLabels).getLabelCollection()).toBe(michelLabels);
   });
+
+  test('I can normalize an enriched entity', () => {
+    const michelEnrichedEntity = createEnrichedEntity(michelIdentifier, michelLabels);
+
+    expect(michelEnrichedEntity.normalize())
+      .toEqual({
+        identifier: 'michel',
+        labels: {en_US: 'Michel'}
+      });
+  });
 });

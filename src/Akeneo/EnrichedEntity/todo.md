@@ -9,9 +9,13 @@
 - Create LabelCollection from outside the domain object EnrichedEntity
 - What to do in a show command handler if the entity is not found? Throw an exception? null?
 - Should we use "list" or "index"? Should we use "get" or "show"? In a lot of places we use one or the other. Could be nice to choose before it's getting too messy
-- rename "I get an enriched entity" acceptance step [DONE]
 - add normalizer for enriched entity
-- manage breadcrumb
+- use decorator for acceptance tests front
+
+DONE:
+
+- rename "I get an enriched entity" acceptance step [DONE]
+- manage breadcrumb [DONE]
 - add loading placeholder [DONE]
 - rename hidrate -> hydrate [DONE]
-- rework form.tsx to not remove labels
+- rework form.tsx to not remove labels [DONE]

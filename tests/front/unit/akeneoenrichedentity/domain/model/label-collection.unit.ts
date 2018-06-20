@@ -33,6 +33,13 @@ describe('akeneo > enriched entity > domain > model --- label collection', () =>
     }).toThrow("The label for locale fr_FR doesn't exist");
   });
 
+  test('I can update a label for the given locale', () => {
+    const rawLabels = {en_US: 'michel'};
+    const updatedLabels = createLabelCollection({en_US: 'michel', fr_FR: 'didier'});
+
+    expect(createLabelCollection({en_US: 'michel'}).setLabel('fr_FR', 'didier')).toEqual(updatedLabels);
+  });
+
   test('I can get the normalized labels', () => {
     const rawLabels = {en_US: 'michel'};
 

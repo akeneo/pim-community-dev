@@ -1,7 +1,5 @@
 pim_title.locale:
   edit: "ロケール %locale.code% |編集"
-Permissions: パーミッション
-pane.accordion.permissions: パーミッション
 attribute group.permissions:
   view.label: 属性の表示を許可
   view.help: この属性グループの製品を表示することができます。
@@ -84,18 +82,16 @@ pimee_enrich:
   product:
     tab:
       proposal.title: 提案
-  category:
-    tab:
-      permission.title: パーミッション
-  locale:
-    tab:
-      permission.title: パーミッション
   channel:
     tab:
       asset_transformation.title: アセット変換
   acl.product_ownership.title: 所有権
   attributes:
     empty: なし
+  category:
+    tab:
+      permission:
+        title: パーミッション
   groups:
     label: 所有者グループ
     empty: なし

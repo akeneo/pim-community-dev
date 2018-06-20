@@ -76,11 +76,11 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     } = this.props;
 
     return (
-      <table className="AknGrid">
-        <tbody className="AknGrid-body">
+      <div className="AknGrid">
+        <div className="AknGrid-body">
           {this.renderItems(enrichedEntities, locale, onRedirectToEnrichedEntity)}
-        </tbody>
-      </table>
+        </div>
+      </div>
     );
   }
 }

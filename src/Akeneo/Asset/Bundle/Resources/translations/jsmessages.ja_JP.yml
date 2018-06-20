@@ -38,13 +38,6 @@ pimee_product_asset:
       invalid_locale: ロケールが無効です。
       exists: すでに同じ名前のファイルがインポートされています
       conflicts: ファイル名の競合
-    grid:
-      medias: メディア
-      filename: ファイル名
-      filetype: ファイルの種類
-      status: ステータス
-      progress: 進行状況
-      actions: アクション
     status:
       added: 追加
       queued: 処理待ち
@@ -59,6 +52,12 @@ pimee_product_asset:
         success: 選択したアセットが正常に削除されました。
         error: 選択されたアセットの削除中にエラーが発生しました、やり直してください。
         empty_selection: アセットが1つも選択されていません
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: アセットのコレクション
 pim_dashboard:
   widget:
     last_operations:
