@@ -79,7 +79,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
                 - refresh
                 - detach
         completenesses:
-            targetEntity: Pim\Component\Catalog\Model\CompletenessInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface
             mappedBy: product
             cascade:
                 - remove

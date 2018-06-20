@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Model;
+namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
 /**
  * Product completeness entity, define the completeness of the enrichment of the product

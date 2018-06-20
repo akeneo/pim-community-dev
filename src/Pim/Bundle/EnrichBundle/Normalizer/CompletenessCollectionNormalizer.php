@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
