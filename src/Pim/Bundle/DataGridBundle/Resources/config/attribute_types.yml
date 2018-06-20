@@ -4,7 +4,7 @@ parameters:
             type:        product_value_field
         filter:
             type:        product_value_string
-            ftype:       string
+            ftype:       identifier
             options:
                 field_options:
                     attr:
