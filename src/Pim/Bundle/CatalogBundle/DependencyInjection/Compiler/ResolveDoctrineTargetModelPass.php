@@ -19,7 +19,6 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'Pim\Component\Catalog\Model\ProductModelAssociationInterface'   => 'pim_catalog.entity.product_model_association.class',
             'Pim\Component\Catalog\Model\AssociationTypeInterface'           => 'pim_catalog.entity.association_type.class',
             'Pim\Component\Catalog\Model\AttributeOptionValueInterface'      => 'pim_catalog.entity.attribute_option_value.class',
             'Pim\Component\Catalog\Model\GroupInterface'                     => 'pim_catalog.entity.group.class',
