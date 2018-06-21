@@ -11,7 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class CategoryUpdaterSpec extends ObjectBehavior

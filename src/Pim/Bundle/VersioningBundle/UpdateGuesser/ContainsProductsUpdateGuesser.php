@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 
 /**

@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Gedmo\Exception\UnexpectedValueException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -45,7 +45,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
                 - treeRight
     manyToMany:
         categories:
-            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
             joinTable:
                 name: pim_catalog_category_product_model
                 joinColumns:

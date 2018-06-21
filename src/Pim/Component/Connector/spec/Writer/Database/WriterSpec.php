@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 
 class WriterSpec extends ObjectBehavior
 {

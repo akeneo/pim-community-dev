@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\UniqueEntity;

@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Pim\Enrichment\Component\Category\Model;
 
 use Akeneo\Tool\Component\Classification\Model\Category as BaseCategory;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 
 /**
  * Category class allowing to organize a flexible product class into trees
@@ -171,7 +171,7 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\CategoryTranslation';
+        return CategoryTranslation::class;
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Pim\Enrichment\Component\Category\Model;
 
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
-use Pim\Component\Catalog\Model\CategoryTranslationInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface;
 
 /**
  * Category translation entity
