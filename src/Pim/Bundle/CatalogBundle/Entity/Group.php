@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 

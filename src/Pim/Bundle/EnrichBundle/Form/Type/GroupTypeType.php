@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Akeneo\Pim\Structure\Component\Model\GroupType as EntityGroupType;
-use Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation;
+use Akeneo\Pim\Structure\Component\Model\GroupTypeTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

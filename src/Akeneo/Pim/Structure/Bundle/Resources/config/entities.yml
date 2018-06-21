@@ -12,3 +12,5 @@ parameters:
     pim_catalog.entity.attribute_option.class:             Akeneo\Pim\Structure\Component\Model\AttributeOption
     pim_catalog.model.group_type.interface: Akeneo\Pim\Structure\Component\Model\GroupTypeInterface
     pim_catalog.model.group_type_translation.interface: Akeneo\Pim\Structure\Component\Model\GroupTypeTranslationInterface
+    pim_catalog.entity.group_type.class: Akeneo\Pim\Structure\Component\Model\GroupType
+    pim_catalog.entity.group_type_translation.class: Akeneo\Pim\Structure\Component\Model\GroupTypeTranslation

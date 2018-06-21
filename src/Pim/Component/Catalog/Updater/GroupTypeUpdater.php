@@ -2,10 +2,10 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 
 /**
  * Updates a group type
