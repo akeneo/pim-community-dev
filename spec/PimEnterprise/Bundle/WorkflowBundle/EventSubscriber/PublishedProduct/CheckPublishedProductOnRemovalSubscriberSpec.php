@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Event;
