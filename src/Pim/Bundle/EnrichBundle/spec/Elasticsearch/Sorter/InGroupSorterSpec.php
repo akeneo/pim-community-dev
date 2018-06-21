@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Elasticsearch\Sorter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Pim\Bundle\EnrichBundle\Elasticsearch\Sorter\InGroupSorter;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 use Pim\Component\Catalog\Exception\InvalidDirectionException;

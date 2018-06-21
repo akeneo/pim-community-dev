@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;

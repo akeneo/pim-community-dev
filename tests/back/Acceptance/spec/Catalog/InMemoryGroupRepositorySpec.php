@@ -5,7 +5,7 @@ namespace spec\Akeneo\Test\Acceptance\Catalog;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Catalog\InMemoryGroupRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 class InMemoryGroupRepositorySpec extends ObjectBehavior
