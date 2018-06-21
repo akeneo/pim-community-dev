@@ -1,6 +1,7 @@
 import user, {UserState} from 'akeneoenrichedentity/application/reducer/user';
 import sidebar, {SidebarState} from 'akeneoenrichedentity/application/reducer/sidebar';
 import grid, {GridState} from 'akeneoenrichedentity/application/reducer/grid';
+import editForm, {EditFormState} from 'akeneoenrichedentity/application/reducer/edit-form';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import Record from 'akeneoenrichedentity/domain/model/record/record';
 
@@ -9,6 +10,7 @@ export interface State {
   sidebar: SidebarState;
   grid: GridState<Record>;
   enrichedEntity: EnrichedEntity | null;
+  editForm: EditFormState
 }
 
 export default {
@@ -35,4 +37,5 @@ export default {
 
     return state;
   },
+  editForm: editForm('enrichedEntity', 'ENRICHED_ENTITY_UPDATED', 'ENRICHED_ENTITY_RECEIVED')
 };

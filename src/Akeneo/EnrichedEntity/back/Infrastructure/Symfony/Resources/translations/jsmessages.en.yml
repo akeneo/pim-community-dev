@@ -14,3 +14,6 @@ pim_enriched_entity:
         index:
             grid:
                 count: "{{ count }} results"
+pim_enrich:
+    confirmation:
+        discard_changes: 'You will lose changes to the {{ entity }} if you leave the page.'

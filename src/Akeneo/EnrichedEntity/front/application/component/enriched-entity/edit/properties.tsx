@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { State } from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
+import {connect} from 'react-redux';
+import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import Form from 'akeneoenrichedentity/application/component/enriched-entity/edit/form';
 import {updateEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
@@ -8,6 +8,7 @@ import __ from 'akeneoenrichedentity/tools/translator';
 
 interface StateProps {
   enrichedEntity: EnrichedEntity|null;
+  isDirty: boolean;
   context: {
     locale: string;
   };
@@ -62,6 +63,7 @@ export default connect((state: State): StateProps => {
 
   return {
     enrichedEntity,
+    isDirty: state.editForm.isDirty,
     context: {
       locale
     },
