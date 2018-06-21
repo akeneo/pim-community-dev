@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\DependencyInjection\CompilerPass;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface;
@@ -32,6 +33,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             CategoryInterface::class => 'pim_catalog.entity.category.class',
             CategoryTranslationInterface::class => 'pim_catalog.entity.category_translation.class',
             CompletenessInterface::class => 'pim_catalog.entity.completeness.class',
+            GroupInterface::class => 'pim_catalog.entity.group.class',
             ProductInterface::class => 'pim_catalog.entity.product.class',
             ProductAssociationInterface::class => 'pim_catalog.entity.association.class',
             ProductModelInterface::class => 'pim_catalog.entity.product_model.class',

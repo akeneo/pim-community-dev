@@ -33,7 +33,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation:
                     onDelete: CASCADE
     manyToMany:
         groups:
-            targetEntity: Pim\Component\Catalog\Model\GroupInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
             joinTable:
                 name: pim_catalog_association_product_model_to_group
                 joinColumns:

@@ -22,7 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Component\Catalog\Model\GroupInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

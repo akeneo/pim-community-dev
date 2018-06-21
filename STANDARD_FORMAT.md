@@ -465,7 +465,7 @@ Its standard format would be the following:
 | ------------- | -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | identifier    | string         | `"bar"`                                                                   | it's the identifier of the product                                                               |
 | family        | string         | `"familyA"`                                                               | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyInterface*                    |
-| groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the objects *Pim\Component\Catalog\Model\GroupInterface*             |
+| groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the objects *Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface*             |
 | categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the objects *Akeneo\Tool\Component\Classification\Model\CategoryInterface* |
 | enabled       | boolean        | `true`                                                                    |                                                                                                  |
 | values        | array          |                                                                           | see below                                                                                        |
@@ -493,7 +493,7 @@ The structure of the array is composed as below:
 
 "X_SELL" represents the *code* of the *Pim\Component\Catalog\Model\AssociationTypeInterface*.
 
-Each element in the array "groups" represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*
+Each element in the array "groups" represents the *code* of the *Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface*
 
 Each element in the array "products" represents the *identifier* of the *Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface*
 
@@ -857,7 +857,7 @@ Its standard format would be the following:
 | family        | string         | `"familyA"`                                                               | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyInterface*                    |
 | family_variant| string         | `"familyVariantA1"`                                                       | it represents the *code* of the *Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface*             |
 | parent        | string         | `"fooProductModel"`                                                       | it represents the *code* of the *Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface*              |
-| groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
+| groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface*                     |
 | categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Tool\Component\Classification\Model\CategoryInterface* |
 | values        | array          |                                                                           | see below                                                                                        |
 | created       | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
@@ -1153,7 +1153,7 @@ Its standard format would be the following:
 | code                   | string         | `"a_date"`                         | it's the identifier of the attribute                                                                                                                                                   |
 | type                   | string         | `"pim_catalog_date"`               |                                                                                                                                                                                        |
 | labels                 | string[]       | `[0 => "A date", 1 => "Une date"]` | each key of the array represents the *code* of the *Akeneo\Channel\Component\Model\LocaleInterface*                                                                                       |
-| group                  | string         | `"other"`                          | it represents the *code* of the object *Pim\Component\Catalog\Model\GroupInterface*                                                                                                    |
+| group                  | string         | `"other"`                          | it represents the *code* of the object *Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface*                                                                                                    |
 | unique                 | boolean        | `false`                            |                                                                                                                                                                                        |
 | useable_as_grid_filter | boolean        | `true`                             |                                                                                                                                                                                        |
 | allowed_extensions     | string[]       | `[0 => "pdf", 1 => "doc"]`         | List of extensions                                                                                                                                                                     |

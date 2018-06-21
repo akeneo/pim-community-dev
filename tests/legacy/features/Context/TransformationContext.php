@@ -3,7 +3,7 @@
 namespace Context;
 
 use Pim\Behat\Context\PimContext;
-use Pim\Component\Catalog\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 
 /**

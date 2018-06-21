@@ -14,7 +14,6 @@ use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ScopableInterface;
 use Pim\Component\Catalog\Model\TimestampableInterface;
 
