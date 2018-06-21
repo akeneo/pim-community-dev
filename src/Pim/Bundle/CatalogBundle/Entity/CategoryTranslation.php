@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
-use Pim\Component\Catalog\Model\CategoryTranslationInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface;
 
 /**
  * Category translation entity

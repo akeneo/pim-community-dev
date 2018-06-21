@@ -46,7 +46,7 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
                 - treeRight
     oneToMany:
         translations:
-            targetEntity: Pim\Component\Catalog\Model\CategoryTranslationInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

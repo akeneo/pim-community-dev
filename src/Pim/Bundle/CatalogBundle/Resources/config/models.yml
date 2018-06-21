@@ -18,7 +18,7 @@ parameters:
     pim_catalog.model.metric.interface:                 Pim\Component\Catalog\Model\MetricInterface
     pim_catalog.model.product_price.interface:          Pim\Component\Catalog\Model\ProductPriceInterface
 
-    pim_catalog.model.category_translation.interface:         Pim\Component\Catalog\Model\CategoryTranslationInterface
+    pim_catalog.model.category_translation.interface:         Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface
     pim_catalog.model.family_translation.interface:           Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface
     pim_catalog.model.association_type_translation.interface: Pim\Component\Catalog\Model\AssociationTypeTranslationInterface
     pim_catalog.model.attribute_group_translation.interface:  Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface
