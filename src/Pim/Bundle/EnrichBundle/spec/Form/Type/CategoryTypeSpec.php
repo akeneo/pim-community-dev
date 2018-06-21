@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Type\CategoryType;
 use Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType;

@@ -10,6 +10,10 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Entity\CategoryTranslation` to `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation`
+- Move `Pim\Component\Catalog\Model\CategoryTranslationInterface` to `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface`
+- Move `Pim\Component\Catalog\Entity\Category` to `Akeneo\Pim\Enrichment\Component\Category\Model\Category`
+- Move `Pim\Component\Catalog\Model\CategoryInterface` to `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface`
 - Move `Pim\Component\Catalog\Model\AbstractAssociation` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation`
 - Move `Pim\Component\Catalog\Model\AssociationInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface`
 - Move `Pim\Component\Catalog\Model\ProductModelAssociation` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation`

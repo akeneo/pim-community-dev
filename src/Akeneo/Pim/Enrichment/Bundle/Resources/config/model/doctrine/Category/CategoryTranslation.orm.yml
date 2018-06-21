@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\CategoryTranslation:
+Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation:
     type: entity
     table: pim_catalog_category_translation
     changeTrackingPolicy: DEFERRED_EXPLICIT

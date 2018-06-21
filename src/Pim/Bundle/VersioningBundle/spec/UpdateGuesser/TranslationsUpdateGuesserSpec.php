@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;

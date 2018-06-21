@@ -171,7 +171,7 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\CategoryTranslation';
+        return CategoryTranslation::class;
     }
 
     /**
