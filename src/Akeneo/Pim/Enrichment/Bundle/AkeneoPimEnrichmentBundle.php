@@ -21,18 +21,17 @@ class AkeneoPimEnrichmentBundle extends Bundle
      */
     public function build(ContainerBuilder $container): void
     {
-
         $container
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
         ;
 
-        $productMappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Pim\Enrichment\Component\Product\Model'
+        $mappings = [
+            realpath(__DIR__ . '/Resources/config/model/doctrine/Product') => 'Akeneo\Pim\Enrichment\Component\Product\Model'
         ];
 
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
-                $productMappings,
+                $mappings,
                 ['doctrine.orm.entity_manager'],
                 false
             )

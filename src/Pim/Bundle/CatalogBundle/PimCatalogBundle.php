@@ -52,17 +52,5 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new RegisterLocalizersPass())
             ->addCompilerPass(new RegisterPresentersPass())
             ->addCompilerPass(new RegisterSerializerPass('pim_serializer'));
-
-        $productMappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\Catalog\Model'
-        ];
-
-        $container->addCompilerPass(
-            DoctrineOrmMappingsPass::createYamlMappingDriver(
-                $productMappings,
-                ['doctrine.orm.entity_manager'],
-                false
-            )
-        );
     }
 }
