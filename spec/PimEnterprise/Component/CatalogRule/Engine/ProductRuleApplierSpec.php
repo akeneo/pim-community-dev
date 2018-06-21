@@ -7,7 +7,6 @@ use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -33,7 +32,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
             $productsValidator,
             $productsSaver,
             $eventDispatcher,
-            $objectDetacher
+            $objectDetacher,
+            10
         );
     }
 
@@ -52,24 +52,21 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsUpdater,
         $productsValidator,
         $productsSaver,
+        $objectDetacher,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
-        CursorInterface $cursor,
-        PaginatorFactoryInterface $paginatorFactory,
-        PaginatorInterface $paginator
+        CursorInterface $cursor
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
-        $rule->getActions()->willReturn([]);
-
-        $paginator->valid()->shouldBeCalled()->willReturn(false);
-        $paginator->rewind()->shouldBeCalled()->willReturn(null);
-        $paginatorFactory->createPaginator($cursor)->shouldBeCalled()->willReturn($paginator);
-        $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
+        $cursor->rewind()->shouldBeCalled();
+        $cursor->valid()->willReturn(false);
+        $subjectSet->getSubjectsCursor()->willReturn($cursor);
 
         $productsUpdater->update(Argument::any(), Argument::any())->shouldNotBeCalled();
         $productsValidator->validate(Argument::any(), Argument::any())->shouldNotBeCalled();
         $productsSaver->save(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
         $this->apply($rule, $subjectSet);
@@ -84,43 +81,75 @@ class ProductRuleApplierSpec extends ObjectBehavior
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductInterface $selectedProduct,
-        PaginatorFactoryInterface $paginatorFactory,
-        PaginatorInterface $paginator,
         CursorInterface $cursor,
         ProductInterface $validProduct1,
         ProductInterface $validProduct2
     ) {
+        $indexPage = 0;
+
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
-        // paginator mocking
-        $productArray = [];
-        for ($i = 0; $i < 13; $i++) {
-            $productArray[] = $selectedProduct;
-        }
-        $indexPage = 0;
-        $paginator->current()->willReturn(array_slice($productArray, $indexPage * 10, 10));
-        $paginator->next()->shouldBeCalled()->will(function () use ($paginator, &$productArray, &$indexPage) {
-            $paginator->current()->willReturn(array_slice($productArray, $indexPage * 10, 10));
-            $indexPage++;
-        });
-        $paginator->rewind()->shouldBeCalled()->will(function () use (&$indexPage) {
-            $indexPage = 0;
-        });
-        $paginator->valid()->shouldBeCalled()->will(function () use (&$indexPage) {
-            return $indexPage < 3;
-        });
-
-        $paginatorFactory->createPaginator($cursor)->shouldBeCalled()->willReturn($paginator);
-        $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
-
+        $cursor->rewind()->will(
+            function () use (&$indexPage) {
+                $indexPage = 0;
+            }
+        );
+        $cursor->current()->willReturn($selectedProduct);
+        $cursor->next()->will(
+            function () use (&$indexPage) {
+                $indexPage++;
+            }
+        );
+        $cursor->valid()->will(
+            function () use (&$indexPage) {
+                return $indexPage < 13;
+            }
+        );
+        $subjectSet->getSubjectsCursor()->willReturn($cursor);
         $productsUpdater->update($rule, Argument::any())->shouldBeCalled();
         $productsValidator->validate($rule, Argument::any())->willReturn([$validProduct1, $validProduct2]);
         $productsSaver->save($rule, [$validProduct1, $validProduct2])->shouldBeCalled();
+        $objectDetacher->detach(Argument::any())->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
         $this->apply($rule, $subjectSet);
+    }
 
-        $objectDetacher->detach($selectedProduct)->shouldBeCalled();
+    function it_applies_a_rule_on_every_product_in_the_subject_set(
+        $productsUpdater,
+        $productsValidator,
+        $productsSaver,
+        $objectDetacher,
+        RuleInterface $rule,
+        RuleSubjectSetInterface $subjectSet,
+        ProductInterface $selectedProduct,
+        CursorInterface $cursor
+    ) {
+        $indexPage = 0;
+        $cursor->rewind()->will(
+            function () use (&$indexPage) {
+                $indexPage = 0;
+            }
+        );
+        $cursor->current()->willReturn($selectedProduct);
+        $cursor->next()->will(
+            function () use (&$indexPage) {
+                $indexPage++;
+            }
+        );
+        $cursor->valid()->will(
+            function () use (&$indexPage) {
+                return $indexPage < 42;
+            }
+        );
+        $subjectSet->getSubjectsCursor()->willReturn($cursor);
+
+        $productsUpdater->update($rule, Argument::type('array'))->shouldBeCalledTimes(5);
+        $productsValidator->validate($rule, Argument::type('array'))->shouldBeCalledTimes(5)->willReturnArgument(1);
+        $productsSaver->save($rule, Argument::type('array'))->shouldBeCalledTimes(5);
+        $objectDetacher->detach(Argument::type(ProductInterface::class))->shouldBeCalledTimes(42);
+
+        $this->apply($rule, $subjectSet);
     }
 }
