@@ -6,6 +6,7 @@ use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -2243,7 +2244,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\CategoryInterface
+     * @return CategoryInterface
      */
     protected function createCategory($data)
     {

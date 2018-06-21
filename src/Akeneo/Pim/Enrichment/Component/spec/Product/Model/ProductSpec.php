@@ -9,7 +9,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;

@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
 
 class CategoryNormalizerSpec extends ObjectBehavior

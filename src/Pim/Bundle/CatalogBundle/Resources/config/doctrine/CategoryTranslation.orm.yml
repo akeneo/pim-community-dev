@@ -22,7 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\CategoryTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

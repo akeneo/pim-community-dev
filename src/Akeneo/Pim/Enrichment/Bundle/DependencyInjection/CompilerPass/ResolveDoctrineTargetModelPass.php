@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\DependencyInjection\CompilerPass;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -27,6 +28,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping(): array
     {
         return [
+            CategoryInterface::class => 'pim_catalog.entity.category.class',
             CompletenessInterface::class => 'pim_catalog.entity.completeness.class',
             ProductInterface::class => 'pim_catalog.entity.product.class',
             ProductAssociationInterface::class => 'pim_catalog.entity.association.class',

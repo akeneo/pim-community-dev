@@ -56,7 +56,7 @@ Pim\Bundle\CatalogBundle\Entity\Category:
             targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
             mappedBy: category
         children:
-            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
             mappedBy: parent
             cascade:
                 - persist
@@ -64,7 +64,7 @@ Pim\Bundle\CatalogBundle\Entity\Category:
                 left: ASC
     manyToOne:
         parent:
-            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
             inversedBy: children
             joinColumns:
                 parent_id:
