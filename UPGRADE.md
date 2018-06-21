@@ -214,3 +214,7 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Valida
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\FamilyRequirementsValidator/Akeneo\\Pim\\Structure\\Component\\Validator\\Constraints\\FamilyRequirementsValidator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ImmutableVariantAxes/Akeneo\\Pim\\Structure\\Component\\Validator\\Constraints\\ImmutableVariantAxes/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ImmutableVariantAxesValidator/Akeneo\\Pim\\Structure\\Component\\Validator\\Constraints\\ImmutableVariantAxesValidator/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\GroupType/Akeneo\\Pim\\Structure\\Component\\Product\\Model\\GroupType/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\GroupTypeInterface/Akeneo\\Pim\\Structure\\Component\\Product\\Model\\GroupTypeInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\GroupTypeTranslation/Akeneo\\Pim\\Structure\\Component\\Product\\Model\\GroupTypeTranslation/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\GroupTypeTranslationInterface/Akeneo\\Pim\\Structure\\Component\\Product\\Model\\GroupTypeTranslationInterface/g'

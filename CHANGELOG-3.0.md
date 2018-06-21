@@ -241,3 +241,7 @@
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes`
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator`
 - Remove `Pim\Component\Catalog\Model\AttributeTypeTranslationInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\GroupType` to `Akeneo\Pim\Structure\Component\Product\Model\GroupType`
+- Move `Pim\Component\Catalog\Model\GroupTypeInterface` to `Akeneo\Pim\Structure\Component\Product\Model\GroupTypeInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation` to `Akeneo\Pim\Structure\Component\Product\Model\GroupTypeTranslation`
+- Move `Pim\Component\Catalog\Model\GroupTypeTranslationInterface` to `Akeneo\Pim\Structure\Component\Product\Model\GroupTypeTranslationInterface`
