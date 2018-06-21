@@ -131,7 +131,7 @@ class DatagridViewAccessManager
             return true;
         }
 
-        /** @var \Pim\Component\Catalog\Model\CategoryInterface $category */
+        /** @var \Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface $category */
         if (null === $category = $this->categoryRepository->find($categoryId)) {
             return false;
         }
