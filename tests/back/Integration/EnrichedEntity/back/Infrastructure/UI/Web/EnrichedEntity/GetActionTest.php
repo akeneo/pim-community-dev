@@ -63,7 +63,7 @@ class GetActionTest extends TestCase
             ['identifier' => 'unknown_enriched_entity'],
             'GET'
         );
-        $this->webClientHelper->assertResponse($this->client->getResponse(), '404');
+        $this->webClientHelper->assert404($this->client->getResponse());
     }
 
     protected function getConfiguration()
