@@ -5,6 +5,8 @@ namespace Pim\Behat\Context;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Currency;
 use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
@@ -37,8 +39,8 @@ class FixturesContext extends PimContext
         'Currency'         => Currency::class,
         'Family'           => Family::class,
         'FamilyVariant'    => FamilyVariant::class,
-        'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
-        'ProductCategory'  => 'PimCatalogBundle:Category',
+        'Category'         => Category::class, // TODO: To remove
+        'ProductCategory'  => Category::class,
         'AssociationType'  => 'PimCatalogBundle:AssociationType',
         'JobInstance'      => 'Akeneo\Tool\Component\Batch\Model\JobInstance',
         'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',
@@ -47,7 +49,7 @@ class FixturesContext extends PimContext
         'UserGroup'        => 'Akeneo\UserManagement\Component\Model\Group',
         'Locale'           => Locale::class,
         'GroupType'        => 'PimCatalogBundle:GroupType',
-        'Product'          => 'Akeneo\Pim\Enrichment\Component\Product\Model\Product',
+        'Product'          => Product::class,
         'ProductGroup'     => 'Pim\Bundle\CatalogBundle\Entity\Group',
     ];
 
