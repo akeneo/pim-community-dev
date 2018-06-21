@@ -37,4 +37,9 @@ class WebClientHelper
         Assert::assertEquals($statusCode, $response->getStatusCode());
         Assert::assertEquals($expectedContent, $response->getContent());
     }
+
+    public function assert404(Response $response)
+    {
+        Assert::assertEquals('404', $response->getStatusCode());
+    }
 }

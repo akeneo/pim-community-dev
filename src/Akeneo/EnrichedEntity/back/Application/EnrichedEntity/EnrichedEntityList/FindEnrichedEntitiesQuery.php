@@ -40,7 +40,7 @@ class FindEnrichedEntitiesQuery
     {
         $all = $this->enrichedEntityRepository->all();
         $items = array_map(function (EnrichedEntity $enrichedEntity) {
-            return EnrichedEntityItem::fromEntity($enrichedEntity);
+            return EnrichedEntityItem::fromEnrichedEntity($enrichedEntity);
         }, $all);
 
         return $items;

@@ -39,8 +39,11 @@ class IndexActionTest extends TestCase
      */
     public function it_returns_a_list_of_records()
     {
-        $this->webClientHelper->callRoute($this->client, self::RECORD_LIST_ROUTE,
-            ['enrichedEntityIdentifier' => 'designer']);
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::RECORD_LIST_ROUTE,
+            ['enrichedEntityIdentifier' => 'designer']
+        );
 
         $expectedContent = json_encode([
             'items' => [

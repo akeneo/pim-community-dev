@@ -10,7 +10,6 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Component\HttpFoundation\Response;
 
 class GetActionTest extends TestCase
 {
@@ -37,7 +36,11 @@ class GetActionTest extends TestCase
      */
     public function it_returns_an_enriched_entity_details()
     {
-        $this->callRoute($this->client, self::ENRICHED_ENTITIY_DETAIL_ROUTE, ['identifier' => 'designer']);
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::ENRICHED_ENTITIY_DETAIL_ROUTE,
+            ['identifier' => 'designer']
+        );
         $expectedContent = json_encode([
             'identifier' => 'designer',
             'labels'     => [
@@ -52,13 +55,13 @@ class GetActionTest extends TestCase
      */
     public function it_returns_404_not_found_when_the_identifier_does_not_exist()
     {
-        $this->callRoute(
+        $this->webClientHelper->callRoute(
             $this->client,
             self::ENRICHED_ENTITIY_DETAIL_ROUTE,
             ['identifier' => 'unknown_enriched_entity'],
             'GET'
         );
-        $this->assertResponse($this->client->getResponse(), '404', '{}');
+        $this->webClientHelper->assertResponse($this->client->getResponse(), '404', '{}');
     }
 
     protected function getConfiguration()
@@ -80,17 +83,5 @@ class GetActionTest extends TestCase
         $user = new User();
         $user->setUsername('julia');
         $this->getFromTestContainer('pim_user.repository.user')->save($user);
-    }
-
-    private function callRoute(Client $client, string $route, array $arguments = [], string $method = 'GET'): void
-    {
-        $url = $this->get('router')->generate($route, $arguments);
-        $client->request($method, $url, [], [], [], json_encode([]));
-    }
-
-    private function assertResponse(Response $response, string $statusCode, string $expectedContent = ''): void
-    {
-        $this->assertEquals($statusCode, $response->getStatusCode());
-        $this->assertEquals($expectedContent, $response->getContent());
     }
 }
