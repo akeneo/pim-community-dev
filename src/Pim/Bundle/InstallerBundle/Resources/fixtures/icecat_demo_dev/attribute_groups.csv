@@ -6,7 +6,7 @@ manufacturing;4;Manufacturing;Fabrication;Herstellung
 color;5;Color;Couleur;Farbe
 size;6;Size;Taille;Größe
 medias;7;Media;Media;Media
-erp;1;ERP;ERP;ERP
-ecommerce;4;Ecommerce;Ecommerce;Ecommerce
-product;3;Product;Produit;Product
+erp;8;ERP;ERP;ERP
+ecommerce;9;Ecommerce;Ecommerce;Ecommerce
+product;10;Product;Produit;Product
 other;100;Other;Autre;Ander
