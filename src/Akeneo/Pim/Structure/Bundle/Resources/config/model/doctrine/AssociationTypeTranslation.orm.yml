@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation:
+Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslation:
     type: entity
     table: pim_catalog_association_type_translation
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -22,7 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Component\Catalog\Model\AssociationTypeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

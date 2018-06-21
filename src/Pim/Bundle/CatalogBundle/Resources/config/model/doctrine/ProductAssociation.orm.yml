@@ -16,7 +16,7 @@ Pim\Component\Catalog\Model\ProductAssociation:
                 - association_type_id
     manyToOne:
         associationType:
-            targetEntity: Pim\Component\Catalog\Model\AssociationTypeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface
             joinColumns:
                 association_type_id:
                     referencedColumnName: id

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Doctrine\Common\Collections\Collection;
 
 /**

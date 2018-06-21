@@ -4,22 +4,10 @@ parameters:
     pim_catalog.model.value.interface:                  Pim\Component\Catalog\Model\ValueInterface
     pim_catalog.model.association.interface:            Pim\Component\Catalog\Model\AssociationInterface
     pim_catalog.model.completeness.interface:           Pim\Component\Catalog\Model\CompletenessInterface
-    pim_catalog.model.association_type.interface:       Pim\Component\Catalog\Model\AssociationTypeInterface
     pim_catalog.model.category.interface:               Pim\Component\Catalog\Model\CategoryInterface
     pim_catalog.model.group.interface:                  Pim\Component\Catalog\Model\GroupInterface
-    pim_catalog.model.attribute.interface:              Akeneo\Pim\Structure\Component\Model\AttributeInterface
-    pim_catalog.model.attribute_group.interface:        Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface
-    pim_catalog.model.attribute_option.interface:       Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface
     pim_catalog.model.attribute_option_value.interface: Pim\Component\Catalog\Model\AttributeOptionValueInterface
-    pim_catalog.model.attribute_requirement.interface:  Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface
-    pim_catalog.model.family.interface:                 Akeneo\Pim\Structure\Component\Model\FamilyInterface
-    pim_catalog.model.family_variant.interface:         Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface
     pim_catalog.model.metric.interface:                 Pim\Component\Catalog\Model\MetricInterface
     pim_catalog.model.product_price.interface:          Pim\Component\Catalog\Model\ProductPriceInterface
-
     pim_catalog.model.category_translation.interface:         Pim\Component\Catalog\Model\CategoryTranslationInterface
-    pim_catalog.model.family_translation.interface:           Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface
-    pim_catalog.model.association_type_translation.interface: Pim\Component\Catalog\Model\AssociationTypeTranslationInterface
-    pim_catalog.model.attribute_group_translation.interface:  Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface
-    pim_catalog.model.attribute_translation.interface:        Akeneo\Pim\Structure\Component\Model\AttributeTranslationInterface
     pim_catalog.model.group_translation.interface:            Pim\Component\Catalog\Model\GroupTranslationInterface

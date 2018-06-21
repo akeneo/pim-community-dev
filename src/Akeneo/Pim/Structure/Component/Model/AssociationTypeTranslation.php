@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
-use Pim\Component\Catalog\Model\AssociationTypeTranslationInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface;
 
 /**
  * Association type translation entity
