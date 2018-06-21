@@ -18,7 +18,7 @@ Pim\Bundle\CatalogBundle\Entity\GroupType:
             targetEntity: Pim\Component\Catalog\Model\GroupInterface
             mappedBy: type
         translations:
-            targetEntity: Pim\Component\Catalog\Model\GroupTypeTranslationInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\GroupTypeTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

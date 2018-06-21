@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
-use Pim\Component\Catalog\Model\GroupTypeTranslationInterface;
+use Akeneo\Pim\Structure\Component\Model\GroupTypeTranslationInterface;
 
 /**
  * Group type translation
