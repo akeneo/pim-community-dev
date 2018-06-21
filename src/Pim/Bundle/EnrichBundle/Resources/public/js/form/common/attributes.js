@@ -97,14 +97,21 @@ define(
                 __
             });
 
-            const container = fieldCollection.fields.sort(
-                (firstField, secondField) => firstField.attribute.sort_order - secondField.attribute.sort_order
-            ).reduce((container, field) => {
-                _.defer(field.render.bind(field));
-                container.appendChild(field.el);
+            const container = _(fieldCollection.fields)
+                .chain()
+                .sortBy(function(field) {
+                    return field.attribute.meta.id;
+                })
+                .sortBy(function(field) {
+                    return field.attribute.sort_order;
+                })
+                .value()
+                .reduce((container, field) => {
+                    _.defer(field.render.bind(field));
+                    container.appendChild(field.el);
 
-                return container;
-            }, document.createElement('div'));
+                    return container;
+                }, document.createElement('div'));
 
             view.appendChild(container);
 
@@ -205,11 +212,20 @@ define(
                             const locale = UserContext.get('catalogLocale');
                             const fieldsToFill = toFillFieldProvider.getMissingRequiredFields(data, scope, locale);
 
-                            const sections = _.values(
+                            attributeGroups = _.values(
                                 fields.reduce(groupFieldsBySection(attributeGroups, fieldsToFill), {})
-                            ).sort((firstSection, secondSection) =>
-                                firstSection.attributeGroup.sort_order - secondSection.attributeGroup.sort_order
                             );
+
+                            const sections = _(attributeGroups)
+                                .chain()
+                                .sortBy(function(group) {
+                                    return group.attributeGroup.meta.id;
+                                })
+                                .sortBy(function(group) {
+                                    return group.attributeGroup.sort_order;
+                                })
+                                .value();
+
                             const fieldsView = document.createElement('div');
 
                             for (const section of sections) {

@@ -119,7 +119,17 @@ define(
                     if (!_.isEmpty(this.getElements())) {
                         this.$el.html(this.template({
                             current: this.getCurrent(),
-                            elements: _.sortBy(this.getElements(), 'sort_order'),
+                            elements: _(this.getElements())
+                                .chain()
+                                .sortBy(function(group) {
+                                    if (undefined === group.meta) {
+                                        return false;
+                                    }
+
+                                    return group.meta.id;
+                                })
+                                .sortBy('sort_order')
+                                .value(),
                             badges: this.badges,
                             locale: UserContext.get('catalogLocale'),
                             toFillAttributeGroups: toFillAttributeGroups,
