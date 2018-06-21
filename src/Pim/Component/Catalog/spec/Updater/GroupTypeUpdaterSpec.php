@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 
 class GroupTypeUpdaterSpec extends ObjectBehavior
 {
@@ -23,7 +23,7 @@ class GroupTypeUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Pim\Component\Catalog\Model\GroupTypeInterface'
+                'Akeneo\Pim\Structure\Component\Model\GroupTypeInterface'
             )
         )->during(
             'update',

@@ -15,7 +15,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             unique: true
     manyToOne:
         type:
-            targetEntity: Pim\Component\Catalog\Model\GroupTypeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\GroupTypeInterface
             inversedBy: groups
             joinColumns:
                 type_id:
