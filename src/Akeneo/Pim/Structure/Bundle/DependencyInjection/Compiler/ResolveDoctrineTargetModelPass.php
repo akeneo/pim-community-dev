@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler;
 
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface;
@@ -49,6 +50,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             GroupTypeInterface::class => 'pim_catalog.entity.group_type.class',
             GroupTypeTranslationInterface::class => 'pim_catalog.entity.group_type_translation.class',
             AssociationTypeTranslationInterface::class => 'pim_catalog.entity.association_type_translation.class',
+            AssociationTypeInterface::class => 'pim_catalog.entity.association_type.class',
         ];
     }
 }
