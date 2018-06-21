@@ -187,7 +187,7 @@ class FamilyAttributeUsedAsAxisValidatorSpec extends ObjectBehavior
     function it_builds_violations_for_multiple_attributes_used_as_axis_in_multiple_family_variants(
         $context,
         ConstraintViolationBuilderInterface $violationBuilder,
-        \Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxis $familyAttributesUsedAsAxisConstraint,
+        FamilyAttributeUsedAsAxis $familyAttributesUsedAsAxisConstraint,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant1,
         FamilyVariantInterface $familyVariant2,

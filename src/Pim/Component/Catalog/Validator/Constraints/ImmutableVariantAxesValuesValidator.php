@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

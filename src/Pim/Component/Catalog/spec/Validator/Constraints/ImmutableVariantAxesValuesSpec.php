@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
+namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;

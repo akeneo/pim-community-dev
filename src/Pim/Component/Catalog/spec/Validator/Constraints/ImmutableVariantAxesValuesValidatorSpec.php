@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
+namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\UnitOfWork;
@@ -37,7 +37,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator::class);
+        $this->shouldHaveType(ImmutableVariantAxesValuesValidator::class);
     }
 
     function it_is_a_constraint_validator()
@@ -47,7 +47,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_it_does_not_validate_an_entity_with_variant(
         UserInterface $entity,
-        \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues $constraint
+        ImmutableVariantAxesValues $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [
             $entity,
@@ -68,7 +68,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
     function it_does_not_build_a_violation_if_the_entity_has_no_id(
         $context,
         ProductInterface $variantProduct,
-        \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues $constraint
+        ImmutableVariantAxesValues $constraint
     ) {
         $variantProduct->getId()->willReturn(null);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
@@ -79,7 +79,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
     function it_does_not_build_a_violation_if_the_entity_has_no_familyVariant(
         $context,
         ProductInterface $variantProduct,
-        \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues $constraint
+        ImmutableVariantAxesValues $constraint
     ) {
         $variantProduct->getId()->willReturn(42);
         $variantProduct->getFamilyVariant()->willReturn(null);
@@ -93,7 +93,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
         $attributesProvider,
         $valueCollectionFactory,
         ProductInterface $variantProduct,
-        \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues $constraint,
+        ImmutableVariantAxesValues $constraint,
         FamilyVariantInterface $familyVariant,
         AttributeInterface $sizeAttribute,
         AttributeInterface $colorAttribute,
@@ -142,13 +142,13 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
         $originalColorValue->isEqual($newColorValue)->willReturn(false);
 
         $context->buildViolation(
-            \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
+            ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
             '%variant_axis%' => 'size',
             '%provided_value%' => '[m]',
         ])->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('attribute')->willReturn($constraintViolationBuilder);
         $context->buildViolation(
-            \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
+            ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
             '%variant_axis%' => 'color',
             '%provided_value%' => '[blue]',
         ])->willReturn($constraintViolationBuilder);

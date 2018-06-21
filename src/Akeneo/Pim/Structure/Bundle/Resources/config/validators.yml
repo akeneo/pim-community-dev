@@ -30,8 +30,3 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxisValidator'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_attribute_used_as_axis }
-
-
-
-
-

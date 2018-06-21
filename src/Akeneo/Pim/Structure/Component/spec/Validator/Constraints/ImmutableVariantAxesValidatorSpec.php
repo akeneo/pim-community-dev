@@ -39,7 +39,7 @@ class ImmutableVariantAxesValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_it_does_not_validate_a_variant_attribute_set(
         \stdClass $entity,
-        \Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues $constraint
+        ImmutableVariantAxesValues $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [
             $entity,
