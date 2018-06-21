@@ -1,4 +1,4 @@
-# 2.3.x
+# 2.3.0-BETA1 (2018-06-21)
 
 ## Better manage products with variants
 
