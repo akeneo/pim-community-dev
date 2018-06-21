@@ -14,6 +14,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslationInterface;
+use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
@@ -43,6 +44,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             FamilyVariantInterface::class             => 'pim_catalog.entity.family_variant.class',
             FamilyVariantTranslationInterface::class  => 'pim_catalog.entity.family_variant_translation.class',
             VariantAttributeSetInterface::class       => 'pim_catalog.entity.variant_attribute_set.class',
+            GroupTypeInterface::class => 'pim_catalog.entity.group_type.class',
         ];
     }
 }

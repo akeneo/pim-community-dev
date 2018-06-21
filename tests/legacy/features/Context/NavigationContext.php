@@ -9,7 +9,7 @@ use Pim\Behat\Context\NavigationContext as BaseNavigationContext;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModel;
 
@@ -215,7 +215,7 @@ class NavigationContext extends BaseNavigationContext
     }
 
     /**
-     * @param GroupTypeInterface $groupType
+     * @param \Akeneo\Pim\Structure\Component\Model\GroupTypeInterface $groupType
      *
      * @Given /^I should be on the ("([^"]*)" group type) page$/
      */

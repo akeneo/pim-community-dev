@@ -5,7 +5,7 @@ namespace spec\Akeneo\Test\Acceptance\Catalog;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Catalog\InMemoryGroupTypeRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Akeneo\Pim\Structure\Component\Model\GroupType;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Prophecy\Argument;
 
