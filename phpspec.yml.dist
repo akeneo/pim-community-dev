@@ -39,6 +39,13 @@ suites:
         spec_path: src/Akeneo/Pim/Enrichment/Bundle
         src_path: src/Akeneo/Pim/Enrichment/Bundle
 
+    ## Enrichment context
+    Enrichment:
+        namespace: Akeneo\Pim\Enrichment\Component
+        psr4_prefix: Akeneo\Pim\Enrichment\Component
+        spec_path: src/Akeneo/Pim/Enrichment/Component
+        src_path: src/Akeneo/Pim/Enrichment/Component
+
     ## Akeneo Components
     Analytics:
         namespace: Akeneo\Tool\Component\Analytics
