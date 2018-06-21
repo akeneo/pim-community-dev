@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
@@ -169,6 +171,23 @@ class Client
         ];
 
         return $this->client->search($params);
+    }
+
+    /**
+     * @param string $indexType
+     * @param array  $body
+     *
+     * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html}
+     */
+    public function msearch(string $indexType, array $body): array
+    {
+        $params = [
+            'index' => $this->indexName,
+            'type' => $indexType,
+            'body' => $body,
+        ];
+
+        return $this->client->msearch($params);
     }
 
     /**

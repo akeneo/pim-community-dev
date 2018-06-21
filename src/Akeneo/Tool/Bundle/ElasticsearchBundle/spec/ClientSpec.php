@@ -96,6 +96,67 @@ class ClientSpec extends ObjectBehavior
         $this->search('an_index_type', ['a key' => 'a value']);
     }
 
+    public function it_multi_searches_documents($client)
+    {
+        $client->msearch(
+            [
+                'index' => 'an_index_name',
+                'type'  => 'an_index_type',
+                'body'  => [
+                    ['index' => 'another_index_name', 'type' => 'another_index_type'],
+                    ['size' => 0, 'query' => ['match_all' => (object)[]]],
+                    [],
+                    ['size' => 0, 'query' => ['match_all' => (object)[]]],
+                ]
+            ]
+        )->willReturn([
+            [
+                'took' => 51,
+                'timed_out' => false,
+                '_shards' => [
+                    'total' => 5,
+                    'successful' => 5,
+                    'failed' => 0
+                ],
+                [
+                    'took' => 53,
+                    'timed_out' => false,
+                    '_shards' => [
+                        'total' => 7,
+                        'successful' => 5,
+                        'failed' => 0
+                    ]
+                ]
+            ]
+        ]);
+
+        $this->msearch('an_index_type', [
+            ['index' => 'another_index_name', 'type' => 'another_index_type'],
+            ['size' => 0, 'query' => ['match_all' => (object)[]]],
+            [],
+            ['size' => 0, 'query' => ['match_all' => (object)[]]],
+        ])->shouldReturn([
+            [
+                'took' => 51,
+                'timed_out' => false,
+                '_shards' => [
+                    'total' => 5,
+                    'successful' => 5,
+                    'failed' => 0
+                ],
+                [
+                    'took' => 53,
+                    'timed_out' => false,
+                    '_shards' => [
+                        'total' => 7,
+                        'successful' => 5,
+                        'failed' => 0
+                    ]
+                ]
+            ]
+        ]);
+    }
+
     public function it_deletes_a_document($client)
     {
         $client->delete(
