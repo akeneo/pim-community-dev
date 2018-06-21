@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslation;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Type\TranslatableFieldType;
 use Symfony\Component\Form\AbstractType;

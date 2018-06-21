@@ -8,7 +8,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterfa
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Component\Catalog\Model\AbstractAssociation;
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;

@@ -491,7 +491,7 @@ The structure of the array is composed as below:
           ]
         ]
 
-"X_SELL" represents the *code* of the *Pim\Component\Catalog\Model\AssociationTypeInterface*.
+"X_SELL" represents the *code* of the *Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface*.
 
 Each element in the array "groups" represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*
 

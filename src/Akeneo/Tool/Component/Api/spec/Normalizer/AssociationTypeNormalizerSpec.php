@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Component\Api\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Api\Normalizer\AssociationTypeNormalizer;
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssociationTypeNormalizerSpec extends ObjectBehavior

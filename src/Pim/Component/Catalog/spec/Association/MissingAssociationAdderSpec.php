@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Association;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Association\AssociationClassResolver;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\ProductModelAssociation;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 use Prophecy\Argument;

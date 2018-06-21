@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Validation;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

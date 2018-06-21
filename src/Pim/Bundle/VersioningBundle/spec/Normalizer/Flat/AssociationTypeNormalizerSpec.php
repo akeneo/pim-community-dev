@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Normalizer\Standard\AssociationTypeNormalizer;
 use Prophecy\Argument;
 
