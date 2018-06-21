@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
