@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Validator\Constraints;
+namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

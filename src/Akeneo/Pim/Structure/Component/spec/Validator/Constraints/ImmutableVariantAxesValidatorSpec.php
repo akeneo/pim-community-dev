@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Validator\Constraints;
+namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -8,8 +8,8 @@ use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSet;
-use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes;
-use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator;
 use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;

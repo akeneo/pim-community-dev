@@ -141,12 +141,14 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
         $originalSizeValue->isEqual($newSizeValue)->willReturn(false);
         $originalColorValue->isEqual($newColorValue)->willReturn(false);
 
-        $context->buildViolation(ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
+        $context->buildViolation(
+            ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
             '%variant_axis%' => 'size',
             '%provided_value%' => '[m]',
         ])->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('attribute')->willReturn($constraintViolationBuilder);
-        $context->buildViolation(ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
+        $context->buildViolation(
+            ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
             '%variant_axis%' => 'color',
             '%provided_value%' => '[blue]',
         ])->willReturn($constraintViolationBuilder);

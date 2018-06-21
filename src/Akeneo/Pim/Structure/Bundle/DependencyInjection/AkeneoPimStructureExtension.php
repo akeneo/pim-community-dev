@@ -33,5 +33,8 @@ class AkeneoPimStructureExtension extends Extension
         $loader->load('array_converters.yml');
         $loader->load('readers.yml');
         $loader->load('writers.yml');
+        $loader->load('entities.yml');
+        $loader->load('managers.yml');
+        $loader->load('validators.yml');
     }
 }

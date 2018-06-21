@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Validator\Constraints;
+namespace spec\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes;
 use Symfony\Component\Validator\Constraint;
 
 class ImmutableVariantAxesSpec extends ObjectBehavior

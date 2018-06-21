@@ -1,0 +1,5 @@
+services:
+    pim_catalog.manager.attribute_options_sorter:
+        class: 'Akeneo\Pim\Structure\Component\Manager\AttributeOptionsSorter'
+        arguments:
+            - '@pim_catalog.saver.attribute_option'

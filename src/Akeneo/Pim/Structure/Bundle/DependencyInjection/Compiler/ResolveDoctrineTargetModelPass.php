@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Structure\Bundle\DependencyInjection\CompilerPass;
+namespace Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslationInterface;

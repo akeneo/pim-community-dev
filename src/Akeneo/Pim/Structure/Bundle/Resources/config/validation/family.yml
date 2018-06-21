@@ -4,10 +4,10 @@ Akeneo\Pim\Structure\Component\Model\Family:
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
-        - Pim\Component\Catalog\Validator\Constraints\FamilyRequirements: ~
-        - Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabel: ~
-        - Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsImage: ~
-        - Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxis: ~
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyRequirements: ~
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsLabel: ~
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsImage: ~
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxis: ~
     properties:
         code:
             - NotBlank: ~
