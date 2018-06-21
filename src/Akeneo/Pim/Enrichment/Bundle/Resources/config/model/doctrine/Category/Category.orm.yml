@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\Category:
+Akeneo\Pim\Enrichment\Component\Category\Model\Category:
     type: entity
     table: pim_catalog_category
     changeTrackingPolicy: DEFERRED_EXPLICIT

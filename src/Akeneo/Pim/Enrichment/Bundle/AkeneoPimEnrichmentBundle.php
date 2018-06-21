@@ -26,7 +26,8 @@ class AkeneoPimEnrichmentBundle extends Bundle
         ;
 
         $mappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine/Product') => 'Akeneo\Pim\Enrichment\Component\Product\Model'
+            realpath(__DIR__ . '/Resources/config/model/doctrine/Product') => 'Akeneo\Pim\Enrichment\Component\Product\Model',
+            realpath(__DIR__ . '/Resources/config/model/doctrine/Category') => 'Akeneo\Pim\Enrichment\Component\Category\Model'
         ];
 
         $container->addCompilerPass(

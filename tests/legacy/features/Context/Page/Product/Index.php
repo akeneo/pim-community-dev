@@ -5,7 +5,7 @@ namespace Context\Page\Product;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Grid;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 
 /**
  * Product index page
