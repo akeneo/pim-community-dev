@@ -12,6 +12,8 @@
 - add normalizer for enriched entity
 - use decorator for acceptance tests front
 - add session storage for tab situation
+- rework acceptance tests when the locale switcher will work
+- fix the form to take into account what the backend answered
 
 DONE:
 

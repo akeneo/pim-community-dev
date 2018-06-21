@@ -11,15 +11,16 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > record', () => {
 
   it('It search for records', async () => {
     page.on('request', interceptedRequest => {
-      if ('http://pim.com/rest/enriched_entity/designer/record' === interceptedRequest.url() &&
+      if (
+        'http://pim.com/rest/enriched_entity/designer/record' === interceptedRequest.url() &&
         'GET' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
           contentType: 'application/json',
           body: JSON.stringify({
             items: [],
-            total: 0
-          })
+            total: 0,
+          }),
         });
       }
     });
@@ -28,15 +29,13 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > record', () => {
       const fetcher = require('akeneoenrichedentity/infrastructure/fetcher/record').default;
 
       return await fetcher.search({
-        filters: [
-          {value: 'designer'}
-        ]
+        filters: [{value: 'designer'}],
       });
     });
 
     expect(response).toEqual({
       items: [],
-      total: 0
+      total: 0,
     });
   });
 });

@@ -1,7 +1,11 @@
 import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import {enrichedEntitySaved, enrichedEntityReceived, enrichedEntityUpdated} from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
+import {
+  enrichedEntitySaved,
+  enrichedEntityReceived,
+  enrichedEntityUpdated,
+} from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
 
 describe('akeneo > enriched entity > domain > event > enriched entity --- edit', () => {
   test('I can create a enrichedEntityReceived event', () => {

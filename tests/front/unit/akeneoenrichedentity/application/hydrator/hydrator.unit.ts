@@ -36,14 +36,16 @@ describe('akeneo > enriched entity > application > hydrator --- hydrator', () =>
 
   test('I can validate the presence of keys in an object', () => {
     expect(() => {
-      validateKeys({name: 'didier', age: 20}, ['name', 'height', 'parents'], '')
+      validateKeys({name: 'didier', age: 20}, ['name', 'height', 'parents'], '');
     }).toThrow();
     expect(validateKeys({name: 'didier', age: 20, height: 160}, ['name', 'age'], '')).toBeUndefined();
   });
 
   test('I can throw InvalidRawObjectError', () => {
     expect(() => {
-      throw new InvalidRawObjectError('The provided raw enriched entity seems to be malformed.', ['name'], ['height'], {age: 12});
+      throw new InvalidRawObjectError('The provided raw enriched entity seems to be malformed.', ['name'], ['height'], {
+        age: 12,
+      });
     }).toThrow();
   });
 });
