@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 
 /**
  * Association type entity
