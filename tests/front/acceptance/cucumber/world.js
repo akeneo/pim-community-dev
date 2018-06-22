@@ -10,7 +10,7 @@ module.exports = function(cucumber) {
   const {Before, After, Status } = cucumber;
 
   Before({timeout: 10 * 1000}, async function() {
-    this.baseUrl = 'http://pim.com/';
+    this.baseUrl = 'http://pim.com';
     this.browser = await puppeteer.launch({
       ignoreHTTPSErrors: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -30,7 +30,7 @@ module.exports = function(cucumber) {
     });
 
     this.page.on('request', request => {
-      if (request.url() === this.baseUrl) {
+      if (request.url() === `${this.baseUrl}/`) {
         request.respond({
           contentType: 'text/html',
           body: htmlTemplate
