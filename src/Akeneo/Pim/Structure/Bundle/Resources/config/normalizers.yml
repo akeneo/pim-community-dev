@@ -165,3 +165,18 @@ services:
             - '@pim_catalog.normalizer.standard.attribute_group'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_enrich.normalizer.group_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\GroupTypeNormalizer'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_enrich.provider.structure_version.group_type'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_catalog.normalizer.standard.group_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\GroupTypeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

@@ -12,7 +12,6 @@ parameters:
     pim_catalog.normalizer.standard.association_type.class: Pim\Component\Catalog\Normalizer\Standard\AssociationTypeNormalizer
     pim_catalog.normalizer.standard.category.class: Pim\Component\Catalog\Normalizer\Standard\CategoryNormalizer
     pim_catalog.normalizer.standard.group.class: Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer
-    pim_catalog.normalizer.standard.group_type.class: Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer
     pim_catalog.normalizer.standard.translation.class: Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer
     pim_catalog.normalizer.standard.job_instance.class: Akeneo\Tool\Component\Batch\Normalizer\Standard\JobInstanceNormalizer
 
@@ -96,13 +95,6 @@ services:
 
     pim_catalog.normalizer.standard.group:
         class: '%pim_catalog.normalizer.standard.group.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.translation'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_catalog.normalizer.standard.group_type:
-        class: '%pim_catalog.normalizer.standard.group_type.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
         tags:
