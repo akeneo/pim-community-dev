@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\Product:
+Akeneo\Pim\Enrichment\Component\Product\Model\Product:
     group_sequence:
         - Product
         - VariantProduct

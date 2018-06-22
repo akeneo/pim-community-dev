@@ -1,4 +1,4 @@
-Pim\Component\Catalog\Model\ProductModel:
+Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
     group_sequence:
         - ProductModel
         - UniqueAxis
