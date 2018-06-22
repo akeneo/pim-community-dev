@@ -3,8 +3,8 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 /**
  * Attribute option update guesser
