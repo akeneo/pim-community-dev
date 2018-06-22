@@ -53,4 +53,4 @@ extensions:
             token_save_pre_activation_title: pimee_suggest_data.pim_dot_ai.token.save.to_activate
             token_save_post_activation_title:  pimee_suggest_data.pim_dot_ai.token.save.activated
             activation_url: pimee_suggest_data_pim_dot_ai_connection_save
-            code: pim-dot-ai-connection
+            code: pim-dot-ai
