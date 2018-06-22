@@ -7,9 +7,10 @@ import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/en
 import createStore from 'akeneoenrichedentity/infrastructure/store';
 import enrichedEntityReducer from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
-import { enrichedEntityReceived } from 'akeneoenrichedentity/domain/event/show.ts';
+import { enrichedEntityReceived } from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
 import { catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged } from 'akeneoenrichedentity/domain/event/user';
-import { setUpSidebar } from "akeneoenrichedentity/application/action/enriched-entity/sidebar";
+import { setUpSidebar } from 'akeneoenrichedentity/application/action/enriched-entity/sidebar';
+import { updateRecordResults } from 'akeneoenrichedentity/application/action/record/search';
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
@@ -25,6 +26,7 @@ class EnrichedEntityEditController extends BaseController {
         store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
         store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
         store.dispatch(setUpSidebar() as any);
+        store.dispatch(updateRecordResults());
 
         mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-enriched-entity' });
 

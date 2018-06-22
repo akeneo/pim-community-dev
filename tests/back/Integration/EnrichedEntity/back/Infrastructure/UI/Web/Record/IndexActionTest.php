@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends TestCase
 {
-    private const RECORD_LIST_ROUTE = 'akeneo_enriched_entities_records_index_rest';
+    private const RECORD_LIST_ROUTE = 'akeneo_enriched_entities_record_index_rest';
 
     /** @var Client */
     private $client;

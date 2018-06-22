@@ -12,8 +12,11 @@ export interface Query {
   filters: QueryFilter[];
 }
 
-export default interface Fetcher<Entity> {
+export interface SearchFetcher<Entity> {
+  search: (query: Query) => Promise<{items: Entity[]; total: number}>;
+}
+
+export default interface Fetcher<Entity> extends SearchFetcher<Entity> {
   fetch: (identifier: string) => Promise<Entity>;
   fetchAll: () => Promise<Entity[]>;
-  search: (query: Query) => Promise<{items: Entity[]; total: number}>;
 }

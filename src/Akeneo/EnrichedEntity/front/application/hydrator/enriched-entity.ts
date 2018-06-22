@@ -1,24 +1,7 @@
 import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import LabelCollection, {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-
-class InvalidRawObject extends Error {
-  constructor(message: string, expectedKeys: string[], invalidKeys: string[], malformedObject: any) {
-    super(`${message}
-Expected keys are ${expectedKeys.join(', ')}
-Received object:
-${JSON.stringify(malformedObject)}
-Invalid keys: ${invalidKeys.join(', ')}`);
-  }
-}
-
-const validateKeys = (object: any, keys: string[]) => {
-  const invalidKeys = keys.filter((key: string) => undefined === object[key]);
-
-  if (0 !== invalidKeys.length) {
-    throw new InvalidRawObject('The provided raw enriched entity seems to be malformed.', keys, invalidKeys, object);
-  }
-};
+import {validateKeys} from 'akeneoenrichedentity/application/hydrator/hydrator';
 
 export const hydrator = (
   createEnrichedEntity: (identifier: Identifier, labelCollection: LabelCollection) => EnrichedEntity,
@@ -27,7 +10,7 @@ export const hydrator = (
 ) => (backendEnrichedEntity: any): EnrichedEntity => {
   const expectedKeys = ['identifier', 'labels'];
 
-  validateKeys(backendEnrichedEntity, expectedKeys);
+  validateKeys(backendEnrichedEntity, expectedKeys, 'The provided raw enriched entity seems to be malformed.');
 
   const identifier = createIdentifier(backendEnrichedEntity.identifier);
   const labelCollection = createLabelCollection(backendEnrichedEntity.labels);
