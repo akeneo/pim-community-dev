@@ -38,8 +38,8 @@ class MassUploadIntoAssetCollectionProcessor
     /** @var ImporterInterface */
     protected $importer;
 
-    /** @var BuildAsset */
-    protected $buildAsset;
+    /** @var AssetBuilder */
+    protected $assetBuilder;
 
     /** @var SaverInterface */
     protected $assetSaver;
@@ -58,7 +58,7 @@ class MassUploadIntoAssetCollectionProcessor
 
     /**
      * @param ImporterInterface             $importer
-     * @param BuildAsset                    $buildAsset
+     * @param AssetBuilder                  $assetBuilder
      * @param SaverInterface                $assetSaver
      * @param EventDispatcherInterface      $eventDispatcher
      * @param RetrieveAssetGenerationErrors $assetGenerationErrors
@@ -67,7 +67,7 @@ class MassUploadIntoAssetCollectionProcessor
      */
     public function __construct(
         ImporterInterface $importer,
-        BuildAsset $buildAsset,
+        AssetBuilder $assetBuilder,
         SaverInterface $assetSaver,
         EventDispatcherInterface $eventDispatcher,
         RetrieveAssetGenerationErrors $assetGenerationErrors,
@@ -75,7 +75,7 @@ class MassUploadIntoAssetCollectionProcessor
         AddAssetToEntityWithValues $addAssetToEntityWithValues
     ) {
         $this->importer = $importer;
-        $this->buildAsset = $buildAsset;
+        $this->assetBuilder = $assetBuilder;
         $this->assetSaver = $assetSaver;
         $this->eventDispatcher = $eventDispatcher;
         $this->retrieveAssetGenerationErrors = $assetGenerationErrors;
@@ -99,7 +99,7 @@ class MassUploadIntoAssetCollectionProcessor
         $importedAssetCodes = [];
         foreach ($importedFiles as $file) {
             try {
-                $asset = $this->buildAsset->fromFile($file);
+                $asset = $this->assetBuilder->buildFromFile($file);
                 $reason = null === $asset->getId() ? UploadMessages::STATUS_NEW : UploadMessages::STATUS_UPDATED;
 
                 $this->assetSaver->save($asset);

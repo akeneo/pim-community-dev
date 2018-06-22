@@ -23,7 +23,7 @@ use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Upload\ImporterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\EntityToAddAssetsInto;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetToEntityWithValues;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\BuildAsset;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AssetBuilder;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\RetrieveAssetGenerationErrors;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
@@ -38,7 +38,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
 {
     function let(
         ImporterInterface $importer,
-        BuildAsset $buildAsset,
+        AssetBuilder $buildAsset,
         SaverInterface $assetSaver,
         EventDispatcherInterface $eventDispatcher,
         RetrieveAssetGenerationErrors $retrieveAssetGenerationErrors,
@@ -76,7 +76,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         $addAssetTo = new EntityToAddAssetsInto(666, 'asset_collection');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $buildAsset->fromFile($importedFile)->willReturn($asset);
+        $buildAsset->buildFromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(42);
         $asset->getCode()->willReturn('asset_code');
 
@@ -116,7 +116,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         $addAssetTo = new EntityToAddAssetsInto(666, 'asset_collection');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $buildAsset->fromFile($importedFile)->willReturn($asset);
+        $buildAsset->buildFromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(null);
         $asset->getCode()->willReturn('asset_code');
 
@@ -156,7 +156,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         $addAssetTo = new EntityToAddAssetsInto(666, 'asset_collection');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $buildAsset->fromFile($importedFile)->willReturn($asset);
+        $buildAsset->buildFromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(42);
         $asset->getCode()->willReturn('asset_code');
 
@@ -197,7 +197,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         $exception = new \Exception('A fatal error!');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $buildAsset->fromFile($importedFile)->willThrow($exception);
+        $buildAsset->buildFromFile($importedFile)->willThrow($exception);
 
         $assetSaver->save(Argument::any())->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();
@@ -230,7 +230,7 @@ class MassUploadIntoAssetCollectionProcessorSpec extends ObjectBehavior
         $addAssetTo = new EntityToAddAssetsInto(666, 'asset_collection');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $buildAsset->fromFile($importedFile)->willReturn($asset);
+        $buildAsset->buildFromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(null);
         $asset->getCode()->willReturn('asset_code');
 

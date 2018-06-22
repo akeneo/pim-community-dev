@@ -21,7 +21,7 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Upload\ImporterInterface;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\BuildAsset;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AssetBuilder;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\RetrieveAssetGenerationErrors;
 use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
@@ -36,7 +36,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
 {
     function let(
         ImporterInterface $importer,
-        BuildAsset $buildAsset,
+        AssetBuilder $buildAsset,
         SaverInterface $assetSaver,
         EventDispatcherInterface $eventDispatcher,
         RetrieveAssetGenerationErrors $retrieveAssetGenerationErrors,
@@ -70,7 +70,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $buildAsset->fromFile($importedFile)->willReturn($asset);
+        $buildAsset->buildFromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(42);
 
         $assetSaver->save($asset)->shouldBeCalled();
@@ -105,7 +105,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $buildAsset->fromFile($importedFile)->willReturn($asset);
+        $buildAsset->buildFromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(null);
 
         $assetSaver->save($asset)->shouldBeCalled();
@@ -140,7 +140,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $uploadContext = new UploadContext('/tmp/pim/file_storage', 'username');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $buildAsset->fromFile($importedFile)->willReturn($asset);
+        $buildAsset->buildFromFile($importedFile)->willReturn($asset);
         $asset->getId()->willReturn(42);
 
         $assetSaver->save($asset)->shouldBeCalled();
@@ -175,7 +175,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $exception = new \Exception('A fatal error!');
 
         $importer->getImportedFiles($uploadContext)->willReturn([$importedFile]);
-        $buildAsset->fromFile($importedFile)->willThrow($exception);
+        $buildAsset->buildFromFile($importedFile)->willThrow($exception);
 
         $assetSaver->save(Argument::any())->shouldNotBeCalled();
         $eventDispatcher->dispatch(Argument::cetera())->shouldNotBeCalled();

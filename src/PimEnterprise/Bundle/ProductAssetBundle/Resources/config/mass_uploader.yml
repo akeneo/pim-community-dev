@@ -18,8 +18,8 @@ services:
             - '@pimee_product_asset.upload_checker'
             - '@akeneo_file_storage.file_storage.file.file_storer'
 
-    pimee_product_asset.mass_upload.build_asset:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\BuildAsset'
+    pimee_product_asset.mass_upload.builder.asset:
+        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\AssetBuilder'
         arguments:
             - '@pimee_product_asset.upload_checker'
             - '@pimee_product_asset.factory.asset'
@@ -53,7 +53,7 @@ services:
         class: '%pimee_product_asset.mass_upload_processor.class%'
         arguments:
             - '@pimee_product_asset.upload_importer'
-            - '@pimee_product_asset.mass_upload.build_asset'
+            - '@pimee_product_asset.mass_upload.builder.asset'
             - '@pimee_product_asset.saver.asset'
             - '@event_dispatcher'
             - '@pimee_product_asset.mass_upload.retrieve_asset_generation_errors'
@@ -63,7 +63,7 @@ services:
         class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor'
         arguments:
             - '@pimee_product_asset.upload_importer'
-            - '@pimee_product_asset.mass_upload.build_asset'
+            - '@pimee_product_asset.mass_upload.builder.asset'
             - '@pimee_product_asset.saver.asset'
             - '@event_dispatcher'
             - '@pimee_product_asset.mass_upload.retrieve_asset_generation_errors'
@@ -74,7 +74,7 @@ services:
         class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor'
         arguments:
             - '@pimee_product_asset.upload_importer'
-            - '@pimee_product_asset.mass_upload.build_asset'
+            - '@pimee_product_asset.mass_upload.builder.asset'
             - '@pimee_product_asset.saver.asset'
             - '@event_dispatcher'
             - '@pimee_product_asset.mass_upload.retrieve_asset_generation_errors'

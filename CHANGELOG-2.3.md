@@ -1,3 +1,7 @@
+# 2.3.x
+
+- PIM-7457: Revert PIM-7446, updating asset during mass upload is a needed functionality.
+
 # 2.3.0-BETA1 (2018-06-21)
 
 ## Better manage products with variants
@@ -13,8 +17,9 @@
 ## Improve the asset management
 
 - PIM-7405: As Julia, I would like to order the assets linked to the products in the asset collection in the product form.
-- PIM-7397: Add asset collection preview on the product edit form
+- PIM-7397: Add asset collection preview on the product edit form.
 - PIM-7407: As Julia, I would like to upload assets linked to products directly from the Product Form in the asset collection.
+- PIM-7446: As Julia, if I mass upload an asset which has the same name than another asset in the PIM, I would like it to be well created.
 
 ## Improve Julia's experience
 
@@ -35,11 +40,7 @@
     `PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface`,
     `Akeneo\Component\FileStorage\File\FileStorerInterface`,
     and `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`,
-    and add `PimEnterprise\Component\ProductAsset\Upload\MassUpload\BuildAsset` and `PimEnterprise\Component\ProductAsset\Upload\MassUpload\RetrieveAssetGenerationErrors` as new arguments.
-
-## Improve Julia's experience
-
-- PIM-7446: As Julia, if I mass upload an asset which has the same name than another asset in the PIM, I would like it to be well created.
+    and add `PimEnterprise\Component\ProductAsset\Upload\MassUpload\AssetBuilder` and `PimEnterprise\Component\ProductAsset\Upload\MassUpload\RetrieveAssetGenerationErrors` as new arguments.
 
 # 2.3.0-ALPHA2 (2018-06-07)
 

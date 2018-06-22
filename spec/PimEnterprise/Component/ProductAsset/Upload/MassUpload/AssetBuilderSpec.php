@@ -15,6 +15,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
@@ -22,23 +23,22 @@ use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException;
 use PimEnterprise\Component\ProductAsset\Upload\ParsedFilenameInterface;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\BuildAsset;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AssetBuilder;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use Prophecy\Argument;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class BuildAssetSpec extends ObjectBehavior
+class AssetBuilderSpec extends ObjectBehavior
 {
     function let(
         UploadCheckerInterface $uploadChecker,
         AssetFactory $assetFactory,
-        AssetRepositoryInterface $assetRepository,
+        IdentifiableObjectRepositoryInterface $assetRepository,
         FilesUpdaterInterface $filesUpdater,
         FileStorerInterface $fileStorer,
         LocaleRepositoryInterface $localeRepository
@@ -55,7 +55,41 @@ class BuildAssetSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(BuildAsset::class);
+        $this->shouldHaveType(AssetBuilder::class);
+    }
+
+    function it_adds_an_imported_file_to_an_asset(
+        $uploadChecker,
+        $assetFactory,
+        $assetRepository,
+        $filesUpdater,
+        $fileStorer,
+        $localeRepository,
+        ParsedFilenameInterface $parsedFilename,
+        AssetInterface $asset,
+        FileInfoInterface $storedFile,
+        ReferenceInterface $assetReference
+    ) {
+        $file = new \SplFileInfo('file_name.jpg');
+
+        $uploadChecker->getParsedFilename('file_name.jpg')->willReturn($parsedFilename);
+        $uploadChecker->validateFilenameFormat($parsedFilename)->shouldBeCalled();
+        $parsedFilename->getAssetCode()->willReturn('file_name');
+        $parsedFilename->getLocaleCode()->willReturn(null);
+        $localeRepository->findOneBy(Argument::any())->shouldNotBeCalled();
+
+        $assetRepository->findOneByIdentifier('file_name')->willReturn($asset);
+        $assetFactory->create()->shouldNotBeCalled();
+        $assetFactory->createReferences(Argument::cetera())->shouldNotBeCalled();
+
+        $fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true)->willReturn($storedFile);
+
+        $asset->getReference(null)->willReturn($assetReference);
+        $assetReference->setFileInfo($storedFile)->shouldBeCalled();
+        $filesUpdater->resetAllVariationsFiles($assetReference, true)->shouldBeCalled();
+        $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
+
+        $this->buildFromFile($file)->shouldReturn($asset);
     }
 
     function it_adds_an_imported_file_to_a_new_asset(
@@ -90,45 +124,7 @@ class BuildAssetSpec extends ObjectBehavior
         $filesUpdater->resetAllVariationsFiles($assetReference, true)->shouldBeCalled();
         $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
 
-        $this->fromFile($file)->shouldReturn($asset);
-    }
-
-    function it_adds_an_imported_file_to_a_new_asset_with_an_automatically_generated_code(
-        $uploadChecker,
-        $assetFactory,
-        $assetRepository,
-        $filesUpdater,
-        $fileStorer,
-        $localeRepository,
-        ParsedFilenameInterface $parsedFilename,
-        AssetInterface $asset,
-        FileInfoInterface $storedFile,
-        ReferenceInterface $assetReference
-    ) {
-        $file = new \SplFileInfo('file_name.jpg');
-
-        $uploadChecker->getParsedFilename('file_name.jpg')->willReturn($parsedFilename);
-        $uploadChecker->validateFilenameFormat($parsedFilename)->shouldBeCalled();
-        $parsedFilename->getAssetCode()->willReturn('file_name');
-        $parsedFilename->getLocaleCode()->willReturn(null);
-        $localeRepository->findOneBy(Argument::any())->shouldNotBeCalled();
-
-        $assetRepository->findOneByIdentifier('file_name')->willReturn($asset);
-        $asset->getCode()->willReturn('file_name');
-        $assetRepository->findSimilarCodes('file_name')->willReturn(['file_name']);
-
-        $assetFactory->create()->willReturn($asset);
-        $asset->setCode('file_name_1')->shouldBeCalled();
-        $assetFactory->createReferences($asset, false)->shouldBeCalled();
-
-        $fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true)->willReturn($storedFile);
-
-        $asset->getReference(null)->willReturn($assetReference);
-        $assetReference->setFileInfo($storedFile)->shouldBeCalled();
-        $filesUpdater->resetAllVariationsFiles($assetReference, true)->shouldBeCalled();
-        $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
-
-        $this->fromFile($file)->shouldReturn($asset);
+        $this->buildFromFile($file)->shouldReturn($asset);
     }
 
     function it_adds_an_imported_file_to_a_new_localized_asset(
@@ -164,7 +160,7 @@ class BuildAssetSpec extends ObjectBehavior
         $filesUpdater->resetAllVariationsFiles($assetReference, true)->shouldBeCalled();
         $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
 
-        $this->fromFile($file)->shouldReturn($asset);
+        $this->buildFromFile($file)->shouldReturn($asset);
     }
 
     function it_does_not_add_an_imported_file_to_an_asset_without_reference(
@@ -186,10 +182,9 @@ class BuildAssetSpec extends ObjectBehavior
         $parsedFilename->getLocaleCode()->willReturn(null);
         $localeRepository->findOneBy(Argument::any())->shouldNotBeCalled();
 
-        $assetRepository->findOneByIdentifier('file_name')->willReturn(null);
-        $assetFactory->create()->willReturn($asset);
-        $asset->setCode('file_name')->shouldBeCalled();
-        $assetFactory->createReferences($asset, false)->shouldBeCalled();
+        $assetRepository->findOneByIdentifier('file_name')->willReturn($asset);
+        $assetFactory->create()->shouldNotBeCalled();
+        $assetFactory->createReferences(Argument::cetera())->shouldNotBeCalled();
 
         $fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true)->willReturn($storedFile);
 
@@ -197,7 +192,7 @@ class BuildAssetSpec extends ObjectBehavior
         $filesUpdater->resetAllVariationsFiles(Argument::cetera())->shouldNotBeCalled();
         $filesUpdater->updateAssetFiles($asset)->shouldBeCalled();
 
-        $this->fromFile($file)->shouldReturn($asset);
+        $this->buildFromFile($file)->shouldReturn($asset);
     }
 
     function it_throws_an_exception_if_parsed_file_name_is_not_valid(
@@ -209,6 +204,6 @@ class BuildAssetSpec extends ObjectBehavior
         $uploadChecker->getParsedFilename('file_name.jpg')->willReturn($parsedFilename);
         $uploadChecker->validateFilenameFormat($parsedFilename)->willThrow(UploadException::class);
 
-        $this->shouldThrow(UploadException::class)->during('fromFile', [$file]);
+        $this->shouldThrow(UploadException::class)->during('buildFromFile', [$file]);
     }
 }
