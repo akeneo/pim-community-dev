@@ -46,7 +46,7 @@ stage("Build") {
         }
     }
     milestone 2
-
+    withCredentials([[$class: 'FileBinding', credentialsId:"google-akeneo-ci", variable: 'GOOGLE_APPLICATION_CREDENTIALS']]) {
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
         parallel(
             "pim-ce": {
@@ -78,7 +78,7 @@ stage("Build") {
                 }
             }
         )
-    }
+    }}
 }
 
 stage("Test") {
