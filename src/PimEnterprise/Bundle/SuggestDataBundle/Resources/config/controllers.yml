@@ -4,3 +4,9 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pimee_suggest_data.data_provider.factory'
+
+    pimee_suggest_data.controller.identifiers_mapping:
+        class: PimEnterprise\Bundle\SuggestDataBundle\Controller\IdentifiersMappingController
+        arguments:
+           - '@pimee_suggest_data.application.manage_mapping'
+           - '@translator'

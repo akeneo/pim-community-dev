@@ -50,6 +50,17 @@ services:
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
         class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryEnrichedEntityRepository
 
+    akeneo_ee_integration_tests.builder.attribute:
+        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        shared: false
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+
+    pim_user.repository.user:
+        class: Akeneo\Test\Acceptance\User\InMemoryUserRepository
+
     akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
         class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryFindEnrichedEntityDetails
 

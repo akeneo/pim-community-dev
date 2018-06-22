@@ -1,0 +1,5 @@
+services:
+    pimee_suggest_data.application.manage_mapping:
+        class: PimEnterprise\Component\SuggestData\Application\ManageMapping
+        arguments:
+            - '@pimee_suggest_data.handler.update_identifiers_mapping'

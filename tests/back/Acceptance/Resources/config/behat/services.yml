@@ -23,3 +23,11 @@ services:
             - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
         tags:
             - { name: fob.context_service }
+
+    test.suggest_data.identifiers_mapping:
+        class: 'AkeneoEnterprise\Test\Acceptance\SuggestData\Context\IdentifiersMapping'
+        arguments:
+            - '@__symfony__.pimee_suggest_data.application.manage_mapping'
+            - '@__symfony__.pimee_suggest_data.repository.identifiers_mapping'
+        tags:
+            - { name: 'fob.context_service' }

@@ -19,3 +19,8 @@ pimee_suggest_data_pim_dot_ai_connection_map_identifiers:
     requirements:
         code: '[a-zA-Z0-9_]+'
     methods: [POST]
+
+pimee_suggest_data_identifiers_mapping_save:
+    path: /suggest-data/identifiers-mapping
+    defaults: { _controller: pimee_suggest_data.controller.identifiers_mapping:updateIdentifiersMappingAction}
+    methods: [POST]

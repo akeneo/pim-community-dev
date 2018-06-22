@@ -1,0 +1,6 @@
+services:
+    pimee_suggest_data.repository.identifiers_mapping:
+        class: 'PimEnterprise\Bundle\SuggestDataBundle\Doctrine\Repository\IdentifiersMappingRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.repository.attribute'

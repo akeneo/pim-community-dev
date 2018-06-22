@@ -17,3 +17,6 @@ services:
 
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryRecordRepository
+
+    pimee_suggest_data.repository.identifiers_mapping:
+        class: 'AkeneoEnterprise\Test\Acceptance\SuggestData\Repository\InMemoryIdentifiersMappingRepository'

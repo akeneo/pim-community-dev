@@ -197,6 +197,14 @@ acceptance:
                 - test.enriched_entity.enriched_entity_edit.context
             filters:
                 tags: '@acceptance-back'
+        suggest-data:
+            paths:
+                - 'tests/features/suggest-data'
+            contexts_services:
+                - 'test.suggest_data.mapping'
+                - 'test.attribute.context'
+            filters:
+                tags: '@acceptance-back'
         volume-monitoring:
             paths:
                 - '%paths.base%/tests/features/volume-monitoring'
