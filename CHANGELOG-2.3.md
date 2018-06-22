@@ -1,4 +1,8 @@
-# 2.3.x
+# 2.3.0-BETA1 (2018-06-21)
+
+## Monitore your catalog volume
+
+- PIM-7209: As John, I want to be able to get info about my catalog volume.
 
 ## Improve Julia's experience
 
@@ -13,16 +17,19 @@
 - PIM-7302: As Julia, I am not able to delete an attribute option if it's use as variant axis.
 - PIM-7330: Improve validation message in case of product model or variant product axis values duplication
 - PIM-7326: Create a version when the parent of a variant product or a sub product model is changed.
-- PIM-6250: As Julia, I would like to change the parent of a variant product/sub product model from the UI
 - PIM-6784: Improve the product grid search with categories for products with variants
 - PIM-7308: As Julia, I would like to bulk add product models associations if product models are selected.
+- PIM-7293: As Julia, I would like to export variant products associations with their parent associations.
 - PIM-7001: Don't display remove button on an association if it comes from inheritance
 - PIM-7390: In the Product Edit Form, we now keep the context of attributes filter (missing, all, level specific...)
-- PIM-7430: mass associate generate new product version
+- PIM-7430: Mass associate generate new product version
+- PIM-7298: As Julia, I would like to change the parent of a sub product model by import.
+- PIM-6350: As Julia, I would like to change the parent of a variant product/sub product model from the UI.
 
 ## Technical improvements
 
-- Add a 'family_variant' filter in the Product Query Builder with operators 'IN', 'NOT IN', 'EMPTY' and 'NOT EMPTY'.
+- PIM-7302: Add a 'family_variant' filter in the Product Query Builder with operators 'IN', 'NOT IN', 'EMPTY' and 'NOT EMPTY'.
+- PIM-7324: Rework structure version provider to better handle cache invalidation.
 
 ## BC Breaks
 
@@ -31,10 +38,6 @@
 - Add method `generateMissingForProducts` to `Pim\Component\Catalog\Completeness\CompletenessGeneratorInterface`
 - Add a new public method `findProductModelsForFamilyVariant` to `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface`
 - Change signature of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductModelDescendantsSaver` constructor to add `Akeneo\Component\StorageUtils\Indexer\IndexerInterface`
-
-## Technical improvements
-
-- PIM-7324: Rework structure version provider to better handle cache invalidation
 
 # 2.3.0-ALPHA1 (2018-04-27)
 

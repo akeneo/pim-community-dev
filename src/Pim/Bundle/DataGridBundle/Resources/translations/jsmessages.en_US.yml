@@ -79,6 +79,10 @@ pim_datagrid:
       empty: is empty
       not_empty: is not empty
       in_list: in list
+      contains: contains
+      does_not_contain: does not contain
+      equal: is equal to
+      start_with: starts with
       operator: Operator
     price_filter:
       label: Currency

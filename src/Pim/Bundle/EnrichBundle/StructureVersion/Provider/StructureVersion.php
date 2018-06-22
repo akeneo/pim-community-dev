@@ -50,6 +50,10 @@ SQL;
 
         $loggedAt = $stmt->fetch(\PDO::FETCH_ASSOC)['last_update'];
 
+        if (null === $loggedAt) {
+            return 0;
+        }
+
         return $connection->convertToPHPValue($loggedAt, 'datetime')->getTimestamp();
     }
 

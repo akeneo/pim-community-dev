@@ -4,11 +4,13 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
 
 /**
  * This migration triggers the reindexation of the products and product models.
  */
-class Version_2_3_20180515121925_index_products_and_product_models extends AbstractMigration
+class Version_2_3_20180621121925_index_products_and_product_models extends AbstractMigration
 {
     /**
      * @param Schema $schema
