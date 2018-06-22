@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\ProductAsset\Upload\MassUpload;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 
@@ -27,7 +27,7 @@ use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class BuildAsset
+class AssetBuilder
 {
     /** @var UploadCheckerInterface */
     protected $uploadChecker;
@@ -35,7 +35,7 @@ class BuildAsset
     /** @var AssetFactory */
     protected $assetFactory;
 
-    /** @var AssetRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $assetRepository;
 
     /** @var FilesUpdaterInterface */
@@ -48,17 +48,17 @@ class BuildAsset
     protected $localeRepository;
 
     /**
-     * @param UploadCheckerInterface    $uploadChecker
-     * @param AssetFactory              $assetFactory
-     * @param AssetRepositoryInterface  $assetRepository
-     * @param FilesUpdaterInterface     $filesUpdater
-     * @param FileStorerInterface       $fileStorer
-     * @param LocaleRepositoryInterface $localeRepository
+     * @param UploadCheckerInterface                $uploadChecker
+     * @param AssetFactory                          $assetFactory
+     * @param IdentifiableObjectRepositoryInterface $assetRepository
+     * @param FilesUpdaterInterface                 $filesUpdater
+     * @param FileStorerInterface                   $fileStorer
+     * @param LocaleRepositoryInterface             $localeRepository
      */
     public function __construct(
         UploadCheckerInterface $uploadChecker,
         AssetFactory $assetFactory,
-        AssetRepositoryInterface $assetRepository,
+        IdentifiableObjectRepositoryInterface $assetRepository,
         FilesUpdaterInterface $filesUpdater,
         FileStorerInterface $fileStorer,
         LocaleRepositoryInterface $localeRepository
@@ -80,7 +80,7 @@ class BuildAsset
      *
      * @return AssetInterface
      */
-    public function fromFile(\SplFileInfo $file): AssetInterface
+    public function buildFromFile(\SplFileInfo $file): AssetInterface
     {
         $parsedFilename = $this->uploadChecker->getParsedFilename($file->getFilename());
         $this->uploadChecker->validateFilenameFormat($parsedFilename);
@@ -90,11 +90,13 @@ class BuildAsset
             $this->localeRepository->findOneBy(['code' => $parsedFilename->getLocaleCode()]) :
             null;
 
-        $assetCode = $this->computeAssetCode($parsedFilename->getAssetCode());
+        $asset = $this->assetRepository->findOneByIdentifier($parsedFilename->getAssetCode());
 
-        $asset = $this->assetFactory->create();
-        $asset->setCode($assetCode);
-        $this->assetFactory->createReferences($asset, $isLocalized);
+        if (null === $asset) {
+            $asset = $this->assetFactory->create();
+            $asset->setCode($parsedFilename->getAssetCode());
+            $this->assetFactory->createReferences($asset, $isLocalized);
+        }
 
         $storedFile = $this->fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);
 
@@ -108,34 +110,5 @@ class BuildAsset
         $this->filesUpdater->updateAssetFiles($asset);
 
         return $asset;
-    }
-
-    /**
-     * +     * @param string $assetCode
-     * +     * @return string
-     * +     */
-    private function computeAssetCode(string $assetCode): string
-    {
-        $asset = $this->assetRepository->findOneByIdentifier($assetCode);
-
-        if ($asset instanceof AssetInterface) {
-            $codes = $this->assetRepository->findSimilarCodes($assetCode);
-
-            //Necessary because findSimilarCodes can return integers, and we want to perform a strict comparison
-            array_walk($codes, function (&$item) {
-                $item = (string)$item;
-            });
-
-            if (!empty($codes)) {
-                $nextId = 1;
-                while (in_array($assetCode.'_'.$nextId, $codes)) {
-                    $nextId++;
-                }
-
-                $assetCode = sprintf('%s_%d', $assetCode, $nextId);
-            }
-        }
-
-        return $assetCode;
     }
 }
