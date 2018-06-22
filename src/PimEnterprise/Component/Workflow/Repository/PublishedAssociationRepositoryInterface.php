@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Repository;
 
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductAssociation;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 
@@ -25,8 +25,8 @@ interface PublishedAssociationRepositoryInterface
     /**
      * Find a published association from a product association.
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface $type
-     * @param int                                                            $ownerId
+     * @param AssociationTypeInterface $type
+     * @param int                      $ownerId
      *
      * @return PublishedProductAssociation|null
      */

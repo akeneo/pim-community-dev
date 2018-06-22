@@ -11,12 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Repository;
 
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
@@ -87,7 +82,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     /**
      * Count published products for a specific association type
      *
-     * @param \Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface $associationType
+     * @param AssociationTypeInterface $associationType
      *
      * @return int
      */
