@@ -14,17 +14,6 @@ parameters:
     pim_catalog.entity.group_translation.class:            Pim\Bundle\CatalogBundle\Entity\GroupTranslation
     pim_catalog.entity.group_type.class:                   Pim\Bundle\CatalogBundle\Entity\GroupType
     pim_catalog.entity.group_type_translation.class:       Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation
-    pim_catalog.entity.attribute.class:                    Akeneo\Pim\Structure\Component\Model\Attribute
-    pim_catalog.entity.attribute_translation.class:        Akeneo\Pim\Structure\Component\Model\AttributeTranslation
-    pim_catalog.entity.attribute_group.class:              Akeneo\Pim\Structure\Component\Model\AttributeGroup
-    pim_catalog.entity.attribute_group_translation.class:  Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation
-    pim_catalog.entity.attribute_option.class:             Akeneo\Pim\Structure\Component\Model\AttributeOption
     pim_catalog.entity.attribute_option_value.class:       Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
-    pim_catalog.entity.attribute_requirement.class:        Akeneo\Pim\Structure\Component\Model\AttributeRequirement
-    pim_catalog.entity.family.class:                       Akeneo\Pim\Structure\Component\Model\Family
-    pim_catalog.entity.family_translation.class:           Akeneo\Pim\Structure\Component\Model\FamilyTranslation
     pim_catalog.entity.metric.class:                       Pim\Component\Catalog\Model\Metric
     pim_catalog.entity.product_price.class:                Pim\Component\Catalog\Model\ProductPrice
-    pim_catalog.entity.family_variant.class:               Akeneo\Pim\Structure\Component\Model\FamilyVariant
-    pim_catalog.entity.family_variant_translation.class:   Akeneo\Pim\Structure\Component\Model\FamilyVariantTranslation
-    pim_catalog.entity.variant_attribute_set.class:        Akeneo\Pim\Structure\Component\Model\VariantAttributeSet

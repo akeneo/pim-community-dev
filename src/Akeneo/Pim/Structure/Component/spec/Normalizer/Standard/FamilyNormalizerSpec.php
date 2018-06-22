@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

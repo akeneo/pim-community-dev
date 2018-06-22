@@ -10,6 +10,7 @@ use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -87,7 +88,18 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
      */
     public function findOneBy(array $criteria)
     {
-        throw new NotImplementedException(__METHOD__);
+        $username = $criteria['username'] ?? null;
+        if (null === $username || count($criteria) > 1) {
+            throw new \InvalidArgumentException('This method only supports finding by "username"');
+        }
+
+        foreach ($this->users as $user) {
+            if (null !== $username && $username === $user->getUsername()) {
+                return $user;
+            }
+        }
+
+        return null;
     }
 
     /**

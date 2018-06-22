@@ -101,6 +101,26 @@
     cursor: not-allowed;
   }
 
+  // Slate Grey
+  &--slateGrey {
+    background-color: @AknSlateGrey;
+    border-color: @AknSlateGrey;
+    color: white;
+  }
+
+  &--slateGrey:hover,
+  &--slateGrey&--active {
+    background-color: darken(@AknSlateGrey, @darken);
+    border-color: darken(@AknSlateGrey, @darken);
+    color: white;
+  }
+
+  &--slateGrey&--disabled {
+    background-color: lighten(@AknSlateGrey, @lighten);
+    border-color: lighten(@AknSlateGrey, @lighten);
+    cursor: not-allowed;
+  }
+
   // Important color
   &--important {
     background-color: @AknRed;

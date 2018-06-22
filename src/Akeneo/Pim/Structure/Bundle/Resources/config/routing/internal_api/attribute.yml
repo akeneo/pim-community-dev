@@ -1,0 +1,35 @@
+pim_enrich_attribute_rest_index:
+    path: /
+    defaults: { _controller: pim_enrich.controller.rest.attribute:indexAction }
+    methods: [GET, POST]
+
+pim_enrich_attribute_rest_create:
+    path: /
+    defaults: { _controller: pim_enrich.controller.rest.attribute:createAction }
+    methods: [PUT]
+
+pim_enrich_attribute_rest_get:
+    path: /{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.attribute:getAction }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [GET]
+
+pim_enrich_attribute_rest_post:
+    path: /{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.attribute:postAction }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [POST]
+
+pim_enrich_attribute_rest_remove:
+    path: /{code}
+    defaults: { _controller: pim_enrich.controller.rest.attribute:removeAction }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [DELETE]
+
+pim_enrich_attribute_axes_index:
+    path: /axes
+    defaults: { _controller: pim_enrich.controller.rest.attribute:listAxesAction }
+    methods: [GET]

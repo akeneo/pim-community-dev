@@ -3,5 +3,17 @@ pim_title:
   pim_user_role_index: Rollen
   pim_user_group_index: Benutzergruppen
   oro_config_configuration_system: Konfiguration
+  pim_user_profile_view: '{{ username }}'
   pim_user_security_login: Anmelden
   pim_user_reset_request: Passwort vergessen
+pim_user_management:
+  entity:
+    user:
+      page_title:
+        index: "] -Inf, 1] {{ count }} Benutzer|] 1, Inf [{{ count }} Benutzer"
+    role:
+      page_title:
+        index: "] -Inf, 1] {{ count }} Rolle|] 1, Inf [{{ count }} Rollen"
+    group:
+      page_title:
+        index: "] -Inf, 1] {{ count }} Gruppe|] 1, Inf [{{ count }} Gruppen"

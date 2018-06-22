@@ -92,8 +92,8 @@
 - Move namespace `Pim\Component\Classification` to `Akeneo\Tool\Component\Classification`
 - Move namespace `Pim\Bundle\ClassificationBundle` to `Akeneo\Tool\Bundle\ClassificationBundle`
 - Move namespace `Pim\Bundle\BufferBundle` to `Akeneo\Tool\Bundle\BufferBundle`
-- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\ChannelController` to `Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController`
-- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\ChannelController` to `Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController`
+- Move `Pim\Bundle\ApiBundle\Controller\ChannelController` to `Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController`
+- Move `Pim\Bundle\ApiBundle\Controller\ChannelController` to `Akeneo\Channel\Bundle\Controller\ExternalApi\ChannelController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\ChannelController` to `Akeneo\Channel\Bundle\Controller\InternalApi\ChannelController`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ChannelRemover` to `Akeneo\Channel\Bundle\Doctrine\Remover\ChannelRemover`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository` to `Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository`
@@ -183,3 +183,61 @@
 - Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeNormalizer`
 - Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AttributeOptionNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AttributeOptionNormalizer`
 - Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\FamilyNormalizer`
+- Move `Pim\Bundle\ApiBundle\Controller\AttributeController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeController`
+- Move `Pim\Bundle\ApiBundle\Controller\AttributeGroupController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeGroupController`
+- Move `Pim\Bundle\ApiBundle\Controller\AttributeOptionController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AttributeOptionController`
+- Move `Pim\Bundle\ApiBundle\Controller\FamilyController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\FamilyController`
+- Move `Pim\Bundle\ApiBundle\Controller\FamilyVariantController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\FamilyVariantController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeOptionController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\FamilyVariantController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\FamilyVariantController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeTypeController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeTypeController`
+- Move `Pim\Component\Catalog\AttributeTypeRegistry` to `Akeneo\Pim\Structure\Component\AttributeTypeRegistry`
+- Remove class `Pim\Bundle\EnrichBundle\Controller\FamilyController`
+- Remove class `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRequirementRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRequirementRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\AttributeSaver` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\FamilySaver`
+- Move `Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface`
+- Move `Pim\Component\Catalog\Repository\AttributeRequirementRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface`
+- Move `Pim\Bundle\ApiBundle\Doctrine\ORM\Repository\AttributeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi\AttributeRepository`
+- Move `Pim\Component\Api\Repository\AttributeRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeOptionSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeOptionSearchableRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeSearchableRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilySearchableRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyVariantRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyVariantSearchableRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupSearchableRepository`
+- Move namespace `Pim\Bundle\CatalogBundle\AttributeType` to `Akeneo\Pim\Structure\Component\AttributeType`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Attribute` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\Attribute`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\FlatToStandard\AttributeGroup` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\AttributeGroup`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\FlatToStandard\AttributeOption` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\AttributeOption`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\FlatToStandard\Family` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\Family`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\FlatToStandard\FamilyVariant` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\FamilyVariant`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\Attribute` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\Attribute`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\AttributeGroup` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\AttributeGroup`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\AttributeOption` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\AttributeOption`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\Family` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\Family`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\FamilyVariant\FamilyVariant` to `Akeneo\Pim\Structure\Component\ArrayConverter\FamilyVariant\StandardToFlat\FamilyVariant`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\FamilyVariant\FieldSplitter` to `Akeneo\Pim\Structure\Component\ArrayConverter\FamilyVariant\StandardToFlat\FieldSplitter`
+- Move `Pim\Component\Connector\Reader\Database\AttributeOptionReader` to `Akeneo\Pim\Structure\Component\Reader\Database\AttributeOptionReader`
+- Move `Pim\Component\Connector\Writer\Database\AttributeGroupWriter` to `Akeneo\Pim\Structure\Component\Writer\Database\AttributeGroupWriter`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass` to `Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterAttributeTypePass`
+- Move `Pim\Component\Catalog\Manager\AttributeOptionsSorter` to `Akeneo\Pim\Structure\Component\Manager\AttributeOptionsSorter`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsImage` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsImage`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsImageValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsImageValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabel` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsLabel`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabelValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsLabelValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxis` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxis`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxisValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxisValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyRequirements` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyRequirements`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyRequirementsValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyRequirementsValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes`
+- Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator`
+- Remove `Pim\Component\Catalog\Model\AttributeTypeTranslationInterface`

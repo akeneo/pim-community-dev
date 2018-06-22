@@ -3,8 +3,8 @@
 namespace spec\Akeneo\Pim\Structure\Component\Factory;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Component\Catalog\AttributeTypeRegistry;
+use Akeneo\Pim\Structure\Component\AttributeType\AbstractAttributeType;
+use Akeneo\Pim\Structure\Component\AttributeTypeRegistry;
 
 class AttributeFactorySpec extends ObjectBehavior
 {

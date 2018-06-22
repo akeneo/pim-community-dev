@@ -8,9 +8,6 @@ parameters:
     pim_catalog.validator.constraint.single_identifier.class:              Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttributeValidator
     pim_catalog.validator.constraint.unique_value.class:                   Pim\Component\Catalog\Validator\Constraints\UniqueValueValidator
     pim_catalog.validator.constraint.immutable.class:                      Pim\Component\Catalog\Validator\Constraints\ImmutableValidator
-    pim_catalog.validator.constraint.family_requirements.class:            Pim\Component\Catalog\Validator\Constraints\FamilyRequirementsValidator
-    pim_catalog.validator.constraint.family_attribute_as_label.class:      Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabelValidator
-    pim_catalog.validator.constraint.family_attribute_as_image.class:      Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsImageValidator
     pim_catalog.validator.constraint.scopable_value.class:                 Pim\Component\Catalog\Validator\Constraints\ScopableValueValidator
     pim_catalog.validator.constraint.localizable_value.class:              Pim\Component\Catalog\Validator\Constraints\LocalizableValueValidator
     pim_catalog.validator.constraint.attribute_type_for_option.class:      Pim\Component\Catalog\Validator\Constraints\AttributeTypeForOptionValidator
@@ -42,16 +39,14 @@ parameters:
     pim_catalog.validator.unique_value_set.class:                          Pim\Component\Catalog\Validator\UniqueValuesSet
     pim_catalog.validator.unique_axes_combination_set.class:               Pim\Component\Catalog\Validator\UniqueAxesCombinationSet
     pim_catalog.validator.constraint.family_variant_axes.class:            Pim\Component\Catalog\Validator\Constraints\FamilyVariantValidator
-    pim_catalog.validator.constraint.immutable_family_variant_axes.class:  Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator
     pim_catalog.validator.constraint.only_expected_attributes.class:       Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributesValidator
     pim_catalog.validator.constraint.unique_variant_axes.class:            Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxisValidator
     pim_catalog.validator.constraint.not_empty_variant_axes.class:         Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxesValidator
     pim_catalog.validator.constraint.has_a_root_product_model_as_parent.class: Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTreeValidator
     pim_catalog.validator.constraint.family_same_family_than_parent.class: Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParentValidator
     pim_catalog.validator.constraint.not_empty_family.class: Pim\Component\Catalog\Validator\Constraints\NotEmptyFamilyValidator
-    pim_catalog.validator.constraint.invalid_variant_product_parent.class: Pim\Component\Catalog\Validator\Constraints\VariantProductParentValidator
     pim_catalog.validator.constraint.immutable_variant_axis_values.class:  Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator
-    pim_catalog.validator.constraint.family_attribute_used_as_axis.class:  Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxisValidator
+    pim_catalog.validator.constraint.invalid_variant_product_parent.class: Pim\Component\Catalog\Validator\Constraints\VariantProductParentValidator
     pim_catalog.validator.constraint.unique_product.class:                 Pim\Component\Catalog\Validator\Constraints\UniqueEntityValidator
 
 services:
@@ -76,13 +71,6 @@ services:
         class: '%pim_catalog.validator.constraint.family_variant_axes.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_variant }
-
-    pim_catalog.validator.constraint.immutable_family_variant_axes:
-        class: '%pim_catalog.validator.constraint.immutable_family_variant_axes.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_immutable_variant_axes_validator }
 
     pim_catalog.validator.constraint.only_expected_attributes:
         class: '%pim_catalog.validator.constraint.only_expected_attributes.class%'
@@ -168,26 +156,6 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: validator.constraint_validator, alias: pim_immutable_validator }
-
-    pim_catalog.validator.constraint.family_requirements:
-        class: '%pim_catalog.validator.constraint.family_requirements.class%'
-        arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.channel'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_family_requirements_validator }
-
-    pim_catalog.validator.constraint.family_attribute_as_label:
-        class: '%pim_catalog.validator.constraint.family_attribute_as_label.class%'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_family_attribute_as_label_validator }
-
-    pim_catalog.validator.constraint.family_attribute_as_image:
-        class: '%pim_catalog.validator.constraint.family_attribute_as_image.class%'
-        arguments:
-            - [ 'pim_catalog_image' ]
-        tags:
-            - { name: validator.constraint_validator, alias: pim_family_attribute_as_image_validator }
 
     pim_catalog.validator.constraint.scopable_value:
         class: '%pim_catalog.validator.constraint.scopable_value.class%'
@@ -397,11 +365,6 @@ services:
         class: '%pim_catalog.validator.constraint.not_empty_family.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_not_empty }
-
-    pim_catalog.validator.constraint.family_attribute_used_as_axis:
-        class: '%pim_catalog.validator.constraint.family_attribute_used_as_axis.class%'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_family_attribute_used_as_axis }
 
     pim_catalog.validator.constraint.unique_product:
         class: '%pim_catalog.validator.constraint.unique_product.class%'
