@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

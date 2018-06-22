@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;

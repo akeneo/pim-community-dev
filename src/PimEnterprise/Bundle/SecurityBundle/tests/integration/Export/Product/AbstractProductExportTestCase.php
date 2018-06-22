@@ -2,9 +2,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Export\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 abstract class AbstractProductExportTestCase extends TestCase
 {

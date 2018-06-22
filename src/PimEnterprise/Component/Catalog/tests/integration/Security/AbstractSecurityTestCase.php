@@ -2,11 +2,11 @@
 
 namespace PimEnterprise\Component\Catalog\tests\integration\Security;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AbstractSecurityTestCase extends TestCase

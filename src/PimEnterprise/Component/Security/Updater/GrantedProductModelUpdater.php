@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Security\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

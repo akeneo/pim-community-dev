@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Component\Security\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;

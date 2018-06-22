@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Security\Merger;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Security\Authorization;
 
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceViewAccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

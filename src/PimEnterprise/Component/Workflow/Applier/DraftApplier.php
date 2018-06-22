@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Component\Workflow\Applier;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

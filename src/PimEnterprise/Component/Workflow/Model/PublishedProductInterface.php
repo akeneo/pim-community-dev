@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
-use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Component\Versioning\Model\Version;
 
 /**
  * Published product interface

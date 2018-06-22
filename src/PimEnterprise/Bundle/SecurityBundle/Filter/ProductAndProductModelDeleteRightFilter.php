@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**

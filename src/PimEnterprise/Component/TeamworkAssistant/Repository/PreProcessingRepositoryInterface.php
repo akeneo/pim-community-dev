@@ -13,8 +13,8 @@ namespace PimEnterprise\Component\TeamworkAssistant\Repository;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Doctrine\Common\Collections\Collection;
 use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 

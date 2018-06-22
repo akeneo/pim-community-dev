@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\CatalogRule\Connector\Executor;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Execute all the rules to a set of entities with family.
