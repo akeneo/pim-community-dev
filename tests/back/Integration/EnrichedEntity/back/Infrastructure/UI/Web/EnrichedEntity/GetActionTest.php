@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityDetails;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
@@ -45,6 +46,7 @@ class GetActionTest extends TestCase
             'identifier' => 'designer',
             'labels'     => [
                 'en_US' => 'Designer',
+                'fr_FR' => 'Concepteur',
             ],
         ]);
         $this->webClientHelper->assertResponse($this->client->getResponse(), '200', $expectedContent);
@@ -61,7 +63,7 @@ class GetActionTest extends TestCase
             ['identifier' => 'unknown_enriched_entity'],
             'GET'
         );
-        $this->webClientHelper->assertResponse($this->client->getResponse(), '404', '{}');
+        $this->webClientHelper->assert404($this->client->getResponse());
     }
 
     protected function getConfiguration()
@@ -71,14 +73,15 @@ class GetActionTest extends TestCase
 
     private function loadFixtures(): void
     {
-        $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.enriched_entity')->save(
-            EnrichedEntity::create(
-                EnrichedEntityIdentifier::fromString('designer'),
-                [
-                    'en_US' => 'Designer',
-                ]
-            )
-        );
+        $queryHandler = $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details');
+
+        $entityItem = new EnrichedEntityDetails();
+        $entityItem->identifier = (EnrichedEntityIdentifier::fromString('designer'));
+        $entityItem->labels = LabelCollection::fromArray([
+            'en_US' => 'Designer',
+            'fr_FR' => 'Concepteur',
+        ]);
+        $queryHandler->save($entityItem);
 
         $user = new User();
         $user->setUsername('julia');

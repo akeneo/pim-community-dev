@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntity;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntityInterface;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordItem;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -25,7 +25,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindRecordItemsForEnrichedEntity implements FindRecordItemsForEnrichedEntity
+class SqlFindRecordItemsForEnrichedEntity implements FindRecordItemsForEnrichedEntityInterface
 {
     /** @var Connection */
     private $sqlConnection;

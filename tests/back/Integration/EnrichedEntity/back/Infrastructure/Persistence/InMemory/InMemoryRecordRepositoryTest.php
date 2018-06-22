@@ -25,14 +25,6 @@ class InMemoryRecordRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_array_when_there_is_no_record()
-    {
-        $this->assertEmpty($this->recordRepository->all());
-    }
-
-    /**
-     * @test
-     */
     public function it_save_a_record_and_returns_it()
     {
         $identifier = RecordIdentifier::fromString('record_identifier');
@@ -52,25 +44,6 @@ class InMemoryRecordRepositoryTest extends TestCase
     {
         $enrichedEntity = $this->recordRepository->getByIdentifier(RecordIdentifier::fromString('unknown_identifier'));
         $this->assertNull($enrichedEntity);
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_all_the_records()
-    {
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
-
-        $identifier1 = RecordIdentifier::fromString('identifier1');
-        $record1 = Record::create($identifier1, $enrichedEntityIdentifier, []);
-        $identifier2 = RecordIdentifier::fromString('identifier2');
-        $record2 = Record::create($identifier2, $enrichedEntityIdentifier, []);
-
-        $this->recordRepository->save($record1);
-        $this->recordRepository->save($record2);
-        $recordFound = $this->recordRepository->all();
-
-        $this->assertRecordList([$record1, $record2], $recordFound);
     }
 
     /**

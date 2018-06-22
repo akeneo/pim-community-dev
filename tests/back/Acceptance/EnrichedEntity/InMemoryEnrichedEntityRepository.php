@@ -14,6 +14,7 @@ use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
  */
 class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
 {
+    /** @var EnrichedEntity[] */
     private $enrichedEntities = [];
 
     public function save(EnrichedEntity $enrichedEntity): void
@@ -32,13 +33,5 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
         }
 
         return $enrichedEntity;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function all(): array
-    {
-        return array_values($this->enrichedEntities);
     }
 }

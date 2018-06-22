@@ -89,28 +89,6 @@ SQL;
         return $this->hydrateRecord($result['identifier'], $result['enriched_entity_identifier'], $result['labels']);
     }
 
-    public function all(): array
-    {
-        $selectAllQuery = <<<SQL
-        SELECT identifier, enriched_entity_identifier, labels
-        FROM akeneo_enriched_entity_record;
-SQL;
-        $statement = $this->sqlConnection->executeQuery($selectAllQuery);
-        $results = $statement->fetchAll();
-        $statement->closeCursor();
-
-        $records = [];
-        foreach ($results as $result) {
-            $records[] = $this->hydrateRecord(
-                $result['identifier'],
-                $result['enriched_entity_identifier'],
-                $result['labels']
-            );
-        }
-
-        return $records;
-    }
-
     private function hydrateRecord(
         string $identifier,
         string $enrichedEntityIdentifier,

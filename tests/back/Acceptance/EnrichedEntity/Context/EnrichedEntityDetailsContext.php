@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\FindEnrichedEntityQuery;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityDetails;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindEnrichedEntityDetailsInterface;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -21,8 +19,8 @@ use PHPUnit\Framework\Assert;
  */
 final class EnrichedEntityDetailsContext implements Context
 {
-    /** @var FindEnrichedEntityQuery */
-    private $findEnrichedEntityQuery;
+    /** @var FindEnrichedEntityDetailsInterface */
+    private $findEnrichedEntityDetailsQueryHandler;
 
     /** @var EnrichedEntityRepository */
     private $enrichedEntityRepository;
@@ -34,19 +32,21 @@ final class EnrichedEntityDetailsContext implements Context
     private $entityFound;
 
     /**
-     * @param FindEnrichedEntityQuery  $findEnrichedEntityQuery
-     * @param EnrichedEntityRepository $enrichedEntityRepository
+     * @param FindEnrichedEntityDetailsInterface $findEnrichedEntityDetailsQuery
+     * @param EnrichedEntityRepository           $enrichedEntityRepository
      */
     public function __construct(
-        FindEnrichedEntityQuery $findEnrichedEntityQuery,
+        FindEnrichedEntityDetailsInterface $findEnrichedEntityDetailsQuery,
         EnrichedEntityRepository $enrichedEntityRepository
     ) {
-        $this->findEnrichedEntityQuery = $findEnrichedEntityQuery;
+        $this->findEnrichedEntityDetailsQueryHandler = $findEnrichedEntityDetailsQuery;
         $this->enrichedEntityRepository = $enrichedEntityRepository;
     }
 
     /**
      * @Given /^the following enriched entities to show:$/
+     *
+     * @param TableNode $enrichedEntityTable
      */
     public function theFollowingEnrichedEntity(TableNode $enrichedEntityTable): void
     {
@@ -70,7 +70,7 @@ final class EnrichedEntityDetailsContext implements Context
      */
     public function theUserAskForTheEnrichedEntity(string $identifier): void
     {
-        $this->entityFound = ($this->findEnrichedEntityQuery)($identifier);
+        $this->entityFound = ($this->findEnrichedEntityDetailsQueryHandler)(EnrichedEntityIdentifier::fromString($identifier));
     }
 
     /**
@@ -95,8 +95,9 @@ final class EnrichedEntityDetailsContext implements Context
      */
     private function assertLabel(EnrichedEntityDetails $enrichedEntityDetails, string $expectedLabel): void
     {
-        foreach ($enrichedEntityDetails->labels as $locale => $label) {
-            if ($label === $expectedLabel) {
+        $localeCodes = $enrichedEntityDetails->labels->getLocaleCodes();
+        foreach ($localeCodes as $localeCode) {
+            if ($expectedLabel === $enrichedEntityDetails->labels->getLabel($localeCode)) {
                 return;
             }
         }
