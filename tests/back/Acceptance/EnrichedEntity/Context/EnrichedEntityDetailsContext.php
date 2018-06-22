@@ -20,7 +20,7 @@ use PHPUnit\Framework\Assert;
 final class EnrichedEntityDetailsContext implements Context
 {
     /** @var FindEnrichedEntityDetailsInterface */
-    private $findOneEnrichedEntityItemQuery;
+    private $findEnrichedEntityDetailsQueryHandler;
 
     /** @var EnrichedEntityRepository */
     private $enrichedEntityRepository;
@@ -32,14 +32,14 @@ final class EnrichedEntityDetailsContext implements Context
     private $entityFound;
 
     /**
-     * @param FindEnrichedEntityDetailsInterface $findOneEnrichedEntityItemQuery
+     * @param FindEnrichedEntityDetailsInterface $findEnrichedEntityDetailsQuery
      * @param EnrichedEntityRepository           $enrichedEntityRepository
      */
     public function __construct(
-        FindEnrichedEntityDetailsInterface $findOneEnrichedEntityItemQuery,
+        FindEnrichedEntityDetailsInterface $findEnrichedEntityDetailsQuery,
         EnrichedEntityRepository $enrichedEntityRepository
     ) {
-        $this->findOneEnrichedEntityItemQuery = $findOneEnrichedEntityItemQuery;
+        $this->findEnrichedEntityDetailsQueryHandler = $findEnrichedEntityDetailsQuery;
         $this->enrichedEntityRepository = $enrichedEntityRepository;
     }
 
@@ -70,7 +70,7 @@ final class EnrichedEntityDetailsContext implements Context
      */
     public function theUserAskForTheEnrichedEntity(string $identifier): void
     {
-        $this->entityFound = ($this->findOneEnrichedEntityItemQuery)(EnrichedEntityIdentifier::fromString($identifier));
+        $this->entityFound = ($this->findEnrichedEntityDetailsQueryHandler)(EnrichedEntityIdentifier::fromString($identifier));
     }
 
     /**
