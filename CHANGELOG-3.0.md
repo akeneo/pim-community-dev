@@ -249,3 +249,5 @@
 - Move `Pim\Component\Catalog\Model\AssociationTypeInterface` to `Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface`
 - Move `Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation` to `Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslation`
 - Move `Pim\Component\Catalog\Model\AssociationTypeTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue` to `Akeneo\Pim\Structure\Component\Model\AttributeOptionValue`
+- Move `Pim\Component\Catalog\Model\AttributeOptionValueInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface`

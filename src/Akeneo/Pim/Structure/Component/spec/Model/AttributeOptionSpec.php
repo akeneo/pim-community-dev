@@ -4,8 +4,8 @@ namespace spec\Akeneo\Pim\Structure\Component\Model;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use Prophecy\Argument;
 
 class AttributeOptionSpec extends ObjectBehavior

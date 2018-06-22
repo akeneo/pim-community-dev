@@ -10,6 +10,5 @@ parameters:
     pim_catalog.entity.category_translation.class:         Pim\Bundle\CatalogBundle\Entity\CategoryTranslation
     pim_catalog.entity.group.class:                        Pim\Bundle\CatalogBundle\Entity\Group
     pim_catalog.entity.group_translation.class:            Pim\Bundle\CatalogBundle\Entity\GroupTranslation
-    pim_catalog.entity.attribute_option_value.class:       Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
     pim_catalog.entity.metric.class:                       Pim\Component\Catalog\Model\Metric
     pim_catalog.entity.product_price.class:                Pim\Component\Catalog\Model\ProductPrice

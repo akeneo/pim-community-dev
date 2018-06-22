@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 /**
  * Attribute options

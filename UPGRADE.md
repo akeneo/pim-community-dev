@@ -222,3 +222,5 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Ent
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AssociationTypeInterface/Akeneo\\Pim\\Structure\\Component\\Model\\AssociationTypeInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\AssociationTypeTranslation/Akeneo\\Pim\\Structure\\Component\\Model\\AssociationTypeTranslation/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AssociationTypeTranslationInterface/Akeneo\\Pim\\Structure\\Component\\Model\\AssociationTypeTranslationInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Entity\\AttributeOptionValue\\AttributeOptionValue/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeOptionValue/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\AttributeOptionValue/Akeneo\\Pim\\Structure\\Component\\Model\\AttributeOptionValueInterface/g'

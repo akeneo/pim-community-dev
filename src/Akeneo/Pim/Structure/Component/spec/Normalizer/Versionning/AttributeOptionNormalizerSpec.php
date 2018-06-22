@@ -5,7 +5,7 @@ namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Versionning;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
