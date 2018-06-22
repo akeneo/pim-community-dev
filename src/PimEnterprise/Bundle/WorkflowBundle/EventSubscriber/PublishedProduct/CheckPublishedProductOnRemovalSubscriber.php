@@ -20,7 +20,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;

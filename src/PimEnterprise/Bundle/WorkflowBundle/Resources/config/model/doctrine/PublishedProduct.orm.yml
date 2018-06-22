@@ -45,7 +45,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
                 referencedColumnName: id
     manyToMany:
         groups:
-            targetEntity: Pim\Component\Catalog\Model\GroupInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
             joinTable:
                 name: pimee_workflow_group_published_product
                 joinColumns:

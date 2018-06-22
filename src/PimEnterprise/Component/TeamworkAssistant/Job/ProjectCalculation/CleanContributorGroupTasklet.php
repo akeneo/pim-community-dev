@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
