@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
 
 /**
  * Attribute option

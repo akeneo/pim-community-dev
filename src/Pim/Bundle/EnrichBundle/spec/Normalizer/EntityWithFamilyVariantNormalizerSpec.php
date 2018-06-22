@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;

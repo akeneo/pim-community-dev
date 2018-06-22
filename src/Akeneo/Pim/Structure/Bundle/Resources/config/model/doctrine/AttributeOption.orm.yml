@@ -31,7 +31,7 @@ Akeneo\Pim\Structure\Component\Model\AttributeOption:
                     onDelete: CASCADE
     oneToMany:
         optionValues:
-            targetEntity: Pim\Component\Catalog\Model\AttributeOptionValueInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface
             indexBy: locale
             cascade:
                 - persist

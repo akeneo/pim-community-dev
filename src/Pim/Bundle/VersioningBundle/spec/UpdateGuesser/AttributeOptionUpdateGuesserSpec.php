@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
 
 class AttributeOptionUpdateGuesserSpec extends ObjectBehavior
 {

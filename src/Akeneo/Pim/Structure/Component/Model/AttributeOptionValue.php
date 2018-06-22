@@ -1,9 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
-
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\AttributeOptionValueInterface;
+namespace Akeneo\Pim\Structure\Component\Model;
 
 /**
  * Attribute option values
