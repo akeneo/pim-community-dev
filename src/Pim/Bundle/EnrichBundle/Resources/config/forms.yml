@@ -26,7 +26,7 @@ services:
         factory: 'form.factory:createNamed'
         arguments:
             - 'pim_enrich_grouptype_form'
-            - '%pim_enrich.form.type.group_type.class%'
+            - 'Akeneo\Pim\Structure\Bundle\Form\Type\GroupTypeType'
 
     pim_enrich.form.association_type:
         class: 'Symfony\Component\Form\Form'
