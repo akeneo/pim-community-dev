@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\ValuesFiller;
 
-use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 
 /**
  * Values filler for Products.

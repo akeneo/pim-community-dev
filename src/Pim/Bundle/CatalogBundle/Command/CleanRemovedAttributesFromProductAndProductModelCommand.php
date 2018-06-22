@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;

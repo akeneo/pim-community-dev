@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
@@ -16,7 +17,6 @@ use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**

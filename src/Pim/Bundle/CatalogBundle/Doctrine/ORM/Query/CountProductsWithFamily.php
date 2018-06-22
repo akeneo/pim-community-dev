@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\ProductAndProductModel\Query\CountProductsWithFamilyInterface;
 
 /**

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\EntityWithFamily;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AbstractValue;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * A required value is the translation of the attribute requirements

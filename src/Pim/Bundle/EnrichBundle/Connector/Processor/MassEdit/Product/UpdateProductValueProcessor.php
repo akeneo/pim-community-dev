@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
-use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
-use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
+use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

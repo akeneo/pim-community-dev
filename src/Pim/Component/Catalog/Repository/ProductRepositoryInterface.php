@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * Product repository interface

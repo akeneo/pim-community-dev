@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Component\Catalog\Factory\GroupFactory;

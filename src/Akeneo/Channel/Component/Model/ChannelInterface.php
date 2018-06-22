@@ -2,10 +2,10 @@
 
 namespace Akeneo\Channel\Component\Model;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 
 /**
  * Channel interface

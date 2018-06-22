@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Command\Cleaner;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\AttributeTypes;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Update the variant product to clean all the wrong boolean values.

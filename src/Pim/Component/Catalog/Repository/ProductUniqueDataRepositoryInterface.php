@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * Product unique data repository. Please see {@see Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface}

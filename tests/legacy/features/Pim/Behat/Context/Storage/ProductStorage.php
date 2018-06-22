@@ -2,12 +2,12 @@
 
 namespace Pim\Behat\Context\Storage;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 

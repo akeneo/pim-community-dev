@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
-use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * Interface for media product value

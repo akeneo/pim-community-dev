@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\EntityWithFamily;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * A collection of incomplete values depending on an entity with a family

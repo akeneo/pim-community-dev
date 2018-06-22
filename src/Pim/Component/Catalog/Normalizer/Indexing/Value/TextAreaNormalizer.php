@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Value;
 
-use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Value;
 
-use Pim\Component\Catalog\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
 
 /**
  * Interface for metric product value

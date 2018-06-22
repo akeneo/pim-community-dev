@@ -2,12 +2,12 @@
 
 namespace Pim\Component\Catalog\Builder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @author    Julien Janvier <julien.janvier@akeneo.com>

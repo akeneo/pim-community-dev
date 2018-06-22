@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Component\Catalog\AttributeTypes;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

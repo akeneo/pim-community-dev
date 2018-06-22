@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\Api\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * @author    Soulet Olivier <olivier.soulet@akeneo.com>

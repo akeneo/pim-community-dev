@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Component\Connector\Processor\Denormalization\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Find the product to import depending the data given by the reader

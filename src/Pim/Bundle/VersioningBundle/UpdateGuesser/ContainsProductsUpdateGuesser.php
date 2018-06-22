@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
-use Doctrine\ORM\EntityManager;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Contains product update guesser

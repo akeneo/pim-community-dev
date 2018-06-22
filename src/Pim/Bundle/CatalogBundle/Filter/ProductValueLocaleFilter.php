@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Filter;
 
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 
 /**
  * Filter the product values according to locale codes provided in options.

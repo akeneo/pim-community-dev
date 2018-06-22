@@ -3,10 +3,10 @@
 namespace Pim\Component\Catalog\Normalizer\Indexing\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

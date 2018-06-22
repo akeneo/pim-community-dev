@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterData;
 use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterInterface;
 

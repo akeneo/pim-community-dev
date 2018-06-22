@@ -2,12 +2,12 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 

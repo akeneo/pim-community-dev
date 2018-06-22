@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -13,7 +14,6 @@ use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;
 
 /**

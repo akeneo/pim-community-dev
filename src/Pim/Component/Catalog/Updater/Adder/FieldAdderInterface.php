@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
-use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 
 /**
  * Adds a data into a product's field

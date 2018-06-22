@@ -4,8 +4,8 @@ namespace Pim\Component\Catalog\Completeness\Checker;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Check if a product price collection complete or not for a provided channel.
