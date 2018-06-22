@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
+Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation:
     type: entity
     table: pim_catalog_group_translation
     changeTrackingPolicy: DEFERRED_EXPLICIT

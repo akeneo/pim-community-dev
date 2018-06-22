@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Completeness;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Pim\Component\Catalog\Model\GroupTranslationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;

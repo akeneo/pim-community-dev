@@ -28,7 +28,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Group:
             mappedBy: groups
     oneToMany:
         translations:
-            targetEntity: Pim\Component\Catalog\Model\GroupTranslationInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

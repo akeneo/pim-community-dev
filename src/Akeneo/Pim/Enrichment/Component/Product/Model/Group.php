@@ -165,7 +165,7 @@ class Group implements GroupInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\GroupTranslation';
+        return 'Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation';
     }
 
     /**

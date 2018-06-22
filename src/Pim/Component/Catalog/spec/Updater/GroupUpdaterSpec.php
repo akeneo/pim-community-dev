@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
