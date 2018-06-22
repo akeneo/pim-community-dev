@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ApiBundle\Controller;
+namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository;

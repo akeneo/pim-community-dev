@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller\Rest;
+namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
