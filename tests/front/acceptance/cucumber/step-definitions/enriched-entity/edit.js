@@ -1,9 +1,8 @@
 const Edit = require('../../decorators/enriched-entity/edit.decorator');
-const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
 
 const {
   decorators: {createElementDecorator},
-  tools: {convertDataTable, convertItemTable},
+  tools: {convertDataTable, convertItemTable, answerJson},
 } = require('../../test-helpers.js');
 
 module.exports = async function(cucumber) {
@@ -45,16 +44,9 @@ module.exports = async function(cucumber) {
   };
 
   const savedEnrichedEntityWillBe = async function(page, identifier, updates) {
-    const labels = convertDataTable(updates).labels;
-    const enrichedEntityBuilder = new EnrichedEntityBuilder();
-    enrichedEntityBuilder.withIdentifier(identifier);
-    enrichedEntityBuilder.withLabels(labels);
-
-    const enrichedEntity = enrichedEntityBuilder.build();
-
     page.on('request', request => {
       if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'POST' === request.method()) {
-        answerJson(request, enrichedEntity);
+        answerJson(request, convertItemTable(updates)[0]);
       }
     });
   };
