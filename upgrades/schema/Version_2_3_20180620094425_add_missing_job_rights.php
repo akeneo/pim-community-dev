@@ -8,7 +8,7 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Adds missing job rights for jobs added in CE
  */
-class Version_2_3_20180418094425_add_missing_job_rights extends AbstractMigration
+class Version_2_3_20180620094425_add_missing_job_rights extends AbstractMigration
 {
     /**
      * @param Schema $schema
@@ -19,6 +19,13 @@ class Version_2_3_20180418094425_add_missing_job_rights extends AbstractMigratio
 INSERT INTO `pimee_security_job_profile_access` (`job_profile_id`,`user_group_id`,`execute_job_profile`,`edit_job_profile`)
 SELECT
 	(SELECT id FROM akeneo_batch_job_instance WHERE code = 'add_to_group') as job_profile_id,
+    id as user_group_id,
+    1,
+    1
+FROM `oro_access_group`;
+INSERT INTO `pimee_security_job_profile_access` (`job_profile_id`,`user_group_id`,`execute_job_profile`,`edit_job_profile`)
+SELECT
+	(SELECT id FROM akeneo_batch_job_instance WHERE code = 'change_parent_product') as job_profile_id,
     id as user_group_id,
     1,
     1
