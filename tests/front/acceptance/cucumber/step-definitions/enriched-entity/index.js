@@ -35,8 +35,10 @@ module.exports = async function(cucumber) {
 
     enrichedEntityResponse.forEach(enrichedEntity => {
       this.page.on('request', request => {
-        if (`http://pim.com/rest/enriched_entity/${enrichedEntity.identifier}` === request.url()
-          && 'GET' === request.method()) {
+        if (
+          `http://pim.com/rest/enriched_entity/${enrichedEntity.identifier}` === request.url() &&
+          'GET' === request.method()
+        ) {
           answerJson(request, enrichedEntity);
         }
       });

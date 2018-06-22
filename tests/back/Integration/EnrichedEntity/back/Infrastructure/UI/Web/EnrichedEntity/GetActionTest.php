@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class GetActionTest extends TestCase
 {
-    private const ENRICHED_ENTITIY_DETAIL_ROUTE = 'akeneo_enriched_entities_enriched_entities_get_rest';
+    private const ENRICHED_ENTITIY_DETAIL_ROUTE = 'akeneo_enriched_entities_enriched_entity_get_rest';
 
     /** @var Client */
     private $client;

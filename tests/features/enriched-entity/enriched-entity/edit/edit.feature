@@ -11,8 +11,8 @@ Feature: Edit an enriched entity
     When the user updates the enriched entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the enriched entity "designer" should be:
-      | identifier | labels                                      |
-      | designer   | {"en_US": "Stylist", "fr_FR": "Concepteur"} |
+      | identifier | labels                                    |
+      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
 
   #@acceptance-front
   Scenario: Updating an enriched entity with unexpected backend answer

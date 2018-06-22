@@ -1,7 +1,7 @@
-import * as React from "react";
-import EnrichedEntity from "akeneoenrichedentity/domain/model/enriched-entity/enriched-entity";
-import { getImageShowUrl } from "akeneoenrichedentity/tools/media-url-generator";
-const router = require("pim/router");
+import * as React from 'react';
+import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import { getImageShowUrl } from 'akeneoenrichedentity/tools/media-url-generator';
+const router = require('pim/router');
 
 export default ({
   enrichedEntity,

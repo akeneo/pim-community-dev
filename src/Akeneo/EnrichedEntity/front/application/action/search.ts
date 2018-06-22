@@ -1,24 +1,23 @@
 import {startLoading, stopLoading, goNextPage, goFirstPage} from 'akeneoenrichedentity/application/event/search';
-import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
-import Fetcher, {Query} from 'akeneoenrichedentity/domain/fetcher/fetcher';
+import {SearchFetcher, Query} from 'akeneoenrichedentity/domain/fetcher/fetcher';
 import {dataReceived} from 'akeneoenrichedentity/domain/event/search';
 
-const fetchResults = <Object>(fetcher: Fetcher<Object>) => async (
+const fetchResults = <Object>(fetcher: SearchFetcher<Object>) => async (
   query: Query
-): Promise<{enrichedEntities: Object[]; total: number}> => {
+): Promise<{items: Object[]; total: number}> => {
   const {items, total} = await fetcher.search(query);
 
-  return {enrichedEntities: items, total};
+  return {items, total};
 };
 
-export const updateResultsWithFetcher = <Object>(
-  fetcher: Fetcher<Object>,
+const updateResultsWithFetcher = <Object>(
+  fetcher: SearchFetcher<Object>,
   stateToQuery: (state: any) => Promise<Query>
 ) =>
   ((requestCount: number = 0) => {
     return (append: boolean = false): any => async (dispatch: any, getState: any): Promise<void> => {
       requestCount++;
-      const state = getState() as State;
+      const state = getState();
       const currentRequestCount = requestCount;
       if (append && state.grid.isFetching) {
         return Promise.resolve();
@@ -33,11 +32,13 @@ export const updateResultsWithFetcher = <Object>(
       }
 
       const query = await stateToQuery(state);
-      const {enrichedEntities, total} = await fetchResults(fetcher)(query);
+      const {items, total} = await fetchResults<Object>(fetcher)(query);
 
       if (requestCount === currentRequestCount) {
-        dispatch(dataReceived<Object>(enrichedEntities, total, append));
+        dispatch(dataReceived<Object>(items, total, append));
         dispatch(stopLoading());
       }
     };
   })();
+
+export default updateResultsWithFetcher;

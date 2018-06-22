@@ -13,7 +13,7 @@ const config = {
   Properties: {
     selector: '.AknDefault-mainContent',
     decorator: Properties,
-  }
+  },
 };
 
 const Edit = async (nodeElement, createElementDecorator, page) => {
