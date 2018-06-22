@@ -2,7 +2,7 @@ Akeneo\Pim\Structure\Component\Model\AssociationType:
     type: entity
     table: pim_catalog_association_type
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationTypeRepository
+    repositoryClass: Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AssociationTypeRepository
     fields:
         id:
             type: integer

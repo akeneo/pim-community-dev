@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
