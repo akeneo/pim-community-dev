@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 /**
  * Adds a new table and then reindex all drafts.
  */
-class Version20180615152443 extends AbstractMigration implements ContainerAwareInterface
+class Version_2_3_20180615152443_product_model_draft_and_reindex extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
