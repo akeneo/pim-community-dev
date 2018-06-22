@@ -7,6 +7,7 @@ use Akeneo\Channel\Component\Model\Currency;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
@@ -50,7 +51,7 @@ class FixturesContext extends PimContext
         'Locale'           => Locale::class,
         'GroupType'        => 'PimCatalogBundle:GroupType',
         'Product'          => Product::class,
-        'ProductGroup'     => 'Pim\Bundle\CatalogBundle\Entity\Group',
+        'ProductGroup'     => Group::class,
     ];
 
     /**

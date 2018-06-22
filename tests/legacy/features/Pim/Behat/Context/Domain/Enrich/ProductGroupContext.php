@@ -8,7 +8,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use Pim\Component\Catalog\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 
 class ProductGroupContext extends PimContext
 {

@@ -6,6 +6,10 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Entity\\GroupTranslation/Akeneo\\Pim\\Enrichment\\Component\\Category\\Entity\\GroupTranslation/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\GroupTranslationInterface/Akeneo\\Pim\\Enrichment\\Component\\Category\\Model\\GroupTranslationInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Entity\\Group/Akeneo\\Pim\\Enrichment\\Component\\Category\\Entity\\Group/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\GroupInterface/Akeneo\\Pim\\Enrichment\\Component\\Category\\Model\\GroupInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Entity\\CategoryTranslation/Akeneo\\Pim\\Enrichment\\Component\\Category\\Model\\CategoryTranslation/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\CategoryTranslationInterface/Akeneo\\Pim\\Enrichment\\Component\\Category\\Model\\CategoryTranslationInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Entity\\Category/Akeneo\\Pim\\Enrichment\\Component\\Category\\Model\\Category/g'
