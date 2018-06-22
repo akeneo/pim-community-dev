@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace spec\Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -17,7 +17,7 @@ class GroupTypeRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository');
+        $this->shouldHaveType('Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\GroupTypeRepository');
     }
 
     function it_is_a_group_type_repository()

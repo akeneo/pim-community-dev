@@ -2,7 +2,7 @@ Akeneo\Pim\Structure\Component\Model\GroupType:
     type: entity
     table: pim_catalog_group_type
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository
+    repositoryClass: Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\GroupTypeRepository
     fields:
         id:
             type: integer
