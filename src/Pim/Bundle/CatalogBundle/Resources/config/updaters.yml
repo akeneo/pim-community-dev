@@ -9,7 +9,6 @@ parameters:
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
     pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater
     pim_catalog.updater.attribute_group.class:                Pim\Component\Catalog\Updater\AttributeGroupUpdater
-    pim_catalog.updater.group_type.class:                     Pim\Component\Catalog\Updater\GroupTypeUpdater
     pim_catalog.updater.setter.registry.class:                Pim\Component\Catalog\Updater\Setter\SetterRegistry
     pim_catalog.updater.setter.abstract.class:                Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter
     pim_catalog.updater.setter.value.class:                   Pim\Component\Catalog\Updater\Setter\AttributeSetter
@@ -113,9 +112,6 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_group'
             - '@pim_localization.updater.translatable'
-
-    pim_catalog.updater.group_type:
-        class: '%pim_catalog.updater.group_type.class%'
 
     pim_catalog.updater.association_type:
         class: '%pim_catalog.updater.association_type.class%'
