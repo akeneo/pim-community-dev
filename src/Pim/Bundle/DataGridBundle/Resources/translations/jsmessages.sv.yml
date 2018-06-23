@@ -49,6 +49,10 @@ pim.grid.ajax_choice_filter.label_not_empty: är inte tom
 pim:
   grid:
     choice_filter:
+      label_contains: innehåller
+      label_does_not_contain: innehåller inte
+      label_equal: är lika med
+      label_start_with: börjar med
       label_empty: är tom
       label_not_empty: är inte tom
       label_in_list: i listan

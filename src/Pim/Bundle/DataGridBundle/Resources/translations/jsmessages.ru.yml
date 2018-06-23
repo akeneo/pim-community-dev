@@ -49,6 +49,10 @@ pim.grid.ajax_choice_filter.label_not_empty: не является пустым
 pim:
   grid:
     choice_filter:
+      label_contains: содержит
+      label_does_not_contain: не содержит
+      label_equal: равно
+      label_start_with: начинается с
       label_empty: пусто
       label_not_empty: не является пустым
       label_in_list: в списке

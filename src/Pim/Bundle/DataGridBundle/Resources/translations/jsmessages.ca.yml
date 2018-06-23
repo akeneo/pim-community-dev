@@ -49,6 +49,10 @@ pim.grid.ajax_choice_filter.label_not_empty: no és buit
 pim:
   grid:
     choice_filter:
+      label_contains: conté
+      label_does_not_contain: no conté
+      label_equal: és igual a
+      label_start_with: s'inicia amb
       label_empty: està buit
       label_not_empty: no és buit
       label_in_list: a la llista
