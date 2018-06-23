@@ -49,6 +49,10 @@ pim.grid.ajax_choice_filter.label_not_empty: nije prazan
 pim:
   grid:
     choice_filter:
+      label_contains: sadrži
+      label_does_not_contain: ne sadrži
+      label_equal: je jednako
+      label_start_with: počinje sa
       label_empty: je prazan
       label_not_empty: nije prazan
       label_in_list: na popisu
