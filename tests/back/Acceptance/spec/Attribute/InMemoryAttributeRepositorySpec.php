@@ -67,6 +67,21 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this->findBy(['code' => 'attribute_2'])->shouldReturn([]);
     }
 
+    function it_finds_attributes_by_array_criteria()
+    {
+        $attribute1 = $this->createAttribute('attribute_1');
+        $attribute2 = $this->createAttribute('attribute_2');
+        $attribute3 = $this->createAttribute('attribute_3');
+
+        $this->beConstructedWith([
+            $attribute1->getCode() => $attribute1,
+            $attribute2->getCode() => $attribute2,
+            $attribute3->getCode() => $attribute3,
+        ]);
+
+        $this->findBy(['code' => ['attribute_1', 'attribute_2']])->shouldReturn([$attribute1, $attribute2]);
+    }
+
     function it_throws_an_exception_if_saved_object_is_not_an_attribute(\StdClass $object)
     {
         $this
