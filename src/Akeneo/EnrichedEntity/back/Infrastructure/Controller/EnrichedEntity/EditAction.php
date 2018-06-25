@@ -14,6 +14,7 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
+use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityItem;
 use Akeneo\EnrichedEntity\back\Domain\Query\FindEnrichedEntityDetailsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -76,7 +77,8 @@ class EditAction
 
         ($this->editEnrichedEntityHandler)($command);
         /** @var EnrichedEntityItem $enrichedEntityItem */
-        $enrichedEntityItem = ($this->findOneEnrichedEntityItemQuery)($command->identifier);
+        $identifier = EnrichedEntityIdentifier::fromString($command->identifier);
+        $enrichedEntityItem = ($this->findOneEnrichedEntityItemQuery)($identifier);
 
         return new JsonResponse($enrichedEntityItem->normalize());
     }
