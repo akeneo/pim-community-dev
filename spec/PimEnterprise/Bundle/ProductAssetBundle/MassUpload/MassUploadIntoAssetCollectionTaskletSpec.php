@@ -74,12 +74,12 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
 
         $jobExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('entity_type')->willReturn('product');
-        $jobParameters->get('entity_id')->willReturn('42');
+        $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
         $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto(42, 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection')
         )->willReturn($processedItemList);
         $massUploadToProductModelProcessor->applyMassUpload(Argument::cetera())->shouldNotBeCalled();
 
@@ -107,14 +107,14 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
         $jobExecution->getUser()->willReturn('username');
 
         $jobExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('entity_type')->willReturn('product-model');
-        $jobParameters->get('entity_id')->willReturn('42');
+        $jobParameters->get('entity_type')->willReturn('product_model');
+        $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
         $massUploadToProductProcessor->applyMassUpload(Argument::cetera())->shouldNotBeCalled();
         $massUploadToProductModelProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto(42, 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection')
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -141,12 +141,12 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
 
         $jobExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('entity_type')->willReturn('product');
-        $jobParameters->get('entity_id')->willReturn('42');
+        $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
         $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto(42, 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection')
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -179,12 +179,12 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
 
         $jobExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('entity_type')->willReturn('product');
-        $jobParameters->get('entity_id')->willReturn('42');
+        $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
         $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto(42, 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection')
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -202,7 +202,7 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
     ) {
         $processedItemList = new ProcessedItemList();
         $processedItemList->addItem(
-            new EntityToAddAssetsInto(42, 'asset_collection'),
+            new EntityToAddAssetsInto('foobar', 'asset_collection'),
             ProcessedItem::STATE_ERROR,
             '',
             new \Exception('Exception message')
@@ -213,12 +213,12 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
 
         $jobExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('entity_type')->willReturn('product');
-        $jobParameters->get('entity_id')->willReturn('42');
+        $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
         $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto(42, 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection')
         )->willReturn($processedItemList);
 
         $stepExecution->incrementSummaryInfo(Argument::any())->shouldBeCalledTimes(1);
@@ -242,12 +242,12 @@ class MassUploadIntoAssetCollectionTaskletSpec extends ObjectBehavior
 
         $jobExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('entity_type')->willReturn('product');
-        $jobParameters->get('entity_id')->willReturn('42');
+        $jobParameters->get('entity_identifier')->willReturn('foobar');
         $jobParameters->get('attribute_code')->willReturn('asset_collection');
 
         $massUploadToProductProcessor->applyMassUpload(
             new UploadContext('/tmp/pim/file_storage', 'username'),
-            new EntityToAddAssetsInto(42, 'asset_collection')
+            new EntityToAddAssetsInto('foobar', 'asset_collection')
         )->willReturn($processedItemList);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('execute');

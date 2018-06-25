@@ -329,7 +329,7 @@ define(
                 const route = null !== this.entity
                     ? router.generate(this.importRoute, {
                         entityType: this.entity.type,
-                        entityId: this.entity.id,
+                        entityIdentifier: this.entity.identifier,
                         attributeCode: this.entity.attributeCode
                     })
                     : router.generate(this.importRoute);

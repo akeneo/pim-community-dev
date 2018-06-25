@@ -242,13 +242,17 @@ class MassUploadController
      *
      * @param Request $request
      * @param string  $entityType
-     * @param int     $entityId
+     * @param string  $entityIdentifier
      * @param string  $attributeCode
      *
      * @return Response
      */
-    public function importInAssetCollectionAction(Request $request, $entityType, $entityId, $attributeCode)
-    {
+    public function importInAssetCollectionAction(
+        Request $request,
+        string $entityType,
+        string $entityIdentifier,
+        string $attributeCode
+    ) {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
@@ -260,7 +264,7 @@ class MassUploadController
         $configuration = [
             'user_to_notify' => $user->getUsername(),
             'entity_type' => $entityType,
-            'entity_id' => $entityId,
+            'entity_identifier' => $entityIdentifier,
             'attribute_code' => $attributeCode,
         ];
 

@@ -22,28 +22,28 @@ namespace PimEnterprise\Component\ProductAsset\Upload\MassUpload;
  */
 final class EntityToAddAssetsInto
 {
-    /** @var int */
-    private $entityId;
+    /** @var string */
+    private $entityIdentifier;
 
     /** @var string */
     private $attributeCode;
 
     /**
-     * @param int    $entityId
+     * @param string $entityIdentifier
      * @param string $attributeCode
      */
-    public function __construct(int $entityId, string $attributeCode)
+    public function __construct(string $entityIdentifier, string $attributeCode)
     {
-        $this->entityId = $entityId;
+        $this->entityIdentifier = $entityIdentifier;
         $this->attributeCode = $attributeCode;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getEntityId(): int
+    public function getEntityIdentifier(): string
     {
-        return $this->entityId;
+        return $this->entityIdentifier;
     }
 
     /**

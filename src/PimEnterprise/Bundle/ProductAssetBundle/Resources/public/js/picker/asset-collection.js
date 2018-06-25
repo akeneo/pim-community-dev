@@ -130,11 +130,10 @@ define(
                         importRoute: 'pimee_product_asset_mass_upload_into_asset_collection_rest_import'
                     };
 
-                    const invertedUriParts = this.el.baseURI.split('/').reverse();
                     const entity = {
-                        id: invertedUriParts[0],
-                        type: invertedUriParts[1],
-                        attributeCode: this.context.attributeCode
+                        attributeCode: this.context.attributeCode,
+                        identifier: this.context.entityIdentifier,
+                        type: this.context.entityType
                     };
 
                     form.setRoutes(routes)

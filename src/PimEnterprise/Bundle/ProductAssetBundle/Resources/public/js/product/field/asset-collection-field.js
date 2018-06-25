@@ -42,11 +42,18 @@ define(
              * {@inheritdoc}
              */
             renderInput(templateContext) {
+                const entityType = templateContext.context.entity.meta.model_type;
+                const entityIdentifier = 'product_model' === entityType
+                    ? templateContext.context.entity.code
+                    : templateContext.context.entity.identifier;
+
                 const context = _.extend(
                     {},
                     this.context,
                     {editMode: templateContext.editMode},
-                    {attributeCode: templateContext.attribute.code}
+                    {attributeCode: templateContext.attribute.code},
+                    {entityIdentifier: entityIdentifier},
+                    {entityType: entityType}
                 );
 
                 this.assetCollectionPicker.setContext(context);
