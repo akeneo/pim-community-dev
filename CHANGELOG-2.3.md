@@ -1,4 +1,4 @@
-# 2.3.x
+# 2.3.0 (2018-06-25)
 
 - PIM-7457: Revert PIM-7446, updating asset during mass upload is a needed functionality.
 
