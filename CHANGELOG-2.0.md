@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7425: Prevent job 'compute_completeness_of_products_family' to run in some cases.
+- PIM-7396: Fix memory leak on product model descendants computation
 - PIM-7447: do not trigger caclulation of the completeness before exporting products
 - PIM-7411: Fix Request-URI Too Large issue on category selection for product export builder
 

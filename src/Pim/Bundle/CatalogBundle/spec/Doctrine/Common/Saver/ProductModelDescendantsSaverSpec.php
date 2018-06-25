@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -24,7 +25,8 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $pqbFactory,
         CompletenessManager $completenessManager,
         BulkIndexerInterface $productIndexer,
-        BulkIndexerInterface $productModelIndexer
+        BulkIndexerInterface $productModelIndexer,
+        BulkObjectDetacherInterface $bulkObjectDetacher
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -32,7 +34,8 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
             $pqbFactory,
             $completenessManager,
             $productIndexer,
-            $productModelIndexer
+            $productModelIndexer,
+            $bulkObjectDetacher
         );
     }
 
@@ -104,8 +107,6 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $pqbFactory->create()->willReturn($pqb);
         $pqb->addFilter('identifier', Operators::IN_LIST, [])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
-
-        $cursor->count()->willReturn(0);
 
         $completenessManager->schedule(Argument::cetera())->shouldNotBeCalled();
         $completenessManager->generateMissingForProduct(Argument::cetera())->shouldNotBeCalled();
