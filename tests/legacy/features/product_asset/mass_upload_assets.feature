@@ -112,20 +112,3 @@ Feature: Mass uploads assets
     And I should see notification:
       | type    | message              |
       | success | Mass upload executed |
-
-  Scenario: Mass upload assets from product edit form
-    Given the following product:
-      | sku          | family  |
-      | basic_jacket | jackets |
-    And I am on the "basic_jacket" product page
-    When I open the mass uploader of the asset collection
-    And I select the assets to upload:
-      | name                  |
-      | akeneo.jpg            |
-      | akeneo2.jpg           |
-      | logo_akeneo-fr_FR.jpg |
-    And I start assets mass upload
-    And I import assets mass upload
-    And I wait for the "apply_assets_mass_upload_into_asset_collection" job to finish
-    Then the product "basic_jacket" should have the following values:
-      | gallery | akeneo, akeneo2, logo_akeneo |
