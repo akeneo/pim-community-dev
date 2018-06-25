@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\Record;
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetails;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordDetails;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,10 +30,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class GetAction
 {
-    /** @var FindRecordDetails */
+    /** @var FindRecordDetailsInterface */
     private $findRecordDetailsQuery;
 
-    public function __construct(FindRecordDetails $findRecordDetailsQuery)
+    public function __construct(FindRecordDetailsInterface $findRecordDetailsQuery)
     {
         $this->findRecordDetailsQuery = $findRecordDetailsQuery;
     }
