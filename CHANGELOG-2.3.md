@@ -10,7 +10,7 @@
 - AOB-57: As Mary, I would like to submit draft on product model via the API.
 - AOB-139: Make Teamwork assistant project filtering work with product models.
 
-## Monitore your catalog volume
+## Monitor your catalog volume
 
 - PIM-7209: As John, I want to be able to get info about my catalog volume.
 
