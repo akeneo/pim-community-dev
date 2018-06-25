@@ -134,7 +134,7 @@ define(
                     const entity = {
                         id: invertedUriParts[0],
                         type: invertedUriParts[1],
-                        attributeCode: this.$el.closest('[data-attribute]').data('attribute')
+                        attributeCode: this.context.attributeCode
                     };
 
                     form.setRoutes(routes)

@@ -10,17 +10,16 @@ define(
         'underscore',
         'pim/field',
         'pimee/picker/asset-collection'
-    ],
-    function (
+    ], (
         _,
         Field,
         AssetCollectionPicker
-    ) {
+    ) => {
         return Field.extend({
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
+            initialize() {
                 this.assetCollectionPicker = new AssetCollectionPicker();
 
                 this.assetCollectionPicker.on('collection:change', function (assets) {
@@ -33,7 +32,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            setValues: function () {
+            setValues() {
                 Field.prototype.setValues.apply(this, arguments);
 
                 this.assetCollectionPicker.setData(this.getCurrentValue().data);
@@ -42,17 +41,23 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderInput: function (templateContext) {
-                var context = _.extend({}, this.context, {editMode: templateContext.editMode});
+            renderInput(templateContext) {
+                const context = _.extend(
+                    {},
+                    this.context,
+                    {editMode: templateContext.editMode},
+                    {attributeCode: templateContext.attribute.code}
+                );
+
                 this.assetCollectionPicker.setContext(context);
 
                 return this.assetCollectionPicker.render().$el;
             },
 
             /**
-             * @inheritDoc
+             * {@inheritdoc}
              */
-            setFocus: function () {
+            setFocus() {
                 this.el.scrollIntoView(false);
             }
         });
