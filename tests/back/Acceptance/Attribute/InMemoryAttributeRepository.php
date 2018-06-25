@@ -69,16 +69,16 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface, Saver
         foreach ($this->attributes as $attribute) {
             foreach ($criteria as $key => $value) {
                 $getter = sprintf('get%s', ucfirst($key));
-                if(is_array($value))
+
+                if(! is_array($value))
                 {
-                    foreach ($value as $criteriaValue) {
-                        if($attribute->$getter() === $criteriaValue) {
-                            $attributes[] = $attribute;
-                        }
-                    }
+                    $value = [$value];
                 }
-                elseif ($attribute->$getter() === $value) {
-                    $attributes[] = $attribute;
+
+                foreach ($value as $criteriaValue) {
+                    if($attribute->$getter() === $criteriaValue) {
+                        $attributes[] = $attribute;
+                    }
                 }
             }
         }
