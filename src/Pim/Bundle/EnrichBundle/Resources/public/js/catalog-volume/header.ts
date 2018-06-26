@@ -7,6 +7,7 @@ const template = require('pim/template/catalog-volume/header');
 interface HeaderConfig {
   title: string;
   description: string;
+  link: string,
 }
 
 /**
@@ -45,7 +46,7 @@ class HeaderView extends BaseView {
         title: __(this.config.title)
           .replace('{{values}}', productValues.value.toLocaleString('en', {useGrouping: true}))
           .replace('{{average}}', productValuesAverage.value.average),
-        description: __(this.config.description).replace('{{link}}', __('catalog_volume.link')),
+        description: __(this.config.description).replace('{{link}}', this.config.link),
       });
 
       this.$el.html(headerContents);

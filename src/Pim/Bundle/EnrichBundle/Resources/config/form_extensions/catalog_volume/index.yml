@@ -43,6 +43,7 @@ extensions:
         config:
             title: catalog_volume.product_values
             description: catalog_volume.product_values_description
+            link: https://medium.com/akeneo-labs/because-your-product-catalog-typology-matters-e1a9af4c33e0
 
     pim-catalog-volume-product-values-section:
         module: pim/catalog-volume/section
@@ -56,6 +57,7 @@ extensions:
             hint:
                 code: hint-product-values
                 title: catalog_volume.section.product_values.hint
+                link: https://medium.com/akeneo-labs/because-your-product-catalog-typology-matters-e1a9af4c33e0
             axes: [count_products, count_channels, count_scopable_attributes, average_max_attributes_per_family, count_locales, count_localizable_and_scopable_attributes, count_localizable_attributes]
 
     pim-catalog-volume-catalog-structure-section:

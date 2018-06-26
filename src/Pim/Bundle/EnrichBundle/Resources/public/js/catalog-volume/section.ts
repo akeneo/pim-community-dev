@@ -26,6 +26,7 @@ interface SectionConfig {
   hint: {
     code: string;
     title: string;
+    link: string;
   };
   title: string;
 }
@@ -58,6 +59,7 @@ class SectionView extends BaseView {
     hint: {
       code: '',
       title: '',
+      link: '',
     },
     title: ''
   };
@@ -117,7 +119,7 @@ class SectionView extends BaseView {
     this.$el.empty().html(
       this.template({
         title: __(this.config.title),
-        hintTitle: __(this.config.hint.title).replace('{{link}}', __('catalog_volume.link')),
+        hintTitle: __(this.config.hint.title).replace('{{link}}', this.config.hint.link),
         hintIsHidden: this.hintIsHidden(),
         align: this.config.align,
       })

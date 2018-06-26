@@ -1499,7 +1499,6 @@ pim_notification:
     loading: Loading...
 
 catalog_volume:
-    link: https://medium.com/akeneo-labs/because-your-product-catalog-typology-matters-e1a9af4c33e0
     product_values: "You have <span>{{values}}</span> product values in your PIM! On average, it's <span>{{average}}</span> product values per product!&nbsp;💪"
     product_values_description: 'The more product values you have, the more valuable your PIM is, the higher your ROI is! More details <a href="{{link}}" target="_blank">here</a>'
     section:
