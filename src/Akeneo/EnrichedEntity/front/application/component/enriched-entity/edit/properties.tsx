@@ -8,7 +8,6 @@ import __ from 'akeneoenrichedentity/tools/translator';
 
 interface StateProps {
   enrichedEntity: EnrichedEntity|null;
-  isDirty: boolean;
   context: {
     locale: string;
   };
@@ -63,7 +62,6 @@ export default connect((state: State): StateProps => {
 
   return {
     enrichedEntity,
-    isDirty: state.editForm.isDirty,
     context: {
       locale
     },
