@@ -11,15 +11,13 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
 
   it('It search for enriched entities', async () => {
     page.on('request', interceptedRequest => {
-      if ('http://pim.com//rest/enriched_entity' === interceptedRequest.url() &&
-        'GET' === interceptedRequest.method()
-      ) {
+      if ('http://pim.com/rest/enriched_entity' === interceptedRequest.url() && 'GET' === interceptedRequest.method()) {
         interceptedRequest.respond({
           contentType: 'application/json',
           body: JSON.stringify({
             items: [],
-            total: 0
-          })
+            total: 0,
+          }),
         });
       }
     });
@@ -32,25 +30,27 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
 
     expect(response).toEqual({
       items: [],
-      total: 0
+      total: 0,
     });
   });
 
   it('It fetches one enriched entity', async () => {
     page.on('request', interceptedRequest => {
-      if ('http://pim.com//rest/enriched_entity/sofa' === interceptedRequest.url() &&
+      if (
+        'http://pim.com/rest/enriched_entity/sofa' === interceptedRequest.url() &&
         'GET' === interceptedRequest.method()
       ) {
-        const enrichedEntity = (new EnrichedEntityBuilder())
+        const enrichedEntity = new EnrichedEntityBuilder()
           .withIdentifier('sofa')
           .withLabels({
-            'en_US': 'Sofa',
-            'fr_FR': 'Canapé'
-          }).build();
+            en_US: 'Sofa',
+            fr_FR: 'Canapé',
+          })
+          .build();
 
         interceptedRequest.respond({
           contentType: 'application/json',
-          body: JSON.stringify(enrichedEntity)
+          body: JSON.stringify(enrichedEntity),
         });
       }
     });

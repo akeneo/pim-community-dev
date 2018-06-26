@@ -5,7 +5,7 @@ import * as React from 'react';
 import EnrichedEntityView from 'akeneoenrichedentity/application/component/enriched-entity/index';
 import createStore from 'akeneoenrichedentity/infrastructure/store';
 import enrichedEntityReducer from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
-import {updateResults} from 'akeneoenrichedentity/application/action/enriched-entity/search';
+import { updateEnrichedEntityResults } from 'akeneoenrichedentity/application/action/enriched-entity/search';
 import { catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged } from 'akeneoenrichedentity/domain/event/user';
 
 const BaseController = require('pim/controller/base');
@@ -18,7 +18,7 @@ class EnrichedEntityListController extends BaseController {
     store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
     store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
     store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-    store.dispatch(updateResults());
+    store.dispatch(updateEnrichedEntityResults());
 
     mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-enriched-entity' });
 

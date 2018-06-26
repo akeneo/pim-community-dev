@@ -11,10 +11,10 @@ use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
 {
+    /** @var EnrichedEntity[] */
     private $enrichedEntities = [];
 
     public function save(EnrichedEntity $enrichedEntity): void
@@ -33,13 +33,5 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
         }
 
         return $enrichedEntity;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function all(): array
-    {
-        return array_values($this->enrichedEntities);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\InMemory;
@@ -18,14 +19,6 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
     public function setup()
     {
         $this->enrichedEntityRepository = new InMemoryEnrichedEntityRepository();
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_an_empty_array_when_there_is_no_EnrichedEntity()
-    {
-        $this->assertEmpty($this->enrichedEntityRepository->all());
     }
 
     /**
@@ -51,21 +44,6 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
         $this->enrichedEntityRepository->getByIdentifier(
             EnrichedEntityIdentifier::fromString('unknown_identifier')
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_all_the_enriched_entities()
-    {
-        $enrichedEntity1 = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('identifier1'), []);
-        $enrichedEntity2 = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('identifier2'), []);
-
-        $this->enrichedEntityRepository->save($enrichedEntity1);
-        $this->enrichedEntityRepository->save($enrichedEntity2);
-        $enrichedEntitiesFound = $this->enrichedEntityRepository->all();
-
-        $this->assertEnrichedEntityList([$enrichedEntity1, $enrichedEntity2], $enrichedEntitiesFound);
     }
 
     /**

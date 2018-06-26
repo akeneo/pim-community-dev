@@ -48,9 +48,14 @@ pimee_catalog_rule:
 confirmation:
   remove:
     rule: '¿Está seguro que desea eliminar esta regla? No es posible deshacer esta acción'
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Regla eliminada con éxito
 flash:
   rule:
-    removed: Regla eliminada con éxito
     impacted_product_count: La acción en bloque para ejecutar las reglas seleccionadas ha sido lanzada. Será notificado una vez finalizada.
     executed: La ejecución de la regla ha sido lanzada. Será notificado una vez finalizada.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuración de reglas

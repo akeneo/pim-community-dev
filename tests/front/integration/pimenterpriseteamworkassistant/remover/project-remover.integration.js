@@ -9,9 +9,7 @@ describe('Pimenterpriseteamworkassistant > remover > project', () => {
 
   it('It removes a project', async () => {
     page.on('request', interceptedRequest => {
-      if (interceptedRequest.url().includes('projects/new_collection') &&
-        'DELETE' === interceptedRequest.method()
-      ) {
+      if (interceptedRequest.url().includes('projects/new_collection') && 'DELETE' === interceptedRequest.method()) {
         interceptedRequest.respond({});
       }
     });

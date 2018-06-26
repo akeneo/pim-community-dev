@@ -40,13 +40,6 @@ pimee_product_asset:
       invalid_locale: Landestandarden er deaktiveret eller ugyldig
       exists: En fil med samme navn er allerede importeret
       conflicts: Fil navne konflikt
-    grid:
-      medias: medier
-      filename: filnavn
-      filetype: filetype
-      status: status
-      progress: fremskridt
-      actions: aktioner
     status:
       added: Tilføjet
       queued: Sat i kø
@@ -61,6 +54,12 @@ pimee_product_asset:
         success: Valgte aktiver blev slettet.
         error: Der opstod en fejl under forsøget på at slette de valgte produkter, prøv venligst igen.
         empty_selection: Ingen aktiv valgt
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Aktiver samling
 pim_dashboard:
   widget:
     last_operations:

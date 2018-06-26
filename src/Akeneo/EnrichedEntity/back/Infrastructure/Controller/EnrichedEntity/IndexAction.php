@@ -13,36 +13,24 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityList\EnrichedEntityItem;
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityList\FindEnrichedEntitiesQuery;
-use Akeneo\EnrichedEntity\back\Infrastructure\Normalizer\EnrichedEntityItemNormalizer;
+use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityItem;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindEnrichedEntityItemsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Enriched entity index action
+ * List enriched entities
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class IndexAction
 {
-    /** @var FindEnrichedEntitiesQuery */
+    /** @var FindEnrichedEntityItemsInterface */
     private $findEnrichedEntitiesQuery;
 
-    /** @var NormalizerInterface */
-    private $enrichedEntityItemNormalizer;
-
-    /**
-     * @param FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery
-     * @param NormalizerInterface       $enrichedEntityItemNormalizer
-     */
-    public function __construct(
-        FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery,
-        NormalizerInterface $enrichedEntityItemNormalizer
-    ) {
+    public function __construct(FindEnrichedEntityItemsInterface $findEnrichedEntitiesQuery)
+    {
         $this->findEnrichedEntitiesQuery = $findEnrichedEntitiesQuery;
-        $this->enrichedEntityItemNormalizer = $enrichedEntityItemNormalizer;
     }
 
     /**
@@ -68,8 +56,8 @@ class IndexAction
      */
     private function normalizeEnrichedEntityItems(array $enrichedEntityItems): array
     {
-        return array_map(function (EnrichedEntityItem $enrichedEntityItem) {
-            return $this->enrichedEntityItemNormalizer->normalize($enrichedEntityItem, 'internal_api');
+        return array_map(function (EnrichedEntityItem $item) {
+            return $item->normalize();
         }, $enrichedEntityItems);
     }
 }

@@ -25,6 +25,6 @@ Feature: Display the sidebar
     Then the user should see the sidebar collapsed
 
   @acceptance-front
-  Scenario: Can display the properties view
+  Scenario: Can display the active tab view
     When the user asks for the enriched entity "designer"
-    Then the user should see the properties view
+    Then the user should see the active tab view

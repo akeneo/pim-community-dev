@@ -1,72 +1,107 @@
-const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
+const Edit = require('../../decorators/enriched-entity/edit.decorator');
 
 const {
-    tools: { answerJson }
+  decorators: {createElementDecorator},
+  tools: {convertDataTable, convertItemTable, answerJson},
 } = require('../../test-helpers.js');
 
-module.exports = async function (cucumber) {
-  const { Given, Then, When } = cucumber;
+module.exports = async function(cucumber) {
+  const {When, Then} = cucumber;
   const assert = require('assert');
 
-  Given('the following configured tabs:', async function(tabs) {
-      this.expectedTabs = tabs.hashes().reduce((previous, current) => {
-          return [...previous, current.code];
-      }, []);
-  });
+  const config = {
+    Edit: {
+      selector: '.AknDefault-contentWithColumn',
+      decorator: Edit,
+    },
+  };
 
-  When('the user asks for the enriched entity {string}', async function (identifier) {
-    await this.page.evaluate(async (identifier) => {
-        const Controller = require('pim/controller/enriched-entity/edit');
-        const controller = new Controller();
-        controller.renderRoute({params: { identifier }});
-        await document.getElementById('app').appendChild(controller.el);
+  const getElement = createElementDecorator(config);
+
+  const askForEnrichedEntity = async function(identifier) {
+    await this.page.evaluate(async identifier => {
+      const Controller = require('pim/controller/enriched-entity/edit');
+      const controller = new Controller();
+      controller.renderRoute({params: {identifier}});
+      await document.getElementById('app').appendChild(controller.el);
     }, identifier);
 
     await this.page.waitFor('.object-attributes');
-  });
+    const editPage = await await getElement(this.page, 'Edit');
+    const properties = await editPage.getProperties();
+    const isLoaded = await properties.isLoaded();
 
-  When('the user gets the enriched entity {string} with label {string}', async function (
+    assert.equal(isLoaded, true);
+  };
+
+  const changeEnrichedEntity = async function(editPage, identifier, updates) {
+    const properties = await editPage.getProperties();
+
+    // To rework when we will be able to switch locale
+    const labels = convertDataTable(updates).labels;
+
+    await properties.setLabel(labels.en_US);
+  };
+
+  const savedEnrichedEntityWillBe = async function(page, identifier, updates) {
+    page.on('request', request => {
+      if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'POST' === request.method()) {
+        answerJson(request, convertItemTable(updates)[0]);
+      }
+    });
+  };
+
+  When('the user asks for the enriched entity {string}', askForEnrichedEntity);
+
+  When('the user gets the enriched entity {string} with label {string}', async function(
     expectedIdentifier,
     expectedLabel
   ) {
-    await this.page.waitForSelector('.AknTextField[name="identifier"]');
-    const identifier = await this.page.$('.AknTextField[name="identifier"]');
-    const identifierProperty = await identifier.getProperty('value');
-    const identifierValue = await identifierProperty.jsonValue();
+    const editPage = await await getElement(this.page, 'Edit');
+    const properties = await editPage.getProperties();
+    const identifierValue = await properties.getIdentifier();
     assert.equal(identifierValue, expectedIdentifier);
 
-    await this.page.waitForSelector('.AknTextField[name="label"]');
-    const label = await this.page.$('.AknTextField[name="label"]');
-    const labelProperty = await label.getProperty('value');
-    const labelValue = await labelProperty.jsonValue();
+    const labelValue = await properties.getLabel();
     assert.equal(labelValue, expectedLabel);
   });
 
-  When('the user tries to collapse the sidebar', async function () {
-      await this.page.evaluate(async () => {
-          const element = document.querySelector('.AknColumn-collapseButton');
-          element.click();
-      });
+  When('the user updates the enriched entity {string} with:', async function(identifier, updates) {
+    await askForEnrichedEntity.apply(this, [identifier]);
+
+    const editPage = await await getElement(this.page, 'Edit');
+    await changeEnrichedEntity(editPage, identifier, updates);
+    await savedEnrichedEntityWillBe(this.page, identifier, updates);
+    await editPage.save();
   });
 
-  Then('the user should see the sidebar collapsed', async function () {
-      await this.page.waitFor('.AknColumn--collapsed');
+  When('the user changes the enriched entity {string} with:', async function(identifier, updates) {
+    await askForEnrichedEntity.apply(this, [identifier]);
+
+    const editPage = await await getElement(this.page, 'Edit');
+
+    await changeEnrichedEntity.apply(this, [editPage, identifier, updates]);
   });
 
-  Then('the user should see the sidebar with the configured tabs', async function () {
-      const values = await this.page.evaluate(
-          () => [...document.querySelectorAll('.AknColumn-navigationLink')]
-              .map(element => element.getAttribute('data-tab'))
-      );
+  Then('the enriched entity {string} should be:', async function(identifier, updates) {
+    const enrichedEntity = convertItemTable(updates)[0];
 
-      assert.deepStrictEqual(values, this.expectedTabs);
+    const editPage = await await getElement(this.page, 'Edit');
+    const properties = await editPage.getProperties();
+    const identifierValue = await properties.getIdentifier();
+    assert.equal(identifierValue, enrichedEntity.identifier);
+
+    const labelValue = await properties.getLabel();
+    // To rework when we will be able to switch locale
+    assert.equal(labelValue, enrichedEntity.labels['en_US']);
   });
 
-    Then('the user should see the properties view', async function () {
-        const activeTab = await this.page.evaluate(
-            () => document.querySelector('.AknColumn-navigationLink--active').getAttribute('data-tab')
-        );
+  Then('the saved enriched entity {string} will be:', function(identifier, updates) {
+    savedEnrichedEntityWillBe(this.page, identifier, updates);
+  });
 
-        await this.page.waitFor(`[data-tab=${activeTab}]`);
-    });
+  Then('the user saves the changes', async function() {
+    const editPage = await await getElement(this.page, 'Edit');
+    await editPage.save();
+  });
 };

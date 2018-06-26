@@ -182,6 +182,7 @@ acceptance:
             contexts_services:
                 - test.enriched_entity.enriched_entity_grid.context
                 - test.enriched_entity.enriched_entity_details.context
+                - test.enriched_entity.enriched_entity_edit.context
             filters:
                 tags: '@acceptance-back'
         volume-monitoring:

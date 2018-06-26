@@ -15,7 +15,7 @@ export class EnrichedEntityFetcherImplementation implements EnrichedEntityFetche
 
   async fetch(identifier: string): Promise<EnrichedEntity> {
     const backendEnrichedEntity = await getJSON(
-      routing.generate('akeneo_enriched_entities_enriched_entities_get_rest', {identifier})
+      routing.generate('akeneo_enriched_entities_enriched_entity_get_rest', {identifier})
     );
 
     return this.hydrator(backendEnrichedEntity);
@@ -23,7 +23,7 @@ export class EnrichedEntityFetcherImplementation implements EnrichedEntityFetche
 
   async fetchAll(): Promise<EnrichedEntity[]> {
     const backendEnrichedEntities = await getJSON(
-      routing.generate('akeneo_enriched_entities_enriched_entities_index_rest')
+      routing.generate('akeneo_enriched_entities_enriched_entity_index_rest')
     );
 
     return hydrateAll<EnrichedEntity>(this.hydrator)(backendEnrichedEntities);
@@ -31,7 +31,7 @@ export class EnrichedEntityFetcherImplementation implements EnrichedEntityFetche
 
   async search(): Promise<{items: EnrichedEntity[]; total: number}> {
     const backendEnrichedEntities = await getJSON(
-      routing.generate('akeneo_enriched_entities_enriched_entities_index_rest')
+      routing.generate('akeneo_enriched_entities_enriched_entity_index_rest')
     );
 
     const items = hydrateAll<EnrichedEntity>(this.hydrator)(backendEnrichedEntities.items);

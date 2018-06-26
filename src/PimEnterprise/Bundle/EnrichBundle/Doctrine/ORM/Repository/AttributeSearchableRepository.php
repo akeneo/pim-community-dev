@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeSearchableRepository as BaseAttributeSearchableRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeSearchableRepository as BaseAttributeSearchableRepository;
 
 /**
  * Attribute searchable repository

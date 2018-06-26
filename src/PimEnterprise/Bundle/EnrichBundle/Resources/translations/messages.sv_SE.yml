@@ -1,7 +1,5 @@
 pim_title.locale:
   edit: "Språk %locale.code% | Redigera"
-Permissions: Behörigheter
-pane.accordion.permissions: Behörigheter
 attribute group.permissions:
   view.label: Tillåtet för att visa attribut
   view.help: Tillåt för att Visa produkterna i detta attributgrupp
@@ -84,18 +82,16 @@ pimee_enrich:
   product:
     tab:
       proposal.title: Förslag
-  category:
-    tab:
-      permission.title: Behörigheter
-  locale:
-    tab:
-      permission.title: Behörigheter
   channel:
     tab:
       asset_transformation.title: Tillgångs transformationer
   acl.product_ownership.title: Ägande
   attributes:
     empty: ingen
+  category:
+    tab:
+      permission:
+        title: Behörigheter
   groups:
     label: Ägargrupper
     empty: ingen

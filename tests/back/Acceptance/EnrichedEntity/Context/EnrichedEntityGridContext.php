@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context;
 
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityList\FindEnrichedEntitiesQuery;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityItem;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindEnrichedEntityItemsInterface;
 use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -15,28 +15,27 @@ use Behat\Gherkin\Node\TableNode;
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class EnrichedEntityGridContext implements Context
 {
-    /** @var FindEnrichedEntitiesQuery */
-    private $findEnrichedEntitiesQuery;
+    /** @var FindEnrichedEntityItemsInterface */
+    private $findEnrichedEntityItemsQuery;
 
     /** @var EnrichedEntityRepository */
     private $enrichedEntityRepository;
 
-    /** @var EnrichedEntityDetails[] */
+    /** @var EnrichedEntityItem[] */
     private $entitiesFound;
 
     /**
-     * @param FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery
+     * @param FindEnrichedEntityItemsInterface $findEnrichedEntityItemsQuery
      * @param EnrichedEntityRepository  $enrichedEntityRepository
      */
     public function __construct(
-        FindEnrichedEntitiesQuery $findEnrichedEntitiesQuery,
+        FindEnrichedEntityItemsInterface $findEnrichedEntityItemsQuery,
         EnrichedEntityRepository $enrichedEntityRepository
     ) {
-        $this->findEnrichedEntitiesQuery = $findEnrichedEntitiesQuery;
+        $this->findEnrichedEntityItemsQuery = $findEnrichedEntityItemsQuery;
         $this->enrichedEntityRepository = $enrichedEntityRepository;
     }
 
@@ -94,7 +93,7 @@ final class EnrichedEntityGridContext implements Context
      */
     public function theUserAskForTheEnrichedEntityList(): void
     {
-        $this->entitiesFound = ($this->findEnrichedEntitiesQuery)();
+        $this->entitiesFound = ($this->findEnrichedEntityItemsQuery)();
     }
 
     /**

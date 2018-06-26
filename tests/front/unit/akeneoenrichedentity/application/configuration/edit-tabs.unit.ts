@@ -124,7 +124,36 @@ config:
                 first:
                     view: your_view_path_here
       `;
-      expect(error.message).toBe(`Cannot load view configuration for tab "first". The configuration path should be ${confPath}?`);
+      expect(error.message).toBe(
+        `Cannot load view configuration for tab "first". The configuration path should be ${confPath}?`
+      );
+    }
+  });
+
+  test('I get a SibebarMissConfigurationError exception if the view module is not well registered', async () => {
+    const tabProvider = EditTabsProvider.create(
+      {
+        tabs: {
+          first: {
+            label: 'First tab',
+            view: 'view-to-load',
+          },
+        },
+        default_tab: 'my-default-tab',
+      },
+      name => {
+        expect(name).toEqual('view-to-load');
+
+        return Promise.resolve(undefined);
+      }
+    );
+
+    try {
+      await tabProvider.getView('first');
+    } catch (error) {
+      expect(error.message).toBe(
+        'The module "view-to-load" does not exists. You may have an error in your filter configuration file.'
+      );
     }
   });
 });

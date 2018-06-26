@@ -1,3 +1,21 @@
+export class InvalidRawObjectError extends Error {
+  constructor(message: string, expectedKeys: string[], invalidKeys: string[], malformedObject: any) {
+    super(`${message}
+Expected keys are ${expectedKeys.join(', ')}
+Received object:
+${JSON.stringify(malformedObject)}
+Invalid keys: ${invalidKeys.join(', ')}`);
+  }
+}
+
+export const validateKeys = (object: any, keys: string[], message: string) => {
+  const invalidKeys = keys.filter((key: string) => undefined === object[key]);
+
+  if (0 !== invalidKeys.length) {
+    throw new InvalidRawObjectError(message, keys, invalidKeys, object);
+  }
+};
+
 const hydrate = (hydrator: any) => (element: any) => {
   return hydrator(element);
 };

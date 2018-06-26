@@ -37,13 +37,6 @@ pimee_product_asset:
       invalid_locale: El local está inhabilitado o es inválido
       exists: Un fichero con el mismo nombre ya está importado
       conflicts: Conflicto de nombre de ficheros
-    grid:
-      medias: medias
-      filename: nombre de fichero
-      filetype: tipo de fichero
-      status: estatus
-      progress: progreso
-      actions: acciones
     status:
       added: Agregar
       queued: En espera
@@ -57,6 +50,12 @@ pimee_product_asset:
         success: Recursos seleccionados eliminados exitosamente.
         error: Se ha producido un error al intentar eliminar los recursos seleccionados, por favor inténtelo de nuevo.
         empty_selection: Ningún recurso seleccionado
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        type:
+          pim_assets_collection: Colección de recursos
 pim_dashboard:
   widget:
     last_operations:

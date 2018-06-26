@@ -1,11 +1,17 @@
 import Identifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection from 'akeneoenrichedentity/domain/model/label-collection';
+import LabelCollection, {RawLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+
+interface NormalizedEnrichedEntity {
+  identifier: string;
+  labels: RawLabelCollection;
+}
 
 export default interface EnrichedEntity {
   getIdentifier: () => Identifier;
   getLabel: (locale: string) => string;
   getLabelCollection: () => LabelCollection;
   equals: (enrichedEntity: EnrichedEntity) => boolean;
+  normalize: () => NormalizedEnrichedEntity;
 }
 class InvalidArgumentError extends Error {}
 
@@ -41,6 +47,13 @@ class EnrichedEntityImplementation implements EnrichedEntity {
 
   public equals(enrichedEntity: EnrichedEntity): boolean {
     return enrichedEntity.getIdentifier().equals(this.identifier);
+  }
+
+  public normalize(): NormalizedEnrichedEntity {
+    return {
+      identifier: this.getIdentifier().stringValue(),
+      labels: this.getLabelCollection().getLabels(),
+    };
   }
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
@@ -24,14 +25,6 @@ class SqlRecordRepositoryTest extends TestCase
         $this->repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
         $this->resetDB();
         $this->insertEnrichedEntity();
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_an_empty_array_when_there_is_no_record()
-    {
-        $this->assertEmpty($this->repository->all());
     }
 
     /**
@@ -64,35 +57,6 @@ class SqlRecordRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_all_the_records_saved()
-    {
-        $record1 = Record::create(
-            RecordIdentifier::fromString('starck'),
-            EnrichedEntityIdentifier::fromString('designer'),
-            ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']
-        );
-        $record2 = Record::create(
-            RecordIdentifier::fromString('michael_graves'),
-            EnrichedEntityIdentifier::fromString('designer'),
-            ['en_US' => 'Manufacturer', 'fr_FR' => 'Fabricant']
-        );
-        $record3 = Record::create(
-            RecordIdentifier::fromString('coco_channel'),
-            EnrichedEntityIdentifier::fromString('designer'),
-            []
-        );
-
-        $this->repository->save($record1);
-        $this->repository->save($record2);
-        $this->repository->save($record3);
-        $recordsFound = $this->repository->all();
-
-        $this->assertRecordList([$record1, $record2, $record3], $recordsFound);
-    }
-
-    /**
-     * @test
-     */
     public function it_updates_a_record()
     {
         $record = Record::create(
@@ -112,30 +76,6 @@ class SqlRecordRepositoryTest extends TestCase
 
         $enrichedEntityFound = $this->repository->getByIdentifier(RecordIdentifier::fromString('starck'));
         $this->assertRecord($record, $enrichedEntityFound);
-    }
-
-    /**
-     * @param EnrichedEntity[] $enrichedEntitiesExpected
-     * @param EnrichedEntity[] $enrichedEntitiesFound
-     */
-    private function assertRecordList($enrichedEntitiesExpected, $enrichedEntitiesFound): void
-    {
-        foreach ($enrichedEntitiesExpected as $enrichedEntityExpected) {
-            $isFound = false;
-            foreach ($enrichedEntitiesFound as $enrichedEntityFound) {
-                if ($enrichedEntityFound->equals($enrichedEntityExpected)) {
-                    $isFound = true;
-                    $this->assertRecord($enrichedEntityExpected, $enrichedEntityFound);
-                }
-            }
-            $this->assertTrue(
-                $isFound,
-                sprintf(
-                    'The enriched entity with identifier "%s" was not found',
-                    (string) $enrichedEntityExpected->getIdentifier()
-                )
-            );
-        }
     }
 
     private function assertRecord(
