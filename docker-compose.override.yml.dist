@@ -10,7 +10,7 @@ services:
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
       PHP_IDE_CONFIG: 'serverName=pim-ce-cli'
       PHP_XDEBUG_ENABLED: 0
-      XDEBUG_CONFIG: 'remote_host=172.10.0.1'
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1'
     volumes:
       - '~/.composer:/home/docker/.composer'
       - '/tmp/behat/screenshots:/tmp/behat/screenshots'
@@ -19,7 +19,7 @@ services:
     environment:
       YARN_CACHE_FOLDER: '/home/node/.yarn-cache'
     volumes:
-      - ~/.cache/yarn:/home/node/.yarn-cache
+      - '~/.cache/yarn:/home/node/.yarn-cache'
 
   selenium:
     ports:

@@ -15,7 +15,7 @@ services:
     image: 'juliensnz/node'
     user: 'node'
     volumes:
-      - .'/:/srv/pim'
+      - './:/srv/pim'
     working_dir: '/srv/pim'
     networks:
       - 'akeneo'
