@@ -1,6 +1,14 @@
+# 2.3.x
+
+## Enhancements
+
+- PIM-7465: Set form data entity into field context.
+
+# 2.3.0 (2018-06-25)
+
 # 2.3.0-BETA1 (2018-06-21)
 
-## Monitore your catalog volume
+## Monitor your catalog volume
 
 - PIM-7209: As John, I want to be able to get info about my catalog volume.
 
