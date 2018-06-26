@@ -3,6 +3,7 @@ import * as _ from 'underscore';
 
 const __ = require('oro/translator');
 const template = require('pim/template/catalog-volume/header');
+const userContext = require('pim/user-context');
 
 interface HeaderConfig {
   title: string;
@@ -44,7 +45,10 @@ class HeaderView extends BaseView {
     if (undefined !== productValues && productValues.value > 0) {
       const headerContents: string = this.headerTemplate({
         title: __(this.config.title)
-          .replace('{{values}}', productValues.value.toLocaleString('en', {useGrouping: true}))
+          .replace('{{values}}', productValues.value.toLocaleString(
+            userContext.get('uiLocale').split('_')[0],
+            {useGrouping: true})
+          )
           .replace('{{average}}', productValuesAverage.value.average),
         description: __(this.config.description).replace('{{link}}', this.config.link),
       });

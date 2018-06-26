@@ -1256,4 +1256,4 @@ config:
         pim/template/catalog-volume/header:       pimenrich/templates/catalog-volume/header.html
         pim/template/catalog-volume/section:      pimenrich/templates/catalog-volume/section.html
         pim/template/catalog-volume/number:       pimenrich/templates/catalog-volume/number.html
-        pim/template/catalog-volume/average-max:     pimenrich/templates/catalog-volume/average-max.html
+        pim/template/catalog-volume/average-max:  pimenrich/templates/catalog-volume/average-max.html

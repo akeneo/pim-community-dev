@@ -5,6 +5,7 @@ import BaseView = require('pimenrich/js/view/base');
 const __ = require('oro/translator');
 const template = require('pim/template/catalog-volume/section');
 const requireContext = require('require-context');
+const userContext = require('pim/user-context');
 
 class NoTemplateForAxisError extends Error {}
 
@@ -183,9 +184,12 @@ class SectionView extends BaseView {
         name,
         icon: this.getIconName(name),
         value: axis.value,
-        has_warning: axis.hasWarning,
+        hasWarning: axis.hasWarning,
         title: __(`catalog_volume.axis.${name}`),
         warningText: this.config.warningText,
+        meanLabel: __('catalog_volume.mean'),
+        maxLabel: __('catalog_volume.max'),
+        userLocale: userContext.get('uiLocale').split('_')[0],
       });
 
       this.$('.AknCatalogVolume-axisContainer').append(el);
