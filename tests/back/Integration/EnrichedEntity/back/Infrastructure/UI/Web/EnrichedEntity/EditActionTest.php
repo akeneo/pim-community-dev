@@ -6,13 +6,13 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityDetails;
+use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Component\HttpFoundation\Response;
 
 class EditActionTest extends TestCase
 {
@@ -37,8 +37,16 @@ class EditActionTest extends TestCase
     /**
      * @test
      */
-    public function it_edits_an_enriched_entity_details()
+    public function it_edits_an_enriched_entity_details(): void
     {
+        $postContent = [
+            'identifier' => 'designer',
+            'labels'     => [
+                'en_US' => 'foo',
+                'fr_FR' => 'bar',
+            ],
+        ];
+
         $this->webClientHelper->callRoute(
             $this->client,
             self::ENRICHED_ENTITIY_EDIT_ROUTE,
@@ -48,39 +56,33 @@ class EditActionTest extends TestCase
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
                 'CONTENT_TYPE'          => 'application/json',
             ],
-            [
-                'identifier' => 'designer',
-                'labels'     => [
-                    'en_US' => 'foo',
-                    'fr_FR' => 'bar',
-                ],
-            ]
-
+            $postContent
         );
-        $expectedContent = json_encode([
-            'identifier' => 'designer',
-            'labels'     => [
-                'en_US' => 'Designer',
-                'fr_FR' => 'Concepteur',
-            ],
-        ]);
-        $this->webClientHelper->assertResponse($this->client->getResponse(), '200', $expectedContent);
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_NO_CONTENT);
+
+        $repository = $this->getEnrichEntityRepository();
+        $entityItem = $repository->getByIdentifier(EnrichedEntityIdentifier::fromString($postContent['identifier']));
+
+        Assert::assertEquals(array_keys($postContent['labels']), $entityItem->getLabelCodes());
+        Assert::assertEquals($postContent['labels']['en_US'], $entityItem->getLabel('en_US'));
+        Assert::assertEquals($postContent['labels']['fr_FR'], $entityItem->getLabel('fr_FR'));
     }
 
     /**
      * @test
      */
-    public function it_redirects_if_not_xmlhttp_request()
+    public function it_redirects_if_not_xmlhttp_request(): void
     {
         $this->client->followRedirects(false);
         $this->webClientHelper->callRoute(
             $this->client,
             self::ENRICHED_ENTITIY_EDIT_ROUTE,
-            ['identifier' => 'unknown_enriched_entity'],
+            ['identifier' => 'any_id'],
             'POST'
         );
         $response = $this->client->getResponse();
-        Assert::assertEquals(302, $response->getStatusCode());
+        Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
     protected function getConfiguration()
@@ -88,9 +90,14 @@ class EditActionTest extends TestCase
         return null;
     }
 
+    private function getEnrichEntityRepository(): EnrichedEntityRepository
+    {
+        return $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+    }
+
     private function loadFixtures(): void
     {
-        $queryHandler = $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        $queryHandler = $this->getEnrichEntityRepository();
 
         $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [
             'en_US' => 'Designer',

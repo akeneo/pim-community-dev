@@ -17,6 +17,3 @@ services:
 
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryRecordRepository
-
-    akeneo_enrichedentity.infrastructure.persistence.in_memory_database:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryDatabase
