@@ -2,96 +2,86 @@ version: '2'
 
 services:
   fpm:
-    image: akeneo/fpm:php-7.1
-    environment:
-      COMPOSER_HOME: '/home/docker/.composer'
-      BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
-    user: docker
+    image: 'akeneo/fpm:php-7.1'
+    user: 'docker'
     volumes:
-      - ./:/srv/pim
-      - ~/.composer:/home/docker/.composer
-      - /tmp/behat/screenshots:/tmp/behat/screenshots
-    working_dir: /srv/pim
+      - './:/srv/pim'
+    working_dir: '/srv/pim'
     networks:
-      - akeneo
-      - behat
+      - 'akeneo'
+      - 'behat'
 
   node:
-    image: juliensnz/node
-    environment:
-      YARN_CACHE_FOLDER: '/home/node/.yarn-cache'
-    user: node
+    image: 'juliensnz/node'
+    user: 'node'
     volumes:
-      - ./:/srv/pim
-      - ~/.cache/yarn:/home/node/.yarn-cache
-    working_dir: /srv/pim
+      - './:/srv/pim'
+    working_dir: '/srv/pim'
     networks:
-      - akeneo
-      - behat
+      - 'akeneo'
+      - 'behat'
 
   selenium:
-    image: selenium/standalone-firefox-debug:2.53.1-beryllium
+    image: 'selenium/standalone-firefox-debug:2.53.1-beryllium'
     volumes:
-      - ./:/srv/pim:ro
+      - './:/srv/pim:ro'
     networks:
-      - behat
+      - 'behat'
 
   httpd:
-    image: httpd:2.4
+    image: 'httpd:2.4'
     depends_on:
-      - fpm
-    environment:
-      PHP_IDE_CONFIG: 'serverName=pim-ce'
+      - 'fpm'
     ports:
       - '${DOCKER_PORT_HTTP}:80'
     volumes:
-      - ./:/srv/pim:ro
-      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
-      - ./docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro
+      - './:/srv/pim:ro'
+      - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
+      - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
     networks:
-      - akeneo
+      - 'akeneo'
 
   httpd-behat:
-    image: httpd:2.4
+    image: 'httpd:2.4'
     depends_on:
-      - fpm
+      - 'fpm'
     ports:
       - '${DOCKER_PORT_HTTP_BEHAT}:80'
     volumes:
-      - ./:/srv/pim:ro
-      - ./docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
-      - ./docker/akeneo-behat.conf:/usr/local/apache2/conf/vhost.conf:ro
+      - './:/srv/pim:ro'
+      - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
+      - './docker/akeneo-behat.conf:/usr/local/apache2/conf/vhost.conf:ro'
     networks:
-      - behat
+      - 'behat'
 
   mysql:
-    image: mysql:5.7
+    image: 'mysql:5.7'
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: akeneo_pim
-      MYSQL_PASSWORD: akeneo_pim
-      MYSQL_DATABASE: akeneo_pim
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: 'akeneo_pim'
+      MYSQL_PASSWORD: 'akeneo_pim'
+      MYSQL_DATABASE: 'akeneo_pim'
     networks:
-      - akeneo
+      - 'akeneo'
 
   mysql-behat:
-    image: mysql:5.7
+    image: 'mysql:5.7'
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: akeneo_pim
-      MYSQL_PASSWORD: akeneo_pim
-      MYSQL_DATABASE: akeneo_pim
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: 'akeneo_pim'
+      MYSQL_PASSWORD: 'akeneo_pim'
+      MYSQL_DATABASE: 'akeneo_pim'
     networks:
-      - behat
+      - 'behat'
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.3
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:5.5.3'
     environment:
       ES_JAVA_OPTS: '-Xms512m -Xmx512m'
       discovery.type: 'single-node'
     networks:
-      - akeneo
-      - behat
+      - 'akeneo'
+      - 'behat'
 
 networks:
   akeneo:

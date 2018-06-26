@@ -18,6 +18,34 @@ const csvToArray = (csv, separator = ',') => {
   return csv.split(separator).map(value => value.trim());
 };
 
+const convertDataTable = (dataTable) => {
+  return dataTable.rawTable.reduce((result, current) => {
+    try {
+      result[current[0]] = JSON.parse(current[1]);
+    } catch (e) {
+      result[current[0]] = current[1];
+    }
+
+    return result;
+  }, {});
+}
+
+const convertItemTable = (dataTable) => {
+  const [keys, ...items] = dataTable.rawTable;
+
+  return items.map((values) => {
+    return values.reduce((result, value, key) => {
+      try {
+        result[keys[key]] = JSON.parse(value);
+      } catch (e) {
+        result[keys[key]] = value;
+      }
+
+      return result;
+    }, {});
+  });
+}
+
 const renderView = async (page, extension, data) => {
   return await page.evaluate((volumes) => {
     const FormBuilder = require('pim/form-builder');
@@ -36,5 +64,7 @@ module.exports = {
   answerJson,
   json,
   csvToArray,
-  renderView
+  renderView,
+  convertDataTable,
+  convertItemTable
 };
