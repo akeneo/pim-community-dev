@@ -52,5 +52,6 @@ extensions:
             token_field_placeholder: pimee_suggest_data.pim_ai.token.field.placeholder
             token_save_pre_activation_title: pimee_suggest_data.pim_ai.token.save.to_activate
             token_save_post_activation_title:  pimee_suggest_data.pim_ai.token.save.activated
-            activation_url: pimee_suggest_data_pim_ai_connection_save
-            code: pim-ai
+            get_configuration_url: pimee_suggest_data_pim_ai_connection_get
+                        post_configuration_url: pimee_suggest_data_pim_ai_connection_post
+                        code: pim-ai

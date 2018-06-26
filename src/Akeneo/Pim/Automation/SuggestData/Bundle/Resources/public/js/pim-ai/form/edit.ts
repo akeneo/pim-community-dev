@@ -1,8 +1,8 @@
 import * as _ from 'underscore';
 import BaseView = require('pimenrich/js/view/base');
-// import Routing = require('routing');
 
 const __ = require('oro/translator');
+const Routing = require('routing');
 const template = require('pimee/template/pim-ai-connection/edit');
 
 interface EditConfig {
@@ -12,7 +12,8 @@ interface EditConfig {
   token_field_placeholder: string;
   token_save_pre_activation_title: string;
   token_save_post_activation_title: string;
-  activation_url: string;
+  get_configuration_url: string;
+  post_configuration_url: string;
   code: string;
 }
 
@@ -32,14 +33,15 @@ class EditView extends BaseView {
     token_field_placeholder: '',
     token_save_pre_activation_title: '',
     token_save_post_activation_title: '',
-    activation_url: '',
+    get_configuration_url: '',
+    post_configuration_url: '',
     code: '',
   };
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: {config: EditConfig}) {
+  constructor(options: { config: EditConfig }) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -49,16 +51,25 @@ class EditView extends BaseView {
    * {@inheritdoc}
    */
   render(): BaseView {
-    const token: string = '';
-    const activationLabel: string = 0 == token.length
+    const url = Routing.generate(
+      this.config.get_configuration_url,
+      { code: this.config.code }
+    );
+
+    $.get(url).then((configuration) => {
+      const token: string = !_.isEmpty(configuration)
+        ? configuration['configuration_fields']['token']
+        : '';
+
+      const activationLabel: string = 0 == token.length
         ? __(this.config.token_save_pre_activation_title)
         : __(this.config.token_save_post_activation_title);
-    const buttonStyle: string = 0 == token.length ? 'AknButton--slateGrey' : 'AknButton--apply';
 
-    // Not used yet
-    // const activationUrl = Routing.generate(this.config.activation_url, {code: this.config.code});
+      const buttonStyle: string = 0 == token.length
+        ? 'AknButton--slateGrey'
+        : 'AknButton--apply';
 
-    this.$el.empty().html(
+      this.$el.empty().html(
         this.template({
           tokenLabelTitle: __(this.config.token_label_title),
           tokenLabelContent: __(this.config.token_label_content),
@@ -68,7 +79,8 @@ class EditView extends BaseView {
           activationLabel: activationLabel,
           buttonStyle: buttonStyle,
         })
-    );
+      );
+    });
 
     return this;
   };

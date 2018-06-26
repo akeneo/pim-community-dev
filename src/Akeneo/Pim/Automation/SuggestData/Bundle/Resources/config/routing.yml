@@ -5,8 +5,16 @@ pimee_suggest_data_push_product:
 
 pimee_suggest_data_pim_ai_connection_index:
     path: /suggest-data/connection
+    methods: [GET]
 
-pimee_suggest_data_pim_ai_connection_save:
+pimee_suggest_data_pim_ai_connection_get:
+    path: /suggest-data/connection/{code}
+    defaults: { _controller: pimee_suggest_data.controller.pim_dot_ai:getAction }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [GET]
+
+pimee_suggest_data_pim_ai_connection_post:
     path: /suggest-data/connection/{code}
     defaults: { _controller: '' }
     requirements:
