@@ -26,10 +26,16 @@ class WebClientHelper
         $this->router = $router;
     }
 
-    public function callRoute(Client $client, string $route, array $arguments = [], string $method = 'GET'): void
-    {
+    public function callRoute(
+        Client $client,
+        string $route,
+        array $arguments = [],
+        string $method = 'GET',
+        array $headers = [],
+        $content
+    ): void {
         $url = $this->router->generate($route, $arguments);
-        $client->request($method, $url, [], [], [], json_encode([]));
+        $client->request($method, $url, [], [], $headers, json_encode($content));
     }
 
     public function assertResponse(Response $response, string $statusCode, string $expectedContent = ''): void
