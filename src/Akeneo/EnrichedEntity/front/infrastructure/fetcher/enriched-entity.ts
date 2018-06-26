@@ -26,7 +26,7 @@ export class EnrichedEntityFetcherImplementation implements EnrichedEntityFetche
       routing.generate('akeneo_enriched_entities_enriched_entity_index_rest')
     );
 
-    return hydrateAll<EnrichedEntity>(this.hydrator)(backendEnrichedEntities);
+    return hydrateAll<EnrichedEntity>(this.hydrator)(backendEnrichedEntities.items);
   }
 
   async search(): Promise<{items: EnrichedEntity[]; total: number}> {
