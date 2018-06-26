@@ -81,14 +81,14 @@ class MassUploadIntoAssetCollectionTasklet implements TaskletInterface
         $jobParameters = $jobExecution->getJobParameters();
         $entityType = $jobParameters->get('entity_type');
         $addAssetsTo = new EntityToAddAssetsInto(
-            (int)$jobParameters->get('entity_id'),
+            $jobParameters->get('entity_identifier'),
             $jobParameters->get('attribute_code')
         );
 
         if ('product' === $entityType) {
             $processedItems = $this->massUploadToProductProcessor->applyMassUpload($uploadContext, $addAssetsTo);
             $this->incrementSummaryInfo($processedItems);
-        } elseif ('product-model' === $entityType) {
+        } elseif ('product_model' === $entityType) {
             $processedItems = $this->massUploadToProductModelProcessor->applyMassUpload($uploadContext, $addAssetsTo);
             $this->incrementSummaryInfo($processedItems);
         }

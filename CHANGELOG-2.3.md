@@ -1,3 +1,15 @@
+# 2.3.x
+
+## Bug fixes
+
+- PIM-7465: Fix a bug that prevents asset mass upload to work from product model edit form.
+
+## BC breaks
+
+- PIM-7465: Change constructor of ` PimEnterprise\Component\ProductAsset\Upload\MassUpload\EntityToAddAssetsInto` to replace first, integer argument by a string argument.
+- PIM-7465: Change constructor of `PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetToEntityWithValues` to replace `Doctrine\Common\Persistence\ObjectRepository` by `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`.
+- PIM-7465: Change signature of `PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetToEntityWithValues::add` to replace first, integer argument by a string argument.
+
 # 2.3.0 (2018-06-25)
 
 - PIM-7457: Revert PIM-7446, updating asset during mass upload is a needed functionality.
