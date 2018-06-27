@@ -1,13 +1,13 @@
-export interface EditFormState {
+export interface FormState {
   originalData: string;
   isDirty: boolean;
 }
 
 export default (path: string, updateType: string, receivedType: string) => {
   return (
-    state: EditFormState = {originalData: '', isDirty: false},
+    state: FormState = {originalData: '', isDirty: false},
     action: {type: string; [key:string]: any}
-  ): EditFormState => {
+  ): FormState => {
     switch (action.type) {
       case updateType:
         state = {...state, isDirty: state.originalData !== JSON.stringify(action[path])};

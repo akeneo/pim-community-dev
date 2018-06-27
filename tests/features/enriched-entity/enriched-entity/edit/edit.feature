@@ -16,7 +16,7 @@ Feature: Edit an enriched entity
       | identifier | labels                                    |
       | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
 
-  #@acceptance-front
+  @acceptance-front
   Scenario: Updating an enriched entity with unexpected backend answer
     When the user changes the enriched entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
@@ -24,7 +24,7 @@ Feature: Edit an enriched entity
       | identifier | labels                                      |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
     And the user saves the changes
-    And the user shouldn't see the updated message
+    And the user shouldn't be notified that modification have been made
     And the enriched entity "designer" should be:
       | identifier | labels                                      |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
@@ -33,20 +33,35 @@ Feature: Edit an enriched entity
   Scenario: Display updated edit form message
     When the user changes the enriched entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
-    Then the user should see the updated message
-    And the user saves the changes
-    And the user shouldn't see the updated message
+    Then the user should be notified that modification have been made
+    And the saved enriched entity "designer" will be:
+      | identifier | labels                                       |
+      | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
 
   @acceptance-front
-  Scenario: Display confirmation dialog before leaving page and cancel it
+  Scenario: Display confirmation dialog when the user click on a breadcrumb item and cancel it
     When the user changes the enriched entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
-    And the user click on the "Products" menu item
+    And the user click on a breadcrumb item
     Then the user should see the confirmation dialog and dismiss
 
   @acceptance-front
-  Scenario: Display confirmation dialog before leaving page and confirm it
+  Scenario: Display confirmation dialog when the user click on a breadcrumb item and confirm it
     When the user changes the enriched entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
-    And the user click on the "Products" menu item
+    And the user click on a breadcrumb item
+    Then the user should see the confirmation dialog and accept
+
+  @acceptance-front
+  Scenario: Display confirmation dialog when the user goes on another page and cancel it
+    When the user changes the enriched entity "designer" with:
+      | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+    And the user goes to "http://www.pim-test.com"
+    Then the user should see the confirmation dialog and dismiss
+
+  @acceptance-front
+  Scenario: Display confirmation dialog when the user goes on another page and confirm it
+    When the user changes the enriched entity "designer" with:
+      | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+    And the user goes to "http://www.pim-test.com"
     Then the user should see the confirmation dialog and accept

@@ -1,5 +1,5 @@
 const Edit = require('../../decorators/enriched-entity/edit.decorator');
-const Menu = require('../../decorators/enriched-entity/app/menu.decorator');
+const Breadcrumb = require('../../decorators/enriched-entity/app/breadcrumb.decorator');
 
 const {
   decorators: {createElementDecorator},
@@ -15,9 +15,9 @@ module.exports = async function(cucumber) {
       selector: '.AknDefault-contentWithColumn',
       decorator: Edit,
     },
-    Menu: {
-      selector: '.AknHeader-menu',
-      decorator: Menu,
+    Breadcrumb: {
+      selector: '.AknBreadcrumb',
+      decorator: Breadcrumb,
     },
   };
 
@@ -89,9 +89,13 @@ module.exports = async function(cucumber) {
     await changeEnrichedEntity.apply(this, [editPage, identifier, updates]);
   });
 
-  When('the user click on the {string} menu item', async function (itemValue) {
-    const menu = await await getElement(this.page, 'Menu');
-    await menu.clickOnItem(itemValue);
+  When('the user click on a breadcrumb item', async function () {
+    const breadcrumb = await await getElement(this.page, 'Breadcrumb');
+    await breadcrumb.clickOnItem();
+  });
+
+  When('the user goes to {string}', async function (url) {
+    await this.page.goto(url);
   });
 
   Then('the enriched entity {string} should be:', async function(identifier, updates) {
@@ -116,17 +120,16 @@ module.exports = async function(cucumber) {
     await editPage.save();
   });
 
-  Then('the user should see the updated message', async function () {
+  Then('the user should be notified that modification have been made', async function () {
     const editPage = await await getElement(this.page, 'Edit');
     const isUpdated = await editPage.isUpdated();
 
     assert.strictEqual(isUpdated, true);
   });
 
-  Then('the user shouldn\'t see the updated message', async function () {
+  Then('the user shouldn\'t be notified that modification have been made', async function () {
     const editPage = await await getElement(this.page, 'Edit');
     const isSaved = await editPage.isSaved();
-    debugger;
 
     assert.strictEqual(isSaved, true);
   });

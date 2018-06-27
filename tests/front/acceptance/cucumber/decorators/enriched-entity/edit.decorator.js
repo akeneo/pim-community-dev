@@ -40,17 +40,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
   };
 
   const isSaved = async () => {
-    // await page.setRequestInterception(true);
-    // page.on('request', async request => {
-    //   debugger;
-    //   if (request.url().includes('/rest/enriched_entity/designer')) {
-    //     debugger;
-    //     await page.waitForSelector('.updated-status', {hidden: true});
-    //   }
-    // });
-    // await page.waitForNavigation({waitUntil: 'networkidle0'});
     await page.waitForSelector('.updated-status', {hidden: true});
-    // debugger;
 
     return true;
   };
