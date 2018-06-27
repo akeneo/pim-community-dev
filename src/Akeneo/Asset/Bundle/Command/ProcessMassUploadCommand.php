@@ -12,7 +12,7 @@ namespace Akeneo\Asset\Bundle\Command;
 
 use Akeneo\Asset\Bundle\Doctrine\Common\Saver\AssetSaver;
 use Akeneo\Asset\Component\ProcessedItem;
-use Akeneo\Asset\Component\Upload\MassUploadProcessor;
+use Akeneo\Asset\Component\Upload\MassUpload\MassUploadProcessor;
 use Akeneo\Asset\Component\Upload\UploadContext;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;

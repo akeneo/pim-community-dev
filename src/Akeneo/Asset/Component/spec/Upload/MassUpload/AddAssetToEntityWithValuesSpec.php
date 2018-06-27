@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Component\ProductAsset\Upload\MassUpload;
+namespace spec\Akeneo\Asset\Component\Upload\MassUpload;
 
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -20,7 +20,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetToEntityWithValues;
+use Akeneo\Asset\Component\Upload\MassUpload\AddAssetToEntityWithValues;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;

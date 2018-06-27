@@ -15,13 +15,13 @@ namespace Akeneo\Asset\Bundle\MassUpload;
 
 use Akeneo\Asset\Component\ProcessedItem;
 use Akeneo\Asset\Component\ProcessedItemList;
+use Akeneo\Asset\Component\Upload\MassUpload\EntityToAddAssetsInto;
+use Akeneo\Asset\Component\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
 use Akeneo\Asset\Component\Upload\UploadContext;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Connector\Step\TaskletInterface;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\EntityToAddAssetsInto;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
 
 /**
  * Launches the asset upload processor to create assets from uploaded files

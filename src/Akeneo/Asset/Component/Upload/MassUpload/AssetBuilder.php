@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Upload\MassUpload;
+namespace Akeneo\Asset\Component\Upload\MassUpload;
 
 use Akeneo\Asset\Component\Factory\AssetFactory;
 use Akeneo\Asset\Component\FileStorage;

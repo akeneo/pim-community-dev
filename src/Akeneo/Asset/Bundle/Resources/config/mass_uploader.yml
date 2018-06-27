@@ -2,7 +2,7 @@ parameters:
     pimee_product_asset.upload_context.class:        Akeneo\Asset\Component\Upload\UploadContext
     pimee_product_asset.upload_checker.class:        Akeneo\Asset\Component\Upload\UploadChecker
     pimee_product_asset.upload_importer.class:       Akeneo\Asset\Component\Upload\Importer
-    pimee_product_asset.mass_upload_processor.class: Akeneo\Asset\Component\Upload\MassUploadProcessor
+    pimee_product_asset.mass_upload_processor.class: Akeneo\Asset\Component\Upload\MassUpload\MassUploadProcessor
     pimee_product_asset.mass_upload.tasklet.class:   Akeneo\Asset\Bundle\MassUpload\MassUploadTasklet
 
 services:
@@ -20,7 +20,7 @@ services:
             - '@akeneo_file_storage.file_storage.file.file_storer'
 
     pimee_product_asset.mass_upload.builder.asset:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\AssetBuilder'
+        class: 'Akeneo\Asset\Component\Upload\MassUpload\AssetBuilder'
         arguments:
             - '@pimee_product_asset.upload_checker'
             - '@pimee_product_asset.factory.asset'
@@ -30,12 +30,12 @@ services:
             - '@pim_catalog.repository.locale'
 
     pimee_product_asset.mass_upload.retrieve_asset_generation_errors:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\RetrieveAssetGenerationErrors'
+        class: 'Akeneo\Asset\Component\Upload\MassUpload\RetrieveAssetGenerationErrors'
         arguments:
             - '@translator'
 
     pimee_product_asset.mass_upload.add_asset_to_product:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetToEntityWithValues'
+        class: 'Akeneo\Asset\Component\Upload\MassUpload\AddAssetToEntityWithValues'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.updater.product'
@@ -43,7 +43,7 @@ services:
             - '@pim_catalog.saver.product'
 
     pimee_product_asset.mass_upload.add_asset_to_product_model:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\AddAssetToEntityWithValues'
+        class: 'Akeneo\Asset\Component\Upload\MassUpload\AddAssetToEntityWithValues'
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.updater.product_model'
@@ -61,7 +61,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_product_asset.mass_upload.processor.into_product:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor'
+        class: 'Akeneo\Asset\Component\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor'
         arguments:
             - '@pimee_product_asset.upload_importer'
             - '@pimee_product_asset.mass_upload.builder.asset'
@@ -72,7 +72,7 @@ services:
             - '@pimee_product_asset.mass_upload.add_asset_to_product'
 
     pimee_product_asset.mass_upload.processor.into_product_model:
-        class: 'PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor'
+        class: 'Akeneo\Asset\Component\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor'
         arguments:
             - '@pimee_product_asset.upload_importer'
             - '@pimee_product_asset.mass_upload.builder.asset'
@@ -89,7 +89,7 @@ services:
             - '%tmp_storage_dir%'
 
     pimee_product_asset.tasklet.mass_upload_into_asset_collection:
-        class: 'PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadIntoAssetCollectionTasklet'
+        class: 'Akeneo\Asset\Bundle\MassUpload\MassUploadIntoAssetCollectionTasklet'
         arguments:
             - '@pimee_product_asset.mass_upload.processor.into_product'
             - '@pimee_product_asset.mass_upload.processor.into_product_model'

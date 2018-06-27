@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Upload\MassUpload;
+namespace Akeneo\Asset\Component\Upload\MassUpload;
 
 /**
  * This DTO is used to add newly uploaded assets to an asset collection field of a product or product model.

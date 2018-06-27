@@ -23,8 +23,8 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Step\TaskletInterface;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\EntityToAddAssetsInto;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
+use Akeneo\Asset\Component\Upload\MassUpload\EntityToAddAssetsInto;
+use Akeneo\Asset\Component\Upload\MassUpload\MassUploadIntoAssetCollectionProcessor;
 use Prophecy\Argument;
 
 /**

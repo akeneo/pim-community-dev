@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Component\ProductAsset\Upload\MassUpload;
+namespace spec\Akeneo\Asset\Component\Upload\MassUpload;
 
 use Akeneo\Asset\Component\Factory\AssetFactory;
 use Akeneo\Asset\Component\FileStorage;
@@ -27,7 +27,7 @@ use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\AssetBuilder;
+use Akeneo\Asset\Component\Upload\MassUpload\AssetBuilder;
 use Prophecy\Argument;
 
 /**

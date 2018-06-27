@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Component\ProductAsset\Upload\MassUpload;
+namespace spec\Akeneo\Asset\Component\Upload\MassUpload;
 
 use Akeneo\Asset\Bundle\Event\AssetEvent;
 use Akeneo\Asset\Component\Model\AssetInterface;
@@ -25,7 +25,7 @@ use Akeneo\Tool\Component\FileTransformer\Exception\NotApplicableTransformation\
 use Akeneo\Tool\Component\FileTransformer\Exception\NotApplicableTransformation\ImageHeightException;
 use Akeneo\Tool\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\RetrieveAssetGenerationErrors;
+use Akeneo\Asset\Component\Upload\MassUpload\RetrieveAssetGenerationErrors;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

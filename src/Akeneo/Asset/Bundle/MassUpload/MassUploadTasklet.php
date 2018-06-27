@@ -15,7 +15,7 @@ namespace Akeneo\Asset\Bundle\MassUpload;
 
 use Akeneo\Asset\Component\ProcessedItem;
 use Akeneo\Asset\Component\ProcessedItemList;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadProcessor;
+use Akeneo\Asset\Component\Upload\MassUpload\MassUploadProcessor;
 use Akeneo\Asset\Component\Upload\UploadContext;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;

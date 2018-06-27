@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Component\ProductAsset\Upload\MassUpload;
+namespace spec\Akeneo\Asset\Component\Upload\MassUpload;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Upload\MassUpload\EntityToAddAssetsInto;
+use Akeneo\Asset\Component\Upload\MassUpload\EntityToAddAssetsInto;
 
 class EntityToAddAssetsIntoSpec extends ObjectBehavior
 {
