@@ -13,7 +13,7 @@ parameters:
 
 services:
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryEnrichedEntityRepository
+        class: Akeneo\EnrichedEntity\Tests\Back\Acceptance\InMemoryEnrichedEntityRepository
 
     akeneo_enrichedentity.infrastructure.persistence.record:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryRecordRepository
+        class: Akeneo\EnrichedEntity\Tests\Back\Acceptance\InMemoryRecordRepository

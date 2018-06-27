@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context;
+namespace Akeneo\EnrichedEntity\Tests\Back\Acceptance\Context;
 
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
