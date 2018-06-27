@@ -1,4 +1,5 @@
 const Edit = require('../../decorators/enriched-entity/edit.decorator');
+const Menu = require('../../decorators/enriched-entity/app/menu.decorator');
 
 const {
   decorators: {createElementDecorator},
@@ -14,6 +15,10 @@ module.exports = async function(cucumber) {
       selector: '.AknDefault-contentWithColumn',
       decorator: Edit,
     },
+    Menu: {
+      selector: '.AknHeader-menu',
+      decorator: Menu,
+    },
   };
 
   const getElement = createElementDecorator(config);
@@ -23,6 +28,7 @@ module.exports = async function(cucumber) {
       const Controller = require('pim/controller/enriched-entity/edit');
       const controller = new Controller();
       controller.renderRoute({params: {identifier}});
+      const element = controller.el;
       await document.getElementById('app').appendChild(controller.el);
     }, identifier);
 
@@ -31,7 +37,7 @@ module.exports = async function(cucumber) {
     const properties = await editPage.getProperties();
     const isLoaded = await properties.isLoaded();
 
-    assert.equal(isLoaded, true);
+    assert.strictEqual(isLoaded, true);
   };
 
   const changeEnrichedEntity = async function(editPage, identifier, updates) {
@@ -60,10 +66,10 @@ module.exports = async function(cucumber) {
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const identifierValue = await properties.getIdentifier();
-    assert.equal(identifierValue, expectedIdentifier);
+    assert.strictEqual(identifierValue, expectedIdentifier);
 
     const labelValue = await properties.getLabel();
-    assert.equal(labelValue, expectedLabel);
+    assert.strictEqual(labelValue, expectedLabel);
   });
 
   When('the user updates the enriched entity {string} with:', async function(identifier, updates) {
@@ -83,17 +89,22 @@ module.exports = async function(cucumber) {
     await changeEnrichedEntity.apply(this, [editPage, identifier, updates]);
   });
 
+  When('the user click on the {string} menu item', async function (itemValue) {
+    const menu = await await getElement(this.page, 'Menu');
+    await menu.clickOnItem(itemValue);
+  });
+
   Then('the enriched entity {string} should be:', async function(identifier, updates) {
     const enrichedEntity = convertItemTable(updates)[0];
 
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const identifierValue = await properties.getIdentifier();
-    assert.equal(identifierValue, enrichedEntity.identifier);
+    assert.strictEqual(identifierValue, enrichedEntity.identifier);
 
     const labelValue = await properties.getLabel();
     // To rework when we will be able to switch locale
-    assert.equal(labelValue, enrichedEntity.labels['en_US']);
+    assert.strictEqual(labelValue, enrichedEntity.labels['en_US']);
   });
 
   Then('the saved enriched entity {string} will be:', function(identifier, updates) {
@@ -103,5 +114,34 @@ module.exports = async function(cucumber) {
   Then('the user saves the changes', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.save();
+  });
+
+  Then('the user should see the updated message', async function () {
+    const editPage = await await getElement(this.page, 'Edit');
+    const isUpdated = await editPage.isUpdated();
+
+    assert.strictEqual(isUpdated, true);
+  });
+
+  Then('the user shouldn\'t see the updated message', async function () {
+    const editPage = await await getElement(this.page, 'Edit');
+    const isSaved = await editPage.isSaved();
+    debugger;
+
+    assert.strictEqual(isSaved, true);
+  });
+
+  Then('the user should see the confirmation dialog and dismiss', function () {
+    this.page.on('dialog', async (dialog) => {
+      assert.strictEqual(dialog.type(), 'confirm');
+      await dialog.dismiss();
+    });
+  });
+
+  Then('the user should see the confirmation dialog and accept', function () {
+    this.page.on('dialog', async (dialog) => {
+      assert.strictEqual(dialog.type(), 'confirm');
+      await dialog.accept();
+    });
   });
 };

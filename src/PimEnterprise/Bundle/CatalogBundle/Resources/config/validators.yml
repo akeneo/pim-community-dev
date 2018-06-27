@@ -15,7 +15,7 @@ services:
             - { name: validator.constraint_validator, alias: pim_not_null_properties_validator }
 
     pim_catalog.validator.constraint.family_attribute_as_image:
-        class: 'Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsImageValidator'
+        class: '%pim_catalog.validator.constraint.family_attribute_as_image.class%'
         arguments:
             - [ 'pim_catalog_image', 'pim_assets_collection' ]
         tags:
