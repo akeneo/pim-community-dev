@@ -28,7 +28,7 @@ class InMemoryGroupTypeRepository implements SaverInterface, GroupTypeRepository
 
     public function save($group, array $options = [])
     {
-        if(!$group instanceof GroupTypeInterface) {
+        if (!$group instanceof GroupTypeInterface) {
             throw new \InvalidArgumentException('Only group type objects are supported.');
         }
         $this->groupTypes->set($group->getCode(), $group);
