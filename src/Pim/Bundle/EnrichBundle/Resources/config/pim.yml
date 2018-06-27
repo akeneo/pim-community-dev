@@ -56,3 +56,7 @@ pim_catalog:
             - { value: 'MM/dd/yyyy', label: 'mm/dd/yyyy' }
             - { value: 'dd/MM/yyyy', label: 'dd/mm/yyyy' }
             - { value: 'dd.MM.yyyy', label: 'dd.mm.yyyy' }
+
+framework:
+    validation:
+        cache: apc
