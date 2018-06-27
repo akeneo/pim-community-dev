@@ -16,4 +16,3 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class AkeneoEnrichedEntityIntegrationTestsBundle extends Bundle
 {
 }
-
