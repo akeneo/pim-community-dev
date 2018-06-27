@@ -35,7 +35,8 @@ class InMemoryFindEnrichedEntityItems implements FindEnrichedEntityItemsInterfac
     /**
      * {@inheritdoc}
      */
-    public function __invoke(): array {
+    public function __invoke(): array
+    {
         return $this->results;
     }
 }

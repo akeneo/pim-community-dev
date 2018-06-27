@@ -56,7 +56,6 @@ class InMemoryRecordRepositoryTest extends TestCase
                 if (!$isFound && $enrichedEntityFound->equals($enrichedEntity)) {
                     $isFound = true;
                 }
-
             }
             $this->assertTrue(
                 $isFound,

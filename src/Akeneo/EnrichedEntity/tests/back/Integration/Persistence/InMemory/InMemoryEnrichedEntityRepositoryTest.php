@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Tests\Back\Acceptance;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
 use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryEnrichedEntityRepositoryTest extends TestCase
@@ -66,7 +66,6 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
                 if (!$isFound && $enrichedEntityFound->equals($enrichedEntity)) {
                     $isFound = true;
                 }
-
             }
             $this->assertTrue(
                 $isFound,
