@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
+namespace Akeneo\EnrichedEntity\Tests\Back\Acceptance;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 

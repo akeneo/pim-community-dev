@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
+namespace Akeneo\EnrichedEntity\Tests\Back\Acceptance;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
-use Akeneo\EnrichedEntity\back\Domain\Repository\RecordRepository;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordRepository;
 use Akeneo\Test\Integration\TestCase;
 
 class SqlRecordRepositoryTest extends TestCase

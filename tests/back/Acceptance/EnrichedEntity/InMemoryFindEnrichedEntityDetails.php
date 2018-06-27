@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindEnrichedEntityDetailsInterface;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityDetails;
+use Akeneo\EnrichedEntity\Domain\Query\FindEnrichedEntityDetailsInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>

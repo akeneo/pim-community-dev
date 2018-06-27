@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Repository\RecordRepository;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordRepository;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

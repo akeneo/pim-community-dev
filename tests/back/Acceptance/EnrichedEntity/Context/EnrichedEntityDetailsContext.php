@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity\Context;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityDetails;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindEnrichedEntityDetailsInterface;
-use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityDetails;
+use Akeneo\EnrichedEntity\Domain\Query\FindEnrichedEntityDetailsInterface;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;

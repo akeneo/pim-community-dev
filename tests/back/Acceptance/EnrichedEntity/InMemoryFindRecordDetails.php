@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetailsInterface;
-use Akeneo\EnrichedEntity\back\Domain\Query\RecordDetails;
+use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

@@ -45,13 +45,13 @@ services:
             - '@router'
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryFindRecordDetails
+        class: Akeneo\EnrichedEntity\Tests\Back\Acceptance\InMemoryFindRecordDetails
 
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryEnrichedEntityRepository
+        class: Akeneo\EnrichedEntity\Tests\Back\Acceptance\InMemoryEnrichedEntityRepository
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryFindEnrichedEntityDetails
+        class: Akeneo\EnrichedEntity\Tests\Back\Acceptance\InMemoryFindEnrichedEntityDetails
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryFindEnrichedEntityItems
+        class: Akeneo\EnrichedEntity\Tests\Back\Acceptance\InMemoryFindEnrichedEntityItems

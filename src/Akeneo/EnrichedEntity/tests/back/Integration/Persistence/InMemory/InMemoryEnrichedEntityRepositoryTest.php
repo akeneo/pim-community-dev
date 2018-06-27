@@ -2,13 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\InMemory;
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
-use AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryEnrichedEntityRepository;
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+namespace Akeneo\EnrichedEntity\Tests\Back\Acceptance;
+
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryEnrichedEntityRepositoryTest extends TestCase
