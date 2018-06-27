@@ -21,6 +21,4 @@ interface RecordRepository
     public function save(Record $record): void;
 
     public function getByIdentifier(RecordIdentifier $identifier): ?Record;
-
-    public function all(): array;
 }

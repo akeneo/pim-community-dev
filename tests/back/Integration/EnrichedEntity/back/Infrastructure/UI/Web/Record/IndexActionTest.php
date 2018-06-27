@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends TestCase
 {
-    private const RECORD_LIST_ROUTE = 'akeneo_enriched_entities_records_index_rest';
+    private const RECORD_LIST_ROUTE = 'akeneo_enriched_entities_record_index_rest';
 
     /** @var Client */
     private $client;
@@ -39,8 +39,11 @@ class IndexActionTest extends TestCase
      */
     public function it_returns_a_list_of_records()
     {
-        $this->webClientHelper->callRoute($this->client, self::RECORD_LIST_ROUTE,
-            ['enrichedEntityIdentifier' => 'designer']);
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::RECORD_LIST_ROUTE,
+            ['enrichedEntityIdentifier' => 'designer']
+        );
 
         $expectedContent = json_encode([
             'items' => [

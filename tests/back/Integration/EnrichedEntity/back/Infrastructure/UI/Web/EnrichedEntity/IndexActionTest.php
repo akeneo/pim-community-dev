@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityItem;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
@@ -12,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class IndexActionTest extends TestCase
 {
-    private const ENRICHED_ENTITIY_LIST_ROUTE = 'akeneo_enriched_entities_enriched_entities_index_rest';
+    private const ENRICHED_ENTITIY_LIST_ROUTE = 'akeneo_enriched_entities_enriched_entity_index_rest';
 
     /** @var Client */
     private $client;
@@ -66,25 +67,24 @@ class IndexActionTest extends TestCase
 
     private function loadFixtures(): void
     {
-        $enrichedEntityRepository = $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
-        $enrichedEntityRepository->save(
-            EnrichedEntity::create(
-                EnrichedEntityIdentifier::fromString('designer'),
-                [
-                    'en_US' => 'Designer',
-                ]
-            )
+        $queryHandler = $this->getFromTestContainer(
+            'akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items'
         );
 
-        $enrichedEntityRepository->save(
-            EnrichedEntity::create(
-                EnrichedEntityIdentifier::fromString('manufacturer'),
-                [
-                    'en_US' => 'Manufacturer',
-                    'fr_FR' => 'Fabricant',
-                ]
-            )
-        );
+        $entityItem = new EnrichedEntityItem();
+        $entityItem->identifier = (EnrichedEntityIdentifier::fromString('designer'));
+        $entityItem->labels = LabelCollection::fromArray([
+            'en_US' => 'Designer',
+        ]);
+        $queryHandler->save($entityItem);
+
+        $entityItem = new EnrichedEntityItem();
+        $entityItem->identifier = (EnrichedEntityIdentifier::fromString('manufacturer'));
+        $entityItem->labels = LabelCollection::fromArray([
+            'en_US' => 'Manufacturer',
+            'fr_FR' => 'Fabricant',
+        ]);
+        $queryHandler->save($entityItem);
 
         $user = new User();
         $user->setUsername('julia');

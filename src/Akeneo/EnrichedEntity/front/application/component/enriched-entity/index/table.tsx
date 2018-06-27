@@ -8,6 +8,7 @@ import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-col
 interface TableState {
   locale: string;
   enrichedEntities: EnrichedEntity[];
+  isLoading: boolean;
 }
 
 interface TableDispatch {
@@ -34,16 +35,17 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
   renderItems(
     enrichedEntities: EnrichedEntity[],
     locale: string,
+    isLoading: boolean,
     onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void
   ): JSX.Element | JSX.Element[] {
-    if (0 === enrichedEntities.length) {
+    if (0 === enrichedEntities.length && isLoading) {
       const enrichedEntityIdentifier = createIdentifier('');
       const labelCollection = createLabelCollection({});
       const enrichedEntity = createEnrichedEntity(enrichedEntityIdentifier, labelCollection);
 
       return (
         <ItemView
-          isLoading={true}
+          isLoading={isLoading}
           key={0}
           enrichedEntity={enrichedEntity}
           locale={locale}
@@ -73,12 +75,13 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
       enrichedEntities,
       locale,
       onRedirectToEnrichedEntity,
+      isLoading
     } = this.props;
 
     return (
       <div className="AknGrid">
         <div className="AknGrid-body">
-          {this.renderItems(enrichedEntities, locale, onRedirectToEnrichedEntity)}
+          {this.renderItems(enrichedEntities, locale, isLoading, onRedirectToEnrichedEntity)}
         </div>
       </div>
     );

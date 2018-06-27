@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityDetails;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Component\HttpFoundation\Response;
 
 class GetActionTest extends TestCase
 {
-    private const ENRICHED_ENTITIY_DETAIL_ROUTE = 'akeneo_enriched_entities_enriched_entities_get_rest';
+    private const ENRICHED_ENTITIY_DETAIL_ROUTE = 'akeneo_enriched_entities_enriched_entity_get_rest';
 
     /** @var Client */
     private $client;
@@ -37,11 +37,16 @@ class GetActionTest extends TestCase
      */
     public function it_returns_an_enriched_entity_details()
     {
-        $this->callRoute($this->client, self::ENRICHED_ENTITIY_DETAIL_ROUTE, ['identifier' => 'designer']);
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::ENRICHED_ENTITIY_DETAIL_ROUTE,
+            ['identifier' => 'designer']
+        );
         $expectedContent = json_encode([
             'identifier' => 'designer',
             'labels'     => [
                 'en_US' => 'Designer',
+                'fr_FR' => 'Concepteur',
             ],
         ]);
         $this->webClientHelper->assertResponse($this->client->getResponse(), '200', $expectedContent);
@@ -52,13 +57,13 @@ class GetActionTest extends TestCase
      */
     public function it_returns_404_not_found_when_the_identifier_does_not_exist()
     {
-        $this->callRoute(
+        $this->webClientHelper->callRoute(
             $this->client,
             self::ENRICHED_ENTITIY_DETAIL_ROUTE,
             ['identifier' => 'unknown_enriched_entity'],
             'GET'
         );
-        $this->assertResponse($this->client->getResponse(), '404', '{}');
+        $this->webClientHelper->assert404($this->client->getResponse());
     }
 
     protected function getConfiguration()
@@ -68,29 +73,18 @@ class GetActionTest extends TestCase
 
     private function loadFixtures(): void
     {
-        $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.enriched_entity')->save(
-            EnrichedEntity::create(
-                EnrichedEntityIdentifier::fromString('designer'),
-                [
-                    'en_US' => 'Designer',
-                ]
-            )
-        );
+        $queryHandler = $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details');
+
+        $entityItem = new EnrichedEntityDetails();
+        $entityItem->identifier = (EnrichedEntityIdentifier::fromString('designer'));
+        $entityItem->labels = LabelCollection::fromArray([
+            'en_US' => 'Designer',
+            'fr_FR' => 'Concepteur',
+        ]);
+        $queryHandler->save($entityItem);
 
         $user = new User();
         $user->setUsername('julia');
         $this->getFromTestContainer('pim_user.repository.user')->save($user);
-    }
-
-    private function callRoute(Client $client, string $route, array $arguments = [], string $method = 'GET'): void
-    {
-        $url = $this->get('router')->generate($route, $arguments);
-        $client->request($method, $url, [], [], [], json_encode([]));
-    }
-
-    private function assertResponse(Response $response, string $statusCode, string $expectedContent = ''): void
-    {
-        $this->assertEquals($statusCode, $response->getStatusCode());
-        $this->assertEquals($expectedContent, $response->getContent());
     }
 }

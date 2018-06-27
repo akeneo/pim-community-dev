@@ -57,7 +57,7 @@ final class EditEnrichedEntityContext implements Context
      */
     public function theUserUpdatesTheEnrichedEntityWith(string $identifier, TableNode $updateTable)
     {
-        $updates = current($updateTable->getHash());
+        $updates = $updateTable->getRowsHash();
         $command = new EditEnrichedEntityCommand();
         $command->identifier = $identifier;
         $command->labels = json_decode($updates['labels'], true);

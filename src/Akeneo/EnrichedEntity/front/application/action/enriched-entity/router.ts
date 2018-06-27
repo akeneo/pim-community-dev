@@ -2,7 +2,7 @@ import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/en
 import {redirectToRoute} from 'akeneoenrichedentity/application/event/router';
 
 export const redirectToEnrichedEntity = (enrichedEntity: EnrichedEntity) => {
-  return redirectToRoute('akeneo_enriched_entities_enriched_entities_edit', {
+  return redirectToRoute('akeneo_enriched_entities_enriched_entity_edit', {
     identifier: enrichedEntity.getIdentifier().stringValue(),
   });
 };

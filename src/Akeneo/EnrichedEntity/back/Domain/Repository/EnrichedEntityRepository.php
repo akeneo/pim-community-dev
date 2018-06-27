@@ -24,9 +24,4 @@ interface EnrichedEntityRepository
      * @throws EntityNotFoundException
      */
     public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity;
-
-    /**
-     * @return EnrichedEntity[]
-     */
-    public function all(): array;
 }

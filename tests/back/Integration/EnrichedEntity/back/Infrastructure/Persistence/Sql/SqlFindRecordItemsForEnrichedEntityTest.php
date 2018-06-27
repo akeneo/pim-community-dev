@@ -9,21 +9,20 @@ use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentif
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntity;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordItemsForEnrichedEntityInterface;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordItem;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
 class SqlFindRecordItemsForEnrichedEntityTest extends TestCase
 {
-    /** @var FindRecordItemsForEnrichedEntity */
+    /** @var FindRecordItemsForEnrichedEntityInterface */
     private $findRecordsForEnrichedEntity;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->repository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
         $this->findRecordsForEnrichedEntity = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity');
         $this->resetDB();
         $this->loadEnrichedEntityAndRecords();
