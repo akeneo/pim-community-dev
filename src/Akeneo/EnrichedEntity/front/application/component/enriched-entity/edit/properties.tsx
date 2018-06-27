@@ -1,123 +1,51 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import __ from 'akeneoenrichedentity/tools/translator';
-import { getImageShowUrl } from 'akeneoenrichedentity/tools/media-url-generator';
+import * as React from 'react';
+import { connect } from 'react-redux';
 import { State } from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import Form from 'akeneoenrichedentity/application/component/enriched-entity/edit/form';
-import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrumb';
-import { saveEditForm } from 'akeneoenrichedentity/application/action/enriched-entity/form';
+import {updateEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+import __ from 'akeneoenrichedentity/tools/translator';
 
-interface PropertiesState {
+interface StateProps {
   enrichedEntity: EnrichedEntity|null;
   context: {
     locale: string;
   };
 }
 
-interface PropertiesDispatch {
+interface DispatchProps {
   events: {
-    onSaveEditForm: (enrichedEntity: EnrichedEntity) => void
+    onEnrichedEntityUpdated: (enrichedEntity: EnrichedEntity) => void
   }
 }
 
-interface PropertiesProps extends PropertiesState, PropertiesDispatch {
+interface PropertiesProps extends StateProps, DispatchProps {
   code: string;
 }
 
 class Properties extends React.Component<PropertiesProps> {
   props: PropertiesProps;
-  state: PropertiesState;
-
-  constructor(props: PropertiesProps) {
-    super(props);
-
-    this.state = {
-      enrichedEntity: this.props.enrichedEntity,
-      context: {
-        locale: this.props.context.locale
-      }
-    };
-  }
-
-  saveEditForm = () => {
-    if (null !== this.state.enrichedEntity) {
-      this.props.events.onSaveEditForm(this.state.enrichedEntity);
-    }
-  };
 
   updateEditForm = (enrichedEntity: EnrichedEntity) => {
-    this.setState({ enrichedEntity });
+    this.props.events.onEnrichedEntityUpdated(enrichedEntity);
   };
 
   render() {
     return(
-      <div className="AknDefault-mainContent" data-tab={this.props.code}>
-        <header className="AknTitleContainer navigation">
-          <div className="AknTitleContainer-line">
-            <div className="AknTitleContainer-imageContainer">
-              <img className="AknTitleContainer-image" src={getImageShowUrl(null, 'thumbnail')} />
-            </div>
-            <div className="AknTitleContainer-mainContainer">
-              <div>
-                <div className="AknTitleContainer-line">
-                  <div className="AknTitleContainer-breadcrumbs">
-                    <Breadcrumb items={[
-                      {
-                        action: {
-                          type: 'redirect',
-                          route: 'akeneo_enriched_entities_enriched_entities_edit'
-                        },
-                        label: __('pim_enriched_entity.enriched_entity.title')
-                      }
-                    ]}/>
-                  </div>
-                  <div className="AknTitleContainer-buttonsContainer">
-                    <div className="user-menu">
-                      <PimView className="AknTitleContainer-userMenu" viewName="pim-enriched-entity-index-user-navigation"/>
-                    </div>
-                    <div className="AknButtonList" >
-                      <div className="AknTitleContainer-rightButton">
-                        <button className="AknButton AknButton--apply save" onClick={this.saveEditForm}>
-                          {__('pim_enriched_entity.button.save')}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="AknTitleContainer-line">
-                  <div className="AknTitleContainer-title">
-                    {null !== this.props.enrichedEntity ? this.props.enrichedEntity.getLabel(this.props.context.locale) : ''}
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="AknTitleContainer-line">
-                  <div className="AknTitleContainer-context AknButtonList"></div>
-                </div>
-                <div className="AknTitleContainer-line">
-                  <div className="AknTitleContainer-meta AknButtonList"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="AknTitleContainer-line">
-            <div className="AknTitleContainer-navigation"></div>
-          </div>
+      <div className="AknSubsection">
+        <header className="AknSubsection-title AknSubsection-title--blockDown">
+            <span className="group-label">{__('pim_enriched_entity.enriched_entity.properties.title')}</span>
         </header>
-        <div className="content">
-          <div>
-            <div className="tab-container tab-content">
-              <div className="tabbable object-attributes">
-                <div className="tab-content">
-                  <div className="tab-pane active object-values">
-                    <Form
-                      updateEditForm={this.updateEditForm}
-                      locale={this.props.context.locale}
-                      enrichedEntity={this.props.enrichedEntity}
-                    />
-                  </div>
+        <div>
+          <div className="tab-container tab-content">
+            <div className="tabbable object-attributes">
+              <div className="tab-content">
+                <div className="tab-pane active object-values">
+                  <Form
+                    updateEditForm={this.updateEditForm}
+                    locale={this.props.context.locale}
+                    enrichedEntity={this.props.enrichedEntity}
+                  />
                 </div>
               </div>
             </div>
@@ -128,7 +56,7 @@ class Properties extends React.Component<PropertiesProps> {
   }
 }
 
-export default connect((state: State): PropertiesState => {
+export default connect((state: State): StateProps => {
   const enrichedEntity = undefined === state.enrichedEntity ? null : state.enrichedEntity;
   const locale = undefined === state.user || undefined === state.user.uiLocale ? '' : state.user.uiLocale;
 
@@ -138,11 +66,11 @@ export default connect((state: State): PropertiesState => {
       locale
     },
   }
-}, (dispatch: any): PropertiesDispatch => {
+}, (dispatch: any): DispatchProps => {
   return {
     events: {
-      onSaveEditForm: (enrichedEntity: EnrichedEntity) => {
-        dispatch(saveEditForm(enrichedEntity))
+      onEnrichedEntityUpdated: (enrichedEntity: EnrichedEntity) => {
+        dispatch(updateEnrichedEntity(enrichedEntity));
       }
     }
   }

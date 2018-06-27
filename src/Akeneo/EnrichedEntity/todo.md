@@ -11,6 +11,9 @@
 - Should we use "list" or "index"? Should we use "get" or "show"? In a lot of places we use one or the other. Could be nice to choose before it's getting too messy
 - add normalizer for enriched entity
 - use decorator for acceptance tests front
+- add session storage for tab situation
+- rework acceptance tests when the locale switcher will work
+- fix the form to take into account what the backend answered
 
 DONE:
 

@@ -1,24 +1,33 @@
-akeneo_enriched_entities_enriched_entities_index:
+akeneo_enriched_entities_enriched_entity_index:
     path: '/enriched_entity'
 
-akeneo_enriched_entities_enriched_entities_edit:
+akeneo_enriched_entities_enriched_entity_edit:
     path: '/enriched_entity/{identifier}'
 
-akeneo_enriched_entities_enriched_entities_index_rest:
+akeneo_enriched_entities_record_edit:
+    path: '/enriched_entity/{enrichedEntityIdentifier}/record/{identifier}'
+
+akeneo_enriched_entities_enriched_entity_index_rest:
     path: '/rest/enriched_entity'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.index }
+    methods: [GET]
 
-akeneo_enriched_entities_enriched_entities_get_rest:
+akeneo_enriched_entities_enriched_entity_get_rest:
     path: '/rest/enriched_entity/{identifier}'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.get }
     methods: [GET]
 
-akeneo_enriched_entities_enriched_entities_edit_rest:
+akeneo_enriched_entities_enriched_entity_edit_rest:
     path: '/rest/enriched_entity/{identifier}'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.edit }
     methods: [POST]
 
-akeneo_enriched_entities_records_index_rest:
+akeneo_enriched_entities_record_index_rest:
     path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.record.index }
+    methods: [GET]
+
+akeneo_enriched_entities_records_get_rest:
+    path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record/{recordIdentifier}'
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.record.get }
     methods: [GET]

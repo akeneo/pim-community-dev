@@ -11,21 +11,18 @@ services:
     akeneo_enrichedentity.infrastructure.action.enriched_entity.index:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity\IndexAction'
         arguments:
-            - '@akeneo_enrichedentity.application.enriched_entity.enriched_entity_grid.find_enriched_entities_query'
-            - '@akeneo_enrichedentity.infrastructure.normalizer.enriched_entity_item'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items'
 
     akeneo_enrichedentity.infrastructure.action.enriched_entity.get:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity\GetAction'
         arguments:
-            - '@akeneo_enrichedentity.application.enriched_entity.enriched_entity_details.find_enriched_entity_query'
-            - '@akeneo_enrichedentity.infrastructure.normalizer.enriched_entity_details'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details'
 
     akeneo_enrichedentity.infrastructure.action.enriched_entity.edit:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity\EditAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
-            - '@akeneo_enrichedentity.application.enriched_entity.enriched_entity_details.find_enriched_entity_query'
-            - '@akeneo_enrichedentity.infrastructure.normalizer.enriched_entity_details'
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details'
             - '@serializer'
             - '@validator'
 
@@ -39,6 +36,11 @@ services:
         arguments:
           - '@akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity'
 
+    akeneo_enrichedentity.infrastructure.action.record.get:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Controller\Record\GetAction'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.query.find_record_details'
+
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlRecordRepository'
         arguments:
@@ -49,23 +51,22 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_enrichedentity.application.enriched_entity.enriched_entity_details.find_enriched_entity_query:
-        class: 'Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\FindEnrichedEntityQuery'
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlFindRecordDetails'
         arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlFindEnrichedEntityItems'
+        arguments:
+            - '@database_connection'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
+        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql\SqlFindEnrichedEntityDetails'
+        arguments:
+            - '@database_connection'
 
     akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler:
         class: 'Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler'
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
-
-    akeneo_enrichedentity.application.enriched_entity.enriched_entity_grid.find_enriched_entities_query:
-        class: 'Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityList\FindEnrichedEntitiesQuery'
-        arguments:
-            - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
-
-    akeneo_enrichedentity.infrastructure.normalizer.enriched_entity_item:
-        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Normalizer\EnrichedEntityItemNormalizer'
-
-    akeneo_enrichedentity.infrastructure.normalizer.enriched_entity_details:
-        class: 'Akeneo\EnrichedEntity\back\Infrastructure\Normalizer\EnrichedEntityDetailsNormalizer'

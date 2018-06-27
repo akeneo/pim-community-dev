@@ -2,9 +2,9 @@ config:
     config:
         pim/controller-registry:
             controllers:
-                akeneo_enriched_entities_enriched_entities_index:
+                akeneo_enriched_entities_enriched_entity_index:
                     module: pim/controller/enriched-entity/list
-                akeneo_enriched_entities_enriched_entities_edit:
+                akeneo_enriched_entities_enriched_entity_edit:
                     module: pim/controller/enriched-entity/edit
         akeneoenrichedentity/application/configuration/edit-tabs:
             tabs:
