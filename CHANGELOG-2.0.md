@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7460: Fix locale flag for locales with two underscores like az_cyrl_AZ.
+- PIM-7462: Fix step execution read count
 
 # 2.0.28 (2018-06-26)
 
