@@ -20,7 +20,7 @@ class EntityToAddAssetsIntoSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(42, 'foobar');
+        $this->beConstructedWith('foo', 'bar');
     }
 
     function it_is_initializable()
@@ -28,13 +28,13 @@ class EntityToAddAssetsIntoSpec extends ObjectBehavior
         $this->shouldHaveType(EntityToAddAssetsInto::class);
     }
 
-    function it_returns_an_entity_id()
+    function it_returns_an_entity_identifier()
     {
-        $this->getEntityId()->shouldReturn(42);
+        $this->getEntityIdentifier()->shouldReturn('foo');
     }
 
     function it_returns_an_attribute_code()
     {
-        $this->getAttributeCode()->shouldReturn('foobar');
+        $this->getAttributeCode()->shouldReturn('bar');
     }
 }

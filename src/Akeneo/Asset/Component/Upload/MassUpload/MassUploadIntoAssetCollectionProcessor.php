@@ -125,7 +125,7 @@ class MassUploadIntoAssetCollectionProcessor
         if (!empty($importedAssetCodes)) {
             try {
                 $this->addAssetToEntityWithValues->add(
-                    $addAssetsTo->getEntityId(),
+                    $addAssetsTo->getEntityIdentifier(),
                     $addAssetsTo->getAttributeCode(),
                     $importedAssetCodes
                 );

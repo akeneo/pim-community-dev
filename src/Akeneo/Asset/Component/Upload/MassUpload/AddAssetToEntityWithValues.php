@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Asset\Component\Upload\MassUpload;
 
 use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AddAssetToEntityWithValues
 {
-    /** @var ObjectRepository */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $entityWithValueRepository;
 
     /** @var ObjectUpdaterInterface */
@@ -39,13 +39,13 @@ class AddAssetToEntityWithValues
     protected $entityWithValueSaver;
 
     /**
-     * @param ObjectRepository       $entityWithValueRepository
-     * @param ObjectUpdaterInterface $entityWithValueUpdater
-     * @param ValidatorInterface     $validator
-     * @param SaverInterface         $entityWithValueSaver
+     * @param IdentifiableObjectRepositoryInterface $entityWithValueRepository
+     * @param ObjectUpdaterInterface                $entityWithValueUpdater
+     * @param ValidatorInterface                    $validator
+     * @param SaverInterface                        $entityWithValueSaver
      */
     public function __construct(
-        ObjectRepository $entityWithValueRepository,
+        IdentifiableObjectRepositoryInterface $entityWithValueRepository,
         ObjectUpdaterInterface $entityWithValueUpdater,
         ValidatorInterface $validator,
         SaverInterface $entityWithValueSaver
@@ -55,21 +55,22 @@ class AddAssetToEntityWithValues
         $this->validator = $validator;
         $this->entityWithValueSaver = $entityWithValueSaver;
     }
+
     /**
-     * @param int    $entityId
+     * @param string $entityIdentifier
      * @param string $attributeCode
      * @param array  $importedAssetCodes
      */
     public function add(
-        int $entityId,
+        string $entityIdentifier,
         string $attributeCode,
         array $importedAssetCodes
     ): void {
-        $entityWithValues = $this->entityWithValueRepository->find($entityId);
+        $entityWithValues = $this->entityWithValueRepository->findOneByIdentifier($entityIdentifier);
         if (null === $entityWithValues) {
             throw new \InvalidArgumentException(sprintf(
-                'Product with ID "%d" does not exist.',
-                $entityId
+                'Product or product model with identifier "%s" does not exist.',
+                $entityIdentifier
             ));
         }
 

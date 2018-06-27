@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace spec\Akeneo\Asset\Component\Upload\MassUpload;
 
 use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AddAssetToEntityWithValuesSpec extends ObjectBehavior
 {
     function let(
-        ObjectRepository $entityWithValueRepository,
+        IdentifiableObjectRepositoryInterface $entityWithValueRepository,
         ObjectUpdaterInterface $entityWithValueUpdater,
         ValidatorInterface $validator,
         SaverInterface $entityWithValueSaver
@@ -56,7 +56,7 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
         AssetInterface $assetC,
         ConstraintViolationListInterface $violations
     ) {
-        $entityWithValueRepository->find(42)->willReturn($entityWithValues);
+        $entityWithValueRepository->findOneByIdentifier('foobar')->willReturn($entityWithValues);
         $entityWithValues->getValue('asset_collection')->willReturn($previousValue);
         $previousValue->getData()->willReturn([$assetC]);
         $assetC->getCode()->willReturn('asset_c');
@@ -76,7 +76,7 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
 
         $entityWithValueSaver->save($entityWithValues)->shouldBeCalled();
 
-        $this->add(42, 'asset_collection', ['asset_a', 'asset_b']);
+        $this->add('foobar', 'asset_collection', ['asset_a', 'asset_b']);
     }
 
     function it_adds_assets_to_an_empty_asset_collection(
@@ -88,7 +88,7 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
         ReferenceDataCollectionValueInterface $previousValue,
         ConstraintViolationListInterface $violations
     ) {
-        $entityWithValueRepository->find(42)->willReturn($entityWithValues);
+        $entityWithValueRepository->findOneByIdentifier('foobar')->willReturn($entityWithValues);
         $entityWithValues->getValue('asset_collection')->willReturn($previousValue);
         $previousValue->getData()->willReturn([]);
 
@@ -107,7 +107,7 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
 
         $entityWithValueSaver->save($entityWithValues)->shouldBeCalled();
 
-        $this->add(42, 'asset_collection', ['asset_a', 'asset_b']);
+        $this->add('foobar', 'asset_collection', ['asset_a', 'asset_b']);
     }
 
     function it_adds_assets_to_a_new_asset_collection(
@@ -118,7 +118,7 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
         EntityWithValuesInterface $entityWithValues,
         ConstraintViolationListInterface $violations
     ) {
-        $entityWithValueRepository->find(42)->willReturn($entityWithValues);
+        $entityWithValueRepository->findOneByIdentifier('foobar')->willReturn($entityWithValues);
         $entityWithValues->getValue('asset_collection')->willReturn(null);
 
         $entityWithValueUpdater->update($entityWithValues, [
@@ -136,7 +136,7 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
 
         $entityWithValueSaver->save($entityWithValues)->shouldBeCalled();
 
-        $this->add(42, 'asset_collection', ['asset_a', 'asset_b']);
+        $this->add('foobar', 'asset_collection', ['asset_a', 'asset_b']);
     }
 
     function it_does_not_update_the_asset_collection_of_an_invalid_product(
@@ -153,7 +153,7 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
         ConstraintViolationInterface $violation1,
         ConstraintViolationInterface $violation2
     ) {
-        $entityWithValueRepository->find(42)->willReturn($entityWithValues);
+        $entityWithValueRepository->findOneByIdentifier('foobar')->willReturn($entityWithValues);
         $entityWithValues->getValue('asset_collection')->willReturn($previousValue);
         $previousValue->getData()->willReturn([$assetC]);
         $assetC->getCode()->willReturn('asset_c');
@@ -183,7 +183,7 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
         $message = 'First product violation' . PHP_EOL . 'Second product violation' . PHP_EOL;
         $this
             ->shouldThrow(new \InvalidArgumentException($message))
-            ->during('add', [42, 'asset_collection', ['asset_a', 'asset_b']]);
+            ->during('add', ['foobar', 'asset_collection', ['asset_a', 'asset_b']]);
 
         $entityWithValueSaver->save(Argument::any())->shouldNotHaveBeenCalled();
     }
@@ -192,11 +192,11 @@ class AddAssetToEntityWithValuesSpec extends ObjectBehavior
         $entityWithValueRepository,
         $entityWithValueSaver
     ) {
-        $entityWithValueRepository->find(42)->willReturn(null);
+        $entityWithValueRepository->findOneByIdentifier('foobar')->willReturn(null);
 
-        $this
-            ->shouldThrow(new \InvalidArgumentException('Product with ID "42" does not exist.'))
-            ->during('add', [42, 'asset_collection', ['asset_a', 'asset_b']]);
+        $this->shouldThrow(
+            new \InvalidArgumentException('Product or product model with identifier "foobar" does not exist.')
+        )->during('add', ['foobar', 'asset_collection', ['asset_a', 'asset_b']]);
 
         $entityWithValueSaver->save(Argument::any())->shouldNotHaveBeenCalled();
     }
