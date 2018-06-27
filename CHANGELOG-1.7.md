@@ -1,3 +1,8 @@
+# 1.7.x
+
+## Bug fixes
+ - PIM-7373: Fix deletion and reinsertion of all attributes relations at family save time
+
 # 1.7.23 (2018-06-25)
 
 ## Bug fixes

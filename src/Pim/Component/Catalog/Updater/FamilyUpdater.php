@@ -336,12 +336,25 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function addAttributes(FamilyInterface $family, array $data)
     {
+        $currentAttributeCodes = [];
+        $wantedAttributeCodes = array_values($data);
+
         foreach ($family->getAttributes() as $attribute) {
-            if (AttributeTypes::IDENTIFIER !== $attribute->getType()) {
-                $family->removeAttribute($attribute);
+            $currentAttributeCodes[] = $attribute->getCode();
+        }
+
+        $attributeCodesToRemove = array_diff($currentAttributeCodes, $wantedAttributeCodes);
+        $attributeCodesToAdd = array_diff($wantedAttributeCodes, $currentAttributeCodes);
+
+        foreach ($family->getAttributes() as $attribute) {
+            if (in_array($attribute->getCode(), $attributeCodesToRemove)) {
+                if (AttributeTypes::IDENTIFIER !== $attribute->getType()) {
+                    $family->removeAttribute($attribute);
+                }
             }
         }
-        foreach ($data as $attributeCode) {
+
+        foreach ($attributeCodesToAdd as $attributeCode) {
             if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode)) {
                 $family->addAttribute($attribute);
             } else {

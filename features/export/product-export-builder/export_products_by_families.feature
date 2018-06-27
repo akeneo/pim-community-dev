@@ -91,10 +91,10 @@ Feature: Export products according to their families
   Scenario: Display default messages when no family are selected
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
-    When I am on the "csv_footwear_product_export" export job edit page
+    When I am on the "csv_footwear_product_export" export job page
     And I visit the "Content" tab
     Then the export content field "family" should contain "No condition on families"
-    When I am on the "csv_footwear_product_export" export job page
+    When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     Then the export content field "family" should contain "No condition on families"
 
