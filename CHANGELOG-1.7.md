@@ -4,6 +4,7 @@
 
 - PIM-7429: Fix category tab in product edit form
 - PIM-7523: Fix accessibility for boolean switches
+- PIM-7473: Enables cache to avoid reloading validation mapping files
 
 # 1.7.25 (2018-07-06)
 
