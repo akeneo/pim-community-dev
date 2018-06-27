@@ -4,7 +4,7 @@
 
 {% set editMode = form.vars.value.id ? true : false %}
 
-{{ JSFV(form) }}
+{#{{ JSFV(form) }} Fuckkkkkk used but html5 validation #}
 {{ form_start(form, {
     'action': editMode ? path('pim_enrich_attributegroup_edit', { id: form.vars.value.id }) : path('pim_enrich_attributegroup_create'),
     'attr': {

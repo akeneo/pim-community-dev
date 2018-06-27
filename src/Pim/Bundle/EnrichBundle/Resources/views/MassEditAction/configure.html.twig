@@ -10,7 +10,7 @@
 
     {{ parent() }}
 
-    {{ JSFV(form) }}
+    {#{{ JSFV(form) }}#}
     {{ form_start(form, {'attr': {'class': 'span12 '~operationAlias}, 'action': path(performRoute, queryParams|merge({ 'operationAlias': operationAlias })) }) }}
 
         <div class="AknWidget">

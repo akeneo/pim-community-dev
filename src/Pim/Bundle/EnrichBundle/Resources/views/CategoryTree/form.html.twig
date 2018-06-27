@@ -14,7 +14,7 @@
 {% endif %}
 {% endspaceless %}
 
-{{ JSFV(form) }}
+{#{{ JSFV(form) }} Fuckkkkkk used but html5 validation#}
 {{ form_start(form, {
     'action': form.vars.value.id ?
         path(route ~ '_categorytree_edit', { id: form.vars.value.id }) :

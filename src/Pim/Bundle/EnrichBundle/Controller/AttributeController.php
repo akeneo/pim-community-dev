@@ -283,6 +283,9 @@ class AttributeController
      * @AclAncestor("pim_enrich_attribute_edit")
      *
      * @return Response
+     *
+     *
+     * @todo: Still used?
      */
     public function createOptionAction(Request $request, $id, $dataLocale)
     {

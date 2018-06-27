@@ -71,7 +71,7 @@
 {% set entityId = form.vars.value.id %}
 
 {% block content %}
-    {{ JSFV(form) }}
+    {#{{ JSFV(form) }} used / no ajax / error displayed #}
     {{ form_start(form, {
         'action': entityId ? path('oro_user_role_update', { 'id': entityId}) : path('oro_user_role_create'),
         'attr': {
