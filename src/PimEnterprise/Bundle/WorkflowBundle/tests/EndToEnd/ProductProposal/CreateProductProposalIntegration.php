@@ -40,7 +40,7 @@ class CreateProductProposalIntegration extends AbstractProposalIntegration
         $client->request('POST', 'api/rest/v1/products/unknown_product/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
-<<<JSON
+            <<<JSON
 {"code":404,"message":"Product \\"unknown_product\\" does not exist."}
 JSON;
 
@@ -57,7 +57,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '');
 
         $expectedResponseContent =
-<<<JSON
+            <<<JSON
 {"code":400,"message":"Invalid json message received."}
 JSON;
 
@@ -74,7 +74,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
-<<<JSON
+            <<<JSON
 {"code":403,"message":"You have ownership on the product \\"product_with_draft\\", you cannot send a draft for approval."}
 JSON;
 
@@ -91,7 +91,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products/product_modified_by_kevin/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
-<<<JSON
+            <<<JSON
 {"code":422,"message":"You should create a draft before submitting it for approval."}
 JSON;
 
@@ -103,13 +103,13 @@ JSON;
     public function testApprovalAlreadySubmitted()
     {
         $productDraft = $this->createDefaultProductDraft('mary', 'product_with_draft');
-        $this->get('pimee_workflow.manager.entity_with_values_draft')->markAsReady($productDraft);
+        $this->get('pimee_workflow.manager.product_draft')->markAsReady($productDraft);
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
         $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
-<<<JSON
+            <<<JSON
 {"code":422,"message":"You already submit your draft for approval."}
 JSON;
 
@@ -130,7 +130,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
-<<<JSON
+            <<<JSON
 {"code":403,"message":"You only have view permission on the product \\"product_with_draft\\", you cannot send a draft for approval."}
 JSON;
 
@@ -151,7 +151,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
-<<<JSON
+            <<<JSON
 {"code":404,"message":"Product \\"product_with_draft\\" does not exist."}
 JSON;
 
@@ -171,7 +171,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
 
         $expectedResponseContent =
-<<<JSON
+            <<<JSON
 {"code":403,"message":"You have ownership on the product \\"product_with_draft\\", you cannot send a draft for approval."}
 JSON;
 

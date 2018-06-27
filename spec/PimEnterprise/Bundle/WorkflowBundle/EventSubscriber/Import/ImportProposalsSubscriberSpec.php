@@ -44,7 +44,6 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
         $userRepository,
         $ownerGroupsProvider,
         $usersProvider,
-        $jobRepository,
         $notificationFactory,
         GenericEvent $event,
         EntityWithValuesDraftInterface $productDraft,
@@ -58,16 +57,12 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($productDraft);
         $productDraft->getEntityWithValue()->willReturn($product);
-        $productDraft->getAuthor()->willReturn('import_code');
-        $jobRepository
-            ->findOneBy(['jobName' => 'csv_product_proposal_import', 'code' => 'import_code'])
-            ->willReturn($jobInstance);
+        $productDraft->getAuthor()->willReturn('mary');
         $ownerGroupsProvider->getOwnerGroupIds($product)->willReturn(['42']);
         $this->saveGroupIdsToNotify($event);
 
         $jobExecutionEvent->getJobExecution()->willReturn($jobExecution);
         $jobInstance->getJobName()->willReturn('csv_product_proposal_import');
-        $jobInstance->getCode()->willReturn('csv_clothing_product_proposal_import');
 
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getUser()->willReturn('mary');
@@ -82,7 +77,78 @@ class ImportProposalsSubscriberSpec extends ObjectBehavior
             'f' => [
                 'author' => [
                     'value' => [
-                        'csv_clothing_product_proposal_import'
+                        'mary'
+                    ]
+                ]
+            ],
+        ];
+
+        $notificationFactory->create()->willReturn($notification);
+        $notification->setType('add')->willReturn($notification);
+        $notification->setMessage('pimee_workflow.proposal.generic_import')->willReturn($notification);
+        $notification->setRoute('pimee_workflow_proposal_index')->willReturn($notification);
+        $notification->setComment('Nope Mary.')->willReturn($notification);
+        $notification->setContext(
+            [
+                'actionType'       => 'pimee_workflow_import_notification_new_proposals',
+                'showReportButton' => false,
+                'gridParameters'   => http_build_query($gridParameters, 'flags_')
+            ]
+        )->willReturn($notification);
+
+        $notifier->notify($notification, [$author])->shouldBeCalled();
+
+        $notification->setMessage('pimee_workflow.proposal.individual_import')->willReturn($notification);
+        $notification->setMessageParams(
+            [
+                '%author.firstname%' => 'firstname',
+                '%author.lastname%'  => 'lastname'
+            ]
+        )->willReturn($notification);
+        $notifier->notify($notification, [1 => $owner])->shouldBeCalled();
+
+        $this->notifyUsers($jobExecutionEvent);
+    }
+
+    function it_should_notify_author_and_owners_for_product_model_proposal_import(
+        $notifier,
+        $userRepository,
+        $ownerGroupsProvider,
+        $usersProvider,
+        $notificationFactory,
+        GenericEvent $event,
+        EntityWithValuesDraftInterface $productDraft,
+        ProductInterface $product,
+        JobExecutionEvent $jobExecutionEvent,
+        UserInterface $author,
+        UserInterface $owner,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance,
+        NotificationInterface $notification
+    ) {
+        $event->getSubject()->willReturn($productDraft);
+        $productDraft->getEntityWithValue()->willReturn($product);
+        $productDraft->getAuthor()->willReturn('mary');
+        $ownerGroupsProvider->getOwnerGroupIds($product)->willReturn(['42']);
+        $this->saveGroupIdsToNotify($event);
+
+        $jobExecutionEvent->getJobExecution()->willReturn($jobExecution);
+        $jobInstance->getJobName()->willReturn('csv_product_model_proposal_import');
+
+        $jobExecution->getJobInstance()->willReturn($jobInstance);
+        $jobExecution->getUser()->willReturn('mary');
+
+        $userRepository->findOneBy(['username' => 'mary'])->willReturn($author);
+        $usersProvider->getUsersToNotify(['42'])->willReturn([$author, $owner]);
+
+        $author->getFirstName()->willReturn('firstname');
+        $author->getLastName()->willReturn('lastname');
+
+        $gridParameters = [
+            'f' => [
+                'author' => [
+                    'value' => [
+                        'mary'
                     ]
                 ]
             ],

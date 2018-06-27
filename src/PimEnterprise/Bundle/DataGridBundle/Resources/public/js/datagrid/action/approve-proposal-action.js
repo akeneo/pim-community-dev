@@ -13,7 +13,8 @@ define(
         'oro/messenger',
         'oro/translator',
         'oro/datagrid/ajax-action',
-        'pim/form-modal'
+        'pim/form-modal',
+        'routing'
     ],
     function (
         $,
@@ -22,7 +23,8 @@ define(
         messenger,
         __,
         AjaxAction,
-        FormModal
+        FormModal,
+        Router
     ) {
         return AjaxAction.extend({
             /**
@@ -33,8 +35,18 @@ define(
             /**
              * {@inheritdoc}
              */
-            getMethod: function () {
+            getMethod() {
                 return 'POST';
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            getLink() {
+                const productDraftType = this.model.get('document_type');
+                const id = this.model.get('proposal_id');
+
+                return Router.generate('pimee_workflow_' + productDraftType + '_rest_approve', { id });
             },
 
             /**
@@ -42,7 +54,7 @@ define(
              *
              * {@inheritdoc}
              */
-            _handleAjax: function (action) {
+            _handleAjax(action) {
                 var modalParameters = {
                     title: __('pimee_enrich.entity.product_draft.modal.accept_proposal'),
                     okText: __('pimee_enrich.entity.product_draft.modal.confirm'),
@@ -65,7 +77,7 @@ define(
              *
              * @param response
              */
-            _onAjaxSuccess: function (response) {
+            _onAjaxSuccess(response) {
                 messenger.notify(
                     'success',
                     __('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
@@ -89,7 +101,7 @@ define(
              *
              * @param jqXHR
              */
-            _onAjaxError: function (jqXHR) {
+            _onAjaxError(jqXHR) {
                 var message = jqXHR.responseJSON.message;
 
                 messenger.notify(
@@ -111,7 +123,7 @@ define(
              *
              * @return {Promise}
              */
-            validateForm: function (form) {
+            validateForm(form) {
                 var comment = form.getFormData().comment;
                 this.actionParameters.comment = _.isUndefined(comment) ? null : comment;
 
@@ -121,7 +133,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            getActionParameters: function () {
+            getActionParameters() {
                 return this.actionParameters;
             }
         });

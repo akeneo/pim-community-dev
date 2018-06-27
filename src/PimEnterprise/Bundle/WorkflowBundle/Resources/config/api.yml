@@ -2,6 +2,8 @@ parameters:
     pimee_workflow.controller.external_api.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi\ProductDraftController
     pimee_workflow.controller.external_api.product_proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi\ProductProposalController
     pimee_workflow_controller.external_api.publish_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi\PublishedProductController
+    pimee_api.controller.product_model_draft.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductModelDraftController
+    pimee_api.controller.product_model_proposal.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductModelProposalController
     pimee_workflow.router.proxy_product.class: PimEnterprise\Bundle\WorkflowBundle\Router\ProxyProductRouter
     pimee_workflow.normalizer.external_api.product.class: PimEnterprise\Component\Workflow\Normalizer\ExternalApi\ProductNormalizer
     pimee_workflow.normalizer.external_api.published_product.class: PimEnterprise\Component\Workflow\Normalizer\ExternalApi\PublishedProductNormalizer
@@ -43,6 +45,25 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.security.primary_key_encrypter'
             - '%pim_api.configuration%'
+
+    pimee_api.controller.product_model_draft:
+        class: '%pimee_api.controller.product_model_draft.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.applier.draft'
+            - '@pim_serializer'
+            - '@security.token_storage'
+            - '@pimee_security.cached_authorization_checker'
+
+    pimee_api.controller.product_model_proposal:
+        class : '%pimee_api.controller.product_model_proposal.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.manager.product_model_draft'
+            - '@security.token_storage'
+            - '@pimee_security.cached_authorization_checker'
 
     # URL generator
     pimee_workflow.router.proxy_product:

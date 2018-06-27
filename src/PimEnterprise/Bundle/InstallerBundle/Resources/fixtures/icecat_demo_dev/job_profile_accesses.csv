@@ -19,6 +19,7 @@ csv_option_export;All;IT support,Manager
 yml_rule_import;All;IT support,Manager
 yml_rule_export;All;IT support,Manager
 csv_product_proposal_import;All;IT support,Manager
+csv_product_model_proposal_import;All;IT support,Manager
 csv_asset_import;All;IT support,Manager
 csv_asset_category_import;All;IT support,Manager
 csv_asset_category_export;All;IT support,Manager
@@ -39,6 +40,7 @@ set_attribute_requirements;All;
 approve_product_draft;All;
 refuse_product_draft;All;
 apply_assets_mass_upload;All;
+apply_assets_mass_upload_into_asset_collection;All;
 csv_product_quick_export;All;
 csv_product_grid_context_quick_export;All
 csv_published_product_quick_export;All;
@@ -60,6 +62,7 @@ xlsx_product_import;All;IT support,Manager
 xlsx_product_import_with_rules;All;IT support,Manager
 xlsx_product_model_import_with_rules;All;IT support,Manager
 xlsx_product_proposal_import;All;IT support,Manager
+xlsx_product_model_proposal_import;All;IT support,Manager
 xlsx_category_import;All;IT support,Manager
 xlsx_association_type_import;All;IT support
 xlsx_attribute_import;All;IT support,Manager

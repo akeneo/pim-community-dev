@@ -35,6 +35,13 @@ define(
             datagrid: {},
 
             /**
+             * {@inheritdoc}
+             */
+            initialize: function (config) {
+                this.config = _.extend({}, config.config);
+            },
+
+            /**
              * Configure this extension
              *
              * @return {Promise}
@@ -59,7 +66,7 @@ define(
                 });
 
                 this.datagrid = {
-                    name: 'product-draft-grid',
+                    name: this.config.datagridName,
                     paramName: 'entityWithValues'
                 };
 
@@ -149,7 +156,7 @@ define(
 
                 $.get(Routing.generate('pim_datagrid_load', urlParams))
                     .then(function (response) {
-                        this.$('#grid-' + this.datagrid.name).data({
+                        this.$('.draft-grid div').data({
                             metadata: response.metadata,
                             data: JSON.parse(response.data)
                         });

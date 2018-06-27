@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -12,7 +14,8 @@
 namespace Akeneo\Asset\Bundle\MassUpload;
 
 use Akeneo\Asset\Component\ProcessedItem;
-use Akeneo\Asset\Component\Upload\MassUploadProcessor;
+use Akeneo\Asset\Component\ProcessedItemList;
+use PimEnterprise\Component\ProductAsset\Upload\MassUpload\MassUploadProcessor;
 use Akeneo\Asset\Component\Upload\UploadContext;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -20,58 +23,64 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Connector\Step\TaskletInterface;
 
 /**
- * Launch the asset upload processor to create/update assets from uploaded files
+ * Launches the asset upload processor to create assets from uploaded files.
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 class MassUploadTasklet implements TaskletInterface
 {
-    const TASKLET_NAME = 'asset_mass_upload';
+    public const TASKLET_NAME = 'asset_mass_upload';
 
     /** @var StepExecution */
     protected $stepExecution;
 
     /** @var MassUploadProcessor */
-    protected $massUploadProcessor;
+    protected $processor;
 
     /** @var string */
     protected $tmpStorageDir;
 
     /**
-     * @param MassUploadProcessor $massUploadProcessor
+     * @param MassUploadProcessor $processor
      * @param string              $tmpStorageDir
      */
     public function __construct(
-        MassUploadProcessor $massUploadProcessor,
-        $tmpStorageDir
+        MassUploadProcessor $processor,
+        string $tmpStorageDir
     ) {
-        $this->massUploadProcessor = $massUploadProcessor;
+        $this->processor = $processor;
         $this->tmpStorageDir = $tmpStorageDir;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
-
-        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): void
     {
         $jobExecution = $this->stepExecution->getJobExecution();
 
         $username = $jobExecution->getUser();
         $uploadContext = new UploadContext($this->tmpStorageDir, $username);
 
-        $processedList = $this->massUploadProcessor->applyMassUpload($uploadContext);
+        $processedItems = $this->processor->applyMassUpload($uploadContext);
 
-        foreach ($processedList as $item) {
+        $this->incrementSummaryInfo($processedItems);
+    }
+
+    /**
+     * @param ProcessedItemList $processedItems
+     */
+    protected function incrementSummaryInfo(ProcessedItemList $processedItems): void
+    {
+        foreach ($processedItems as $item) {
             $file = $item->getItem();
 
             if (!$file instanceof \SplFileInfo) {

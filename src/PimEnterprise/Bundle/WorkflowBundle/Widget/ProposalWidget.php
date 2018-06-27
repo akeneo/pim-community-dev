@@ -15,6 +15,7 @@ use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -31,7 +32,10 @@ class ProposalWidget implements WidgetInterface
     protected $authorizationChecker;
 
     /** @var EntityWithValuesDraftRepositoryInterface */
-    protected $repository;
+    protected $productDraftRepository;
+
+    /** @var EntityWithValuesDraftRepositoryInterface */
+    protected $productModelDraftRepository;
 
     /** @var UserManager */
     protected $userManager;
@@ -45,24 +49,18 @@ class ProposalWidget implements WidgetInterface
     /** @var RouterInterface */
     protected $router;
 
-    /**
-     * @param AuthorizationCheckerInterface   $authorizationChecker
-     * @param EntityWithValuesDraftRepositoryInterface $ownershipRepository
-     * @param UserManager                     $userManager
-     * @param TokenStorageInterface           $tokenStorage
-     * @param PresenterInterface              $presenter
-     * @param RouterInterface                 $router
-     */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        EntityWithValuesDraftRepositoryInterface $ownershipRepository,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
+        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         PresenterInterface $presenter,
         RouterInterface $router
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->repository = $ownershipRepository;
+        $this->productDraftRepository = $productDraftRepository;
+        $this->productModelDraftRepository = $productModelDraftRepository;
         $this->userManager = $userManager;
         $this->tokenStorage = $tokenStorage;
         $this->presenter = $presenter;
@@ -104,7 +102,11 @@ class ProposalWidget implements WidgetInterface
 
         $user = $this->tokenStorage->getToken()->getUser();
         $result = [];
-        $proposals = $this->repository->findApprovableByUser($user, 10);
+        $productProposals = $this->productDraftRepository->findApprovableByUser($user, 10);
+        $productModelProposals = $this->productModelDraftRepository->findApprovableByUser($user, 10);
+
+        $proposals = array_merge($productProposals, $productModelProposals);
+
         $locale = $user->getUiLocale()->getCode();
 
         $route = $this->router->generate('pimee_workflow_proposal_index');
@@ -116,7 +118,7 @@ class ProposalWidget implements WidgetInterface
                 'authorFullName'   => $this->getAuthorFullName($proposal->getAuthor()),
                 'productReviewUrl' => $route . $this->getProposalGridParametersAsUrl(
                         $proposal->getAuthor(),
-                        $proposal->getEntityWithValue()->getIdentifier()
+                        $proposal instanceof ProductDraft ? $proposal->getEntityWithValue()->getIdentifier() : $proposal->getEntityWithValue()->getCode()
                     ),
                 'createdAt' => $this->presenter->present(
                     $proposal->getCreatedAt(),

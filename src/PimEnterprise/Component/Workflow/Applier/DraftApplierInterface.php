@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -15,25 +17,31 @@ use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 
 /**
- * Product draft applier interface
+ * Draft applier interface
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
 interface DraftApplierInterface
 {
     /**
-     * Apply all changes on the product no matter the review statuses
+     * Apply all changes on the enity, no matter the review statuses
      *
      * @param EntityWithValuesInterface      $entityWithValues
      * @param EntityWithValuesDraftInterface $entityWithValuesDraft
      */
-    public function applyAllChanges(EntityWithValuesInterface $entityWithValues, EntityWithValuesDraftInterface $entityWithValuesDraft);
+    public function applyAllChanges(
+        EntityWithValuesInterface $entityWithValues,
+        EntityWithValuesDraftInterface $entityWithValuesDraft
+    ): void;
 
     /**
-     * Apply only changes with the status EntityWithValuesDraftInterface::TO_REVIEW on the product
+     * Apply only changes with the status EntityWithValuesDraftInterface::TO_REVIEW on the entity
      *
-     * @param EntityWithValuesInterface      $product
+     * @param EntityWithValuesInterface      $entityWithValues
      * @param EntityWithValuesDraftInterface $entityWithValuesDraft
      */
-    public function applyToReviewChanges(EntityWithValuesInterface $entityWithValues, EntityWithValuesDraftInterface $entityWithValuesDraft);
+    public function applyToReviewChanges(
+        EntityWithValuesInterface $entityWithValues,
+        EntityWithValuesDraftInterface $entityWithValuesDraft
+    ): void;
 }

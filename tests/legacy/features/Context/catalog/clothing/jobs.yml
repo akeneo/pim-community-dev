@@ -496,6 +496,11 @@ jobs:
         alias:     apply_assets_mass_upload
         label:     Mass approve product drafts
         type:      mass_upload
+    apply_assets_mass_upload_into_asset_collection:
+        connector: Akeneo Product Asset Connector
+        alias:     apply_assets_mass_upload_into_asset_collection
+        label:     Process mass uploaded assets and add to product
+        type:      mass_upload
     xlsx_clothing_asset_import:
         connector: Akeneo Product Asset Connector
         alias:     xlsx_asset_import

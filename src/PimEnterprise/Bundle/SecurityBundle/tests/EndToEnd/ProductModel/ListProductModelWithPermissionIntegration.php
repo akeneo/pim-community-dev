@@ -96,7 +96,10 @@ class ListProductModelWithPermissionIntegration extends ApiTestCase
                 },
                 "created": "2016-06-14T13:12:50+02:00",
                 "updated": "2016-06-14T13:12:50+02:00",
-                "associations": []
+                "associations": [],
+                "metadata": {
+                    "workflow_status": "working_copy"
+                }
             },
             {
                 "_links": {
@@ -131,7 +134,10 @@ class ListProductModelWithPermissionIntegration extends ApiTestCase
                 },
                 "created": "2016-06-14T13:12:50+02:00",
                 "updated": "2016-06-14T13:12:50+02:00",
-                "associations": []
+                "associations": [],
+                "metadata": {
+                    "workflow_status": "working_copy"
+                }
             }
         ]
     }

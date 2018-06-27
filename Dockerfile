@@ -71,7 +71,8 @@ COPY . .
 COPY .ci/php.ini /usr/local/etc/php/
 COPY .ci/vhost.conf /etc/apache2/sites-available/000-default.conf
 
-RUN composer config repositories.pim-community-dev '{"type": "path", "url": "packages/pim-community-dev", "options": {"symlink": false}}'  \
+RUN composer config --unset extra.branch-alias --working-dir=packages/pim-community-dev \
+    && composer config repositories.pim-community-dev '{"type": "path", "url": "packages/pim-community-dev", "options": {"symlink": false}}'  \
     && composer require --no-update "akeneo/pim-community-dev:@dev" \
     && composer $COMPOSER_COMMAND --no-ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-suggest \
     && bin/console pim:installer:assets --env=prod \

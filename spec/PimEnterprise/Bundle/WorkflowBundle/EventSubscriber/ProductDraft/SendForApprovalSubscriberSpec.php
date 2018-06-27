@@ -12,7 +12,7 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -31,7 +31,7 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_approve_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            ProductDraftEvents::POST_READY => ['sendNotificationToOwners'],
+            EntityWithValuesDraftEvents::POST_READY => ['sendNotificationToOwners'],
         ]);
     }
 

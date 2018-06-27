@@ -2,6 +2,7 @@ parameters:
     pimee_workflow.normalizer.product_draft.class:     PimEnterprise\Bundle\WorkflowBundle\Normalizer\ProductDraftNormalizer
     pimee_workflow.normalizer.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Normalizer\PublishedProductNormalizer
     pimee_workflow.normalizer.proposal_product.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer\ProductProposalNormalizer
+    pimee_workflow.normalizer.proposal_product_model.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer\ProductModelProposalNormalizer
     pimee_workflow.normalizer.published_product_version.class: PimEnterprise\Bundle\WorkflowBundle\Versioning\VersionNormalizer
 
 services:
@@ -19,6 +20,11 @@ services:
 
     pimee_workflow.normalizer.proposal_product:
         class: '%pimee_workflow.normalizer.proposal_product.class%'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pimee_workflow.normalizer.proposal_product_model:
+        class: '%pimee_workflow.normalizer.proposal_product_model.class%'
         tags:
             - { name: pim_serializer.normalizer }
 

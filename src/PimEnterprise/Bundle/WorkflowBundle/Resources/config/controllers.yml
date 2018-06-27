@@ -1,9 +1,12 @@
 parameters:
     pimee_workflow.controller.product_draft.class:          PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController
+    pimee_workflow.controller.product_model_draft.class:    PimEnterprise\Bundle\WorkflowBundle\Controller\ProductModelDraftController
     pimee_workflow.controller.published_product.class:      PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
     pimee_workflow.controller.published_product_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\PublishedProductController
     pimee_workflow.controller.product_draft_rest.class:     PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController
     pimee_workflow.controller.rest.product.class:           PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductController
+    pimee_workflow.controller.product_model_draft_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductModelDraftController
+    pimee_workflow.controller.author_draft.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\AuthorDraftController
 
 services:
     pimee_workflow.controller.product_draft:
@@ -14,7 +17,7 @@ services:
             - '@security.token_storage'
             - '@translator'
             - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.manager.entity_with_values_draft'
+            - '@pimee_workflow.manager.product_draft'
             - '@pim_user.context.user'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
@@ -50,7 +53,7 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.manager.entity_with_values_draft'
+            - '@pimee_workflow.manager.product_draft'
             - '@pim_catalog.repository.product'
             - '@pim_internal_api_serializer'
             - '@security.token_storage'
@@ -68,6 +71,44 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
+
+    pimee_workflow.controller.product_model_draft_rest:
+        class: '%pimee_workflow.controller.product_model_draft_rest.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@security.token_storage'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@security.authorization_checker'
+            - '@pimee_workflow.manager.product_model_draft'
+            - '@pim_internal_api_serializer'
+            - '@pim_user.context.user'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+
+    pimee_workflow.controller.product_model_draft:
+        class: '%pimee_workflow.controller.product_model_draft.class%'
+        arguments:
+            - '@request_stack'
+            - '@router'
+            - '@security.token_storage'
+            - '@translator'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.manager.product_model_draft'
+            - '@pim_user.context.user'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@security.authorization_checker'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_catalog.filter.chained'
+            - '@oro_datagrid.mass_action.parameters_parser'
+
+    pimee_workflow.controller.author_draft:
+        class: '%pimee_workflow.controller.author_draft.class%'
+        arguments:
+            - '@pimee_workflow.query.draft_authors'
+            - '@pim_user.context.user'
 
     pimee_workflow.controller.category_tree.published_product:
         class: '%pim_enrich.controller.category_tree.class%'

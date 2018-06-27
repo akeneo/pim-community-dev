@@ -17,7 +17,8 @@ define(
         'pim/fetcher-registry',
         'pim/form-builder',
         'routing',
-        'backbone/bootstrap-modal'
+        'backbone/bootstrap-modal',
+        'pim/security-context'
     ], (
         $,
         _,
@@ -27,7 +28,9 @@ define(
         templateModal,
         FetcherRegistry,
         FormBuilder,
-        Routing
+        Routing,
+        BootstrapModal,
+        SecurityContext
     ) => {
         return Backbone.View.extend({
             className: 'AknAssetCollectionField',
@@ -36,7 +39,8 @@ define(
             template: _.template(template),
             events: {
                 'click .add-asset': 'updateAssets',
-                'click .asset-thumbnail-item': 'updateAssetsFromPreview'
+                'click .asset-thumbnail-item': 'updateAssetsFromPreview',
+                'click .upload-assets': 'uploadAssets'
             },
             modalTemplate: _.template(templateModal),
 
@@ -117,6 +121,30 @@ define(
             },
 
             /**
+             * Open the modal to mass upload assets.
+             */
+            uploadAssets() {
+                FormBuilder.build('pimee-asset-mass-upload').then(form => {
+                    const routes = {
+                        cancelRedirectionRoute: '',
+                        importRoute: 'pimee_product_asset_mass_upload_into_asset_collection_rest_import'
+                    };
+
+                    const invertedUriParts = this.el.baseURI.split('/').reverse();
+                    const entity = {
+                        id: invertedUriParts[0],
+                        type: invertedUriParts[1],
+                        attributeCode: this.$el.closest('[data-attribute]').data('attribute')
+                    };
+
+                    form.setRoutes(routes)
+                        .setEntity(entity)
+                        .setElement(this.$('.asset-mass-uploader'))
+                        .render();
+                });
+            },
+
+            /**
              * Launch the asset picker
              *
              * @return {Promise}
@@ -190,6 +218,8 @@ define(
              */
             openPreviewModal(currentAssetCode) {
                 const deferred = $.Deferred();
+                const editMode = this.context.editMode;
+                const aclGranted = SecurityContext.isGranted('pimee_product_asset_remove_from_collection');
 
                 FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.data).then(function (assets) {
                     const modal = new Backbone.BootstrapModal({
@@ -208,7 +238,11 @@ define(
                         thumbnailFilter: 'thumbnail',
                         assetCollectionPreviewTitle: __('pimee_product_asset.form.product.asset.preview_title'),
                         downloadLabel: __('pimee_product_asset.form.product.asset.download'),
-                        removeLabel: __('pimee_product_asset.form.product.asset.remove')
+                        removeLabel: __('pimee_product_asset.form.product.asset.remove'),
+                        yesLabel: __('pimee_product_asset.form.product.asset.yes'),
+                        noLabel: __('pimee_product_asset.form.product.asset.no'),
+                        confirmLabel: __('pimee_product_asset.form.product.asset.assetRemoveConfirmationLabel'),
+                        canRemoveAsset: aclGranted && 'view' !== editMode
                     });
                     modal.open();
 
@@ -242,6 +276,15 @@ define(
                         navigateToItem($(thumbnails[(clickedIndex + side + thumbnails.length) % thumbnails.length]));
                     };
 
+                    const toggleRemoveConfirmation = (show) => {
+                        const hiddenClass = 'AknButtonList--hide';
+                        if (show) {
+                            modal.$('.remove-confirmation').removeClass(hiddenClass);
+                        } else {
+                            modal.$('.remove-confirmation').addClass(hiddenClass);
+                        }
+                    };
+
                     modal.$('.AknAssetCollectionField-listItem').click(function () {
                         navigateToItem($(this));
                     });
@@ -254,16 +297,27 @@ define(
                         navigateToNeighbor(1, false);
                     });
 
-                    modal.$('.remove').click(function (e) {
+                    modal.$('.remove').click((e) => {
+                        e.stopPropagation();
+                        toggleRemoveConfirmation(true);
+                    });
+
+                    modal.$('.remove-confirmation .close').on('click', (e) => {
+                        e.stopPropagation();
+                        toggleRemoveConfirmation(false);
+                    });
+
+                    modal.$('.remove-confirmation .confirm').on('click', (e) => {
                         e.stopPropagation();
                         navigateToNeighbor(-1, true);
+                        toggleRemoveConfirmation(false);
                     });
 
                     modal.on('cancel', function () {
                         const thumbnails = modal.$('.asset-thumbnail-item');
                         let assetCodes = [];
                         thumbnails.each(function (i, thumbnail) {
-                            assetCodes.push($(thumbnail).data('asset'))
+                            assetCodes.push($(thumbnail).data('asset'));
                         });
                         modal.close();
 

@@ -50,8 +50,8 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            $canReview = $this->permissionHelper->canEditOneChangeToReview($record->getValue('proposal_product'));
-            $toReview = $record->getValue('proposal_product')->getStatus() === EntityWithValuesDraftInterface::READY;
+            $canReview = $this->permissionHelper->canEditOneChangeToReview($record->getValue('proposal'));
+            $toReview = $record->getValue('proposal')->getStatus() === EntityWithValuesDraftInterface::READY;
             $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $record->getValue('product'));
 
             return [

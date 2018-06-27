@@ -144,6 +144,12 @@ services:
           - '@pim_datagrid.datagrid.request.parameters_extractor'
           - '@pimee_workflow.normalizer.proposal_product'
 
+    pim_datagrid.datasource.result_record.hydrator.product_model_draft:
+        class: '%pimee_datagrid.datasource.result_record.hydrator.product_draft.class%'
+        arguments:
+          - '@pim_datagrid.datagrid.request.parameters_extractor'
+          - '@pimee_workflow.normalizer.proposal_product_model'
+
     pimee_workflow.datagrid.datasource.result_record.hydrator.published_product_history:
         class: '%pimee_workflow.datagrid.datasource.result_record.hydrator.published_product_history.class%'
         arguments:
@@ -161,20 +167,28 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_published_product }
 
+    pimee_catalog.datasource.product_model_draft:
+        class: '%pimee_workflow.datagrid.datasource.product_draft.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_datagrid.datasource.result_record.hydrator.product_model_draft'
+        tags:
+            - { name: oro_datagrid.datasource, type: pimee_datasource_product_model_draft }
+
     # Mass actions
     pimee_workflow.datagrid.mass_action.handler.mass_approve:
         class: '%pimee_workflow.datagrid.mass_action.handler.mass_approve.class%'
         arguments:
             - '@event_dispatcher'
-            - '@pimee_workflow.factory.product_proposal_cursor'
+            - '@pimee_workflow.factory.product_and_product_model_proposal_cursor'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_approve }
 
     pimee_workflow.datagrid.datasource.proposal_product:
         class: '%pimee_workflow.datagrid.datasource.product_proposal.class%'
         arguments:
-            - '@pimee_workflow.doctrine.query.proposal_product_query_builder_from_size_factory_with_permissions'
-            - '@pimee_workflow.normalizer.proposal_product'
+            - '@pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory_with_permissions'
+            - '@pim_serializer'
         calls:
             - [ setMassActionRepository, ['@pimee_workflow.repository.product_draft' ]]
         tags:
@@ -215,7 +229,7 @@ services:
         class: '%oro_datagrid.extension.action.type.ajax.class%'
         shared: false
         tags:
-            - { name: oro_datagrid.extension.action.type, type: reject-proposal }
+            - { name: oro_datagrid.extension.action.type, type: refuse-proposal }
 
     pimee_workflow.datagrid.extension.action.type.remove_proposal:
         class: '%oro_datagrid.extension.action.type.ajax.class%'

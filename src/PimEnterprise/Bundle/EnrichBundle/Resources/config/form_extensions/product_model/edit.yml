@@ -21,3 +21,27 @@ extensions:
         parent: pim-product-model-edit-form-attributes
         targetZone: self
         position: 110
+
+    pim-product-model-edit-form-send-for-approval:
+        module: pimee/product-edit-form/send-for-approval
+        parent: pim-product-model-edit-form
+        targetZone: buttons
+        position: 85
+        config:
+            idKeyName: productModelId
+            routes:
+                ready: pimee_workflow_product_model_draft_ready
+
+    pim-product-model-edit-form-meta-draft-status:
+        module: pimee/product-edit-form/meta/draft-status
+        parent: pim-product-model-edit-form-meta
+        targetZone: meta
+        position: 130
+
+    pim-product-model-edit-form-proposals:
+        module: pimee/product-edit-form/proposals
+        parent: pim-product-model-edit-form-column-tabs
+        targetZone: container
+        position: 115
+        config:
+            datagridName: product-model-draft-grid
