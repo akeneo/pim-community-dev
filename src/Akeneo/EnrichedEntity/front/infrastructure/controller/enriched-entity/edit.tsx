@@ -33,6 +33,7 @@ class EnrichedEntityEditController extends BaseController {
         this.store.dispatch(updateRecordResults());
 
         mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-enriched-entity' });
+        $(window).on('beforeunload', this.beforeUnload);
 
         ReactDOM.render(
           (<Provider store={this.store}>
@@ -44,6 +45,16 @@ class EnrichedEntityEditController extends BaseController {
 
     return $.Deferred().resolve();
   }
+
+  beforeUnload = () => {
+    const state = this.store.getState();
+
+    if (state.editForm.isDirty) {
+      return  __('pim_enrich.confirmation.discard_changes', {entity: 'enriched entity'});
+    }
+
+    return;
+  };
 
   canLeave() {
     const state = this.store.getState();
