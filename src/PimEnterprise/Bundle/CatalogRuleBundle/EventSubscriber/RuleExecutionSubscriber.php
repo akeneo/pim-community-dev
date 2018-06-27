@@ -34,12 +34,17 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     protected $notificationClass;
 
     /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param NotifierInterface     $notifier
-     * @param string                $notificationClass
+     * TODO: @merge master: remove TokenStorageInterface $tokenStorage from the constructor
+     *
+     * @param TokenStorageInterface        $tokenStorage
+     * @param NotifierInterface            $notifier
+     * @param string                       $notificationClass
      */
-    public function __construct(TokenStorageInterface $tokenStorage, NotifierInterface $notifier, $notificationClass)
-    {
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        NotifierInterface $notifier,
+        $notificationClass
+    ) {
         $this->tokenStorage = $tokenStorage;
         $this->notifier = $notifier;
         $this->notificationClass = $notificationClass;
@@ -62,8 +67,12 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
      */
     public function afterJobExecution(GenericEvent $event)
     {
-        $rules = $event->getSubject();
-        $user = $this->getUser();
+        $params = $event->getSubject();
+        $rules = [];
+        if (isset($params['definitions'])) {
+            $rules = $params['definitions'];
+        }
+        $user = array_key_exists('usernameToNotify', $params) ? $params['usernameToNotify'] : $this->getUser();
 
         if (null === $user || 0 === count($rules)) {
             return;
@@ -92,6 +101,8 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * TODO: @merge master: remove this method
+     *
      * @return UserInterface|null
      */
     protected function getUser()

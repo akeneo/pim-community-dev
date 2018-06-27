@@ -23,8 +23,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\User\ChainUserProvider;
 
 /**
  * Command to run a rule
@@ -65,8 +63,6 @@ class RunCommand extends ContainerAwareCommand
         $stopOnError = $input->getOption('stop-on-error') ?: false;
         $dryRun = $input->getOption('dry-run') ?: false;
 
-        $this->setUserInToken($username);
-
         $message = $dryRun ? 'Dry running rules...' : 'Running rules...';
         $output->writeln($message);
 
@@ -83,7 +79,7 @@ class RunCommand extends ContainerAwareCommand
                 }
             );
 
-        $this->runRules($rules, $dryRun, $stopOnError);
+        $this->runRules($rules, $dryRun, $stopOnError, $username);
 
         $progressBar->finish();
     }
@@ -92,14 +88,15 @@ class RunCommand extends ContainerAwareCommand
      * @param RuleDefinitionInterface[] $rules
      * @param bool                      $dryRun
      * @param bool                      $stopOnError
+     * @param string|null               $username
      *
      * @throws \Exception
      */
-    protected function runRules(array $rules, $dryRun, $stopOnError)
+    protected function runRules(array $rules, $dryRun, $stopOnError, $username = null)
     {
         $chainedRunner = $this->getRuleRunner($stopOnError);
 
-        $dryRun ? $chainedRunner->dryRunAll($rules) : $chainedRunner->runAll($rules);
+        $dryRun ? $chainedRunner->dryRunAll($rules) : $chainedRunner->runAll($rules, ['usernameToNotify' => $username]);
     }
 
     /**
@@ -125,28 +122,6 @@ class RunCommand extends ContainerAwareCommand
         }
 
         return $rules;
-    }
-
-    /**
-     * @param string $username
-     */
-    protected function setUserInToken($username)
-    {
-        if (empty($username)) {
-            return;
-        }
-
-        $user = $this->getUserProvider()->loadUserByUsername($username);
-        $token = new UsernamePasswordToken($user, null, 'main');
-        $this->getTokenStorage()->setToken($token);
-    }
-
-    /**
-     * @return ChainUserProvider
-     */
-    protected function getUserProvider()
-    {
-        return $this->getContainer()->get('security.user.provider.concrete.chain_provider');
     }
 
     /**
