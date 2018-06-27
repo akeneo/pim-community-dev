@@ -110,6 +110,10 @@ JSON;
                         'message' => 'The variant product "product_family_variant" cannot have product model ' .
                             '"test" as parent, (this product model can only have other product models as children)'
                     ],
+                    [
+                        'property' => 'attribute',
+                        'message' => 'Cannot set the property "sku" to this entity as it is not in the attribute set'
+                    ]
                 ]
             ],
             json_decode($response->getContent(), true)

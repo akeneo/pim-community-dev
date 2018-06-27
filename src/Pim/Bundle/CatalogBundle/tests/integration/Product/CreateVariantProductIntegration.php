@@ -31,7 +31,7 @@ class CreateVariantProductIntegration extends TestCase
         ]);
 
         $errors = $this->get('pim_catalog.validator.product')->validate($variantProduct);
-        $this->assertEquals(2, $errors->count());
+        $this->assertEquals(4, $errors->count());
         $this->assertEquals(
             'The variant product "minerva_blue_m" cannot have product model "minerva" as parent, (this product model can only have other product models as children)',
             $errors->get(1)->getMessage()
