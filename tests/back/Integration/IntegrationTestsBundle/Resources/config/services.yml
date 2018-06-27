@@ -55,3 +55,6 @@ services:
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
         class: Akeneo\EnrichedEntity\Tests\Back\Acceptance\InMemoryFindEnrichedEntityItems
+
+    pim_user.repository.user:
+        class: Akeneo\Test\Acceptance\User\InMemoryUserRepository

@@ -1,0 +1,12 @@
+services:
+    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
+        class: Akeneo\EnrichedEntity\Tests\Back\Acceptance\InMemoryEnrichedEntityRepository
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
+        class: Akeneo\EnrichedEntity\Tests\Back\Acceptance\InMemoryFindEnrichedEntityDetails
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
+        class: Akeneo\EnrichedEntity\Tests\Back\Acceptance\InMemoryFindEnrichedEntityItems
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
+        class: Akeneo\EnrichedEntity\Tests\Back\Acceptance\InMemoryFindRecordDetails
