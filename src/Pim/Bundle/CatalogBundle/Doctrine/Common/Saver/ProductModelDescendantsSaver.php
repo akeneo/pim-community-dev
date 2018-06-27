@@ -109,7 +109,8 @@ class ProductModelDescendantsSaver implements SaverInterface
          * @TODO We need to remove the if condition during the pull day
          */
         if (null !== $this->productModelIndexer) {
-            $this->productModelIndexer->index($productModel);
+            $fullProductModel = $this->productModelRepository->findOneByIdentifier($productModel->getIdentifier());
+            $this->productModelIndexer->index($fullProductModel);
         }
     }
 

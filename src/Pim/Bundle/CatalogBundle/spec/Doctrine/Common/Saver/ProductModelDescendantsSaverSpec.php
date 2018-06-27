@@ -55,6 +55,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         ProductQueryBuilderInterface $pqb,
         ProductModelInterface $productModel,
         ProductModelInterface $productModelsChildren,
+        ProductModelInterface $fullProductModel,
         ProductInterface $variantProduct1,
         ProductInterface $variantProduct2,
         CursorInterface $cursor
@@ -88,7 +89,8 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $productModelRepository->findChildrenProductModels($productModel)->willReturn([$productModelsChildren]);
         $bulkProductModelIndexer->indexAll([$productModelsChildren]);
 
-        $productModelIndexer->index($productModel);
+        $productModelRepository->findOneByIdentifier('product_model_code')->willReturn($fullProductModel);
+        $productModelIndexer->index($fullProductModel)->shouldBeCalled();
 
         $this->save($productModel);
     }
@@ -103,6 +105,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $productModelIndexer,
         ProductQueryBuilderInterface $pqb,
         ProductModelInterface $productModel,
+        ProductModelInterface $fullProductModel,
         CursorInterface $cursor
     ) {
         $productModel->getCode()->willReturn('product_model_code');
@@ -126,7 +129,8 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $productModelRepository->findChildrenProductModels($productModel)->willReturn([]);
         $bulkProductModelIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();
 
-        $productModelIndexer->index($productModel);
+        $productModelRepository->findOneByIdentifier('product_model_code')->willReturn($fullProductModel);
+        $productModelIndexer->index($fullProductModel)->shouldBeCalled();
 
         $this->save($productModel);
     }
