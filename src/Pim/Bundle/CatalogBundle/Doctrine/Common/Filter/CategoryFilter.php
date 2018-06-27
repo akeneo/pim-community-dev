@@ -64,7 +64,9 @@ class CategoryFilter implements FieldFilterInterface
     {
         $categoryIds = $value;
         if ($operator !== Operators::UNCLASSIFIED) {
-            $this->checkValue($field, $value);
+            if (!isset($options['type_checking']) || $options['type_checking']) {
+                $this->checkValue($field, $value);
+            }
 
             if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
                 $categoryIds = $this->objectIdResolver->getIdsFromCodes('category', $value);

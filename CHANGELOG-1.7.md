@@ -1,14 +1,15 @@
 # 1.7.x
 
 ## Bug fixes
- - PIM-7373: Fix deletion and reinsertion of all attributes relations at family save time
+- PIM-7461: Allow to avoid type check on category filter
+- PIM-7366: Fix performance issue related to reloading of selected category children ids on the grid
+- PIM-7373: Fix deletion and reinsertion of all attributes relations at family save time
 
 # 1.7.23 (2018-06-25)
 
 ## Bug fixes
 
 - PIM-7400: Fix 'ensure-indexes' timeout command
-- PIM-7366: Fix performance issue related to reloading of selected category children ids on the grid
 
 # 1.7.22 (2018-06-05)
 
