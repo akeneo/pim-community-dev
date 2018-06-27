@@ -27,7 +27,7 @@ class InMemoryRoleRepository implements IdentifiableObjectRepositoryInterface, S
 
     public function save($role, array $options = [])
     {
-        if(!$role instanceof RoleInterface) {
+        if (!$role instanceof RoleInterface) {
             throw new \InvalidArgumentException('Only user role objects are supported.');
         }
         $index = $role->getRole();
@@ -50,5 +50,4 @@ class InMemoryRoleRepository implements IdentifiableObjectRepositoryInterface, S
     {
         return $this->roles->get($identifier);
     }
-
 }
