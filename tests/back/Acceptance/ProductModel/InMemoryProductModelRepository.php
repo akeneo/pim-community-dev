@@ -126,8 +126,7 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
         string $search,
         int $limit,
         int $page = 0
-    ): array
-    {
+    ): array {
         throw new NotImplementedException(__METHOD__);
     }
 }

@@ -29,7 +29,7 @@ class InMemoryUserRepository implements IdentifiableObjectRepositoryInterface, S
 
     public function save($user, array $options = [])
     {
-        if(!$user instanceof UserInterface) {
+        if (!$user instanceof UserInterface) {
             throw new \InvalidArgumentException('Only user objects are supported.');
         }
         $this->users->set($user->getUsername(), $user);

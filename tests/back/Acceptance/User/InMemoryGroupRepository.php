@@ -27,7 +27,7 @@ class InMemoryGroupRepository implements IdentifiableObjectRepositoryInterface, 
 
     public function save($group, array $options = [])
     {
-        if(!$group instanceof GroupInterface) {
+        if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException('Only user group objects are supported.');
         }
         $this->groups->set($group->getName(), $group);
