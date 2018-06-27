@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity;
+namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

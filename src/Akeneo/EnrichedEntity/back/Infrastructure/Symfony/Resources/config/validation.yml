@@ -1,4 +1,4 @@
-Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntityCommand:
+Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntityCommand:
     properties:
         identifier:
             - NotBlank: ~

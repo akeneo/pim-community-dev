@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity;
+namespace spec\Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class EnrichedEntityIdentifierSpec extends ObjectBehavior

@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\back\Domain\Query;
+namespace spec\Akeneo\EnrichedEntity\Domain\Query;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityItem;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityItem;
 use PhpSpec\ObjectBehavior;
 
 class EnrichedEntityItemSpec extends ObjectBehavior

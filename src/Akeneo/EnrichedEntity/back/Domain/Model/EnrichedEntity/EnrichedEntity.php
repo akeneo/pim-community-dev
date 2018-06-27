@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity;
+namespace Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>

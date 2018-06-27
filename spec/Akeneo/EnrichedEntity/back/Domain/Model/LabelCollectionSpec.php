@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\back\Domain\Model;
+namespace spec\Akeneo\EnrichedEntity\Domain\Model;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\LocaleInterface;
 

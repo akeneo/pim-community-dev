@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\EnrichedEntity\back\Domain\Model\Record;
+namespace spec\Akeneo\EnrichedEntity\Domain\Model\Record;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use PhpSpec\ObjectBehavior;
 
 class RecordIdentifierSpec extends ObjectBehavior
