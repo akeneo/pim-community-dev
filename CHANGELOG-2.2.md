@@ -1,3 +1,9 @@
+# 2.2.x
+
+## Bug fixes
+
+- PIM-7454: Fix tooltip error on reset password
+
 # 2.2.10 (2018-06-22)
 
 ## Bug fixes
