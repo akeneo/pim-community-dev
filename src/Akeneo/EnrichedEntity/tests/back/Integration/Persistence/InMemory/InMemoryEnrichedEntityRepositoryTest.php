@@ -17,6 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
 use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\tests\back\Acceptance\Common\InMemoryEnrichedEntityRepository;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryEnrichedEntityRepositoryTest extends TestCase

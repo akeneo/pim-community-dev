@@ -1,6 +1,6 @@
 services:
     akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
-        class: Akeneo\EnrichedEntity\tests\back\Acceptance\InMemoryEnrichedEntityRepository
+        class: Akeneo\EnrichedEntity\tests\back\Acceptance\Common\InMemoryEnrichedEntityRepository
 
     akeneo_enrichedentity.infrastructure.persistence.record:
-        class: Akeneo\EnrichedEntity\tests\back\Acceptance\InMemoryRecordRepository
+        class: Akeneo\EnrichedEntity\tests\back\Acceptance\Common\InMemoryRecordRepository
