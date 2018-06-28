@@ -1,4 +1,4 @@
-import {enrichedEntitySaved, enrichedEntityUpdated, enrichedEntityReceived} from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
+import {enrichedEntityUpdated, enrichedEntityReceived} from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import enrichedEntitySaver from 'akeneoenrichedentity/infrastructure/saver/enriched-entity';
 import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
@@ -7,7 +7,6 @@ export const saveEnrichedEntity = (enrichedEntity: EnrichedEntity) => async (dis
   await enrichedEntitySaver.save(enrichedEntity);
   const savedEnrichedEntity: EnrichedEntity = await enrichedEntityFetcher.fetch(enrichedEntity.getIdentifier().stringValue());
 
-  dispatch(enrichedEntitySaved(savedEnrichedEntity));
   dispatch(enrichedEntityReceived(savedEnrichedEntity));
 };
 
