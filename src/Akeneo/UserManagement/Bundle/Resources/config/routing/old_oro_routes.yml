@@ -90,10 +90,11 @@ pim_user_create:
     path: /user/create
     defaults: { _controller: PimUserBundle:User:create }
 
+# TODO Move
 pim_user_edit:
-    path: /user/{username}/edit
+    path: /user/{code}/edit
     requirements:
-        username: '[a-zA-Z0-9_]+'
+        code: '[a-zA-Z0-9_]+'
 
 #pim_user_update:
 #    path: /user/update/{id}

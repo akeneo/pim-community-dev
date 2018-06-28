@@ -10,6 +10,9 @@ services:
             - '@security.token_storage'
             - '@pim_internal_api_serializer'
             - '@pim_user.repository.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.saver.user'
 
     pim_user.controller.security_rest:
         class: '%pim_user.controller.security_rest.class%'

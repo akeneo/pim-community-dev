@@ -96,7 +96,9 @@ class UserUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
-            $this->setData($user, $field, $value);
+            if ($value !== null) {
+                $this->setData($user, $field, $value);
+            }
         }
 
         if (!$user->hasGroup('all')) {

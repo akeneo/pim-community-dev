@@ -106,7 +106,7 @@ extensions:
         position: 30
         targetZone: content
         config:
-           fieldName: namePrefix
+           fieldName: name_prefix
            label: 'Name prefix - to translate'
 
     pim-user-edit-form-first-name:
@@ -115,7 +115,7 @@ extensions:
         position: 40
         targetZone: content
         config:
-           fieldName: firstName
+           fieldName: first_name
            label: 'First Name - to translate'
            required: true
 
@@ -125,7 +125,7 @@ extensions:
         position: 50
         targetZone: content
         config:
-           fieldName: middleName
+           fieldName: middle_name
            label: 'Middle Name - to translate'
 
     pim-user-edit-form-last-name:
@@ -134,7 +134,7 @@ extensions:
         position: 60
         targetZone: content
         config:
-           fieldName: lastName
+           fieldName: last_name
            label: 'Last Name - to translate'
            required: true
 
@@ -144,7 +144,7 @@ extensions:
         position: 70
         targetZone: content
         config:
-           fieldName: nameSuffix
+           fieldName: name_suffix
            label: 'Name Suffix - to translate'
 
     pim-user-edit-form-phone:
@@ -209,7 +209,7 @@ extensions:
         position: 10
         targetZone: content
         config:
-           fieldName: catalogLocale
+           fieldName: catalog_default_locale
            label: 'Catalog locale - to translate'
            required: true
 
@@ -219,7 +219,7 @@ extensions:
         position: 20
         targetZone: content
         config:
-           fieldName: catalogScope
+           fieldName: catalog_default_scope
            label: 'Catalog scope - to translate'
            required: true
 
@@ -229,7 +229,7 @@ extensions:
         position: 30
         targetZone: content
         config:
-           fieldName: defaultTree
+           fieldName: default_category_tree
            label: 'Default tree - to translate'
 
     pim-user-edit-form-product-grid-filters:
@@ -295,7 +295,7 @@ extensions:
         position: 10
         targetZone: content
         config:
-           fieldName: uiLocale
+           fieldName: user_default_locale
            label: 'UI Locale - to translate'
            required: true
 
