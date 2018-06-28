@@ -43,6 +43,9 @@ class UserController
     /** @var SaverInterface */
     protected $saver;
 
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
     /**
      * @param TokenStorageInterface                 $tokenStorage
      * @param NormalizerInterface                   $normalizer
@@ -50,6 +53,7 @@ class UserController
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      * @param SaverInterface                        $saver
+     * @param NormalizerInterface                   $constraintViolationNormalizer
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -57,7 +61,8 @@ class UserController
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        SaverInterface $saver
+        SaverInterface $saver,
+        NormalizerInterface $constraintViolationNormalizer
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->normalizer = $normalizer;
@@ -65,6 +70,7 @@ class UserController
         $this->updater = $updater;
         $this->validator = $validator;
         $this->saver = $saver;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
     }
 
     /**
@@ -117,10 +123,15 @@ class UserController
 
         $violations = $this->validator->validate($user);
         if (0 < $violations->count()) {
-            return new JsonResponse($this->normalizer->normalize(
-                $violations,
-                'standard'
-            ), Response::HTTP_BAD_REQUEST);
+            $normalizedViolations = [];
+            foreach ($violations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api'
+                );
+            }
+
+            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
 
         $this->saver->save($user);

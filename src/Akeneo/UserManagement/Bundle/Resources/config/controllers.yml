@@ -13,6 +13,7 @@ services:
             - '@pim_user.updater.user'
             - '@validator'
             - '@pim_user.saver.user'
+            - '@pim_enrich.normalizer.violation'
 
     pim_user.controller.security_rest:
         class: '%pim_user.controller.security_rest.class%'
