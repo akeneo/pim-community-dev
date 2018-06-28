@@ -55,6 +55,7 @@ define([
          */
         configure() {
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onBadRequest.bind(this));
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', this.render.bind(this));
 
             return BaseForm.prototype.configure.apply(this, arguments);
         },
@@ -66,7 +67,9 @@ define([
             this.errors = this.getFieldErrors(event.response);
             this.render();
 
-            this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.getTabCode());
+            if (this.errors.length) {
+                this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.getTabCode());
+            }
         },
 
         /**
