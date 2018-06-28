@@ -1,75 +1,75 @@
 #!groovy
-
+@Library("k8s-utils@fixup-integration")
 String[] editions = ["ce"]
 String[] legacyFeatures = ["tests/legacy/features"]
-String launchUnitTests = "yes"
-String launchAcceptanceTests = "yes"
+String launchUnitTests = "no"
+String launchAcceptanceTests = "no"
 String launchIntegrationTests = "yes"
-String launchEndToEndTests = "yes"
+String launchEndToEndTests = "no"
 String verboseOutputs = "yes"
 String slackChannel = ""
 String tag = "eu.gcr.io/akeneo-ci/pim-community-dev:${env.BRANCH_NAME}"
 
-stage("Build") {
-    milestone 1
-    if (env.BRANCH_NAME =~ /^PR-/) {
-        timeout(time:5, unit:'DAYS') {
-            userInput = input(message: 'Launch tests?', parameters: [
-                choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
-                choice(choices: 'yes\nno', description: 'Run acceptance tests', name: 'launchAcceptanceTests'),
-                choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
-                choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchEndToEndTests'),
-                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end tests to run', name: 'legacyFeatures'),
-                choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
-                string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
-                string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
-            ])
+// stage("Build") {
+//     milestone 1
+//     if (env.BRANCH_NAME =~ /^PR-/) {
+//         timeout(time:5, unit:'DAYS') {
+//             userInput = input(message: 'Launch tests?', parameters: [
+//                 choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
+//                 choice(choices: 'yes\nno', description: 'Run acceptance tests', name: 'launchAcceptanceTests'),
+//                 choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
+//                 choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchEndToEndTests'),
+//                 string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end tests to run', name: 'legacyFeatures'),
+//                 choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
+//                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
+//                 string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
+//             ])
 
-            editions = userInput['editions'].tokenize(',')
-            legacyFeatures = userInput['legacyFeatures'].tokenize(',')
-            launchUnitTests = userInput['launchUnitTests']
-            launchAcceptanceTests = userInput['launchAcceptanceTests']
-            launchIntegrationTests = userInput['launchIntegrationTests']
-            launchEndToEndTests = userInput['launchEndToEndTests']
-            verboseOutputs = userInput['verboseOutputs']
-            slackChannel = userInput['slackChannel']
-        }
-    }
-    milestone 2
+//             editions = userInput['editions'].tokenize(',')
+//             legacyFeatures = userInput['legacyFeatures'].tokenize(',')
+//             launchUnitTests = userInput['launchUnitTests']
+//             launchAcceptanceTests = userInput['launchAcceptanceTests']
+//             launchIntegrationTests = userInput['launchIntegrationTests']
+//             launchEndToEndTests = userInput['launchEndToEndTests']
+//             verboseOutputs = userInput['verboseOutputs']
+//             slackChannel = userInput['slackChannel']
+//         }
+//     }
+//     milestone 2
 
-    withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
-        parallel(
-            "pim-ce": {
-                pod(label: "build", containers: [
-                    containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
-                ]) {container('docker') {
-                    checkout scm
-                    sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag} ."
-                }}
-            },
-            "pim-ee": {
-                if (editions.contains("ee")) {
-                    pod(label: "build", containers: [
-                        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
-                    ]) {container('docker') {
-                        checkout([$class: 'GitSCM',
-                            branches: [[name: 'master']],
-                            userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
-                        ])
+//     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
+//         parallel(
+//             "pim-ce": {
+//                 pod(label: "build", containers: [
+//                     containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
+//                 ]) {container('docker') {
+//                     checkout scm
+//                     sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag} ."
+//                 }}
+//             },
+//             "pim-ee": {
+//                 if (editions.contains("ee")) {
+//                     pod(label: "build", containers: [
+//                         containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
+//                     ]) {container('docker') {
+//                         checkout([$class: 'GitSCM',
+//                             branches: [[name: 'master']],
+//                             userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
+//                         ])
 
-                        dir('packages/pim-community-dev') {
-                            checkout scm
-                        }
+//                         dir('packages/pim-community-dev') {
+//                             checkout scm
+//                         }
 
-                        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee ."
-                    }}
-                } else {
-                    echo "Skipping Enterprise Edition matrix"
-                }
-            }
-        )
-    }
-}
+//                         sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee ."
+//                     }}
+//                 } else {
+//                     echo "Skipping Enterprise Edition matrix"
+//                 }
+//             }
+//         )
+//     }
+// }
 
 stage("Test") {
     try {

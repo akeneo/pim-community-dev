@@ -38,6 +38,7 @@ class ListAssociationTypeIntegration extends ApiTestCase
 }
 JSON;
 
+        Assert::assertTrue(false);
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
