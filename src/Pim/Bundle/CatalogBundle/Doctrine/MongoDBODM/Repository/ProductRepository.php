@@ -399,7 +399,7 @@ class ProductRepository extends DocumentRepository implements
         $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
         $result = $qb->hydrate(false)->getQuery()->getSingleResult();
 
-        if (null === $result || (null !== $result && $value->getEntity()->getId() === (string) $result['_id'])) {
+        if (null === $result || (null !== $result && (string) $value->getEntity()->getId() === (string) $result['_id'])) {
             return false;
         }
 
