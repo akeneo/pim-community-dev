@@ -1,5 +1,4 @@
 const Edit = require('../../decorators/enriched-entity/edit.decorator');
-const Breadcrumb = require('../../decorators/enriched-entity/app/breadcrumb.decorator');
 
 const {
   decorators: {createElementDecorator},
@@ -15,10 +14,6 @@ module.exports = async function(cucumber) {
       selector: '.AknDefault-contentWithColumn',
       decorator: Edit,
     },
-    Breadcrumb: {
-      selector: '.AknBreadcrumb',
-      decorator: Breadcrumb,
-    },
   };
 
   const getElement = createElementDecorator(config);
@@ -28,7 +23,6 @@ module.exports = async function(cucumber) {
       const Controller = require('pim/controller/enriched-entity/edit');
       const controller = new Controller();
       controller.renderRoute({params: {identifier}});
-      const element = controller.el;
       await document.getElementById('app').appendChild(controller.el);
     }, identifier);
 
@@ -89,15 +83,6 @@ module.exports = async function(cucumber) {
     await changeEnrichedEntity.apply(this, [editPage, identifier, updates]);
   });
 
-  When('the user click on a breadcrumb item', async function () {
-    const breadcrumb = await await getElement(this.page, 'Breadcrumb');
-    await breadcrumb.clickOnItem();
-  });
-
-  When('the user goes to {string}', async function (url) {
-    await this.page.goto(url);
-  });
-
   Then('the enriched entity {string} should be:', async function(identifier, updates) {
     const enrichedEntity = convertItemTable(updates)[0];
 
@@ -118,33 +103,5 @@ module.exports = async function(cucumber) {
   Then('the user saves the changes', async function() {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.save();
-  });
-
-  Then('the user should be notified that modification have been made', async function () {
-    const editPage = await await getElement(this.page, 'Edit');
-    const isUpdated = await editPage.isUpdated();
-
-    assert.strictEqual(isUpdated, true);
-  });
-
-  Then('the user shouldn\'t be notified that modification have been made', async function () {
-    const editPage = await await getElement(this.page, 'Edit');
-    const isSaved = await editPage.isSaved();
-
-    assert.strictEqual(isSaved, true);
-  });
-
-  Then('the user should see the confirmation dialog and dismiss', function () {
-    this.page.on('dialog', async (dialog) => {
-      assert.strictEqual(dialog.type(), 'confirm');
-      await dialog.dismiss();
-    });
-  });
-
-  Then('the user should see the confirmation dialog and accept', function () {
-    this.page.on('dialog', async (dialog) => {
-      assert.strictEqual(dialog.type(), 'confirm');
-      await dialog.accept();
-    });
   });
 };

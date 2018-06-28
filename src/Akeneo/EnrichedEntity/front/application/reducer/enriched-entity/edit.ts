@@ -11,7 +11,7 @@ export interface State {
   sidebar: SidebarState;
   grid: GridState<Record>;
   enrichedEntity: EnrichedEntity | null;
-  editForm: FormState
+  editForm: FormState;
 }
 
 export default {
@@ -35,5 +35,5 @@ export default {
 
     return state;
   },
-  editForm
+  editForm,
 };

@@ -6,7 +6,7 @@ export interface FormState {
 export default (path: string, updateType: string, receivedType: string) => {
   return (
     state: FormState = {originalData: '', isDirty: false},
-    action: {type: string; [key:string]: any}
+    action: {type: string; [key: string]: any}
   ): FormState => {
     switch (action.type) {
       case updateType:

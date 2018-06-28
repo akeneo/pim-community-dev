@@ -5,7 +5,9 @@ import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/e
 
 export const saveEnrichedEntity = (enrichedEntity: EnrichedEntity) => async (dispatch: any): Promise<void> => {
   await enrichedEntitySaver.save(enrichedEntity);
-  const savedEnrichedEntity: EnrichedEntity = await enrichedEntityFetcher.fetch(enrichedEntity.getIdentifier().stringValue());
+  const savedEnrichedEntity: EnrichedEntity = await enrichedEntityFetcher.fetch(
+    enrichedEntity.getIdentifier().stringValue()
+  );
 
   dispatch(enrichedEntityReceived(savedEnrichedEntity));
 };

@@ -37,31 +37,3 @@ Feature: Edit an enriched entity
     And the saved enriched entity "designer" will be:
       | identifier | labels                                       |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
-
-  @acceptance-front
-  Scenario: Display confirmation dialog when the user click on a breadcrumb item and cancel it
-    When the user changes the enriched entity "designer" with:
-      | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
-    And the user click on a breadcrumb item
-    Then the user should see the confirmation dialog and dismiss
-
-  @acceptance-front
-  Scenario: Display confirmation dialog when the user click on a breadcrumb item and confirm it
-    When the user changes the enriched entity "designer" with:
-      | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
-    And the user click on a breadcrumb item
-    Then the user should see the confirmation dialog and accept
-
-  @acceptance-front
-  Scenario: Display confirmation dialog when the user goes on another page and cancel it
-    When the user changes the enriched entity "designer" with:
-      | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
-    And the user goes to "http://www.pim-test.com"
-    Then the user should see the confirmation dialog and dismiss
-
-  @acceptance-front
-  Scenario: Display confirmation dialog when the user goes on another page and confirm it
-    When the user changes the enriched entity "designer" with:
-      | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
-    And the user goes to "http://www.pim-test.com"
-    Then the user should see the confirmation dialog and accept
