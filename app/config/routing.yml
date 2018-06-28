@@ -69,5 +69,3 @@ fos_js_routing:
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
 
-_apy_jsformvalidation:
-    resource: "@APYJsFormValidationBundle/Resources/config/routing/routing.yml"

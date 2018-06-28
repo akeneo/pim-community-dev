@@ -21,7 +21,6 @@
     },
     "require": {
         "php": ">=5.6.0",
-        "apy/jsfv-bundle": "2.0.1",
         "ass/xmlsecurity": "1.1.1",
         "doctrine/annotations": "1.2.7",
         "doctrine/cache": "1.6.0",
