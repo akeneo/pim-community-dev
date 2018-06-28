@@ -15,7 +15,7 @@ namespace Akeneo\EnrichedEntity\tests\back\Acceptance;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetailsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
 
 /**

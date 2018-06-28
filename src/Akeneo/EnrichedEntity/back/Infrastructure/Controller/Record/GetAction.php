@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 
-use Akeneo\EnrichedEntity\Application\EnrichedEntity\EnrichedEntityDetails\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetailsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Record get action.

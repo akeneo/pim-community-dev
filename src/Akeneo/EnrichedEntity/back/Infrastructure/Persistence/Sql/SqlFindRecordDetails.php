@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetailsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
