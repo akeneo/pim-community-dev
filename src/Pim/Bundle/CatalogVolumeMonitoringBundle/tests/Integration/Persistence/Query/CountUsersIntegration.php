@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\Query;
 
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 class CountUsersIntegration extends QueryTestCase
 {
