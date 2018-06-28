@@ -111,7 +111,7 @@ define(
                         break;
                     case 500:
                         /* global console */
-                        var message = response.responseJSON ? response.responseJSON : response;
+                        const message = response.responseJSON ? response.responseJSON : response;
 
                         console.error('Errors:', message);
                         this.getRoot().trigger('pim_enrich:form:entity:error:save', message);

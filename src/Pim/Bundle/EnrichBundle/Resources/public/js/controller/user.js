@@ -1,19 +1,46 @@
 'use strict';
 
 define([
-        'pim/controller/form'
+        'underscore',
+        'pim/controller/front',
+        'pim/fetcher-registry',
+        'pim/page-title',
+        'pim/form-builder'
     ], function (
-        FormController
+        _,
+        BaseController,
+        FetcherRegistry,
+        PageTitle,
+        FormBuilder
     ) {
-        return FormController.extend({
+        return BaseController.extend({
             /**
              * {@inheritdoc}
              */
-            afterSubmit: function () {
-                window.location.reload(); //TODO nav: reload the page to update the menu
+            renderForm: function (route) {
+                return FetcherRegistry.getFetcher('user').fetch(
+                    route.params.username,
+                    //{cached: false, full_attributes: false}
+                ).then((user) => {
+                    if (!this.active) {
+                        return;
+                    }
 
-                FormController.prototype.afterSubmit.apply(this, arguments);
+                    PageTitle.set({'user.username': _.escape(user.username)});
+
+                    return FormBuilder.build(user.meta.form)
+                        .then((form) => {
+                            this.on('pim:controller:can-leave', function (event) {
+                                form.trigger('pim_enrich:form:can-leave', event);
+                            });
+                            form.setData(user);
+                            form.trigger('pim_enrich:form:entity:post_fetch', user);
+                            form.setElement(this.$el).render();
+
+                            return form;
+                        });
+                });
             }
         });
     }
-);
+)

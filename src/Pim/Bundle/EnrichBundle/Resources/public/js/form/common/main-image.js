@@ -63,7 +63,11 @@ define(
                     return this.config.path;
                 }
 
-                var filePath = _.result(this.getFormData().meta.image, 'filePath', null);
+                const filePath = _.result(this.getFormData().meta.image, 'filePath', null);
+
+                if (filePath === null && undefined !== this.config.fallback) {
+                    return this.config.fallback;
+                }
 
                 return MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small');
             }

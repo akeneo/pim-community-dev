@@ -15,6 +15,13 @@ define(
             className: 'AknTitleContainer-title',
 
             /**
+             * @param {Object} meta
+             */
+            initialize: function (meta) {
+                this.config = _.extend({}, meta.config);
+            },
+
+            /**
              * {@inheritdoc}
              */
             configure: function () {
@@ -43,6 +50,10 @@ define(
              */
             getLabel: function () {
                 var data = this.getFormData();
+
+                if (this.config.field) {
+                    return data[this.config.field];
+                }
 
                 if (undefined === data.labels) {
                     return '';

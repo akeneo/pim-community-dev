@@ -25,7 +25,7 @@
     {% endif %}
     {% if resource_granted('pim_user_user_edit') %}
         {{ UI.button({
-            'path' : path('pim_user_update', { id: entity.id }),
+            'path' : path('pim_user_edit', { id: entity.id }),
             'iClass' : 'icon-pencil ',
             'label' : 'pim_common.edit',
             'aClass' : 'AknButtonList-item AknButton--action edit-user'

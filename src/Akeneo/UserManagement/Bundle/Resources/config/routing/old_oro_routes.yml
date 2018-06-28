@@ -90,11 +90,16 @@ pim_user_create:
     path: /user/create
     defaults: { _controller: PimUserBundle:User:create }
 
-pim_user_update:
-    path: /user/update/{id}
-    defaults: { _controller: PimUserBundle:User:update, id: 0 }
+pim_user_edit:
+    path: /user/{username}/edit
     requirements:
-        id: \d+
+        username: '[a-zA-Z0-9_]+'
+
+#pim_user_update:
+#    path: /user/update/{id}
+#    defaults: { _controller: PimUserBundle:User:update, id: 0 }
+#    requirements:
+#        id: \d+
 
 pim_user_index:
     path: /user/

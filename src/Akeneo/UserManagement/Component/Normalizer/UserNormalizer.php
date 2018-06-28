@@ -30,6 +30,7 @@ class UserNormalizer implements NormalizerInterface
             'middleName'    => $user->getMiddleName(),
             'lastName'      => $user->getLastName(),
             'nameSuffix'    => $user->getNameSuffix(),
+            'phone'         => $user->getPhone(),
             'birthday'      => $user->getBirthday() ? $user->getBirthday()->getTimestamp() : null,
             'image'         => $user->getImagePath(),
             'lastLogin'     => $user->getLastLogin() ? $user->getLastLogin()->getTimestamp() : null,
@@ -41,7 +42,11 @@ class UserNormalizer implements NormalizerInterface
             'avatar'        => $user->getImagePath(),
             'timezone'      => $user->getTimezone(),
             'meta'          => [
-                'id' => $user->getId()
+                'id'    => $user->getId(),
+                'form'  => 'pim-user-edit-form',
+                'image' => [
+                    'filePath' => $user->getImagePath()
+                ]
             ]
         ];
     }

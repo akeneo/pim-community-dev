@@ -9,3 +9,10 @@ pim_user_user_rest_get:
     defaults: { _controller: pim_user.controller.user_rest:getAction }
     requirements:
         method: GET
+
+pim_user_user_rest_post:
+    path: /{identifier}
+    defaults: { _controller: pim_user.controller.user_rest:postAction }
+    methods: [POST]
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
