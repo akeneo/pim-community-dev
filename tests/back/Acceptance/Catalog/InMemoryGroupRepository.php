@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Catalog;
 
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Component\Catalog\Model\GroupInterface;

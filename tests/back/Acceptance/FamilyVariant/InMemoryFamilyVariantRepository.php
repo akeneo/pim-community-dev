@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\FamilyVariant;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class InMemoryFamilyVariantRepository implements SaverInterface, IdentifiableObjectRepositoryInterface, FamilyVariantRepositoryInterface
 {

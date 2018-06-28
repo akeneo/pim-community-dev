@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\User;
 
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;
 
 /**
