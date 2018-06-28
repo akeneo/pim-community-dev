@@ -15,14 +15,14 @@ namespace AkeneoEnterprise\Test\Acceptance\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetails;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordDetails;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryFindRecordDetails implements FindRecordDetails
+class InMemoryFindRecordDetails implements FindRecordDetailsInterface
 {
     /** @var RecordDetails[] */
     private $results;

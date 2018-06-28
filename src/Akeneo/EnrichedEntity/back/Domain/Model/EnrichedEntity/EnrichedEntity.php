@@ -15,6 +15,10 @@ namespace Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 
+/**
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ */
 class EnrichedEntity
 {
     /** @var EnrichedEntityIdentifier */
