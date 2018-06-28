@@ -4,6 +4,7 @@
 - PIM-7461: Allow to avoid type check on category filter
 - PIM-7366: Fix performance issue related to reloading of selected category children ids on the grid
 - PIM-7373: Fix deletion and reinsertion of all attributes relations at family save time
+- PIM-7474: Show job profile label instead of code in the headers
 
 # 1.7.23 (2018-06-25)
 
