@@ -58,6 +58,7 @@ doctrine:
                 user:         "%database_user%"
                 password:     "%database_password%"
                 charset:      UTF8
+                server_version: 5.5
             session:
                 driver:       "%database_driver%"
                 host:         "%database_host%"
@@ -67,6 +68,7 @@ doctrine:
                 user:         "%database_user%"
                 password:     "%database_password%"
                 charset:      UTF8
+                server_version: 5.5
         types:
             datetime: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
     orm:
