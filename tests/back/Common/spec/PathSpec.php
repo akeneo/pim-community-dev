@@ -27,4 +27,9 @@ class PathSpec extends ObjectBehavior
     {
         $this->relativePath()->shouldEndWith('tests/back');
     }
+
+    function it_has_an_absolute_path()
+    {
+        $this->absolutePath()->shouldEndWith('tests/back');
+    }
 }
