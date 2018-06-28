@@ -19,13 +19,9 @@ interface TableDispatch {
 interface TableProps extends TableState, TableDispatch {}
 
 export default class Table extends React.Component<TableProps, {nextItemToAddPosition: number}> {
-  constructor(props: TableProps) {
-    super(props);
-
-    this.state = {
-      nextItemToAddPosition: 0,
-    };
-  }
+  readonly state = {
+    nextItemToAddPosition: 0,
+  };
 
   componentWillReceiveProps(nextProps: TableProps) {
     if (this.props.records.length !== nextProps.records.length) {
