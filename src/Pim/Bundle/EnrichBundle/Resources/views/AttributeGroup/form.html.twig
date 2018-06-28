@@ -4,7 +4,231 @@
 
 {% set editMode = form.vars.value.id ? true : false %}
 
-{#{{ JSFV(form) }} Fuckkkkkk used but html5 validation #}
+{% raw %}
+<script type="text/javascript">
+    require(['jquery', 'oro/translator', 'bootstrap'],
+        function ($, __) {
+            var jsfv = new function () {
+                function getComputeMessage(key, placeholders, number) {
+                    var result = __(key, placeholders, number);
+                    if (undefined == result && number != undefined) {
+                        // Try to get translated string without a number parameter.
+                        result = __(key, placeholders);
+                    }
+
+                    return result;
+                }
+
+                function isNotDefined(value) {
+                    return (typeof value === 'undefined' || null === value || '' === value);
+                }
+
+                function showErrorsOnGroups() {
+                    var $groups = $('div.tab-groups ul');
+                    if (!$groups.length) {
+                        return;
+                    }
+
+                    var $error = $('<i class="AknIconButton AknIconButton--important icon-warning-sign validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="There\x20are\x20errors\x20in\x20this\x20tab\x21"></i>');
+
+                    $groups.find('a').each(
+                        function () {
+                            var target = $(this).attr('href');
+                            if (!target || target == '#' || target == 'javascript:void(0);') {
+                                return;
+                            }
+
+                            if ($(target).find('.validation-tooltip').length) {
+                                if (!$(this).find('.validation-tooltip').length) {
+                                    $(this).append($error.tooltip());
+                                }
+                            } else {
+                                $(this).find('.validation-tooltip').remove();
+                            }
+                        }
+                    )
+                }
+
+                function highlightTabsWithErrors() {
+                    var $tabs = $('#form-navbar ul.nav');
+                    if (!$tabs.length) {
+                        return;
+                    }
+
+                    $tabs.find('a').each(
+                        function () {
+                            var target = $(this).attr('href');
+                            if (!target || target == '#' || target == 'javascript:void(0);') {
+                                return;
+                            }
+
+                            if ($(target).find('.validation-tooltip').length) {
+                                $(this).addClass('AknHorizontalNavtab-link--errored error');
+                            } else {
+                                $(this).removeClass('AknHorizontalNavtab-link--errored error');
+                            }
+                        }
+                    )
+                }
+
+                function showFirstTabWithErrors() {
+                    $errors = $('.validation-tooltip');
+                    if (!$errors.length || $errors.filter(':visible').length) {
+                        return;
+                    }
+
+                    $error = $errors.first();
+                    $('a[href="#' + $error.closest('.tab-pane').attr('id') + '"]').click();
+                }
+
+                function getFieldValue(field) {
+                    if (!field || !field.nodeName) {
+                        return undefined;
+                    }
+
+                    var resolveField = function (field) {
+                        if (-1 != $.inArray(field.nodeName.toLowerCase(), ['input', 'select', 'textarea'])) {
+                            return $(field);
+                        }
+                        var select = $('select', field);
+                        if (select.length) {
+                            return select;
+                        }
+                        var input = $('input', field);
+                        if (input.length) {
+                            if (!input.filter('[type=checkbox]') && !input.filter('[type=radio]')) {
+                                return input.first();
+                            }
+                            return input;
+                        }
+                        var textarea = $('textarea', field);
+                        if (textarea.length) {
+                            return textarea.get(0);
+                        }
+                        return undefined;
+                    }
+
+                    var $field = resolveField(field);
+                    var isMultiple = $field.length > 1 || $field.filter('select[multiple=multiple]').length;
+                    var value = undefined;
+
+                    if ($field.filter('input[type="checkbox"]').length) {
+                        value = $field.is(':checked');
+                    } else if ($field.filter('input[type="radio"]').length) {
+                        value = $field.filter(':checked').val();
+                    } else {
+                        value = $field.val();
+                    }
+
+                    if (!isMultiple && value instanceof Array) {
+                        value = value.pop();
+                    } else if (isMultiple && !value instanceof Array) {
+                        if (value && value != '') {
+                            value = [value];
+                        } else {
+                            value = [];
+                        }
+                    }
+
+                    return value;
+                }
+
+                function checkError(field, checkFunction, parameters, value) {
+                    field = jsfv.id(field);
+                    // Remove old errors of the field
+                    jsfv.removeErrors(field);        // Check the value
+                    errorMessage = checkFunction((value === undefined ? getFieldValue(field) : value), parameters);
+                    /*//  */
+
+                    if (errorMessage != true) {
+                        jsfv.addError(field, errorMessage);
+                        highlightTabsWithErrors();
+                        showErrorsOnGroups();
+
+                        return false;
+                    }
+                    highlightTabsWithErrors();
+                    showErrorsOnGroups();
+
+                    return true;
+                }
+
+
+                return {
+                    id: function (id) {
+                        return document.getElementById(id) || document.getElementById(id + '_data');
+                    },
+                    removeErrors: function (field) {
+                        $(field).removeClass('error').parent().filter('.controls').removeClass('validation-error');
+                        if ($(field).siblings('.icons-container').length) {
+                            $(field).siblings('.icons-container').find('.validation-tooltip').remove();
+                        } else {
+                            $(field).closest('.controls').find('.icons-container').find('.validation-tooltip').remove();
+                        }
+                    },
+                    addError: function (field, errorMessage) {
+                        // Add errors block
+                        var $field = $(field);
+                        var $iconContainer = $field.siblings('.icons-container').first();
+                        if (!$iconContainer.length) {
+                            $iconContainer = $field.closest('.controls').find('.icons-container').first();
+                        }
+                        if ($iconContainer.find('.validation-tooltip').length === 0) {
+                            $('<i class="AknIconButton AknIconButton--important icon-warning-sign validation-tooltip" data-placement="right" data-toggle="tooltip"></i>').appendTo($iconContainer);
+                        }
+                        $iconContainer.find('.validation-tooltip').attr('data-original-title', errorMessage).tooltip();
+                        $field.addClass('error').closest('.controls').addClass('validation-error');
+                    },
+                    onEvent: function (field, eventType, handler) {
+                        if (typeof field === 'string') {
+                            field = jsfv.id(field);
+                        }
+                        $(field).bind(eventType, handler);
+                    },
+                    onFirstEvent: function (field, eventType, handler) {
+                        if (typeof field === 'string') {
+                            field = jsfv.id(field);
+                        }
+                        $(field).bind(eventType, handler);
+                    },
+                    onReady: function () {
+                        // On submit checks
+                        var form = jsfv.id('pim_enrich_attributegroup_form');
+
+                        // Form exists ?
+                        if (form) {
+                            // Get the form
+                            if (form.nodeName.toLowerCase() != 'form') {
+                                form = jsfv.id('pim_enrich_attributegroup_form__token').form;
+                            }
+
+                            // Remove HTML5 validation
+                            $(form).attr('novalidate', 'novalidate');
+                            highlightTabsWithErrors();
+                            showErrorsOnGroups();
+
+                            jsfv.onFirstEvent(form, 'submit', function (e) {
+                                var gv, submitForm = true;
+                                if (!submitForm) {
+                                    e.stopImmediatePropagation();
+                                    showFirstTabWithErrors();
+                                    $(form).trigger('validate');
+                                }
+                                return submitForm;
+                            });
+                        }
+
+
+                        // On change checks
+                    }
+                };
+            }
+            $(jsfv.onReady);
+        }
+    );
+</script>
+{% endraw %}
+
 {{ form_start(form, {
     'action': editMode ? path('pim_enrich_attributegroup_edit', { id: form.vars.value.id }) : path('pim_enrich_attributegroup_create'),
     'attr': {
@@ -42,3 +266,4 @@
     </div>
 
 {{ form_end(form) }}
+

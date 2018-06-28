@@ -13,9 +13,369 @@
         'data-button-cancel': 'btn.cancel'|trans|capitalize
     }
 }) }}
-    {#{{ JSFV(form) }} validate the code (desiabled field)#}
 
-    {{ elements.form_errors(form) }}
+{% raw %}
+<script type="text/javascript">
+    require(['jquery', 'oro/translator', 'bootstrap'],
+        function ($, __) {
+            var jsfv = new function () {
+                function getComputeMessage(key, placeholders, number) {
+
+                    var result = __(key, placeholders, number);
+                    if (undefined == result && number != undefined) {
+                        // Try to get translated string without a number parameter.
+                        result = __(key, placeholders);
+                    }
+
+                    return result;
+                }
+
+                function isNotDefined(value) {
+                    return (typeof value === 'undefined' || null === value || '' === value);
+                }
+
+                function showErrorsOnGroups() {
+                    var $groups = $('div.tab-groups ul');
+                    if (!$groups.length) {
+                        return;
+                    }
+
+                    var $error = $('<i class="AknIconButton AknIconButton--important icon-warning-sign validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="There\x20are\x20errors\x20in\x20this\x20tab\x21"></i>');
+
+                    $groups.find('a').each(
+                        function () {
+                            var target = $(this).attr('href');
+                            if (!target || target == '#' || target == 'javascript:void(0);') {
+                                return;
+                            }
+
+                            if ($(target).find('.validation-tooltip').length) {
+                                if (!$(this).find('.validation-tooltip').length) {
+                                    $(this).append($error.tooltip());
+                                }
+                            } else {
+                                $(this).find('.validation-tooltip').remove();
+                            }
+                        }
+                    )
+                }
+
+                function highlightTabsWithErrors() {
+                    var $tabs = $('#form-navbar ul.nav');
+                    if (!$tabs.length) {
+                        return;
+                    }
+
+                    $tabs.find('a').each(
+                        function () {
+                            var target = $(this).attr('href');
+                            if (!target || target == '#' || target == 'javascript:void(0);') {
+                                return;
+                            }
+
+                            if ($(target).find('.validation-tooltip').length) {
+                                $(this).addClass('AknHorizontalNavtab-link--errored error');
+                            } else {
+                                $(this).removeClass('AknHorizontalNavtab-link--errored error');
+                            }
+                        }
+                    )
+                }
+
+                function showFirstTabWithErrors() {
+                    $errors = $('.validation-tooltip');
+                    if (!$errors.length || $errors.filter(':visible').length) {
+                        return;
+                    }
+
+                    $error = $errors.first();
+                    $('a[href="#' + $error.closest('.tab-pane').attr('id') + '"]').click();
+                }
+
+                function getFieldValue(field) {
+                    if (!field || !field.nodeName) {
+                        return undefined;
+                    }
+
+                    var resolveField = function (field) {
+                        if (-1 != $.inArray(field.nodeName.toLowerCase(), ['input', 'select', 'textarea'])) {
+                            return $(field);
+                        }
+                        var select = $('select', field);
+                        if (select.length) {
+                            return select;
+                        }
+                        var input = $('input', field);
+                        if (input.length) {
+                            if (!input.filter('[type=checkbox]') && !input.filter('[type=radio]')) {
+                                return input.first();
+                            }
+                            return input;
+                        }
+                        var textarea = $('textarea', field);
+                        if (textarea.length) {
+                            return textarea.get(0);
+                        }
+                        return undefined;
+                    }
+
+                    var $field = resolveField(field);
+                    var isMultiple = $field.length > 1 || $field.filter('select[multiple=multiple]').length;
+                    var value = undefined;
+
+                    if ($field.filter('input[type="checkbox"]').length) {
+                        value = $field.is(':checked');
+                    } else if ($field.filter('input[type="radio"]').length) {
+                        value = $field.filter(':checked').val();
+                    } else {
+                        value = $field.val();
+                    }
+
+                    if (!isMultiple && value instanceof Array) {
+                        value = value.pop();
+                    } else if (isMultiple && !value instanceof Array) {
+                        if (value && value != '') {
+                            value = [value];
+                        } else {
+                            value = [];
+                        }
+                    }
+
+                    return value;
+                }
+
+                function checkError(field, checkFunction, parameters, value) {
+                    field = jsfv.id(field);
+                    // Remove old errors of the field
+                    jsfv.removeErrors(field);        // Check the value
+                    errorMessage = checkFunction((value === undefined ? getFieldValue(field) : value), parameters);
+                    /*//  */
+
+                    if (errorMessage != true) {
+                        jsfv.addError(field, errorMessage);
+                        highlightTabsWithErrors();
+                        showErrorsOnGroups();
+
+                        return false;
+                    }
+                    highlightTabsWithErrors();
+                    showErrorsOnGroups();
+
+                    return true;
+                }
+
+
+                function NotBlank(field, params) {
+                    var value = field && field.nodeName ? $(field).val() : field;
+
+                    if (isNotDefined(value)) {
+                        return getComputeMessage(params.message);
+                    }
+
+                    return true;
+                }
+
+                function Regex(field, params) {
+                    var value = field && field.nodeName ? $(field).val() : field;
+
+                    if (isNotDefined(value)) {
+                        return true;
+                    }
+
+                    value = String(value);
+
+                    // xor with converted boolean values
+                    if (!params.match != !params.pattern.test(value)) {
+                        return getComputeMessage(params.message);
+                    }
+
+                    return true;
+                }
+
+                function Length(field, params) {
+                    var value = field && field.nodeName ? $(field).val() : field;
+
+                    if (isNotDefined(value)) {
+                        return true;
+                    }
+
+                    value = String(value);
+
+                    if (params['exactMessage'] !== undefined &&
+                        params['min'] !== undefined && params['max'] !== undefined &&
+                        params.min == params.max) {
+                        if (value.length != parseInt(params.min)) {
+                            return getComputeMessage(params.exactMessage, {'limit': params.min}, params.min);
+                        }
+                    } else {
+                        if (params['min'] !== undefined && value.length < parseInt(params.min)) {
+                            return getComputeMessage(params.minMessage, {'limit': params.min}, params.min);
+                        }
+                        if (params['max'] !== undefined && value.length > parseInt(params.max)) {
+                            return getComputeMessage(params.maxMessage, {'limit': params.max}, params.max);
+                        }
+                    }
+
+                    return true;
+                }
+
+
+                /**
+                 * @author   Vitaliy Demidov   <zend@i.ua>
+                 */
+                function UniqueEntity(field, params) {
+                    var value = field && field.nodeName ? $(field).val() : field;
+                    var cache, url, cacheindex = 'm' + value + '';
+                    if (params && params.fields && field.nodeName) {
+                        //TODO This part is compartible only with jquery
+                        cache = $(field).data('_uniqueEntityCache');
+                        if (!cache) cache = {};
+                        if (cache[cacheindex] != undefined) {
+                            if (cache[cacheindex] === false) {
+                                return getComputeMessage(params.message);
+                            } else return true;
+                        }
+                        $.ajax({
+                            type: 'POST',
+                            url: '\x2Fapp_dev.php\x2Fjsfv\x2Funique\x2Dentity.en_US',
+                            data: {
+                                'entity': params.entity,
+                                'target': params.fields,
+                                'value': value,
+                                'ignore': params.identifier_field_id ? self.id(params.identifier_field_id).value : ''
+                            },
+                            success: function (data, textStatus) {
+                                if (data.status && data.status == 'ok') {
+                                    cache[cacheindex] = data.isUnique;
+                                    $(field).data('_uniqueEntityCache', cache);
+                                    if (!cache[cacheindex]) {
+                                        checkError($(field).attr('id'), UniqueEntity, params);
+                                    }
+                                }
+                            },
+                            dataType: 'json'
+                        });
+                    }
+                    return true;
+                }
+
+
+                return {
+                    id: function (id) {
+                        return document.getElementById(id) || document.getElementById(id + '_data');
+                    },
+                    removeErrors: function (field) {
+                        $(field).removeClass('error').parent().filter('.controls').removeClass('validation-error');
+                        if ($(field).siblings('.icons-container').length) {
+                            $(field).siblings('.icons-container').find('.validation-tooltip').remove();
+                        } else {
+                            $(field).closest('.controls').find('.icons-container').find('.validation-tooltip').remove();
+                        }
+                    },
+                    addError: function (field, errorMessage) {
+                        // Add errors block
+                        var $field = $(field);
+                        var $iconContainer = $field.siblings('.icons-container').first();
+                        if (!$iconContainer.length) {
+                            $iconContainer = $field.closest('.controls').find('.icons-container').first();
+                        }
+                        if ($iconContainer.find('.validation-tooltip').length === 0) {
+                            $('<i class="AknIconButton AknIconButton--important icon-warning-sign validation-tooltip" data-placement="right" data-toggle="tooltip"></i>').appendTo($iconContainer);
+                        }
+                        $iconContainer.find('.validation-tooltip').attr('data-original-title', errorMessage).tooltip();
+                        $field.addClass('error').closest('.controls').addClass('validation-error');
+                    },
+                    onEvent: function (field, eventType, handler) {
+                        if (typeof field === 'string') {
+                            field = jsfv.id(field);
+                        }
+                        $(field).bind(eventType, handler);
+                    },
+                    onFirstEvent: function (field, eventType, handler) {
+                        if (typeof field === 'string') {
+                            field = jsfv.id(field);
+                        }
+                        $(field).bind(eventType, handler);
+                    },
+                    check_pim_enrich_group_form_code: function () {
+                        var gv;
+                        result = true;
+                        result = result && checkError('pim_enrich_group_form_code', NotBlank, {
+                            message: "This value should not be blank.",
+                            payload: null
+                        });
+                        result = result && checkError('pim_enrich_group_form_code', Regex, {
+                            message: "Group code may contain only letters, numbers and underscores.",
+                            pattern: /^[a-zA-Z0-9_]+$/,
+                            htmlPattern: null,
+                            match: true,
+                            payload: null
+                        });
+                        result = result && checkError('pim_enrich_group_form_code', Length, {
+                            maxMessage: "This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.",
+                            minMessage: "This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.",
+                            exactMessage: "This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.",
+                            charsetMessage: "This value does not match the expected {{ charset }} charset.",
+                            max: 100,
+                            min: null,
+                            charset: "UTF-8",
+                            payload: null
+                        });
+                        result = result && checkError('pim_enrich_group_form_code', UniqueEntity, {
+                            message: "This value is already used.",
+                            service: "doctrine.orm.validator.unique",
+                            em: null,
+                            repositoryMethod: "findBy",
+                            fields: "code",
+                            errorPath: null,
+                            ignoreNull: true,
+                            payload: null
+                        });
+                        return result;
+                    },
+                    onReady: function () {
+                        // On submit checks
+                        var form = jsfv.id('pim_enrich_group_form');
+
+                        // Form exists ?
+                        if (form) {
+                            // Get the form
+                            if (form.nodeName.toLowerCase() != 'form') {
+                                form = jsfv.id('pim_enrich_group_form__token').form;
+                            }
+
+                            // Remove HTML5 validation
+                            $(form).attr('novalidate', 'novalidate');
+                            highlightTabsWithErrors();
+                            showErrorsOnGroups();
+
+                            jsfv.onFirstEvent(form, 'submit', function (e) {
+                                var gv, submitForm = true;
+                                submitForm = jsfv.check_pim_enrich_group_form_code() && submitForm;
+                                if (!submitForm) {
+                                    e.stopImmediatePropagation();
+                                    showFirstTabWithErrors();
+                                    $(form).trigger('validate');
+                                }
+                                return submitForm;
+                            });
+                        }
+
+
+                        // On change checks
+                        jsfv.onEvent('pim_enrich_group_form_code', 'change', jsfv.check_pim_enrich_group_form_code);
+                    }
+                };
+            }
+
+            $(jsfv.onReady);
+
+        }
+        );
+</script>
+{% endraw %}
+
+{{ elements.form_errors(form) }}
 
     <div class="row-fluid">
         {{ form_row(form.code) }}

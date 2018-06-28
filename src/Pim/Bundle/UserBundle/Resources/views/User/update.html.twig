@@ -46,7 +46,569 @@
 
 {% block page_container %}
 {% block content %}
-    {#{{ JSFV(form) }} used #}
+
+    {% raw %}
+    <script type="text/javascript">
+        require(['jquery', 'oro/translator', 'bootstrap'],
+            function ($, __) {
+                var jsfv = new function () {
+                    function getComputeMessage(key, placeholders, number) {
+
+                        var result = __(key, placeholders, number);
+                        if (undefined == result && number != undefined) {
+                            // Try to get translated string without a number parameter.
+                            result = __(key, placeholders);
+                        }
+
+                        return result;
+                    }
+
+                    function isNotDefined(value) {
+                        return (typeof value === 'undefined' || null === value || '' === value);
+                    }
+
+                    function showErrorsOnGroups() {
+                        var $groups = $('div.tab-groups ul');
+                        if (!$groups.length) {
+                            return;
+                        }
+
+                        var $error = $('<i class="AknIconButton AknIconButton--important icon-warning-sign validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="There\x20are\x20errors\x20in\x20this\x20tab\x21"></i>');
+
+                        $groups.find('a').each(
+                            function () {
+                                var target = $(this).attr('href');
+                                if (!target || target == '#' || target == 'javascript:void(0);') {
+                                    return;
+                                }
+
+                                if ($(target).find('.validation-tooltip').length) {
+                                    if (!$(this).find('.validation-tooltip').length) {
+                                        $(this).append($error.tooltip());
+                                    }
+                                } else {
+                                    $(this).find('.validation-tooltip').remove();
+                                }
+                            }
+                        )
+                    }
+
+                    function highlightTabsWithErrors() {
+                        var $tabs = $('#form-navbar ul.nav');
+                        if (!$tabs.length) {
+                            return;
+                        }
+
+                        $tabs.find('a').each(
+                            function () {
+                                var target = $(this).attr('href');
+                                if (!target || target == '#' || target == 'javascript:void(0);') {
+                                    return;
+                                }
+
+                                if ($(target).find('.validation-tooltip').length) {
+                                    $(this).addClass('AknHorizontalNavtab-link--errored error');
+                                } else {
+                                    $(this).removeClass('AknHorizontalNavtab-link--errored error');
+                                }
+                            }
+                        )
+                    }
+
+                    function showFirstTabWithErrors() {
+                        $errors = $('.validation-tooltip');
+                        if (!$errors.length || $errors.filter(':visible').length) {
+                            return;
+                        }
+
+                        $error = $errors.first();
+                        $('a[href="#' + $error.closest('.tab-pane').attr('id') + '"]').click();
+                    }
+
+                    function getFieldValue(field) {
+                        if (!field || !field.nodeName) {
+                            return undefined;
+                        }
+
+                        var resolveField = function (field) {
+                            if (-1 != $.inArray(field.nodeName.toLowerCase(), ['input', 'select', 'textarea'])) {
+                                return $(field);
+                            }
+                            var select = $('select', field);
+                            if (select.length) {
+                                return select;
+                            }
+                            var input = $('input', field);
+                            if (input.length) {
+                                if (!input.filter('[type=checkbox]') && !input.filter('[type=radio]')) {
+                                    return input.first();
+                                }
+                                return input;
+                            }
+                            var textarea = $('textarea', field);
+                            if (textarea.length) {
+                                return textarea.get(0);
+                            }
+                            return undefined;
+                        }
+
+                        var $field = resolveField(field);
+                        var isMultiple = $field.length > 1 || $field.filter('select[multiple=multiple]').length;
+                        var value = undefined;
+
+                        if ($field.filter('input[type="checkbox"]').length) {
+                            value = $field.is(':checked');
+                        } else if ($field.filter('input[type="radio"]').length) {
+                            value = $field.filter(':checked').val();
+                        } else {
+                            value = $field.val();
+                        }
+
+                        if (!isMultiple && value instanceof Array) {
+                            value = value.pop();
+                        } else if (isMultiple && !value instanceof Array) {
+                            if (value && value != '') {
+                                value = [value];
+                            } else {
+                                value = [];
+                            }
+                        }
+
+                        return value;
+                    }
+
+                    function checkError(field, checkFunction, parameters, value) {
+                        field = jsfv.id(field);
+                        // Remove old errors of the field
+                        jsfv.removeErrors(field);        // Check the value
+                        errorMessage = checkFunction((value === undefined ? getFieldValue(field) : value), parameters);
+                        /*//  */
+
+                        if (errorMessage != true) {
+                            jsfv.addError(field, errorMessage);
+                            highlightTabsWithErrors();
+                            showErrorsOnGroups();
+
+                            return false;
+                        }
+                        highlightTabsWithErrors();
+                        showErrorsOnGroups();
+
+                        return true;
+                    }
+
+
+                    function NotBlank(field, params) {
+                        var value = field && field.nodeName ? $(field).val() : field;
+
+                        if (isNotDefined(value)) {
+                            return getComputeMessage(params.message);
+                        }
+
+                        return true;
+                    }
+
+                    function Length(field, params) {
+                        var value = field && field.nodeName ? $(field).val() : field;
+
+                        if (isNotDefined(value)) {
+                            return true;
+                        }
+
+                        value = String(value);
+
+                        if (params['exactMessage'] !== undefined &&
+                            params['min'] !== undefined && params['max'] !== undefined &&
+                            params.min == params.max) {
+                            if (value.length != parseInt(params.min)) {
+                                return getComputeMessage(params.exactMessage, {'limit': params.min}, params.min);
+                            }
+                        } else {
+                            if (params['min'] !== undefined && value.length < parseInt(params.min)) {
+                                return getComputeMessage(params.minMessage, {'limit': params.min}, params.min);
+                            }
+                            if (params['max'] !== undefined && value.length > parseInt(params.max)) {
+                                return getComputeMessage(params.maxMessage, {'limit': params.max}, params.max);
+                            }
+                        }
+
+                        return true;
+                    }
+
+                    /**
+                     * @author   Vitaliy Demidov   <zend@i.ua>
+                     */
+                    function UniqueEntity(field, params) {
+                        var value = field && field.nodeName ? $(field).val() : field;
+                        var cache, url, cacheindex = 'm' + value + '';
+                        if (params && params.fields && field.nodeName) {
+                            //TODO This part is compartible only with jquery
+                            cache = $(field).data('_uniqueEntityCache');
+                            if (!cache) cache = {};
+                            if (cache[cacheindex] != undefined) {
+                                if (cache[cacheindex] === false) {
+                                    return getComputeMessage(params.message);
+                                } else return true;
+                            }
+                            $.ajax({
+                                type: 'POST',
+                                url: '\x2Fapp_dev.php\x2Fjsfv\x2Funique\x2Dentity.en_US',
+                                data: {
+                                    'entity': params.entity,
+                                    'target': params.fields,
+                                    'value': value,
+                                    'ignore': params.identifier_field_id ? self.id(params.identifier_field_id).value : ''
+                                },
+                                success: function (data, textStatus) {
+                                    if (data.status && data.status == 'ok') {
+                                        cache[cacheindex] = data.isUnique;
+                                        $(field).data('_uniqueEntityCache', cache);
+                                        if (!cache[cacheindex]) {
+                                            checkError($(field).attr('id'), UniqueEntity, params);
+                                        }
+                                    }
+                                },
+                                dataType: 'json'
+                            });
+                        }
+                        return true;
+                    }
+
+
+                    function Email(field, params) {
+                        var value = field && field.nodeName ? $(field).val() : field;
+
+                        if (isNotDefined(value)) {
+                            return true;
+                        }
+
+                        value = String(value);
+
+                        // @see http://emailregex.com
+                        var pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*))@([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}$/;
+
+                        if (pattern.test(value)) {
+                            return true;
+                        }
+
+                        return getComputeMessage(params.message);
+                    }
+
+
+                    function Date(field, params) {
+                        /**
+                         * Remove frontend validation for date to valid localized date
+                         */
+                        return true;
+                    }
+
+
+                    function Image(field, params) {
+                        var value = field && field.nodeName ? $(field).val() : field;
+
+                        return true;
+                    }
+
+                    function Type(field, params) {
+                        var value = field && field.nodeName ? $(field).val() : field;
+                        if (value === void 0) {
+                            return true;
+                        }
+
+                        var result = true;
+                        switch (params.type.toLowerCase()) {
+                            case 'numeric':
+                                result = !isNaN(value);
+                                break;
+                            case 'bool':
+                                result = value == !!value;
+                                break;
+                            default:
+                                break;
+                        }
+
+                        return result || getComputeMessage(params.message, {'type': params.type});
+                    }
+
+
+                    function NotNull(field, params) {
+                        var value = field && field.nodeName ? $(field).val() : field;
+
+                        if (typeof(value) == 'undefined' || value === null) {
+                            return getComputeMessage(params.message);
+                        }
+
+                        return true;
+                    }
+
+
+                    return {
+                        id: function (id) {
+                            return document.getElementById(id) || document.getElementById(id + '_data');
+                        },
+                        removeErrors: function (field) {
+                            $(field).removeClass('error').parent().filter('.controls').removeClass('validation-error');
+                            if ($(field).siblings('.icons-container').length) {
+                                $(field).siblings('.icons-container').find('.validation-tooltip').remove();
+                            } else {
+                                $(field).closest('.controls').find('.icons-container').find('.validation-tooltip').remove();
+                            }
+                        },
+                        addError: function (field, errorMessage) {
+                            // Add errors block
+                            var $field = $(field);
+                            var $iconContainer = $field.siblings('.icons-container').first();
+                            if (!$iconContainer.length) {
+                                $iconContainer = $field.closest('.controls').find('.icons-container').first();
+                            }
+                            if ($iconContainer.find('.validation-tooltip').length === 0) {
+                                $('<i class="AknIconButton AknIconButton--important icon-warning-sign validation-tooltip" data-placement="right" data-toggle="tooltip"></i>').appendTo($iconContainer);
+                            }
+                            $iconContainer.find('.validation-tooltip').attr('data-original-title', errorMessage).tooltip();
+                            $field.addClass('error').closest('.controls').addClass('validation-error');
+                        },
+                        onEvent: function (field, eventType, handler) {
+                            if (typeof field === 'string') {
+                                field = jsfv.id(field);
+                            }
+                            $(field).bind(eventType, handler);
+                        },
+                        onFirstEvent: function (field, eventType, handler) {
+                            if (typeof field === 'string') {
+                                field = jsfv.id(field);
+                            }
+                            $(field).bind(eventType, handler);
+                        },
+                        check_pim_user_user_form_username: function () {
+                            var gv;
+                            result = true;
+                            result = result && checkError('pim_user_user_form_username', NotBlank, {
+                                message: "This value should not be blank.",
+                                payload: null
+                            });
+                            result = result && checkError('pim_user_user_form_username', Length, {
+                                maxMessage: "This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.",
+                                minMessage: "This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.",
+                                exactMessage: "This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.",
+                                charsetMessage: "This value does not match the expected {{ charset }} charset.",
+                                max: 255,
+                                min: 3,
+                                charset: "UTF-8",
+                                payload: null
+                            });
+                            result = result && checkError('pim_user_user_form_username', UniqueEntity, {
+                                message: "This value is already used.",
+                                service: "doctrine.orm.validator.unique",
+                                em: null,
+                                repositoryMethod: "findBy",
+                                fields: "username",
+                                errorPath: null,
+                                ignoreNull: true,
+                                payload: null
+                            });
+                            return result;
+                        },
+                        check_pim_user_user_form_email: function () {
+                            var gv;
+                            result = true;
+                            result = result && checkError('pim_user_user_form_email', NotBlank, {
+                                message: "This value should not be blank.",
+                                payload: null
+                            });
+                            result = result && checkError('pim_user_user_form_email', Length, {
+                                maxMessage: "This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.",
+                                minMessage: "This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.",
+                                exactMessage: "This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.",
+                                charsetMessage: "This value does not match the expected {{ charset }} charset.",
+                                max: 255,
+                                min: 6,
+                                charset: "UTF-8",
+                                payload: null
+                            });
+                            result = result && checkError('pim_user_user_form_email', Email, {
+                                message: "This value is not a valid email address.",
+                                checkMX: false,
+                                checkHost: false,
+                                strict: null,
+                                payload: null
+                            });
+                            result = result && checkError('pim_user_user_form_email', UniqueEntity, {
+                                message: "This value is already used.",
+                                service: "doctrine.orm.validator.unique",
+                                em: null,
+                                repositoryMethod: "findBy",
+                                fields: "email",
+                                errorPath: null,
+                                ignoreNull: true,
+                                payload: null
+                            });
+                            return result;
+                        },
+                        check_pim_user_user_form_firstName: function () {
+                            var gv;
+                            result = true;
+                            result = result && checkError('pim_user_user_form_firstName', NotBlank, {
+                                message: "This value should not be blank.",
+                                payload: null
+                            });
+                            result = result && checkError('pim_user_user_form_firstName', Length, {
+                                maxMessage: "This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.",
+                                minMessage: "This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.",
+                                exactMessage: "This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.",
+                                charsetMessage: "This value does not match the expected {{ charset }} charset.",
+                                max: 100,
+                                min: null,
+                                charset: "UTF-8",
+                                payload: null
+                            });
+                            return result;
+                        },
+                        check_pim_user_user_form_lastName: function () {
+                            var gv;
+                            result = true;
+                            result = result && checkError('pim_user_user_form_lastName', NotBlank, {
+                                message: "This value should not be blank.",
+                                payload: null
+                            });
+                            result = result && checkError('pim_user_user_form_lastName', Length, {
+                                maxMessage: "This value is too long. It should have {{ limit }} character or less.|This value is too long. It should have {{ limit }} characters or less.",
+                                minMessage: "This value is too short. It should have {{ limit }} character or more.|This value is too short. It should have {{ limit }} characters or more.",
+                                exactMessage: "This value should have exactly {{ limit }} character.|This value should have exactly {{ limit }} characters.",
+                                charsetMessage: "This value does not match the expected {{ charset }} charset.",
+                                max: 100,
+                                min: null,
+                                charset: "UTF-8",
+                                payload: null
+                            });
+                            return result;
+                        },
+                        check_pim_user_user_form_birthday: function () {
+                            var gv;
+                            result = true;
+                            result = result && checkError('pim_user_user_form_birthday', Date, {
+                                message: "This value is not a valid date.",
+                                payload: null
+                            });
+                            return result;
+                        },
+                        check_pim_user_user_form_imageFile: function () {
+                            var gv;
+                            result = true;
+                            result = result && checkError('pim_user_user_form_imageFile', Image, {
+                                mimeTypes: "image\/*",
+                                minWidth: null,
+                                maxWidth: null,
+                                maxHeight: null,
+                                minHeight: null,
+                                maxRatio: null,
+                                minRatio: null,
+                                allowSquare: true,
+                                allowLandscape: true,
+                                allowPortrait: true,
+                                mimeTypesMessage: "This file is not a valid image.",
+                                sizeNotDetectedMessage: "The size of the image could not be detected.",
+                                maxWidthMessage: "The image width is too big ({{ width }}px). Allowed maximum width is {{ max_width }}px.",
+                                minWidthMessage: "The image width is too small ({{ width }}px). Minimum width expected is {{ min_width }}px.",
+                                maxHeightMessage: "The image height is too big ({{ height }}px). Allowed maximum height is {{ max_height }}px.",
+                                minHeightMessage: "The image height is too small ({{ height }}px). Minimum height expected is {{ min_height }}px.",
+                                maxRatioMessage: "The image ratio is too big ({{ ratio }}). Allowed maximum ratio is {{ max_ratio }}.",
+                                minRatioMessage: "The image ratio is too small ({{ ratio }}). Minimum ratio expected is {{ min_ratio }}.",
+                                allowSquareMessage: "The image is square ({{ width }}x{{ height }}px). Square images are not allowed.",
+                                allowLandscapeMessage: "The image is landscape oriented ({{ width }}x{{ height }}px). Landscape oriented images are not allowed.",
+                                allowPortraitMessage: "The image is portrait oriented ({{ width }}x{{ height }}px). Portrait oriented images are not allowed.",
+                                binaryFormat: null,
+                                notFoundMessage: "The file could not be found.",
+                                notReadableMessage: "The file is not readable.",
+                                maxSizeMessage: "The file is too large ({{ size }} {{ suffix }}). Allowed maximum size is {{ limit }} {{ suffix }}.",
+                                disallowEmptyMessage: "An empty file is not allowed.",
+                                uploadIniSizeErrorMessage: "The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}.",
+                                uploadFormSizeErrorMessage: "The file is too large.",
+                                uploadPartialErrorMessage: "The file was only partially uploaded.",
+                                uploadNoFileErrorMessage: "No file was uploaded.",
+                                uploadNoTmpDirErrorMessage: "No temporary folder was configured in php.ini.",
+                                uploadCantWriteErrorMessage: "Cannot write temporary file to disk.",
+                                uploadExtensionErrorMessage: "A PHP extension caused the upload to fail.",
+                                uploadErrorMessage: "The file could not be uploaded.",
+                                payload: null
+                            });
+                            return result;
+                        },
+                        check_pim_user_user_form_assetDelayReminder: function () {
+                            var gv;
+                            result = true;
+                            result = result && checkError('pim_user_user_form_assetDelayReminder', NotBlank, {
+                                message: "This value should not be blank.",
+                                payload: null
+                            });
+                            result = result && checkError('pim_user_user_form_assetDelayReminder', Type, {
+                                message: "This value should be of type {{ type }}.",
+                                type: "int",
+                                payload: null
+                            });
+                            return result;
+                        },
+                        check_pim_user_user_form_enabled: function () {
+                            var gv;
+                            result = true;
+                            result = result && checkError('pim_user_user_form_enabled', NotNull, {
+                                message: "This value should not be null.",
+                                payload: null
+                            });
+                            return result;
+                        },
+                        onReady: function () {
+                            // On submit checks
+                            var form = jsfv.id('pim_user_user_form');
+
+                            // Form exists ?
+                            if (form) {
+                                // Get the form
+                                if (form.nodeName.toLowerCase() != 'form') {
+                                    form = jsfv.id('pim_user_user_form__token').form;
+                                }
+
+                                // Remove HTML5 validation
+                                $(form).attr('novalidate', 'novalidate');
+                                highlightTabsWithErrors();
+                                showErrorsOnGroups();
+
+                                jsfv.onFirstEvent(form, 'submit', function (e) {
+                                    var gv, submitForm = true;
+                                    submitForm = jsfv.check_pim_user_user_form_username() && submitForm;
+                                    submitForm = jsfv.check_pim_user_user_form_email() && submitForm;
+                                    submitForm = jsfv.check_pim_user_user_form_firstName() && submitForm;
+                                    submitForm = jsfv.check_pim_user_user_form_lastName() && submitForm;
+                                    submitForm = jsfv.check_pim_user_user_form_birthday() && submitForm;
+                                    submitForm = jsfv.check_pim_user_user_form_imageFile() && submitForm;
+                                    submitForm = jsfv.check_pim_user_user_form_assetDelayReminder() && submitForm;
+                                    submitForm = jsfv.check_pim_user_user_form_enabled() && submitForm;
+                                    if (!submitForm) {
+                                        e.stopImmediatePropagation();
+                                        showFirstTabWithErrors();
+                                        $(form).trigger('validate');
+                                    }
+                                    return submitForm;
+                                });
+                            }
+
+
+                            // On change checks
+                            jsfv.onEvent('pim_user_user_form_username', 'change', jsfv.check_pim_user_user_form_username);
+                            jsfv.onEvent('pim_user_user_form_email', 'change', jsfv.check_pim_user_user_form_email);
+                            jsfv.onEvent('pim_user_user_form_firstName', 'change', jsfv.check_pim_user_user_form_firstName);
+                            jsfv.onEvent('pim_user_user_form_lastName', 'change', jsfv.check_pim_user_user_form_lastName);
+                            jsfv.onEvent('pim_user_user_form_birthday', 'change', jsfv.check_pim_user_user_form_birthday);
+                            jsfv.onEvent('pim_user_user_form_imageFile', 'change', jsfv.check_pim_user_user_form_imageFile);
+                            jsfv.onEvent('pim_user_user_form_assetDelayReminder', 'change', jsfv.check_pim_user_user_form_assetDelayReminder);
+                            jsfv.onEvent('pim_user_user_form_enabled', 'change', jsfv.check_pim_user_user_form_enabled);
+                        }
+                    };
+                }
+                $(jsfv.onReady);
+            });
+    </script>
+{% endraw %}
+
     {{ form_start(form, {
         'action': editRoute,
         'attr': {
