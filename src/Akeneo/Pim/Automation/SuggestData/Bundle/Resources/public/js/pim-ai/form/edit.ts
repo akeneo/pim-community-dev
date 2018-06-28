@@ -26,6 +26,7 @@ interface EditConfig {
  */
 class EditView extends BaseView {
   readonly template = _.template(template);
+
   readonly config: EditConfig = {
     token_label_title: '',
     token_label_content: '',
@@ -50,40 +51,69 @@ class EditView extends BaseView {
   /**
    * {@inheritdoc}
    */
-  render(): BaseView {
+  public configure(): JQueryPromise<any> {
     const url = Routing.generate(
-      this.config.get_configuration_url,
-      { code: this.config.code }
+      this.config.get_configuration_url, {code: this.config.code}
     );
 
-    $.get(url).then((configuration) => {
-      const token: string = !_.isEmpty(configuration)
-        ? configuration['configuration_fields']['token']
-        : '';
+    return $.when(
+      $.get(url).then((configuration) => {
+        this.setData({token: configuration.token});
+      }),
+      BaseView.prototype.configure.apply(this, arguments)
+    );
+  }
 
-      const activationLabel: string = 0 == token.length
-        ? __(this.config.token_save_pre_activation_title)
-        : __(this.config.token_save_post_activation_title);
+  /**
+   * {@inheritdoc}
+   */
+  public render(): BaseView {
+    const data = this.getFormData();
 
-      const buttonStyle: string = 0 == token.length
-        ? 'AknButton--slateGrey'
-        : 'AknButton--apply';
-
-      this.$el.empty().html(
-        this.template({
-          tokenLabelTitle: __(this.config.token_label_title),
-          tokenLabelContent: __(this.config.token_label_content),
-          tokenFieldTitle: __(this.config.token_field_title),
-          tokenFieldPlaceholder: __(this.config.token_field_placeholder),
-          token: token,
-          activationLabel: activationLabel,
-          buttonStyle: buttonStyle,
-        })
-      );
-    });
+    0 === Object.keys(data).length
+      ? this.renderUnactivated(data.token)
+      : this.renderActivated(data.token);
 
     return this;
   };
+
+  /**
+   * Renders the view for an invalid or empty token.
+   *
+   * @param {string} token
+   */
+  private renderUnactivated(token: string): void {
+    this.$el.html(
+      this.template({
+        tokenLabelTitle: __(this.config.token_label_title),
+        tokenLabelContent: __(this.config.token_label_content),
+        tokenFieldTitle: __(this.config.token_field_title),
+        tokenFieldPlaceholder: __(this.config.token_field_placeholder),
+        token: token,
+        activationLabel: __(this.config.token_save_pre_activation_title),
+        buttonStyle: 'AknButton--slateGrey',
+      })
+    );
+  }
+
+  /**
+   * Renders the view for a filled and valid token.
+   *
+   * @param {string} token
+   */
+  private renderActivated(token: string): void {
+    this.$el.html(
+      this.template({
+        tokenLabelTitle: __(this.config.token_label_title),
+        tokenLabelContent: __(this.config.token_label_content),
+        tokenFieldTitle: __(this.config.token_field_title),
+        tokenFieldPlaceholder: __(this.config.token_field_placeholder),
+        token: token,
+        activationLabel: __(this.config.token_save_post_activation_title),
+        buttonStyle: 'AknButton--apply',
+      })
+    );
+  }
 }
 
 export = EditView;

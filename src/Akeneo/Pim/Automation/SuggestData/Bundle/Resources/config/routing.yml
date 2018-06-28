@@ -11,14 +11,14 @@ pimee_suggest_data_pim_ai_connection_get:
     path: /suggest-data/connection/{code}
     defaults: { _controller: pimee_suggest_data.controller.pim_dot_ai:getAction }
     requirements:
-        code: '[a-zA-Z0-9_]+'
+        code: '[\w._-]+'
     methods: [GET]
 
 pimee_suggest_data_pim_ai_connection_post:
     path: /suggest-data/connection/{code}
-    defaults: { _controller: '' }
+    defaults: { _controller: pimee_suggest_data.controller.pim_dot_ai:postAction }
     requirements:
-        code: '[a-zA-Z0-9_]+'
+        code: '[\w._-]+'
     methods: [POST]
 
 pimee_suggest_data_pim_ai_connection_map_identifiers:

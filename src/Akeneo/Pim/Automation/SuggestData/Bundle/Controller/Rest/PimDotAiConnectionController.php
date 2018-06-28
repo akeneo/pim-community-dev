@@ -58,6 +58,31 @@ class PimDotAiConnectionController
     {
         $normalizedConfiguration = $this->getNormalizedConfiguration->query($code);
 
-        return new JsonResponse($normalizedConfiguration);
+        return new JsonResponse($normalizedConfiguration['configuration_fields']);
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @return Response
+     */
+    public function postAction(Request $request, string $code): Response
+    {
+        $configurationFields = json_decode($request->getContent(), true);
+
+        $isActivated = $this->suggestDataConnection->activate($code, $configurationFields);
+
+        if (false === $isActivated) {
+            return new JsonResponse([
+                'successful' => $isActivated,
+                'message' => $this->translator->trans('pimee_suggest_data.connection.pim_dot_ai.error'),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        return new JsonResponse([
+            'successful' => $isActivated,
+            'message' => $this->translator->trans('pimee_suggest_data.connection.pim_dot_ai.success'),
+        ]);
     }
 }
