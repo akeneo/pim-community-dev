@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\ApiBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes;
