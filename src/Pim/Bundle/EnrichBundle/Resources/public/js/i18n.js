@@ -8,10 +8,15 @@ define(
             getFlag: function (locale, displayLanguage) {
                 displayLanguage = (undefined === displayLanguage) ? true : displayLanguage;
                 if (locale) {
-                    var info = locale.split('_');
+                    const info = locale.split('_');
+                    let country = info[1];
+
+                    if (3 === info.length) {
+                        country = info[2];
+                    }
 
                     return this.flagTemplate({
-                        'country': info[1].toLowerCase(),
+                        'country': country.toLowerCase(),
                         'language': info[0],
                         'displayLanguage': displayLanguage
                     });

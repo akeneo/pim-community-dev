@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7460: Fix locale flag for locales with two underscores like az_cyrl_AZ.
+
 # 2.0.28 (2018-06-26)
 
 ## Bug fixes
