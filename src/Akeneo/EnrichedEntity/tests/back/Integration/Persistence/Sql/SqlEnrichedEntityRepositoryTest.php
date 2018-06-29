@@ -9,10 +9,10 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
 use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 
-class SqlEnrichedEntityRepositoryTest extends TestCase
+class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
 {
     /** @var EnrichedEntityRepository */
     private $repository;

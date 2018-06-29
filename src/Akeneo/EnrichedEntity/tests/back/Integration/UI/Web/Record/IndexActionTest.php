@@ -8,12 +8,12 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 
-class IndexActionTest extends TestCase
+class IndexActionTest extends ControllerIntegrationTestCase
 {
     private const RECORD_LIST_ROUTE = 'akeneo_enriched_entities_record_index_rest';
 
@@ -29,9 +29,9 @@ class IndexActionTest extends TestCase
 
         $this->loadFixtures();
         $this->client = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.helper.authenticated_client_factory')
+            ->get('akeneo_ee_integration_tests.helper.authenticated_client_factory')
             ->logIn('julia');
-        $this->webClientHelper = $this->getFromTestContainer('akeneo_ee_integration_tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneo_ee_integration_tests.helper.web_client_helper');
     }
 
     /**
@@ -74,7 +74,7 @@ class IndexActionTest extends TestCase
 
     private function loadFixtures(): void
     {
-        $recordRepository = $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
         $recordRepository->save(
             EnrichedEntity::create(
                 EnrichedEntityIdentifier::fromString('designer'),
@@ -93,7 +93,7 @@ class IndexActionTest extends TestCase
             )
         );
 
-        $recordRepository = $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.record');
+        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
         $recordRepository->save(
             Record::create(
                 RecordIdentifier::fromString('starck'),
@@ -115,6 +115,6 @@ class IndexActionTest extends TestCase
 
         $user = new User();
         $user->setUsername('julia');
-        $this->getFromTestContainer('pim_user.repository.user')->save($user);
+        $this->get('pim_user.repository.user')->save($user);
     }
 }

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
+namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
-class EditActionTest extends TestCase
+class EditActionTest extends ControllerIntegrationTestCase
 {
     private const ENRICHED_ENTITIY_EDIT_ROUTE = 'akeneo_enriched_entities_enriched_entity_edit_rest';
 
@@ -29,9 +29,9 @@ class EditActionTest extends TestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = $this->getFromTestContainer('akeneo_ee_integration_tests.helper.authenticated_client_factory')
+        $this->client = $this->get('akeneo_ee_integration_tests.helper.authenticated_client_factory')
             ->logIn('julia');
-        $this->webClientHelper = $this->getFromTestContainer('akeneo_ee_integration_tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneo_ee_integration_tests.helper.web_client_helper');
     }
 
     /**
@@ -92,7 +92,7 @@ class EditActionTest extends TestCase
 
     private function getEnrichEntityRepository(): EnrichedEntityRepository
     {
-        return $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
+        return $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
     }
 
     private function loadFixtures(): void
@@ -107,6 +107,6 @@ class EditActionTest extends TestCase
 
         $user = new User();
         $user->setUsername('julia');
-        $this->getFromTestContainer('pim_user.repository.user')->save($user);
+        $this->get('pim_user.repository.user')->save($user);
     }
 }

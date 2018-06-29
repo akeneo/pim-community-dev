@@ -11,9 +11,9 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepository;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 
-class SqlRecordRepositoryTest extends TestCase
+class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 {
     /** @var RecordRepository */
     private $repository;

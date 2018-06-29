@@ -11,10 +11,11 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\FindEnrichedEntityItemsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
+use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class SqlFindEnrichedEntityItemsTest extends TestCase
+class SqlFindEnrichedEntityItemsTest extends SqlIntegrationTestCase
 {
     /** @var FindEnrichedEntityItemsInterface */
     private $findEnrichedEntityItems;

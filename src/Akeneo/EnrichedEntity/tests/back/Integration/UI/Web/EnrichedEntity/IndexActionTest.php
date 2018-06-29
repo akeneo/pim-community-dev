@@ -6,12 +6,12 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityItem;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 
-class IndexActionTest extends TestCase
+class IndexActionTest extends ControllerIntegrationTestCase
 {
     private const ENRICHED_ENTITIY_LIST_ROUTE = 'akeneo_enriched_entities_enriched_entity_index_rest';
 
@@ -27,9 +27,9 @@ class IndexActionTest extends TestCase
 
         $this->loadFixtures();
         $this->client = $this
-            ->getFromTestContainer('akeneo_ee_integration_tests.helper.authenticated_client_factory')
+            ->get('akeneo_ee_integration_tests.helper.authenticated_client_factory')
             ->logIn('julia');
-        $this->webClientHelper = $this->getFromTestContainer('akeneo_ee_integration_tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneo_ee_integration_tests.helper.web_client_helper');
     }
 
     /**
@@ -67,7 +67,7 @@ class IndexActionTest extends TestCase
 
     private function loadFixtures(): void
     {
-        $queryHandler = $this->getFromTestContainer(
+        $queryHandler = $this->get(
             'akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items'
         );
 
@@ -88,6 +88,6 @@ class IndexActionTest extends TestCase
 
         $user = new User();
         $user->setUsername('julia');
-        $this->getFromTestContainer('pim_user.repository.user')->save($user);
+        $this->get('pim_user.repository.user')->save($user);
     }
 }

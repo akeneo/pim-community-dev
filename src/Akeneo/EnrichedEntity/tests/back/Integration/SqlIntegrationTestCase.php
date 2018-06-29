@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web;
+namespace Akeneo\EnrichedEntity\tests\back\Integration;
 
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -16,18 +17,31 @@ use Symfony\Component\HttpKernel\KernelInterface;
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ControllerIntegrationTestCase
+class SqlIntegrationTestCase extends KernelTestCase
 {
     /** @var KernelInterface */
-    protected $kernel;
+    protected $testKernel;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
+        $this->bootTestKernel();
+    }
+
+    protected function bootTestKernel(): void
+    {
         static::bootKernel(['debug' => false]);
-        $this->kernel = new \AppKernelTest('ControllerIntegrationTest', false);
-        $this->kernel->boot();
+        $this->testKernel = new \AppKernelTest('test', false);
+        $this->testKernel->boot();
+    }
+
+    /*
+     * @return mixed
+     */
+    protected function get(string $service)
+    {
+        return $this->testKernel->getContainer()->get($service);
     }
 }

@@ -8,12 +8,12 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 
-class GetActionTest extends TestCase
+class GetActionTest extends ControllerIntegrationTestCase
 {
     private const RECORD_DETAIL_ROUTE = 'akeneo_enriched_entities_records_get_rest';
 
@@ -28,9 +28,9 @@ class GetActionTest extends TestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = $this->getFromTestContainer('akeneo_ee_integration_tests.helper.authenticated_client_factory')
+        $this->client = $this->get('akeneo_ee_integration_tests.helper.authenticated_client_factory')
             ->logIn('julia');
-        $this->webClientHelper = $this->getFromTestContainer('akeneo_ee_integration_tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneo_ee_integration_tests.helper.web_client_helper');
     }
 
     /**
@@ -94,11 +94,11 @@ class GetActionTest extends TestCase
         $starck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $starck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
 
-        $findRecordDetailsQueryHandler = $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.query.find_record_details');
+        $findRecordDetailsQueryHandler = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_details');
         $findRecordDetailsQueryHandler->save($starck);
 
         $user = new User();
         $user->setUsername('julia');
-        $this->getFromTestContainer('pim_user.repository.user')->save($user);
+        $this->get('pim_user.repository.user')->save($user);
     }
 }

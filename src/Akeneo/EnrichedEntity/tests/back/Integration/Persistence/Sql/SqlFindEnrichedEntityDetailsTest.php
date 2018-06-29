@@ -9,11 +9,11 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\Domain\Query\FindEnrichedEntityDetailsInterface;
+use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
-class SqlFindEnrichedEntityDetailsTest extends TestCase
+class SqlFindEnrichedEntityDetailsTest extends SqlIntegrationTestCase
 {
     /** @var FindEnrichedEntityDetailsInterface */
     private $findEnrichedEntityDetails;

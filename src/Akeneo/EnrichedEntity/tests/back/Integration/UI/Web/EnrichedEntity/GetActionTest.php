@@ -7,12 +7,12 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityDetails;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 
-class GetActionTest extends TestCase
+class GetActionTest extends ControllerIntegrationTestCase
 {
     private const ENRICHED_ENTITIY_DETAIL_ROUTE = 'akeneo_enriched_entities_enriched_entity_get_rest';
 
@@ -27,9 +27,9 @@ class GetActionTest extends TestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = $this->getFromTestContainer('akeneo_ee_integration_tests.helper.authenticated_client_factory')
+        $this->client = $this->get('akeneo_ee_integration_tests.helper.authenticated_client_factory')
             ->logIn('julia');
-        $this->webClientHelper = $this->getFromTestContainer('akeneo_ee_integration_tests.helper.web_client_helper');
+        $this->webClientHelper = $this->get('akeneo_ee_integration_tests.helper.web_client_helper');
     }
 
     /**
@@ -73,7 +73,7 @@ class GetActionTest extends TestCase
 
     private function loadFixtures(): void
     {
-        $queryHandler = $this->getFromTestContainer('akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details');
+        $queryHandler = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details');
 
         $entityItem = new EnrichedEntityDetails();
         $entityItem->identifier = (EnrichedEntityIdentifier::fromString('designer'));
@@ -85,6 +85,6 @@ class GetActionTest extends TestCase
 
         $user = new User();
         $user->setUsername('julia');
-        $this->getFromTestContainer('pim_user.repository.user')->save($user);
+        $this->get('pim_user.repository.user')->save($user);
     }
 }

@@ -11,10 +11,10 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
+use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
 
-class SqlFindRecordDetailsTest extends TestCase
+class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
 {
     /** @var FindRecordDetailsInterface */
     private $findRecordDetailsQuery;

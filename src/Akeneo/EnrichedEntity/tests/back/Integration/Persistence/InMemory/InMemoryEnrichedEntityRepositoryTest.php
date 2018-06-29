@@ -54,24 +54,4 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
             EnrichedEntityIdentifier::fromString('unknown_identifier')
         );
     }
-
-    /**
-     * @param EnrichedEntity[] $EnrichedEntitys
-     * @param EnrichedEntity[] $EnrichedEntitysFound
-     */
-    private function assertEnrichedEntityList(array $EnrichedEntitys, array $EnrichedEntitysFound): void
-    {
-        foreach ($EnrichedEntitys as $enrichedEntity) {
-            $isFound = false;
-            foreach ($EnrichedEntitysFound as $enrichedEntityFound) {
-                if (!$isFound && $enrichedEntityFound->equals($enrichedEntity)) {
-                    $isFound = true;
-                }
-            }
-            $this->assertTrue(
-                $isFound,
-                sprintf('The enriched entity with identifier %s was not found', (string) $enrichedEntity->getIdentifier())
-            );
-        }
-    }
 }
