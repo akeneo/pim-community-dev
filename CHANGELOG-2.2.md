@@ -9,6 +9,7 @@
 ## Bug fixes
 
 - PIM-7442: Bulk actions ALL - count not taking variant products into account
+- PIM-7413: Newly created attribute group is correctly sorted after existing ones
 
 # 2.2.9 (2018-06-14)
 
