@@ -5,9 +5,9 @@ services:
             - '@pim_catalog.repository.product'
             - '@pimee_suggest_data.data_provider.factory'
 
-    pimee_suggest_data.controller.pim_dot_ai:
-        class: 'PimEnterprise\Bundle\SuggestDataBundle\Controller\Rest\PimDotAiConnectionController'
+    pimee_suggest_data.controller.pim_ai:
+        class: 'PimEnterprise\Bundle\SuggestDataBundle\Controller\Rest\PimAiConnectionController'
         arguments:
-            - '@pimee_suggest_data.application.connection'
-            - '@pimee_suggest_data.query.get_normalized_configuration'
+            - '@pimee_suggest_data.connection.activate'
+            - '@pimee_suggest_data.connection.get_normalized_configuration'
             - '@translator'

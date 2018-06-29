@@ -9,14 +9,14 @@ pimee_suggest_data_pim_ai_connection_index:
 
 pimee_suggest_data_pim_ai_connection_get:
     path: /suggest-data/connection/{code}
-    defaults: { _controller: pimee_suggest_data.controller.pim_dot_ai:getAction }
+    defaults: { _controller: pimee_suggest_data.controller.pim_ai:getAction }
     requirements:
         code: '[\w._-]+'
     methods: [GET]
 
 pimee_suggest_data_pim_ai_connection_post:
     path: /suggest-data/connection/{code}
-    defaults: { _controller: pimee_suggest_data.controller.pim_dot_ai:postAction }
+    defaults: { _controller: pimee_suggest_data.controller.pim_ai:postAction }
     requirements:
         code: '[\w._-]+'
     methods: [POST]

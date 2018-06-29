@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\Controller\Rest;
 
-use PimEnterprise\Component\SuggestData\Application\SuggestDataConnection;
-use PimEnterprise\Component\SuggestData\Query\GetNormalizedConfiguration;
+use PimEnterprise\Component\SuggestData\Application\ActivateSuggestDataConnection;
+use PimEnterprise\Component\SuggestData\Application\GetNormalizedConfiguration;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +23,10 @@ use Symfony\Component\Translation\TranslatorInterface;
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class PimDotAiConnectionController
+class PimAiConnectionController
 {
-    /** @var SuggestDataConnection */
-    private $suggestDataConnection;
+    /** @var ActivateSuggestDataConnection */
+    private $activateSuggestDataConnection;
 
     /** @var GetNormalizedConfiguration */
     private $getNormalizedConfiguration;
@@ -35,16 +35,16 @@ class PimDotAiConnectionController
     private $translator;
 
     /**
-     * @param SuggestDataConnection      $suggestDataConnection
-     * @param GetNormalizedConfiguration $getNormalizedConfiguration
-     * @param TranslatorInterface        $translator
+     * @param ActivateSuggestDataConnection $activateSuggestDataConnection
+     * @param GetNormalizedConfiguration    $getNormalizedConfiguration
+     * @param TranslatorInterface           $translator
      */
     public function __construct(
-        SuggestDataConnection $suggestDataConnection,
+        ActivateSuggestDataConnection $activateSuggestDataConnection,
         GetNormalizedConfiguration $getNormalizedConfiguration,
         TranslatorInterface $translator
     ) {
-        $this->suggestDataConnection = $suggestDataConnection;
+        $this->activateSuggestDataConnection = $activateSuggestDataConnection;
         $this->getNormalizedConfiguration = $getNormalizedConfiguration;
         $this->translator = $translator;
     }
@@ -71,18 +71,18 @@ class PimDotAiConnectionController
     {
         $configurationFields = json_decode($request->getContent(), true);
 
-        $isActivated = $this->suggestDataConnection->activate($code, $configurationFields);
+        $isActivated = $this->activateSuggestDataConnection->activate($code, $configurationFields);
 
         if (false === $isActivated) {
             return new JsonResponse([
                 'successful' => $isActivated,
-                'message' => $this->translator->trans('pimee_suggest_data.connection.pim_dot_ai.error'),
+                'message' => $this->translator->trans('pimee_suggest_data.connection.pim_ai.error'),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new JsonResponse([
             'successful' => $isActivated,
-            'message' => $this->translator->trans('pimee_suggest_data.connection.pim_dot_ai.success'),
+            'message' => $this->translator->trans('pimee_suggest_data.connection.pim_ai.success'),
         ]);
     }
 }

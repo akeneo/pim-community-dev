@@ -1,7 +1,9 @@
 import * as _ from 'underscore';
 import BaseView = require('pimenrich/js/view/base');
+import {EventsHash} from 'backbone';
 
 const __ = require('oro/translator');
+const Messenger = require('oro/messenger');
 const Routing = require('routing');
 const template = require('pimee/template/pim-ai-connection/edit');
 
@@ -51,6 +53,16 @@ class EditView extends BaseView {
   /**
    * {@inheritdoc}
    */
+  public events(): EventsHash {
+    return {
+      'click .activate-connection': 'activate',
+      'keyup input': 'updateModel',
+    };
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public configure(): JQueryPromise<any> {
     const url = Routing.generate(
       this.config.get_configuration_url, {code: this.config.code}
@@ -68,14 +80,41 @@ class EditView extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    const data = this.getFormData();
+    const formData = this.getFormData();
 
-    0 === Object.keys(data).length
-      ? this.renderUnactivated(data.token)
-      : this.renderActivated(data.token);
+    0 === Object.keys(formData).length
+      ? this.renderUnactivated(formData.token)
+      : this.renderActivated(formData.token);
 
     return this;
   };
+
+  /**
+   * Activates the connection to PIM.ai
+   */
+  public activate(): void {
+    const url = Routing.generate(
+      this.config.post_configuration_url, {code: this.config.code}
+    );
+
+    $.post(
+      url,
+      JSON.stringify(this.getFormData())
+    ).fail((xhr) => {
+      Messenger.notify('error', xhr.responseJSON.message);
+    }).done((response) => {
+      Messenger.notify('success', response.message);
+    });
+  }
+
+  /**
+   * Updates the model.
+   */
+  public updateModel(): void {
+    const fieldValue = $('.token-field').val();
+
+    this.setData({token: fieldValue});
+  }
 
   /**
    * Renders the view for an invalid or empty token.

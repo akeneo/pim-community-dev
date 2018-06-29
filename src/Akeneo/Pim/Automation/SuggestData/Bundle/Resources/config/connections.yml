@@ -1,5 +1,5 @@
 services:
-    pimee_suggest_data.application.activate_connection:
+    pimee_suggest_data.connection.activate:
         class: 'Akeneo\Pim\Automation\SuggestData\Component\Application\ActivateSuggestDataConnection'
         arguments:
             - '@pimee_suggest_data.handler.save_configuration'
