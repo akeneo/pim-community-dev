@@ -2,9 +2,9 @@
 
 namespace PimEnterprise\Behat\Context;
 
-use Akeneo\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
-use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
 use Context\Spin\SpinCapableTrait;
