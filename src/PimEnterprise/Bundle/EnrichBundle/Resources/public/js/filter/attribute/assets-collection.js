@@ -35,7 +35,7 @@ define([
                         return {
                             search: term,
                             options: {
-                                locale: UserContext.get('uiLocale')
+                                locale: UserContext.get('user_default_locale')
                             }
                         };
                     },
@@ -91,7 +91,7 @@ define([
                 results: _.map(assets, function (asset) {
                     return {
                         id: asset.code,
-                        text: i18n.getLabel([], UserContext.get('uiLocale'), asset.code)
+                        text: i18n.getLabel([], UserContext.get('user_default_locale'), asset.code)
                     };
                 }),
                 more: 0 !== assets.length

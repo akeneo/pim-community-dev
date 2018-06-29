@@ -154,7 +154,7 @@ define(
              * @return {String}
              */
             formatLine: function (project, type) {
-                var uiLocale = UserContext.get('uiLocale');
+                var uiLocale = UserContext.get('user_default_locale');
                 var channelLabel = i18n.getLabel(project.channel.labels, uiLocale, project.channel.code);
 
                 return this.lineTemplate({

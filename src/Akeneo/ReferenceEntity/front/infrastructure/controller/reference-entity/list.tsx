@@ -21,9 +21,9 @@ const shortcutDispatcher = (store: any) => (event: KeyboardEvent) => {
 class ReferenceEntityListController extends BaseController {
   renderRoute() {
     const store = createStore(true)(referenceEntityReducer);
-    store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
+    store.dispatch(catalogLocaleChanged(userContext.get('catalog_default_locale')));
     store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
-    store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
+    store.dispatch(uiLocaleChanged(userContext.get('user_default_locale')));
     store.dispatch(updateReferenceEntityResults());
     document.addEventListener('keydown', shortcutDispatcher(store));
 

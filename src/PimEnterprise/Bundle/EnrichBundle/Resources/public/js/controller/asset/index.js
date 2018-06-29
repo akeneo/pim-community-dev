@@ -42,7 +42,7 @@ define(
             setupLocale() {
                 const locale = window.location.hash.split('?dataLocale=')[1];
                 if (locale) {
-                    UserContext.set('catalogLocale', locale);
+                    UserContext.set('catalog_default_locale', locale);
                 }
             }
         });

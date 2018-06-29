@@ -47,7 +47,7 @@ define(
                     __moduleConfig.urls.product_edit,
                     {
                         id: this.getFormData().meta.original_product_id,
-                        dataLocale: UserContext.get('catalogLocale')
+                        dataLocale: UserContext.get('catalog_default_locale')
                     }
                 );
             }
