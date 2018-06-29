@@ -64,7 +64,7 @@ class IndexActionTest extends TestCase
             ],
             'total' => 2,
         ]);
-        $this->webClientHelper->assertResponse($this->client->getResponse(), '200', $expectedContent);
+        $this->webClientHelper->assertResponse($this->client->getResponse(), 200, $expectedContent);
     }
 
     protected function getConfiguration()

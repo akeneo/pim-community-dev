@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\back\Domain\Query;
 use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
 
-interface FindRecordDetails
+interface FindRecordDetailsInterface
 {
     public function __invoke(
         EnrichedEntityIdentifier $enrichedEntityEnrichedEntityIdentifier,

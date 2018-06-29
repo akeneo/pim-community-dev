@@ -51,7 +51,7 @@ class GetActionTest extends TestCase
                 'fr_FR' => 'Philippe Starck',
             ],
         ]);
-        $this->webClientHelper->assertResponse($this->client->getResponse(), '200', $expectedContent);
+        $this->webClientHelper->assertResponse($this->client->getResponse(), 200, $expectedContent);
     }
 
     /**

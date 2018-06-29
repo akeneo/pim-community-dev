@@ -10,13 +10,6 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
   }, timeout);
 
   it('It saves an enriched entity', async () => {
-    const sofa = new EnrichedEntityBuilder()
-      .withIdentifier('sofa')
-      .withLabels({
-        en_US: 'Sofa',
-        fr_FR: 'Canapé',
-      })
-      .build();
 
     page.on('request', interceptedRequest => {
       if (
@@ -24,8 +17,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
         'POST' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
-          contentType: 'application/json',
-          body: JSON.stringify(sofa),
+          status: 204
         });
       }
     });
@@ -45,9 +37,6 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
       return await saver.save(savedSofa);
     });
 
-    expect(response).toEqual({
-      identifier: {identifier: 'sofa'},
-      labelCollection: {labels: {en_US: 'Sofa', fr_FR: 'Canapé'}},
-    });
+    expect(response).toEqual(undefined);
   });
 });
