@@ -17,7 +17,7 @@ class CompletenessRepositorySpec extends ObjectBehavior
         Statement $statement,
         ClassMetadata $classMetadata
     ) {
-        $connection->prepare(Argument::any())->willReturn($statement);
+        $connection->executeQuery(Argument::any(), ['locale' => 'en_US'])->willReturn($statement);
         $manager->getClassMetadata(Argument::any())->willReturn($classMetadata);
 
         $manager->getConnection()->willReturn($connection);
@@ -29,10 +29,8 @@ class CompletenessRepositorySpec extends ObjectBehavior
         $this->shouldImplement('Pim\Component\Catalog\Repository\CompletenessRepositoryInterface');
     }
 
-    function it_counts_products_per_channels(Statement $statement)
+    function it_counts_products_per_channels($statement)
     {
-        $statement->execute()->willReturn(null);
-
         $statement->fetchAll()->willReturn(
             [
                 ['label' => 'ECommerce', 'total' => 3],
@@ -40,7 +38,7 @@ class CompletenessRepositorySpec extends ObjectBehavior
             ]
         );
 
-        $this->getProductsCountPerChannels(Argument::any())->shouldReturn(
+        $this->getProductsCountPerChannels('en_US')->shouldReturn(
             [
                 ['label' => 'ECommerce', 'total' => 3],
                 ['label' => 'Mobile', 'total' => 2]
@@ -48,10 +46,8 @@ class CompletenessRepositorySpec extends ObjectBehavior
         );
     }
 
-    function it_counts_complete_products_per_channels(Statement $statement)
+    function it_counts_complete_products_per_channels($statement)
     {
-        $statement->execute()->willReturn(null);
-
         $statement->fetchAll()->willReturn(
             [
                 ['locale' => 'en_US', 'label' => 'ECommerce', 'total' => 0],
@@ -60,7 +56,7 @@ class CompletenessRepositorySpec extends ObjectBehavior
             ]
         );
 
-        $this->getCompleteProductsCountPerChannels(Argument::any())->shouldReturn(
+        $this->getCompleteProductsCountPerChannels('en_US')->shouldReturn(
             [
                 ['locale' => 'en_US', 'label' => 'ECommerce', 'total' => 0],
                 ['locale' => 'fr_FR', 'label' => 'ECommerce', 'total' => 1],

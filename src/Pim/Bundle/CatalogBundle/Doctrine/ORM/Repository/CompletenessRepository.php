@@ -56,17 +56,13 @@ class CompletenessRepository implements CompletenessRepositoryInterface
                 JOIN %product_table% p ON p.id = cp.product_id
                 WHERE p.is_enabled = 1
             ) as p
-            JOIN pim_catalog_channel_translation t on t.foreign_key = p.channel_id
-            AND t.locale = '%locale%'
+            JOIN pim_catalog_channel_translation t on t.foreign_key = p.channel_id AND t.locale = :locale
             GROUP BY t.foreign_key, t.label
         ) as co;
 SQL;
 
         $sql = $this->applyTableNames($sql);
-        $sql = $this->applyParameters($sql, $localeCode);
-
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->execute();
+        $stmt = $this->entityManager->getConnection()->executeQuery($sql, ['locale' => $localeCode]);
 
         return $stmt->fetchAll();
     }
@@ -75,36 +71,36 @@ SQL;
      * {@inheritdoc}
      *
      * The request selects at first in an optimised subquery all the enabled product for a given channel.
-     * It eliminates duplicates in this subquery for performance concern, by using DISTINCT instead of GROUP BY, which is faster in that case.
+     * It eliminates duplicates in this subquery for performance concern, by using DISTINCT and then using GROUP BY, which is faster.
      * After that, it joins with the other tables to get the locale code, the channel label, and filter to get only the complete products.
      */
     public function getCompleteProductsCountPerChannels($localeCode)
     {
         $sql = <<<SQL
-        SELECT co.label, co.code as locale, co.total FROM (
-            SELECT t.foreign_key as channel_id, lo.id as locale_id, t.label, lo.code, COUNT(co.product_id) as total 
-            FROM 
-            (
-                SELECT DISTINCT ch.id as channel_id, p.id FROM pim_catalog_channel ch
-                JOIN %category_table% ca ON ca.root = ch.category_id
-                JOIN %category_join_table% cp ON cp.category_id = ca.id
-                JOIN %product_table% p ON p.id = cp.product_id
-                WHERE p.is_enabled = 1
-            ) as p 
-            JOIN pim_catalog_channel_translation t on t.foreign_key = p.channel_id
-            JOIN pim_catalog_channel_locale cl ON cl.channel_id = p.channel_id
-            JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
-            LEFT JOIN pim_catalog_completeness co
-            ON co.locale_id = lo.id AND co.channel_id = t.foreign_key AND co.product_id = p.id AND co.ratio = 100
-            WHERE t.locale = '%locale%'
-            GROUP BY t.foreign_key, lo.id, t.label, lo.code
-        ) as co;
+            SELECT IFNULL(t.label, ch.code),lo.code as locale, COALESCE(co.total,0)
+            FROM pim_catalog_channel ch
+            LEFT JOIN pim_catalog_channel_translation t on t.foreign_key = ch.id and t.locale = :locale
+            LEFT JOIN pim_catalog_channel_locale cl ON cl.channel_id = ch.id
+            LEFT JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
+            LEFT JOIN (
+                SELECT p.channel_id,lo.id as locale_id, COUNT(co.product_id) as total
+                FROM (
+                    SELECT DISTINCT ch.id as channel_id, cp.product_id as id
+                    FROM pim_catalog_channel ch
+                    JOIN %category_table% ca ON ca.root = ch.category_id
+                    JOIN %category_join_table% cp ON cp.category_id = ca.id
+                    JOIN %product_table% p ON p.id = cp.product_id
+                    WHERE p.is_enabled = 1
+                ) as p
+                JOIN pim_catalog_channel_locale cl ON cl.channel_id = p.channel_id
+                JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
+                JOIN pim_catalog_completeness co ON co.locale_id = lo.id AND co.channel_id = p.channel_id AND co.product_id = p.id AND co.ratio = 100
+                GROUP BY p.channel_id, lo.id
+            ) co on ch.id = co.channel_id and co.locale_id = lo.id;
 SQL;
-        $sql = $this->applyTableNames($sql);
-        $sql = $this->applyParameters($sql, $localeCode);
 
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->execute();
+        $sql = $this->applyTableNames($sql);
+        $stmt = $this->entityManager->getConnection()->executeQuery($sql, ['locale' => $localeCode]);
 
         return $stmt->fetchAll();
     }
@@ -132,18 +128,5 @@ SQL;
                 '%product_table%'       => $this->entityManager->getClassMetadata($this->productClass)->getTableName(),
             ]
         );
-    }
-
-    /**
-     * Replace parameters placeholders by their real values
-     *
-     * @param string $sql
-     * @param string $localeCode
-     *
-     * @return string
-     */
-    protected function applyParameters($sql, $localeCode)
-    {
-        return strtr($sql, ['%locale%' => $localeCode]);
     }
 }
