@@ -99,7 +99,7 @@ define(
                                     options: {
                                         limit: 20,
                                         page: page,
-                                        catalogLocale: UserContext.get('catalogLocale')
+                                        catalogLocale: UserContext.get('catalog_default_locale')
                                     }
                                 };
                             }.bind(this),
@@ -125,8 +125,8 @@ define(
                             var identifiers = AttributeManager.getValue(
                                 this.model.attributes.values,
                                 this.attribute,
-                                UserContext.get('catalogLocale'),
-                                UserContext.get('catalogScope')
+                                UserContext.get('catalog_default_locale'),
+                                UserContext.get('catalog_default_scope')
                             ).data;
 
                             if (
@@ -207,7 +207,7 @@ define(
             convertBackendItem: function (item) {
                 return {
                     id: item.code,
-                    text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code)
+                    text: i18n.getLabel(item.labels, UserContext.get('catalog_default_locale'), item.code)
                 };
             }
         });

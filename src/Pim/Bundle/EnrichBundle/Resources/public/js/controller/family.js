@@ -29,7 +29,7 @@ define(
                         var label = _.escape(
                             i18n.getLabel(
                                 family.labels,
-                                UserContext.get('catalogLocale'),
+                                UserContext.get('catalog_default_locale'),
                                 family.code
                             )
                         );

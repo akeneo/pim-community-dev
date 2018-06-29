@@ -177,7 +177,7 @@ define([
                 FetcherRegistry.getFetcher('attribute').fetch(this.getCode())
             ).then(function (templateContext, attribute) {
                 return _.extend({}, templateContext, {
-                    label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
+                    label: i18n.getLabel(attribute.labels, UserContext.get('user_default_locale'), attribute.code),
                     attribute: attribute
                 });
             }.bind(this));

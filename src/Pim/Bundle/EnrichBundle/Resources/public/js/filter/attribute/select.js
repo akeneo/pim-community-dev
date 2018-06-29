@@ -103,7 +103,7 @@ define([
                         }
 
                         return {
-                            label: i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code),
+                            label: i18n.getLabel(attribute.labels, UserContext.get('user_default_locale'), attribute.code),
                             select2Options: this.getSelect2Options(attribute),
                             removable: this.isRemovable(),
                             editable: this.isEditable()
@@ -149,7 +149,7 @@ define([
                         return {
                             search: term,
                             options: {
-                                locale: UserContext.get('uiLocale')
+                                locale: UserContext.get('user_default_locale')
                             }
                         };
                     },
@@ -200,7 +200,7 @@ define([
                 this.config.url,
                 {
                     class: this.config.entityClass,
-                    dataLocale: UserContext.get('uiLocale'),
+                    dataLocale: UserContext.get('user_default_locale'),
                     collectionId: attribute.meta.id,
                     options: {type: 'code'},
                     referenceDataName: attribute.reference_data_name

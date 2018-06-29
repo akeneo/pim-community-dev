@@ -41,8 +41,8 @@ define(
             render: function () {
                 const variantProductCompleteness = this.getFormData().meta.variant_product_completenesses;
                 const completenesses = variantProductCompleteness.completenesses;
-                const channel = UserContext.get('catalogScope');
-                const locale = UserContext.get('catalogLocale');
+                const channel = UserContext.get('catalog_default_scope');
+                const locale = UserContext.get('catalog_default_locale');
 
                 const totalProducts = variantProductCompleteness.total;
                 let completeProducts = 0;

@@ -40,10 +40,10 @@ define(
             triggerModelUpdate: function () {
                 var values = _.mapObject(this.getFormData().values, function (attributeValues) {
                     return _.map(attributeValues, function (value) {
-                        if (null !== value.locale && UserContext.get('catalogLocale') !== value.locale) {
+                        if (null !== value.locale && UserContext.get('catalog_default_locale') !== value.locale) {
                             value.data = null;
                         }
-                        if (null !== value.scope && UserContext.get('catalogScope') !== value.scope) {
+                        if (null !== value.scope && UserContext.get('catalog_default_scope') !== value.scope) {
                             value.data = null;
                         }
 

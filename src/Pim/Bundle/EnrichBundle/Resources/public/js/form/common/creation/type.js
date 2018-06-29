@@ -73,7 +73,7 @@ define([
          * @return {Object}
          */
         parseResults(types) {
-            const locale = UserContext.get('catalogLocale');
+            const locale = UserContext.get('catalog_default_locale');
 
             const data = { results: [] };
 
@@ -99,7 +99,7 @@ define([
             if (!this.configured) return this;
 
             const formData = this.getFormData();
-            const locale = UserContext.get('catalogLocale');
+            const locale = UserContext.get('catalog_default_locale');
 
             this.$el.html(this.template({
                 label: __('pim_common.type'),

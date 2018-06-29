@@ -19,7 +19,7 @@
                                     FetcherRegistry.initialize().done(function () {
                                         FetcherRegistry.getFetcher('association-type').fetch('{{ code }}', {cached: false, generateMissing: true})
                                             .then(function (associationType) {
-                                                var label    = _.escape(associationType.labels[UserContext.get('catalogLocale')]);
+                                                var label    = _.escape(associationType.labels[UserContext.get('catalog_default_locale')]);
                                                 var newTitle = document.title.replace('%association type.label%', label);
 
                                                 document.title  = newTitle;

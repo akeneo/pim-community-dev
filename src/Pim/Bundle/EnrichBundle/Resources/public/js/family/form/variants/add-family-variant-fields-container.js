@@ -71,7 +71,7 @@ define(
              * {@inheritdoc}
              */
             render() {
-                const catalogLocale = UserContext.get('catalogLocale');
+                const catalogLocale = UserContext.get('catalog_default_locale');
                 const familyVariant = _.defaults(this.getFormData(), this.getNewFamilyVariant());
                 const label = this.getEntityLabel(familyVariant, catalogLocale);
                 const axes1 = familyVariant.variant_attribute_sets[0].axes.join(',');
@@ -143,7 +143,7 @@ define(
                         .getFetcher('family')
                         .fetchAvailableAxes(familyCode)
                         .then((attributes) => {
-                            const catalogLocale = UserContext.get('catalogLocale');
+                            const catalogLocale = UserContext.get('catalog_default_locale');
                             const attributeResults = this.searchOnResults(options.term, attributes);
                             const entities = _.map(attributeResults, (attribute) => {
                                 const label = this.getEntityLabel(attribute, catalogLocale);
@@ -172,7 +172,7 @@ define(
              * @returns {array}
              */
             searchOnResults(term, attributes) {
-                const catalogLocale = UserContext.get('catalogLocale');
+                const catalogLocale = UserContext.get('catalog_default_locale');
                 term = term.toLowerCase();
 
                 return attributes.filter((entity) => {
@@ -191,7 +191,7 @@ define(
              */
             initSelection : function (element, callback) {
                 const attributeCodes = element.val().split(',');
-                const catalogLocale = UserContext.get('catalogLocale');
+                const catalogLocale = UserContext.get('catalog_default_locale');
 
                 const fetchAttributesPromises = _.map(attributeCodes, (attributeCode) => {
                     return FetcherRegistry.getFetcher('attribute').fetch(attributeCode).promise();
@@ -216,7 +216,7 @@ define(
              * Update the family variant model
              */
             updateModel() {
-                const catalogLocale = UserContext.get('catalogLocale');
+                const catalogLocale = UserContext.get('catalog_default_locale');
                 const axisLevelOne = _.compact(this.$('input[name="axes1"]').val().split(','));
                 const numberOfLevels = parseInt(this.$('select[name="numberOfLevels"]').val());
 
@@ -243,7 +243,7 @@ define(
              * @returns {Object}
              */
             getNewFamilyVariant() {
-                const catalogLocale = UserContext.get('catalogLocale');
+                const catalogLocale = UserContext.get('catalog_default_locale');
 
                 return {
                     code: '',

@@ -99,7 +99,7 @@ define(
              * @returns {Array}
              */
             prepareGroupsForTemplate: function (groups) {
-                var locale = UserContext.get('catalogLocale');
+                var locale = UserContext.get('catalog_default_locale');
 
                 return _.map(groups, function (group) {
                     return {
@@ -146,13 +146,13 @@ define(
                             cancelText: __('pim_common.cancel'),
                             title: __(
                                 'pim_enrich.entity.product.module.show_group.title',
-                                { group: i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code) }
+                                { group: i18n.getLabel(group.labels, UserContext.get('catalog_default_locale'), group.code) }
                             ),
                             content: this.modalTemplate({
                                 products:     productList.products,
                                 productCount: productList.productCount,
                                 identifier:   identifierAttribute,
-                                locale:       UserContext.get('catalogLocale')
+                                locale:       UserContext.get('catalog_default_locale')
                             })
                         });
 

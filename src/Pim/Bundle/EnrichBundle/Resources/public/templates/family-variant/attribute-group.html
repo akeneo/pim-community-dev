@@ -4,7 +4,7 @@
             data-attribute-code="<%- attribute.code %>"
             class="AknVerticalList-item AknFamilyVariant-columnListItem AknFamilyVariant-attribute attribute <%- !lockedAttributes.includes(attribute.code) && movable ? 'AknFamilyVariant-attribute--movable movable' : 'AknFamilyVariant-attribute--notMovable' %> <%- !lockedAttributes.includes(attribute.code) ? 'deletable' : '' %>"
         >
-            <%- i18n.getLabel(attribute.labels, UserContext.get('catalogLocale'), attribute.code) %>
+            <%- i18n.getLabel(attribute.labels, UserContext.get('catalog_default_locale'), attribute.code) %>
 
             <% if (axesAttributes.includes(attribute.code)) { %>
             (<%- __('pim_enrich.entity.family_variant.module.edit.variant_axis_label') %>)

@@ -8,13 +8,13 @@
 </div>
 <div class="AknColumnConfigurator">
     <div class="AknColumnConfigurator-column attribute-groups">
-        <header class="AknColumnConfigurator-columnHeader"><%- __('pim_enrich.export.product.filter.attributes_selector.attribute_group') %></header>
+        <header class="AknColumnConfigurator-columnHeader"><%- __('pim_enrich.entity.attribute_group.plural_label') %></header>
         <div data-scroll-container="attribute-groups" class="AknColumnConfigurator-listContainer">
             <ul class="AknVerticalList">
                 <li class="AknVerticalList-item AknVerticalList-item--selectable <%- null === currentGroup ? 'selected active' : '' %>" data-attribute-group-code=""><%- __('pim_enrich.export.product.filter.attributes_selector.all_group') %></li>
                 <% _.each(attributeGroups, function (attributeGroup) { %>
                     <li class="AknVerticalList-item AknVerticalList-item--selectable <%- currentGroup === attributeGroup.code ? 'selected active' : '' %>" data-attribute-group-code="<%- attributeGroup.code %>">
-                        <%- i18n.getLabel(attributeGroup.labels, userContext.get('uiLocale'), attributeGroup.code) %>
+                        <%- i18n.getLabel(attributeGroup.labels, userContext.get('user_default_locale'), attributeGroup.code) %>
                     </li>
                 <% }); %>
             </ul>
@@ -39,7 +39,7 @@
                 --><% _.each(selectedAttributes, function (attribute) { %>
                     <li class="AknVerticalList-item AknVerticalList-item--movable <%- currentGroup === attribute.code ? 'selected' : '' %>" data-attribute-code="<%- attribute.code %>">
                         <div>
-                            <span class="attribute-label"><%- i18n.getLabel(attribute.labels, userContext.get('uiLocale'), attribute.code) %></span>
+                            <span class="attribute-label"><%- i18n.getLabel(attribute.labels, userContext.get('user_default_locale'), attribute.code) %></span>
                         </div>
                         <span class="AknIconButton AknIconButton--grey AknIconButton--small remove"><i class="icon-trash"></i></span>
                     </li>

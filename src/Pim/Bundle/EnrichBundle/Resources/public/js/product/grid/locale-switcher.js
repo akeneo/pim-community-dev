@@ -62,7 +62,7 @@ define(
              * {@inheritdoc}
              */
             render() {
-                const currentLocaleCode = UserContext.get('catalogLocale');
+                const currentLocaleCode = UserContext.get('catalog_default_locale');
                 let currentLocale = _.find(this.locales, { code: currentLocaleCode });
                 if (undefined === currentLocale) {
                     currentLocale = _.first(this.locales);

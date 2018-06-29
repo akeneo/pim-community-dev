@@ -57,8 +57,8 @@ define(
              * @returns {Promise}
              */
             configure: function () {
-                this.locale = UserContext.get('catalogLocale');
-                this.scope  = UserContext.get('catalogScope');
+                this.locale = UserContext.get('catalog_default_locale');
+                this.scope  = UserContext.get('catalog_default_scope');
                 this.getScopeLabel(this.scope).then(function (scopeLabel) {
                     this.scopeLabel = scopeLabel;
                 }.bind(this));
@@ -175,8 +175,8 @@ define(
                         var oldValue = AttributeManager.getValue(
                             formValues[copyField.field.attribute.code],
                             copyField.field.attribute,
-                            UserContext.get('catalogLocale'),
-                            UserContext.get('catalogScope')
+                            UserContext.get('catalog_default_locale'),
+                            UserContext.get('catalog_default_scope')
                         );
 
                         if (undefined === oldValue) {

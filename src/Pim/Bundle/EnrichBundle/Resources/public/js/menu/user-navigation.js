@@ -51,8 +51,8 @@ define(
              */
             render: function () {
                 this.$el.html(this.template({
-                    firstName: UserContext.get('firstName'),
-                    lastName: UserContext.get('lastName'),
+                    firstName: UserContext.get('first_name'),
+                    lastName: UserContext.get('last_name'),
                     avatar: UserContext.get('avatar'),
                     logoutLabel: __(this.config.logout),
                     userAccountLabel: __(this.config.userAccount)

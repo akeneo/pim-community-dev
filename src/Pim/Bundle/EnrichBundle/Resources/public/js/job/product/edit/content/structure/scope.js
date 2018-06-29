@@ -90,7 +90,7 @@ define(
              * @return {Array}
              */
             setChannelLabels: function (channels) {
-                var locale = UserContext.get('uiLocale');
+                var locale = UserContext.get('user_default_locale');
 
                 return _.map(channels, function (channel) {
                     channel.label = i18n.getLabel(channel.labels, locale, channel.code);

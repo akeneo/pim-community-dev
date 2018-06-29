@@ -26,7 +26,7 @@
                                     <i class="icon-reorder"></i>
                                 </span>
                             </td>
-                            <td class="AknGrid-bodyCell"><%- i18n.getLabel(attribute.labels, UserContext.get('catalogLocale'), attribute.code) %></td>
+                            <td class="AknGrid-bodyCell"><%- i18n.getLabel(attribute.labels, UserContext.get('user_default_locale'), attribute.code) %></td>
                             <td class="AknGrid-bodyCell"><%- __('pim_enrich.entity.attribute.property.type.' + attribute.type) %></td>
                             <td class="AknGrid-bodyCell">
                                 <input type="checkbox" disabled="disabled"<%- attribute.scopable ? ' checked="checked"' : '' %>>

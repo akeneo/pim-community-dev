@@ -82,7 +82,7 @@ define(
                             associationType: associationTypes.find(
                                 associationType => associationType.code === this.getCurrentAssociationTypeCode()
                             ),
-                            locale: UserContext.get('uiLocale'),
+                            locale: UserContext.get('user_default_locale'),
                             i18n,
                             label: __('pim_enrich.entity.product.module.associations.association_type_selector'),
                             addAssociationsLabel: __('pim_enrich.entity.product.module.associations.add_associations')
@@ -136,7 +136,7 @@ define(
              * {@inheritdoc}
              */
             labelMethod: function (item) {
-                return item.meta.label[UserContext.get('catalogLocale')];
+                return item.meta.label[UserContext.get('catalog_default_locale')];
             },
 
             /**
@@ -246,7 +246,7 @@ define(
                         .fetch(this.getCurrentAssociationTypeCode())
                         .then((associationType) => {
                             form.setCustomTitle(__('pim_enrich.entity.product.module.associations.manage', {
-                                associationType: associationType.labels[UserContext.get('catalogLocale')]
+                                associationType: associationType.labels[UserContext.get('catalog_default_locale')]
                             }));
 
                             let modal = new Backbone.BootstrapModal({

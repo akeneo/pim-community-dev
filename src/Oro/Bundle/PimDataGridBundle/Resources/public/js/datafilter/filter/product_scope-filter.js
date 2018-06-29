@@ -48,7 +48,7 @@ define(
 
             initialize: function() {
                 SelectFilter.prototype.initialize.apply(this, arguments);
-                this.catalogScope = UserContext.get('catalogScope');
+                this.catalogScope = UserContext.get('catalog_default_scope');
 
                 mediator.once('datagrid_filters:rendered', this.resetValue.bind(this));
                 mediator.once('datagrid_filters:rendered', this.moveFilter.bind(this));
@@ -87,7 +87,7 @@ define(
                     this.setValue({value: scope});
                 }
 
-                UserContext.set('catalogScope', scope);
+                UserContext.set('catalog_default_scope', scope);
 
                 this.selectWidget.multiselect('refresh');
 
@@ -125,7 +125,7 @@ define(
                     return;
                 }
 
-                UserContext.set('catalogScope', newValue.value);
+                UserContext.set('catalog_default_scope', newValue.value);
                 this.catalogScope = newValue.value;
 
                 return SelectFilter.prototype._onValueUpdated.apply(this, arguments);

@@ -3,6 +3,7 @@
 namespace Akeneo\UserManagement\Component\Normalizer;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -14,16 +15,26 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class UserNormalizer implements NormalizerInterface
 {
+    /** @var DateTimeNormalizer */
+    private $dateTimeNormalizer;
+
     /** @var array */
     protected $supportedFormats = ['array', 'standard', 'internal_api'];
+
+    public function __construct(DateTimeNormalizer $dateTimeNormalizer)
+    {
+        $this->dateTimeNormalizer = $dateTimeNormalizer;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function normalize($user, $format = null, array $context = [])
     {
+        /** @var UserInterface $user */
         return [
             'code'                   => $user->getUsername(), # Every Form Extension requires 'code' field.
+            'enabled'                => $user->isEnabled(),
             'username'               => $user->getUsername(),
             'email'                  => $user->getEmail(),
             'name_prefix'            => $user->getNamePrefix(),
@@ -32,7 +43,7 @@ class UserNormalizer implements NormalizerInterface
             'last_name'              => $user->getLastName(),
             'name_suffix'            => $user->getNameSuffix(),
             'phone'                  => $user->getPhone(),
-            'birthday'               => $user->getBirthday() ? $user->getBirthday()->getTimestamp() : null,
+            'birthday'               => $user->getBirthday() ? $user->getBirthday()->format('Y-m-d') : null,
             'image'                  => $user->getImagePath(),
             'last_login'             => $user->getLastLogin() ? $user->getLastLogin()->getTimestamp() : null,
             'login_count'            => $user->getLoginCount(),

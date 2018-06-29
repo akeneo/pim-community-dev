@@ -108,7 +108,7 @@ define(
                     this.$el.html(
                         this.template({
                             product: this.getFormData(),
-                            locale: UserContext.get('catalogLocale'),
+                            locale: UserContext.get('catalog_default_locale'),
                             state: this.state.toJSON(),
                             trees: this.trees
                         })

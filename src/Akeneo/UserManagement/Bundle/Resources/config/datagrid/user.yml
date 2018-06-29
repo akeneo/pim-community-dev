@@ -40,7 +40,7 @@ datagrid:
                 type: url
                 route: pim_user_edit
                 params:
-                    - username
+                    code: username
             view_link:
                 type: url
                 route: pim_user_view

@@ -79,7 +79,7 @@ define(
                 }
 
                 const { gridName } = this.config;
-                const dataLocale = UserContext.get('catalogLocale');
+                const dataLocale = UserContext.get('catalog_default_locale');
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
                 if (state.columns) {
@@ -145,7 +145,7 @@ define(
              * @return {Object} urlParams
              */
             getInitialParams() {
-                const dataLocale = UserContext.get('catalogLocale');
+                const dataLocale = UserContext.get('catalog_default_locale');
                 const alias = this.config.gridName;
                 const urlParams = { dataLocale, alias };
                 urlParams.params = { dataLocale };

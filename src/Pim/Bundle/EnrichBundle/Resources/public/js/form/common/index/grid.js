@@ -34,7 +34,7 @@ define(
              */
             configure: function () {
                 var metaData = this.config.metadata || {};
-                metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalogLocale');
+                metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalog_default_locale');
 
                 this.grid = new Grid(this.config.alias, metaData);
 

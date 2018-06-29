@@ -54,7 +54,7 @@ define(
                     var fieldLabels = _.map(notReadyFields, function (field) {
                         return i18n.getLabel(
                             field.attribute.label,
-                            UserContext.get('catalogLocale'),
+                            UserContext.get('catalog_default_locale'),
                             field.attribute.code
                         );
                     });

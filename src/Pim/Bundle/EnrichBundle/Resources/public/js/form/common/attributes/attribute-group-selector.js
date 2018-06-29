@@ -104,8 +104,8 @@ define(
                 $.when(
                     AttributeGroupManager.getAttributeGroupsForObject(this.getFormData())
                 ).then(function (attributeGroups) {
-                    const scope = UserContext.get('catalogScope');
-                    const locale = UserContext.get('catalogLocale');
+                    const scope = UserContext.get('catalog_default_scope');
+                    const locale = UserContext.get('catalog_default_locale');
                     const attributes = toFillFieldProvider.getMissingRequiredFields(this.getFormData(), scope, locale);
 
                     const toFillAttributeGroups = _.uniq(_.map(attributes, function (attribute) {
@@ -123,7 +123,7 @@ define(
                                 return [attributeGroup.sort_order, attributeGroup.code].join('_');
                             }),
                             badges: this.badges,
-                            locale: UserContext.get('catalogLocale'),
+                            locale: UserContext.get('catalog_default_locale'),
                             toFillAttributeGroups: toFillAttributeGroups,
                             allAttributeCode: this.all.code,
                             currentElement: _.findWhere(this.getElements(), {code: this.getCurrent()}),

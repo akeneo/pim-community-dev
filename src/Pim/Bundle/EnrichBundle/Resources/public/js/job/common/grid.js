@@ -35,7 +35,7 @@ define(
              */
             render: function () {
                 var metaData = this.config.metadata || {};
-                metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalogLocale');
+                metaData[this.config.localeKey || 'localeCode'] = UserContext.get('catalog_default_locale');
                 metaData.jobCode = this.getFormData().code;
 
                 this.grid = new Grid(this.config.alias, metaData);

@@ -42,7 +42,7 @@ define(
         }
 
         const getObjectViewParams = (object) => {
-            const label = object.meta.label[UserContext.get('catalogLocale')];
+            const label = object.meta.label[UserContext.get('catalog_default_locale')];
 
             return {
                 id:         object.meta.id,

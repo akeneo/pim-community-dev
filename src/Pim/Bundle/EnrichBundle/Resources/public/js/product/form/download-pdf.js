@@ -52,8 +52,8 @@ define(
                     'pim_pdf_generator_download_product_pdf',
                     {
                         id:         this.getFormData().meta.id,
-                        dataLocale: UserContext.get('catalogLocale'),
-                        dataScope:  UserContext.get('catalogScope')
+                        dataLocale: UserContext.get('catalog_default_locale'),
+                        dataScope:  UserContext.get('catalog_default_scope')
                     }
                 ));
 

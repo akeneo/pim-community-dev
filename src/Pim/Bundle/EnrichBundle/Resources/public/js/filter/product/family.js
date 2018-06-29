@@ -38,7 +38,7 @@ define([
                             options: {
                                 limit: 20,
                                 page: page,
-                                locale: userContext.get('uiLocale')
+                                locale: userContext.get('user_default_locale')
                             }
                         };
                     },
@@ -50,7 +50,7 @@ define([
                         _.each(families, function (value, key) {
                             data.results.push({
                                 id: key,
-                                text: i18n.getLabel(value.labels, userContext.get('uiLocale'), value.code)
+                                text: i18n.getLabel(value.labels, userContext.get('user_default_locale'), value.code)
                             });
                         });
 
@@ -66,7 +66,7 @@ define([
                                 callback(_.map(families, function (family) {
                                     return {
                                         id: family.code,
-                                        text: i18n.getLabel(family.labels, userContext.get('uiLocale'), family.code)
+                                        text: i18n.getLabel(family.labels, userContext.get('user_default_locale'), family.code)
                                     };
                                 }));
                             });

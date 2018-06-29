@@ -204,7 +204,7 @@ define(
              * @return {string}
              */
             getAttributeLabel: function (attribute, key) {
-                var uiLocale = UserContext.get('catalogLocale');
+                var uiLocale = UserContext.get('catalog_default_locale');
                 var label    = i18n.getLabel(attribute.labels, uiLocale, attribute.code);
 
                 key = key.split('-');

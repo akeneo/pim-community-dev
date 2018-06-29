@@ -62,7 +62,7 @@ define([
                         return [attributeGroup.sort_order, attributeGroup.code].join('_');
                     }),
                     i18n: i18n,
-                    uiLocale: UserContext.get('catalogLocale')
+                    uiLocale: UserContext.get('catalog_default_locale')
                 }));
 
                 this.$('tbody').sortable({

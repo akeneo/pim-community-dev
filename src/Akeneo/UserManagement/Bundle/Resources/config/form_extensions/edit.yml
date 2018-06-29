@@ -80,13 +80,13 @@ extensions:
                 sectionTitle: ''
                 dropZone: content
 
-    pim-user-edit-form-status:
-        module: pim/form/common/fields/text
+    pim-user-edit-form-enabled:
+        module: pim/form/common/fields/boolean
         parent: pim-user-edit-form-general-tab-content
         position: 10
         targetZone: content
         config:
-           fieldName: status
+           fieldName: enabled
            label: 'Status - to translate'
            required: true
 
@@ -162,8 +162,9 @@ extensions:
         position: 90
         targetZone: content
         config:
-           fieldName: birthday
-           label: 'Birthday - to translate'
+            fieldName: birthday
+            label: 'Birthday - to translate'
+            #sourceFormat: ''
 
     pim-user-edit-form-avatar:
         module: pim/form/common/fields/text

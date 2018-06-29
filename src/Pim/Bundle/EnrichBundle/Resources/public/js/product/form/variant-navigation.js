@@ -71,7 +71,7 @@ define(
              */
             render: function () {
                 const entity = this.getFormData();
-                const catalogLocale = UserContext.get('catalogLocale');
+                const catalogLocale = UserContext.get('catalog_default_locale');
 
                 if ('product' === entity.meta.model_type && null === entity.parent) {
                     this.$el.html('');
@@ -109,7 +109,7 @@ define(
                          * This way we can display entities and their info beside them (completeness, image..).
                          */
                         formatResult: (item, $container) => {
-                            const catalogLocale = UserContext.get('catalogLocale');
+                            const catalogLocale = UserContext.get('catalog_default_locale');
                             const filePath = (null !== item.image) ? item.image.filePath : null;
                             const entity = {
                                 label: item.axes_values_labels[catalogLocale],
@@ -311,8 +311,8 @@ define(
              * @returns {string}
              */
             parseCompleteness: function (entity) {
-                const catalogLocale = UserContext.get('catalogLocale');
-                const catalogScope = UserContext.get('catalogScope');
+                const catalogLocale = UserContext.get('catalog_default_locale');
+                const catalogScope = UserContext.get('catalog_default_scope');
 
                 if ('product' === entity.model_type) {
                     const channelCompletenesses = _.findWhere(entity.completeness, {channel: catalogScope});
@@ -367,7 +367,7 @@ define(
              * @returns {array}
              */
             searchOnResults: function (term, entities) {
-                const catalogLocale = UserContext.get('catalogLocale');
+                const catalogLocale = UserContext.get('catalog_default_locale');
                 term = term.toLowerCase();
 
                 return entities.filter((entity) => {

@@ -67,7 +67,7 @@ define(
                 let modelId = entity.meta.variant_navigation[0].selected.id;
 
                 if (isProduct) {
-                    const uiLocale = UserContext.get('uiLocale');
+                    const uiLocale = UserContext.get('user_default_locale');
                     const comesFromParent = entity.meta.parent_attributes.includes(field.attribute.code);
                     const hasTwoLevelsOfVariation = (3 === entity.meta.variant_navigation.length);
 

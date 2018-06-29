@@ -56,7 +56,7 @@ define(
 
                 const label = i18n.getLabel(
                     familyVariant.labels,
-                    UserContext.get('catalogLocale'),
+                    UserContext.get('catalog_default_locale'),
                     entity.family_variant
                 );
 

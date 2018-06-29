@@ -67,7 +67,7 @@ define(['underscore', 'pim/user-context', 'pim/i18n'], function (_, UserContext,
         formatOne: function (entity) {
             return {
                 id: entity.code,
-                text: i18n.getLabel(entity.labels, UserContext.get('catalogLocale'), entity.code)
+                text: i18n.getLabel(entity.labels, UserContext.get('catalog_default_locale'), entity.code)
             };
         }
     };

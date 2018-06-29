@@ -80,7 +80,7 @@ define(
                 var notReadyFields = FieldManager.getNotReadyFields();
 
                 if (0 < notReadyFields.length) {
-                    var catalogLocale = UserContext.get('catalogLocale');
+                    var catalogLocale = UserContext.get('catalog_default_locale');
                     var fieldLabels = this.getFieldLabels(notReadyFields, catalogLocale);
 
                     return this.showFlashMessage(this.notReadyMessage, fieldLabels);

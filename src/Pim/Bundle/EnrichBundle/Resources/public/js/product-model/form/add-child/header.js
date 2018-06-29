@@ -48,7 +48,7 @@ define(
                             .then((familyVariant) => {
                                 this.getAxesAttributes(familyVariant, parent.meta.level + 1)
                                     .then((axesAttributes) => {
-                                        const catalogLocale = UserContext.get('catalogLocale');
+                                        const catalogLocale = UserContext.get('catalog_default_locale');
                                         const axesLabels = axesAttributes.map((attribute) => {
                                             return i18n.getLabel(attribute.labels, catalogLocale, attribute.code);
                                         });

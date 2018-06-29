@@ -75,9 +75,9 @@ define(
 
                 $.when(
                     FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes),
-                    FetcherRegistry.getFetcher('locale').fetch(UserContext.get('catalogLocale')),
+                    FetcherRegistry.getFetcher('locale').fetch(UserContext.get('catalog_default_locale')),
                     FetcherRegistry.getFetcher('channel')
-                        .fetch(UserContext.get('catalogScope'), {force_list_method: true}),
+                        .fetch(UserContext.get('catalog_default_scope'), {force_list_method: true}),
                     FetcherRegistry.getFetcher('currency').fetchAll()
                 ).then(function (attributes, locale, channel, currencies) {
                     var formData = this.getFormData();

@@ -151,7 +151,7 @@ define(
                                     tree: category,
                                     label: i18n.getLabel(
                                         category.labels,
-                                        UserContext.get('uiLocale'),
+                                        UserContext.get('user_default_locale'),
                                         category.code
                                     )
                                 }));

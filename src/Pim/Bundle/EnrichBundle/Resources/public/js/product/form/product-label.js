@@ -19,7 +19,7 @@ define(
                 var meta = this.getFormData().meta;
 
                 if (meta && meta.label) {
-                    return meta.label[UserContext.get('catalogLocale')];
+                    return meta.label[UserContext.get('catalog_default_locale')];
                 }
 
                 return null;

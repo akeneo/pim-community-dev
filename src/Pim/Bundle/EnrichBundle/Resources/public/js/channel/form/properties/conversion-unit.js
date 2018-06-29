@@ -31,7 +31,7 @@ define([
         return BaseForm.extend({
             className: 'tabsection',
             template: _.template(template),
-            catalogLocale: UserContext.get('catalogLocale'),
+            catalogLocale: UserContext.get('catalog_default_locale'),
             config: null,
 
             /**

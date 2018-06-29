@@ -93,7 +93,7 @@ define(
                                 options: {
                                     limit: self.resultsPerPage,
                                     page: page,
-                                    locale: UserContext.get('catalogLocale')
+                                    locale: UserContext.get('catalog_default_locale')
                                 }
                             },
                             dataType: 'json',

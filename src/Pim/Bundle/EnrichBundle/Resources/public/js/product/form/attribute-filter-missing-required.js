@@ -52,8 +52,8 @@ define(
              * @returns {Promise}
              */
             filterValues(values) {
-                const scope = UserContext.get('catalogScope');
-                const locale = UserContext.get('catalogLocale');
+                const scope = UserContext.get('catalog_default_scope');
+                const locale = UserContext.get('catalog_default_locale');
 
                 const fieldsToFill = toFillFieldProvider.getMissingRequiredFields(this.getFormData(), scope, locale);
                 const valuesToFill = _.pick(values, fieldsToFill);

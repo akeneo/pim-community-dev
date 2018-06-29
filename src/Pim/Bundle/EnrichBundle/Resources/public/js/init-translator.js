@@ -11,7 +11,7 @@ define([
     ) {
         return {
             fetch: function () {
-                return $.getJSON('js/translation/' + UserContext.get('uiLocale') + '.js')
+                return $.getJSON('js/translation/' + UserContext.get('user_default_locale') + '.js')
                     .then(function (messages) {
                         Translator.fromJSON(messages);
                     });

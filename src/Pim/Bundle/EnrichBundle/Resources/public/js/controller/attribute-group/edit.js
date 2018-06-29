@@ -32,7 +32,7 @@ define(
 
                         PageTitle.set({
                             'group.label':
-                            _.escape(attributeGroup.labels[UserContext.get('catalogLocale')])
+                            _.escape(attributeGroup.labels[UserContext.get('catalog_default_locale')])
                         });
 
                         return FormBuilder.build('pim-attribute-group-edit-form')

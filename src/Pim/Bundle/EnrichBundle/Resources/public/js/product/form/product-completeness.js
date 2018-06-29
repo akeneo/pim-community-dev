@@ -71,8 +71,8 @@ define(
              */
             renderCompleteness: function (event) {
                 const options = Object.assign({}, {
-                    locale: UserContext.get('catalogLocale'),
-                    scope: UserContext.get('catalogScope')
+                    locale: UserContext.get('catalog_default_locale'),
+                    scope: UserContext.get('catalog_default_scope')
                 }, event);
 
                 this.$el.empty();
@@ -192,7 +192,7 @@ define(
                     {
                         attribute: event.currentTarget.dataset.attribute,
                         locale: event.currentTarget.dataset.locale,
-                        scope: UserContext.get('catalogScope')
+                        scope: UserContext.get('catalog_default_scope')
                     }
                 );
                 this.renderCompleteness();

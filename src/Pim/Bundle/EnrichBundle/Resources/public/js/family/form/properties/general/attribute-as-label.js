@@ -34,7 +34,7 @@ define([
             className: 'AknFieldContainer',
             template: _.template(template),
             errors: [],
-            catalogLocale: UserContext.get('catalogLocale'),
+            catalogLocale: UserContext.get('catalog_default_locale'),
 
             /**
              * {@inheritdoc}

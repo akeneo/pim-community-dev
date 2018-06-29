@@ -53,7 +53,7 @@ define(
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
                     if ('base_product' === localeEvent.context) {
-                        UserContext.set('catalogLocale', localeEvent.localeCode);
+                        UserContext.set('catalog_default_locale', localeEvent.localeCode);
                         this.render();
                     }
                 }.bind(this));
@@ -81,10 +81,10 @@ define(
                                 channels: channels,
                                 currentScope: i18n.getLabel(
                                     scope.labels,
-                                    UserContext.get('catalogLocale'),
+                                    UserContext.get('catalog_default_locale'),
                                     scope.code
                                 ),
-                                catalogLocale: UserContext.get('catalogLocale'),
+                                catalogLocale: UserContext.get('catalog_default_locale'),
                                 i18n: i18n,
                                 displayInline: this.displayInline,
                                 displayLabel: this.displayLabel,

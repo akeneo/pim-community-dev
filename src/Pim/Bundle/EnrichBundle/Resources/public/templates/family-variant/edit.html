@@ -7,7 +7,7 @@
             <%- __('Code') %>: <%- familyVariant.code %>
         </div>
         <div class="AknFamilyVariant-title AknTitleContainer-title">
-            <%- i18n.getLabel(familyVariant.labels, userContext.get('uiLocale'), familyVariant.code) %>
+            <%- i18n.getLabel(familyVariant.labels, userContext.get('user_default_locale'), familyVariant.code) %>
         </div>
     </div>
     <div class="AknFamilyVariant-rightHeader">

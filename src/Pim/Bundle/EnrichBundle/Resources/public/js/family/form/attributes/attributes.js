@@ -45,7 +45,7 @@ define([
             identifierAttributeType: 'pim_catalog_identifier',
             template: _.template(template),
             errors: [],
-            catalogLocale: UserContext.get('catalogLocale'),
+            catalogLocale: UserContext.get('catalog_default_locale'),
             channels: null,
             events: {
                 'click .group': 'toggleGroup',

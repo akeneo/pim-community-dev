@@ -101,11 +101,11 @@ define(
              */
             changeContext: function (locale, scope) {
                 if (locale) {
-                    UserContext.set('catalogLocale', locale);
+                    UserContext.set('catalog_default_locale', locale);
                 }
 
                 if (scope) {
-                    UserContext.set('catalogScope', scope);
+                    UserContext.set('catalog_default_scope', scope);
                 }
             }
         });
