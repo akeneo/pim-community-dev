@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\Project;
 
-use PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter;
+use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\TeamworkAssistantTestCase;
 
 class FilterByProjectProgressIntegration extends TeamworkAssistantTestCase
