@@ -621,7 +621,7 @@ pim_title.product:
   edit: "产品%product.sku%|编辑"
 pim_title.family:
   index: "品类"
-  edit: "产品族%family.label%|编辑"
+  edit: "产品族%code%|编辑"
 pim_title.channel:
   index: "渠道"
   create: "通道|创建"
@@ -738,7 +738,7 @@ pim_menu:
   tab:
     collect: 收集
     enrich: 添加
-    settings: 设置 
+    settings: 设置
     spread: 传播
   item:
     association_type: 关联类型

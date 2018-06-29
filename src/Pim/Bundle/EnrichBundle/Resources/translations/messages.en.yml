@@ -689,7 +689,7 @@ pim_title.product:
 
 pim_title.family:
     index: "Families"
-    edit: "Families %family.label% | Edit"
+    edit: "Families %code% | Edit"
 
 pim_title.channel:
     index: "Channels"

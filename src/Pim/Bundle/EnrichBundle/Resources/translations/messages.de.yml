@@ -621,7 +621,7 @@ pim_title.product:
   edit: "Produkte %product.sku% | Bearbeiten"
 pim_title.family:
   index: "Produktfamilien"
-  edit: "Produktfamilien %family.label% | Bearbeiten"
+  edit: "Produktfamilien %code% | Bearbeiten"
 pim_title.channel:
   index: "Ausgabekanäle"
   create: "Ausgabekanäle | Anlegen"

@@ -74,6 +74,10 @@ class ResponseHistoryListener
             );
         }
 
+        $titleService = $this->getTitleService();
+        if (!empty($historyItem->getCode())) {
+            $titleService->setData(['params' => ['%code%' => $historyItem->getCode()]]);
+        }
         $historyItem->setTitle($this->getTitleService()->getSerialized());
 
         // force update

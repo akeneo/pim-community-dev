@@ -87,6 +87,8 @@ services:
         class: '%oro_navigation.item.builder.pinbar.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@router'
+            - 'pinbar'
         tags:
             - { name: oro_navigation.item.builder, alias: pinbar }
 
@@ -94,6 +96,8 @@ services:
         class: '%oro_navigation.item.builder.favorite.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@router'
+            - 'favorite'
         tags:
             - { name: oro_navigation.item.builder, alias: favorite }
 
@@ -101,6 +105,8 @@ services:
         class: '%oro_navigation.item.builder.history.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@router'
+            - 'history'
         tags:
             - { name: oro_navigation.item.builder, alias: history }
 
@@ -108,6 +114,8 @@ services:
         class: '%oro_navigation.item.builder.history.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
+            - '@router'
+            - 'mostviewed'
         tags:
             - { name: oro_navigation.item.builder, alias: mostviewed }
 

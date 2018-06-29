@@ -604,7 +604,7 @@ pim_title.product:
   edit: "Produkty %product.sku% | Edycja"
 pim_title.family:
   index: "Rodziny"
-  edit: "Rodziny %family.label% | Edycja"
+  edit: "Rodziny %code% | Edycja"
 pim_title.channel:
   index: "Kanały"
   create: "Kanały | Utwórz"

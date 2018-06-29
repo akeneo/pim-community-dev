@@ -296,7 +296,9 @@ class TitleService implements TitleServiceInterface
      */
     public function setParams(array $params)
     {
-        $this->params = $params;
+        foreach ($params as $key => $value) {
+            $this->params[$key] = $value;
+        }
 
         return $this;
     }

@@ -571,7 +571,7 @@ pim_title.product:
   edit: "Producten %product.sku% | Bewerken"
 pim_title.family:
   index: "Families"
-  edit: "Families %family.label%|Bewerken"
+  edit: "Families %code%|Bewerken"
 pim_title.channel:
   index: "Kanalen"
   create: "Kanalen | Aanmaken"

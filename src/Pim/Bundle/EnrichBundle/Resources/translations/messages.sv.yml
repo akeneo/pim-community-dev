@@ -621,7 +621,7 @@ pim_title.product:
   edit: "Produkter %product.sku% | Redigera"
 pim_title.family:
   index: "Familjer"
-  edit: "Familjer %family.label% | Redigera"
+  edit: "Familjer %code% | Redigera"
 pim_title.channel:
   index: "Kanaler"
   create: "Kanaler | Skapa"

@@ -621,7 +621,7 @@ pim_title.product:
   edit: "製品 %product.sku% |編集"
 pim_title.family:
   index: "ファミリー"
-  edit: "ファミリー %family.label% |編集"
+  edit: "ファミリー %code% |編集"
 pim_title.channel:
   index: "チャンネル"
   create: "チャンネル |作成"

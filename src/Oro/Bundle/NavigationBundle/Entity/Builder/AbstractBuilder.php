@@ -3,6 +3,7 @@
 namespace Oro\Bundle\NavigationBundle\Entity\Builder;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Routing\RouterInterface;
 
 abstract class AbstractBuilder
 {
@@ -16,14 +17,19 @@ abstract class AbstractBuilder
      */
     private $type;
 
+    /** @var RouterInterface */
+    private $router;
+
     /**
-     * @param EntityManager $em
-     * @param string        $type
+     * @param EntityManager   $em
+     * @param RouterInterface $router
+     * @param string          $type
      */
-    public function __construct(EntityManager $em, $type)
+    public function __construct(EntityManager $em, RouterInterface $router, $type)
     {
         $this->em = $em;
         $this->type = $type;
+        $this->router = $router;
     }
 
     /**
@@ -59,5 +65,13 @@ abstract class AbstractBuilder
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return RouterInterface
+     */
+    protected function getRouter()
+    {
+        return $this->router;
     }
 }
