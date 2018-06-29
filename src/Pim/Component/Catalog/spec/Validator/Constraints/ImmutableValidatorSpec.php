@@ -2,10 +2,11 @@
 
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\Family;
 use Pim\Component\Catalog\Validator\Constraints\Immutable;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -24,7 +25,7 @@ class ImmutableValidatorSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Component\Catalog\Validator\Constraints\ImmutableValidator');
     }
 
-    function it_adds_violation_when_a_immutable_property_has_been_modified(
+    function it_adds_violation_when_an_immutable_property_has_been_modified(
         $context,
         $entityManager,
         UnitOfWork $unitOfWork,
@@ -45,6 +46,31 @@ class ImmutableValidatorSpec extends ObjectBehavior
 
         $constraint->properties = ['code'];
         $this->validate($family, $constraint);
+    }
+
+    function it_adds_violation_when_an_immutable_reference_data_name_has_been_modified(
+        $context,
+        $entityManager,
+        UnitOfWork $unitOfWork,
+        Immutable $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $attribute = new Attribute();
+        $attribute->setReferenceDataName('myUpdatedReferenceDataName');
+
+        $entityManager->getUnitOfWork()->willReturn($unitOfWork);
+        $unitOfWork->getOriginalEntityData($attribute)->willReturn(
+            ['properties' => ['reference_data_name' => 'MyOriginalReferenceDataName']]
+        );
+
+        $context->buildViolation('This property cannot be changed.')
+            ->shouldBeCalled()
+            ->willReturn($violation);
+        $violation->atPath('reference_data_name')->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
+
+        $constraint->properties = ['reference_data_name'];
+        $this->validate($attribute, $constraint);
     }
 
     function it_does_not_add_violation_when_a_immutable_property_has_not_been_modified(

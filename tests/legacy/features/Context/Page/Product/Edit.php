@@ -96,7 +96,7 @@ class Edit extends ProductEditForm
     {
         return count(
             $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown')
-                ->findAll('css', 'a[data-locale]')
+                ->findAll('css', '[data-locale]')
         );
     }
 
@@ -118,7 +118,7 @@ class Edit extends ProductEditForm
                 $dropdown->click();
             }
 
-            return $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
+            return $dropdown->find('css', sprintf('[data-locale="%s"]', $localeCode));
         }, 'Can not click on the locale dropdown button');
 
         if ($flag) {
