@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
-use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Query\DraftAuthors;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

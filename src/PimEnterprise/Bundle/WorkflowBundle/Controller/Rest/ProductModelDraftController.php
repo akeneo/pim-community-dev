@@ -13,16 +13,13 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\EntityWithValuesDraftRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes;
@@ -46,7 +43,7 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  */
 class ProductModelDraftController
 {
-    /** @var ProductModelRepository */
+    /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
     /** @var TokenStorageInterface */
@@ -80,7 +77,7 @@ class ProductModelDraftController
     private $supportedReviewActions = ['approve', 'refuse'];
 
     public function __construct(
-        ProductModelRepository $productModelRepository,
+        ProductModelRepositoryInterface $productModelRepository,
         TokenStorageInterface $tokenStorage,
         EntityWithValuesDraftRepository $entityWithValuesDraftRepo,
         AuthorizationCheckerInterface $authorizationChecker,
