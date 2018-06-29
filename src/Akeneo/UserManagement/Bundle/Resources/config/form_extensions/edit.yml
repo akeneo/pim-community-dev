@@ -164,7 +164,6 @@ extensions:
         config:
             fieldName: birthday
             label: 'Birthday - to translate'
-            #sourceFormat: ''
 
     pim-user-edit-form-avatar:
         module: pim/form/common/fields/text
@@ -205,7 +204,7 @@ extensions:
                 dropZone: content
 
     pim-user-edit-form-catalog-locale:
-        module: pim/form/common/fields/text
+        module: pim/form/common/fields/available-locales
         parent: pim-user-edit-form-additional-tab-content
         position: 10
         targetZone: content
@@ -213,6 +212,7 @@ extensions:
            fieldName: catalog_default_locale
            label: 'Catalog locale - to translate'
            required: true
+           multiple: false
 
     pim-user-edit-form-catalog-scope:
         module: pim/form/common/fields/text

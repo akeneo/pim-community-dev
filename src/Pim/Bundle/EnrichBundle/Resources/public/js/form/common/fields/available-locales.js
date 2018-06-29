@@ -29,6 +29,18 @@ function (
         },
         template: _.template(template),
         availableLocales: [],
+        multiple: true,
+
+        /**
+         * @param {Object} meta
+         */
+        initialize: function (meta) {
+            BaseField.prototype.initialize.apply(this, arguments);
+
+            if (undefined !== meta.config.multiple) {
+                this.multiple = meta.config.multiple;
+            }
+        },
 
         /**
          * {@inheritdoc}
@@ -50,7 +62,7 @@ function (
             return this.template(_.extend(templateContext, {
                 value: this.getFormData()[this.fieldName],
                 choices: this.formatChoices(this.availableLocales),
-                multiple: true,
+                multiple: this.multiple,
                 labels: {
                     defaultLabel: ''
                 }
@@ -62,15 +74,6 @@ function (
          */
         postRender: function () {
             this.$('select.select2').select2();
-        },
-
-        /**
-         * {@inheritdoc}
-         *
-         * This field shouldn't be displayed if the attribute is not locale specific.
-         */
-        isVisible: function () {
-            return undefined !== this.getFormData().is_locale_specific && this.getFormData().is_locale_specific;
         },
 
         /**
@@ -87,7 +90,7 @@ function (
          * {@inheritdoc}
          */
         getFieldValue: function (field) {
-            var value = $(field).val();
+            const value = $(field).val();
 
             return null === value ? [] : value;
         }

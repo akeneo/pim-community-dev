@@ -35,17 +35,6 @@ function (
         modelDateFormat: 'yyyy-MM-dd',
 
         /**
-         * @param {Object} meta
-         */
-        initialize: function (meta) {
-            BaseField.prototype.initialize.apply(this, arguments);
-
-            if (undefined !== meta.config.sourceFormat) {
-                this.modelDateFormat = meta.config.sourceFormat;
-            }
-        },
-
-        /**
          * {@inheritdoc}
          */
         renderInput: function (templateContext) {

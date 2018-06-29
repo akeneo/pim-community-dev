@@ -948,6 +948,7 @@ config:
         pim/form/common/fields/text:                    pimenrich/js/form/common/fields/text
         pim/form/common/fields/textarea:                pimenrich/js/form/common/fields/textarea
         pim/form/common/fields/metric:                  pimenrich/js/form/common/fields/metric
+        pim/form/common/fields/available-locales:       pimenrich/js/form/common/fields/available-locales
 
         # Values fields
         pim/form/common/fields/values/boolean:              pimenrich/js/form/common/fields/values/boolean
