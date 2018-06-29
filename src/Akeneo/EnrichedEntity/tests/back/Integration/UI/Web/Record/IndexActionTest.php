@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
+use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\AuthenticatedClientFactory;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -28,8 +29,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = $this
-            ->get('akeneo_ee_integration_tests.helper.authenticated_client_factory')
+        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneo_ee_integration_tests.helper.web_client_helper');
     }
@@ -67,54 +67,31 @@ class IndexActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->assertResponse($this->client->getResponse(), 200, $expectedContent);
     }
 
-    protected function getConfiguration()
-    {
-        return null;
-    }
-
     private function loadFixtures(): void
     {
-        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
-        $recordRepository->save(
-            EnrichedEntity::create(
-                EnrichedEntityIdentifier::fromString('designer'),
-                [
-                    'en_US' => 'Designer',
-                ]
-            )
+        $findRecordItems = $this->get('akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity');
+        $findRecordItems->save(
+            $this->createRecordItem('starck', 'designer', [ 'en_US' => 'Philippe Starck'])
         );
-        $recordRepository->save(
-            EnrichedEntity::create(
-                EnrichedEntityIdentifier::fromString('manufacturer'),
-                [
-                    'en_US' => 'Manufacturer',
-                    'fr_FR' => 'Fabricant',
-                ]
-            )
-        );
-
-        $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
-        $recordRepository->save(
-            Record::create(
-                RecordIdentifier::fromString('starck'),
-                EnrichedEntityIdentifier::fromString('designer'),
-                [
-                    'en_US' => 'Philippe Starck',
-                ]
-            )
-        );
-        $recordRepository->save(
-            Record::create(
-                RecordIdentifier::fromString('coco'),
-                EnrichedEntityIdentifier::fromString('designer'),
-                [
-                    'en_US' => 'Coco',
-                ]
-            )
+        $findRecordItems->save(
+            $this->createRecordItem('coco', 'designer', ['en_US' => 'Coco'])
         );
 
         $user = new User();
         $user->setUsername('julia');
         $this->get('pim_user.repository.user')->save($user);
+    }
+
+    private function createRecordItem(
+        string $recordIdentifier,
+        string $enrichedEntityIdentifier,
+        array $labels
+    ): RecordItem {
+        $recordItem = new RecordItem();
+        $recordItem->identifier = RecordIdentifier::fromString($recordIdentifier);
+        $recordItem->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+        $recordItem->labels = LabelCollection::fromArray($labels);
+
+        return $recordItem;
     }
 }

@@ -32,24 +32,21 @@ abstract class ControllerIntegrationTestCase extends KernelTestCase
         $this->overrideSqlImplementationsForInMemoryImplementations();
     }
 
-    protected function bootTestKernel(): void
+    protected function get(string $service)
+    {
+        return $this->testKernel->getContainer()->get($service);
+    }
+
+    private function bootTestKernel(): void
     {
         static::bootKernel(['debug' => false]);
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
     }
 
-    /*
-     * @return mixed
-     */
-    protected function get(string $service)
-    {
-        return $this->testKernel->getContainer()->get($service);
-    }
-
     private function overrideSqlImplementationsForInMemoryImplementations(): void
     {
-        $services = Yaml::parseFile(__DIR__ . '/controller_services.yml');
+        $services = Yaml::parseFile(__DIR__ . '/controller_integration_services.yml');
         foreach ($services['services'] as $serviceId => $fqcn) {
             $this->testKernel->getContainer()->set($serviceId, new $fqcn['class']);
         }

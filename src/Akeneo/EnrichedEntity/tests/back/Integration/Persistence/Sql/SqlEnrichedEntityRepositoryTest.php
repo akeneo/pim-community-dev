@@ -10,7 +10,6 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
 use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
-use Akeneo\Test\Integration\Configuration;
 
 class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
 {
@@ -88,14 +87,6 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
             $this->assertEquals($enrichedEntityExpected->getLabel($localeCode),
                 $enrichedEntityFound->getLabel($localeCode));
         }
-    }
-
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
-    {
-        return null;
     }
 
     private function resetDB()

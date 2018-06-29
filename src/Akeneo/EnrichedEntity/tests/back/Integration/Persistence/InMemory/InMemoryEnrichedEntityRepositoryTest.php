@@ -18,6 +18,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
 use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
 use Akeneo\EnrichedEntity\tests\back\Common\InMemoryEnrichedEntityRepository;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryEnrichedEntityRepositoryTest extends TestCase
@@ -41,7 +42,7 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
         $this->enrichedEntityRepository->save($enrichedEntity);
 
         $enrichedEntityFound = $this->enrichedEntityRepository->getByIdentifier($identifier);
-        $this->assertTrue($enrichedEntity->equals($enrichedEntityFound));
+        Assert::isTrue($enrichedEntity->equals($enrichedEntityFound));
     }
 
     /**

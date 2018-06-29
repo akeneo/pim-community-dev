@@ -12,7 +12,6 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
-use Akeneo\Test\Integration\Configuration;
 
 class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
 {
@@ -56,14 +55,6 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
         $expectedStarck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
 
         $this->assertRecordDetails($expectedStarck, $actualStarck);
-    }
-
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
-    {
-        return null;
     }
 
     private function resetDB(): void

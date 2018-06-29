@@ -94,11 +94,6 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         }
     }
 
-    protected function getConfiguration()
-    {
-        return null;
-    }
-
     private function resetDB(): void
     {
         $resetQuery = <<<SQL

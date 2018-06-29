@@ -12,7 +12,6 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\FindRecordItemsForEnrichedEntityInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
-use Akeneo\Test\Integration\Configuration;
 
 class SqlFindRecordItemsForEnrichedEntityTest extends SqlIntegrationTestCase
 {
@@ -55,14 +54,6 @@ class SqlFindRecordItemsForEnrichedEntityTest extends SqlIntegrationTestCase
 
         $this->assertRecordItem($starck, $recordItems[0]);
         $this->assertRecordItem($coco, $recordItems[1]);
-    }
-
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
-    {
-        return null;
     }
 
     private function resetDB(): void

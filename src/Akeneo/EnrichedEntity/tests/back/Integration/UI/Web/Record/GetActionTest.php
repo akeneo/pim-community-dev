@@ -10,6 +10,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
+use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\AuthenticatedClientFactory;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -28,7 +29,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = $this->get('akeneo_ee_integration_tests.helper.authenticated_client_factory')
+        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneo_ee_integration_tests.helper.web_client_helper');
     }
@@ -80,11 +81,6 @@ class GetActionTest extends ControllerIntegrationTestCase
             'GET'
         );
         $this->webClientHelper->assert404($this->client->getResponse());
-    }
-
-    protected function getConfiguration()
-    {
-        return null;
     }
 
     private function loadFixtures(): void

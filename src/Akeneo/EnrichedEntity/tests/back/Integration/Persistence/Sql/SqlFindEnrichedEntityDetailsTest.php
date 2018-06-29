@@ -10,7 +10,6 @@ use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityDetails;
 use Akeneo\EnrichedEntity\Domain\Query\FindEnrichedEntityDetailsInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
-use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 
 class SqlFindEnrichedEntityDetailsTest extends SqlIntegrationTestCase
@@ -48,14 +47,6 @@ class SqlFindEnrichedEntityDetailsTest extends SqlIntegrationTestCase
         $designer->labels = LabelCollection::fromArray(['fr_FR' => 'Concepteur', 'en_US' => 'Designer']);
 
         $this->assertEnrichedEntityItem($designer, $entity);
-    }
-
-    /**
-     * @return Configuration
-     */
-    protected function getConfiguration()
-    {
-        return null;
     }
 
     private function resetDB(): void

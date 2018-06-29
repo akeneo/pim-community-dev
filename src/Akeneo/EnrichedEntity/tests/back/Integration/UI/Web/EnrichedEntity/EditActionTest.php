@@ -9,6 +9,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
+use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\AuthenticatedClientFactory;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -29,7 +30,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         parent::setUp();
 
         $this->loadFixtures();
-        $this->client = $this->get('akeneo_ee_integration_tests.helper.authenticated_client_factory')
+        $this->client = (new AuthenticatedClientFactory($this->get('pim_user.repository.user'), $this->testKernel))
             ->logIn('julia');
         $this->webClientHelper = $this->get('akeneo_ee_integration_tests.helper.web_client_helper');
     }
@@ -83,11 +84,6 @@ class EditActionTest extends ControllerIntegrationTestCase
         );
         $response = $this->client->getResponse();
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
-    }
-
-    protected function getConfiguration()
-    {
-        return null;
     }
 
     private function getEnrichEntityRepository(): EnrichedEntityRepository
