@@ -8,7 +8,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepository;
-use Akeneo\EnrichedEntity\tests\back\Acceptance\Common\InMemoryRecordRepository;
+use Akeneo\EnrichedEntity\tests\back\Common\InMemoryRecordRepository;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryRecordRepositoryTest extends TestCase
