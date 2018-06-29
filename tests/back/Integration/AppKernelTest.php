@@ -18,7 +18,6 @@ class AppKernelTest extends AppKernel
             new AcmeEnterprise\Bundle\AppBundle\AcmeEnterpriseAppBundle(),
             new Akeneo\Test\IntegrationTestsBundle\AkeneoIntegrationTestsBundle(),
             new AkeneoEnterprise\Test\IntegrationTestsBundle\AkeneoEnterpriseIntegrationTestsBundle(),
-            new \Akeneo\EnrichedEntity\tests\back\Integration\IntegrationTestsBundle\AkeneoEnrichedEntityIntegrationTestsBundle()
         ];
     }
 
