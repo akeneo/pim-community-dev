@@ -24,3 +24,8 @@ pimee_suggest_data_identifiers_mapping_save:
     path: /suggest-data/identifiers-mapping
     defaults: { _controller: pimee_suggest_data.controller.identifiers_mapping:updateIdentifiersMappingAction}
     methods: [POST]
+
+pimee_suggest_data_identifiers_mapping_get:
+    path: /suggest-data/identifiers-mapping
+    defaults: { _controller: pimee_suggest_data.controller.identifiers_mapping:getIdentifiersMappingAction}
+    methods: [GET]

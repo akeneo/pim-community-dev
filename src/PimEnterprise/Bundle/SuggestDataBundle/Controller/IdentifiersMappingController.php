@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\SuggestDataBundle\Controller;
 
 use PimEnterprise\Component\SuggestData\Application\ManageMapping;
+use PimEnterprise\Component\SuggestData\Repository\IdentifiersMappingRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -13,11 +14,13 @@ class IdentifiersMappingController
 {
     private $manageMapping;
     private $translator;
+    private $identifiersMappingRepository;
 
-    public function __construct(ManageMapping $manageMapping, TranslatorInterface $translator)
+    public function __construct(ManageMapping $manageMapping, TranslatorInterface $translator, IdentifiersMappingRepositoryInterface $identifiersMappingRepository)
     {
         $this->manageMapping = $manageMapping;
         $this->translator = $translator;
+        $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
 
     /**
@@ -43,5 +46,14 @@ class IdentifiersMappingController
             ]);
         }
 
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function getIdentifiersMappingAction() {
+        $identifiersMapping = $this->identifiersMappingRepository->findAll();
+
+        return new JsonResponse($identifiersMapping->getIdentifiers());
     }
 }
