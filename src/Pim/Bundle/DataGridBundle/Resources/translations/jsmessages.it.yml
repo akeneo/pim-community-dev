@@ -51,6 +51,10 @@ pim.grid.ajax_choice_filter.label_not_empty: non è vuoto
 pim:
   grid:
     choice_filter:
+      label_contains: contiene
+      label_does_not_contain: non contiene
+      label_equal: è uguale a
+      label_start_with: inizia con
       label_empty: è vuoto
       label_not_empty: non è vuoto
       label_in_list: nell'elenco
@@ -105,5 +109,11 @@ grid.view_selector:
 grid.view_selector.flash.updated: La griglia di dati è stata aggiornata con successo
 grid.display_selector:
   label: Mostra
+  gallery: Galleria
+  list: Elenco
 Client ID: ID cliente
 Secret: Segreto
+grid.empty_results:
+  associated_product:
+    hint: Non ci sono prodotti associati
+    subHint: 'Fai clic sul pulsante "Aggiungi associazioni" per associare questo prodotto'
