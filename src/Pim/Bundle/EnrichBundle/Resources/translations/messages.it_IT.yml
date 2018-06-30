@@ -360,6 +360,7 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Modificare 
 update_product_value.steps.update_product_value_processor.title: Modifica un valore di prodotto
 remove_product_value.steps.update_product_value_processor.title: Rimuovi un valore di prodotto
 edit_common_attributes: Modificare gli attributi
+edit_common_attributes_clean: Pulisci i file per gli attributi
 perform.steps.duplicated.title: Dimensione Duplicata
 perform.steps.excluded.title: Prodotto escluso
 mass_edit report:
