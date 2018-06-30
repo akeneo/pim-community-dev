@@ -255,6 +255,7 @@ pim_enrich.mass_edit_action:
     description: Seleccione los grupos en los cuales agregará los productos seleccionados
     success_flash: Los productos se han agregado correctamente a los grupos seleccionados
   set-attribute-requirements:
+    label: Establecer los requisitos de atributos
     description: Se aplicarán los siguientes requisitos de atributo a las familias seleccionadas
     success_flash: Requisitos de atributo se aplicaron a las familias seleccionadas
 To enable: Para habilitar
