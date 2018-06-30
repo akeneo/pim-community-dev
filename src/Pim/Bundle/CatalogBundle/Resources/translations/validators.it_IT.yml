@@ -42,6 +42,20 @@ pim_catalog:
     variant_product_has_parent: 'Il prodotto variante "%variant_product%" deve avere un genitore'
     invalid_variant_product_parent: 'Il prodotto variante "%variant_product%" non può avere come genitore il modello di prodotto "%product_model%", (questo modello di prodotto può avere solo altri modelli di prodotto come figli)'
     modified_variant_axis_value: 'L''asse variante "%variant_axis%" non può essere modificato, dato "%provided_value%"'
+    family_variant_attributes_unique: Gli attributi devono essere unici, "%attributes%" sono usati diverse volte nei set di attributi varianti
+    family_variant_axes_unique: Gli assi varianti devono essere unici, "%attributes%" sono usati diverse volte nei set di attributi varianti
+    family_variant_axes_immutable: 'Gli assi varianti non posso essere modificati per il livello %level%'
+    family_variant_axes_attribute_type_unique: Gli assi varianti "%axis%" non posso essere unici o un identificatore
+    family_variant_axes_attribute_type: Gli assi varianti "%axis%" devono essere un booleano, una selezione semplice, un riferimento dati semplice o un metrico
+    family_variant_axes_wrong_type: Gli assi varianti "%axis%" non possono essere localizzabili, customizzabili per canale e specific i per impostazioni locali
+    family_variant_axes_number_of_axes: 'Un set di attributi variante non può avere più di %max_axes_number% assi'
+    family_variant_no_axis: Dovrebbe esserci almeno un attributo definito come asse per il set di attributi per il livello "%level%"
+    family_variant_axis_level: L'attributo "%axis%" deve essere impostato come attributo nello stesso set di attributi varianti impostato come asse
+    family_variant_has_family_attribute: 'L''attributo "%attribute%" non può essere aggiunto alla famiglia variante "%family_variant%", dal momento che non è un attributo della famiglia "%family%"'
+    family_variant_level_do_not_exist: Non c'è nessun attributo variante impostato per il livello "%level%"
+    family_variant_no_level: Dovrebbe esserci almeno un livello definito nella famiglia variante
+    family_variant_maximum_number_of_level: La famiglia variante non può avere più di "%level%" livelli
+    family_variant_unique_attributes_in_last_level: L'attributo unico "%attribute%" deve essere impostato a livello di prodotto
     product_identifier: Gli identificatori "%s" non esistono.
     0: Si è verificato un errore imprevisto.
     100: Valore non previsto
