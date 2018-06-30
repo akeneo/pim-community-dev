@@ -11,6 +11,8 @@ pimee_product_asset:
         description: Scegli gli asset che vuoi allegare al prodotto
     asset:
       not_empty: Il codice è richiesto. Non può essere vuoto.
+      alpha_numeric_plus_underscore: Il codice dovrebbe contenere solo caratteri alfanumerici o trattino basso (underscore).
+      unique: Il codice deve essere univoco. Ne abbiamo generato uno nuovo per te.
   enrich_asset:
     grid:
       edit: Modifica le proprietà dell'asset
@@ -65,6 +67,7 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
+        confirm_content: Sei sicuro di voler cancellare gli asset selezionati?
         success: Gli asset selezionati sono stati eliminati con successo.
         error: Si è verificato un errore cancellando gli asset selezionati, per favore riprova.
         empty_selection: Nessun asset selezionato
@@ -131,6 +134,9 @@ batch_jobs:
   xlsx_asset_category_export:
     label: Esportazione categorie asset in XLSX
     export.label: Esportazione categorie asset in XLSX
+  xlsx_asset_variation_export:
+    label: Esportazione variazione asset in XLSX
+    export.label: Esportazione variazione asset in XLSX
   classify_assets:
     perform.label: Spostare gli asset nelle categorie
   add_tags_to_assets:
