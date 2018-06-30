@@ -45,8 +45,12 @@ flash:
     removed: Grupo de atributos eliminado correctamente
   family:
     removed: Familia eliminada correctamente
+  family_variant:
+    removed: Variante de familia removida exitosamente
   product:
     removed: Producto eliminado correctamente
+  product_model:
+    removed: Modelo de producto éxitosamente removido
   channel:
     removed: Canal eliminado correctamente
   group:
@@ -243,8 +247,10 @@ pim_enrich:
       info:
         create_successful: Modelo de producto creado éxitosamente
         update_successful: Modelo de producto actualizado exitosamente. La integridad de sus productos variantes se recalculará.
+        deletion_successful: Modelo de producto borrado éxitosamente.
         update_failed: El modelo de producto no pudo ser actualizado.
         field_not_ready: "El modelo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
+      read_only_parent_attribute_from_common: Dicho atributo puede ser actualizado en los atributos comunes.
       variant_axis: Eje variante
       title: modelo de productos
       add_child:
@@ -347,6 +353,7 @@ pim_enrich:
         label: Etiqueta
         levels: Niveles de variantes
         axis_level: Nivel del eje de la variable
+        required: requerido
     attribute_option:
       code: Código
       label: Etiqueta
@@ -377,7 +384,12 @@ pim_enrich:
         update_successful: El perfil de trabajo ha sido actualizado exitosamente.
     attribute:
       info:
+        deletion_successful: Atributo éxitosamente borrado.
         deletion_failed: No se ha podido eliminar el atributo.
+        update_successful: Atributo éxitosamente actualizado.
+        update_failed: El atributo no pudo ser actualizado.
+        create_successful: Atributo creado éxitosamente.
+        create_failed: El atributo no pudo ser creado.
       scopable: Scopable
       type:
         pim_catalog_identifier: Identificador
@@ -964,10 +976,12 @@ pim_enrich:
     confirm: Confirmar
     product:
       title: Productos de acción masiva
+      confirm: "{1}Usted está a punto de actualizar un producto con la siguiente información, por favor confirmar. |] 1, Inf. [Usted está a punto de actualizar {{ itemsCount }} productos con la siguiente información, por favor confirmar."
       step:
         select:
           label: Elegir productos
         choose:
+          title: Acciones masivas sobre los productos
           label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
@@ -987,21 +1001,35 @@ pim_enrich:
           description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
         change_family:
           label: Cambiar familia
+          label_count: "{1}Cambiar la familia de <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Cambiar la famlia de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: La familia de los productos seleccionados se cambiará a la familia elegida
           field: Familia
         add_to_group:
           label: Agregar a grupos
+          label_count: "{1}Agregar <span class=\"AknFullPage-title--highlight\"> 1 producto</span> a grupos |] 1, Inf [agregar <span class=\"AknFullPage-title--highlight\"> productos{{ itemsCount }}</span> a grupos"
           description: Seleccione los grupos en los cuales agregará los productos seleccionados
           field: Grupos
         add_to_category:
           label: Agregar a categorias
+          label_count: "{1}Agregar <span class=\"AknFullPage-title--highlight\"> 1 producto</span> a categorías |] 1, Inf [Agregar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a categorías"
+        move_to_category:
+          label: Mover entre categorias
+          label_count: "{1}Mover <span class=\"AknFullPage-title--highlight\"> 1 producto</span> entre categorías |] 1, Inf [Mover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> entre categorías"
         remove_from_category:
+          label: Eliminar de las categorías
+          label_count: "{1}Remover <span class=\"AknFullPage-title--highlight\">1 producto</span> de categorías|] 1, Inf [Remover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> de categorías"
           description: Se eliminarán los productos de las siguientes categorías.
+        add_to_existing_product_model:
+          label: Agregar a un modelo de producto existente
+          label_count: "{1}Agregar <span class=\"AknFullPage-title--highlight\">1 producto</span> a un modelo de producto existente|] 1, Inf [Agregar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a un modelo de producto existente"
+          description: El modelo de producto seleccionado reunirá los productos y permitirá el enrequecimiento de sus propiedades comunes.
     family:
+      title: Acción masiva sobre las familias
       step:
         select:
           label: Elija familias
         choose:
+          title: Acción masiva sobre las familias
           label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
@@ -1009,6 +1037,9 @@ pim_enrich:
           label: Confirmar
         launched:
           label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
+      operation:
+        set_requirements:
+          label: Establecer los requisitos de atributos
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
   http:
@@ -1268,6 +1299,7 @@ pim_menu:
     user_role: Roles
     info: Información del sistema
     job_tracker: Seguimiento de procesos
+    api_connection: Conexiones API
   navigation:
     activity: Actividad de navegación
     system: Sistema de navegación
