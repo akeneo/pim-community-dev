@@ -3,6 +3,7 @@ pimee_product_asset:
     product:
       asset:
         manage: Administrer aktiver
+        upload: Upload
         manage_asset:
           title: Administrer aktiver
           cancel: Annuller
@@ -11,6 +12,8 @@ pimee_product_asset:
         description: Vælge de aktiver, du vil vedhæfte til dit produkt
         download: Hent
         remove: Fjern
+        yes: true
+        no: false
     asset:
       not_empty: Koden er påkrævet. Det kan ikke være tom.
       alpha_numeric_plus_underscore: Koden skal kun være alfanumeriske eller understreg.

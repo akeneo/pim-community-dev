@@ -3,6 +3,7 @@ pimee_product_asset:
     product:
       asset:
         manage: Assets verwalten
+        upload: Hochladen
         manage_asset:
           title: Assets verwalten
           cancel: Abbrechen
@@ -11,6 +12,8 @@ pimee_product_asset:
         description: Wählen Sie die Assets die dem Produkt zugeordnet werden sollen
         download: Herunterladen
         remove: Entfernen
+        yes: true
+        no: false
     asset:
       not_empty: Code ist erforderlich. Feld darf nicht leer sein.
   enrich_asset:
