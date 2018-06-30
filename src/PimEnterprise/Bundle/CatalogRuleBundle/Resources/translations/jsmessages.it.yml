@@ -4,6 +4,7 @@ pimee_catalog_rule:
   selected: 'regole selezionate'
   popin:
     execute_rules:
+      confirm_title: Conferma esecuzione
       confirm_content: Sei sicuro di voler eseguire tutte le regole? (questo potrebbe richiedere molto tempo)
   notification:
     fail: L'azione potrebbe non essere eseguita
@@ -29,14 +30,17 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
+          confirm_title: Conferma esecuzione
           confirm_content: Sei sicuro di voler eseguire la regola?
           confirm_ok: OK
       mass_edit_action:
+        confirm_title: Conferma calcolo
         confirm_content: Sei sicuro di voler calcolare i prodotti interessati dalle regole?
         confirm_ok: OK
       mass_action:
         execute:
           confirm_ok: OK
+          confirm_title: Conferma esecuzione
           confirm_content: Sei sicuro di voler eseguire le regole selezionate?
           success: L'azione di massa per eseguire le regole selezionate è stata lanciata. Sarai avvisato quando finisce
           error: Si è verificato un errore durante la creazione delle regole.
@@ -66,6 +70,7 @@ batch_jobs:
   yml_rule_import:
     label: Importazione regole in YAML
     import.label: Importazione regole
+    execute_rules.label: Esecuzione regole
   yml_rule_export:
     label: Esportazione regole in YAML
     export.label: Esportazione regole
