@@ -54,6 +54,7 @@ pimee_enrich:
           added: Al gruppo {{ group }} sarà concesso il permesso {{ permission }} sul gruppo attributi
   entity:
     product:
+      index_title: "] -Inf, 1] {{ count }} risultato|] 1, Inf [{{ count }} risultati"
       navigation: Prodotti pubblicati
       history:
         published: Pubblicato
@@ -176,9 +177,12 @@ pimee_enrich:
           warning: I {{ itemsCount }} prodotti selezionati saranno pubblicati.
         unpublish:
           label: Ritira
+          label_count: "{1}Annulla pubblicazione <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Annulla pubblicazione <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
           description: I prodotti saranno ritirati
           warning: I {{ itemsCount }} prodotti selezionati saranno ritirati.
     asset:
+      title: Azione in massa per gli asset
+      confirm: "{1}Stai per aggiornare un asset con le seguenti informazioni, confermare.|] 1, Inf [Stai per aggiornare {{ itemsCount }} asset con le seguenti informazioni, confermare."
       step:
         select:
           label: Scegli gli asset
@@ -193,9 +197,13 @@ pimee_enrich:
         add_tag:
           label: Aggiungi tag agli asset
           description: I tag saranno aggiunti all'asset.
+          label_count: "{1}Aggiungi tag a <span class=\"AknFullPage-title--highlight\">1 asset</span>|] 1, Inf [Aggiungi tag a <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} asset</span>"
           field: Tag
+          empty_selection: Scegli i tag
         add_to_category:
           label: Classificare gli asset in categorie
+          description: Gli asset saranno posizionati all'interno delle categorie seguenti, il posizionamento esistente andrà perso.
+          label_count: "{1}Classifica <span class=\"AknFullPage-title--highlight\">1 asset</span> to categories|] 1, Inf [Classifica <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} asset</span> to categories"
           field: Categorie
 pim_menu:
   tab:
@@ -232,6 +240,7 @@ batch_jobs:
     perform.label: Rimuovi un valore di prodotto
     execute_rules.label: Esecuzione regole
   edit_common_attributes_with_permission_and_rules:
+    label: Modifica gli attributi con controllo dei permessi e con l'applicazione delle regole
     perform.label: Modificare gli attributi
     execute_rules.label: Esecuzione regole
     cleaner.label: Elimina file temporanei
