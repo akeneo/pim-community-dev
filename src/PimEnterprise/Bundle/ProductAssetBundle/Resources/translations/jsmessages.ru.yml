@@ -3,6 +3,7 @@ pimee_product_asset:
     product:
       asset:
         manage: Управление активами
+        upload: Загрузить
         manage_asset:
           title: Управление активами
           cancel: Отмена
@@ -10,6 +11,8 @@ pimee_product_asset:
         title: Управление активами
         download: Скачать
         remove: Удалить
+        yes: true
+        no: false
     asset:
       not_empty: Код требуется. Он не может быть пустым.
   enrich_asset:

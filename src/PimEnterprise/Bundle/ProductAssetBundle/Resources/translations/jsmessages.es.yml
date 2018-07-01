@@ -3,6 +3,7 @@ pimee_product_asset:
     product:
       asset:
         manage: Gestionar recursos
+        upload: Cargar
         manage_asset:
           title: Gestionar recursos
           cancel: Cancelar
@@ -10,6 +11,8 @@ pimee_product_asset:
         title: Gestionar recursos
         download: Descargar
         remove: Quitar
+        yes: true
+        no: false
     asset:
       not_empty: Código requerido. No puede estar vacío.
   enrich_asset:

@@ -3,6 +3,7 @@ pimee_product_asset:
     product:
       asset:
         manage: アセット管理
+        upload: アップロード
         manage_asset:
           title: アセット管理
           cancel: キャンセル
@@ -11,6 +12,8 @@ pimee_product_asset:
         description: 製品に添付するアセットを選択
         download: ダウンロード
         remove: 削除
+        yes: true
+        no: false
     asset:
       not_empty: コードが必要です。それは空にできません。
   enrich_asset:

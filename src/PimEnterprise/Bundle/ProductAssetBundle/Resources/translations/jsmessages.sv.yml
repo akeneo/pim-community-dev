@@ -3,6 +3,7 @@ pimee_product_asset:
     product:
       asset:
         manage: Hantera tillgångar
+        upload: Ladda upp
         manage_asset:
           title: Hantera tillgångar
           cancel: Avbryt
@@ -10,6 +11,8 @@ pimee_product_asset:
         title: Hantera tillgångar
         download: Ladda ner
         remove: Ta bort
+        yes: true
+        no: false
     asset:
       not_empty: Koden krävs. Det kan inte vara tomt.
   enrich_asset:
