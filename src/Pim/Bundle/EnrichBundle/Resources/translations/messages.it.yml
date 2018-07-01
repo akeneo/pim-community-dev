@@ -19,6 +19,8 @@ pim_enrich:
       attribute.title: Attributi
       history.title: Cronologia
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Impossibile rimuovere questo attributo usato come asse variante in una famiglia variante
     tab:
       property.title: Proprietà
       attribute.title: Attributi
@@ -89,6 +91,7 @@ pim_enrich:
       description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni di localizzazione selezionate.
       empty: Si prega di selezionare l'attributo/gli attributi che si desidera modificare
       success_flash: È in corso l'aggiornamento dello stato del prodotto/dei prodotti
+      launched_flash: L'azione di massa "modifica attributi" è stata lanciata. Sarai avvisato quando è completata.
       message:
         warning: Non esiste un attributo in comune per i prodotti selezionati. Si prega di cambiare la selezione.
         invalid_attribute: L'attributo con codice "attribute_code" non è comune ai prodotti selezionati, attributo saltato.
@@ -153,9 +156,11 @@ pim_enrich:
       download: Scarica il prodotto in formato PDF
       history: Visualizza lo storico del prodotto
     product_model:
+      create: Crea un modello di prodotto
       edit_attributes: Modifica gli attributi di modello di prodotto
       categories_view: Consulta le categorie di un modello di prodotto
       history: Visualizza la cronologia del modello di prodotto
+      remove: Rimuovi un modello di prodotto
     category:
       list: Lista Categorie
       create: Creare una categoria
@@ -760,6 +765,7 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Modificare 
 update_product_value.steps.update_product_value_processor.title: Modifica un valore di prodotto
 remove_product_value.steps.update_product_value_processor.title: Rimuovi un valore di prodotto
 edit_common_attributes: Modificare gli attributi
+edit_common_attributes_clean: Pulisci i file per gli attributi
 perform.steps.duplicated.title: Dimensione Duplicata
 perform.steps.excluded.title: Prodotto escluso
 batch_jobs:
@@ -775,6 +781,14 @@ batch_jobs:
     label: Modificare gli attributi
     perform:
       label: Modificare gli attributi
+    clean:
+      label: Pulisci i file per gli attributi
+    cleaner:
+      label: Pulisci i file per gli attributi
+  add_to_existing_product_model:
+    label: Aggiungere ad un modello di prodotto esistente
+    perform:
+      label: Aggiungere ad un modello di prodotto esistente
   set_attribute_requirements:
     label: Imposta i requisiti degli attributi
     perform:
