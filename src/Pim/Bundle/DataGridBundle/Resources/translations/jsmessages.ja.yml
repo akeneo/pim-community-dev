@@ -51,6 +51,10 @@ pim.grid.ajax_choice_filter.label_not_empty: 空ではない
 pim:
   grid:
     choice_filter:
+      label_contains: 含む
+      label_does_not_contain: 含まない
+      label_equal: 等しい
+      label_start_with: で始まる
       label_empty: 空
       label_not_empty: 空ではない
       label_in_list: リストに存在する

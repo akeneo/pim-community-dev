@@ -1080,6 +1080,7 @@ pim_enrich:
           label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à un modèle de produit existant|] 1, Inf [Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à un modèle de produit existant"
           description: Le modèle de produit sélectionné va rassembler des produits et améliorer l'enrichissement de leurs propriétés communes.
         associate_to_product_and_product_model:
+          label: Associer
           label_count: "{1}Associer <span class=\"AknFullPage-title--highlight\">1 produit</span> à des produits ou modèles de produits|] 1, Inf [Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des produits ou modèles de produits"
           description: Les produits sélectionnés depuis la grille seront associés aux produits et modèles de produits sélectionnés, pour le type d'association sélectionné
           validate: Veuillez ajouter une association avant de passer à l’étape suivante
@@ -1116,7 +1117,7 @@ page_title:
   pim_enrich_attributegroup_index: Groupes d'attributs
   pim_enrich_attributegroup_create: Groupe d'attributs | Création
   pim_enrich_attributegroup_edit: Groupe d'attributs {{ group.label }} | Édition
-  pim_enrich_catalog_volume_index: Surveillance de la volumétrie du catalogue
+  pim_enrich_catalog_volume_index: Volumétrie du catalogue
   pim_enrich_categorytree_index: Arborescences des catégories
   pim_enrich_categorytree_create: Arborescences | Création
   pim_enrich_categorytree_edit: Arbre de catégories {{ category.label }} | Édition
@@ -1180,6 +1181,10 @@ batch_jobs:
     label: Retirer de la catégorie
     perform:
       label: Retirer de la catégorie
+  add_association:
+    label: Associer
+    perform:
+      label: Associer
   add_to_existing_product_model:
     label: Ajouter à un modèle de produit existant
     perform:
@@ -1444,7 +1449,7 @@ pim_menu:
     import_history: Historique des imports
     import_profile: Profils d'import
     configuration: Configuration
-    catalog_volume: Surveillance de la volumétrie du catalogue
+    catalog_volume: Volumétrie du catalogue
     user_management: Gestion des utilisateurs
     user: Utilisateurs
     user_group: Groupes
@@ -1465,18 +1470,18 @@ pim_notification:
   no_notifications: Pas de notification
   loading: Chargement en cours...
 catalog_volume:
-  product_values: "Vous avez <span>{{values}}</span> valeurs de produit dans votre PIM! En moyenne chaque produit a <span>{{average}}</span> valeurs! 💪"
-  product_values_description: 'Plus vous avez de valeurs de produit, plus votre information produit est supérieure, plus haut est votre ROI! Plus de détails <a href="#">ici</a>'
+  product_values: "Vous avez <span>{{values}}</span> valeurs de produit dans votre PIM ! En moyenne, chaque produit contient <span>{{average}}</span> valeurs !&nbsp;💪"
+  product_values_description: 'Plus vous aurez de valeurs de produit, plus votre PIM prendra de la valeur et donc, plus vous boosterez votre ROI ! Plus de détails <a href="{{link}}" target="_blank">ici</a>.'
   section:
     product_values:
-      hint: Saviez-vous que le nombre total de valeurs de produits de votre PIM est directement lié aux axes quivants ?<br/>Pour plus de détails, nous vous invitons à <a href="{{}}" target="_blank">lire cet article</a>.
-      title: Axes qui influcent le nombre de valeurs de produit
+      hint: 'Saviez-vous que le nombre total de valeurs de produit de votre PIM est directement lié aux axes suivants ?<br/>Pour plus de détails, nous vous invitons à <a href="{{link}}" target="_blank">lire cet article</a>.'
+      title: Axes qui influencent le nombre de valeurs de produit
     catalog_structure:
-      hint: Vous devez retenir qu'une bonne structure de catalogue est importante et est une condition nécessaire à un bon enrichissement produit. Voici les différents axes à surveiller pour la structure de votre catalogue.
+      hint: Vous savez sûrement qu'une bonne structure de catalogue est importante. C'est une condition nécessaire à l'enrichissement efficace de vos produits. Voici les différents axes à suivre sur la structure de votre catalogue.
       title: Axes liés à la structure de votre catalogue
     variant_modelling:
-      hint: Si vous utilisez la modélisation avec variantes, voici les axes pour vous aider à surveiller votre volumétrie.
-      title: Axes concernant la modélisation avec variantes
+      hint: Si vous utilisez la modélisation des produits avec variantes, voici les axes pour vous aider à suivre votre volumétrie.
+      title: Axes concernant la modélisation des produits avec variantes
   axis:
     count_products: Produits
     average_max_attributes_per_family: Attributs par famille

@@ -47,6 +47,7 @@ Additional: Aggiuntive
 Groups and Roles: Gruppi e Ruoli
 Username: Nome utente
 Password: Password
+Password (again): Password (di nuovo)
 Re-enter password: Reinserisci password
 Name prefix: Prefisso del nome
 First name: Nome
@@ -154,4 +155,5 @@ Username or Email: Nome utente o Email
 Forgot Password: Password Dimenticata
 Request: Richiesta
 Check Email: Controlla la tua email
+password_reset_email_sent: E' stata inviata una email all'utente. Contiene un link per reimpostare la password.
 Go to homepage: Vai alla Homepage

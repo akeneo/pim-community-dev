@@ -6,7 +6,9 @@ confirmation:
     attribute: Sei sicuro di voler eliminare questo attributo?
     attribute_group: Sei sicuro di voler eliminare questo gruppo di attributi?
     family: Sei sicuro di voler eliminare questa famiglia?
+    family_variant: Sei sicuro di voler eliminare questa famiglia variante?
     product: Sei sicuro di voler eliminare questo prodotto?
+    product_model: Sei sicuro di voler cancellare questo modello di prodotto? Anche tutti i suoi figli, modelli di prodotto e varianti di prodotto, saranno cancellati.
     channel: Sei sicuro di voler eliminare questo canale?
     group: Sei sicuro di voler eliminare questo gruppo?
     group_type: Sei sicuro di voler eliminare questo tipo di gruppo?
@@ -16,6 +18,7 @@ confirmation:
     role: Sei sicuro di voler eliminare questo ruolo?
     job_instance: È sicuro di che volere cancellare questa istanza di lavoro?
     api_connection: Sei sicuro di voler revocare questa connessione API? Tutte le chiamate API fatte attraverso questa connessione da ora in poi genereranno un errore.
+    products_and_product_models: Sei sicuro di voler eliminare i prodotti selezioni e i modelli di prodotto? Anche tutti i figli dei modelli di prodotto saranno eliminati.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -25,6 +28,7 @@ pim_datagrid:
   mass_action:
     delete:
       label: Eliminare
+      confirm_content: Sei sicuro di voler eliminare i prodotti selezionati?
       success: I prodotti selezionati sono stati eliminati con successo.
       error: Si è verificato un errore cancellando i prodotti selezionati, per favore riprova.
   view_selector:
@@ -44,8 +48,12 @@ flash:
     removed: Gruppo di attributi rimosso con successo
   family:
     removed: Famiglia rimossa con successo
+  family_variant:
+    removed: Famiglia variante rimossa correttamente
   product:
     removed: Articolo rimosso con successo
+  product_model:
+    removed: Modello di prodotto rimosso con successo
   channel:
     removed: Canale rimosso con successo
   group:
@@ -106,6 +114,7 @@ Classify the product: Classificare il prodotto
 Delete the product: Eliminare il prodotto
 Change status: Modificare lo stato
 Toggle status: Stato di conversione
+mass_delete: Eliminazione di massa
 pim:
   grid:
     mass_action:
@@ -149,12 +158,15 @@ pim_enrich:
     product:
       navigation: Navigazione prodotti
       infos: Info prodotto
+      index_title: "] -Inf, 1] {{ count }} risultato|] 1, Inf [{{ count }} risultati"
       title: prodotto
       locale: Impostazioni locali
       category: Categoria
       create: Crea
       subTitle: Crea prodotto
+      modalTitle: Seleziona un'azione
       filters: Filtri
+      selected: risultati selezionati
       common: In comune
       btn:
         enabled: Attivato
@@ -222,6 +234,7 @@ pim_enrich:
         title: Crea
         labels:
           family: Scegli una famiglia
+          family_variant: Scegli una famiglia variante
           save: Salva
           cancel: Annulla
       message:
@@ -231,15 +244,27 @@ pim_enrich:
         item_limit: Sono visualizzati solo i primi 1000 articoli di questa modifica sequenziale ({{ count }} selezionati)
         empty: La selezione è vuota, modificare i criteri di ricerca
     product_model:
+      create_popin:
+        type: Modello di prodotto
+        title: Crea un modello di prodotto
+        content: Un modello di prodotto raccoglie prodotti varianti e facilita l'arricchimento delle proprietà in comune.
       info:
+        create_successful: Modello di prodotto creato correttamente
         update_successful: Modello di prodotto aggiornato correttamente. La completezza delle sue varianti sarà ricalcolata.
+        deletion_successful: Modello di prodotto eliminato con successo.
         update_failed: Il modello di prodotto non può essere aggiornato.
         field_not_ready: "Il modello di prodotto non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}"
+      read_only_parent_attribute_from_common: Questo attributo può essere aggiornato negli attributi comuni.
+      read_only_parent_attribute_from_model: "Questo attributo può essere aggiornato negli attributi per {{ axes }}"
       variant_axis: Asse di variante
+      title: modelli di prodotto
       add_child:
+        create: Aggiungi nuovo
         cancel: Annulla
         confirm: Conferma
+        create_label: "Aggiungi un nuovo {{ axes }}"
         fields:
+          required_label: (asse variante)
           code: Codice
     association_type:
       info:
@@ -306,6 +331,7 @@ pim_enrich:
         cant_remove_attribute_as_label: Non è possibile rimuovere l'attributo utilizzato come etichetta
         cant_remove_attribute_as_image: Non è possibile rimuovere l'attributo utilizzato come immagine principale
         attribute_edit_permission_is_not_granted: Non hai i diritti per modificare gli attributi della famiglia
+        cant_remove_attribute_used_as_axis: Impossibile rimuovere questo attributo usato come asse variante in una famiglia variante
       meta:
         created: Creato
         created_by: Creato da
@@ -318,12 +344,17 @@ pim_enrich:
       message:
         created: Famiglia creata con successo
       variant:
+        common:
+          title: Attributi comuni
+          empty: Non ci sono attributi comuni
         axis.label: Asse di variante
         level_1.label: Attributi varianti livello uno
         level_2.label: Attributi varianti livello due
         add_variant: Aggiungi variante
         create_label: Crea una nuova famiglia variante
         create_description: In una famiglia variante si può definire una struttura per i prodotti con varianti. Scegli il numero dei livelli di varianti gestite, gli attributi usati come assi varianti e poi definisci come gli attributi vengono distribuiti.
+        update_description: Fai Drag&Drop degli attributi nel livello variante selezionato per avere questi attributi gestiti a livello variante.
+        update_translation: Traduci l'etichetta della famiglia variante
         create: Crea
         cancel: Annulla
         code: Codice
@@ -331,6 +362,12 @@ pim_enrich:
         levels: Livelli varianti
         axis_level: Livello asse variante
         required: richiesto
+        confirm_attribute_removal:
+          title: Conferma la rimozione degli attributi
+          message: Rimuovendo questi attributi li rimetterai tra gli attributi comuni alla famiglia variante e cancellerai i valori dai prodotti varianti
+    family_variant:
+      info:
+        update_successful: Famiglia variante aggiornata correttamente. I prodotti con varianti saranno aggiornati con le modifiche apportate.
     attribute_option:
       code: Codice
       label: Etichetta
@@ -368,6 +405,7 @@ pim_enrich:
         update_failed: L'attributo non può essere aggiornato.
         create_successful: Attributo creato con successo.
         create_failed: L'attributo non può essere creato.
+        field_not_ready: "L'attributo non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}"
       scopable: Customizzazione per canale
       type:
         pim_catalog_identifier: Identificatore
@@ -402,6 +440,7 @@ pim_enrich:
     leave: Sei sicuro di voler lasciare questa pagina?
     discard_changes: Perderai le modifiche a {{ entity }} se lasci la pagina.
     delete_item: Conferma cancellazione
+    remove_item: Conferma rimozione
     remove: Rimuovere
     delete:
       attribute: Sei sicuro di voler rimuovere questo attributo dal prodotto?
@@ -419,9 +458,15 @@ pim_enrich:
   form:
     required: (obbligatorio)
     product_model:
+      choose_product_model: Scegli un modello di prodotto
+      choose_variant: Scegli una variante
       complete_variant_product: prodotto variante
       complete_variant_products: prodotti varianti
       family_variant: Variante
+      product_model: Modello di prodotto
+      flash:
+        product_model_added: Modello di prodotto aggiunto correttamente al modello di prodotto
+        variant_product_added: Prodotto variante correttamente aggiunto al modello di prodotto
     product:
       tab:
         associations:
@@ -430,8 +475,12 @@ pim_enrich:
             none_exist: Nessun tipo di associazione esistente.
             show_products: Visualizza i prodotti
             show_groups: Mostra gruppi
+            number_of_associations: "{{ productCount }} prodotto(i), {{ productModelCount }} modello(i) di prodotto e {{ groupCount }} gruppo(i)"
           association_type_selector: Tipi di associazione
           target: Target
+          manage: Aggiungi associazioni {{ associationType }}
+          manage_description: Seleziona i prodotti che vuoi associare al prodotto corrente
+          add_associations: Aggiungi associazioni
         attributes:
           title: Attributi
           btn:
@@ -445,10 +494,12 @@ pim_enrich:
             load_more: Carica ulteriori risultati...
           attribute_group_selector: Gruppo attributi
           attribute_group_all: Tutti
+          attribute_group.to_fill_count: "{1}1 attributo obbligatorio mancante|]1, Inf [{{ count }} attributi obbligatori mancanti"
           attribute_filter:
             display: Mostra
             all: Tutti gli attributi
             missing_required: Tutti gli attributi richiesti mancanti
+            at_this_level: Tutti gli attributi specifici di livello
         categories:
           title: Categorie
       panel:
@@ -544,6 +595,8 @@ pim_enrich:
           title: Cronologia
     family_variant:
       tab:
+        attributes:
+          title: Attributi varianti
         labels:
           title: Traduzioni etichetta
     attribute_option:
@@ -824,6 +877,8 @@ pim_enrich:
             ">=": Completa almeno una delle impostazioni internazionali selezionate
             "GREATER OR EQUALS THAN ON ALL LOCALES": Completo su tutte le impostazione internazionali selezionate
             LOWER THAN ON ALL LOCALES: Non completo su tutte le impostazione internazionali selezionate
+            AT LEAST COMPLETE: Almeno un prodotto figlio completo in una impostazione locale selezionata
+            ALL COMPLETE: Tutti i prodotti figli completo in un'unica impostazione locale selezionata
           empty_selection: Seleziona una famiglia
         category:
           title: Categoria
@@ -899,6 +954,9 @@ pim_enrich:
         title: Proprietà
       global_settings:
         title: Impostazioni Globali
+  mass_edit_action:
+    edit_common_attributes:
+      description: Solo gli attributi appartenenti alle famiglie dei prodotti selezionati verranno modificati con i seguenti dati per le impostazioni internazionali di <span class="highlight">{{ locale }}</span> e il canale di <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
       title: "] -Inf, 1] {{ count }} tipo di associazione|] 1, Inf [{{ count }} tipi di associazione"
@@ -987,6 +1045,14 @@ pim_enrich:
           label_count: "{1}Cambia lo stato di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Cambia lo stato di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
           description: Gli articoli selezionati saranno attivati o disattivati.
           field: Per attivare
+        edit_common:
+          label: Modifica valori degli attributi
+          label_count: "{1}Modifica valori degli attributi di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Modifica valori degli attributi di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
+          description: Solo gli attributi appartenenti alle famiglie dei prodotti selezionati saranno modificati con i seguenti dati per le impostazioni internazionali {{ locale }} e il canale {{ scope }}.
+        add_attribute_value:
+          label: Aggiungi valori di attributi
+          label_count: "{1}Aggiungi valori degli attributi per <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Aggiungi valori di attributi per <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
+          description: Solo gli attributi multivalore appartenenti alle famiglie di prodotti saranno modificati con i dati seguenti per le impostazioni locali {{ locale }} e per il canale {{ scope }}. I valori degli attributi sono aggiunti, i valori precedenti sono mantenuti.
         change_family:
           label: Cambia famiglia
           label_count: "{1}Modifica la famiglia di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Modifica la famiglia di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
@@ -1000,13 +1066,28 @@ pim_enrich:
         add_to_category:
           label: Aggiungi alle categorie
           label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> to categories|] 1, Inf [Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> to categories"
+          description: I prodotti saranno classificati nelle seguenti categorie, la classificazione esistente sarà mantenuta.
         move_to_category:
           label: Sposta tra categorie
           label_count: "{1}Sposta <span class=\"AknFullPage-title--highlight\">1 prodotto</span> between categories|] 1, Inf [Sposta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> between categories"
+          description: I prodotti saranno classificati nelle seguenti categorie, la classificazione esistente sarà persa.
         remove_from_category:
           label: Rimuovi dalle categorie
           label_count: "{1}Rimuovi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> from categories|] 1, Inf [Rmuovi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> from categories"
           description: I prodotti verranno rimossi dalle seguenti categorie.
+        add_to_existing_product_model:
+          label: Aggiungere ad un modello di prodotto esistente
+          label_count: "{1}Aggiungere <span class=\"AknFullPage-title--highlight\">1 prodotto</span> ad un modello di prodotto esistente|] 1, Inf [Aggiungere <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> ad un modello di prodotto esistente"
+          description: Il modello di prodotto selezionato raccoglierà i prodotti e permetterà l'arricchimento delle loro proprietà comuni.
+        associate_to_product_and_product_model:
+          label: Associa
+          label_count: "{1}Associa <span class=\"AknFullPage-title--highlight\">1 prodotto</span> a prodotti o modelli di prodotto|] 1, Inf [Associa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> a prodotti o modelli di prodotto"
+          description: I prodotti selezionati nella griglia saranno associati ai prodotti e modelli di prodotto selezionati per il tipo di associazione scelta
+          validate: Aggiungere l'associazione prima di procedere al passaggio successivo
+        change_parent_product_model:
+          label: Modifica il modello di prodotto padre
+          label_count: "{1}Modifica il modello di prodotto padre di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Modifica modello di prodotto padre di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
+          description: Il padre dei prodotti varianti o sotto-modelli di prodotto selezionati nella griglia saranno modificati al modello di prodotto scelto.
     family:
       title: Azione di massa sulle famiglie
       confirm: "{1}Si sta per aggiornare una famiglia con le informazioni seguenti, confermare.|] 1, Inf [Si stanno per aggiornare {{ itemsCount }} famiglie con le informazioni seguenti, confermare."
@@ -1036,6 +1117,7 @@ page_title:
   pim_enrich_attributegroup_index: Gruppi di attributi
   pim_enrich_attributegroup_create: Gruppi di attributo | Crea
   pim_enrich_attributegroup_edit: Gruppo attributi {{ group.label }} | Modifica
+  pim_enrich_catalog_volume_index: Monitoraggio del volume di catalogo
   pim_enrich_categorytree_index: Albero della categoria
   pim_enrich_categorytree_create: Strutture di categoria | Crea
   pim_enrich_categorytree_edit: Albero di categoria {{ category.label }} | Modifica
@@ -1077,28 +1159,54 @@ batch_jobs:
     label: Modifica un valore di prodotto
     perform:
       label: Modifica un valore di prodotto
+  add_to_group:
+    label: Aggiungi a gruppo
+    perform:
+      label: Aggiungi a gruppo
   edit_common_attributes:
     label: Modificare gli attributi
     perform:
       label: Modificare gli attributi
+    cleaner:
+      label: Pulisci i file per gli attributi
+  add_to_category:
+    label: Aggiungi a categoria
+    perform:
+      label: Aggiungi a categoria
+  move_to_category:
+    label: Sposta a categoria
+    perform:
+      label: Sposta a categoria
+  add_association:
+    label: Associa
+    perform:
+      label: Associa
+  add_to_existing_product_model:
+    label: Aggiungere ad un modello di prodotto esistente
+    perform:
+      label: Aggiungere ad un modello di prodotto esistente
   set_attribute_requirements:
     label: Imposta i requisiti degli attributi
     perform:
       label: Imposta i requisiti degli attributi
   csv_product_quick_export:
     quick_export.label: Esportazione rapida prodotti in Csv
+    quick_export_product_model.label: Esportazione rapida modelli di prodotto in CSV
     perform:
       label: Esportazione rapida prodotti in Csv
   csv_product_grid_context_quick_export:
     quick_export.label: Esportazione rapida prodotti in Csv presenti nel contesto griglia
+    quick_export_product_model.label: Esportazione rapida contesto di griglia dei modelli di prodotto in CSV
     perform:
       label: Esportazione rapida prodotti in Csv presenti nel contesto griglia
   xlsx_product_quick_export:
     quick_export.label: Esportazione rapida prodotti in XLSX
+    quick_export_product_model.label: Esportazione rapida modelli di prodotto in XLSX
     perform:
       label: Esportazione rapida prodotti in XLSX
   xlsx_product_grid_context_quick_export:
     quick_export.label: Esportazione rapida prodotti in XLSX presenti nel contesto griglia
+    quick_export_product_model.label: Esportazione rapida contesto di griglia dei modelli di prodotto in XLSX
     perform:
       label: Esportazione rapida prodotti in XLSX presenti nel contesto griglia
   csv_product_export:
@@ -1155,6 +1263,8 @@ batch_jobs:
     label: Importazione famiglie in CSV
     validation.label: Validazione del file
     import.label: Importazione famiglie
+    compute_data_related_to_family_variants.label: Calcolare dati di modelli di prodotto
+    compute_data_related_to_family_products.label: Calcola dati di prodotto
   csv_family_variant_import:
     label: Importazione famiglia variante in CSV
     validation.label: Validazione del file
@@ -1218,6 +1328,8 @@ batch_jobs:
     label: Importazione famiglie in XLSX
     validation.label: Validazione del file
     import.label: Importazione famiglie
+    compute_data_related_to_family_variants.label: Calcolare dati di modelli di prodotto
+    compute_data_related_to_family_products.label: Calcola dati di prodotto
   xlsx_family_variant_import:
     label: Importazione famiglia variante in XLSX
     validation.label: Validazione del file
@@ -1310,6 +1422,9 @@ pim_menu:
     exports: Esportazioni
     settings: Impostazioni
     system: Sistema
+    help:
+      title: Aiuto
+      helper: Help Center Akeneo
   item:
     association_type: Tipi di associazione
     attribute: Attributi
@@ -1323,12 +1438,14 @@ pim_menu:
     group_type: Tipi di gruppo
     locale: Impostazioni locali
     product: Articoli
+    product_model: Modelli di prodotto
     published_product: Prodotti Pubblicati
     export_history: Cronologia esportazioni
     export_profile: Profili di esportazione
     import_history: Cronologia importazioni
     import_profile: Profili di importazione
     configuration: Configurazione
+    catalog_volume: Monitoraggio del volume di catalogo
     user_management: Gestione degli utenti
     user: Utenti
     user_group: Gruppi
@@ -1349,11 +1466,31 @@ pim_notification:
   no_notifications: Nessuna notifica
   loading: Caricamento in corso...
 catalog_volume:
+  product_values: "Hai <span>{{values}}</span> valori di prodotto nel tuo PIM! In media sono <span>{{average}}</span> valori di prodotto per prodotto!&nbsp;💪"
+  product_values_description: 'Più dati di prodotto hai, più valore ha il tuo PIM, più alto è il tuo ROI! Maggiori dettagli <a href="{{link}}" target="_blank">qui</a>'
+  section:
+    product_values:
+      hint: 'Sapevi che il numero totale di valori di prodotto nel tuo PIM è direttamente collegato agli assi seguenti?<br/>Per avere più dettagli, vi invitiamo a <a href="{{link}}" target="_blank">leggere questo articolo</a>.'
+      title: Assi che influenzano il numero di valori di prodotto
+    catalog_structure:
+      hint: Potresti sapere che una buona struttura di catalogo è davvero importante ed è una condizione per un arricchimento efficiente. Qui sotto ci sono i vari assi per monitorare la struttura del tuo catalogo.
+      title: Assi correlati alla struttura di catalogo
+    variant_modelling:
+      hint: Se stai usando la modellazione variante, qui ci sono gli assi per aiutarti a monitorare il volume.
+      title: Assi relativi alla modellazione di varianti
   axis:
     count_products: Articoli
+    average_max_attributes_per_family: Attributi per famiglia
     count_channels: Canali
+    count_locales: Impostazioni locali (attivate)
+    count_scopable_attributes: Attributi personalizzabili per canale
+    count_localizable_and_scopable_attributes: Attributi localizzabili e personalizzabili per canale
+    count_localizable_attributes: Attributi localizzabili
     count_families: Famiglie
     count_attributes: Attributi
+    average_max_options_per_attribute: Opzioni per attributo
     count_categories: Categorie
     count_category_trees: Albero della categoria
+    count_variant_products: Prodotti varianti
     count_product_models: Modelli di prodotto
+    warning: Wow! Hai raggiunto il record con questo asse! Non esitare a contattarci se hai bisogno di aiuto con questo tipo di volume.

@@ -19,6 +19,8 @@ pim_enrich:
       attribute.title: Attributi
       history.title: Cronologia
   family:
+    info:
+      cant_remove_attribute_used_as_axis: Impossibile rimuovere questo attributo usato come asse variante in una famiglia variante
     tab:
       property.title: Proprietà
       attribute.title: Attributi
@@ -89,6 +91,7 @@ pim_enrich:
       description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni di localizzazione selezionate.
       empty: Si prega di selezionare l'attributo/gli attributi che si desidera modificare
       success_flash: È in corso l'aggiornamento dello stato del prodotto/dei prodotti
+      launched_flash: L'azione di massa "modifica attributi" è stata lanciata. Sarai avvisato quando è completata.
       message:
         warning: Non esiste un attributo in comune per i prodotti selezionati. Si prega di cambiare la selezione.
         invalid_attribute: L'attributo con codice "attribute_code" non è comune ai prodotti selezionati, attributo saltato.
@@ -145,6 +148,8 @@ pim_enrich:
       add_attribute: Aggiungere un attributo ad un articolo
       remove_attribute: Rimuovere un attributo da un articolo
       categories_view: Consultare le categorie di un articolo
+      associations_view: Visualizza le associazioni di un prodotto
+      associations_edit: Aggiungi associazioni ad un prodotto
       change_family: Cambia la famiglia dell'articolo
       change_state: Cambia lo stato dell'articolo
       add_to_groups: Aggiungi l'articolo ai gruppi
@@ -153,9 +158,11 @@ pim_enrich:
       download: Scarica il prodotto in formato PDF
       history: Visualizza lo storico del prodotto
     product_model:
+      create: Crea un modello di prodotto
       edit_attributes: Modifica gli attributi di modello di prodotto
       categories_view: Consulta le categorie di un modello di prodotto
       history: Visualizza la cronologia del modello di prodotto
+      remove: Rimuovi un modello di prodotto
     category:
       list: Lista Categorie
       create: Creare una categoria
@@ -178,6 +185,8 @@ pim_enrich:
       edit_attributes: Modificare gli attributi di una famiglia
       remove: Rimuovere una famiglia
       history: Visualizza lo storico della famiglia
+    family_variant:
+      remove: Rimuovi una famiglia variante
     attribute_group:
       index: Elenco attributi di gruppo
       create: Crea un gruppo attributi
@@ -211,6 +220,8 @@ pim_enrich:
       edit: Modifica un tipo di associazione
       remove: Rimuovi un tipo di associazione
       history: Visualizza lo storico del tipo di associazione
+    association:
+      remove: Rimuovi associazioni da un prodotto
     job_tracker:
       index: Visualizza il tracker di processo
     api_connection:
@@ -232,6 +243,11 @@ pim_enrich:
     empty_value:
       reference_data_type:
         label: Sceglii il tipo di dati di riferimento
+  notification:
+    settings:
+      remove_completeness_for_channel_and_locale:
+        start: Le impostazioni locali sono stati rimossi dal canale. Stiamo eliminando i dati di completezza collegati.
+        done: Rimozione delle impostazioni locali per il canale completata.
 attribute:
   title: attributo
   edit: Modifica attributo
@@ -329,6 +345,7 @@ confirmation:
     attribute group: Sei sicuro di voler eliminare il gruppo attributi %name%?
     category: Sei sicuro di voler eliminare la categoria %name%?
     family: Sei sicuro di voler eliminare la famiglia %name%?
+    family_variant: Sei sicuro di volere eliminare la famiglia variante %name%?
     product: Sei sicuro di voler eliminare l'articolo %name%?
     group: Sei sicuro di voler eliminare il gruppo %name%?
     group type: Sei sicuro di voler eliminare il gruppo %name%?
@@ -479,6 +496,7 @@ Useable as grid column: Utilizzabile come colonna della griglia
 Useable as grid filter: Utilizzabile nella griglia
 Family: Famiglia
 Image: Immagine
+Variant products: Prodotti varianti
 Available locales: Impostazioni locali disponibili
 Locale specific: Impostazioni locali specifiche
 default: Predefinito
@@ -749,17 +767,24 @@ pim_mass_edit:
       error: Esportazione rapida <strong>%label%</strong> non riuscita
       warning: Esportazione rapida <strong>%label%</strong> completata con alcuni avvisi
       success: Esportazione rapida <strong>%label%</strong> completata
+    mass_delete:
+      error: Eliminazione di massa di <strong>%label%</strong> non riuscita
+      warning: Eliminazione di massa di <strong>%label%</strong> completata con alcuni avvisi
+      success: Eliminazione di massa di <strong>%label%</strong> completata
 job_execution.summary:
   mass_edited: Azione di massa modificata
   skip: Saltato
   skipped_products: Prodotti saltati
   skipped_attributes: Attributi saltati
   skipped_families: Famiglie saltate
+  deleted_products: Prodotti eliminati
+  deleted_product_models: Modelli di prodotto eliminati
 pim_mass_edit_execution_show: Esecuzione modifiche di massa | Dettagli
 edit_common_attributes.steps.edit_common_attributes_processor.title: Modificare gli attributi
 update_product_value.steps.update_product_value_processor.title: Modifica un valore di prodotto
 remove_product_value.steps.update_product_value_processor.title: Rimuovi un valore di prodotto
 edit_common_attributes: Modificare gli attributi
+edit_common_attributes_clean: Pulisci i file per gli attributi
 perform.steps.duplicated.title: Dimensione Duplicata
 perform.steps.excluded.title: Prodotto escluso
 batch_jobs:
@@ -771,10 +796,34 @@ batch_jobs:
     label: Modifica un valore di prodotto
     perform:
       label: Modifica un valore di prodotto
+  add_attribute_value:
+    label: Aggiungi valore attributi
+    perform:
+      label: Aggiungi valore attributi
   edit_common_attributes:
     label: Modificare gli attributi
     perform:
       label: Modificare gli attributi
+    clean:
+      label: Pulisci i file per gli attributi
+    cleaner:
+      label: Pulisci i file per gli attributi
+  add_to_category:
+    label: Aggiungi a categoria
+    perform:
+      label: Aggiungi a categoria
+  move_to_category:
+    label: Sposta a categoria
+    perform:
+      label: Sposta a categoria
+  add_association:
+    label: Associa
+    perform:
+      label: Associa
+  add_to_existing_product_model:
+    label: Aggiungere ad un modello di prodotto esistente
+    perform:
+      label: Aggiungere ad un modello di prodotto esistente
   set_attribute_requirements:
     label: Imposta i requisiti degli attributi
     perform:
@@ -795,6 +844,11 @@ batch_jobs:
     quick_export.label: Esportazione rapida prodotti in Xlsx presenti nel contesto griglia
     perform:
       label: Esportazione rapida prodotti in Xlsx presenti nel contesto griglia
+  delete_products_and_product_models:
+    delete_products_and_product_models.label: Eliminazione in massa prodotti
+  change_parent_product:
+    perform:
+      label: Modifica il modello di prodotto padre
 mass_edit report:
   overview: Modifica di massa dei report
 job_tracker:

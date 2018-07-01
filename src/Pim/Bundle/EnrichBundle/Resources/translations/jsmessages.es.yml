@@ -46,6 +46,8 @@ flash:
     removed: Grupo de atributos eliminado correctamente
   family:
     removed: Familia eliminada correctamente
+  family_variant:
+    removed: Variante de familia removida exitosamente
   product:
     removed: Producto eliminado correctamente
   product_model:
@@ -249,6 +251,7 @@ pim_enrich:
         deletion_successful: Modelo del producto eliminado con éxito.
         update_failed: El modelo de producto no pudo ser actualizado.
         field_not_ready: "El modelo de producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}"
+      read_only_parent_attribute_from_common: Dicho atributo puede ser actualizado en los atributos comunes.
       variant_axis: Eje variante
       title: modelos de productos
       add_child:
@@ -1007,10 +1010,12 @@ pim_enrich:
     confirm: Confirmar
     product:
       title: Productos de acción masiva
+      confirm: "{1}Usted está a punto de actualizar un producto con la siguiente información, por favor confirmar. |] 1, Inf. [Usted está a punto de actualizar {{ itemsCount }} productos con la siguiente información, por favor confirmar."
       step:
         select:
           label: Elegir productos
         choose:
+          title: Acciones masivas sobre los productos
           label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
@@ -1030,21 +1035,35 @@ pim_enrich:
           description: Se editarán sólo los atributos pertenecientes a las familias de los productos seleccionados con los siguientes datos para el local {{ locale }} y el canal de {{ scope }}.
         change_family:
           label: Cambiar familia
+          label_count: "{1}Cambiar la familia de <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Cambiar la famlia de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: La familia de los productos seleccionados se cambiará a la familia elegida
           field: Familia
         add_to_group:
           label: Agregar a grupos
+          label_count: "{1}Agregar <span class=\"AknFullPage-title--highlight\"> 1 producto</span> a grupos |] 1, Inf [agregar <span class=\"AknFullPage-title--highlight\"> productos{{ itemsCount }}</span> a grupos"
           description: Seleccione los grupos en los cuales agregará los productos seleccionados
           field: Grupos
         add_to_category:
           label: Agregar a categorias
+          label_count: "{1}Agregar <span class=\"AknFullPage-title--highlight\"> 1 producto</span> a categorías |] 1, Inf [Agregar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a categorías"
+        move_to_category:
+          label: Mover entre categorias
+          label_count: "{1}Mover <span class=\"AknFullPage-title--highlight\"> 1 producto</span> entre categorías |] 1, Inf [Mover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> entre categorías"
         remove_from_category:
+          label: Eliminar de las categorías
+          label_count: "{1}Remover <span class=\"AknFullPage-title--highlight\">1 producto</span> de categorías|] 1, Inf [Remover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> de categorías"
           description: Se eliminarán los productos de las siguientes categorías.
+        add_to_existing_product_model:
+          label: Agregar a un modelo de producto existente
+          label_count: "{1}Agregar <span class=\"AknFullPage-title--highlight\">1 producto</span> a un modelo de producto existente|] 1, Inf [Agregar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a un modelo de producto existente"
+          description: El modelo de producto seleccionado reunirá los productos y permitirá el enrequecimiento de sus propiedades comunes.
     family:
+      title: Acción masiva sobre las familias
       step:
         select:
           label: Elija familias
         choose:
+          title: Acción masiva sobre las familias
           label_count: "] 0, Inf [Seleccione su acción"
         configure:
           label: Configurar
@@ -1052,6 +1071,9 @@ pim_enrich:
           label: Confirmar
         launched:
           label: La acción en masa "{{ operation }}" ha sido lanzada. Será notificado una vez finalizada.
+      operation:
+        set_requirements:
+          label: Establecer los requisitos de atributos
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
   http:
@@ -1060,24 +1082,37 @@ page_title:
   oro_default: Cartelera
   pim_enrich_attributegroup_index: Grupos de atributos
   pim_enrich_attributegroup_create: Grupos de Atributos | Crear
+  pim_enrich_attributegroup_edit: Grupo de atributo {{ group.label }} | Editar
   pim_enrich_categorytree_index: Árbol de categoría
   pim_enrich_categorytree_create: Árboles de categoría | Crear
+  pim_enrich_categorytree_edit: Árbol de categoría {{ category.label }} | Editar
   pim_enrich_categorytree_create_tree: Árboles de categoría | Crear
   pim_enrich_attribute_index: Atributos
   pim_enrich_attribute_create: Atributos | Crear
+  pim_enrich_attribute_edit: Atributo {{ attribute.label }} | Editar
   pim_enrich_product_index: Productos
+  pim_enrich_product_edit: Producto {{ product.label }} | Editar
+  pim_enrich_product_model_edit: Modelo del producto {{ product.label }} | Editar
   pim_enrich_family_index: Familias
+  pim_enrich_family_edit: Familia {{ family.label }} | Editar
   pim_enrich_channel_index: Canales
   pim_enrich_channel_create: Canales | Crear
+  pim_enrich_channel_edit: Canal {{ channel.label }} | Editar
   pim_enrich_currency_index: Monedas
   pim_enrich_locale_index: Locales
   pim_enrich_group_index: Grupos
+  pim_enrich_group_edit: Grupo {{ group.label }} | Editar
   pim_enrich_associationtype_index: Tipos de asociaciones
+  pim_enrich_associationtype_edit: Tipo de asociación {{ association type.label }} | Editar
   pim_enrich_grouptype_index: Tipos de grupo
+  pim_enrich_grouptype_edit: Tipo de grupo {{ group type.label }} | Editar
   pim_enrich_mass_edit_action_choose: Edición masiva | Seleccionar
   pim_enrich_mass_edit_action_configure: Edición masiva | Configurar
+  pim_enrich_mass_edit_action_perform: Edición masiva | Realizar
   pim_enrich_job_tracker_index: Seguimiento de procesos
   pim_enrich_job_tracker_show: Seguimiento de procesos | Ver el trabajo
+  pim_enrich_api_connection_index: Conexiones API
+  pim_enrich_api_connection_create: Conexiones API | Crear
   pim_enrich_mass_edit_action: Edición en masa
   pim_analytics_system_info_index: Información del sistema
 batch_jobs:
@@ -1093,6 +1128,14 @@ batch_jobs:
     label: Editar atributos
     perform:
       label: Editar atributos
+  add_to_existing_product_model:
+    label: Agregar a un modelo de producto existente
+    perform:
+      label: Agregar a un modelo de producto existente
+  set_attribute_requirements:
+    label: Establecer los requisitos de atributos
+    perform:
+      label: Establecer los requisitos de atributos
   csv_product_export:
     label: Exportar productos a CSV
     export.label: Exportar productos
@@ -1311,6 +1354,7 @@ pim_menu:
     user_role: Roles
     info: Información del sistema
     job_tracker: Seguimiento de procesos
+    api_connection: Conexiones API
   navigation:
     activity: Actividad de navegación
     system: Sistema de navegación
