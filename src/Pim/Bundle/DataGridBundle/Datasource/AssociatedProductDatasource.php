@@ -72,12 +72,12 @@ class AssociatedProductDatasource extends ProductDatasource
         $from = null !== $this->getConfiguration('from', false) ?
             (int) $this->getConfiguration('from', false) : 0;
 
-        $associatedProductsIdentifiersFromParent = [];
-        $associatedProductModelsIdentifiersFromParent = [];
+        $associatedProductsIdsFromParent = [];
+        $associatedProductModelsIdsFromParent = [];
         $parentAssociation = $this->getParentAssociation($sourceProduct, $this->getConfiguration('association_type_id'));
         if (null !== $parentAssociation) {
-            $associatedProductsIdentifiersFromParent = $this->getAssociatedProductIdentifiers($parentAssociation);
-            $associatedProductModelsIdentifiersFromParent = $this->getAssociatedProductModelIdentifiers($parentAssociation);
+            $associatedProductsIdsFromParent = $this->getAssociatedProductIds($parentAssociation);
+            $associatedProductModelsIdsFromParent = $this->getAssociatedProductModelIds($parentAssociation);
         }
 
         $associatedProducts = $this->getAssociatedProducts(
@@ -103,14 +103,14 @@ class AssociatedProductDatasource extends ProductDatasource
 
         $normalizedAssociatedProducts = $this->normalizeProductsAndProductModels(
             $associatedProducts,
-            $associatedProductsIdentifiersFromParent,
+            $associatedProductsIdsFromParent,
             $locale,
             $scope
         );
 
         $normalizedAssociatedProductModels = $this->normalizeProductsAndProductModels(
             $associatedProductModels,
-            $associatedProductModelsIdentifiersFromParent,
+            $associatedProductModelsIdsFromParent,
             $locale,
             $scope
         );
@@ -222,7 +222,7 @@ class AssociatedProductDatasource extends ProductDatasource
 
     /**
      * @param CursorInterface $products
-     * @param array           $identifiersFromInheritance
+     * @param array           $idsFromInheritance
      * @param string          $locale
      * @param string          $scope
      *
@@ -230,7 +230,7 @@ class AssociatedProductDatasource extends ProductDatasource
      */
     protected function normalizeProductsAndProductModels(
         CursorInterface $products,
-        array $identifiersFromInheritance,
+        array $idsFromInheritance,
         $locale,
         $scope
     ) {
@@ -258,13 +258,7 @@ class AssociatedProductDatasource extends ProductDatasource
                 ]
             );
 
-            if ($product instanceof ProductModelInterface) {
-                $identifier = $product->getCode();
-            } else {
-                $identifier = $product->getIdentifier();
-            }
-
-            $normalized['from_inheritance'] = in_array($identifier, $identifiersFromInheritance);
+            $normalized['from_inheritance'] = in_array($product->getId(), $idsFromInheritance);
 
             $data[] = new ResultRecord($normalized);
         }
