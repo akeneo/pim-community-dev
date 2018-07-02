@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\UnitOfWork;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 
 /**
@@ -31,7 +32,11 @@ class FamilyAttributeRequirementUpdateGuesser implements UpdateGuesserInterface
         $updatedEntities = [];
 
         if ($entity instanceof AttributeRequirement) {
-            $updatedEntities[] = $entity->getFamily();
+            $family = $entity->getFamily();
+
+            if ($em->getUnitOfWork()->getEntityState($family) === UnitOfWork::STATE_MANAGED) {
+                $updatedEntities[] = $entity->getFamily();
+            }
         }
 
         return $updatedEntities;
