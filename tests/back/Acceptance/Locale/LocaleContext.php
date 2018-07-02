@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Locale;
 
-use Akeneo\Test\Common\Builder\EntityBuilder;
 use Akeneo\Test\Acceptance\Common\ListOfCodes;
+use Akeneo\Test\Common\EntityBuilder;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 

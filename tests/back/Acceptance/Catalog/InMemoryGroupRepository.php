@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Catalog;
 
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Component\Catalog\Model\GroupInterface;
@@ -28,7 +28,7 @@ class InMemoryGroupRepository implements GroupRepositoryInterface, SaverInterfac
 
     public function save($group, array $options = [])
     {
-        if(!$group instanceof GroupInterface) {
+        if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException('Only group objects are supported.');
         }
         $this->groups->set($group->getCode(), $group);

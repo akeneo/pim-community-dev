@@ -314,10 +314,26 @@ class Product implements ArrayConverterInterface
             }
         }
 
-        if (0 < count($unknownFields)) {
-            $message = count($unknownFields) > 1 ? 'The fields "%s" do not exist' : 'The field "%s" does not exist';
+        $nonLocalizableOrScopableFields = $this->filterNonLocalizableOrScopableFields($unknownFields);
+        $unknownFields = array_diff($unknownFields, $nonLocalizableOrScopableFields);
 
-            throw new StructureArrayConversionException(sprintf($message, implode(', ', $unknownFields)));
+        $messages = [];
+        if (0 < count($unknownFields)) {
+            $messages[] = count($unknownFields) > 1 ?
+                sprintf('The fields "%s" do not exist.', implode(', ', $unknownFields)) :
+                sprintf('The field "%s" does not exist.', $unknownFields[0]);
+        }
+        foreach ($nonLocalizableOrScopableFields as $nonLocalizableOrScopableField) {
+            $messages[] = sprintf('The field "%s" needs an additional locale and/or a channel information; '.
+                'in order to do that, please set the code as follow: '.
+                '\'%s-[locale_code]-[channel_code]\'.',
+                $nonLocalizableOrScopableField,
+                $nonLocalizableOrScopableField
+            );
+        }
+
+        if (count($messages) > 0) {
+            throw new StructureArrayConversionException(join(' ', $messages));
         }
     }
 
@@ -351,5 +367,37 @@ class Product implements ArrayConverterInterface
         }
 
         return $this->optionalAssocFields;
+    }
+
+    /**
+     * This method filters a list of fields (attribute codes) to return only the existing attributes
+     * that are scopable or localizable.
+     *
+     * @param string[]  $attributeCodes
+     * @return string[]
+     */
+    private function filterNonLocalizableOrScopableFields(array $attributeCodes): array
+    {
+        $result = [];
+        if (count($attributeCodes) === 0) {
+            return $result;
+        }
+
+        $attributes = $this->attributeRepository->findBy(['code' => $attributeCodes]);
+        foreach ($attributeCodes as $attributeCode) {
+            $found = false;
+            foreach ($attributes as $attribute) {
+                if ($attribute->getCode() === $attributeCode &&
+                    ($attribute->isLocalizable() || $attribute->isScopable())
+                ) {
+                    $found = true;
+                }
+            }
+            if ($found === true) {
+                $result[] = $attributeCode;
+            }
+        }
+
+        return $result;
     }
 }

@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Mass associate product
+ * Mass associate
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

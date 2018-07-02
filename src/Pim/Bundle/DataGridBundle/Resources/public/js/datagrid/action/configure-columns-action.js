@@ -62,7 +62,7 @@ define(
             template: _.template(template),
 
             configuratorTemplate: _.template(
-                '<div id="column-configurator" class="AknColumnConfigurator"></div>'
+                '<div id="column-configurator"></div>'
             ),
 
             /**

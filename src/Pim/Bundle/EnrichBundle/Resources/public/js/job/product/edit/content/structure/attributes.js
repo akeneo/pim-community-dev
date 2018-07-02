@@ -108,10 +108,10 @@ define(
                     },
                     allowCancel: true,
                     okCloses: false,
-                    cancelText: __('pim_common.cancel'),
-                    title: __('pim_enrich.export.product.filter.attributes.modal.title'),
+                    cancelText: _.__('pim_common.cancel'),
+                    title: _.__('pim_enrich.export.product.filter.attributes.modal.title'),
                     content: '<div class="AknColumnConfigurator attribute-selector"></div>',
-                    okText: __('pim_common.apply'),
+                    okText: _.__('pim_common.apply'),
                     attributeCount: 0
                 });
 

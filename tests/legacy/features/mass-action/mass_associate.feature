@@ -13,9 +13,9 @@ Feature: Associate many products at once
     When I sort by "ID" value ascending
     Given I select rows Bag, Belt and Hat
     And I press the "Bulk actions" button
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     And I move on to the choose step
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     Given I press the "Add associations" button and wait for modal
     And I check the row "Scarf"
     And the item picker basket should contain Scarf
@@ -35,14 +35,20 @@ Feature: Associate many products at once
     Then the product "1111111240" should have the following associations:
       | type   | products              |
       | X_SELL | 1111111292,1111111304 |
+    When I am on the "1111111171" product page
+    And I visit the "History" column tab
+    Then there should be 2 update
+    And I should see history:
+      | version | property        | before | value                 | date |
+      | 2       | X_SELL-products |        | 1111111292,1111111304 | now  |
 
   Scenario: Mass associate products to product models
     When I sort by "ID" value ascending
     Given I select rows Bag, Belt and Hat
     And I press the "Bulk actions" button
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     And I move on to the choose step
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     Given I press the "Add associations" button and wait for modal
     And I search "juno"
     And I check the row "juno"
@@ -69,9 +75,9 @@ Feature: Associate many products at once
     When I sort by "ID" value ascending
     Given I select rows amor
     And I press the "Bulk actions" button
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     And I move on to the choose step
-    And I choose the "Associate to products" operation
+    And I choose the "Associate" operation
     Given I press the "Add associations" button and wait for modal
     And I check the row "Scarf"
     And the item picker basket should contain Scarf
@@ -82,12 +88,15 @@ Feature: Associate many products at once
     And I should see the text "Sunglasses"
     And I validate mass edit
     And I wait for the "add_association" job to finish
-    Then the product "1111111113" should have the following associations:
+    And the product "1111111113" should have the following associations:
       | type   | products              |
       | X_SELL | 1111111292,1111111304 |
-    Then the product "1111111112" should have the following associations:
+    And the product "1111111112" should have the following associations:
       | type   | products              |
       | X_SELL | 1111111292,1111111304 |
-    Then the product "1111111111" should have the following associations:
+    And the product "1111111111" should have the following associations:
+      | type   | products              |
+      | X_SELL | 1111111292,1111111304 |
+    Then the product model "amor" should have the following associations:
       | type   | products              |
       | X_SELL | 1111111292,1111111304 |

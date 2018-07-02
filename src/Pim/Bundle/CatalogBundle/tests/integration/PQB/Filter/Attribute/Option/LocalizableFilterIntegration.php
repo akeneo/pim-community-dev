@@ -85,7 +85,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testOperatorNotIn()
     {
         $result = $this->executeFilter([['a_localizable_simple_select', Operators::NOT_IN_LIST, ['black'], ['locale' => 'en_US']]]);
-        $this->assert($result, ['product_one']);
+        $this->assert($result, ['empty_product', 'product_one']);
     }
 
     /**

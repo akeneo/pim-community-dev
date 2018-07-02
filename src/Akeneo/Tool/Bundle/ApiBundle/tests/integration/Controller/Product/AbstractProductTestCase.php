@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
@@ -110,7 +111,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $expected = json_decode($expected, true);
 
         if (!isset($result['_embedded'])) {
-            \PHPUnit_Framework_Assert::fail($response->getContent());
+            Assert::fail($response->getContent());
         }
 
         foreach ($result['_embedded']['items'] as $index => $product) {
@@ -121,7 +122,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
             }
         }
 
-        $this->assertEquals($expected, $result);
+        Assert::assertEquals($expected, $result);
     }
 
     /**
@@ -137,6 +138,6 @@ abstract class AbstractProductTestCase extends ApiTestCase
         NormalizedProductCleaner::clean($expectedProduct);
         NormalizedProductCleaner::clean($standardizedProduct);
 
-        $this->assertSame($expectedProduct, $standardizedProduct);
+        Assert::assertSame($expectedProduct, $standardizedProduct);
     }
 }

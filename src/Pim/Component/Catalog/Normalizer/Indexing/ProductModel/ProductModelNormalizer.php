@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductModelNormalizer implements NormalizerInterface
 {
     public const INDEXING_FORMAT_PRODUCT_MODEL_INDEX = 'indexing_product_model';
-    private const FIELD_ATTRIBUTES_IN_LEVEL = 'attributes_for_this_level';
+    private const FIELD_ATTRIBUTES_IN_LEVEL = 'attributes_of_ancestors';
     private const FIELD_DOCUMENT_TYPE = 'document_type';
 
     /** @var NormalizerInterface */
@@ -43,7 +43,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $data = $this->propertiesNormalizer->normalize($productModel, $format, $context);
 
         $data[self::FIELD_DOCUMENT_TYPE] = ProductModelInterface::class;
-        $data[self::FIELD_ATTRIBUTES_IN_LEVEL] = $this->getAttributeCodesForOwnLevel($productModel);
+        $data[self::FIELD_ATTRIBUTES_IN_LEVEL] = $this->getAttributesOfAncestors($productModel);
 
         return $data;
     }
@@ -56,43 +56,33 @@ class ProductModelNormalizer implements NormalizerInterface
         return $data instanceof ProductModelInterface && self::INDEXING_FORMAT_PRODUCT_MODEL_INDEX === $format;
     }
 
-
     /**
-     * Get attribute codes for the product model level.
-     * We index all attribute codes to be able to search product models on attributes with operators like "is empty".
-     *
-     * At the end, we sort to reindex attributes correctly (if index keys are not sorted correctly, ES will throw an exception)
+     * Get attribute codes of the product model ancestors
      *
      * @param ProductModelInterface $productModel
      *
      * @return array
      */
-    private function getAttributeCodesForOwnLevel(ProductModelInterface $productModel): array
+    private function getAttributesOfAncestors(ProductModelInterface $productModel): array
     {
-        $attributeCodes = array_keys($productModel->getRawValues());
-
-        $variationLevel = $productModel->getVariationLevel();
-
-        if (ProductModel::ROOT_VARIATION_LEVEL === $variationLevel) {
-            $familyAttributes = $productModel->getFamilyVariant()->getCommonAttributes()->toArray();
-        } else {
-            $attributeSet = $productModel->getFamilyVariant()->getVariantAttributeSet($variationLevel);
-
-            if (null === $attributeSet) {
-                return $attributeCodes;
-            }
-
-            $familyAttributes = array_merge($attributeSet->getAttributes()->toArray(), $attributeSet->getAxes()->toArray());
+        if (null === $productModel->getFamilyVariant()) {
+            return [];
         }
 
-        $familyAttributesCodes = array_map(function (AttributeInterface $attribute) {
-            return $attribute->getCode();
-        }, $familyAttributes);
+        if (ProductModel::ROOT_VARIATION_LEVEL === $productModel->getVariationLevel()) {
+            return [];
+        }
 
-        $attributeCodes = array_unique(array_merge($familyAttributesCodes, $attributeCodes));
+        $attributesOfAncestors = $productModel->getFamilyVariant()
+            ->getCommonAttributes()
+            ->map(
+                function (AttributeInterface $attribute) {
+                    return $attribute->getCode();
+                }
+            )->toArray();
 
-        sort($attributeCodes);
+        sort($attributesOfAncestors);
 
-        return $attributeCodes;
+        return $attributesOfAncestors;
     }
 }

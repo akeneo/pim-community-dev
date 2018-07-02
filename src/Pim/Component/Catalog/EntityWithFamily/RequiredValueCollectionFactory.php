@@ -35,17 +35,13 @@ class RequiredValueCollectionFactory
         foreach ($this->filterRequirementsByChannel($family, $channel) as $attributeRequirement) {
             foreach ($attributeRequirement->getChannel()->getLocales() as $locale) {
                 if ($attributeRequirement->isRequired()) {
-                    $channel = $attributeRequirement->getChannel();
-
                     $attribute = $attributeRequirement->getAttribute();
+
                     if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
                         continue;
                     }
 
-                    $channelCode = $attribute->isScopable() ? $channel->getCode() : null;
-                    $localeCode = $attribute->isLocalizable() ? $locale->getCode() : null;
-
-                    $requiredValues[] = new RequiredValue($attribute, $channelCode, $localeCode);
+                    $requiredValues[] = new RequiredValue($attribute, $attributeRequirement->getChannel(), $locale);
                 }
             }
         }

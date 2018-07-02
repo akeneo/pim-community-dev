@@ -6,6 +6,7 @@ namespace Akeneo\Test\Common;
  * Object that represent a directory path from the root directory of this application.
  *
  * For instance new (Path('foo', 'bar')); will return /application/root/directory/foo/bar
+ * Beware, those Path may not exist yet on the filesystem. That's why realpath is not used here.
  */
 final class Path
 {
@@ -41,14 +42,7 @@ final class Path
      */
     public function absolutePath(): string
     {
-        $absolutePath = sprintf(
-            '%s%s%s',
-            $this->rootDirectory(),
-            DIRECTORY_SEPARATOR,
-            $this->relativePath()
-        );
-
-        return $absolutePath;
+        return $this->rootDirectory() . $this->relativePath();
     }
 
     /**

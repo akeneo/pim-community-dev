@@ -56,7 +56,7 @@ class TextFilterType extends AbstractType
             self::TYPE_NOT_CONTAINS => $this->translator->trans('oro.filter.form.label_type_not_contains'),
             self::TYPE_EQUAL        => $this->translator->trans('oro.filter.form.label_type_equals'),
             self::TYPE_STARTS_WITH  => $this->translator->trans('oro.filter.form.label_type_start_with'),
-            self::TYPE_EMPTY  => $this->translator->trans('oro.filter.form.label_type_empty'),
+            self::TYPE_EMPTY        => $this->translator->trans('oro.filter.form.label_type_empty'),
         ];
 
         $resolver->setDefaults(

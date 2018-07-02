@@ -64,6 +64,8 @@ class PimCatalogFamilyVariantIntegration extends AbstractPimCatalogProductModelI
         $this->assertDocument(
             $productsFound,
             [
+                'camera_nikon',
+                'empty_product',
                 'model-tshirt-unique-size',
                 'tshirt-unique-size-blue',
                 'tshirt-unique-size-red',
@@ -89,7 +91,11 @@ class PimCatalogFamilyVariantIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertDocument($productsFound, ['watch']);
+        $this->assertDocument($productsFound, [
+            'camera_nikon',
+            'empty_product',
+            'watch'
+        ]);
     }
 
     public function test_pqb_is_able_to_search_products_and_product_models_which_have_a_family_variant()

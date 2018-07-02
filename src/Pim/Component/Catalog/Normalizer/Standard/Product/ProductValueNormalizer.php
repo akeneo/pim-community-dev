@@ -28,7 +28,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * {@inheritdoc}
      */
-    public function setSerializer(SerializerInterface $serializer)
+    public function setSerializer(SerializerInterface $serializer): void
     {
         $this->serializer = $serializer;
     }
@@ -36,7 +36,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * {@inheritdoc}
      */
-    public function normalize($entity, $format = null, array $context = [])
+    public function normalize($entity, $format = null, array $context = []): array
     {
         $isCollection = $entity instanceof OptionsValueInterface
             || $entity instanceof PriceCollectionValueInterface
@@ -55,7 +55,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ValueInterface && 'standard' === $format;
     }
@@ -67,7 +67,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      *
      * @return array
      */
-    protected function getCollectionValue(ValueInterface $value, $format = null, array $context = [])
+    protected function getCollectionValue(ValueInterface $value, ?string $format = null, array $context = []): array
     {
         $attributeType = $value->getAttribute()->getType();
         $context['is_decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
@@ -82,6 +82,19 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             }
         }
 
+        $data = $this->sortData($data, $attributeType);
+
+        return $data;
+    }
+
+    /**
+     * @param array  $data
+     * @param string $attributeType
+     *
+     * @return array
+     */
+    protected function sortData(array $data, string $attributeType): array
+    {
         if (AttributeTypes::PRICE_COLLECTION === $attributeType) {
             usort($data, function ($a, $b) {
                 return strnatcasecmp($a['currency'], $b['currency']);
@@ -95,12 +108,12 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
 
     /**
      * @param ValueInterface $value
-     * @param null           $format
+     * @param null|string    $format
      * @param array          $context
      *
      * @return mixed
      */
-    protected function getSimpleValue(ValueInterface $value, $format = null, array $context = [])
+    protected function getSimpleValue(ValueInterface $value, ?string $format = null, array $context = [])
     {
         if (null === $value->getData()) {
             return null;

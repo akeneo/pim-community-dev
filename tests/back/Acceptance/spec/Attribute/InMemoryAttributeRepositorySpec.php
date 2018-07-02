@@ -9,6 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\AttributeTypes;
 
 class InMemoryAttributeRepositorySpec extends ObjectBehavior
 {
@@ -87,6 +88,16 @@ class InMemoryAttributeRepositorySpec extends ObjectBehavior
         $this
             ->shouldThrow(new \InvalidArgumentException('The object argument should be a attribute'))
             ->during('save', [$object]);
+    }
+
+    function it_get_identifier_by_identifier()
+    {
+        $identifier = (new Attribute())->setType(AttributeTypes::IDENTIFIER);
+
+        $this->save($identifier);
+        $this->save((new Attribute())->setCode('name'));
+
+        $this->getIdentifier()->shouldReturn($identifier);
     }
 
     private function createAttribute(string $code): AttributeInterface

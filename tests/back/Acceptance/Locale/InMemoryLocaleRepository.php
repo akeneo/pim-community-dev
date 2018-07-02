@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\Locale;
 
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Acceptance\Common\NotImplementedException;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Test\Acceptance\Common\NotImplementedException;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 final class InMemoryLocaleRepository implements LocaleRepositoryInterface, SaverInterface
 {

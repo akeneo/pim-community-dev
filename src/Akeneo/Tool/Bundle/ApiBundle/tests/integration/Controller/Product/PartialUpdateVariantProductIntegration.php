@@ -47,6 +47,19 @@ class PartialUpdateVariantProductIntegration extends AbstractProductTestCase
             ]
         );
 
+        $this->createProductModel(
+            [
+                'code' => 'apollon',
+                'parent' => 'test',
+                'family_variant' => 'familyVariantA1',
+                'values'  => [
+                    'a_simple_select' => [
+                        ['locale' => null, 'scope' => null, 'data' => 'optionA'],
+                    ],
+                ],
+            ]
+        );
+
         // apollon_blue_m & apollon_blue_l, categorized in 2 trees (master and categoryA1)
         $this->createVariantProduct('apollon_optionb_false', [
             'categories' => ['master'],
@@ -1754,6 +1767,93 @@ JSON;
             $response->headers->get('location')
         );
         $this->assertSame('', $response->getContent());
+    }
+
+    public function testProductVariantPartialUpdateWithTheParentUpdated(): void
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "identifier": "apollon_optionb_false",
+        "family": "familyA",
+        "parent": "apollon",
+        "values": {
+          "a_simple_select": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": "optionB"
+            }
+          ]
+        }
+    }
+JSON;
+        $expectedProduct = [
+            'identifier'    => 'apollon_optionb_false',
+            'family'        => "familyA",
+            'parent'        => "apollon",
+            'groups'        => [],
+            'categories'    => ['master'],
+            'enabled'       => true,
+            'values'        => [
+                "a_localized_and_scopable_text_area" => [
+                    [
+                        "locale" => "en_US",
+                        "scope"  => "ecommerce",
+                        "data"   => "my pink tshirt",
+                    ],
+                ],
+                "a_number_float" => [
+                    [
+                        "locale" => null,
+                        "scope"  => null,
+                        "data"   => "12.5000",
+                    ],
+                ],
+                "a_price" => [
+                    [
+                        "locale" => null,
+                        "scope"  => null,
+                        "data"   => [
+                            [
+                                "amount"   => "50.00",
+                                "currency" => "EUR",
+                            ],
+                        ],
+                    ],
+                ],
+                'a_simple_select' => [
+                    ['locale' => null, 'scope' => null, 'data' => 'optionA'],
+                ],
+                "a_yes_no" => [
+                    [
+                        "locale" => null,
+                        "scope"  => null,
+                        "data"   => false,
+                    ],
+                ],
+                'sku' => [
+                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
+                ],
+            ],
+            'created'       => '2016-06-14T13:12:50+02:00',
+            'updated'       => '2016-06-14T13:12:50+02:00',
+            'associations'  => [],
+        ];
+
+        $client->request('PATCH', 'api/rest/v1/products/apollon_optionb_false', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertArrayHasKey('location', $response->headers->all());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/products/apollon_optionb_false',
+            $response->headers->get('location')
+        );
     }
 
     public function testPartialUpdateResponseWhenMissingIdentifierPropertyAndProvidedIdentifierInValues(): void

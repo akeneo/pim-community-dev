@@ -38,7 +38,9 @@ class UniqueValueGuesser implements ConstraintGuesserInterface
     {
         $constraints = [];
 
-        if ($attribute->isUnique()) {
+        // We don't apply the unique value constraint on identifier because it is done
+        // by `Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductEntity`
+        if ($attribute->isUnique() && AttributeTypes::IDENTIFIER !== $attribute->getType()) {
             $constraints[] = new UniqueValue();
         }
 

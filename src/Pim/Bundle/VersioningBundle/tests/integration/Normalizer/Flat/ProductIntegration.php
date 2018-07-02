@@ -23,6 +23,7 @@ class ProductIntegration extends TestCase
             'family' => 'familyA',
             'groups' => 'groupA,groupB',
             'categories' => 'categoryA1,categoryB',
+            'parent' => '',
             'X_SELL-groups' => 'groupB',
             'X_SELL-products' => 'bar',
             'X_SELL-product_models' => '',

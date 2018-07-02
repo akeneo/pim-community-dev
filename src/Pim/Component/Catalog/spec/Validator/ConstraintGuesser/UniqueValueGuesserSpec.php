@@ -34,6 +34,7 @@ class UniqueValueGuesserSpec extends ObjectBehavior
         $attribute->getBackendType()
             ->willReturn(AttributeTypes::BACKEND_TYPE_TEXT);
         $attribute->isUnique()->willReturn(true);
+        $attribute->getType()->willReturn(AttributeTypes::METRIC);
         $textConstraints = $this->guessConstraints($attribute);
 
         $textConstraints->shouldHaveCount(1);
@@ -48,6 +49,19 @@ class UniqueValueGuesserSpec extends ObjectBehavior
             ->willReturn(AttributeTypes::BACKEND_TYPE_TEXT);
 
         $attribute->isUnique()->willReturn(false);
+        $attribute->getType()->willReturn(AttributeTypes::METRIC);
+
+        $this->guessConstraints($attribute)
+            ->shouldReturn([]);
+    }
+
+    public function it_does_not_guess_unique_value_if_it_is_an_identifier(AttributeInterface $attribute)
+    {
+        $attribute->getBackendType()
+            ->willReturn(AttributeTypes::BACKEND_TYPE_TEXT);
+
+        $attribute->isUnique()->willReturn(false);
+        $attribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
 
         $this->guessConstraints($attribute)
             ->shouldReturn([]);

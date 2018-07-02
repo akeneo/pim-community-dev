@@ -267,7 +267,7 @@ define(
              */
             setItems: function (itemCodes) {
                 $('#item-picker-append-field').val(itemCodes.join(','));
-                this.updateBasket();
+                this.updateBasket(itemCodes);
 
                 return this;
             },
@@ -308,14 +308,22 @@ define(
             },
 
             /**
-             * Fetches the new items and render the basket
+             * Fetches the new items and render the basket.
+             *
+             * In the case where asset codes are integers, even if their order is correctly managed by the backend, the
+             * fetcher will reorganize them, sorting them by code ascending. As "itemCodes" contains the codes in the
+             * correct order, we reorder the assets according to this list of code.
              */
-            updateBasket: function () {
-                FetcherRegistry.getFetcher(this.config.fetcher).fetchByIdentifiers(this.getItems())
-                    .then(function (items) {
-                        this.renderBasket(items);
-                        this.delegateEvents();
-                    }.bind(this));
+            updateBasket: function (itemCodes) {
+                FetcherRegistry.getFetcher(this.config.fetcher).fetchByIdentifiers(this.getItems()).then(items => {
+                    let orderedItems = [];
+                    itemCodes.forEach(itemCode => {
+                        orderedItems = orderedItems.concat(items.filter(item => item.code === itemCode));
+                    });
+
+                    this.renderBasket(orderedItems);
+                    this.delegateEvents();
+                });
             },
 
             /**

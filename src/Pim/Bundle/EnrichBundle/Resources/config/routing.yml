@@ -12,7 +12,7 @@ value_rest:
 
 catalog_volume:
     resource: '@PimEnrichBundle/Resources/config/routing/catalog_volume.yml'
-    prefix: /system/catalog-volume
+    prefix: /catalog-volumes
 
 currency:
     resource: '@PimEnrichBundle/Resources/config/routing/currency.yml'

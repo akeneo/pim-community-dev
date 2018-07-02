@@ -105,30 +105,31 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id'             => 'product_model_67',
-                'identifier'     => 'sku-001',
-                'created'        => $now->format('c'),
-                'updated'        => $now->format('c'),
-                'family'         => 'family_A',
-                'family_variant' => 'family_variant_1',
-                'categories'     => ['category_A', 'category_B'],
+                'id'                      => 'product_model_67',
+                'identifier'              => 'sku-001',
+                'created'                 => $now->format('c'),
+                'updated'                 => $now->format('c'),
+                'family'                  => 'family_A',
+                'family_variant'          => 'family_variant_1',
+                'categories'              => ['category_A', 'category_B'],
+                'categories_of_ancestors' => [],
                 'parent'         => null,
                 'values'         => [],
-                'all_complete' => [
+                'all_complete'   => [
                     'ecommerce' => [
-                        'fr_FR' => 0
-                    ]
+                        'fr_FR' => 0,
+                    ],
                 ],
                 'all_incomplete' => [
                     'ecommerce' => [
-                        'fr_FR' => 0
-                    ]
+                        'fr_FR' => 0,
+                    ],
                 ],
-                'ancestors' => [
-                    'ids' => [],
+                'ancestors'      => [
+                    'ids'   => [],
                     'codes' => [],
                 ],
-                'label' => []
+                'label'          => [],
             ]
         );
     }
@@ -199,42 +200,43 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
-                'id'             => 'product_model_67',
-                'identifier'     => 'sku-001',
-                'created'        => $now->format('c'),
-                'updated'        => $now->format('c'),
-                'family'         => [
+                'id'                      => 'product_model_67',
+                'identifier'              => 'sku-001',
+                'created'                 => $now->format('c'),
+                'updated'                 => $now->format('c'),
+                'family'                  => [
                     'code'   => 'family',
                     'labels' => [
                         'fr_FR' => 'Une famille',
                         'en_US' => 'A family',
                     ],
                 ],
-                'family_variant' => 'family_variant_B',
-                'categories'     => ['category_A', 'category_B'],
-                'parent'         => null,
-                'values'         => [
+                'family_variant'          => 'family_variant_B',
+                'categories'              => ['category_A', 'category_B'],
+                'categories_of_ancestors' => [],
+                'parent'                  => null,
+                'values'                  => [
                     'a_size-decimal' => [
                         '<all_channels>' => [
                             '<all_locales>' => '10.51',
                         ],
                     ],
                 ],
-                'all_complete' => [
+                'all_complete'            => [
                     'ecommerce' => [
-                        'fr_FR' => 0
-                    ]
+                        'fr_FR' => 0,
+                    ],
                 ],
-                'all_incomplete' => [
+                'all_incomplete'          => [
                     'ecommerce' => [
-                        'fr_FR' => 0
-                    ]
+                        'fr_FR' => 0,
+                    ],
                 ],
-                'ancestors' => [
-                    'ids' => [],
+                'ancestors'               => [
+                    'ids'   => [],
                     'codes' => [],
                 ],
-                'label' => []
+                'label'                   => [],
             ]
         );
     }
@@ -262,6 +264,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $parent->getCode()->willReturn('parent_A');
         $parent->getId()->willReturn(1);
         $parent->getParent()->willReturn(null);
+        $parent->getCategoryCodes()->willReturn(['category_A']);
 
         $productModel->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -331,6 +334,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 ],
                 'family_variant' => 'family_variant_B',
                 'categories'     => ['category_A', 'category_B'],
+                'categories_of_ancestors' => ['category_A'],
                 'parent'         => 'parent_A',
                 'values'         => [
                     'a_size-decimal'         => [

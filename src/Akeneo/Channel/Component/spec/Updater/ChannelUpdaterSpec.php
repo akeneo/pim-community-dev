@@ -2,7 +2,12 @@
 
 namespace spec\Akeneo\Channel\Component\Updater;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
+use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Component\Model\ChannelTranslationInterface;
+use Akeneo\Channel\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Updater\ChannelUpdater;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -11,12 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Updater\ChannelUpdater;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class ChannelUpdaterSpec extends ObjectBehavior
@@ -115,6 +115,62 @@ class ChannelUpdaterSpec extends ObjectBehavior
             'maximum_diagonal' => 'INCHES',
             'weight'           => 'KILOGRAM',
         ])->shouldBeCalled();
+
+        $this->update($channel, $values, []);
+    }
+
+
+    function it_updates_a_channel_with_conversion_units_empty(
+        $categoryRepository,
+        $localeRepository,
+        $currencyRepository,
+        $attributeRepository,
+        ChannelInterface $channel,
+        CategoryInterface $tree,
+        LocaleInterface $enUS,
+        LocaleInterface $frFR,
+        CurrencyInterface $usd,
+        CurrencyInterface $eur,
+        ChannelTranslationInterface $channelTranslation,
+        AttributeInterface $maximumDiagonalAttribute,
+        AttributeInterface $weightAttribute
+    ) {
+        $values = [
+            'code'             => 'ecommerce',
+            'labels'           => [
+                'fr_FR' => 'Tablette',
+                'en_US' => 'Tablet',
+            ],
+            'locales'          => ['en_US', 'fr_FR'],
+            'currencies'       => ['EUR', 'USD'],
+            'category_tree'    => 'master_catalog',
+            'conversion_units' => [],
+        ];
+
+        $channel->setCode('ecommerce')->shouldBeCalled();
+
+        $categoryRepository->findOneByIdentifier('master_catalog')->willReturn($tree);
+        $channel->setCategory($tree)->shouldBeCalled();
+
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enUS);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($frFR);
+        $channel->setLocales([$enUS, $frFR])->shouldBeCalled();
+
+        $currencyRepository->findOneByIdentifier('EUR')->willReturn($eur);
+        $currencyRepository->findOneByIdentifier('USD')->willReturn($usd);
+        $channel->setCurrencies([$eur, $usd])->shouldBeCalled();
+
+        $channel->getTranslation()->willReturn($channelTranslation);
+
+        $maximumDiagonalAttribute->getMetricFamily()->willReturn('Length');
+        $weightAttribute->getMetricFamily()->willReturn('Weight');
+
+        $attributeRepository->findOneByIdentifier('maximum_diagonal')->willReturn($maximumDiagonalAttribute);
+        $attributeRepository->findOneByIdentifier('weight')->willReturn($weightAttribute);
+
+        $channelTranslation->setLabel('Tablet');
+        $channelTranslation->setLabel('Tablette');
+        $channel->setConversionUnits([])->shouldBeCalled();
 
         $this->update($channel, $values, []);
     }

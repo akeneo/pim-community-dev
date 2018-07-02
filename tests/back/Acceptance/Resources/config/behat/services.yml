@@ -1,28 +1,28 @@
 services:
     ### Entity builder
     test.channel.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.channel'
             - '@__symfony__.pim_catalog.updater.channel'
             - '@__symfony__.validator'
 
     test.locale.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.locale'
             - '@__symfony__.pim_catalog.updater.locale'
             - '@__symfony__.validator'
 
     test.category.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.category'
             - '@__symfony__.pim_catalog.updater.category'
             - '@__symfony__.validator'
 
     test.currency.builder:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         arguments:
             - '@__symfony__.pim_catalog.factory.currency'
             - '@__symfony__.pim_catalog.updater.currency'
@@ -47,6 +47,14 @@ services:
         arguments:
             - '@__symfony__.pim_catalog.factory.family'
             - '@__symfony__.pim_catalog.updater.family'
+            - '@__symfony__.validator'
+
+    test.catalog.product.builder:
+        class: 'Akeneo\Test\Common\EntityWithValue\Builder\Product'
+        shared: false
+        arguments:
+            - '@__symfony__.pim_catalog.builder.product'
+            - '@__symfony__.pim_catalog.updater.product'
             - '@__symfony__.validator'
 
     ### Behat context, don't forget to tag them (fob.context_service)
@@ -78,5 +86,22 @@ services:
             - '@test.attribute.builder'
             - '@__symfony__.pim_catalog.repository.attribute_group'
             - '@test.attribute_group.builder'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog.product_creation.context:
+        class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductCreation'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.attribute'
+            - '@test.catalog.product.builder'
+            - '@__symfony__.pim_catalog.repository.product'
+        tags:
+            - { name: fob.context_service }
+
+    test.catalog.product_validation.context:
+        class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductValidation'
+        arguments:
+            - '@test.catalog.product.builder'
+            - '@__symfony__.validator'
         tags:
             - { name: fob.context_service }
