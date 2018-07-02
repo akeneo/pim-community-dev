@@ -26,7 +26,7 @@ Feature: Revert an assets collection in a product
     And I visit the "History" column tab
     Then I should see history:
       | version | property | value                |
-      | 2       | gallery  | chicagoskyline,paint |
+      | 2       | gallery  | paint,chicagoskyline |
     And I visit the "Attributes" column tab
     And I start to manage assets for "gallery"
     And I search "paint"
@@ -37,8 +37,8 @@ Feature: Revert an assets collection in a product
     When I save the product
     And I visit the "History" column tab
     Then I should see history:
-      | version | property | value   |
+      | version | property | value          |
       | 3       | gallery  | chicagoskyline |
     When I revert the product version number 2
     Then the product "jeans" should have the following values:
-      | gallery | chicagoskyline, paint |
+      | gallery | paint, chicagoskyline |

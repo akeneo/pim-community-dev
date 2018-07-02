@@ -7,6 +7,9 @@ services:
     pimee_workflow.saver.working_copy_product:
         alias: pim_catalog.saver.product
 
+    pimee_workflow.saver.working_copy_product_model:
+        alias: pim_catalog.saver.product_model
+
     pimee_workflow.saver.published_product:
         class: '%pim_catalog.saver.product.class%'
         arguments:
@@ -64,6 +67,6 @@ services:
             - '@security.token_storage'
             - '@pimee_workflow.product_model.builder.draft'
             - '@pimee_workflow.remover.product_model_draft'
-            - '@pimee_catalog.security.merger.merge_data_on_product'
+            - '@pimee_catalog.security.merger.merge_data_on_product_model'
             - '@pim_catalog.repository.product_model'
             - '@pimee_workflow.repository.product_model_draft'

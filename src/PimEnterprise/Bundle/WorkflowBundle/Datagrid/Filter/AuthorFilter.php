@@ -79,7 +79,7 @@ class AuthorFilter extends AjaxChoiceFilter
     {
         return array_merge(
             parent::getFormOptions(),
-            ['choice_url' => 'pimee_workflow_product_draft_rest_author_choice']
+            ['choice_url' => 'pimee_workflow_author_draft_rest']
         );
     }
 }

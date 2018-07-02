@@ -61,6 +61,7 @@ services:
         arguments:
             -
                 - 'apply_assets_mass_upload'
+                - 'apply_assets_mass_upload_into_asset_collection'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 

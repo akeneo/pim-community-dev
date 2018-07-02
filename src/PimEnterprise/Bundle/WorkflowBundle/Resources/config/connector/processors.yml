@@ -1,5 +1,6 @@
 parameters:
     pimee_workflow.processor.denormalization.product_draft.class: PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor
+    pimee_workflow.processor.denormalization.product_model_draft.class: PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductModelDraftProcessor
 
 services:
     pimee_workflow.processor.denormalization.product_draft:
@@ -11,16 +12,19 @@ services:
             - '@pimee_workflow.product.builder.draft'
             - '@pimee_workflow.applier.draft'
             - '@pimee_workflow.repository.product_draft'
+            - '@security.token_storage'
 
     pimee_workflow.processor.denormalization.product_model_draft:
-        class: '%pimee_workflow.processor.denormalization.product_draft.class%'
+        class: '%pimee_workflow.processor.denormalization.product_model_draft.class%'
         arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.updater.product'
-            - '@pim_catalog.validator.product'
-            - '@pimee_workflow.product.builder.draft'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product_model'
+            - '@pimee_workflow.product_model.builder.draft'
             - '@pimee_workflow.applier.draft'
-            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@security.token_storage'
+            - '@pim_connector.processor.attribute_filter.product_model'
 
     pimee_workflow.processor.normalization.published_product:
         class: '%pim_connector.processor.normalization.product.class%'

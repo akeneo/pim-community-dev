@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Applier\DraftApplier;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -37,7 +37,7 @@ class DraftApplierSpec extends ObjectBehavior
     ) {
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::PRE_APPLY,
+                EntityWithValuesDraftEvents::PRE_APPLY,
                 Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
@@ -45,7 +45,7 @@ class DraftApplierSpec extends ObjectBehavior
         $propertySetter->setData(Argument::cetera())->shouldNotBeCalled();
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::POST_APPLY,
+                EntityWithValuesDraftEvents::POST_APPLY,
                 Argument::type(GenericEvent::class)
             )
             ->shouldNotBeCalled();
@@ -88,7 +88,7 @@ class DraftApplierSpec extends ObjectBehavior
         ]);
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::PRE_APPLY,
+                EntityWithValuesDraftEvents::PRE_APPLY,
                 Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
@@ -111,7 +111,7 @@ class DraftApplierSpec extends ObjectBehavior
 
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::POST_APPLY,
+                EntityWithValuesDraftEvents::POST_APPLY,
                 Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
@@ -155,7 +155,7 @@ class DraftApplierSpec extends ObjectBehavior
         ]);
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::PRE_APPLY,
+                EntityWithValuesDraftEvents::PRE_APPLY,
                 Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();
@@ -178,7 +178,7 @@ class DraftApplierSpec extends ObjectBehavior
 
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::POST_APPLY,
+                EntityWithValuesDraftEvents::POST_APPLY,
                 Argument::type(GenericEvent::class)
             )
             ->shouldBeCalled();

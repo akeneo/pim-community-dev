@@ -33,7 +33,6 @@ behat.yml
 .php_cs.cache
 .phpspec/*.tpl
 composer.phar
-composer.lock
 /node_modules
 phpspec.yml
 npm-debug.log
@@ -47,3 +46,4 @@ yarn.lock
 package-lock.json
 yarn-error.log
 coverage/*
+composer.lock

@@ -61,8 +61,9 @@ class Resolution extends AbstractTransformation
         }
 
         $this->launcher->convert(
-            sprintf('-density %dx%d -units %s', $options['resolution'], $options['resolution'], $unit),
-            $file->getPathname()
+            '',
+            $file->getPathname(),
+            sprintf('-density %dx%d -units %s', $options['resolution'], $options['resolution'], $unit)
         );
     }
 

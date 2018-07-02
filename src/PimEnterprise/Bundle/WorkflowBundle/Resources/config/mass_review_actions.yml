@@ -7,7 +7,9 @@ services:
         class: '%pimee_workflow.mass_review_tasklet.approve_draft.class%'
         arguments:
             - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.manager.entity_with_values_draft'
+            - '@pimee_workflow.manager.product_draft'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.manager.product_model_draft'
             - '@pim_user.provider.user'
             - '@security.authorization_checker'
             - '@security.token_storage'
@@ -17,7 +19,9 @@ services:
         class: '%pimee_workflow.mass_review_tasklet.refuse_draft.class%'
         arguments:
             - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.manager.entity_with_values_draft'
+            - '@pimee_workflow.manager.product_draft'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.manager.product_model_draft'
             - '@pim_user.provider.user'
             - '@security.authorization_checker'
             - '@security.token_storage'

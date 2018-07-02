@@ -13,9 +13,6 @@ config:
         pimee/product-model-view-form:
             forwarded-events:
                 'pim_enrich:form:field:extension:add':           'pim_enrich:form:field:extension:add'
-        pimee/product-edit-form/send-for-approval:
-            routes:
-                ready: pimee_workflow_product_draft_ready
         pim/fetcher-registry:
             fetchers:
                 permission:

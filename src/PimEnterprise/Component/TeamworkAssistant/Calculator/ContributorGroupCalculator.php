@@ -88,7 +88,7 @@ class ContributorGroupCalculator implements ProjectItemCalculatorInterface
      */
     protected function findUserGroupNamesForProduct(ProductInterface $product)
     {
-        $contributors = $this->categoryAccessRepository->getGrantedUserGroupsForProduct(
+        $contributors = $this->categoryAccessRepository->getGrantedUserGroupsForEntityWithValues(
             $product,
             Attributes::EDIT_ITEMS
         );

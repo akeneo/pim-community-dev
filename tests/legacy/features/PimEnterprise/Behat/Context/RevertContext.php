@@ -61,6 +61,7 @@ class RevertContext implements Context
      *
      * @throws \PimEnterprise\Bundle\VersioningBundle\Exception\RevertException
      *
+     * @When the product :productIdentifier is reverted to the previous version
      * @When the variant product :productIdentifier is reverted to the previous version
      */
     public function revertProductToThePreviousVersion(string $productIdentifier): void

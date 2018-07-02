@@ -33,9 +33,15 @@ define(
             submitTemplate: _.template(submitTemplate),
             confirmationMessage: __('pimee_enrich.entity.product_draft.confirmation.discard_changes'),
             confirmationTitle: __('pimee_enrich.entity.product_draft.confirmation.discard_changes_title'),
-            routes: {},
             events: {
                 'click .submit-draft': 'onSubmitDraft'
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (meta) {
+                this.config = _.extend({}, meta.config);
             },
 
             /**
@@ -44,8 +50,6 @@ define(
              * @returns {Promise}
              */
             configure: function () {
-                this.routes = __moduleConfig.routes;
-
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -130,10 +134,16 @@ define(
              * Submit the current draft to backend for approval
              */
             submitDraft: function (comment) {
+                const postData = {
+                    comment: comment
+                };
+
+                postData[this.config.idKeyName] = this.getProductId();
+
                 $.post(
                     Routing.generate(
-                        this.routes.ready,
-                        {productId: this.getProductId(), comment: comment}
+                        this.config.routes.ready,
+                        postData
                     )
                 )
                 .then(function (product) {

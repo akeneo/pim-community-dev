@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -28,7 +28,7 @@ class RemoveNotificationSubscriber extends AbstractProposalStateNotificationSubs
     public static function getSubscribedEvents()
     {
         return [
-            ProductDraftEvents::POST_REMOVE => ['sendNotificationForRemoval', 10],
+            EntityWithValuesDraftEvents::POST_REMOVE => ['sendNotificationForRemoval', 10],
         ];
     }
 

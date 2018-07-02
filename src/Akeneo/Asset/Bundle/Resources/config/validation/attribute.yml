@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\Attribute:
+Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
         - Akeneo\Asset\Bundle\Validator\Constraints\AssetsCollectionConstraint:
             groups:

@@ -110,6 +110,6 @@ class ApproveProposalCommand extends ContainerAwareCommand
      */
     protected function getProductDraftManager()
     {
-        return $this->getContainer()->get('pimee_workflow.manager.entity_with_values_draft');
+        return $this->getContainer()->get('pimee_workflow.manager.product_draft');
     }
 }

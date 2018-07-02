@@ -65,6 +65,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ProductAssetController extends Controller
 {
+    private const DEFAULT_IMAGE_PATH = '/bundles/pimui/images/Default-picture.svg';
+
     /** @var AssetRepositoryInterface */
     protected $assetRepository;
 
@@ -257,7 +259,7 @@ class ProductAssetController extends Controller
 
             return new JsonResponse(
                 [
-                    'route' => $route,
+                    'route'  => $route,
                     'params' => $params,
                 ]
             );
@@ -267,7 +269,7 @@ class ProductAssetController extends Controller
             if (!empty($errors)) {
                 $message = '';
                 foreach ($errors as $error) {
-                    $message .= $error->getMessage().' ';
+                    $message .= $error->getMessage() . ' ';
                 }
 
                 $this->addFlashMessage('error', $message);
@@ -279,7 +281,7 @@ class ProductAssetController extends Controller
         }
 
         return [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 
@@ -300,7 +302,7 @@ class ProductAssetController extends Controller
         if (!empty($codes)) {
             $nextId = 1;
             $code = substr($code, 0, strlen($code));
-            while (in_array($code.'_'.$nextId, $codes)) {
+            while (in_array($code . '_' . $nextId, $codes)) {
                 $nextId++;
             }
 
@@ -539,15 +541,15 @@ class ProductAssetController extends Controller
         $trees = $this->categoryManager->getGrantedFilledTree($parent, $categories);
 
         return [
-            'trees' => $trees,
-            'categories' => $categories,
+            'trees'      => $trees,
+            'categories' => $categories
         ];
     }
 
     /**
      * Action to render the asset thumbnail depending on a channel (and a locale if the asset is localizable).
      *
-     * @see \Akeneo\Asset\Component\Model\AssetInterface::getFileForContext()
+     * @see \PimEnterprise\Component\ProductAsset\Model\AssetInterface::getFileForContext()
      *
      * @param Request $request
      * @param string  $code
@@ -558,6 +560,40 @@ class ProductAssetController extends Controller
      * @return RedirectResponse
      */
     public function thumbnailAction(Request $request, $code, $filter, $channelCode, $localeCode = null)
+    {
+        return $this->fileController->showAction(
+            $request,
+            urlencode($this->getFileName($code, $channelCode, $localeCode)),
+            $filter
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     * @param string  $channelCode
+     * @param string  $localeCode
+     *
+     * @return Response
+     */
+    public function originalAction(Request $request, $code, $channelCode, $localeCode = null): Response
+    {
+        $filename = $this->getFileName($code, $channelCode, $localeCode);
+        if (FileController::DEFAULT_IMAGE_KEY === $filename) {
+            return new RedirectResponse(self::DEFAULT_IMAGE_PATH, 301);
+        }
+
+        return $this->fileController->downloadAction(urlencode($filename));
+    }
+
+    /**
+     * @param string $code
+     * @param string $channelCode
+     * @param string $localeCode
+     *
+     * @return string
+     */
+    private function getFileName($code, $channelCode, $localeCode = null): string
     {
         $asset = $this->findProductAssetByCodeOr404($code);
         $filename = FileController::DEFAULT_IMAGE_KEY;
@@ -573,7 +609,7 @@ class ProductAssetController extends Controller
             }
         }
 
-        return $this->fileController->showAction($request, urlencode($filename), $filter);
+        return $filename;
     }
 
     /**
@@ -677,16 +713,13 @@ class ProductAssetController extends Controller
 
         $trees = $this->assetCategoryRepo->getItemCountByGrantedTree($productAsset, $this->userContext->getUser());
 
-        return $this->render(
-            'PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig',
-            [
-                'asset' => $productAsset,
-                'form' => $assetForm->createView(),
-                'metadata' => $this->getAssetMetadata($productAsset),
-                'currentLocale' => $locale,
-                'trees' => $trees,
-            ]
-        );
+        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', [
+            'asset'         => $productAsset,
+            'form'          => $assetForm->createView(),
+            'metadata'      => $this->getAssetMetadata($productAsset),
+            'currentLocale' => $locale,
+            'trees'         => $trees,
+        ]);
     }
 
     /**
@@ -713,14 +746,11 @@ class ProductAssetController extends Controller
             $attachments[$refKey]['reference'] = $reference;
         }
 
-        return $this->render(
-            'PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig',
-            [
-                'asset' => $productAsset,
-                'attachments' => $attachments,
-                'metadata' => $this->getAssetMetadata($productAsset),
-            ]
-        );
+        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', [
+            'asset'       => $productAsset,
+            'attachments' => $attachments,
+            'metadata'    => $this->getAssetMetadata($productAsset)
+        ]);
     }
 
     /**
@@ -776,7 +806,7 @@ class ProductAssetController extends Controller
      * Switch case to redirect after saving a product asset from the edit form
      *
      * @param Request $request
-     * @param array   $params Request parameters
+     * @param array   $params  Request parameters
      *
      * @return Response
      */
@@ -788,7 +818,7 @@ class ProductAssetController extends Controller
 
         return new JsonResponse(
             [
-                'route' => 'pimee_product_asset_edit',
+                'route'  => 'pimee_product_asset_edit',
                 'params' => $params,
             ]
         );
@@ -809,7 +839,7 @@ class ProductAssetController extends Controller
 
         if (null === $productAsset) {
             throw new NotFoundHttpException(
-                sprintf('Product asset with id "%s" cannot be found.', (string)$id)
+                sprintf('Product asset with id "%s" cannot be found.', (string) $id)
             );
         }
 
@@ -853,7 +883,7 @@ class ProductAssetController extends Controller
 
         if (null === $reference) {
             throw new NotFoundHttpException(
-                sprintf('Asset reference with id "%s" could not be found.', (string)$id)
+                sprintf('Asset reference with id "%s" could not be found.', (string) $id)
             );
         }
 
@@ -875,7 +905,7 @@ class ProductAssetController extends Controller
 
         if (null === $variation) {
             throw new NotFoundHttpException(
-                sprintf('Asset variation with id "%s" could not be found.', (string)$id)
+                sprintf('Asset variation with id "%s" could not be found.', (string) $id)
             );
         }
 

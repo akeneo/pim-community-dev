@@ -34,12 +34,13 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('appliers.yml');
         $loader->load('builder.yml');
         $loader->load('category_counters.yml');
-        $loader->load('completeness.yml');
+        $loader->load('configurators.yml');
         $loader->load('connector/array_converters.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/readers.yml');
         $loader->load('connector/writers.yml');
         $loader->load('controllers.yml');
+        $loader->load('completeness.yml');
         $loader->load('cursors.yml');
         $loader->load('datagrid.yml');
         $loader->load('entities.yml');
@@ -53,10 +54,10 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('mass_review_actions.yml');
         $loader->load('normalizers.yml');
         $loader->load('presenters.yml');
-        $loader->load('product_draft.yml');
         $loader->load('providers.yml');
         $loader->load('publishers.yml');
         $loader->load('purgers.yml');
+        $loader->load('queries.yml');
         $loader->load('query_builders.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');

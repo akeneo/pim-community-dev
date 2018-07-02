@@ -36,5 +36,5 @@ interface ProjectCompletenessRepositoryInterface
      *
      * @return array
      */
-    public function findProductIds(ProjectInterface $project, $status, $username);
+    public function findProductIdentifiers(ProjectInterface $project, $status, $username);
 }

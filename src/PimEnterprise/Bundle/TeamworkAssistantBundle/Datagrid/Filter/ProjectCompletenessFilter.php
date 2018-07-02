@@ -11,10 +11,12 @@
 
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter;
 
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Pim\Component\Catalog\Query\Filter\Operators;
 use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -46,6 +48,9 @@ class ProjectCompletenessFilter extends OroChoiceFilter
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
      * @param FormFactoryInterface                   $factory
      * @param FilterUtility                          $util
@@ -53,6 +58,7 @@ class ProjectCompletenessFilter extends OroChoiceFilter
      * @param ProjectRepositoryInterface             $projectRepository
      * @param ProjectCompletenessRepositoryInterface $projectCompletenessRepo
      * @param TokenStorageInterface                  $tokenStorage
+     * @param AttributeRepositoryInterface           $attributeRepository
      */
     public function __construct(
         FormFactoryInterface $factory,
@@ -60,7 +66,8 @@ class ProjectCompletenessFilter extends OroChoiceFilter
         RequestParameters $requestParams,
         ProjectRepositoryInterface $projectRepository,
         ProjectCompletenessRepositoryInterface $projectCompletenessRepo,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        AttributeRepositoryInterface $attributeRepository
     ) {
         $this->formFactory = $factory;
         $this->util = $util;
@@ -68,12 +75,13 @@ class ProjectCompletenessFilter extends OroChoiceFilter
         $this->projectCompletenessRepo = $projectCompletenessRepo;
         $this->projectRepository = $projectRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function apply(FilterDatasourceAdapterInterface $ds, $data)
+    public function apply(FilterDatasourceAdapterInterface $datasource, $data)
     {
         if (0 === $data['value']) {
             return false;
@@ -95,22 +103,18 @@ class ProjectCompletenessFilter extends OroChoiceFilter
         }
 
         $username = $this->tokenStorage->getToken()->getUsername();
-        $productIds = $this->projectCompletenessRepo->findProductIds($project, $data['value'], $username);
-
-        // the datagrid uses the "product_and_product_model_index_name" index,
-        // where ES product identifier are prefixed by "model_"
-        $productIds = array_map(
-            function (string $productId): string {
-                return 'product_' . $productId;
-            },
-            $productIds
-        );
+        $productIdentifiers = $this->projectCompletenessRepo->findProductIdentifiers($project, $data['value'], $username);
 
         // If the user has access to zero product in the project, we have to return "no result". So we add an
-        // "always-false" filter by looking for products with "id = '-1'"
-        $productIds = empty($productIds) ? ['-1'] : $productIds;
+        // "always-false" filter by looking for products with "identifier = null"
+        $productIdentifiers = $productIdentifiers ?? [null];
 
-        $this->util->applyFilter($ds, 'id', 'IN', $productIds);
+        $this->util->applyFilter(
+            $datasource,
+            $this->attributeRepository->getIdentifierCode(),
+            Operators::IN_LIST,
+            $productIdentifiers
+        );
 
         return true;
     }

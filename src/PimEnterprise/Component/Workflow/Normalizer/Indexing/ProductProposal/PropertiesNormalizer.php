@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -14,7 +16,8 @@ namespace PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductProposalIndexer;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -30,13 +33,13 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     use SerializerAwareTrait;
 
     const FIELD_ID = 'id';
-    const FIELD_PRODUCT_IDENTIFIER = 'product_identifier';
+    const FIELD_ENTITY_WITH_VALUES_IDENTIFIER = 'entity_with_values_identifier';
     const FIELD_AUTHOR = 'author';
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($productProposal, $format = null, array $context = [])
+    public function normalize($productProposal, $format = null, array $context = []): array
     {
         if (!$this->serializer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
@@ -44,11 +47,11 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
 
         $data = [];
 
-        $data[self::FIELD_ID] = (string) $productProposal->getId();
+        $data[self::FIELD_ID] = ProductProposalIndexer::PRODUCT_IDENTIFIER_PREFIX . (string) $productProposal->getId();
 
         $product = $productProposal->getEntityWithValue();
-        $data[self::FIELD_PRODUCT_IDENTIFIER] = $product->getIdentifier();
-        $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = (string) $productProposal->getId();
+        $data[self::FIELD_ENTITY_WITH_VALUES_IDENTIFIER] = $product->getIdentifier();
+        $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] =  (string) $productProposal->getId();
         $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
             $productProposal->getCreatedAt(),
             ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
@@ -68,13 +71,15 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $attributeAsLabelCode = null !== $product->getFamily() ?
             $product->getFamily()->getAttributeAsLabel()->getCode() : null;
 
-        $labelValue = $product->getValue($attributeAsLabelCode);
-
-        $productLabel = null !== $labelValue
-            ? $this->serializer->normalize(
-                $labelValue,
-                $format
-            ) : [];
+        $productLabel = [];
+        if (null !== $attributeAsLabelCode) {
+            $labelValue = $product->getValue($attributeAsLabelCode);
+            $productLabel = null !== $labelValue
+                ? $this->serializer->normalize(
+                    $labelValue,
+                    $format
+                ) : [];
+        }
 
         $data[StandardPropertiesNormalizer::FIELD_LABEL] = $this->getLabel(
             $productLabel,
@@ -84,14 +89,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         return $data;
     }
 
-    /**
-     * Get product label from family attribute as label product value
-     *
-     * @param array            $values
-     * @param ProductInterface $product
-     *
-     * @return array
-     */
     private function getLabel(array $values, ProductInterface $product): array
     {
         if (null === $product->getFamily()) {
@@ -109,8 +106,8 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof EntityWithValuesDraftInterface && ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX === $format;
+        return $data instanceof ProductDraft && ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX === $format;
     }
 }

@@ -1,0 +1,19 @@
+pimee_workflow_product_model_draft_rest_partial_approve:
+    path: /rest/{id}/partial-approve/{code}
+    defaults: { _controller: pimee_workflow.controller.product_model_draft_rest:partialReviewAction, action: approve }
+    methods: [POST]
+
+pimee_workflow_product_model_draft_rest_partial_reject:
+    path: /rest/{id}/partial-reject/{code}
+    defaults: { _controller: pimee_workflow.controller.product_model_draft_rest:partialReviewAction, action: refuse }
+    methods: [POST]
+
+pimee_workflow_product_model_draft_rest_approve:
+    path: /rest/{id}/approve
+    defaults: { _controller: pimee_workflow.controller.product_model_draft_rest:reviewAction, action: approve }
+    methods: [POST]
+
+pimee_workflow_product_model_draft_rest_refuse:
+    path: /rest/{id}/refuse
+    defaults: { _controller: pimee_workflow.controller.product_model_draft_rest:reviewAction, action: refuse }
+    methods: [POST]

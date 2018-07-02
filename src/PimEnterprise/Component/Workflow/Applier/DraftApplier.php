@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -14,8 +16,7 @@ namespace PimEnterprise\Component\Workflow\Applier;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -36,11 +37,6 @@ class DraftApplier implements DraftApplierInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
-    /**
-     * @param PropertySetterInterface               $propertySetter
-     * @param EventDispatcherInterface              $dispatcher
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository
-     */
     public function __construct(
         PropertySetterInterface $propertySetter,
         EventDispatcherInterface $dispatcher,
@@ -54,42 +50,42 @@ class DraftApplier implements DraftApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyAllChanges(EntityWithValuesInterface $entityWithValues, EntityWithValuesDraftInterface $productDraft)
-    {
-        $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPLY, new GenericEvent($productDraft));
+    public function applyAllChanges(
+        EntityWithValuesInterface $entityWithValues,
+        EntityWithValuesDraftInterface $entityWithValuesDraft
+    ): void {
+        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_APPLY, new GenericEvent($entityWithValuesDraft));
 
-        $changes = $productDraft->getChanges();
+        $changes = $entityWithValuesDraft->getChanges();
         if (!isset($changes['values'])) {
             return;
         }
 
         $this->applyValues($entityWithValues, $changes['values']);
 
-        $this->dispatcher->dispatch(ProductDraftEvents::POST_APPLY, new GenericEvent($productDraft));
+        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::POST_APPLY, new GenericEvent($entityWithValuesDraft));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function applyToReviewChanges(EntityWithValuesInterface $entityWithValues, EntityWithValuesDraftInterface $productDraft)
-    {
-        $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPLY, new GenericEvent($productDraft));
+    public function applyToReviewChanges(
+        EntityWithValuesInterface $entityWithValues,
+        EntityWithValuesDraftInterface $entityWithValuesDraft
+    ): void {
+        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_APPLY, new GenericEvent($entityWithValuesDraft));
 
-        $changes = $productDraft->getChangesToReview();
+        $changes = $entityWithValuesDraft->getChangesToReview();
         if (!isset($changes['values'])) {
             return;
         }
 
         $this->applyValues($entityWithValues, $changes['values']);
 
-        $this->dispatcher->dispatch(ProductDraftEvents::POST_APPLY, new GenericEvent($productDraft));
+        $this->dispatcher->dispatch(EntityWithValuesDraftEvents::POST_APPLY, new GenericEvent($entityWithValuesDraft));
     }
 
-    /**
-     * @param EntityWithValuesInterface $entityWithValues
-     * @param array                     $changesValues
-     */
-    protected function applyValues(EntityWithValuesInterface $entityWithValues, array $changesValues)
+    protected function applyValues(EntityWithValuesInterface $entityWithValues, array $changesValues): void
     {
         foreach ($changesValues as $code => $values) {
             if ($this->attributeExists($code)) {
@@ -105,14 +101,7 @@ class DraftApplier implements DraftApplierInterface
         }
     }
 
-    /**
-     * Check if attribute still exists in db
-     *
-     * @param string $code
-     *
-     * @return bool
-     */
-    protected function attributeExists($code)
+    protected function attributeExists(string $code): bool
     {
         return null !== $this->attributeRepository->findOneByIdentifier($code);
     }
