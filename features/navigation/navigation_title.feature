@@ -25,7 +25,7 @@ Feature: Well display navigation titles
       | category tree creation                        | Category trees \| Create                            |
       | currencies                                    | Currencies                                          |
       | families                                      | Families                                            |
-      | "boots" family                                | Families Boots \| Edit                              |
+      | "boots" family                                | Families boots \| Edit                              |
       | attribute groups                              | Attribute groups                                    |
       | attribute group creation                      | Attribute groups \| Create                          |
       | "info" attribute group                        | Attribute groups Product information \| Edit        |
