@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -28,10 +29,14 @@ class FamilyAttributeRequirementUpdateGuesserSpec extends ObjectBehavior
 
     function it_guesses_family_update_when_an_attribute_requirement_is_added(
         EntityManager $em,
+        UnitOfWork $uo,
         AttributeRequirement $attributeRequirement,
         Family $family
     )
     {
+        $em->getUnitOfWork()->willReturn($uo);
+        $uo->getEntityState($family)->willReturn(UnitOfWork::STATE_MANAGED);
+
         $attributeRequirement->getFamily()->willReturn($family);
 
         $this->guessUpdates($em, $attributeRequirement, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)
@@ -40,14 +45,33 @@ class FamilyAttributeRequirementUpdateGuesserSpec extends ObjectBehavior
 
     function it_guesses_family_update_when_an_attribute_requirement_is_removed(
         EntityManager $em,
+        UnitOfWork $uo,
         AttributeRequirement $attributeRequirement,
         Family $family
     )
     {
+        $em->getUnitOfWork()->willReturn($uo);
+        $uo->getEntityState($family)->willReturn(UnitOfWork::STATE_MANAGED);
+
         $attributeRequirement->getFamily()->willReturn($family);
 
         $this->guessUpdates($em, $attributeRequirement, UpdateGuesserInterface::ACTION_DELETE)
             ->shouldReturn([$family]);
+    }
+
+    function it_returns_no_pending_update_if_family_is_deleted_too(
+        EntityManager $em,
+        UnitOfWork $uo,
+        AttributeRequirement $attributeRequirement,
+        Family $family
+    )
+    {
+        $em->getUnitOfWork()->willReturn($uo);
+        $uo->getEntityState($family)->willReturn(UnitOfWork::STATE_REMOVED);
+        $attributeRequirement->getFamily()->willReturn($family);
+
+        $this->guessUpdates($em, $attributeRequirement, UpdateGuesserInterface::ACTION_DELETE)
+            ->shouldReturn([]);
     }
 
     function it_returns_no_pending_updates_if_not_given_an_attribute_requirement(EntityManager $em)
