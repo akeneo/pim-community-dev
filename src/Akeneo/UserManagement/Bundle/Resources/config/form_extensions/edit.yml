@@ -86,9 +86,9 @@ extensions:
         position: 10
         targetZone: content
         config:
-           fieldName: enabled
-           label: 'Status - to translate'
-           required: true
+            fieldName: enabled
+            label: 'Status - to translate'
+            required: true
 
     pim-user-edit-form-username:
         module: pim/form/common/fields/text
@@ -96,9 +96,9 @@ extensions:
         position: 20
         targetZone: content
         config:
-           fieldName: username
-           label: 'Username - to translate'
-           required: true
+            fieldName: username
+            label: 'Username - to translate'
+            required: true
 
     pim-user-edit-form-name-prefix:
         module: pim/form/common/fields/text
@@ -106,8 +106,8 @@ extensions:
         position: 30
         targetZone: content
         config:
-           fieldName: name_prefix
-           label: 'Name prefix - to translate'
+            fieldName: name_prefix
+            label: 'Name prefix - to translate'
 
     pim-user-edit-form-first-name:
         module: pim/form/common/fields/text
@@ -115,9 +115,9 @@ extensions:
         position: 40
         targetZone: content
         config:
-           fieldName: first_name
-           label: 'First Name - to translate'
-           required: true
+            fieldName: first_name
+            label: 'First Name - to translate'
+            required: true
 
     pim-user-edit-form-middle-name:
         module: pim/form/common/fields/text
@@ -125,8 +125,8 @@ extensions:
         position: 50
         targetZone: content
         config:
-           fieldName: middle_name
-           label: 'Middle Name - to translate'
+            fieldName: middle_name
+            label: 'Middle Name - to translate'
 
     pim-user-edit-form-last-name:
         module: pim/form/common/fields/text
@@ -134,9 +134,9 @@ extensions:
         position: 60
         targetZone: content
         config:
-           fieldName: last_name
-           label: 'Last Name - to translate'
-           required: true
+            fieldName: last_name
+            label: 'Last Name - to translate'
+            required: true
 
     pim-user-edit-form-name-suffix:
         module: pim/form/common/fields/text
@@ -144,8 +144,8 @@ extensions:
         position: 70
         targetZone: content
         config:
-           fieldName: name_suffix
-           label: 'Name Suffix - to translate'
+            fieldName: name_suffix
+            label: 'Name Suffix - to translate'
 
     pim-user-edit-form-phone:
         module: pim/form/common/fields/text
@@ -153,8 +153,8 @@ extensions:
         position: 80
         targetZone: content
         config:
-           fieldName: phone
-           label: 'Phone - to translate'
+            fieldName: phone
+            label: 'Phone - to translate'
 
     pim-user-edit-form-birthday:
         module: pim/form/common/fields/date
@@ -171,8 +171,8 @@ extensions:
         position: 100
         targetZone: content
         config:
-           fieldName: image
-           label: 'Image - to translate'
+            fieldName: image
+            label: 'Image - to translate'
 
     pim-user-edit-form-email:
         module: pim/form/common/fields/text
@@ -180,9 +180,9 @@ extensions:
         position: 110
         targetZone: content
         config:
-           fieldName: email
-           label: 'Email - to translate'
-           required: true
+            fieldName: email
+            label: 'Email - to translate'
+            required: true
 
     # Additional tab
     pim-user-edit-form-additional-tab:
@@ -209,11 +209,11 @@ extensions:
         position: 10
         targetZone: content
         config:
-           fieldName: catalog_default_locale
-           label: 'Catalog locale - to translate'
-           required: true
-           isMultiple: false
-           allowClear: false
+            fieldName: catalog_default_locale
+            label: 'Catalog locale - to translate'
+            required: true
+            isMultiple: false
+            allowClear: false
 
     pim-user-edit-form-catalog-scope:
         module: pim/form/common/fields/scope
@@ -221,11 +221,11 @@ extensions:
         position: 20
         targetZone: content
         config:
-           fieldName: catalog_default_scope
-           label: 'Catalog scope - to translate'
-           required: true
-           isMultiple: false
-           allowClear: false
+            fieldName: catalog_default_scope
+            label: 'Catalog scope - to translate'
+            required: true
+            isMultiple: false
+            allowClear: false
 
     pim-user-edit-form-name-default-tree:
         module: pim/form/common/fields/category-tree
@@ -245,9 +245,9 @@ extensions:
         position: 40
         targetZone: content
         config:
-           fieldName: productGridFilters
-           label: 'Product Grid Filters - to translate'
-           required: true
+            fieldName: productGridFilters
+            label: 'Product Grid Filters - to translate'
+            required: true
 
     # Groups and Roles tab
     pim-user-edit-form-groups-and-roles-tab:
@@ -297,14 +297,16 @@ extensions:
                 dropZone: content
 
     pim-user-edit-form-ui-locale:
-        module: pim/form/common/fields/text
+        module: pim/form/common/fields/ui-locale
         parent: pim-user-edit-form-interfaces-tab-content
         position: 10
         targetZone: content
         config:
-           fieldName: user_default_locale
-           label: 'UI Locale - to translate'
-           required: true
+            fieldName: user_default_locale
+            label: 'UI Locale - to translate'
+            required: true
+            isMultiple: false
+            allowClear: false
 
     pim-user-edit-form-timezone:
         module: pim/form/common/fields/text
@@ -312,6 +314,6 @@ extensions:
         position: 20
         targetZone: content
         config:
-           fieldName: timezone
-           label: 'Timezone - to translate'
-           required: true
+            fieldName: timezone
+            label: 'Timezone - to translate'
+            required: true
