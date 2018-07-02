@@ -29,5 +29,6 @@ services:
         arguments:
             - '@__symfony__.pimee_suggest_data.application.manage_mapping'
             - '@__symfony__.pimee_suggest_data.repository.identifiers_mapping'
+            - '@__symfony__.pim_catalog.repository.attribute'
         tags:
             - { name: 'fob.context_service' }

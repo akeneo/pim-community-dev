@@ -6,6 +6,7 @@ namespace spec\PimEnterprise\Component\SuggestData\Command;
 
 use PimEnterprise\Component\SuggestData\Command\UpdateIdentifiersMapping;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\SuggestData\Exception\DuplicatedMappingAttributeException;
 
 class UpdateIdentifiersMappingSpec extends ObjectBehavior
 {
@@ -67,6 +68,6 @@ class UpdateIdentifiersMappingSpec extends ObjectBehavior
             'asin' => 'id',
         ]);
 
-        $this->shouldThrow(new \InvalidArgumentException('An attribute cannot be used more that 1 time'))->duringInstantiation();
+        $this->shouldThrow(new DuplicatedMappingAttributeException('An attribute cannot be used more that 1 time'))->duringInstantiation();
     }
 }

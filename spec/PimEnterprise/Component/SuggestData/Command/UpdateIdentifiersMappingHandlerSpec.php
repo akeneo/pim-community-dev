@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\PimEnterprise\Component\SuggestData\Command;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\SuggestData\Command\UpdateIdentifiersMapping;
 use PimEnterprise\Component\SuggestData\Command\UpdateIdentifiersMappingHandler;
@@ -27,9 +28,8 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
     function it_should_throw_an_exception_with_invalid_attributes(
         AttributeRepositoryInterface $attributeRepository,
         UpdateIdentifiersMapping $command
-    )
-    {
-        $attributeRepository->findBy(Argument::cetera())->willReturn([]);
+    ) {
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn(null);
         $command->getIdentifiersMapping()->willReturn([
             'brand' => 'manufacturer',
             'mpn' => 'model',
@@ -43,9 +43,12 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
     function it_should_save_the_identifiers_mapping(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        UpdateIdentifiersMapping $command
-    )
-    {
+        UpdateIdentifiersMapping $command,
+        AttributeInterface $manufacturer,
+        AttributeInterface $model,
+        AttributeInterface $ean,
+        AttributeInterface $id
+    ) {
         $identifiers = [
             'brand' => 'manufacturer',
             'mpn' => 'model',
@@ -54,9 +57,18 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         ];
         $command->getIdentifiersMapping()->willReturn($identifiers);
 
-        $attributeRepository->findBy(Argument::cetera())->willReturn($identifiers);
+        $attributeRepository->findOneByIdentifier(Argument::any())->shouldBeCalledTimes(4);
+        $attributeRepository->findOneByIdentifier('manufacturer')->willReturn($manufacturer);
+        $attributeRepository->findOneByIdentifier('model')->willReturn($model);
+        $attributeRepository->findOneByIdentifier('ean')->willReturn($ean);
+        $attributeRepository->findOneByIdentifier('id')->willReturn($id);
 
-        $identifiersMapping = new IdentifiersMapping($identifiers);
+        $identifiersMapping = new IdentifiersMapping([
+            'brand' => $manufacturer->getWrappedObject(),
+            'mpn' => $model->getWrappedObject(),
+            'upc' => $ean->getWrappedObject(),
+            'asin' => $id->getWrappedObject(),
+        ]);
         $identifiersMappingRepository->save($identifiersMapping)->shouldBeCalled();
 
         $this->handle($command);

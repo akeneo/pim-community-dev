@@ -6,30 +6,34 @@ namespace PimEnterprise\Component\SuggestData\Application;
 
 use PimEnterprise\Component\SuggestData\Command\UpdateIdentifiersMapping;
 use PimEnterprise\Component\SuggestData\Command\UpdateIdentifiersMappingHandler;
+use PimEnterprise\Component\SuggestData\Model\IdentifiersMapping;
+use PimEnterprise\Component\SuggestData\Repository\IdentifiersMappingRepositoryInterface;
 
 class ManageMapping
 {
     private $updateIdentifiersMappingHandler;
 
-    public function __construct(UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler)
+    private $identifiersMappingRepository;
+
+    public function __construct(UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler, IdentifiersMappingRepositoryInterface $identifiersMappingRepository)
     {
         $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
+        $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
 
     /**
      * @param array $identifiers
-     * @return bool
      */
-    public function updateIdentifierMapping(array $identifiers): bool
+    public function updateIdentifierMapping(array $identifiers): void
     {
-        try {
-            $updateIdentifierCommand = new UpdateIdentifiersMapping($identifiers);
-            $this->updateIdentifiersMappingHandler->handle($updateIdentifierCommand);
+        $updateIdentifierCommand = new UpdateIdentifiersMapping($identifiers);
+        $this->updateIdentifiersMappingHandler->handle($updateIdentifierCommand);
+    }
 
-            return true;
-        }
-        catch (\InvalidArgumentException $e) {
-            return false;
-        }
+    public function getIdentifiersMapping(): array
+    {
+        $identifiersMapping = $this->identifiersMappingRepository->findAll();
+
+        return $identifiersMapping->normalize();
     }
 }

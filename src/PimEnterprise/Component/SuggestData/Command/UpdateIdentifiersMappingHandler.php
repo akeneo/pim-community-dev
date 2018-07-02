@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\SuggestData\Command;
 
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\SuggestDataBundle\Entity\IdentifierMapping;
 use PimEnterprise\Component\SuggestData\Model\IdentifiersMapping;
 use PimEnterprise\Component\SuggestData\Repository\IdentifiersMappingRepositoryInterface;
 
@@ -26,7 +27,8 @@ class UpdateIdentifiersMappingHandler
     public function handle(UpdateIdentifiersMapping $updateIdentifiersMappingCommand): void
     {
         $identifiers = $updateIdentifiersMappingCommand->getIdentifiersMapping();
-        $this->validateAttributesExist($identifiers);
+
+        $identifiers = $this->replaceAttributeCodesByAttributes($identifiers);
 
         $identifiersMapping = new IdentifiersMapping($identifiers);
 
@@ -34,16 +36,22 @@ class UpdateIdentifiersMappingHandler
     }
 
     /**
-     * @param array $attributeIdentifiers
+     * @param array $identifiers
+     *
+     * @return array
      */
-    private function validateAttributesExist(array $attributeIdentifiers): void
+    private function replaceAttributeCodesByAttributes(array $identifiers): array
     {
-        $attributeIdentifiers = array_filter(array_values($attributeIdentifiers));
+        foreach ($identifiers as $pimAiCode => $attributeCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-        $attributes = $this->attributeRepository->findBy(['code' => $attributeIdentifiers]);
+            if (! $attribute instanceof AttributeInterface) {
+                throw new \InvalidArgumentException('Some attributes for the identifiers mapping don\'t exist');
+            }
 
-        if (count($attributes) !== count($attributeIdentifiers)) {
-            throw new \InvalidArgumentException('Some attributes for the identifiers mapping don\'t exist');
+            $identifiers[$pimAiCode] = $attribute;
         }
+
+        return $identifiers;
     }
 }

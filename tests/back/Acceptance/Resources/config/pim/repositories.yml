@@ -20,3 +20,8 @@ services:
 
     pimee_suggest_data.repository.identifiers_mapping:
         class: 'AkeneoEnterprise\Test\Acceptance\SuggestData\Repository\InMemoryIdentifiersMappingRepository'
+        arguments:
+            - !service
+              class: PimEnterprise\Component\SuggestData\Model\IdentifiersMapping
+              arguments:
+                  - []

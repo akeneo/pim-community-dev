@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\SuggestData\Command;
 
+use PimEnterprise\Component\SuggestData\Exception\DuplicatedMappingAttributeException;
+
 class UpdateIdentifiersMapping
 {
     private $identifiersMapping;
@@ -29,17 +31,16 @@ class UpdateIdentifiersMapping
     private function validateIdentifiers(array $identifiersMapping): void
     {
         $expectedKeys = [
+            'asin',
             'brand',
             'mpn',
             'upc',
-            'asin',
         ];
-        sort($expectedKeys);
 
         $mappingKeys = array_keys($identifiersMapping);
         sort($mappingKeys);
 
-        if ($expectedKeys != $mappingKeys) {
+        if ($expectedKeys !== $mappingKeys) {
             throw new \InvalidArgumentException('Some identifiers mapping are missing or invalid');
         }
 
@@ -52,7 +53,7 @@ class UpdateIdentifiersMapping
     private function ensureAttributesAreMappedOnlyOneTime(array $identifiersMapping): void
     {
         if (count($identifiersMapping) > count(array_unique($identifiersMapping))) {
-            throw new \InvalidArgumentException('An attribute cannot be used more that 1 time');
+            throw new DuplicatedMappingAttributeException('An attribute cannot be used more that 1 time');
         }
     }
 }

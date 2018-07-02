@@ -12,9 +12,9 @@ class InMemoryIdentifiersMappingRepository implements IdentifiersMappingReposito
     private
         $identifiers;
 
-    public function __construct()
+    public function __construct(IdentifiersMapping $identifiers)
     {
-        $this->identifiers = new IdentifiersMapping([]);
+        $this->identifiers = $identifiers;
     }
 
     /**

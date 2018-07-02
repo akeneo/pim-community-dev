@@ -2,7 +2,10 @@ PimEnterprise\Bundle\SuggestDataBundle\Entity\IdentifierMapping:
     type: entity
     table: pim_catalog_pimai_identifier_mapping
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    #repositoryClass: PimEnterprise\Bundle\SuggestDataBundle\Doctrine\Repository\IdentifiersMappingRepository
+    indexes:
+        pim_ai_code__idx:
+            columns:
+                - pim_ai_code
     fields:
         id:
             type: integer

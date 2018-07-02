@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\tests\integration\Doctrine\Repository;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;
 use PimEnterprise\Component\SuggestData\Model\IdentifiersMapping;
@@ -15,7 +16,14 @@ class ConfigurationRepositoryIntegration extends TestCase
      */
     public function it_creates_an_identifiers_mapping()
     {
-        $this->updateMapping(['brand' => 'sku'], 'sku');
+        $mapping = $this->updateMapping(['brand' => $this->getAttribute('sku')]);
+
+        $this->assertEquals([
+            [
+                'pim_ai_code' => 'brand',
+                'attribute_id' => $this->getAttribute('sku')->getId(),
+            ],
+        ], $mapping);
     }
 
     /**
@@ -24,15 +32,39 @@ class ConfigurationRepositoryIntegration extends TestCase
     public function it_updates_an_identifiers_mapping()
     {
         $identifiersMapping = new IdentifiersMapping([
-            'brand' => 'sku',
+            'brand' => $this->getAttribute('sku'),
         ]);
         $this->get('pimee_suggest_data.repository.identifiers_mapping')->save($identifiersMapping);
 
         $this->createAttribute('ean');
-        $this->updateMapping(['brand' => 'ean'], 'ean');
+        $mapping = $this->updateMapping(['brand' => $this->getAttribute('ean')]);
+
+        $this->assertEquals([
+            [
+                'pim_ai_code' => 'brand',
+                'attribute_id' => $this->getAttribute('ean')->getId(),
+            ],
+        ], $mapping);
     }
 
-    private function updateMapping(array $newMapping, string $newAttributeName)
+    /**
+     * @test
+     */
+    public function it_finds_identifiers_mapping()
+    {
+        $identifiersMapping = new IdentifiersMapping([
+            'brand' => $this->getAttribute('sku'),
+        ]);
+
+        $identifiersMappingRepository = $this->get('pimee_suggest_data.repository.identifiers_mapping');
+        $identifiersMappingRepository->save($identifiersMapping);
+
+        $savedMapping = $identifiersMappingRepository->findAll();
+
+        $this->assertEquals($identifiersMapping, $savedMapping);
+    }
+
+    private function updateMapping(array $newMapping)
     {
         $identifiersMapping = new IdentifiersMapping($newMapping);
 
@@ -42,31 +74,8 @@ class ConfigurationRepositoryIntegration extends TestCase
         $statement = $entityManager->getConnection()->query(
             'SELECT pim_ai_code, attribute_id from pim_catalog_pimai_identifier_mapping;'
         );
-        $identifiersMapping = $statement->fetchAll();
 
-        $this->assertEquals([
-            [
-                'pim_ai_code' => 'brand',
-                'attribute_id' => $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($newAttributeName)->getId(),
-            ],
-        ], $identifiersMapping);
-    }
-
-    /**
-     * @test
-     */
-    public function it_finds_identifiers_mapping()
-    {
-        $identifiersMapping = new IdentifiersMapping([
-            'brand' => 'sku',
-        ]);
-
-        $identifiersMappingRepository = $this->get('pimee_suggest_data.repository.identifiers_mapping');
-        $identifiersMappingRepository->save($identifiersMapping);
-
-        $savedMapping = $identifiersMappingRepository->findAll();
-
-        $this->assertEquals($identifiersMapping, $savedMapping);
+        return $statement->fetchAll();
     }
 
     private function createAttribute(string $code)
@@ -78,6 +87,11 @@ class ConfigurationRepositoryIntegration extends TestCase
         ]);
 
         $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+    }
+
+    private function getAttribute(string $name): AttributeInterface
+    {
+        return $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($name);
     }
 
     /**

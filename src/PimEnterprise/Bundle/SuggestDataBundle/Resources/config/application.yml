@@ -3,3 +3,4 @@ services:
         class: PimEnterprise\Component\SuggestData\Application\ManageMapping
         arguments:
             - '@pimee_suggest_data.handler.update_identifiers_mapping'
+            - '@pimee_suggest_data.repository.identifiers_mapping'

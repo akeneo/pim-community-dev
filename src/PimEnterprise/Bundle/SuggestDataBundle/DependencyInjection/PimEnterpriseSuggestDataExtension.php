@@ -29,11 +29,11 @@ class PimEnterpriseSuggestDataExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('application.yml');
+        $loader->load('clients.yml');
         $loader->load('connector.yml');
         $loader->load('controllers.yml');
         $loader->load('data_providers.yml');
-        $loader->load('clients.yml');
-        $loader->load('application.yml');
         $loader->load('handlers.yml');
         $loader->load('repositories.yml');
     }

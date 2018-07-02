@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\SuggestData\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+
 class IdentifiersMapping implements \IteratorAggregate
 {
     private $identifiers;
@@ -26,7 +28,7 @@ class IdentifiersMapping implements \IteratorAggregate
      *
      * @return null|string
      */
-    public function getIdentifier(string $name): ?string
+    public function getIdentifier(string $name): ?AttributeInterface
     {
         if (array_key_exists($name, $this->identifiers)) {
             return $this->identifiers[$name];
@@ -35,10 +37,20 @@ class IdentifiersMapping implements \IteratorAggregate
         return null;
     }
 
+    public function normalize(): array
+    {
+        $result = [];
+        foreach ($this->identifiers as $pimAiCode => $attribute) {
+            $result[$pimAiCode] = $attribute->getCode();
+        }
+
+        return $result;
+    }
+
     /**
-     * @return \ArrayIterator|\Traversable
+     * @inheritdoc
      */
-    public function getIterator()
+    public function getIterator(): iterable
     {
         return new \ArrayIterator($this->identifiers);
     }

@@ -22,29 +22,24 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function save(IdentifiersMapping $identifiersMapping): void
     {
-        foreach ($identifiersMapping as $pimAiCode => $pimAttributeCode) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($pimAttributeCode);
-
-            $identifier = $this->em->getRepository(IdentifierMapping::class)->findOneBy(['pimAiCode' => $pimAiCode]);
-            if (! $identifier instanceof IdentifierMapping) {
-                $identifier = new IdentifierMapping();
-                $identifier->pimAiCode = $pimAiCode;
-                $identifier->attribute = $attribute;
-            } else {
-                $identifier->attribute = $attribute;
+        foreach ($identifiersMapping as $pimAiCode => $attribute) {
+            $identifierMapping = $this->em->getRepository(IdentifierMapping::class)->findOneBy(['pimAiCode' => $pimAiCode]);
+            if (! $identifierMapping instanceof IdentifierMapping) {
+                $identifierMapping = new IdentifierMapping(null, $pimAiCode, $attribute);
             }
+            $identifierMapping->updateAttribute($attribute);
 
-            $this->em->persist($identifier);
+            $this->em->persist($identifierMapping);
         }
         $this->em->flush();
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function findAll(): IdentifiersMapping
     {
@@ -52,7 +47,7 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
 
         $identifiersArray = [];
         foreach ($identifiers as $identifier) {
-            $identifiersArray[$identifier->pimAiCode] = $identifier->attribute->getCode();
+            $identifiersArray[$identifier->getPimAiCode()] = $identifier->getAttribute();
         }
 
         return new IdentifiersMapping($identifiersArray);

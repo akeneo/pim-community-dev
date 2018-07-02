@@ -10,4 +10,3 @@ services:
         arguments:
            - '@pimee_suggest_data.application.manage_mapping'
            - '@translator'
-           - '@pimee_suggest_data.repository.identifiers_mapping'
