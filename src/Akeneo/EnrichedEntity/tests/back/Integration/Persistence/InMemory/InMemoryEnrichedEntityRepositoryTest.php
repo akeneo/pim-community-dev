@@ -34,7 +34,7 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_save_an_enriched_entity_and_returns_it()
+    public function it_saves_an_enriched_entity_and_returns_it()
     {
         $identifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $enrichedEntity = EnrichedEntity::create($identifier, []);
