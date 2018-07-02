@@ -5,20 +5,24 @@ import Sidebar from 'akeneoenrichedentity/application/component/app/sidebar';
 import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
 import editTabsProvider from 'akeneoenrichedentity/application/configuration/edit-tabs';
 import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrumb';
-import { getImageShowUrl } from 'akeneoenrichedentity/tools/media-url-generator';
+import {getImageShowUrl} from 'akeneoenrichedentity/tools/media-url-generator';
 import __ from 'akeneoenrichedentity/tools/translator';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import { saveEnrichedEntity } from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+import {saveEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
 
 interface StateProps {
   sidebar: {
     tabs: Tab[];
     currentTab: string;
   };
+  form: {
+    isDirty: boolean;
+  };
   context: {
     locale: string;
-  }
+  };
   enrichedEntity: EnrichedEntity|null;
 }
 
@@ -61,6 +65,8 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
   };
 
   render(): JSX.Element | JSX.Element[] {
+    const editState = this.props.form.isDirty ? <EditState /> : '';
+
     return (
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-thirdColumnContainer">
@@ -104,6 +110,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                       <div className="AknTitleContainer-title">
                         {null !== this.props.enrichedEntity ? this.props.enrichedEntity.getLabel(this.props.context.locale) : ''}
                       </div>
+                      {editState}
                     </div>
                   </div>
                   <div>
@@ -141,6 +148,9 @@ export default connect((state: State): StateProps => {
     sidebar: {
       tabs,
       currentTab,
+    },
+    form: {
+      isDirty: state.editForm.isDirty,
     },
     context: {
       locale

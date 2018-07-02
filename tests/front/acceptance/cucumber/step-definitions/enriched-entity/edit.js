@@ -31,7 +31,7 @@ module.exports = async function(cucumber) {
     const properties = await editPage.getProperties();
     const isLoaded = await properties.isLoaded();
 
-    assert.equal(isLoaded, true);
+    assert.strictEqual(isLoaded, true);
   };
 
   const changeEnrichedEntity = async function(editPage, identifier, updates) {
@@ -60,10 +60,10 @@ module.exports = async function(cucumber) {
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const identifierValue = await properties.getIdentifier();
-    assert.equal(identifierValue, expectedIdentifier);
+    assert.strictEqual(identifierValue, expectedIdentifier);
 
     const labelValue = await properties.getLabel();
-    assert.equal(labelValue, expectedLabel);
+    assert.strictEqual(labelValue, expectedLabel);
   });
 
   When('the user updates the enriched entity {string} with:', async function(identifier, updates) {
@@ -89,11 +89,11 @@ module.exports = async function(cucumber) {
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const identifierValue = await properties.getIdentifier();
-    assert.equal(identifierValue, enrichedEntity.identifier);
+    assert.strictEqual(identifierValue, enrichedEntity.identifier);
 
     const labelValue = await properties.getLabel();
     // To rework when we will be able to switch locale
-    assert.equal(labelValue, enrichedEntity.labels['en_US']);
+    assert.strictEqual(labelValue, enrichedEntity.labels['en_US']);
   });
 
   Then('the saved enriched entity {string} will be:', function(identifier, updates) {

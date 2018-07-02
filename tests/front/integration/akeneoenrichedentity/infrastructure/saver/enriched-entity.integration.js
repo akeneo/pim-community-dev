@@ -10,14 +10,13 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
   }, timeout);
 
   it('It saves an enriched entity', async () => {
-
     page.on('request', interceptedRequest => {
       if (
         'http://pim.com/rest/enriched_entity/sofa' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
-          status: 204
+          status: 204,
         });
       }
     });
