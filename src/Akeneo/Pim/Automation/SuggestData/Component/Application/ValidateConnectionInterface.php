@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Application;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
-
 /**
  * Checks that the connection to a data provider is valid.
  * For example, if the provided configuration contains a token, the validation
@@ -25,9 +23,9 @@ use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
 interface ValidateConnectionInterface
 {
     /**
-     * @param SaveConfiguration $configuration
+     * @param array $configurationValues
      *
      * @return bool
      */
-    public function validate(SaveConfiguration $configuration): bool;
+    public function validate(array $configurationValues): bool;
 }

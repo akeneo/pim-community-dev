@@ -16,6 +16,7 @@ interface EditConfig {
   token_save_post_activation_title: string;
   get_configuration_url: string;
   post_configuration_url: string;
+  is_connection_activated_url: string;
   code: string;
 }
 
@@ -38,6 +39,7 @@ class EditView extends BaseView {
     token_save_post_activation_title: '',
     get_configuration_url: '',
     post_configuration_url: '',
+    is_connection_activated_url: '',
     code: '',
   };
 
@@ -85,11 +87,17 @@ class EditView extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    const formData = this.getFormData();
+    const url = Routing.generate(
+      this.config.is_connection_activated_url, {code: this.config.code}
+    );
 
-    0 === Object.keys(formData).length
-      ? this.renderUnactivated(formData.token)
-      : this.renderActivated(formData.token);
+    $.get(url).then((isConnectionActivated) => {
+      const formData = this.getFormData();
+
+      true === isConnectionActivated
+        ? this.renderActivated(formData.token)
+        : this.renderUnactivated(formData.token);
+    });
 
     return this;
   };
@@ -107,8 +115,10 @@ class EditView extends BaseView {
       JSON.stringify(this.getFormData())
     ).fail((xhr) => {
       Messenger.notify('error', xhr.responseJSON.message);
+      this.render();
     }).done((response) => {
       Messenger.notify('success', response.message);
+      this.render();
     });
   }
 

@@ -32,10 +32,8 @@ final class ValidatePimAiConnection implements ValidateConnectionInterface
     /**
      * {@inheritdoc}
      */
-    public function validate(SaveConfiguration $saveConfiguration): bool
+    public function validate(array $configurationValues): bool
     {
-        $saveConfigurationValues = $saveConfiguration->getValues();
-
-        return isset($saveConfigurationValues['token']) && static::PIM_AI_TOKEN === $saveConfigurationValues['token'];
+        return isset($configurationValues['token']) && static::PIM_AI_TOKEN === $configurationValues['token'];
     }
 }

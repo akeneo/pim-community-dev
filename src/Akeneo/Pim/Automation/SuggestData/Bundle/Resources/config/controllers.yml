@@ -10,4 +10,5 @@ services:
         arguments:
             - '@pimee_suggest_data.connection.activate'
             - '@pimee_suggest_data.connection.get_normalized_configuration'
+            - '@pimee_suggest_data.connection.get_status'
             - '@translator'

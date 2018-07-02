@@ -15,6 +15,7 @@ namespace PimEnterprise\Bundle\SuggestDataBundle\Controller\Rest;
 
 use PimEnterprise\Component\SuggestData\Application\ActivateSuggestDataConnection;
 use PimEnterprise\Component\SuggestData\Application\GetNormalizedConfiguration;
+use PimEnterprise\Component\SuggestData\Application\GetSuggestDataConnectionStatus;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,21 +32,27 @@ class PimAiConnectionController
     /** @var GetNormalizedConfiguration */
     private $getNormalizedConfiguration;
 
+    /** @var GetSuggestDataConnectionStatus */
+    private $getSuggestDataConnectionStatus;
+
     /** @var TranslatorInterface */
     private $translator;
 
     /**
-     * @param ActivateSuggestDataConnection $activateSuggestDataConnection
-     * @param GetNormalizedConfiguration    $getNormalizedConfiguration
-     * @param TranslatorInterface           $translator
+     * @param ActivateSuggestDataConnection  $activateSuggestDataConnection
+     * @param GetNormalizedConfiguration     $getNormalizedConfiguration
+     * @param GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus
+     * @param TranslatorInterface            $translator
      */
     public function __construct(
         ActivateSuggestDataConnection $activateSuggestDataConnection,
         GetNormalizedConfiguration $getNormalizedConfiguration,
+        GetSuggestDataConnectionStatus $getSuggestDataConnectionStatus,
         TranslatorInterface $translator
     ) {
         $this->activateSuggestDataConnection = $activateSuggestDataConnection;
         $this->getNormalizedConfiguration = $getNormalizedConfiguration;
+        $this->getSuggestDataConnectionStatus = $getSuggestDataConnectionStatus;
         $this->translator = $translator;
     }
 
@@ -59,6 +66,18 @@ class PimAiConnectionController
         $normalizedConfiguration = $this->getNormalizedConfiguration->fromCode($code);
 
         return new JsonResponse($normalizedConfiguration);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Response
+     */
+    public function isActiveAction(string $code): Response
+    {
+        $isActive = $this->getSuggestDataConnectionStatus->forCode($code);
+
+        return new JsonResponse($isActive);
     }
 
     /**
