@@ -70,7 +70,12 @@ class EditView extends BaseView {
 
     return $.when(
       $.get(url).then((configuration) => {
-        this.setData({token: configuration.token});
+        const data = {token: ''};
+        if (configuration.hasOwnProperty('values')) {
+          data.token = configuration.values.token;
+        }
+
+        this.setData(data);
       }),
       BaseView.prototype.configure.apply(this, arguments)
     );

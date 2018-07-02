@@ -116,6 +116,12 @@ class PimAiContext implements Context
      */
     private function activatePimAi(string $activationCode): bool
     {
-        return $this->pimAiConnection->activate('pim-ai', ['token' => $activationCode]);
+        try {
+            $this->pimAiConnection->activate('pim-ai', ['token' => $activationCode]);
+        } catch (\InvalidArgumentException $exception) {
+            return false;
+        }
+
+        return true;
     }
 }

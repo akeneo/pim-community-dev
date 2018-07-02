@@ -56,9 +56,9 @@ class PimAiConnectionController
      */
     public function getAction(string $code): Response
     {
-        $normalizedConfiguration = $this->getNormalizedConfiguration->query($code);
+        $normalizedConfiguration = $this->getNormalizedConfiguration->fromCode($code);
 
-        return new JsonResponse($normalizedConfiguration['configuration_fields']);
+        return new JsonResponse($normalizedConfiguration);
     }
 
     /**
@@ -71,17 +71,17 @@ class PimAiConnectionController
     {
         $configurationFields = json_decode($request->getContent(), true);
 
-        $isActivated = $this->activateSuggestDataConnection->activate($code, $configurationFields);
-
-        if (false === $isActivated) {
+        try {
+            $this->activateSuggestDataConnection->activate($code, $configurationFields);
+        } catch (\InvalidArgumentException $exception) {
             return new JsonResponse([
-                'successful' => $isActivated,
+                'successful' => false,
                 'message' => $this->translator->trans('pimee_suggest_data.connection.pim_ai.error'),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new JsonResponse([
-            'successful' => $isActivated,
+            'successful' => true,
             'message' => $this->translator->trans('pimee_suggest_data.connection.pim_ai.success'),
         ]);
     }

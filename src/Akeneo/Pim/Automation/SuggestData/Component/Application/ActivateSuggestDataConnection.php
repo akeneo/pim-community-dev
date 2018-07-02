@@ -18,8 +18,6 @@ use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler
 use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfiguration;
 
 /**
- * Activates the connection to the the data provider.
- *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class ActivateSuggestDataConnection
@@ -36,20 +34,21 @@ class ActivateSuggestDataConnection
     }
 
     /**
+     * Activates the connection to the the data provider.
+     * Throws an invalid argument exception if anything goes wrong during the activation.
+     *
      * @param string $code
      * @param array  $configuration
      *
-     * @return bool
+     * @throws \InvalidArgumentException
      */
-    public function activate(string $code, array $configuration): bool
+    public function activate(string $code, array $configuration): void
     {
         try {
             $saveConfiguration = new SaveConfiguration($code, $configuration);
             $this->saveConfigurationHandler->handle($saveConfiguration);
         } catch (InvalidConnectionConfiguration $exception) {
-            return false;
+            throw new \InvalidArgumentException($exception->getMessage());
         }
-
-        return true;
     }
 }

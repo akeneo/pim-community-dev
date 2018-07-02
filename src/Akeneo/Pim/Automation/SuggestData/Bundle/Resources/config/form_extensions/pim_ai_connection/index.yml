@@ -1,5 +1,5 @@
 extensions:
-    pimee-pim-ai-connection-index:
+    pim-pim-ai-connection-index:
         module: pim/common/simple-view
         config:
             template: pim/template/common/default-template
