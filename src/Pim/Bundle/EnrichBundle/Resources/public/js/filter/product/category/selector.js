@@ -98,7 +98,7 @@ define(
              * @param {Object} data
              */
             uncheckNode: function (data) {
-                var code = data.rslt.obj.data('code');
+                var code = data.rslt.obj.data('code').toString();
 
                 if ('' !== code) {
                     this.attributes.categories = _.without(this.attributes.categories, code);

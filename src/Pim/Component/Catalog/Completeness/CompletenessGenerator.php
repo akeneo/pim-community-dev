@@ -50,6 +50,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
      */
     public function generateMissingForProducts(ChannelInterface $channel, array $filters)
     {
@@ -61,6 +63,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated to remove as completeness is generated on the fly when a product is saved since 2.x
      */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
@@ -72,6 +76,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated to remove as it is not used
      */
     public function generateMissing()
     {

@@ -38,7 +38,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /* @var string */
     protected $jobExecutionClass;
 
-    /** @var int */
+    /* @var int */
     protected $batchSize;
 
     /**
@@ -200,7 +200,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
         foreach ($jobsExecutions as $i => $jobsExecution) {
             $this->jobManager->remove($jobsExecution);
 
-            if (0 == $i % $this->batchSize) {
+            if (0 === $i % $this->batchSize) {
                 $this->jobManager->flush();
             }
         }
