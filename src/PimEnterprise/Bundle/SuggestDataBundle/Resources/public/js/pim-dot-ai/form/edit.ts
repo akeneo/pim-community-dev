@@ -3,7 +3,7 @@ import BaseView = require('pimenrich/js/view/base');
 // import Routing = require('routing');
 
 const __ = require('oro/translator');
-const template = require('pimee/template/pim-dot-ai-connection/edit');
+const template = require('pimee/template/pim-ai-connection/edit');
 
 interface EditConfig {
   token_label_title: string;

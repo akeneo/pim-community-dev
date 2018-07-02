@@ -5,5 +5,5 @@ extensions:
         aclResourceId: pimee_suggest_data_connection
         position: 130
         config:
-            title: pimee_suggest_data.pim_dot_ai.title.main_title
-            to: pimee_suggest_data_pim_dot_ai_connection_index
+            title: pimee_suggest_data.pim_ai.title.main_title
+            to: pimee_suggest_data_pim_ai_connection_index

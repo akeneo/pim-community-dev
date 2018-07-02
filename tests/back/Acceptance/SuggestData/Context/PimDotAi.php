@@ -85,7 +85,7 @@ class PimDotAi implements Context
      */
     public function isPimDotAiActivated(string $not = null)
     {
-        $isActive = $this->configurationRepository->find('pim-dot-ai');
+        $isActive = $this->configurationRepository->find('pim-ai');
 
         if (null === $not) {
             Assert::assertNotNull($isActive);
@@ -99,12 +99,12 @@ class PimDotAi implements Context
      */
     public function retrievePimDotAiConnectionConfiguration()
     {
-        $configuration = $this->getNormalizedConfiguration->query('pim-dot-ai');
+        $configuration = $this->getNormalizedConfiguration->query('pim-ai');
 
         Assert::assertSame([
-            'code' => 'pim-dot-ai',
+            'code' => 'pim-ai',
             'configuration_fields' => [
-                'pim_dot_ai_activation_code' => static::PIM_AI_VALID_TOKEN,
+                'pim_ai_activation_code' => static::PIM_AI_VALID_TOKEN,
             ],
         ], $configuration);
     }
@@ -116,6 +116,6 @@ class PimDotAi implements Context
      */
     private function activatePimDotAi(string $activationCode): bool
     {
-        return $this->pimDotAiConnection->activate('pim-dot-ai', ['pim_dot_ai_activation_code' => $activationCode]);
+        return $this->pimDotAiConnection->activate('pim-ai', ['pim_ai_activation_code' => $activationCode]);
     }
 }

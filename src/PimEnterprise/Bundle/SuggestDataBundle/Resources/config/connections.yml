@@ -4,5 +4,5 @@ services:
         arguments:
             - '@pimee_suggest_data.handler.save_configuration'
 
-    pimee_suggest_data.connection.is_valid.pim_dot_ai:
+    pimee_suggest_data.connection.is_valid.pim_ai:
         class: 'PimEnterprise\Bundle\SuggestDataBundle\Infra\Fake\PimDotAiConnection'

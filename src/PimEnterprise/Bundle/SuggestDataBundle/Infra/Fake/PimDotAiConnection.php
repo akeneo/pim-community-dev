@@ -26,14 +26,14 @@ final class PimDotAiConnection implements ConnectionIsValidInterface
     /**
      * @const string A hard-coded token for acceptance tests.
      */
-    private const PIM_DOT_AI_TOKEN = 'the-only-valid-token-for-acceptance';
+    private const pim_ai_TOKEN = 'the-only-valid-token-for-acceptance';
 
     /**
      * {@inheritdoc}
      */
     public function isValid(array $configurationFields): bool
     {
-        return isset($configurationFields['pim_dot_ai_activation_code']) &&
-            static::PIM_DOT_AI_TOKEN === $configurationFields['pim_dot_ai_activation_code'];
+        return isset($configurationFields['pim_ai_activation_code']) &&
+            static::pim_ai_TOKEN === $configurationFields['pim_ai_activation_code'];
     }
 }

@@ -32,10 +32,10 @@ class PimDotAiConnectionSpec extends ObjectBehavior
         $this->shouldImplement(ConnectionIsValidInterface::class);
     }
 
-    public function it_checks_that_a_pim_dot_ai_connectionis_valid()
+    public function it_checks_that_a_pim_ai_connectionis_valid()
     {
-        $this->isValid(['pim_dot_ai_activation_code' => 'the-only-valid-token-for-acceptance'])->shouldReturn(true);
-        $this->isValid(['pim_dot_ai_activation_code' => 'an-invalid-token-for-acceptance'])->shouldReturn(false);
+        $this->isValid(['pim_ai_activation_code' => 'the-only-valid-token-for-acceptance'])->shouldReturn(true);
+        $this->isValid(['pim_ai_activation_code' => 'an-invalid-token-for-acceptance'])->shouldReturn(false);
         $this->isValid(['foo' => 'bar'])->shouldReturn(false);
     }
 }

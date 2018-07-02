@@ -29,7 +29,7 @@ class ConfigurationRepositoryIntegration extends TestCase
      */
     public function it_saves_a_suggest_data_configuration()
     {
-        $configuration = new Configuration('pim-dot-ai', ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
+        $configuration = new Configuration('pim-ai', ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
 
         $this->get('pimee_suggest_data.repository.configuration')->save($configuration);
 
@@ -41,7 +41,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         $retrievedConfiguration = $statement->fetchAll();
 
         $this->assertSame([[
-            'entity' => 'pim-dot-ai',
+            'entity' => 'pim-ai',
             'name' => 'token',
             'value' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj',
         ]], $retrievedConfiguration);
@@ -52,15 +52,15 @@ class ConfigurationRepositoryIntegration extends TestCase
      */
     public function it_finds_a_suggest_data_configuration()
     {
-        $configuration = new Configuration('pim-dot-ai', ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
+        $configuration = new Configuration('pim-ai', ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
 
         $repository = $this->get('pimee_suggest_data.repository.configuration');
         $repository->save($configuration);
 
-        $retrievedConfiguration = $repository->find('pim-dot-ai');
+        $retrievedConfiguration = $repository->find('pim-ai');
         $this->assertInstanceOf(Configuration::class, $retrievedConfiguration);
         $this->assertSame([
-            'code' => 'pim-dot-ai',
+            'code' => 'pim-ai',
             'configuration_fields' => ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj'],
         ], $retrievedConfiguration->normalize());
     }

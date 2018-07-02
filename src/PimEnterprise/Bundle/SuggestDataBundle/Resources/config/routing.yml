@@ -3,17 +3,17 @@ pimee_suggest_data_push_product:
     defaults: { _controller: pimee_suggest_data.controller.suggest_data:pushAction }
     methods: [GET]
 
-pimee_suggest_data_pim_dot_ai_connection_index:
+pimee_suggest_data_pim_ai_connection_index:
     path: /suggest-data/connection
 
-pimee_suggest_data_pim_dot_ai_connection_save:
+pimee_suggest_data_pim_ai_connection_save:
     path: /suggest-data/connection/{code}
     defaults: { _controller: '' }
     requirements:
         code: '[a-zA-Z0-9_]+'
     methods: [POST]
 
-pimee_suggest_data_pim_dot_ai_connection_map_identifiers:
+pimee_suggest_data_pim_ai_connection_map_identifiers:
     path: /suggest-data/connection/mapping
     defaults: { _controller: '' }
     requirements:
