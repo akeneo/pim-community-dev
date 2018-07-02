@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\ProductProposal;
 
-use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
 use Symfony\Component\HttpFoundation\Response;
