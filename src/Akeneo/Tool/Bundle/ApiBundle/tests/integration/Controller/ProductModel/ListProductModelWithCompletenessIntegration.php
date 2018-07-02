@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
+namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
-use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
 
 /**
  * @group ce
  */
-class ListProductModelWithCompletenessIntegration extends AbstractProductTestCase
+class ListProductModelWithCompletenessIntegration extends AbstractProductModelTestCase
 {
     /**
      * {@inheritdoc}
