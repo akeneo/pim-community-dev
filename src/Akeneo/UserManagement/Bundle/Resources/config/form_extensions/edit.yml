@@ -309,7 +309,7 @@ extensions:
             allowClear: false
 
     pim-user-edit-form-timezone:
-        module: pim/form/common/fields/text
+        module: pim/form/common/fields/timezone
         parent: pim-user-edit-form-interfaces-tab-content
         position: 20
         targetZone: content
@@ -317,3 +317,5 @@ extensions:
             fieldName: timezone
             label: 'Timezone - to translate'
             required: true
+            isMultiple: false
+            allowClear: false
