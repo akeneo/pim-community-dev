@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\SuggestData\Model;
 
 /**
- * Holds the configuration of a third party connector.
+ * Holds the configuration of data provider.
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */

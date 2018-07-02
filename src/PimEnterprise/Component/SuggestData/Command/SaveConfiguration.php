@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\SuggestData\Command;
 
 /**
+ * This command is a DTO holding and validating the raw values of a suggest data configuration.
+ *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class SaveConfiguration

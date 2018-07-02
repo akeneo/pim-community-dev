@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\SuggestData\Exception;
 
 /**
+ * Exception thrown when a provided suggest data configuration does not allow
+ * to connect to the data provider.
+ *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 final class InvalidConnectionConfiguration extends \LogicException

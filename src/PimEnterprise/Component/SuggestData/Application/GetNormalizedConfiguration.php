@@ -16,6 +16,8 @@ namespace PimEnterprise\Component\SuggestData\Application;
 use PimEnterprise\Component\SuggestData\Repository\ConfigurationRepositoryInterface;
 
 /**
+ * Retrieves a suggest data configuration and returns it normalized.
+ *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 class GetNormalizedConfiguration
