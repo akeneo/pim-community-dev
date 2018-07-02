@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\Doctrine\Repository;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\ConfigBundle\Entity\Config;
@@ -106,17 +104,26 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
             $oroConfig->setRecordId(static::ORO_CONFIG_RECORD_ID);
         }
 
-        $oroConfigValues = new ArrayCollection();
         foreach ($values as $key => $value) {
-            $oroConfigValue = new ConfigValue();
-            $oroConfigValue->setConfig($oroConfig);
-            $oroConfigValue->setName($key);
-            $oroConfigValue->setValue($value);
+            $oroConfigValueAreadyExists = false;
 
-            $oroConfigValues->add($oroConfigValue);
+            foreach ($oroConfig->getValues() as $oroConfigValue) {
+                if ($key === $oroConfigValue->getName()) {
+                    $oroConfigValue->setValue($value);
+
+                    $oroConfigValueAreadyExists = true;
+                }
+            }
+
+            if (false === $oroConfigValueAreadyExists) {
+                $oroConfigValue = new ConfigValue();
+                $oroConfigValue->setConfig($oroConfig);
+                $oroConfigValue->setName($key);
+                $oroConfigValue->setValue($value);
+
+                $oroConfig->getValues()->add($oroConfigValue);
+            }
         }
-
-        $oroConfig->setValues($oroConfigValues);
 
         return $oroConfig;
     }

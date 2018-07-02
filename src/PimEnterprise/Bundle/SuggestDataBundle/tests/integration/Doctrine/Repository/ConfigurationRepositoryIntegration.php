@@ -49,6 +49,30 @@ class ConfigurationRepositoryIntegration extends TestCase
     /**
      * @test
      */
+    public function it_updates_a_suggest_data_configuration()
+    {
+        $configuration = new Configuration('pim-dot-ai', ['token' => 'a_first_token']);
+        $this->get('pimee_suggest_data.repository.configuration')->save($configuration);
+
+        $configuration->setValues(['token' => 'a_new_token']);
+        $this->get('pimee_suggest_data.repository.configuration')->save($configuration);
+
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $statement = $entityManager->getConnection()->query(
+            'SELECT entity, name, value from oro_config INNER JOIN oro_config_value o on oro_config.id = o.config_id;'
+        );
+        $retrievedConfiguration = $statement->fetchAll();
+
+        $this->assertSame([[
+            'entity' => 'pim-dot-ai',
+            'name' => 'token',
+            'value' => 'a_new_token',
+        ]], $retrievedConfiguration);
+    }
+
+    /**
+     * @test
+     */
     public function it_finds_a_suggest_data_configuration()
     {
         $configuration = new Configuration('pim-ai', ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
