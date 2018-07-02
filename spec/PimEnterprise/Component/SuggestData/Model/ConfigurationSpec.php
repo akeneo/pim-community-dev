@@ -35,23 +35,23 @@ class ConfigurationSpec extends ObjectBehavior
         $this->getCode()->shouldReturn('foobar');
     }
 
-    function it_gets_the_configuration_fields()
+    function it_gets_the_values()
     {
-        $this->getConfigurationFields()->shouldReturn(['field' => 'value']);
+        $this->getValues()->shouldReturn(['field' => 'value']);
     }
 
-    function it_sets_new_configuration_fields()
+    function it_sets_new_values()
     {
-        $this->setConfigurationFields(['new_field' => 'new_value']);
+        $this->setValues(['new_field' => 'new_value']);
 
-        $this->getConfigurationFields()->shouldReturn(['new_field' => 'new_value']);
+        $this->getValues()->shouldReturn(['new_field' => 'new_value']);
     }
 
     function it_is_normalizable()
     {
         $this->normalize()->shouldReturn([
             'code' => 'foobar',
-            'configuration_fields' => ['field' => 'value'],
+            'values' => ['field' => 'value'],
         ]);
     }
 }

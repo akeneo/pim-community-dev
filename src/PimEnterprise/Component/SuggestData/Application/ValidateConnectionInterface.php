@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\SuggestData\Application;
 
+use PimEnterprise\Component\SuggestData\Command\SaveConfiguration;
+
 /**
  * Checks that the connection to a data provider is valid.
  * For example, if the provided configuration contains a token, the validation
@@ -20,12 +22,12 @@ namespace PimEnterprise\Component\SuggestData\Application;
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-interface ConnectionIsValidInterface
+interface ValidateConnectionInterface
 {
     /**
-     * @param array $configurationFields
+     * @param SaveConfiguration $configuration
      *
      * @return bool
      */
-    public function isValid(array $configurationFields): bool;
+    public function validate(SaveConfiguration $configuration): bool;
 }

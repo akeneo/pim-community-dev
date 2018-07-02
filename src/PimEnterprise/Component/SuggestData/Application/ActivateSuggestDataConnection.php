@@ -22,7 +22,7 @@ use PimEnterprise\Component\SuggestData\Exception\InvalidConnectionConfiguration
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SuggestDataConnection
+class ActivateSuggestDataConnection
 {
     /** @var SaveConfigurationHandler */
     private $saveConfigurationHandler;
@@ -30,7 +30,7 @@ class SuggestDataConnection
     /**
      * @param SaveConfigurationHandler $saveConfigurationHandler
      */
-    public function __construct(SaveconfigurationHandler $saveConfigurationHandler)
+    public function __construct(SaveConfigurationHandler $saveConfigurationHandler)
     {
         $this->saveConfigurationHandler = $saveConfigurationHandler;
     }
@@ -44,7 +44,7 @@ class SuggestDataConnection
     public function activate(string $code, array $configuration): bool
     {
         try {
-            $saveConfiguration = new Saveconfiguration($code, $configuration);
+            $saveConfiguration = new SaveConfiguration($code, $configuration);
             $this->saveConfigurationHandler->handle($saveConfiguration);
         } catch (InvalidConnectionConfiguration $exception) {
             return false;

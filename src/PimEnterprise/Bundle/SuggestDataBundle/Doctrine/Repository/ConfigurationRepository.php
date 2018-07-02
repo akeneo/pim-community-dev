@@ -45,7 +45,7 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function find(string $code): ?Configuration
+    public function findOneByCode(string $code): ?Configuration
     {
         $oroConfig = $this->getOroConfigRepository()->findOneBy([
             'scopedEntity' => $code,
@@ -56,12 +56,12 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
             return null;
         }
 
-        $configurationFields = [];
+        $configurationValues = [];
         foreach ($oroConfig->getValues() as $oroConfigValue) {
-            $configurationFields[$oroConfigValue->getName()] = $oroConfigValue->getValue();
+            $configurationValues[$oroConfigValue->getName()] = $oroConfigValue->getValue();
         }
 
-        return new Configuration($oroConfig->getEntity(), $configurationFields);
+        return new Configuration($oroConfig->getEntity(), $configurationValues);
     }
 
     /**
@@ -69,8 +69,7 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
      */
     public function save(Configuration $configuration): void
     {
-        $oroConfig = $this->findOrCreateOroConfig($configuration->getCode());
-        $this->createAndAddOroConfigValues($configuration->getConfigurationFields(), $oroConfig);
+        $oroConfig = $this->findOrCreateOroConfig($configuration);
 
         $this->entityManager->persist($oroConfig);
         $this->entityManager->flush();
@@ -87,12 +86,14 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
     /**
      * Retrieves an oro config entity from database if it exists, or creates a new one.
      *
-     * @param string $code
+     * @param Configuration $configuration
      *
      * @return Config
      */
-    private function findOrCreateOroConfig(string $code): Config
+    private function findOrCreateOroConfig(Configuration $configuration): Config
     {
+        $code = $configuration->getCode();
+        $values = $configuration->getValues();
 
         $oroConfig = $this->getOroConfigRepository()->findOneBy([
             'scopedEntity' => $code,
@@ -105,25 +106,18 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
             $oroConfig->setRecordId(static::ORO_CONFIG_RECORD_ID);
         }
 
-        return $oroConfig;
-    }
-
-    /**
-     * @param array  $configurationFields
-     * @param Config $oroConfig
-     */
-    private function createAndAddOroConfigValues(array $configurationFields, Config $oroConfig): void
-    {
         $oroConfigValues = new ArrayCollection();
-        foreach ($configurationFields as $fieldKey => $fieldValue) {
+        foreach ($values as $key => $value) {
             $oroConfigValue = new ConfigValue();
             $oroConfigValue->setConfig($oroConfig);
-            $oroConfigValue->setName($fieldKey);
-            $oroConfigValue->setValue($fieldValue);
+            $oroConfigValue->setName($key);
+            $oroConfigValue->setValue($value);
 
             $oroConfigValues->add($oroConfigValue);
         }
 
         $oroConfig->setValues($oroConfigValues);
+
+        return $oroConfig;
     }
 }

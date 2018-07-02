@@ -1,5 +1,0 @@
-services:
-    pimee_suggest_data.query.get_normalized_configuration:
-        class: 'PimEnterprise\Component\SuggestData\Query\GetNormalizedConfiguration'
-        arguments:
-            - '@pimee_suggest_data.repository.configuration'

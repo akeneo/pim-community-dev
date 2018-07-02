@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\SuggestData\Command;
 
-use PimEnterprise\Component\SuggestData\Application\ConnectionIsValidInterface;
+use PimEnterprise\Component\SuggestData\Application\ValidateConnectionInterface;
 use PimEnterprise\Component\SuggestData\Exception\InvalidConnectionConfiguration;
 use PimEnterprise\Component\SuggestData\Model\Configuration;
 use PimEnterprise\Component\SuggestData\Repository\ConfigurationRepositoryInterface;
@@ -29,21 +29,21 @@ use PimEnterprise\Component\SuggestData\Repository\ConfigurationRepositoryInterf
  */
 class SaveConfigurationHandler
 {
-    /** @var ConnectionIsValidInterface */
-    private $pimDotAiConnection;
+    /** @var ValidateConnectionInterface */
+    private $connectionValidator;
 
     /** @var ConfigurationRepositoryInterface */
     private $repository;
 
     /**
-     * @param ConnectionIsValidInterface       $pimDotAiConnection
+     * @param ValidateConnectionInterface      $connectionValidator
      * @param ConfigurationRepositoryInterface $repository
      */
     public function __construct(
-        ConnectionIsValidInterface $pimDotAiConnection,
+        ValidateConnectionInterface $connectionValidator,
         ConfigurationRepositoryInterface $repository
     ) {
-        $this->pimDotAiConnection = $pimDotAiConnection;
+        $this->connectionValidator = $connectionValidator;
         $this->repository = $repository;
     }
 
@@ -54,19 +54,19 @@ class SaveConfigurationHandler
      */
     public function handle(SaveConfiguration $saveConfiguration): void
     {
-        if (!$this->pimDotAiConnection->isValid($saveConfiguration->getConfigurationFields())) {
+        if (!$this->connectionValidator->validate($saveConfiguration)) {
             throw InvalidConnectionConfiguration::forCode($saveConfiguration->getCode());
         }
 
-        $configuration = $this->repository->find((string) $saveConfiguration->getCode());
+        $configuration = $this->repository->findOneByCode($saveConfiguration->getCode());
 
         if (null === $configuration) {
             $configuration = new Configuration(
                 $saveConfiguration->getCode(),
-                $saveConfiguration->getConfigurationFields()
+                $saveConfiguration->getValues()
             );
         } else {
-            $configuration->setConfigurationFields($saveConfiguration->getConfigurationFields());
+            $configuration->setValues($saveConfiguration->getValues());
         }
 
         $this->repository->save($configuration);

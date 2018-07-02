@@ -38,7 +38,7 @@ final class InMemoryConfigurationRepository implements ConfigurationRepositoryIn
     /**
      * {@inheritdoc}
      */
-    public function find(string $code): ?Configuration
+    public function findOneByCode(string $code): ?Configuration
     {
         foreach ($this->configurations as $configuration) {
             if ($configuration->getCode() ===  $code) {

@@ -24,16 +24,16 @@ final class Configuration
     private $code;
 
     /** @var array */
-    private $configurationFields;
+    private $values;
 
     /**
      * @param string $code
-     * @param array  $configurationFields
+     * @param array  $values
      */
-    public function __construct(string $code, array $configurationFields)
+    public function __construct(string $code, array $values)
     {
         $this->code = $code;
-        $this->configurationFields = $configurationFields;
+        $this->values = $values;
     }
 
     /**
@@ -47,17 +47,17 @@ final class Configuration
     /**
      * @return array
      */
-    public function getConfigurationFields(): array
+    public function getValues(): array
     {
-        return $this->configurationFields;
+        return $this->values;
     }
 
     /**
-     * @param array $configurationFields
+     * @param array $values
      */
-    public function setConfigurationFields(array $configurationFields): void
+    public function setValues(array $values): void
     {
-        $this->configurationFields = $configurationFields;
+        $this->values = $values;
     }
 
     /**
@@ -69,7 +69,7 @@ final class Configuration
     {
         return [
             'code' => $this->code,
-            'configuration_fields' => $this->configurationFields,
+            'values' => $this->values,
         ];
     }
 }

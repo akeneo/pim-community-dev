@@ -27,7 +27,7 @@ interface ConfigurationRepositoryInterface
      *
      * @return Configuration
      */
-    public function find(string $code): ?Configuration;
+    public function findOneByCode(string $code): ?Configuration;
 
     /**
      * Saves a configuration.

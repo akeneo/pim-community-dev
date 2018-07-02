@@ -33,7 +33,6 @@ class ConfigurationRepositoryIntegration extends TestCase
 
         $this->get('pimee_suggest_data.repository.configuration')->save($configuration);
 
-        /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
             'SELECT entity, name, value from oro_config INNER JOIN oro_config_value o on oro_config.id = o.config_id;'
@@ -57,11 +56,11 @@ class ConfigurationRepositoryIntegration extends TestCase
         $repository = $this->get('pimee_suggest_data.repository.configuration');
         $repository->save($configuration);
 
-        $retrievedConfiguration = $repository->find('pim-ai');
+        $retrievedConfiguration = $repository->findOneByCode('pim-ai');
         $this->assertInstanceOf(Configuration::class, $retrievedConfiguration);
         $this->assertSame([
             'code' => 'pim-ai',
-            'configuration_fields' => ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj'],
+            'values' => ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj'],
         ], $retrievedConfiguration->normalize());
     }
 

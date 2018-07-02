@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Component\SuggestData\Query;
+namespace spec\PimEnterprise\Component\SuggestData\Application;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\SuggestData\Model\Configuration;
-use PimEnterprise\Component\SuggestData\Query\GetNormalizedConfiguration;
+use PimEnterprise\Component\SuggestData\Application\GetNormalizedConfiguration;
 use PimEnterprise\Component\SuggestData\Repository\ConfigurationRepositoryInterface;
 
 /**
@@ -36,18 +36,18 @@ class GetNormalizedConfigurationSpec extends ObjectBehavior
     function it_queries_a_normalized_configuration($repository)
     {
         $configuration = new Configuration('foobar', ['foo' => 'bar']);
-        $repository->find('foobar')->willReturn($configuration);
+        $repository->findOneByCode('foobar')->willReturn($configuration);
 
-        $this->query('foobar')->shouldReturn([
+        $this->fromCode('foobar')->shouldReturn([
             'code' => 'foobar',
-            'configuration_fields' => ['foo' => 'bar'],
+            'values' => ['foo' => 'bar'],
         ]);
     }
 
     function it_returns_an_empty_array_if_configuration_does_not_exist($repository)
     {
-        $repository->find('foobar')->willReturn(null);
+        $repository->findOneByCode('foobar')->willReturn(null);
 
-        $this->query('foobar')->shouldReturn([]);
+        $this->fromCode('foobar')->shouldReturn([]);
     }
 }

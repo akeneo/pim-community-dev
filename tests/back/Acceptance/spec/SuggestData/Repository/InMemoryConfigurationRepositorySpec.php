@@ -31,20 +31,20 @@ class InMemoryConfigurationRepositorySpec extends ObjectBehavior
         $this->shouldImplement(ConfigurationRepositoryInterface::class);
     }
 
-    function it_finds_a_configuration_by_its_code()
+    function it_findOneByCodes_a_configuration_by_its_code()
     {
         $configuration = new Configuration('foobar', ['field' => 'value']);
         $this->beConstructedWith([$configuration]);
 
-        $this->find('foobar')->shouldReturn($configuration);
+        $this->findOneByCode('foobar')->shouldReturn($configuration);
     }
 
-    function it_finds_no_configuration_if_there_is_no_configuration_for_the_provided_code()
+    function it_findOneByCodes_no_configuration_if_there_is_no_configuration_for_the_provided_code()
     {
         $configuration = new Configuration('foobar', ['field' => 'value']);
         $this->beConstructedWith([$configuration]);
 
-        $this->find('another_code')->shouldReturn(null);
+        $this->findOneByCode('another_code')->shouldReturn(null);
     }
 
     function it_saves_a_configuration()
@@ -54,6 +54,6 @@ class InMemoryConfigurationRepositorySpec extends ObjectBehavior
 
         $this->save($configuration);
 
-        $this->find('foobar')->shouldReturn($configuration);
+        $this->findOneByCode('foobar')->shouldReturn($configuration);
     }
 }

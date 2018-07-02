@@ -22,20 +22,20 @@ class SaveConfiguration
     private $code;
 
     /** @var array */
-    private $configurationFields;
+    private $values;
 
     /**
      * @param string $code
-     * @param array  $configurationFields
+     * @param array  $configurationValues
      */
-    public function __construct(string $code, array $configurationFields)
+    public function __construct(string $code, array $configurationValues)
     {
         if (empty($code)) {
             throw new \InvalidArgumentException('Configuration code cannot be empty.');
         }
         $this->code = $code;
 
-        $this->addConfigurationFields($configurationFields);
+        $this->addValues($configurationValues);
     }
 
     /**
@@ -49,42 +49,42 @@ class SaveConfiguration
     /**
      * @return array
      */
-    public function getConfigurationFields(): array
+    public function getValues(): array
     {
-        return $this->configurationFields;
+        return $this->values;
     }
 
     /**
-     * Validates and adds configuration fields.
+     * Validates and adds configuration values.
      *
      * @throws \InvalidArgumentException
      *
-     * @param array $configurationFields
+     * @param array $configurationValues
      */
-    private function addConfigurationFields(array $configurationFields): void
+    private function addValues(array $configurationValues): void
     {
-        if (empty($configurationFields)) {
-            throw new \InvalidArgumentException('Configuration fields cannot be empty.');
+        if (empty($configurationValues)) {
+            throw new \InvalidArgumentException('Configuration values cannot be empty.');
         }
 
-        foreach ($configurationFields as $key => $value) {
+        foreach ($configurationValues as $key => $value) {
             if (!is_string($key)) {
                 throw new \InvalidArgumentException(sprintf(
-                    'The key of a configuration field must be a string, "%s" given.',
+                    'The key of a configuration value must be a string, "%s" given.',
                     gettype($key)
                 ));
             }
             if (!is_string($value)) {
                 throw new \InvalidArgumentException(sprintf(
-                    'The value of a configuration field must be a string, "%s" given.',
+                    'The value of a configuration value must be a string, "%s" given.',
                     gettype($value)
                 ));
             }
             if (empty($value)) {
-                throw new \InvalidArgumentException('The value of a configuration field cannot be empty.');
+                throw new \InvalidArgumentException('The value of a configuration value cannot be empty.');
             }
 
-            $this->configurationFields[$key] = $value;
+            $this->values[$key] = $value;
         }
     }
 }

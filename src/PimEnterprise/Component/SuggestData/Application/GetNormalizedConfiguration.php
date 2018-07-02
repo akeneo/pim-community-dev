@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\SuggestData\Query;
+namespace PimEnterprise\Component\SuggestData\Application;
 
 use PimEnterprise\Component\SuggestData\Repository\ConfigurationRepositoryInterface;
 
@@ -36,9 +36,9 @@ class GetNormalizedConfiguration
      *
      * @return array
      */
-    public function query(string $code): array
+    public function fromCode(string $code): array
     {
-        $configuration = $this->repository->find($code);
+        $configuration = $this->repository->findOneByCode($code);
 
         if (null === $configuration) {
             return [];

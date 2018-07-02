@@ -16,13 +16,13 @@ namespace spec\PimEnterprise\Component\SuggestData\Application;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\SuggestData\Command\SaveConfiguration;
 use PimEnterprise\Component\SuggestData\Command\SaveConfigurationHandler;
-use PimEnterprise\Component\SuggestData\Application\SuggestDataConnection;
+use PimEnterprise\Component\SuggestData\Application\ActivateSuggestDataConnection;
 use PimEnterprise\Component\SuggestData\Exception\InvalidConnectionConfiguration;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SuggestDataConnectionSpec extends ObjectBehavior
+class ActivateSuggestDataConnectionSpec extends ObjectBehavior
 {
     function let(SaveConfigurationHandler $saveConnectorConfigurationHandler)
     {
@@ -31,7 +31,7 @@ class SuggestDataConnectionSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SuggestDataConnection::class);
+        $this->shouldHaveType(ActivateSuggestDataConnection::class);
     }
 
     function it_activates_a_valid_connection($saveConnectorConfigurationHandler)

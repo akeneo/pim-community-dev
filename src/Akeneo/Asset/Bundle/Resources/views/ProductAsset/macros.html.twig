@@ -1,13 +1,13 @@
 {% macro renderUploadZone(fileElement, spanClass = 'span6') %}
-    {% set isValid = fileElement.uploadedFile.vars.valid %}
-    <div class="AknMediaField asset-uploader media-uploader {{ spanClass }}{% if not isValid %} error{% endif %}">
+    {% set validate = fileElement.uploadedFile.vars.valid %}
+    <div class="AknMediaField asset-uploader media-uploader {{ spanClass }}{% if not validate %} error{% endif %}">
         <!-- This next line has to be changed with a single input with this class -->
         {{ form_widget(fileElement, {'attr': {'class': 'AknMediaField-fileUploaderInput'}}) }}
         <div class="AknMediaField-emptyContainer">
             <span class="AknMediaField-uploadIcon"></span>
             <span>{{ 'pim_enrich.create.drag_or_upload'|trans }}</span>
         </div>
-        {% if not isValid %}
+        {% if not validate %}
             <div class="errors">
                 {% for error in  fileElement.uploadedFile.vars.errors %}
                     {{ error.message|trans }}

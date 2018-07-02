@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SuggestDataBundle\Infra\Fake;
 
-use PimEnterprise\Component\SuggestData\Application\ConnectionIsValidInterface;
+use PimEnterprise\Component\SuggestData\Application\ValidateConnectionInterface;
+use PimEnterprise\Component\SuggestData\Command\SaveConfiguration;
 
 /**
  * Fake validation of a PIM.ai token using a hard coded value.
@@ -21,19 +22,20 @@ use PimEnterprise\Component\SuggestData\Application\ConnectionIsValidInterface;
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-final class PimDotAiConnection implements ConnectionIsValidInterface
+final class ValidatePimAiConnection implements ValidateConnectionInterface
 {
     /**
      * @const string A hard-coded token for acceptance tests.
      */
-    private const pim_ai_TOKEN = 'the-only-valid-token-for-acceptance';
+    private const PIM_AI_TOKEN = 'the-only-valid-token-for-acceptance';
 
     /**
      * {@inheritdoc}
      */
-    public function isValid(array $configurationFields): bool
+    public function validate(SaveConfiguration $saveConfiguration): bool
     {
-        return isset($configurationFields['pim_ai_activation_code']) &&
-            static::pim_ai_TOKEN === $configurationFields['pim_ai_activation_code'];
+        $saveConfigurationValues = $saveConfiguration->getValues();
+
+        return isset($saveConfigurationValues['token']) && static::PIM_AI_TOKEN === $saveConfigurationValues['token'];
     }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace spec\PimEnterprise\Component\SuggestData\Command;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\SuggestData\Application\ConnectionIsValidInterface;
+use PimEnterprise\Component\SuggestData\Application\ValidateConnectionInterface;
 use PimEnterprise\Component\SuggestData\Command\SaveConfiguration;
 use PimEnterprise\Component\SuggestData\Command\SaveConfigurationHandler;
 use PimEnterprise\Component\SuggestData\Exception\InvalidConnectionConfiguration;
@@ -28,10 +28,10 @@ use Prophecy\Argument;
 class SaveConfigurationHandlerSpec extends ObjectBehavior
 {
     public function let(
-        ConnectionIsValidInterface $pimDotAiConnection,
+        ValidateConnectionInterface $connectionValidator,
         ConfigurationRepositoryInterface $repository
     ) {
-        $this->beConstructedWith($pimDotAiConnection, $repository);
+        $this->beConstructedWith($connectionValidator, $repository);
     }
 
     function it_is_a_save_connector_configuration_command_handler()
@@ -39,38 +39,38 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(SaveConfigurationHandler::class);
     }
 
-    function it_updates_an_existing_configuration($pimDotAiConnection, $repository)
+    function it_updates_an_existing_configuration($connectionValidator, $repository)
     {
         $command = new SaveConfiguration('foobar', ['foo' => 'bar']);
         $configuration = new Configuration('foobar', ['foo' => 'bar']);
 
-        $pimDotAiConnection->isValid(['foo' => 'bar'])->willReturn(true);
-        $repository->find('foobar')->willReturn($configuration);
+        $connectionValidator->validate($command)->willReturn(true);
+        $repository->findOneByCode('foobar')->willReturn($configuration);
 
         $repository->save($configuration)->shouldBeCalled();
 
         $this->handle($command);
     }
 
-    function it_saves_a_new_connector_configuration($pimDotAiConnection, $repository)
+    function it_saves_a_new_connector_configuration($connectionValidator, $repository)
     {
         $command = new SaveConfiguration('foobar', ['foo' => 'bar']);
 
-        $pimDotAiConnection->isValid(['foo' => 'bar'])->willReturn(true);
-        $repository->find('foobar')->willReturn(null);
+        $connectionValidator->validate($command)->willReturn(true);
+        $repository->findOneByCode('foobar')->willReturn(null);
 
         $repository->save(new Configuration('foobar', ['foo' => 'bar']))->shouldBeCalled();
 
         $this->handle($command);
     }
 
-    function it_throws_an_exception_if_configuration_is_invalid($pimDotAiConnection, $repository)
+    function it_throws_an_exception_if_configuration_is_invalid($connectionValidator, $repository)
     {
         $command = new SaveConfiguration('foobar', ['bar' => 'baz']);
 
-        $pimDotAiConnection->isValid(['bar' => 'baz'])->willReturn(false);
+        $connectionValidator->validate($command)->willReturn(false);
 
-        $repository->find(Argument::any())->shouldNotBeCalled();
+        $repository->findOneByCode(Argument::any())->shouldNotBeCalled();
         $repository->save(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(InvalidConnectionConfiguration::forCode('foobar'))->during('handle', [$command]);
