@@ -1,2 +1,0 @@
-parameters:
-    pimee_suggest_data.entity.configuration: 'PimEnterprise\Component\SuggestData\Model\Configuration'

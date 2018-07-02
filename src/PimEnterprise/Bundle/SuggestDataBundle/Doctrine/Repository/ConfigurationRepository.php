@@ -82,7 +82,8 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
     }
 
     /**
-     * Retrieves an oro config entity from database if it exists, or creates a new one.
+     * Retrieves an oro config entity from database or creates a new one, then
+     * updates it.
      *
      * @param Configuration $configuration
      *
@@ -91,7 +92,6 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
     private function findOrCreateOroConfig(Configuration $configuration): Config
     {
         $code = $configuration->getCode();
-        $values = $configuration->getValues();
 
         $oroConfig = $this->getOroConfigRepository()->findOneBy([
             'scopedEntity' => $code,
@@ -103,6 +103,23 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
             $oroConfig->setEntity($code);
             $oroConfig->setRecordId(static::ORO_CONFIG_RECORD_ID);
         }
+
+        $this->updateOroConfigValues($oroConfig, $configuration);
+
+        return $oroConfig;
+    }
+
+    /**
+     * Updates OroConfigValues with the values of our configuration model.
+     * If no OroConfigValues exists for a value, a new one will be created and
+     * added to the OroConfig entity.
+     *
+     * @param Config        $oroConfig
+     * @param Configuration $configuration
+     */
+    private function updateOroConfigValues(Config $oroConfig, Configuration $configuration): void
+    {
+        $values = $configuration->getValues();
 
         foreach ($values as $key => $value) {
             $oroConfigValueAreadyExists = false;
@@ -124,7 +141,5 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
                 $oroConfig->getValues()->add($oroConfigValue);
             }
         }
-
-        return $oroConfig;
     }
 }
