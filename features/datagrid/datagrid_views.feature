@@ -206,17 +206,17 @@ Feature: Datagrid views
     And I am on the products page
     And I filter by "category" with operator "unclassified" and value ""
     Then the row "purple-sneakers" should contain:
-      | column | value           |
-      | Name   | Purple sneakers |
-      | Family | Sneakers        |
+      | column | value            |
+      | Label   | Purple sneakers |
+      | Family | Sneakers         |
     And the row "black-sneakers" should contain:
-      | column | value          |
-      | Name   | Black sneakers |
-      | Family | Sneakers       |
+      | column | value           |
+      | Label   | Black sneakers |
+      | Family | Sneakers        |
     And the row "black-boots" should contain:
-      | column | value       |
-      | Name   | Black boots |
-      | Family | Boots       |
+      | column | value        |
+      | Label   | Black boots |
+      | Family | Boots        |
 
   Scenario: Successfully change grid channel
     Given I am on the products page

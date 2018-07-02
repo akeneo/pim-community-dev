@@ -534,6 +534,10 @@
                             return result;
                         },
                         check_pim_user_user_form_assetDelayReminder: function () {
+                            if (null == jsfv.id('pim_user_user_form_assetDelayReminder')) {
+                                return true;
+                            }
+
                             var gv;
                             result = true;
                             result = result && checkError('pim_user_user_form_assetDelayReminder', NotBlank, {
