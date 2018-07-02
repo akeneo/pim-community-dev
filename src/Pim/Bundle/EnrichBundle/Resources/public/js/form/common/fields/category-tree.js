@@ -24,20 +24,20 @@ function (
         configure: function () {
             return $.when(
                 BaseSelect.prototype.configure.apply(this, arguments),
-                FetcherRegistry.getFetcher('channel').fetchAll()
-                    .then(function (scopes) {
-                        this.config.choices = scopes;
+                FetcherRegistry.getFetcher('category').fetchAll()
+                    .then(function (categories) {
+                        this.config.choices = categories;
                     }.bind(this))
             );
         },
 
         /**
-         * @param {Array} scopes
+         * @param {Array} categories
          */
-        formatChoices: function (scopes) {
-            return scopes.reduce((result, channel) => {
-                const label = channel.labels[UserContext.get('user_default_locale')];
-                result[channel.code] = label !== undefined ? label : '[' + channel.code + ']';
+        formatChoices: function (categories) {
+            return categories.reduce((result, category) => {
+                const label = category.labels[UserContext.get('user_default_locale')];
+                result[category.code] = label !== undefined ? label : '[' + category.code + ']';
                 return result;
             }, {});
         }

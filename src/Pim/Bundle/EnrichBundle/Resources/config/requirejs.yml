@@ -950,6 +950,7 @@ config:
         pim/form/common/fields/metric:                  pimenrich/js/form/common/fields/metric
         pim/form/common/fields/available-locales:       pimenrich/js/form/common/fields/available-locales
         pim/form/common/fields/scope:                   pimenrich/js/form/common/fields/scope
+        pim/form/common/fields/category-tree:           pimenrich/js/form/common/fields/category-tree
 
         # Values fields
         pim/form/common/fields/values/boolean:              pimenrich/js/form/common/fields/values/boolean

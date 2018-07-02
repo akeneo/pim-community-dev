@@ -212,7 +212,8 @@ extensions:
            fieldName: catalog_default_locale
            label: 'Catalog locale - to translate'
            required: true
-           multiple: false
+           isMultiple: false
+           allowClear: false
 
     pim-user-edit-form-catalog-scope:
         module: pim/form/common/fields/scope
@@ -223,15 +224,20 @@ extensions:
            fieldName: catalog_default_scope
            label: 'Catalog scope - to translate'
            required: true
+           isMultiple: false
+           allowClear: false
 
     pim-user-edit-form-name-default-tree:
-        module: pim/form/common/fields/text
+        module: pim/form/common/fields/category-tree
         parent: pim-user-edit-form-additional-tab-content
-        position: 30
         targetZone: content
+        position: 30
         config:
-           fieldName: default_category_tree
-           label: 'Default tree - to translate'
+            fieldName: default_category_tree
+            label: 'Default tree - to translate'
+            required: true
+            isMultiple: false
+            allowClear: false
 
     pim-user-edit-form-product-grid-filters:
         module: pim/form/common/fields/text

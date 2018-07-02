@@ -51,7 +51,9 @@ function (
          * {@inheritdoc}
          */
         postRender: function () {
-            this.$('select.select2').select2({allowClear: true});
+            this.$('select.select2').select2({
+                allowClear: this.config.allowClear !== undefined ? this.config.allowClear : true
+            });
         },
 
         /**
