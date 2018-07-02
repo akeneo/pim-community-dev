@@ -29,6 +29,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface, BulkRemoverInterface
 {
+    public const PRODUCT_IDENTIFIER_PREFIX = 'product_draft_';
+
     /** @var NormalizerInterface */
     private $normalizer;
 
@@ -62,7 +64,7 @@ class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, 
     {
         $normalizedObject = $this->normalizer->normalize($object, ProductProposalNormalizer::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX);
         $this->validateObjectNormalization($normalizedObject);
-        $this->productProposalClient->index($this->indexType, $normalizedObject['identifier'], $normalizedObject);
+        $this->productProposalClient->index($this->indexType, $normalizedObject['id'], $normalizedObject);
     }
 
     /**
@@ -101,9 +103,15 @@ class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, 
      */
     public function remove($objectId, array $options = []) : void
     {
-        $documents = $this->productProposalClient->search($this->indexType, ['query' => ['term' => ['id' => $objectId]]]);
+        $documents = $this->productProposalClient->search(
+            $this->indexType,
+            ['query' => ['term' => ['id' => self::PRODUCT_IDENTIFIER_PREFIX . (string) $objectId]]]
+        );
         if (0 !== $documents['hits']['total']) {
-            $this->productProposalClient->delete($this->indexType, $objectId);
+            $this->productProposalClient->delete(
+                $this->indexType,
+                self::PRODUCT_IDENTIFIER_PREFIX . (string) $objectId
+            );
         }
     }
 
@@ -114,6 +122,10 @@ class ProductProposalIndexer implements IndexerInterface, BulkIndexerInterface, 
      */
     public function removeAll(array $objects, array $options = []) : void
     {
+        $objectIds = [];
+        foreach ($objects as $objectId) {
+            $objectIds[]  = self::PRODUCT_IDENTIFIER_PREFIX . (string) $objectId;
+        }
         $this->productProposalClient->bulkDelete($this->indexType, $objects);
     }
 

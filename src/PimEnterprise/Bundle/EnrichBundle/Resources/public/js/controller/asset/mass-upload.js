@@ -18,7 +18,10 @@ define(
             */
             renderForm() {
                 return FormBuilder.build('pimee-asset-mass-upload').then((form) => {
-                    form.setElement(this.$el).render();
+                    form.setRoutes({
+                        cancelRedirectionRoute: 'pimee_product_asset_index',
+                        importRoute: 'pimee_product_asset_mass_upload_rest_import'
+                    }).setElement(this.$el).render();
 
                     return form;
                 });

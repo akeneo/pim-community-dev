@@ -12,9 +12,8 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
-use PimEnterprise\Component\Workflow\Factory\ProductDraftFactory;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Prophecy\Argument;
@@ -76,8 +75,8 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('sku');
         $partialDraft->getEntityWithValue()->willReturn($product);
 
-        $dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_APPROVE, Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(ProductDraftEvents::POST_PARTIAL_APPROVE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_PARTIAL_APPROVE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(EntityWithValuesDraftEvents::POST_PARTIAL_APPROVE, Argument::any())->shouldBeCalled();
 
         $draft->getChange('sku', null, null)->willReturn(['ak-mug']);
         $wholeChange = ['sku' => [['locale' => null, 'scope' => null, 'data' => ['ak-mug']]]];
@@ -128,8 +127,8 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('sku');
         $partialDraft->getEntityWithValue()->willReturn($product);
 
-        $dispatcher->dispatch(ProductDraftEvents::PRE_PARTIAL_REFUSE, Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(ProductDraftEvents::POST_PARTIAL_REFUSE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_PARTIAL_REFUSE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(EntityWithValuesDraftEvents::POST_PARTIAL_REFUSE, Argument::any())->shouldBeCalled();
 
         $wholeChange = ['sku' => [['locale' => null, 'scope' => null]]];
 
@@ -168,8 +167,8 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
         $values->getByCodes('sku', null, null)->willReturn(null);
 
-        $dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_APPROVE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(EntityWithValuesDraftEvents::POST_APPROVE, Argument::any())->shouldBeCalled();
 
         $wholeChanges = [
             'sku' => [['locale' => null, 'scope' => null]],
@@ -222,8 +221,8 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
         $partialDraft->getEntityWithValue()->willReturn($product);
 
-        $dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_APPROVE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(EntityWithValuesDraftEvents::POST_APPROVE, Argument::any())->shouldBeCalled();
 
         $wholeChanges = [
             'sku' => [['locale' => null, 'scope' => null]],
@@ -281,8 +280,8 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $values->getByCodes('sku', null, null)->willReturn(null);
         $values->getByCodes('description', 'tablet', 'fr_FR')->willReturn(null);
 
-        $dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, Argument::any())->shouldBeCalled();
-        $dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(EntityWithValuesDraftEvents::PRE_REFUSE, Argument::any())->shouldBeCalled();
+        $dispatcher->dispatch(EntityWithValuesDraftEvents::POST_REFUSE, Argument::any())->shouldBeCalled();
 
         $wholeChanges = [
             'sku' => [['locale' => null, 'scope' => null]],
@@ -358,7 +357,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
     {
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::PRE_READY,
+                EntityWithValuesDraftEvents::PRE_READY,
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
@@ -366,7 +365,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $draftSaver->save($productDraft)->shouldBeCalled();
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::POST_READY,
+                EntityWithValuesDraftEvents::POST_READY,
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
@@ -392,14 +391,14 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
 
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::PRE_REMOVE,
+                EntityWithValuesDraftEvents::PRE_REMOVE,
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
         $remover->remove($productDraft)->shouldBeCalled();
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::POST_REMOVE,
+                EntityWithValuesDraftEvents::POST_REMOVE,
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
@@ -439,14 +438,14 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
 
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::PRE_REMOVE,
+                EntityWithValuesDraftEvents::PRE_REMOVE,
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
         $remover->remove($productDraft)->shouldNotBeCalled();
         $dispatcher
             ->dispatch(
-                ProductDraftEvents::POST_REMOVE,
+                EntityWithValuesDraftEvents::POST_REMOVE,
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();

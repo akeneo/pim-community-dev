@@ -51,6 +51,13 @@ pimee_product_asset_thumbnail:
     requirements:
         id: '[0-9]+'
 
+pimee_product_asset_original:
+    path: /{code}/original/{channelCode}/{localeCode}
+    defaults: { _controller: pimee_product_asset.controller.product_asset:originalAction, localeCode: null }
+    methods: [GET]
+    requirements:
+        id: '[0-9]+'
+
 pimee_product_asset_rest_index:
     path: /rest/
     defaults: { _controller: pimee_product_asset.controller.rest.product_asset:indexAction, _format: json }
@@ -78,6 +85,15 @@ pimee_product_asset_mass_upload_rest_import:
     path: /rest/mass-upload/import
     defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:importAction, _format: json }
     methods: [GET]
+
+pimee_product_asset_mass_upload_into_asset_collection_rest_import:
+    path: /rest/mass-upload/import-and-add-to/{entityType}/{entityIdentifier}/{attributeCode}
+    defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:importInAssetCollectionAction, _format: json }
+    methods: [GET]
+    requirements:
+        entityType: '[\w-]+'
+        entityId: \d+
+        attributeCode: '[a-zA-Z0-9_]+'
 
 pimee_product_asset_mass_upload_rest_list:
     path: /rest/mass-upload

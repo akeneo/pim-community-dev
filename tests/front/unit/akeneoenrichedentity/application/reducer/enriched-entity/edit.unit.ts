@@ -38,7 +38,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
     });
   });
 
-  test('I can update the enriched entity', () => {
+  test('I can change values of an enriched entity', () => {
     const state = {};
     const identifier: Identifier = createIdentifier('designer_updated');
     const labelCollection: LabelCollection = createLabelCollection({['en_US']: 'Designer Updated'});
@@ -46,7 +46,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
 
     const newState = reducer.enrichedEntity(state, {
       type: 'ENRICHED_ENTITY_UPDATED',
-      enrichedEntity: enrichedEntity,
+      enrichedEntity,
     });
 
     expect(newState).toEqual({

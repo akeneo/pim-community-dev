@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import __ from 'akeneoenrichedentity/tools/translator';
 import { State } from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import { toggleSidebar, updateCurrentTab } from 'akeneoenrichedentity/application/event/sidebar';
-import { Tab } from "akeneoenrichedentity/application/reducer/sidebar";
+import { Tab } from 'akeneoenrichedentity/application/reducer/sidebar';
 
 interface SidebarState {
   tabs: Tab[];

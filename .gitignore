@@ -33,7 +33,6 @@ behat.yml
 .php_cs.cache
 .phpspec/*.tpl
 composer.phar
-composer.lock
 /node_modules
 phpspec.yml
 npm-debug.log
@@ -41,8 +40,10 @@ npm-debug.log
 !/docker/akeneo.conf
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
+.env
 docker-compose.override.yml
 yarn.lock
 package-lock.json
 yarn-error.log
 coverage/*
+composer.lock

@@ -32,3 +32,26 @@ services:
         decoration_inner_name: 'akeneo_integration_tests.configuration.catalog.base'
         arguments:
             - '@akeneo_integration_tests.configuration.catalog.base'
+
+    akeneo_ee_integration_tests.helper.authenticated_client_factory:
+        class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\AuthenticatedClientFactory'
+        arguments:
+          - '@pim_user.repository.user'
+          - '@kernel'
+
+    akeneo_ee_integration_tests.helper.web_client_helper:
+        class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper'
+        arguments:
+            - '@router'
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
+        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryFindRecordDetails
+
+    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
+        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryEnrichedEntityRepository
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
+        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryFindEnrichedEntityDetails
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
+        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryFindEnrichedEntityItems

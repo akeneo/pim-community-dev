@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -24,7 +24,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerAwareInterface::class);
     }
 
-    function it_supports_product_proposal_normalization(EntityWithValuesDraftInterface $productProposal)
+    function it_supports_product_proposal_normalization(ProductDraft $productProposal)
     {
         $this->supportsNormalization($productProposal, 'datagrid')->shouldReturn(true);
     }
@@ -32,7 +32,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
     function it_normalizes(
         $normalizer,
         CollectionFilterInterface $filter,
-        EntityWithValuesDraftInterface $productProposal,
+        ProductDraft $productProposal,
         ValueCollectionInterface $valueCollection,
         ProductInterface $product
     ) {
@@ -65,6 +65,7 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
         $productProposal->getEntityWithValue()->willReturn($product);
         $productProposal->getCreatedAt()->willReturn($created);
         $productProposal->getValues()->willReturn($valueCollection);
+        $product->getIdentifier()->willReturn(2);
 
         $this->normalize($productProposal, 'datagrid', $context)->shouldReturn(
             [
@@ -81,9 +82,11 @@ class ProductProposalNormalizerSpec extends ObjectBehavior
                 'product' => $product,
                 'author' => 'Mary',
                 'status' => 1,
-                'proposal_product' => $productProposal,
-                'id' => 1,
-                'identifier' => 1,
+                'proposal' => $productProposal,
+                'search_id' => 2,
+                'id' => 'product_draft_1',
+                'document_type' => 'product_draft',
+                'proposal_id' => 1,
             ]
         );
     }

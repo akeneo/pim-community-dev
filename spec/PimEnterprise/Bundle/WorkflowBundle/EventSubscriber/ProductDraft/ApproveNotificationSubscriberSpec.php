@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -38,8 +38,8 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_approve_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            ProductDraftEvents::POST_APPROVE         => ['sendNotificationForApproval', 10],
-            ProductDraftEvents::POST_PARTIAL_APPROVE => ['sendNotificationForPartialApproval', 10]
+            EntityWithValuesDraftEvents::POST_APPROVE         => ['sendNotificationForApproval', 10],
+            EntityWithValuesDraftEvents::POST_PARTIAL_APPROVE => ['sendNotificationForPartialApproval', 10]
         ]);
     }
 
@@ -122,7 +122,6 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         EntityWithValuesDraftInterface $draft,
         ProductInterface $product,
         ValueInterface $identifier,
-        AttributeInterface $attribute,
         NotificationInterface $notification
     ) {
         $context->getCurrentLocaleCode()->willReturn(Argument::any());

@@ -33,16 +33,8 @@ datagrid:
                 frontend_type: html
         properties:
             id: ~
-            approve_link:
-                type: url
-                route: pimee_workflow_product_draft_approve
-                params:
-                    - id
-            refuse_link:
-                type: url
-                route: pimee_workflow_product_draft_refuse
-                params:
-                    - id
+            proposal_id: ~
+            document_type: ~
         actions:
             approve:
                 type: approve-proposal
@@ -52,7 +44,7 @@ datagrid:
                     className: AknButton AknButton--apply AknButton--small
                 link: approve_link
             refuse:
-                type: reject-proposal
+                type: refuse-proposal
                 label: pimee_workflow.product_draft.action.refuse
                 launcherOptions:
                     iconClassName: AknButton-icon icon-remove
@@ -101,6 +93,15 @@ datagrid:
                     type: label_or_identifier
                     label: Label or identifier
                     data_name: label_or_identifier
+                identifier:
+                    label:         Identifier
+                    data_name:     entity_with_values_identifier
+                    type:          product_value_string
+                    ftype:         string
+                    options:
+                        field_options:
+                            attr:
+                                choice_list: true
         sorters:
             columns:
                 author:

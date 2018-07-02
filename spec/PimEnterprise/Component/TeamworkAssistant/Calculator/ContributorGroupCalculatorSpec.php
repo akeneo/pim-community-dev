@@ -52,7 +52,7 @@ class ContributorGroupCalculatorSpec extends ObjectBehavior
         ChannelInterface $channel,
         LocaleInterface $locale
     ) {
-        $categoryAccessRepository->getGrantedUserGroupsForProduct($product, Attributes::EDIT_ITEMS)
+        $categoryAccessRepository->getGrantedUserGroupsForEntityWithValues($product, Attributes::EDIT_ITEMS)
             ->willreturn(
                 [
                     ['name' => 'Redactor'],

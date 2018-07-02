@@ -81,7 +81,7 @@ abstract class AbstractProductImportTestCase extends TestCase
         string $username,
         array $draftData
     ): EntityWithValuesDraftInterface {
-        $productDraft = $this->get('pimee_workflow.factory.product_draft')->createEntityWithValuesDraft($product, $username);
+        $productDraft = $this->get('pimee_workflow.factory.product_draft')->createEntityWithValueDraft($product, $username);
         $productDraft->setChanges($draftData);
 
 

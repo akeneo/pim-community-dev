@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -11,13 +13,11 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Provider;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
 
 /**
- * Class OwnerGroupsProvider
- *
  * Provides a set of user groups having owner permission of a product.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
@@ -27,25 +27,15 @@ class OwnerGroupsProvider
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
 
-    /**
-     * @param CategoryAccessRepository $categoryAccessRepo
-     */
     public function __construct(CategoryAccessRepository $categoryAccessRepo)
     {
         $this->categoryAccessRepo = $categoryAccessRepo;
     }
 
-    /**
-     * Return the set of group ids owner of a product.
-     *
-     * @param ProductInterface $product
-     *
-     * @return array
-     */
-    public function getOwnerGroupIds(ProductInterface $product)
+    public function getOwnerGroupIds(EntityWithValuesInterface $entityWithValues): array
     {
         $ownerGroupsId = [];
-        $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForProduct($product, Attributes::OWN_PRODUCTS);
+        $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($entityWithValues, Attributes::OWN_PRODUCTS);
         foreach ($ownerGroups as $userGroup) {
             $ownerGroupsId[] = $userGroup['id'];
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -11,17 +13,18 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * This subscriber listens to product draft submission for approval.
+ * This subscriber listens to entity with values draft submission for approval.
  * This way, we can send notifications to the right users.
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -45,13 +48,6 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
     /** @var SimpleFactoryInterface */
     protected $notificationFactory;
 
-    /**
-     * @param NotifierInterface       $notifier
-     * @param UserRepositoryInterface $userRepository
-     * @param OwnerGroupsProvider     $ownerGroupsProvider
-     * @param UsersToNotifyProvider   $usersProvider
-     * @param SimpleFactoryInterface  $notificationFactory
-     */
     public function __construct(
         NotifierInterface $notifier,
         UserRepositoryInterface $userRepository,
@@ -72,21 +68,16 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ProductDraftEvents::POST_READY => ['sendNotificationToOwners'],
+            EntityWithValuesDraftEvents::POST_READY => ['sendNotificationToOwners'],
         ];
     }
 
-    /**
-     * Send notifications to all owners of product the draft is attached to.
-     *
-     * @param GenericEvent $event
-     */
-    public function sendNotificationToOwners(GenericEvent $event)
+    public function sendNotificationToOwners(GenericEvent $event): void
     {
-        $productDraft = $event->getSubject();
-        $product = $productDraft->getEntityWithValue();
+        $entityWithValuesDraft = $event->getSubject();
+        $entityWithValue = $entityWithValuesDraft->getEntityWithValue();
 
-        $groupsToNotify = $this->ownerGroupsProvider->getOwnerGroupIds($product);
+        $groupsToNotify = $this->ownerGroupsProvider->getOwnerGroupIds($entityWithValue);
         if (empty($groupsToNotify)) {
             return;
         }
@@ -96,7 +87,7 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $author = $this->userRepository->findOneBy(['username' => $productDraft->getAuthor()]);
+        $author = $this->userRepository->findOneBy(['username' => $entityWithValuesDraft->getAuthor()]);
         $authorCatalogLocale = $author->getCatalogLocale()->getCode();
 
         $gridParameters = [
@@ -106,8 +97,8 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
                         $author->getUsername(),
                     ],
                 ],
-                'sku'    => [
-                    'value' => $product->getIdentifier(),
+                'identifier'    => [
+                    'value' => $entityWithValue instanceof ProductInterface ? $entityWithValue->getIdentifier() : $entityWithValue->getCode(),
                     'type' => 1,
                 ],
             ],
@@ -118,7 +109,7 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
             ->setMessage('pimee_workflow.proposal.to_review')
             ->setMessageParams(
                 [
-                    '%product.label%'    => $product->getLabel($authorCatalogLocale),
+                    '%product.label%'    => $entityWithValue->getLabel($authorCatalogLocale),
                     '%author.firstname%' => $author->getFirstName(),
                     '%author.lastname%'  => $author->getLastName()
                 ]

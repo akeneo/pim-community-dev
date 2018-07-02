@@ -6,6 +6,7 @@ pimee_product_asset:
             remove: Remove asset
             categories_view: Consult the categories of an asset
             mass_upload: Mass-upload assets
+            remove_from_collection: Remove a product asset from an asset collection
         category_asset_picker:
             list: List asset categories in the asset picker
         category:

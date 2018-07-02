@@ -81,7 +81,7 @@ class AbstractProposalIntegration extends ApiTestCase
     {
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 
-        $productDraft = $this->get('pimee_workflow.product_model.builder.draft')->build($product, $userName);
+        $productDraft = $this->get('pimee_workflow.product.builder.draft')->build($product, $userName);
 
         $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
 

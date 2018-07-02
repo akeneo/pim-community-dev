@@ -18,6 +18,7 @@ pimee_product_asset_categories_view:
     label: pimee_product_asset.acl.asset.categories_view
     group_name: pimee_product_asset.acl_group.asset
 
+
 # Asset category
 pimee_product_asset_category_list:
     type: action
@@ -47,6 +48,11 @@ pimee_product_asset_category_edit_permissions:
 pimee_product_asset_picker_category_list:
     type: action
     label: pimee_product_asset.acl.category_asset_picker.list
+    group_name: pim_enrich.acl_group.product
+
+pimee_product_asset_remove_from_collection:
+    type: action
+    label: pimee_product_asset.acl.asset.remove_from_collection
     group_name: pim_enrich.acl_group.product
 
 pimee_product_asset_mass_upload:

@@ -10,6 +10,7 @@ String launchEndToEndTests = "yes"
 String verboseOutputs = "yes"
 String slackChannel = ""
 String tag = "eu.gcr.io/akeneo-ci/pim-enterprise-dev:${env.BRANCH_NAME}"
+String composerCommand = "update"
 
 stage("Build") {
     milestone 1
@@ -27,6 +28,10 @@ stage("Build") {
                 string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
             ])
 
+            if (ceBranch == userInput['ce_branch']) {
+                composerCommand = "install"
+            }
+
             ceBranch = userInput['ce_branch']
             ceOwner = userInput['ce_owner']
             legacyFeatures = userInput['legacyFeatures'].tokenize(',')
@@ -36,6 +41,7 @@ stage("Build") {
             launchEndToEndTests = userInput['launchEndToEndTests']
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
+
         }
     }
     milestone 2
@@ -52,7 +58,7 @@ stage("Build") {
             ])
         }
 
-        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag} ."
+        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composerCommand} ."
     }}
 }
 
@@ -109,16 +115,27 @@ stage("Test") {
             "back-legacy-integration-phpunit": {queue(
                 condition: launchIntegrationTests.equals("yes"),
                 container: tag,
+                containers: pimContainers(image: tag, selenium: false),
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/vendor/akeneo/pim-community-dev/src /var/www/pim/vendor/akeneo/pim-community-dev/tests /var/www/pim/src /var/www/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+                fetcher: {
+                    return pimPhpunitFetcher(
+                        paths:[
+                            "/var/www/pim/src",
+                            "/var/www/pim/vendor/akeneo/pim-community-dev/src",
+                            "/var/www/pim/vendor/akeneo/pim-community-dev/tests"
+                        ]
+                    )
+                },
+                parallelism: 50
             )},
 
             // END TO END TESTS
             "legacy-end-to-end-behat": {queue(
                 condition: launchEndToEndTests.equals("yes"),
                 container: tag,
+                containers: pimContainers(image: tag),
                 verbose: (verboseOutputs == "yes"),
-                fetcher: {return pimBehatFetcher(profiles: ["legacy"], features: legacyFeatures)}
+                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
             )}
         )
     } finally {

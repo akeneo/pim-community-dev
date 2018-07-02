@@ -14,17 +14,15 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EnrichedEntityDetails\FindEnrichedEntityQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Edit enriched entity action
+ * Validate & save an enriched entity
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
@@ -34,12 +32,6 @@ class EditAction
     /** @var EditEnrichedEntityHandler */
     private $editEnrichedEntityHandler;
 
-    /** @var FindEnrichedEntityQuery */
-    private $findEnrichedEntityQuery;
-
-    /** @var NormalizerInterface */
-    private $enrichedEntityDetailsNormalizer;
-
     /** @var Serializer */
     private $serializer;
 
@@ -48,24 +40,15 @@ class EditAction
 
     public function __construct(
         EditEnrichedEntityHandler $editEnrichedEntityHandler,
-        FindEnrichedEntityQuery $findEnrichedEntityQuery,
-        NormalizerInterface $enrichedEntityDetailsNormalizer,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
         $this->editEnrichedEntityHandler = $editEnrichedEntityHandler;
-        $this->findEnrichedEntityQuery = $findEnrichedEntityQuery;
-        $this->enrichedEntityDetailsNormalizer  = $enrichedEntityDetailsNormalizer;
         $this->serializer = $serializer;
         $this->validator = $validator;
     }
 
-    /**
-     * Save an enriched entity
-     *
-     * @return Response
-     */
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -78,17 +61,14 @@ class EditAction
             $errors = [];
             foreach ($violations as $violation) {
                 // TODO: format the error the way we want for the front
-                $errors[] = $violation->getPropertyPath() .' '. $violation->getMessage();
+                $errors[] = $violation->getPropertyPath() . ' ' . $violation->getMessage();
             }
 
             return new JsonResponse(['errors' => json_encode($errors)], Response::HTTP_BAD_REQUEST);
         }
 
         ($this->editEnrichedEntityHandler)($command);
-        $enrichedEntityDetails = ($this->findEnrichedEntityQuery)($command->identifier);
 
-        return new JsonResponse(
-            $this->enrichedEntityDetailsNormalizer->normalize($enrichedEntityDetails, 'internal_api')
-        );
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

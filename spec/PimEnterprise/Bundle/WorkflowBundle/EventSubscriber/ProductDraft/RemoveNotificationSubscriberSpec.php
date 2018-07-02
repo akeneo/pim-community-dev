@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -36,7 +36,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_approve_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            ProductDraftEvents::POST_REMOVE => ['sendNotificationForRemoval', 10],
+            EntityWithValuesDraftEvents::POST_REMOVE => ['sendNotificationForRemoval', 10],
         ]);
     }
 

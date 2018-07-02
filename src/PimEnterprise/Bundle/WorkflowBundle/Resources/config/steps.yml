@@ -11,6 +11,17 @@ services:
             - '@pim_base_connector.writer.database.product_draft'
             - '%pim_job_product_batch_size%'
 
+    pimee_workflow.step.csv_product_model_proposal.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_workflow.reader.file.csv_product_model_draft'
+            - '@pimee_workflow.processor.denormalization.product_model_draft'
+            - '@pim_base_connector.writer.database.product_model_draft'
+            - '%pim_job_product_batch_size%'
+
     # CSV Export steps ------------------------------------------------------------------------------------------------
     pimee_workflow.step.csv_published_product.export:
         class: '%pim_connector.step.item_step.class%'
@@ -33,6 +44,17 @@ services:
             - '@pimee_workflow.reader.file.xlsx_product_draft'
             - '@pimee_workflow.processor.denormalization.product_draft'
             - '@pim_base_connector.writer.database.product_draft'
+            - '%pim_job_product_batch_size%'
+
+    pimee_workflow.step.xlsx_product_model_proposal.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pimee_workflow.reader.file.xlsx_product_model_draft'
+            - '@pimee_workflow.processor.denormalization.product_model_draft'
+            - '@pim_base_connector.writer.database.product_model_draft'
             - '%pim_job_product_batch_size%'
 
     # XLSX Export steps -----------------------------------------------------------------------------------------------

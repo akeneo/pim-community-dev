@@ -20,6 +20,7 @@ use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -312,14 +313,14 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     /**
      * Get the granted user groups for a product
      *
-     * @param ProductInterface $product     the product
-     * @param string           $accessLevel the expected access level
+     * @param EntityWithValuesInterface $entityWithValues the product
+     * @param string                    $accessLevel      the expected access level
      *
      * @return array
      */
-    public function getGrantedUserGroupsForProduct(ProductInterface $product, $accessLevel)
+    public function getGrantedUserGroupsForEntityWithValues(EntityWithValuesInterface $entityWithValues, $accessLevel)
     {
-        $categories = $product->getCategories();
+        $categories = $entityWithValues->getCategories();
         if (0 === count($categories)) {
             return [];
         }

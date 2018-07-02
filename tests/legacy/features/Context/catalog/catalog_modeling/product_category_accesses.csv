@@ -13,7 +13,7 @@ master_men_pants;IT support,Manager,Redactor;IT support,Manager,Redactor;IT supp
 master_men_pants_shorts;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
 master_men_pants_jeans;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
 master_men_shoes;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
-tshirts;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
+tshirts;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager
 master_women;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
 master_women_blouses;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
 master_women_blouses_deals;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
@@ -23,7 +23,7 @@ master_women_shoes;IT support,Manager,Redactor;IT support,Manager,Redactor;IT su
 print;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
 print_accessories;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
 print_clothing;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
-print_shoes;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
+print_shoes;IT support,Manager,Redactor;IT support,Manager;IT support,Manager
 suppliers;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
 supplier_mongo;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
 supplier_zaro;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor

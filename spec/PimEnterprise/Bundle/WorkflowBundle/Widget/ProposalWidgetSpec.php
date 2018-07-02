@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Widget;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
@@ -9,7 +10,8 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
+use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -19,7 +21,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class ProposalWidgetSpec extends ObjectBehavior
 {
     function let(
-        EntityWithValuesDraftRepositoryInterface $repository,
+        EntityWithValuesDraftRepositoryInterface $productDraftRepository,
+        EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
         AuthorizationCheckerInterface $authorizationChecker,
         UserInterface $user,
         TokenInterface $token,
@@ -37,7 +40,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         $locale->getCode()->willReturn('en');
         $router->generate('pimee_workflow_proposal_index')->willReturn('/my/route/');
 
-        $this->beConstructedWith($authorizationChecker, $repository, $userManager, $tokenStorage, $presenter, $router);
+        $this->beConstructedWith($authorizationChecker, $productDraftRepository, $productModelDraftRepository, $userManager, $tokenStorage, $presenter, $router);
     }
 
     function it_is_a_widget()
@@ -66,31 +69,33 @@ class ProposalWidgetSpec extends ObjectBehavior
     function it_exposes_proposal_data(
         $authorizationChecker,
         $user,
-        $repository,
+        $productDraftRepository,
+        $productModelDraftRepository,
         $userManager,
         $presenter,
-        EntityWithValuesDraftInterface $first,
-        EntityWithValuesDraftInterface $second,
+        ProductDraft $first,
+        ProductModelDraft $second,
         ProductInterface $firstProduct,
-        ProductInterface $secondProduct,
+        ProductModelInterface $secondProductModel,
         UserInterface $userJulia
     ) {
         $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
-        $repository->findApprovableByUser($user, 10)->willReturn([$first, $second]);
+        $productDraftRepository->findApprovableByUser($user, 10)->willReturn([$first]);
+        $productModelDraftRepository->findApprovableByUser($user, 10)->willReturn([$second]);
 
         $userJulia->getFirstName()->willReturn('Julia');
         $userJulia->getLastName()->willReturn('Stark');
         $userManager->findUserByUsername('julia')->willReturn($userJulia);
 
         $first->getEntityWithValue()->willReturn($firstProduct);
-        $second->getEntityWithValue()->willReturn($secondProduct);
+        $second->getEntityWithValue()->willReturn($secondProductModel);
 
         $firstProduct->getId()->willReturn(1);
-        $secondProduct->getId()->willReturn(2);
+        $secondProductModel->getId()->willReturn(2);
         $firstProduct->getIdentifier()->willReturn('sku1');
-        $secondProduct->getIdentifier()->willReturn('sku2');
+        $secondProductModel->getCode()->willReturn('sku2');
         $firstProduct->getLabel()->willReturn('First product');
-        $secondProduct->getLabel()->willReturn('Second product');
+        $secondProductModel->getLabel()->willReturn('Second product');
         $first->getAuthor()->willReturn('julia');
         $second->getAuthor()->willReturn('julia');
         $firstCreatedAt = new \DateTime();
@@ -109,7 +114,7 @@ class ProposalWidgetSpec extends ObjectBehavior
                     'productLabel'     => 'First product',
                     'authorFullName'   => 'Julia Stark',
                     'productReviewUrl' =>
-                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bsku%5D%5Bvalue%5D=sku1&f%5Bsku%5D%5Btype%5D=1',
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bidentifier%5D%5Bvalue%5D=sku1&f%5Bidentifier%5D%5Btype%5D=1',
                     'createdAt'        => $firstCreatedAt->format('m/d/Y')
                 ],
                 [
@@ -117,7 +122,7 @@ class ProposalWidgetSpec extends ObjectBehavior
                     'productLabel'     => 'Second product',
                     'authorFullName'   => 'Julia Stark',
                     'productReviewUrl' =>
-                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bsku%5D%5Bvalue%5D=sku2&f%5Bsku%5D%5Btype%5D=1',
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=julia&f%5Bidentifier%5D%5Bvalue%5D=sku2&f%5Bidentifier%5D%5Btype%5D=1',
                     'createdAt'        => $secondCreatedAt->format('m/d/Y')
                 ]
             ]
@@ -127,16 +132,18 @@ class ProposalWidgetSpec extends ObjectBehavior
     function it_fallbacks_on_username_if_user_not_found(
         $authorizationChecker,
         $user,
-        $repository,
+        $productDraftRepository,
+        $productModelDraftRepository,
         $userManager,
         $presenter,
-        EntityWithValuesDraftInterface $first,
-        EntityWithValuesDraftInterface $second,
+        ProductDraft $first,
+        ProductDraft $second,
         ProductInterface $firstProduct,
         ProductInterface $secondProduct
     ) {
         $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
-        $repository->findApprovableByUser($user, 10)->willReturn([$first, $second]);
+        $productDraftRepository->findApprovableByUser($user, 10)->willReturn([$first, $second]);
+        $productModelDraftRepository->findApprovableByUser($user, 10)->willReturn([]);
 
         $userManager->findUserByUsername('jack')->willReturn(null);
 
@@ -167,7 +174,7 @@ class ProposalWidgetSpec extends ObjectBehavior
                     'productLabel'     => 'First product',
                     'authorFullName'   => 'jack',
                     'productReviewUrl' =>
-                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=jack&f%5Bsku%5D%5Bvalue%5D=sku1&f%5Bsku%5D%5Btype%5D=1',
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=jack&f%5Bidentifier%5D%5Bvalue%5D=sku1&f%5Bidentifier%5D%5Btype%5D=1',
                     'createdAt'        => $firstCreatedAt->format('m/d/Y')
                 ],
                 [
@@ -175,7 +182,7 @@ class ProposalWidgetSpec extends ObjectBehavior
                     'productLabel'     => 'Second product',
                     'authorFullName'   => 'jack',
                     'productReviewUrl' =>
-                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=jack&f%5Bsku%5D%5Bvalue%5D=sku2&f%5Bsku%5D%5Btype%5D=1',
+                        '/my/route/|g/f%5Bauthor%5D%5Bvalue%5D%5B0%5D=jack&f%5Bidentifier%5D%5Bvalue%5D=sku2&f%5Bidentifier%5D%5Btype%5D=1',
                     'createdAt'        => $secondCreatedAt->format('m/d/Y')
                 ]
             ]

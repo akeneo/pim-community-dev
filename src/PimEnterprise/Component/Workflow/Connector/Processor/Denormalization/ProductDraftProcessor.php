@@ -18,13 +18,14 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Workflow\Applier\DraftApplierInterface;
 use PimEnterprise\Component\Workflow\Builder\EntityWithValuesDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -55,21 +56,17 @@ class ProductDraftProcessor extends AbstractProcessor implements
     /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productDraftRepo;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface    $repository          product repository
-     * @param ObjectUpdaterInterface                   $updater             product updater
-     * @param ValidatorInterface                       $validator           product validator
-     * @param EntityWithValuesDraftBuilderInterface    $productDraftBuilder product draft builder
-     * @param DraftApplierInterface                    $productDraftApplier product draft applier
-     * @param EntityWithValuesDraftRepositoryInterface $productDraftRepo    product draft repository
-     */
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         EntityWithValuesDraftBuilderInterface $productDraftBuilder,
         DraftApplierInterface $productDraftApplier,
-        EntityWithValuesDraftRepositoryInterface $productDraftRepo
+        EntityWithValuesDraftRepositoryInterface $productDraftRepo,
+        TokenStorageInterface $tokenStorage
     ) {
         parent::__construct($repository);
 
@@ -78,6 +75,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
         $this->productDraftBuilder = $productDraftBuilder;
         $this->productDraftApplier = $productDraftApplier;
         $this->productDraftRepo = $productDraftRepo;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -87,7 +85,7 @@ class ProductDraftProcessor extends AbstractProcessor implements
     {
         $identifier = $this->getIdentifier($item);
 
-        $product = $this->findProduct($identifier);
+        $product = $this->repository->findOneByIdentifier($identifier);
         if (null === $product) {
             $this->skipItemWithMessage($item, sprintf('Product "%s" does not exist', $identifier));
         }
@@ -95,12 +93,12 @@ class ProductDraftProcessor extends AbstractProcessor implements
         $product = $this->applyDraftToProduct($product);
 
         try {
-            $this->updateProduct($product, $item);
-        } catch (PropertyException $exception) {
+            $this->updater->update($product, $item);
+        } catch (PropertyException | ResourceAccessDeniedException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
-        $violations = $this->validateProduct($product);
+        $violations = $this->validator->validate($product);
         if ($violations->count() > 0) {
             $this->skipItemWithConstraintViolations($item, $violations);
         }
@@ -111,29 +109,29 @@ class ProductDraftProcessor extends AbstractProcessor implements
     /**
      * Apply current draft values to product to fix problem with optional attributes
      *
-     * @param ProductInterface $product
+     * @param EntityWithValuesInterface $entityWithValues
      *
-     * @return ProductInterface
+     * @return EntityWithValuesInterface
      */
-    protected function applyDraftToProduct(ProductInterface $product)
+    protected function applyDraftToProduct(EntityWithValuesInterface $entityWithValues): EntityWithValuesInterface
     {
-        $productDraft = $this->getProductDraft($product);
+        $productDraft = $this->getProductDraft($entityWithValues);
 
         if (null !== $productDraft) {
-            $this->productDraftApplier->applyAllChanges($product, $productDraft);
+            $this->productDraftApplier->applyAllChanges($entityWithValues, $productDraft);
         }
 
-        return $product;
+        return $entityWithValues;
     }
 
     /**
-     * @param ProductInterface $product
+     * @param EntityWithValuesInterface $entityWithValues
      *
-     * @return ProductDraft|null
+     * @return EntityWithValuesInterface|null
      */
-    protected function getProductDraft(ProductInterface $product)
+    protected function getProductDraft(EntityWithValuesInterface $entityWithValues): ?EntityWithValuesInterface
     {
-        return $this->productDraftRepo->findUserEntityWithValuesDraft($product, $this->getCodeInstance());
+        return $this->productDraftRepo->findUserEntityWithValuesDraft($entityWithValues, $this->getUsername());
     }
 
     /**
@@ -143,36 +141,13 @@ class ProductDraftProcessor extends AbstractProcessor implements
      *
      * @return string
      */
-    protected function getIdentifier(array $convertedItem)
+    protected function getIdentifier(array $convertedItem): string
     {
         if (!isset($convertedItem['identifier'])) {
-            throw new \InvalidArgumentException('Identifier is expected');
+            throw new \InvalidArgumentException('Column "identifier" is expected');
         }
 
         return $convertedItem['identifier'];
-    }
-
-    /**
-     * @param string $identifier
-     *
-     * @throws \RuntimeException
-     *
-     * @return ProductInterface|null
-     */
-    protected function findProduct($identifier)
-    {
-        return $this->repository->findOneByIdentifier($identifier);
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param array            $convertedItem
-     *
-     * @throws PropertyException
-     */
-    protected function updateProduct(ProductInterface $product, array $convertedItem)
-    {
-        $this->updater->update($product, $convertedItem);
     }
 
     /**
@@ -182,19 +157,19 @@ class ProductDraftProcessor extends AbstractProcessor implements
      *  - no diff between product and draft and there is a draft for this product in DB: return old draft, it will be
      *      deleted in writer
      *
-     * @param ProductInterface $product
+     * @param EntityWithValuesInterface $entityWithValues
      *
      * @throws InvalidItemException
      *
-     * @return ProductDraft|null
+     * @return EntityWithValuesDraftInterface|null
      */
-    protected function buildDraft(ProductInterface $product)
+    protected function buildDraft(EntityWithValuesInterface $entityWithValues): ?EntityWithValuesDraftInterface
     {
-        $productDraft = $this->productDraftBuilder->build($product, $this->getCodeInstance());
+        $productDraft = $this->productDraftBuilder->build($entityWithValues, $this->getUsername());
 
         // no draft has been created because there is no diff between proposal and product
         if (null === $productDraft) {
-            $deprecatedDraft = $this->getProductDraft($product);
+            $deprecatedDraft = $this->getProductDraft($entityWithValues);
             if (null !== $deprecatedDraft) {
                 $deprecatedDraft->setChanges([]);
 
@@ -212,22 +187,10 @@ class ProductDraftProcessor extends AbstractProcessor implements
     }
 
     /**
-     * @param ProductInterface $product
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return ConstraintViolationListInterface
-     */
-    protected function validateProduct(ProductInterface $product)
-    {
-        return $this->validator->validate($product);
-    }
-
-    /**
      * @return string
      */
-    protected function getCodeInstance()
+    protected function getUsername(): string
     {
-        return $this->stepExecution->getJobExecution()->getJobInstance()->getCode();
+        return $this->tokenStorage->getToken()->getUsername();
     }
 }

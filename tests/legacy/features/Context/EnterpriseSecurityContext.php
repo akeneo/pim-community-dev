@@ -59,7 +59,7 @@ class EnterpriseSecurityContext extends SecurityContext
      */
     public function iMakeADirectAuthenticatedPostCallToRejectTheLastProposalOfUser($username)
     {
-        $routeName = 'pimee_workflow_product_draft_rest_reject';
+        $routeName = 'pimee_workflow_product_draft_rest_refuse';
 
         $proposal = $this->getService('pimee_workflow.repository.product_draft')
             ->findOneBy(['author' => $username]);
