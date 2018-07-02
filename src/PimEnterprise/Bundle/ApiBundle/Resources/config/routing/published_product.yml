@@ -7,3 +7,5 @@ pimee_api_published_product_get:
     path: /published-products/{code}
     defaults: { _controller: pimee_api.controller.published_product:getAction, _format: json }
     methods: [GET]
+    requirements:
+        code: .+

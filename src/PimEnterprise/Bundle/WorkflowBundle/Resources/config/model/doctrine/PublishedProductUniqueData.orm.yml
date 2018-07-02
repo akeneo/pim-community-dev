@@ -19,6 +19,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProductUniqueData:
     manyToOne:
         product:
             targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductInterface
+            inversedBy: uniqueData
             joinColumns:
                 product_id:
                     referencedColumnName: id
