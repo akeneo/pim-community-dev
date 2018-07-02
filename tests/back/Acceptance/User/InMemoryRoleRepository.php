@@ -6,8 +6,8 @@ namespace Akeneo\Test\Acceptance\User;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -26,7 +26,7 @@ class InMemoryRoleRepository implements IdentifiableObjectRepositoryInterface, S
 
     public function save($role, array $options = [])
     {
-        if(!$role instanceof RoleInterface) {
+        if (!$role instanceof RoleInterface) {
             throw new \InvalidArgumentException('Only user role objects are supported.');
         }
         $index = $role->getRole();
@@ -49,5 +49,4 @@ class InMemoryRoleRepository implements IdentifiableObjectRepositoryInterface, S
     {
         return $this->roles->get($identifier);
     }
-
 }

@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle;
 
+use Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterComparatorsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterCompleteCheckerPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterFilterPass;

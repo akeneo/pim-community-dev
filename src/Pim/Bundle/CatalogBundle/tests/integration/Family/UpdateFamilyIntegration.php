@@ -8,8 +8,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabel;
-use Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxis;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsLabel;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxis;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**

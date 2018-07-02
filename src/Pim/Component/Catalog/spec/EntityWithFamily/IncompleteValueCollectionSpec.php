@@ -7,7 +7,7 @@ use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollection;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Pim\Component\Catalog\EntityWithFamily\RequiredValue;
 
 class IncompleteValueCollectionSpec extends ObjectBehavior
 {
@@ -20,12 +20,12 @@ class IncompleteValueCollectionSpec extends ObjectBehavior
         ChannelInterface $print,
         LocaleInterface $en_US,
         LocaleInterface $fr_FR,
-        ValueInterface $value1,
-        ValueInterface $value2,
-        ValueInterface $value3,
-        ValueInterface $value4,
-        ValueInterface $value5,
-        ValueInterface $value6
+        RequiredValue $value1,
+        RequiredValue $value2,
+        RequiredValue $value3,
+        RequiredValue $value4,
+        RequiredValue $value5,
+        RequiredValue $value6
     ) {
         $length->isUnique()->willReturn(false);
         $price->isUnique()->willReturn(false);
@@ -51,28 +51,47 @@ class IncompleteValueCollectionSpec extends ObjectBehavior
         $en_US->getCode()->willReturn('en_US');
         $fr_FR->getCode()->willReturn('fr_FR');
 
-        $value1->getAttribute()->willReturn($length);
-        $value2->getAttribute()->willReturn($price);
-        $value3->getAttribute()->willReturn($description);
-        $value4->getAttribute()->willReturn($description);
-        $value5->getAttribute()->willReturn($description);
-        $value6->getAttribute()->willReturn($releaseDate);
+        $value1->forAttribute()->willReturn($length);
+        $value2->forAttribute()->willReturn($price);
+        $value3->forAttribute()->willReturn($description);
+        $value4->forAttribute()->willReturn($description);
+        $value5->forAttribute()->willReturn($description);
+        $value6->forAttribute()->willReturn($releaseDate);
 
-        $value1->getScope()->willReturn(null);
-        $value2->getScope()->willReturn(null);
-        $value3->getScope()->willReturn('ecommerce');
-        $value4->getScope()->willReturn('ecommerce');
-        $value5->getScope()->willReturn('print');
-        $value6->getScope()->willReturn(null);
+        $value1->forChannel()->willReturn($ecommerce);
+        $value2->forChannel()->willReturn($ecommerce);
+        $value3->forChannel()->willReturn($ecommerce);
+        $value4->forChannel()->willReturn($print);
+        $value5->forChannel()->willReturn($print);
+        $value6->forChannel()->willReturn($print);
 
-        $value1->getLocale()->willReturn(null);
-        $value2->getLocale()->willReturn(null);
-        $value3->getLocale()->willReturn('en_US');
-        $value4->getLocale()->willReturn('fr_FR');
-        $value5->getLocale()->willReturn('en_US');
-        $value6->getLocale()->willReturn(null);
+        $value1->forLocale()->willReturn($en_US);
+        $value2->forLocale()->willReturn($en_US);
+        $value3->forLocale()->willReturn($en_US);
+        $value4->forLocale()->willReturn($fr_FR);
+        $value5->forLocale()->willReturn($fr_FR);
+        $value6->forLocale()->willReturn($fr_FR);
 
-        $value6->getData()->willReturn('2016-09-12');
+        $value1->attribute()->willReturn('length');
+        $value2->attribute()->willReturn('price');
+        $value3->attribute()->willReturn('description');
+        $value4->attribute()->willReturn('description');
+        $value5->attribute()->willReturn('description');
+        $value6->attribute()->willReturn('release_date');
+
+        $value1->channel()->willReturn(null);
+        $value2->channel()->willReturn(null);
+        $value3->channel()->willReturn('ecommerce');
+        $value4->channel()->willReturn('ecommerce');
+        $value5->channel()->willReturn('print');
+        $value6->channel()->willReturn(null);
+
+        $value1->locale()->willReturn(null);
+        $value2->locale()->willReturn('en_US');
+        $value3->locale()->willReturn('en_US');
+        $value4->locale()->willReturn('fr_FR');
+        $value5->locale()->willReturn('fr_FR');
+        $value6->locale()->willReturn(null);
 
         $this->beConstructedWith([$value1, $value2, $value3, $value4, $value5, $value6]);
     }

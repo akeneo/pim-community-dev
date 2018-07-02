@@ -6,6 +6,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ListOffsetProductModelIntegration extends AbstractProductModelTestCase
 {
+    /**
+     * @group ce
+     */
     public function testSuccessfullyGetListOfProductModelWithoutParameter()
     {
         $client = $this->createAuthenticatedClient();
@@ -35,6 +38,9 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    /**
+     * @group ce
+     */
     public function testSuccessfullyGetListOfProductModelFirstPageWithCount()
     {
         $client = $this->createAuthenticatedClient();
@@ -63,6 +69,9 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    /**
+     * @group ce
+     */
     public function testSuccessfullyGetListOfProductModelFirstPageWithoutCount()
     {
         $client = $this->createAuthenticatedClient();
@@ -90,6 +99,9 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    /**
+     * @group ce
+     */
     public function testSuccessfullyGetListOfProductModelLastPageWithCount()
     {
         $client = $this->createAuthenticatedClient();

@@ -2,22 +2,23 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductModelNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $propertiesNormalizer)
+    function let(NormalizerInterface $propertiesNormalizer, EntityWithFamilyVariantAttributesProvider $attributesProvider)
     {
-        $this->beConstructedWith($propertiesNormalizer);
+        $this->beConstructedWith($propertiesNormalizer, $attributesProvider);
     }
 
     function it_is_initializable()
@@ -44,27 +45,21 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_root_product_model_in_indexing_format(
         $propertiesNormalizer,
+        $attributesProvider,
         ProductModelInterface $productModel,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
-        CommonAttributeCollection $commonAttributes,
         AttributeInterface $attrOne,
         AttributeInterface $attrTwo
     ) {
         $productModel->getFamily()->willReturn($family);
         $productModel->getVariationLevel()->willReturn(0);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getCommonAttributes()->willReturn($commonAttributes);
-        $commonAttributes->toArray()->willReturn([$attrOne, $attrTwo]);
 
+        $attributesProvider->getAttributes($productModel)->willReturn([$attrTwo, $attrOne]);
         $attrOne->getCode()->willReturn('attr1');
         $attrTwo->getCode()->willReturn('attr2');
 
-        $productModel->getRawValues()
-            ->willReturn([
-                'property_1' => ['value_1'],
-                'property_2' => ['value_2'],
-            ]);
         $propertiesNormalizer->normalize(
             $productModel,
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
@@ -73,41 +68,35 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn([
-                'properties'                => 'properties are normalized here',
-                'document_type'              => ProductModelInterface::class,
-                'attributes_for_this_level' => ['attr1', 'attr2', 'property_1', 'property_2'],
+                'properties'              => 'properties are normalized here',
+                'document_type'           => ProductModelInterface::class,
+                'attributes_of_ancestors' => [],
+                'attributes_for_this_level' => ['attr1', 'attr2'],
             ]);
     }
 
     function it_normalizes_a_sub_product_model_in_indexing_format(
         $propertiesNormalizer,
+        $attributesProvider,
         ProductModelInterface $productModel,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant,
-        VariantAttributeSetInterface $variantAttributeSet,
-        Collection $attributes,
-        Collection $axes,
-        AttributeInterface $propertyOne,
-        AttributeInterface $axeOne
+        CommonAttributeCollection $commonAttributeCollection,
+        ArrayCollection $attributeCodes,
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2
     ) {
         $productModel->getFamily()->willReturn($family);
         $productModel->getVariationLevel()->willReturn(1);
-
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $familyVariant->getVariantAttributeSet(1)->willReturn($variantAttributeSet);
-        $variantAttributeSet->getAttributes()->willReturn($attributes);
-        $variantAttributeSet->getAxes()->willReturn($axes);
+        $familyVariant->getCommonAttributes()->willReturn($commonAttributeCollection);
+        $commonAttributeCollection->map(Argument::cetera())->willReturn($attributeCodes);
+        $attributeCodes->toArray()->willReturn(['parent_attribute1', 'parent_attribute2']);
 
-        $attributes->toArray()->willReturn([$propertyOne]);
-        $axes->toArray()->willReturn([$axeOne]);
-        $propertyOne->getCode()->willReturn('attr1');
-        $axeOne->getCode()->willReturn('attr2');
+        $attributesProvider->getAttributes($productModel)->willReturn([$attribute1, $attribute2]);
+        $attribute1->getCode()->willReturn('attribute1');
+        $attribute2->getCode()->willReturn('attribute2');
 
-        $productModel->getRawValues()
-            ->willReturn([
-                'property_1' => ['value_1'],
-                'property_2' => ['value_2'],
-            ]);
         $propertiesNormalizer->normalize(
             $productModel,
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
@@ -116,9 +105,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn([
-                'properties'                => 'properties are normalized here',
-                'document_type'              => ProductModelInterface::class,
-                'attributes_for_this_level' => ['attr1', 'attr2', 'property_1', 'property_2'],
+                'properties'              => 'properties are normalized here',
+                'document_type'           => ProductModelInterface::class,
+                'attributes_of_ancestors' => ['parent_attribute1', 'parent_attribute2'],
+                'attributes_for_this_level' => ['attribute1', 'attribute2'],
             ]);
     }
 }

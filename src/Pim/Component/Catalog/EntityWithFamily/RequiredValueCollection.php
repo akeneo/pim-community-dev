@@ -6,7 +6,6 @@ namespace Pim\Component\Catalog\EntityWithFamily;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * A collection of required values depending on the attribute requirements of a family.
@@ -23,20 +22,20 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  */
 class RequiredValueCollection implements \Countable, \IteratorAggregate
 {
-    /** @var ValueInterface[] */
+    /** @var RequiredValue[] */
     private $values;
 
     /**
-     * @param ValueInterface[] $values
+     * @param RequiredValue[] $values
      */
     public function __construct(array $values)
     {
         $this->values = [];
 
         foreach ($values as $value) {
-            if (!$value instanceof ValueInterface) {
+            if (!$value instanceof RequiredValue) {
                 throw new \InvalidArgumentException(
-                    'Expected an instance of "Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface".'
+                    'Expected an instance of "Pim\Component\Catalog\EntityWithFamily\RequiredValue".'
                 );
             }
 
@@ -47,11 +46,11 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
     /**
      * Is there already a value with the same attribute, channel and locale than $value?
      *
-     * @param ValueInterface $value
+     * @param RequiredValue $value
      *
      * @return bool
      */
-    public function hasSame(ValueInterface $value): bool
+    public function hasSame(RequiredValue $value): bool
     {
         return array_key_exists($this->buildInternalKey($value), $this->values);
     }
@@ -70,14 +69,20 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
     ): RequiredValueCollection {
         $filteredValues = array_filter(
             $this->values,
-            function (ValueInterface $value) use ($channel, $locale) {
-                $attribute = $value->getAttribute();
+            function (RequiredValue $requiredValue) use ($channel, $locale) {
+                $attribute = $requiredValue->forAttribute();
 
-                if ($attribute->isScopable() && $channel->getCode() !== $value->getScope()) {
+                if ($attribute->isScopable() && $requiredValue->forChannel()->getCode() !== $channel->getCode()) {
                     return false;
                 }
 
-                if ($attribute->isLocalizable() && $locale->getCode() !== $value->getLocale()) {
+                if ($attribute->isLocalizable() && $requiredValue->forLocale()->getCode() !== $locale->getCode()) {
+                    return false;
+                }
+
+                if ($attribute->isLocaleSpecific() &&
+                    (!$attribute->hasLocaleSpecific($locale) || $requiredValue->forLocale()->getCode() !== $locale->getCode())
+                ) {
                     return false;
                 }
 
@@ -105,16 +110,15 @@ class RequiredValueCollection implements \Countable, \IteratorAggregate
     }
 
     /**
-     * @param ValueInterface $value
+     * @param RequiredValue $value
      *
      * @return string
      */
-    private function buildInternalKey(ValueInterface $value): string
+    private function buildInternalKey(RequiredValue $requiredValue): string
     {
-        $attribute = $value->getAttribute();
-        $channelCode = null !== $value->getScope() ? $value->getScope() : '<all_channels>';
-        $localeCode = null !== $value->getLocale() ? $value->getLocale() : '<all_locales>';
-        $key = sprintf('%s-%s-%s', $attribute->getCode(), $channelCode, $localeCode);
+        $channelCode = null !== $requiredValue->channel() ? $requiredValue->channel() : '<all_channels>';
+        $localeCode = null !== $requiredValue->locale() ? $requiredValue->locale() : '<all_locales>';
+        $key = sprintf('%s-%s-%s', $requiredValue->attribute(), $channelCode, $localeCode);
 
         return $key;
     }

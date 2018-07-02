@@ -48,7 +48,7 @@ class RefreshProductCommand extends ContainerAwareCommand
         $productModelSaver = $this->getContainer()
             ->get('pim_catalog.saver.product_model');
         $pqbFactory = $this->getContainer()
-            ->get('pim_enrich.query.product_and_product_model_query_builder_factory');
+            ->get('pim_catalog.query.product_and_product_model_query_builder_factory');
         $identifiers = $input->getArgument('identifiers');
 
         $pqb = $pqbFactory->create();

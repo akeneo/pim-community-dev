@@ -883,6 +883,7 @@ config:
         pim/common/simple-view:            pimenrich/js/form/common/simple-view
         pim/common/grid-title:             pimenrich/js/form/common/grid-title
         pim/common/item-picker:            pimenrich/js/common/item-picker
+        pim/common/title-with-subtitle:    pimenrich/js/common/title-with-subtitle.ts
 
         # Root
         pim/form/common/edit-form: pimenrich/js/form/common/edit-form
@@ -937,6 +938,7 @@ config:
         pim/form/common/fields/date:                    pimenrich/js/form/common/fields/date
         pim/form/common/fields/select:                  pimenrich/js/form/common/fields/select
         pim/form/common/fields/simple-select-async:     pimenrich/js/form/common/fields/simple-select-async
+        pim/form/common/fields/multi-select-async:      pimenrich/js/form/common/fields/multi-select-async
         pim/form/common/fields/text:                    pimenrich/js/form/common/fields/text
         pim/form/common/fields/textarea:                pimenrich/js/form/common/fields/textarea
         pim/form/common/fields/metric:                  pimenrich/js/form/common/fields/metric
@@ -1001,6 +1003,7 @@ config:
         pim/template/common/grid:                                 pimenrich/templates/common/grid.html
         pim/template/common/item-picker:                          pimenrich/templates/common/item-picker.html
         pim/template/common/item-picker-basket:                   pimenrich/templates/common/item-picker-basket.html
+        pim/template/common/title-with-subtitle:                  pimenrich/templates/common/title-with-subtitle.html
 
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html

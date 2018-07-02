@@ -760,6 +760,149 @@ JSON;
     }
 
     /**
+     * @throws \Exception
+     */
+    public function testProductModelCreationWithAssociations()
+    {
+        $this->createProductModel([
+            'code' => 'a_product_model',
+            'family_variant' => 'familyVariantA1',
+            'values'  => [],
+        ]);
+
+        $this->createProduct('simple', ['enabled' => false]);
+
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "code": "product_model_creation_associations",
+    "family_variant": "familyVariantA1",
+    "associations": {
+        "UPSELL": {
+            "product_models": ["a_product_model"]
+        },
+        "X_SELL": {
+            "groups": ["groupA"],
+            "products": ["simple"]
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+
+        $expectedProductModel = [
+            'code'    => 'product_model_creation_associations',
+            'family_variant' => 'familyVariantA1',
+            'parent'         => null,
+            'categories'     => [],
+            'values'         => [],
+            'created'        => '2016-06-14T13:12:50+02:00',
+            'updated'        => '2016-06-14T13:12:50+02:00',
+            'associations'   => [
+                "PACK"         => [
+                    "groups"   => [],
+                    "products" => [],
+                    "product_models" => [],
+                ],
+                "SUBSTITUTION" => [
+                    "groups"   => [],
+                    "products" => [],
+                    "product_models" => [],
+                ],
+                "UPSELL"       => [
+                    "groups"   => [],
+                    "products" => [],
+                    "product_models" => ["a_product_model"],
+                ],
+                "X_SELL"       => [
+                    "groups"   => ["groupA"],
+                    "products" => ["simple"],
+                    "product_models" => [],
+                ],
+            ],
+        ];
+
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSameProductModels($expectedProductModel, 'product_model_creation_associations');
+    }
+
+    public function testResponseWhenAssociatingToNonExistingProductModel()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "code": "a_product_model",
+    "associations": {
+        "X_SELL": {
+            "product_models": ["a_non_exiting_product_model"]
+        }
+    }
+}
+JSON;
+
+        $expected = <<<JSON
+{
+    "code": 422,
+    "message": "Property \"associations\" expects a valid Product model identifier. The product model does not exist, \"a_non_exiting_product_model\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+
+    public function testResponseWhenAssociatingToNonExistingProduct()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "code": "a_product_model",
+    "associations": {
+        "X_SELL": {
+            "products": ["a_non_exiting_product"]
+        }
+    }
+}
+JSON;
+
+        $expected = <<<JSON
+{
+    "code": 422,
+    "message": "Property \"associations\" expects a valid product identifier. The product does not exist, \"a_non_exiting_product\" given. Check the expected format on the API documentation.",
+    "_links": {
+        "documentation": {
+            "href": "http:\/\/api.akeneo.com\/api-reference.html#post_product_model"
+        }
+    }
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    /**
      * @param array  $expectedProductModel normalized data of the product model that should be created
      * @param string $identifier           identifier of the product that should be created
      */

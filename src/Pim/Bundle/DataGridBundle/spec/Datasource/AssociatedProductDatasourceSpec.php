@@ -80,18 +80,24 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         ProductQueryBuilderInterface $pqbAsso,
         ProductQueryBuilderInterface $pqbAssoProductModel,
         ProductInterface $currentProduct,
+        ProductModelInterface $parent,
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
         ProductModelInterface $associatedProductModel,
         Collection $associationCollection,
+        Collection $parentAssociationCollection,
         AssociationInterface $association,
+        AssociationInterface $parentAssociation,
         AssociationTypeInterface $associationType,
         \ArrayIterator $associationIterator,
+        \ArrayIterator $parentAssociationIterator,
         CursorInterface $productCursor,
         CursorInterface $associatedProductCursor,
         CursorInterface $associatedProductModelCursor,
         Collection $collectionProductModel,
-        \Iterator $collectionIterator
+        Collection $parentCollectionProductModel,
+        \Iterator $collectionProductModelIterator,
+        \Iterator $parentCollectionProductModelIterator
     ) {
         $pqbFactory->create([
             'repository_parameters' => [],
@@ -119,6 +125,14 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associatedProductModel->getId()->willReturn('2');
         $currentProduct->getAllAssociations()->willReturn($associationCollection);
         $currentProduct->getIdentifier()->willReturn('current_product');
+        $currentProduct->getParent()->willReturn($parent);
+
+        $parent->getAllAssociations()->willReturn($parentAssociationCollection);
+
+        $parentAssociationCollection->getIterator()->willReturn($parentAssociationIterator);
+        $parentAssociationIterator->rewind()->shouldBeCalled();
+        $parentAssociationIterator->valid()->willReturn(true, false);
+        $parentAssociationIterator->current()->willReturn($parentAssociation);
 
         $associationCollection->getIterator()->willReturn($associationIterator);
         $associationIterator->rewind()->shouldBeCalled();
@@ -126,14 +140,22 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associationIterator->current()->willReturn($association);
 
         $association->getProducts()->willReturn([$associatedProduct1, $associatedProduct2]);
+        $parentAssociation->getProducts()->willReturn([$associatedProduct2]);
         $association->getProductModels()->willReturn($collectionProductModel);
-        $collectionProductModel->getIterator()->willReturn($collectionIterator);
-        $collectionIterator->rewind()->shouldBeCalled();
-        $collectionIterator->valid()->willReturn(true, false);
-        $collectionIterator->current()->willReturn($associatedProductModel);
-        $collectionIterator->next()->shouldBeCalled();
+        $parentAssociation->getProductModels()->willReturn($parentCollectionProductModel);
+
+        $collectionProductModel->getIterator()->willReturn($collectionProductModelIterator);
+        $collectionProductModelIterator->rewind()->shouldBeCalled();
+        $collectionProductModelIterator->valid()->willReturn(true, false);
+        $collectionProductModelIterator->current()->willReturn($associatedProductModel);
+        $collectionProductModelIterator->next()->shouldBeCalled();
+
+        $parentCollectionProductModel->getIterator()->willReturn($parentCollectionProductModelIterator);
+        $parentCollectionProductModelIterator->rewind()->shouldBeCalled();
+        $parentCollectionProductModelIterator->valid()->willReturn(false);
 
         $association->getAssociationType()->willReturn($associationType);
+        $parentAssociation->getAssociationType()->willReturn($associationType);
         $associationType->getId()->willReturn(1);
 
         $pqb->execute()->willReturn($productCursor);
@@ -169,6 +191,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associatedProductCursor->valid()->willReturn(true, true, false);
         $associatedProductCursor->current()->willReturn($associatedProduct1, $associatedProduct2);
         $associatedProductCursor->next()->shouldBeCalled();
+        $associatedProductCursor->count()->willReturn(2);
 
         $pqbFactory->create([
             'repository_parameters' => [],
@@ -198,6 +221,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $associatedProductModelCursor->valid()->willReturn(true, false);
         $associatedProductModelCursor->current()->willReturn($associatedProductModel);
         $associatedProductModelCursor->next()->shouldBeCalled();
+        $associatedProductModelCursor->count()->willReturn(1);
 
         $productNormalizer->normalize($currentProduct, Argument::cetera())->shouldNotBeCalled();
 
@@ -217,6 +241,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'is_associated' => true,
             'label'         => 'associated_product_1',
             'completeness'  => null,
+            'from_inheritance' => false,
         ]);
 
         $productNormalizer->normalize($associatedProduct2, 'datagrid', [
@@ -235,6 +260,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'is_associated' => true,
             'label'         => 'associated_product_2',
             'completeness'  => null,
+            'from_inheritance' => true,
         ]);
 
         $productNormalizer->normalize($associatedProductModel, 'datagrid', [
@@ -263,6 +289,9 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
         $results['data']->shouldBeArray();
         $results['data']->shouldHaveCount(3);
         $results['data']->shouldBeAnArrayOfInstanceOf(ResultRecord::class);
+        $results['data'][0]->getValue('id')->shouldReturn('product-2');
+        $results['data'][1]->getValue('id')->shouldReturn('product-3');
+        $results['data'][2]->getValue('id')->shouldReturn('product-model-2');
     }
 
     public function getMatchers()

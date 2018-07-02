@@ -9,20 +9,22 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountLocalizableAttribute;
 use Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountScopableAndLocalizableAttribute;
 use Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountScopableAttribute;
+use Pim\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
+use Pim\Component\CatalogVolumeMonitoring\Volume\ReadModel\CountVolume;
 
 class AttributeDataCollectorSpec extends ObjectBehavior
 {
     function let(
-        CountableRepositoryInterface $attributeRepository,
-        CountLocalizableAttribute $countLocalizableAttribute,
-        CountScopableAttribute $countScopableAttribute,
-        CountScopableAndLocalizableAttribute $countScopableAndLocalizableAttribute
+        CountQuery $attributeCountQuery,
+        CountQuery $localizableAttributeCountQuery,
+        CountQuery $scopableAttributeCountQuery,
+        CountQuery $localizableAndScopableAttributeCountQuery
     ) {
         $this->beConstructedWith(
-            $attributeRepository,
-            $countLocalizableAttribute,
-            $countScopableAttribute,
-            $countScopableAndLocalizableAttribute
+            $attributeCountQuery,
+            $localizableAttributeCountQuery,
+            $scopableAttributeCountQuery,
+            $localizableAndScopableAttributeCountQuery
         );
     }
 
@@ -37,15 +39,15 @@ class AttributeDataCollectorSpec extends ObjectBehavior
     }
 
     function it_collects_data_about_catalog(
-        $attributeRepository,
-        $countLocalizableAttribute,
-        $countScopableAttribute,
-        $countScopableAndLocalizableAttribute
+        $attributeCountQuery,
+        $localizableAttributeCountQuery,
+        $scopableAttributeCountQuery,
+        $localizableAndScopableAttributeCountQuery
     ) {
-        $attributeRepository->countAll()->willReturn(1000);
-        $countLocalizableAttribute->__invoke()->willReturn(33);
-        $countScopableAttribute->__invoke()->willReturn(40);
-        $countScopableAndLocalizableAttribute->__invoke()->willReturn(64);
+        $attributeCountQuery->fetch()->willReturn(new CountVolume(1000, -1, 'count_attributes'));
+        $localizableAttributeCountQuery->fetch()->willReturn(new CountVolume(33, -1, 'count_localizable_attributes'));
+        $scopableAttributeCountQuery->fetch()->willReturn(new CountVolume(40, -1, 'count_scopable_attributes'));
+        $localizableAndScopableAttributeCountQuery->fetch()->willReturn(new CountVolume(64, -1, 'count_localizable_and_scopable_attributes'));
 
         $this->collect()->shouldReturn([
             'nb_attributes' => 1000,

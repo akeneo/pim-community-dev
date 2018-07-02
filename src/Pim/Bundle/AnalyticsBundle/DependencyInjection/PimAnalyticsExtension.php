@@ -30,6 +30,5 @@ class PimAnalyticsExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('data_collectors.yml');
         $loader->load('twig.yml');
-        $loader->load('queries.yml');
     }
 }

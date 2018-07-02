@@ -110,7 +110,12 @@ abstract class AbstractValue implements ValueInterface
      */
     protected function setLocale($locale)
     {
-        if ($locale && $this->getAttribute() && !$this->getAttribute()->isLocalizable()) {
+        $isProductValueNotLocalizableNeitherLocaleSpecific = $locale
+            && null !== $this->getAttribute()
+            && !$this->getAttribute()->isLocalizable()
+            && !$this->getAttribute()->isLocaleSpecific();
+
+        if ($isProductValueNotLocalizableNeitherLocaleSpecific) {
             $attributeCode = $this->getAttribute()->getCode();
             throw new \LogicException(
                 "The product value cannot be localized, see attribute '".$attributeCode."' configuration"

@@ -29,6 +29,7 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     private const FIELD_ALL_INCOMPLETE = 'all_incomplete';
     private const FIELD_ALL_COMPLETE = 'all_complete';
     private const FIELD_ANCESTORS = 'ancestors';
+    private const FIELD_CATEGORIES_OF_ANCESTORS = 'categories_of_ancestors';
 
     /** @var CompleteFilterInterface */
     private $completenessGridFilterQuery;
@@ -45,6 +46,12 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     {
         if (!$this->serializer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
+        }
+
+        if (!$productModel instanceof ProductModelInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('Expected type %s, %s given', ProductModelInterface::class, get_class($productModel))
+            );
         }
 
         $data = [];
@@ -73,6 +80,9 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
         $data[self::FIELD_FAMILY_VARIANT] = $familyVariant;
 
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $productModel->getCategoryCodes();
+        $categoriesOfAncestors = null !== $productModel->getParent() ?
+            $productModel->getParent()->getCategoryCodes() : [];
+        $data[self::FIELD_CATEGORIES_OF_ANCESTORS] = $categoriesOfAncestors;
 
         $parentCode = null !== $productModel->getParent() ? $productModel->getParent()->getCode() : null;
         $data[self::FIELD_PARENT] = $parentCode;

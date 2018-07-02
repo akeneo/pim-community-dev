@@ -4,6 +4,9 @@ namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel
 
 class ListSearchAfterProductModelIntegration extends AbstractProductModelTestCase
 {
+    /**
+     * @group ce
+     */
     public function testSearchAfterPaginationListProductModelsWithoutParameter()
     {
         $standardizedProducts = $this->getStandardizedProductModels();
@@ -32,6 +35,9 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    /**
+     * @group ce
+     */
     public function testSearchAfterPaginationListProductModelsWithNextLink()
     {
         $standardizedProducts = $this->getStandardizedProductModels();
@@ -64,6 +70,9 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    /**
+     * @group ce
+     */
     public function testSearchAfterPaginationLastPageOfTheListOfProductModels()
     {
         $standardizedProducts = $this->getStandardizedProductModels();

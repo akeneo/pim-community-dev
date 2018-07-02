@@ -7,7 +7,6 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Doctrine\Common\Inflector\Inflector;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Validator\Constraints\UniqueValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -92,13 +91,6 @@ class ViolationNormalizer implements NormalizerInterface
 
                 if (AttributeTypes::IDENTIFIER === $attributeType) {
                     $propertyPath = 'identifier';
-                    $uniqueValueConstraint = new UniqueValue();
-
-                    if ($uniqueValueConstraint->message === $violationMessage) {
-                        // this is the translation key used in
-                        // Pim/Bundle/CatalogBundle/Resources/config/validation/product.yml
-                        $violationMessage = 'The same identifier is already set on another product';
-                    }
                 }
             }
 

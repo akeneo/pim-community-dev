@@ -40,7 +40,6 @@ behat.yml
 /phpspec.yml
 uploads_test/
 .phpspec/*.tpl
-composer.lock
 .php_cs.cache
 /node_modules
 npm-debug.log
@@ -48,6 +47,7 @@ npm-debug.log
 !/docker/akeneo.conf
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
+.env
 docker-compose.override.yml
 .web-server-pid
 

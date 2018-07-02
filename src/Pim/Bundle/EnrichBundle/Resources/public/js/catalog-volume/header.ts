@@ -51,7 +51,7 @@ class HeaderView extends BaseView {
             )
           )
           .replace('{{average}}', productValuesAverage.value.average),
-        description: __(this.config.description),
+        description: __(this.config.description).replace('{{link}}', __('catalog_volume.link')),
       });
 
       this.$el.html(headerContents);

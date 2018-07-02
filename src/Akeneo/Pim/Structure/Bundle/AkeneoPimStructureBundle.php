@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle;
 
-use Akeneo\Pim\Structure\Bundle\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
+use Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

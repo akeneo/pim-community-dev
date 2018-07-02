@@ -37,7 +37,7 @@ class Catalog implements CatalogInterface
     public function useTechnicalCatalog(): Configuration
     {
         $catalogDirectories = [
-            (string) new Path('tests', 'back', 'Integration', 'catalog','technical'),
+            (string) new Path('tests', 'back', 'Integration', 'catalog', 'technical'),
         ];
 
         $fixtureDirectories = [

@@ -4,13 +4,20 @@ namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use PHPUnit\Framework\Assert;
+use Pim\Component\Catalog\Model\ProductModelAssociation;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetProductModelIntegration extends ApiTestCase
 {
+    /**
+     * @group ce
+     */
     public function testSuccessfullyGetProductModel()
     {
+        $this->addAssociationsToProductModel('model-biker-jacket-leather');
+
         $standardProductModel = [
             'code' => 'model-biker-jacket-leather',
             'family_variant' => 'clothing_material_size',
@@ -74,14 +81,19 @@ class GetProductModelIntegration extends ApiTestCase
             ],
             'created' => '2017-10-02T15:03:55+02:00',
             'updated' => '2017-10-02T15:03:55+02:00',
-            'associations' => [],
+            'associations'  => [
+                'X_SELL' => ['groups' => [], 'products' => ['biker-jacket-leather-m'], 'product_models' => ['model-biker-jacket-polyester']],
+                'PACK' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'SUBSTITUTION' => ['groups' => [], 'products' => [], 'product_models' => []],
+                'UPSELL' => ['groups' => [], 'products' => [], 'product_models' => []]
+            ]
         ];
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/product-models/model-biker-jacket-leather');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertResponse($response, $standardProductModel);
     }
 
@@ -92,7 +104,38 @@ class GetProductModelIntegration extends ApiTestCase
         $client->request('GET', 'api/rest/v1/product-models/model-bayqueur-jaquette');
 
         $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        Assert::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
+
+    protected function addAssociationsToProductModel($productModelCode)
+    {
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByCode($productModelCode);
+
+        $association = $productModel->getAssociationForTypeCode('X_SELL');
+        if (null === $association) {
+            $associationType = $this->get('pim_catalog.repository.association_type')
+                ->findOneBy(['code' => 'X_SELL']);
+
+            $association = new ProductModelAssociation();
+            $association->setAssociationType($associationType);
+            $productModel->addAssociation($association);
+        }
+        $association->addProductModel(
+            $this->get('pim_catalog.repository.product_model')->findOneByCode('model-biker-jacket-polyester')
+        );
+
+        $association->addProduct(
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-m')
+        );
+
+        $missingAssociationAdder = $this->get('pim_catalog.association.missing_association_adder');
+        $missingAssociationAdder->addMissingAssociations($productModel);
+
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+
+        Assert::assertCount(0, $errors);
+
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
     }
 
     /**
@@ -114,6 +157,6 @@ class GetProductModelIntegration extends ApiTestCase
         NormalizedProductCleaner::clean($expected);
         NormalizedProductCleaner::clean($result);
 
-        $this->assertSame($expected, $result);
+        Assert::assertSame($expected, $result);
     }
 }

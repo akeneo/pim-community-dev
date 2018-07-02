@@ -242,3 +242,29 @@
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilyVariantSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\FamilyVariantSearchableRepository`
 - Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AttributeGroupSearchableRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AttributeGroupSearchableRepository`
 - Move namespace `Pim\Bundle\CatalogBundle\AttributeType` to `Akeneo\Pim\Structure\Component\AttributeType`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\Attribute` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\Attribute`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\FlatToStandard\AttributeGroup` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\AttributeGroup`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\FlatToStandard\AttributeOption` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\AttributeOption`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\FlatToStandard\Family` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\Family`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\FlatToStandard\FamilyVariant` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\FamilyVariant`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\Attribute` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\Attribute`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\AttributeGroup` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\AttributeGroup`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\AttributeOption` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\AttributeOption`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\Family` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\Family`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\FamilyVariant\FamilyVariant` to `Akeneo\Pim\Structure\Component\ArrayConverter\FamilyVariant\StandardToFlat\FamilyVariant`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\FlatToStandard\FamilyVariant\FieldSplitter` to `Akeneo\Pim\Structure\Component\ArrayConverter\FamilyVariant\StandardToFlat\FieldSplitter`
+- Move `Pim\Component\Connector\Reader\Database\AttributeOptionReader` to `Akeneo\Pim\Structure\Component\Reader\Database\AttributeOptionReader`
+- Move `Pim\Component\Connector\Writer\Database\AttributeGroupWriter` to `Akeneo\Pim\Structure\Component\Writer\Database\AttributeGroupWriter`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass` to `Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterAttributeTypePass`
+- Move `Pim\Component\Catalog\Manager\AttributeOptionsSorter` to `Akeneo\Pim\Structure\Component\Manager\AttributeOptionsSorter`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsImage` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsImage`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsImageValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsImageValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabel` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsLabel`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabelValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeAsLabelValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxis` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxis`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyAttributeUsedAsAxisValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyAttributeUsedAsAxisValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyRequirements` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyRequirements`
+- Move `Pim\Component\Catalog\Validator\Constraints\FamilyRequirementsValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\FamilyRequirementsValidator`
+- Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes`
+- Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator`
+- Remove `Pim\Component\Catalog\Model\AttributeTypeTranslationInterface`

@@ -89,7 +89,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     public function testOperatorNotIn()
     {
         $result = $this->executeFilter([['a_localizable_scopable_simple_select', Operators::NOT_IN_LIST, ['black'], ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
-        $this->assert($result, ['product_one']);
+        $this->assert($result, ['empty_product', 'product_one']);
     }
 
     /**

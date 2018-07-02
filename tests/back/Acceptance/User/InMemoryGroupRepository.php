@@ -6,8 +6,8 @@ namespace Akeneo\Test\Acceptance\User;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -26,7 +26,7 @@ class InMemoryGroupRepository implements IdentifiableObjectRepositoryInterface, 
 
     public function save($group, array $options = [])
     {
-        if(!$group instanceof GroupInterface) {
+        if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException('Only user group objects are supported.');
         }
         $this->groups->set($group->getName(), $group);

@@ -22,7 +22,7 @@ jobs:
     add_association:
         connector: Akeneo Mass Edit Connector
         alias:     add_association
-        label:     Mass associate products
+        label:     Mass associate
         type:      mass_edit
     add_to_category:
         connector: Akeneo Mass Edit Connector

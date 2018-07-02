@@ -264,7 +264,7 @@ suites:
         spec_path: src/Oro/Bundle/FilterBundle
         src_path: src/Oro/Bundle/FilterBundle
 
-    ## Acceptance
+    ## Test
     Acceptance:
         namespace: Akeneo\Test\Acceptance
         psr4_prefix: Akeneo\Test\Acceptance

@@ -35,10 +35,12 @@ class EntityWithFamilyVariantAttributesProvider
         if (EntityWithFamilyVariantInterface::ROOT_VARIATION_LEVEL === $level) {
             $attributes = $familyVariant->getCommonAttributes()->toArray();
         } else {
-            $attributes = $familyVariant
-                ->getVariantAttributeSet($level)
-                ->getAttributes()
-                ->toArray();
+            $variantAttributeSet = $familyVariant->getVariantAttributeSet($level);
+            if (null === $variantAttributeSet) {
+                return [];
+            }
+
+            $attributes = $variantAttributeSet->getAttributes()->toArray();
         }
 
         return $attributes;

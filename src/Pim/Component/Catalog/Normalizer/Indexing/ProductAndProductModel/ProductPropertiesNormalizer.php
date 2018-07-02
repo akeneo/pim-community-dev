@@ -30,6 +30,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     private const FIELD_ID = 'id';
     private const FIELD_PARENT = 'parent';
     private const FIELD_ANCESTORS = 'ancestors';
+    private const FIELD_CATEGORIES_OF_ANCESTORS = 'categories_of_ancestors';
 
     /**
      * {@inheritdoc}
@@ -59,6 +60,11 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
 
         $data[StandardPropertiesNormalizer::FIELD_ENABLED] = (bool) $product->isEnabled();
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
+        $ancestorsCategories = [];
+        if ($product->isVariant() && null !== $product->getParent()) {
+            $ancestorsCategories = $product->getParent()->getCategoryCodes();
+        }
+        $data[self::FIELD_CATEGORIES_OF_ANCESTORS] = $ancestorsCategories;
 
         $data[StandardPropertiesNormalizer::FIELD_GROUPS] = $product->getGroupCodes();
 

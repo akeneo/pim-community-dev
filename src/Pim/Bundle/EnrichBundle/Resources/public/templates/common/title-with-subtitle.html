@@ -1,0 +1,19 @@
+<div>
+    <%= mainTitle %>
+</div>
+<div class="AknSubTitleContainer AknSubTitleContainer-line">
+    <div class="AknSubTitleContainer-imageContainer">
+        <img class="AknSubTitleContainer-image" src="<%= illustration %>">
+    </div>
+    <div class="AknSubTitleContainer-separation"></div>
+    <div class="AknSubTitleContainer-mainContainer">
+        <div class="AknSubTitleContainer-subTitle">
+            <p><%= subTitle %></p>
+        </div>
+        <div class="AknSubTitleContainer-description">
+            <% descriptionLines.forEach(line => { %>
+                <p><%= line %></p>
+            <% }) %>
+        </div>
+    </div>
+</div>

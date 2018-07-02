@@ -5,7 +5,6 @@ namespace spec\Pim\Component\Catalog\Normalizer\Storage\Product;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Normalizer\Storage\Product\AssociationsNormalizer;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssociationsNormalizerSpec extends ObjectBehavior

@@ -1,24 +1,10 @@
 <select id="add-filter-select" multiple>
-    <%  var groups = [systemFilterGroup];
-        _.each(filters, function(filter) {
-            if (filter.group) {
-                var key = filter.groupOrder !== null ? filter.groupOrder : 'last';
-                if (_.isUndefined(groups[key])) {
-                    groups[key] = filter.group;
-                } else if (!_.contains(groups, filter.group)) {
-                    groups.push(filter.group);
-                }
-            } else {
-                filter.group = systemFilterGroup;
-            }
-       });
-    %>
-    <% _.each(groups, function (group) { %>
+    <% groups.forEach((group) => { %>
         <optgroup label="<%= group %>">
-            <% _.each(filters, function (filter, name) { %>
-                <% if (filter.group == group) { %>
-                    <option value="<%= name %>" <% if (filter.enabled) { %>selected<% } %>>
-                        <%= filter.label %>
+            <% Object.keys(filters).forEach((filterKey) => { %>
+                <% if (filters[filterKey].group === group) { %>
+                    <option value="<%= filterKey %>" <% if (filters[filterKey].enabled) { %>selected<% } %>>
+                        <%= filters[filterKey].label %>
                     </option>
                     <% } %>
             <% }); %>

@@ -28,13 +28,18 @@ define(
             thumbnailTemplate: _.template(thumbnailTemplate),
 
             /**
-             * Returns true if the user has the right to remove an association,
-             * hide the remove button in this case.
+             * Return true if the user can remove the association, false otherwise.
+             *
+             * The use can remove an association if he has the permission and if the association
+             * does not come from inheritance.
              *
              * @return {Boolean}
              */
             canRemoveAssociation() {
-                return SecurityContext.isGranted('pim_enrich_associations_remove');
+                const permissionGranted = SecurityContext.isGranted('pim_enrich_associations_remove');
+                const fromInheritance = this.model.get('from_inheritance');
+
+                return permissionGranted && !fromInheritance;
             },
 
             /**

@@ -14,7 +14,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AbstractProductAndProductModelQueryBuilderTestCase extends TestCase
+abstract class AbstractProductAndProductModelQueryBuilderTestCase extends TestCase
 {
     /** @var Client */
     protected $esProductAndProductModelClient;

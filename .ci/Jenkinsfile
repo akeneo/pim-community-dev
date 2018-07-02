@@ -1,5 +1,4 @@
 #!groovy
-
 String[] editions = ["ce"]
 String[] legacyFeatures = ["tests/legacy/features"]
 String launchUnitTests = "yes"
@@ -9,6 +8,7 @@ String launchEndToEndTests = "yes"
 String verboseOutputs = "yes"
 String slackChannel = ""
 String tag = "eu.gcr.io/akeneo-ci/pim-community-dev:${env.BRANCH_NAME}"
+String composer_command = "update"
 
 stage("Build") {
     milestone 1
@@ -33,6 +33,7 @@ stage("Build") {
             launchEndToEndTests = userInput['launchEndToEndTests']
             verboseOutputs = userInput['verboseOutputs']
             slackChannel = userInput['slackChannel']
+            composer_command = "install"
         }
     }
     milestone 2
@@ -44,7 +45,7 @@ stage("Build") {
                     containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
                 ]) {container('docker') {
                     checkout scm
-                    sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag} ."
+                    sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composer_command} ."
                 }}
             },
             "pim-ee": {
@@ -61,7 +62,7 @@ stage("Build") {
                             checkout scm
                         }
 
-                        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee ."
+                        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee,_COMPOSER_COMMAND=${composer_command} ."
                     }}
                 } else {
                     echo "Skipping Enterprise Edition matrix"
@@ -146,13 +147,17 @@ stage("Test") {
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
-                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/src /var/www/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+                containers: pimContainers(image: tag, selenium: false),
+                fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/tests"])},
+                parallelism: 50
             )},
             "back-legacy-phpunit-integration-ee": {queue(
                 condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
-                fetcher: {return pimIntegrationFetcher(fetcher:'find /var/www/pim/src /var/www/pim/tests /var/www/pim/vendor/akeneo/pim-community-dev/src /var/www/pim/vendor/akeneo/pim-community-dev/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"', testsuites: ["PIM_Integration_Test"])}
+                containers: pimContainers(image: "${tag}-ee", selenium: false),
+                fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/vendor/akeneo/pim-community-dev/src", "/var/www/pim/vendor/akeneo/pim-community-dev/tests"])},
+                parallelism: 50
             )},
 
             // END TO END TESTS
@@ -160,13 +165,15 @@ stage("Test") {
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ce"),
                 verbose: (verboseOutputs == "yes"),
                 container: tag,
-                fetcher: {return pimBehatFetcher(profiles: ["legacy"], features: legacyFeatures)}
+                containers: pimContainers(image: tag),
+                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
             )},
             "legacy-end-to-end-behat-ee": {queue(
                 condition: launchEndToEndTests.equals("yes") && editions.contains("ee"),
                 verbose: (verboseOutputs == "yes"),
                 container: "${tag}-ee",
-                fetcher: {return pimBehatFetcher(profiles: ["legacy"], features: legacyFeatures)}
+                containers: pimContainers(image: "${tag}-ee"),
+                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
             )}
         )
     } finally {
