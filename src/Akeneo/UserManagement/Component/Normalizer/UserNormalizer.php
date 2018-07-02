@@ -53,6 +53,7 @@ class UserNormalizer implements NormalizerInterface
             'default_category_tree'  => $user->getDefaultTree()->getCode(),
             'avatar'                 => $user->getImagePath(),
             'timezone'               => $user->getTimezone(),
+            'groups'                 => $user->getGroupNames(),
             'meta'                   => [
                 'id'    => $user->getId(),
                 'form'  => 'pim-user-edit-form',

@@ -7,7 +7,6 @@
     <% if (readOnly) { %>readonly disabled<% } %>
 >
     <option value=""<% if (!value) { %> selected<% } %>></option>
-<% debugger; %>
     <% if (Object.keys(choices).length > 0 && Object.values(choices)[0] instanceof Object) { %>
         <% _.each(choices, function (optGroupOptions, optGroupLabel) { %>
             <optgroup label="<%- optGroupLabel %>">

@@ -953,6 +953,7 @@ config:
         pim/form/common/fields/category-tree:           pimenrich/js/form/common/fields/category-tree
         pim/form/common/fields/ui-locale:               pimenrich/js/form/common/fields/ui-locale
         pim/form/common/fields/timezone:                pimenrich/js/form/common/fields/timezone
+        pim/form/common/fields/user-group:              pimenrich/js/form/common/fields/user-group
 
         # Values fields
         pim/form/common/fields/values/boolean:              pimenrich/js/form/common/fields/values/boolean

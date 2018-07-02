@@ -227,7 +227,7 @@ extensions:
             isMultiple: false
             allowClear: false
 
-    pim-user-edit-form-name-default-tree:
+    pim-user-edit-form-default-tree:
         module: pim/form/common/fields/category-tree
         parent: pim-user-edit-form-additional-tab-content
         targetZone: content
@@ -257,6 +257,27 @@ extensions:
         position: 30
         config:
             label: 'Groups and roles - to translate'
+
+    pim-user-edit-form-groups-and-roles-tab-content:
+        module: pim/common/simple-view
+        parent: pim-user-edit-form-groups-and-roles-tab
+        position: 10
+        config:
+            template: pim/template/form/tab/section
+            templateParams:
+                sectionTitle: ''
+                dropZone: content
+
+    pim-user-edit-form-groups:
+        module: pim/form/common/fields/user-group
+        parent: pim-user-edit-form-groups-and-roles-tab-content
+        targetZone: content
+        position: 10
+        config:
+            fieldName: groups
+            label: 'Groups - to translate'
+            isMultiple: true
+            allowClear: true
 
     # Password tab
     pim-user-edit-form-password-tab:
