@@ -201,7 +201,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
         }
 
         foreach ($item['associations'] as $association) {
-            if (!empty($association['products']) || !empty($association['groups'])) {
+            if (!empty($association['products']) || !empty($association['groups']) || !empty($association['product_models'])) {
                 return true;
             }
         }

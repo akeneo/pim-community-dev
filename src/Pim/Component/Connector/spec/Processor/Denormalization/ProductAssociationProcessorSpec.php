@@ -110,6 +110,82 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->shouldReturn($product);
     }
 
+    function it_updates_an_existing_product_without_comparison(
+        $productRepository,
+        $productUpdater,
+        $productValidator,
+        $stepExecution,
+        ProductInterface $product,
+        AssociationInterface $association,
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(false);
+
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $product->getAssociations()->willReturn([$association]);
+        $productValidator
+            ->validate($association)
+            ->willReturn($violationList);
+
+        $data = [
+            'identifier'   => 'tshirt',
+            'associations' => [
+                'XSELL' => [
+                    'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
+                    'product' => ['AKN_TS', 'ORO_TS'],
+                    'product_model' => ['model']
+                ]
+            ]
+        ];
+        $this->testProductUpdate($data, $product, $productUpdater);
+
+        $data = [
+            'identifier'   => 'tshirt',
+            'associations' => [
+                'XSELL' => [
+                    'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
+                ]
+            ]
+        ];
+        $this->testProductUpdate($data, $product, $productUpdater);
+
+        $data = [
+            'identifier'   => 'tshirt',
+            'associations' => [
+                'XSELL' => [
+                    'products'  => ['akeneo_tshirt', 'oro_tshirt'],
+                ]
+            ]
+        ];
+        $this->testProductUpdate($data, $product, $productUpdater);
+
+        $data = [
+            'identifier'   => 'tshirt',
+            'associations' => [
+                'XSELL' => [
+                    'product_models'  => ['akeneo_tshirt', 'oro_tshirt'],
+                ]
+            ]
+        ];
+        $this->testProductUpdate($data, $product, $productUpdater);
+    }
+
+    private function testProductUpdate($data, $product, $productUpdater)
+    {
+        $productUpdater
+            ->update($product, $data)
+            ->shouldBeCalled();
+
+        $this
+            ->process($data)
+            ->shouldReturn($product);
+    }
+
     function it_skips_a_product_when_update_fails(
         $productRepository,
         $productUpdater,
