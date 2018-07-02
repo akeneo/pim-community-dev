@@ -215,7 +215,7 @@ extensions:
            multiple: false
 
     pim-user-edit-form-catalog-scope:
-        module: pim/form/common/fields/text
+        module: pim/form/common/fields/scope
         parent: pim-user-edit-form-additional-tab-content
         position: 20
         targetZone: content
