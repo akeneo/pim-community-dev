@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\UnexpectedResultException;
-use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 
 /**
  * Group type repository

@@ -22,7 +22,7 @@ class GroupTypeRepositorySpec extends ObjectBehavior
 
     function it_is_a_group_type_repository()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface');
+        $this->shouldImplement('Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface');
     }
 
     function it_is_a_doctrine_repository()

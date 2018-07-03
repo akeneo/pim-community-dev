@@ -10,7 +10,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 
 /**
  * Updates and validates a group
