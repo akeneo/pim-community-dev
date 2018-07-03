@@ -7,7 +7,6 @@ parameters:
     pim_api.normalizer.category.class: Akeneo\Tool\Component\Api\Normalizer\CategoryNormalizer
     pim_api.normalizer.attribute_group.class: Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeGroupNormalizer
     pim_api.normalizer.file.class: Akeneo\Tool\Component\Api\Normalizer\FileNormalizer
-    pim_api.normalizer.association_type.class: Akeneo\Tool\Component\Api\Normalizer\AssociationTypeNormalizer
 
 services:
     fos_rest.serializer:
@@ -68,12 +67,5 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.file'
             - '@router'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_api.normalizer.association_type:
-        class: '%pim_api.normalizer.association_type.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.association_type'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }

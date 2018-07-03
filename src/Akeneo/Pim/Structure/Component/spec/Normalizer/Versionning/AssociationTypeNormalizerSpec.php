@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Versionning;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Pim\Component\Catalog\Normalizer\Standard\AssociationTypeNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\Standard\AssociationTypeNormalizer;
 use Prophecy\Argument;
 
 class AssociationTypeNormalizerSpec extends ObjectBehavior
@@ -19,7 +19,7 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\VersioningBundle\Normalizer\Flat\AssociationTypeNormalizer');
+        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Normalizer\Versionning\AssociationTypeNormalizer');
     }
 
     function it_is_a_normalizer()
