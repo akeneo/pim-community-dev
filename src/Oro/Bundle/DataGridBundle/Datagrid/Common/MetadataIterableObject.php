@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\DataGridBundle\Datagrid\Common;
 
-use Oro\Bundle\DataGridBundle\Common\Object;
+use Oro\Bundle\DataGridBundle\Common\IterableObject;
 
-class MetadataObject extends Object
+class MetadataIterableObject extends IterableObject
 {
     const GRID_NAME_KEY = 'gridName';
     const OPTIONS_KEY = 'options';
