@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
@@ -649,7 +650,7 @@ class PermissionFixturesLoader
         $accessManager = $this->container->get('pimee_security.manager.category_access');
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
 
-        $category = $entityManager->getRepository('PimCatalogBundle:Category')->findOneBy(['code' => $categoryCode]);
+        $category = $entityManager->getRepository(Category::class)->findOneBy(['code' => $categoryCode]);
         $userGroup = $entityManager->getRepository(Group::class)->findOneBy(['name' => $userGroupName]);
 
         $accessManager->revokeAccess($category);
@@ -666,7 +667,7 @@ class PermissionFixturesLoader
         $accessManager = $this->container->get('pimee_security.manager.category_access');
         $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
 
-        $category = $entityManager->getRepository('PimCatalogBundle:Category')->findOneBy(['code' => $categoryCode]);
+        $category = $entityManager->getRepository(Category::class)->findOneBy(['code' => $categoryCode]);
         $accessManager->revokeAccess($category);
         $entityManager->flush();
     }
