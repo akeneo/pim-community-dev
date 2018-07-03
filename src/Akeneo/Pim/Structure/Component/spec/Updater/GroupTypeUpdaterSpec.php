@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
@@ -10,7 +10,7 @@ class GroupTypeUpdaterSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\GroupTypeUpdater');
+        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Updater\GroupTypeUpdater');
     }
 
     function it_is_an_updater()

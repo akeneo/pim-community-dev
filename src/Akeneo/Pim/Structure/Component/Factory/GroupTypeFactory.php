@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Factory;
+namespace Akeneo\Pim\Structure\Component\Factory;
 
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 

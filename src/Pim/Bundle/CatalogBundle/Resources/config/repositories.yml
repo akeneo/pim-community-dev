@@ -2,7 +2,6 @@ parameters:
     pim_catalog.repository.association_type.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationTypeRepository
     pim_catalog.repository.category.class:              Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
     pim_catalog.repository.group.class:                 Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupRepository
-    pim_catalog.repository.group_type.class:            Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository
     pim_catalog.repository.product_unique_data.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductUniqueDataRepository
     pim_catalog.repository.association.class:           Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository
     pim_catalog.repository.product.class:               Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository
@@ -34,13 +33,6 @@ services:
         class: '%pim_catalog.repository.group.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_catalog.entity.group.class%']
-        tags:
-            - { name: 'pim_repository' }
-
-    pim_catalog.repository.group_type:
-        class: '%pim_catalog.repository.group_type.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
-        arguments: ['%pim_catalog.entity.group_type.class%']
         tags:
             - { name: 'pim_repository' }
 

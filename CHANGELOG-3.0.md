@@ -251,3 +251,10 @@
 - Move `Pim\Component\Catalog\Model\AssociationTypeTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface`
 - Move `Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue` to `Akeneo\Pim\Structure\Component\Model\AttributeOptionValue`
 - Move `Pim\Component\Catalog\Model\AttributeOptionValueInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\GroupTypeRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupTypeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\GroupTypeRepository`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\GroupTypeType` to `Akeneo\Pim\Structure\Bundle\Form\Type\GroupTypeType`
+- Move `Pim\Component\Catalog\Factory\GroupTypeFactory` to `Akeneo\Pim\Structure\Component\Factory\GroupTypeFactory`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\GroupTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\GroupTypeNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\GroupTypeNormalizer`
+- Move `Pim\Component\Catalog\Updater\GroupTypeUpdater` to `Akeneo\Pim\Structure\Component\Updater\GroupTypeUpdater`
