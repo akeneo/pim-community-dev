@@ -218,11 +218,6 @@ config:
                     options:
                         urls:
                             list: pim_localization_format_index
-                user-group:
-                    module: pim/base-fetcher
-                    options:
-                        urls:
-                            list: pim_user_user_group_rest_index
                 job-execution:
                     module: pim/base-fetcher
                     options:
@@ -342,37 +337,6 @@ config:
                 pim_enrich_family_edit:
                     module: pim/controller/family
                     aclResourceId: pim_enrich_family_index
-                pim_user_index:
-                    module: pim/controller/common/index
-                    config:
-                        entity: user
-
-                pim_user_edit:
-                    module: pim/controller/user
-
-
-                pim_user_create:
-                    module: pim/controller/form
-                #pim_user_update:
-                #    module: pim/controller/user
-                pim_user_profile_update:
-                    module: pim/controller/user
-                pim_user_role_index:
-                    module: pim/controller/common/index
-                    config:
-                        entity: user-role
-                pim_user_role_create:
-                    module: pim/controller/form
-                pim_user_role_update:
-                    module: pim/controller/role
-                pim_user_group_create:
-                    module: pim/controller/form
-                pim_user_group_index:
-                    module: pim/controller/common/index
-                    config:
-                        entity: user-group
-                pim_user_group_update:
-                    module: pim/controller/form
                 pim_importexport_import_profile_launch_upload:
                     module: pim/controller/redirect
                     aclResourceId: pim_importexport_import_profile_launch_upload
@@ -388,8 +352,6 @@ config:
                 pim_importexport_export_profile_remove:
                     module: pim/controller/redirect
                     aclResourceId: pim_importexport_export_profile_remove
-                pim_user_profile_update:
-                    module: pim/controller/form
                 pim_enrich_locale_index:
                     module: pim/controller/common/index
                     aclResourceId: pim_enrich_locale_index
@@ -954,6 +916,7 @@ config:
         pim/form/common/fields/ui-locale:               pimenrich/js/form/common/fields/ui-locale
         pim/form/common/fields/timezone:                pimenrich/js/form/common/fields/timezone
         pim/form/common/fields/user-group:              pimenrich/js/form/common/fields/user-group
+        pim/form/common/fields/user-role:               pimenrich/js/form/common/fields/user-role
 
         # Values fields
         pim/form/common/fields/values/boolean:              pimenrich/js/form/common/fields/values/boolean

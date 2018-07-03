@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Component\Normalizer;
 
+use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -54,6 +55,7 @@ class UserNormalizer implements NormalizerInterface
             'avatar'                 => $user->getImagePath(),
             'timezone'               => $user->getTimezone(),
             'groups'                 => $user->getGroupNames(),
+            'roles'                  => $this->getRoleNames($user),
             'meta'                   => [
                 'id'    => $user->getId(),
                 'form'  => 'pim-user-edit-form',
@@ -70,5 +72,21 @@ class UserNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof UserInterface && in_array($format, $this->supportedFormats);
+    }
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return string[]
+     */
+    private function getRoleNames(UserInterface $user): array
+    {
+        $roles = $user->getRolesCollection();
+        $result = [];
+        foreach ($roles as $role) {
+            $result[] = $role->getRole();
+        }
+
+        return $result;
     }
 }

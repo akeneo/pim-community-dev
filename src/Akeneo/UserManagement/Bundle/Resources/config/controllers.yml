@@ -2,6 +2,7 @@ parameters:
     pim_user.controller.user_rest.class: Akeneo\UserManagement\Bundle\Controller\Rest\UserController
     pim_user.controller.security_rest.class: Akeneo\UserManagement\Bundle\Controller\Rest\SecurityController
     pim_user.controller.user_group_rest.class: Akeneo\UserManagement\Bundle\Controller\Rest\UserGroupController
+    pim_user.controller.user_role_rest.class: Akeneo\UserManagement\Bundle\Controller\Rest\UserRoleController
 
 services:
     pim_user.controller.user_rest:
@@ -32,3 +33,10 @@ services:
             - '@fos_oauth_server.client_manager.default'
             - '@validator'
             - '@pim_internal_api_serializer'
+
+    pim_user.controller.user_role_rest:
+        class: '%pim_user.controller.user_role_rest.class%'
+        arguments:
+            - '@pim_user.repository.role'
+            - '@serializer'
+            - '@pim_user.context.user'

@@ -7,9 +7,45 @@ config:
                     options:
                         urls:
                             get: pim_user_user_rest_get
-                user_group:
+                user-group:
                     module: pim/base-fetcher
                     options:
                         urls:
                             list: pim_user_user_group_rest_index
-                            search: pim_user_user_group_rest_index
+                user-role:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_user_user_role_rest_index
+        pim/controller-registry:
+            controllers:
+                pim_user_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: user
+                pim_user_edit:
+                    module: pim/controller/user
+                pim_user_create:
+                    module: pim/controller/form
+                #pim_user_update:
+                #    module: pim/controller/user
+                pim_user_profile_update:
+                    module: pim/controller/user
+                pim_user_role_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: user-role
+                pim_user_role_create:
+                    module: pim/controller/form
+                pim_user_role_update:
+                    module: pim/controller/role
+                pim_user_group_create:
+                    module: pim/controller/form
+                pim_user_group_index:
+                    module: pim/controller/common/index
+                    config:
+                        entity: user-group
+                pim_user_group_update:
+                    module: pim/controller/form
+                pim_user_profile_update:
+                    module: pim/controller/form

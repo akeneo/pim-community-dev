@@ -163,10 +163,11 @@ class UserUpdater implements ObjectUpdaterInterface
                 $user->setDefaultTree($this->findCategory($data));
                 break;
             case 'roles':
+                $roles = [];
                 foreach ($data as $code) {
-                    $role = $this->findRole($code);
-                    $user->addRole($role);
+                    $roles[] = $this->findRole($code);
                 }
+                $user->setRoles($roles);
                 break;
             case 'groups':
                 foreach ($data as $code) {
