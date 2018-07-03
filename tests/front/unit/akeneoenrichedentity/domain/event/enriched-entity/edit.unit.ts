@@ -19,17 +19,6 @@ describe('akeneo > enriched entity > domain > event > enriched entity --- edit',
     });
   });
 
-  test('I can create a enrichedEntitySaved event', () => {
-    const identifier: Identifier = createIdentifier('designer_saved');
-    const labelCollection: LabelCollection = createLabelCollection({['en_US']: 'Designer saved'});
-    const enrichedEntity: EnrichedEntity = createEnrichedEntity(identifier, labelCollection);
-
-    expect(enrichedEntitySaved(enrichedEntity)).toEqual({
-      type: 'ENRICHED_ENTITY_SAVED',
-      enrichedEntity,
-    });
-  });
-
   test('I can create a enrichedEntityUpdated event', () => {
     const identifier: Identifier = createIdentifier('designer_updated');
     const labelCollection: LabelCollection = createLabelCollection({['en_US']: 'Designer updated'});

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { State } from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
+import {connect} from 'react-redux';
+import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import Form from 'akeneoenrichedentity/application/component/enriched-entity/edit/form';
 import {updateEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';

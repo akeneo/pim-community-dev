@@ -1,4 +1,5 @@
 services:
+    # products
     pimee_workflow.reader.file.csv_product_draft:
         parent: pim_connector.reader.file.csv_product
         class: '%pim_connector.reader.file.csv_product.class%'
@@ -15,6 +16,24 @@ services:
             - '@pimee_base_connector.array_converter.flat_to_standard.product_draft_changes'
             - '@pim_connector.reader.file.media_path_transformer'
 
+    # product models
+    pimee_workflow.reader.file.csv_product_model_draft:
+        parent: pim_connector.reader.file.csv_product_model
+        class: '%pim_connector.reader.file.csv_product_model.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pimee_base_connector.array_converter.flat_to_standard.product_draft_changes'
+            - '@pim_connector.reader.file.media_path_transformer'
+
+    pimee_workflow.reader.file.xlsx_product_model_draft:
+        parent: pim_connector.reader.file.xlsx_product_model
+        class: '%pim_connector.reader.file.xlsx_product_model.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pimee_base_connector.array_converter.flat_to_standard.product_draft_changes'
+            - '@pim_connector.reader.file.media_path_transformer'
+
+    # published products
     pimee_workflow.connector.reader.mass_edit.published_product:
         class: '%pim_connector.reader.database.product.class%'
         arguments:

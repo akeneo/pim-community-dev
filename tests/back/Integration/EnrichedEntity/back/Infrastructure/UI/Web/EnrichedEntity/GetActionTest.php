@@ -35,7 +35,7 @@ class GetActionTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_enriched_entity_details()
+    public function it_returns_an_enriched_entity_details(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,
@@ -49,13 +49,13 @@ class GetActionTest extends TestCase
                 'fr_FR' => 'Concepteur',
             ],
         ]);
-        $this->webClientHelper->assertResponse($this->client->getResponse(), '200', $expectedContent);
+        $this->webClientHelper->assertResponse($this->client->getResponse(), 200, $expectedContent);
     }
 
     /**
      * @test
      */
-    public function it_returns_404_not_found_when_the_identifier_does_not_exist()
+    public function it_returns_404_not_found_when_the_identifier_does_not_exist(): void
     {
         $this->webClientHelper->callRoute(
             $this->client,

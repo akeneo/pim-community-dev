@@ -13,6 +13,10 @@ extensions:
         parent: pim-product-edit-form
         targetZone: buttons
         position: 85
+        config:
+            idKeyName: productId
+            routes:
+                ready: pimee_workflow_product_draft_ready
 
     pim-product-edit-form-smart-attribute:
         module: pimee/product-edit-form/attributes/smart-attribute
@@ -86,6 +90,8 @@ extensions:
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         position: 115
+        config:
+            datagridName: product-draft-grid
 
     pim-product-edit-form-categories:
         module: pimee/product-edit-form/categories

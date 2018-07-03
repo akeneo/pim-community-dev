@@ -26,6 +26,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Gedmo\Exception\UnexpectedValueException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +35,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -235,7 +236,11 @@ class AssetCategoryController
         $this->updateCategory($assetCategory, $data, 'patch_asset_categories__code_');
         $this->validateCategory($assetCategory, $data);
 
-        $this->saver->save($assetCategory);
+        try {
+            $this->saver->save($assetCategory);
+        } catch (UnexpectedValueException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
 
         $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
         $response = $this->getResponse($assetCategory, $status);
@@ -332,7 +337,7 @@ class AssetCategoryController
         $route = $this->router->generate(
             'pimee_api_asset_category_get',
             ['code' => $category->getCode()],
-            Router::ABSOLUTE_URL
+            UrlGeneratorInterface::ABSOLUTE_URL
         );
 
         $response->headers->set('Location', $route);

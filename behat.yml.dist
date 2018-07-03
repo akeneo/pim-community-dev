@@ -57,8 +57,7 @@ legacy:
                     - '@pim_catalog.saver.product_model'
                     - '@pim_catalog.validator.product'
                     - '@pim_versioning.repository.version'
-                - Pim\Behat\Context\Domain\Enrich\VariantProductContext:
-                    - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Enrich\ProductContext:
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.updater.product'
                     - '@pim_catalog.saver.product'
@@ -89,13 +88,15 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\TeamworkAssistant\ProjectContext:
                     - 'Context\EnterpriseFeatureContext'
+                - PimEnterprise\Behat\Context\AssetContext:
+                    - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\HookContext:
                     - 'Context\EnterpriseFeatureContext'
                     - 1280
                     - 1024
                 - PimEnterprise\Behat\Context\JobContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Pim\Behat\Context\ImportFileContext:
+                - Pim\Behat\Context\ImportExportFileContext:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
@@ -127,6 +128,23 @@ legacy:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product'
                     - '@pim_catalog.repository.product_model'
+                - PimEnterprise\Behat\Context\ProductAssetCollectionContext:
+                    - '@pim_catalog.updater.product'
+                    - '@pim_catalog.saver.product'
+                    - '@pim_catalog.repository.product'
+                    - '@doctrine.orm.entity_manager'
+                - PimEnterprise\Behat\Context\Proposal\ProductProposalStorageContext:
+                    - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+                    - '@pim_catalog.repository.product'
+                    - '@pimee_workflow.repository.product_draft'
+                    - '@doctrine.orm.entity_manager'
+                - PimEnterprise\Behat\Context\AuthenticatedImportFileContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - PimEnterprise\Behat\Context\Proposal\ProductModelProposalStorageContext:
+                    - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+                    - '@pim_catalog.repository.product_model'
+                    - '@pimee_workflow.repository.product_model_draft'
+                    - '@doctrine.orm.entity_manager'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
@@ -185,6 +203,7 @@ acceptance:
                 - '%paths.base%/vendor/akeneo/pim-community-dev/tests/features/volume-monitoring'
             contexts_services:
                 - test.catalog_volume_limits.report_context
+                - test.catalog_volume_limits.system_info_context
                 - test.catalog_volume_limits.attribute_per_family_context
                 - test.catalog_volume_limits.product_context
                 - test.catalog_volume_limits.channel_context
@@ -200,6 +219,9 @@ acceptance:
                 - test.catalog_volume_limits.variant_product_context
                 - test.catalog_volume_limits.product_model_context
                 - test.catalog_volume_limits.product_value_context
+                - test.catalog_volume_limits.user_context
+                - test.catalog_volume_limits.category_in_one_category_context
+                - test.catalog_volume_limits.category_level_context
                 - test.product_asset.asset_context
                 - test.product_asset.asset_category_context
                 - test.product_asset.asset_category_tree_context

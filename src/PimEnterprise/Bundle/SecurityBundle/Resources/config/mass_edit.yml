@@ -77,7 +77,7 @@ services:
         class: '%pimee_security.connector.writer.mass_edit.product_and_product_model.class%'
         arguments:
             - '@pimee_workflow.saver.product_delegating'
-            - '@pim_catalog.saver.product_model'
+            - '@pimee_workflow.saver.product_model_delegating'
             - '@pim_versioning.manager.version'
             - '@pim_connector.doctrine.cache_clearer'
             - '@security.authorization_checker'

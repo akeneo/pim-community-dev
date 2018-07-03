@@ -10,10 +10,10 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Component\Workflow\Event\ProductDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -38,8 +38,8 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_refuse_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            ProductDraftEvents::POST_REFUSE         => ['sendNotificationForRefusal', 10],
-            ProductDraftEvents::POST_PARTIAL_REFUSE => ['sendNotificationForPartialRefusal', 10]
+            EntityWithValuesDraftEvents::POST_REFUSE         => ['sendNotificationForRefusal', 10],
+            EntityWithValuesDraftEvents::POST_PARTIAL_REFUSE => ['sendNotificationForPartialRefusal', 10]
         ]);
     }
 

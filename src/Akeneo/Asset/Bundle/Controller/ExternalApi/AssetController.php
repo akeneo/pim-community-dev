@@ -38,7 +38,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -298,7 +298,7 @@ class AssetController
         $route = $this->router->generate(
             'pimee_api_asset_get',
             ['code' => $asset->getCode()],
-            Router::ABSOLUTE_URL
+            UrlGeneratorInterface::ABSOLUTE_URL
         );
 
         $response->headers->set('Location', $route);

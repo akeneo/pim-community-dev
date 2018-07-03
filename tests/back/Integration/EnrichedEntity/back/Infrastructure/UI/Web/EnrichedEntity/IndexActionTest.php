@@ -35,7 +35,7 @@ class IndexActionTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_list_of_enriched_entities()
+    public function it_returns_a_list_of_enriched_entities(): void
     {
         $this->webClientHelper->callRoute($this->client, self::ENRICHED_ENTITIY_LIST_ROUTE);
 
@@ -57,7 +57,7 @@ class IndexActionTest extends TestCase
             ],
             'total' => 2,
         ]);
-        $this->webClientHelper->assertResponse($this->client->getResponse(), '200', $expectedContent);
+        $this->webClientHelper->assertResponse($this->client->getResponse(), 200, $expectedContent);
     }
 
     protected function getConfiguration()

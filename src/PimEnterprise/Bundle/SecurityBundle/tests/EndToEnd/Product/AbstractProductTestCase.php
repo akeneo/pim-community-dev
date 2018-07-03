@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\Product;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use PHPUnit\Framework\Assert;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
@@ -110,7 +111,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $expected = json_decode($expected, true);
 
         if (!isset($result['_embedded'])) {
-            \PHPUnit_Framework_Assert::fail($response->getContent());
+            Assert::fail($response->getContent());
         }
 
         foreach ($result['_embedded']['items'] as $index => $product) {

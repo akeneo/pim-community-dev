@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -11,24 +13,22 @@
 
 namespace PimEnterprise\Component\Workflow\Normalizer\Indexing;
 
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalizes a product proposal to the "indexing_product_proposal" format.
+ * Normalizes a product proposal to the "indexing_product_and_product_model_proposal" format.
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class ProductProposalNormalizer implements NormalizerInterface
 {
-    public const INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX = 'indexing_product_proposal';
+    public const INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX = 'indexing_product_and_product_model_proposal';
+    private const FIELD_DOCUMENT_TYPE = 'document_type';
 
     /** @var NormalizerInterface */
     private $propertiesNormalizer;
 
-    /**
-     * @param NormalizerInterface $propertiesNormalizer
-     */
     public function __construct(NormalizerInterface $propertiesNormalizer)
     {
         $this->propertiesNormalizer = $propertiesNormalizer;
@@ -37,9 +37,11 @@ class ProductProposalNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($productProposal, $format = null, array $context = [])
+    public function normalize($productProposal, $format = null, array $context = []): array
     {
         $data = $this->propertiesNormalizer->normalize($productProposal, $format, $context);
+
+        $data[self::FIELD_DOCUMENT_TYPE] = ProductDraft::class;
 
         return $data;
     }
@@ -47,8 +49,8 @@ class ProductProposalNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof EntityWithValuesDraftInterface && self::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX === $format;
+        return $data instanceof ProductDraft && self::INDEXING_FORMAT_PRODUCT_PROPOSAL_INDEX === $format;
     }
 }

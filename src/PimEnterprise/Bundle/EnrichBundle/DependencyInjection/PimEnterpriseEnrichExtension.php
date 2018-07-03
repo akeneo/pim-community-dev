@@ -32,10 +32,10 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('category_counters.yml');
         $loader->load('controllers.yml');
         $loader->load('form_types.yml');
+        $loader->load('imagine.yml');
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
         $loader->load('jobs.yml');
-        $loader->load('imagine.yml');
         $loader->load('normalizers.yml');
         $loader->load('parameters.yml');
         $loader->load('providers.yml');

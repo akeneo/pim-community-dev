@@ -14,8 +14,6 @@ namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\back\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
-use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityItem;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindEnrichedEntityDetailsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,9 +32,6 @@ class EditAction
     /** @var EditEnrichedEntityHandler */
     private $editEnrichedEntityHandler;
 
-    /** @var FindEnrichedEntityDetailsInterface */
-    private $findOneEnrichedEntityItemQuery;
-
     /** @var Serializer */
     private $serializer;
 
@@ -45,12 +40,10 @@ class EditAction
 
     public function __construct(
         EditEnrichedEntityHandler $editEnrichedEntityHandler,
-        FindEnrichedEntityDetailsInterface $findOneEnrichedEntityItemQuery,
         Serializer $serializer,
         ValidatorInterface $validator
     ) {
         $this->editEnrichedEntityHandler = $editEnrichedEntityHandler;
-        $this->findOneEnrichedEntityItemQuery = $findOneEnrichedEntityItemQuery;
         $this->serializer = $serializer;
         $this->validator = $validator;
     }
@@ -68,16 +61,14 @@ class EditAction
             $errors = [];
             foreach ($violations as $violation) {
                 // TODO: format the error the way we want for the front
-                $errors[] = $violation->getPropertyPath() .' '. $violation->getMessage();
+                $errors[] = $violation->getPropertyPath() . ' ' . $violation->getMessage();
             }
 
             return new JsonResponse(['errors' => json_encode($errors)], Response::HTTP_BAD_REQUEST);
         }
 
         ($this->editEnrichedEntityHandler)($command);
-        /** @var EnrichedEntityItem $enrichedEntityItem */
-        $enrichedEntityItem = ($this->findOneEnrichedEntityItemQuery)($command->identifier);
 
-        return new JsonResponse($enrichedEntityItem->normalize());
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

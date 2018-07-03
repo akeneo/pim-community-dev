@@ -38,7 +38,8 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
 {
     const NOTIFICATION_TYPE = 'pimee_workflow_import_notification_new_proposals';
 
-    const PROPOSAL_IMPORT_ALIAS = 'csv_product_proposal_import';
+    private const PRODUCT_PROPOSAL_IMPORT_ALIAS = 'csv_product_proposal_import';
+    private const PRODUCT_MODEL_PROPOSAL_IMPORT_ALIAS = 'csv_product_model_proposal_import';
 
     /** @var NotifierInterface */
     protected $notifier;
@@ -60,6 +61,9 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
 
     /** @var array */
     protected $ownerGroupIds = [];
+
+    /** @var string */
+    protected $username;
 
     /**
      * @param NotifierInterface       $notifier
@@ -104,12 +108,13 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
      */
     public function saveGroupIdsToNotify(GenericEvent $event)
     {
-        $productDraft = $event->getSubject();
-        if ($productDraft instanceof EntityWithValuesDraftInterface && $this->isProposalImport($productDraft->getAuthor())) {
-            $product = $productDraft->getEntityWithValue();
-            $ownerGroupIds = $this->ownerGroupsProvider->getOwnerGroupIds($product);
+        $draft = $event->getSubject();
+        if ($draft instanceof EntityWithValuesDraftInterface) {
+            $entityWithValues = $draft->getEntityWithValue();
+            $ownerGroupIds = $this->ownerGroupsProvider->getOwnerGroupIds($entityWithValues);
 
             $this->ownerGroupIds = array_unique(array_merge($this->ownerGroupIds, $ownerGroupIds));
+            $this->username = $draft->getAuthor();
         }
     }
 
@@ -121,33 +126,32 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
      */
     public function notifyUsers(JobExecutionEvent $event)
     {
-        if (!empty($this->ownerGroupIds)
-            && self::PROPOSAL_IMPORT_ALIAS === $event->getJobExecution()->getJobInstance()->getJobName()) {
-            $author = $this->userRepository->findOneBy(['username' => $event->getJobExecution()->getUser()]);
+        $draftJobs = [self::PRODUCT_PROPOSAL_IMPORT_ALIAS, self::PRODUCT_MODEL_PROPOSAL_IMPORT_ALIAS];
+
+        if (!empty($this->ownerGroupIds) && null !== $this->username
+            && in_array($event->getJobExecution()->getJobInstance()->getJobName(), $draftJobs)) {
+            $author = $this->userRepository->findOneBy(['username' => $this->username]);
             $usersToNotify = $this->usersProvider->getUsersToNotify($this->ownerGroupIds);
 
             if (!empty($usersToNotify)) {
-                $jobCode = $event->getJobExecution()->getJobInstance()->getCode();
                 $index = array_search($author, $usersToNotify, true);
                 if (false !== $index) {
-                    $this->sendProposalsNotification([$author], $jobCode);
+                    $this->sendProposalsNotification([$author], $this->username);
                     unset($usersToNotify[$index]);
                 }
-                $this->sendProposalsNotification($usersToNotify, $jobCode, $author);
+                $this->sendProposalsNotification($usersToNotify, $this->username, $author);
             }
+
             $this->ownerGroupIds = [];
+            $this->author = null;
         }
     }
 
     /**
      * Notify users that proposals are available for review. If author is set, add the name of the author in the
      * message.
-     *
-     * @param UserInterface[]    $users
-     * @param string             $jobCode
-     * @param UserInterface|null $author
      */
-    protected function sendProposalsNotification(array $users, $jobCode, UserInterface $author = null)
+    protected function sendProposalsNotification(array $users, string $username, UserInterface $author = null)
     {
         $notification = $this->notificationFactory->create();
         $notification
@@ -158,7 +162,7 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
             'f' => [
                 'author' => [
                     'value' => [
-                        $jobCode,
+                        $username,
                     ]
                 ]
             ],
@@ -186,20 +190,5 @@ class ImportProposalsSubscriber implements EventSubscriberInterface
         }
 
         $this->notifier->notify($notification, $users);
-    }
-
-    /**
-     * Check if the code of product draft import is a proposal import code.
-     *
-     * @param string $code The job instance code
-     *
-     * @return bool
-     */
-    protected function isProposalImport($code)
-    {
-        return null !== $this->jobRepository->findOneBy([
-            'jobName' => self::PROPOSAL_IMPORT_ALIAS,
-            'code'    => $code
-        ]);
     }
 }

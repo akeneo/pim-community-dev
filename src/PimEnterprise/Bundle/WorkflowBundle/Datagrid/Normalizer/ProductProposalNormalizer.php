@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -11,7 +13,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer;
 
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -28,7 +30,7 @@ class ProductProposalNormalizer implements NormalizerInterface, NormalizerAwareI
     /**
      * {@inheritdoc}
      */
-    public function normalize($proposalProduct, $format = null, array $context = [])
+    public function normalize($proposalProduct, $format = null, array $context = []): array
     {
         if (!$this->normalizer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
@@ -38,12 +40,14 @@ class ProductProposalNormalizer implements NormalizerInterface, NormalizerAwareI
 
         $data['changes'] = $this->normalizer->normalize($proposalProduct->getValues(), 'standard', $context);
         $data['createdAt'] = $this->normalizer->normalize($proposalProduct->getCreatedAt(), $format, $context);
-        $data['product'] =  $proposalProduct->getEntityWithValue();
-        $data['author'] =  $proposalProduct->getAuthor();
-        $data['status'] =  $proposalProduct->getStatus();
-        $data['proposal_product'] = $proposalProduct;
-        $data['id'] =  $proposalProduct->getId();
-        $data['identifier'] =  $proposalProduct->getId();
+        $data['product'] = $proposalProduct->getEntityWithValue();
+        $data['author'] = $proposalProduct->getAuthor();
+        $data['status'] = $proposalProduct->getStatus();
+        $data['proposal'] = $proposalProduct;
+        $data['search_id'] = $proposalProduct->getEntityWithValue()->getIdentifier();
+        $data['id'] = 'product_draft_' . (string) $proposalProduct->getId();
+        $data['document_type'] = 'product_draft';
+        $data['proposal_id'] = $proposalProduct->getId();
 
         return $data;
     }
@@ -51,8 +55,8 @@ class ProductProposalNormalizer implements NormalizerInterface, NormalizerAwareI
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof EntityWithValuesDraftInterface && 'datagrid' === $format;
+        return $data instanceof ProductDraft && 'datagrid' === $format;
     }
 }

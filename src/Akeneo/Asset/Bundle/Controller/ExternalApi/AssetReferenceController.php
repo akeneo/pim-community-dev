@@ -17,7 +17,6 @@ use Akeneo\Asset\Component\Factory\ReferenceFactory;
 use Akeneo\Asset\Component\FileStorage;
 use Akeneo\Asset\Component\Finder\AssetFinderInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
-use Akeneo\Asset\Component\Model\LocaleCode;
 use Akeneo\Asset\Component\Model\ReferenceInterface;
 use Akeneo\Asset\Component\ProcessedItem;
 use Akeneo\Asset\Component\ProcessedItemList;
@@ -42,7 +41,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -52,6 +51,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AssetReferenceController
 {
+    public const NON_LOCALIZABLE_REFERENCE = 'no-locale';
+
     /** @var IdentifiableObjectRepositoryInterface */
     protected $assetRepository;
 
@@ -156,10 +157,9 @@ class AssetReferenceController
     public function downloadAction(string $code, string $localeCode): Response
     {
         $reference = $this->getReference($code, $localeCode);
-        $localeCode = new LocaleCode($localeCode);
 
         if (null === $reference || null === $reference->getFileInfo()) {
-            $localizableMessage = $localeCode->hasValidCode() ? sprintf(' and the locale "%s"', $localeCode) : '';
+            $localizableMessage = self::NON_LOCALIZABLE_REFERENCE !== $localeCode ? sprintf(' and the locale "%s"', $localeCode) : '';
             $notFoundMessage = sprintf(
                 'Reference file for the asset "%s"%s does not exist.',
                 $code,
@@ -184,7 +184,9 @@ class AssetReferenceController
         } catch (FileTransferException $e) {
             throw new UnprocessableEntityHttpException($e->getMessage(), $e);
         } catch (FileNotFoundException $e) {
-            $localizableMessage = $localeCode->hasValidCode() ? sprintf(' and the locale "%s"', $localeCode) : '';
+            $localizableMessage = static::NON_LOCALIZABLE_REFERENCE !== $localeCode
+                ? sprintf(' and the locale "%s"', $localeCode)
+                : '';
             $notFoundMessage = sprintf(
                 'Reference file for the asset "%s"%s does not exist.',
                 $code,
@@ -209,10 +211,9 @@ class AssetReferenceController
     public function getAction(string $code, string $localeCode): Response
     {
         $reference = $this->getReference($code, $localeCode);
-        $localeCode = new LocaleCode($localeCode);
 
         if (null === $reference || null === $reference->getFileInfo()) {
-            $localizableMessage = $localeCode->hasValidCode() ? sprintf(' and the locale "%s"', $localeCode) : '';
+            $localizableMessage = self::NON_LOCALIZABLE_REFERENCE !== $localeCode ? sprintf(' and the locale "%s"', $localeCode) : '';
             $notFoundMessage = sprintf(
                 'Reference file for the asset "%s"%s does not exist.',
                 $code,
@@ -263,7 +264,7 @@ class AssetReferenceController
         $route = $this->router->generate(
             'pimee_api_asset_reference_get',
             ['code' => $code, 'localeCode' => $localeCode],
-            Router::ABSOLUTE_URL
+            UrlGeneratorInterface::ABSOLUTE_URL
         );
 
         $response->headers->set('Location', $route);
@@ -280,9 +281,7 @@ class AssetReferenceController
      */
     protected function getLocale(string $localeCode): ?LocaleInterface
     {
-        $localeCode = new LocaleCode($localeCode);
-
-        if ($localeCode->hasValidCode()) {
+        if (static::NON_LOCALIZABLE_REFERENCE === $localeCode) {
             return null;
         }
 
@@ -313,7 +312,7 @@ class AssetReferenceController
             throw new UnprocessableEntityHttpException(sprintf(
                 'The asset "%s" is localizable, you must provide an existing locale code. "%s" is only allowed when the asset is not localizable.',
                 $code,
-                (string) new LocaleCode($localeCode)
+                self::NON_LOCALIZABLE_REFERENCE
             ));
         }
 
@@ -321,7 +320,7 @@ class AssetReferenceController
             throw new UnprocessableEntityHttpException(sprintf(
                 'The asset "%s" is not localizable, you must provide the string "%s" as a locale.',
                 $asset->getCode(),
-                (string) new LocaleCode($localeCode)
+                self::NON_LOCALIZABLE_REFERENCE
             ));
         }
 

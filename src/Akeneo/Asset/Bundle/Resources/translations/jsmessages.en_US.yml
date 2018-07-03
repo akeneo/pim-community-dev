@@ -5,8 +5,17 @@ pimee_product_asset:
                 manage: Manage assets
                 manage_asset:
                     title: Manage assets
+                    cancel: Cancel
+                    confirm: Confirm
                 title: Manage assets
                 description: Choose the assets you want to attach to your product
+                preview_title: Asset collection preview
+                download: Download
+                remove: Remove
+                upload: Upload
+                yes: Yes
+                no: No
+                assetRemoveConfirmationLabel: Are you sure you want to remove this asset?
         asset:
             not_empty: Code is required. It can not be empty.
             alpha_numeric_plus_underscore: The code should be only alphanumeric or underscore.
@@ -30,6 +39,8 @@ pimee_product_asset:
             imported: Files imported for asset processing
             canceled: Upload successfully canceled
             deleted: Uploaded file successfully deleted
+            need_refresh: <b>Asset import has been launched</b><br>
+                          To see imported assets in the product form, please refresh the product page as soon as you receive the import notification.
         error:
             list: Cannot read already uploaded files
             upload: An error occured while uploading
@@ -76,6 +87,9 @@ batch_jobs:
     apply_assets_mass_upload:
         label: Assets mass upload
         perform.label: Mass upload
+    apply_assets_mass_upload_into_asset_collection:
+        label: Assets mass upload and add to product
+        perform.label: Mass upload assets and add to product
     yml_asset_channel_configuration_import:
         label: Asset channel configuration import in Yaml
         import_asset.label: Asset channel configuration import in Yaml

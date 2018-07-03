@@ -9,7 +9,7 @@ use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentif
 use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetails;
+use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordDetails;
 use Akeneo\EnrichedEntity\back\Domain\Query\RecordItem;
 use Akeneo\Test\Integration\Configuration;
@@ -17,7 +17,7 @@ use Akeneo\Test\Integration\TestCase;
 
 class SqlFindRecordDetailsTest extends TestCase
 {
-    /** @var FindRecordDetails */
+    /** @var FindRecordDetailsInterface */
     private $findRecordDetailsQuery;
 
     public function setUp()

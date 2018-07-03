@@ -11,8 +11,8 @@ class ProductModelDraftSpec extends ObjectBehavior
         $this->setChanges([
             'values' => [
                 'name' => [
-                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => ['an english name']],
-                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => ['a french name']]
+                    ['scope' => 'ecommerce', 'locale' => 'en_US', 'data' => 'an english name'],
+                    ['scope' => 'ecommerce', 'locale' => 'fr_FR', 'data' => 'a french name']
                 ]
             ],
             'review_statuses' => [
@@ -23,7 +23,7 @@ class ProductModelDraftSpec extends ObjectBehavior
             ]
         ]);
 
-        $this->getChange('name', 'en_US', 'ecommerce')->shouldReturn(['an english name']);
+        $this->getChange('name', 'en_US', 'ecommerce')->shouldReturn('an english name');
     }
 
     function it_does_not_give_changes_for_unknown_attribute() {
