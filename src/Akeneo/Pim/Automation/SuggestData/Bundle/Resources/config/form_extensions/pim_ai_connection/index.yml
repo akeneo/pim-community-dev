@@ -53,6 +53,5 @@ extensions:
             token_save_pre_activation_title: pimee_suggest_data.pim_ai.token.save.to_activate
             token_save_post_activation_title:  pimee_suggest_data.pim_ai.token.save.activated
             get_configuration_url: pimee_suggest_data_connection_get
-            post_configuration_url: pimee_suggest_data_connection_post
             is_connection_activated_url: pimee_suggest_data_is_connection_activated
             code: pim-ai

@@ -5,6 +5,7 @@ import {EventsHash} from 'backbone';
 const __ = require('oro/translator');
 const Messenger = require('oro/messenger');
 const Routing = require('routing');
+const ConnectionSaver = require('pimee/saver/pim_ai_connection');
 const template = require('pimee/template/pim-ai-connection/edit');
 
 interface EditConfig {
@@ -15,7 +16,6 @@ interface EditConfig {
   token_save_pre_activation_title: string;
   token_save_post_activation_title: string;
   get_configuration_url: string;
-  post_configuration_url: string;
   is_connection_activated_url: string;
   code: string;
 }
@@ -38,7 +38,6 @@ class EditView extends BaseView {
     token_save_pre_activation_title: '',
     token_save_post_activation_title: '',
     get_configuration_url: '',
-    post_configuration_url: '',
     is_connection_activated_url: '',
     code: '',
   };
@@ -111,23 +110,18 @@ class EditView extends BaseView {
    * Activates the connection to PIM.ai
    */
   public activate(): void {
-    const url = Routing.generate(
-      this.config.post_configuration_url, {code: this.config.code}
-    );
     const data = this.getFormData();
 
-    $.post(
-      url,
-      JSON.stringify(data)
-    ).fail((xhr) => {
-      Messenger.notify('error', xhr.responseJSON.message);
-      this.renderUnactivated(data.token);
-    }).done((response) => {
-      Messenger.notify('success', response.message);
-      this.storedToken = data.token;
-      this.isConnectionActivated = true;
-      this.renderActivated(data.token);
-    });
+    ConnectionSaver.save(this.config.code, data)
+      .fail((xhr: any) => {
+        Messenger.notify('error', xhr.responseJSON.message);
+        this.renderUnactivated(data.token);
+      }).done((response: any) => {
+        Messenger.notify('success', response.message);
+        this.storedToken = data.token;
+        this.isConnectionActivated = true;
+        this.renderActivated(data.token);
+      });
   }
 
   /**
