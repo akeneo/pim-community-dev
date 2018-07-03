@@ -35,8 +35,7 @@ class IdentifiersMappingController
                 'successful' => true,
                 'message' => $this->translator->trans('pimee_suggest_data.mapping_identifier.success'),
             ]);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return new JsonResponse([
                 'successful' => false,
                 'message' => $this->translator->trans('pimee_suggest_data.mapping_identifier.error'),
