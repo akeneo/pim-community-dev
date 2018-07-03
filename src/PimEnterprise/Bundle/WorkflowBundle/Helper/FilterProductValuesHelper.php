@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Helper;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -37,10 +38,10 @@ class FilterProductValuesHelper
      * Returns values that the current user is allowed to see
      * If locale is specified, only values in this locale are returned
      *
-     * @param \Pim\Component\Catalog\Model\ValueInterface[] $values
-     * @param string|null                                   $locale
+     * @param ValueInterface[] $values
+     * @param string|null      $locale
      *
-     * @return \Pim\Component\Catalog\Model\ValueInterface[]
+     * @return ValueInterface[]
      */
     public function filter(array $values, $locale = null)
     {

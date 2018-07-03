@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider;
 use PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider;
 use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;

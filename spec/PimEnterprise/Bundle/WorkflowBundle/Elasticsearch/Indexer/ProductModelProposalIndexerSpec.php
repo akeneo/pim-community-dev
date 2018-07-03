@@ -2,10 +2,10 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductModel;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductModelProposalNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

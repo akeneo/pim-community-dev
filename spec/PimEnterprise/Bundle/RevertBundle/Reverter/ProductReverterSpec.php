@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use PimEnterprise\Bundle\RevertBundle\Exception\RevertException;

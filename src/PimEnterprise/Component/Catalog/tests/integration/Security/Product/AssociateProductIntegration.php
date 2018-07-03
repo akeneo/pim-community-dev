@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Component\Catalog\tests\integration\Security\Product;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\Catalog\tests\integration\Security\AbstractSecurityTestCase;
 
 /**

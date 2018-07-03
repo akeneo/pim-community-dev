@@ -4,7 +4,7 @@ namespace spec\Akeneo\Asset\Bundle\Voter;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Asset\Bundle\Voter\AssetVoter;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Asset\Component\Model\AssetInterface;

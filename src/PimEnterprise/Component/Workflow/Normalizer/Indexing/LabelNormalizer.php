@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Workflow\Normalizer\Indexing;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -7,5 +7,5 @@ services:
         arguments:
             -
                 PimEnterprise\Component\Workflow\Model\PublishedProductInterface: '%pimee_catalog.entity.published_product_association.class%'
-                Pim\Component\Catalog\Model\ProductInterface: '%pim_catalog.entity.association.class%'
-                Pim\Component\Catalog\Model\ProductModelInterface: '%pim_catalog.entity.product_model_association.class%'
+                Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface: '%pim_catalog.entity.association.class%'
+                Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface: '%pim_catalog.entity.product_model_association.class%'

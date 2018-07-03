@@ -21,7 +21,7 @@ class SortProductValuesHelper
     /**
      * Sorts the provided values by attribute group and sort order
      *
-     * @param \Pim\Component\Catalog\Model\ValueInterface[] $values
+     * @param \Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface[] $values
      *
      * @return array
      */
