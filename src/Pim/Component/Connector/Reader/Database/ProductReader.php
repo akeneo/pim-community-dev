@@ -95,10 +95,11 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
                 $this->products->next();
             }
             $product = $this->products->current();
-            $this->stepExecution->incrementSummaryInfo('read');
         }
 
         if (null !== $product) {
+            $this->stepExecution->incrementSummaryInfo('read');
+
             $channel = $this->getConfiguredChannel();
             if (null !== $channel) {
                 $this->metricConverter->convert($product, $channel);
