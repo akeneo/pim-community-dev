@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -4,7 +4,7 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 
 /**
  * Association repository

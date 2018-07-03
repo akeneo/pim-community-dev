@@ -10,7 +10,7 @@ use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 

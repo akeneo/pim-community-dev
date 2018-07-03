@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 
 class AssociationColumnsResolverSpec extends ObjectBehavior
 {
