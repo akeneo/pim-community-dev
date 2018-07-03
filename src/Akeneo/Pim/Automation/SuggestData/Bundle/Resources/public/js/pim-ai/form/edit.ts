@@ -146,6 +146,7 @@ class EditView extends BaseView {
         token: token,
         activationLabel: __(this.config.token_save_pre_activation_title),
         buttonStyle: 'AknButton--slateGrey',
+        buttonAction: 'activate-connection',
       })
     );
   }
@@ -164,7 +165,8 @@ class EditView extends BaseView {
         tokenFieldPlaceholder: __(this.config.token_field_placeholder),
         token: token,
         activationLabel: __(this.config.token_save_post_activation_title),
-        buttonStyle: 'AknButton--apply',
+        buttonStyle: 'AknButton--apply AknButton--disabled',
+        buttonAction: 'connection-activated',
       })
     );
   }
