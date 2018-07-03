@@ -271,3 +271,8 @@
 - Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AssociationTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AssociationTypeNormalizer`
 - Move `Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface`
 - Remove `Pim\Bundle\EnrichBundle\Form\Type\AssociationType`
+- Remove `Pim\Bundle\EnrichBundle\Controller\GroupTypeController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\GroupTypeController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\GroupTypeController`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\GroupType` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\GroupType`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\GroupType` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\GroupType`
+- Move `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface`
