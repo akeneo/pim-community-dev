@@ -69,8 +69,7 @@ Feature: Create product assets
     Then I should be on the "random_asset" asset edit page
     When I am on the assets grid
     And I press the "Create an asset" button
-    And I fill the code with random_asset
-    And I press the "Save" button
+    And I fill the code with random_asset and wait for validation
     And I hover over the element ".validation-tooltip"
     Then I should see the text "Code must be unique. We generated a new one for you."
 

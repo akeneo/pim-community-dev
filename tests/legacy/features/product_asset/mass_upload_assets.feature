@@ -41,7 +41,7 @@ Feature: Mass uploads assets
     Then I should see "added" status for asset "logo_akeneo-fr_FR.jpg"
     Then I should see "added" status for asset "man-wall.jpg"
     Then I should see "added" status for asset "chicagoskyline-de.jpg"
-    Then I should see "error" status for asset "akeneo (copy).jpg"
+    Then I should see "added" status for asset "akeneo (copy).jpg"
     Then I should see "error" status for asset "akeneo-fo_FO.jpg"
 
   Scenario: Cannot add the same file two times

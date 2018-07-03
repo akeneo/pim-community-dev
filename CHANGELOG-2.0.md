@@ -1,4 +1,22 @@
-# 2.0.x 
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7460: Fix locale flag for locales with two underscores like az_cyrl_AZ.
+ 
+# 2.0.28 (2018-06-26)
+
+## Bug fixes
+
+- PIM-7416: Fix the display of product variant proposal in the widget and datagrid.
+- PIM-7423: Fix rules not applied on every product if rule action affects the conditions.
+- PIM-7445: fix product asset view template for view permissions
+- PIM-7444: Add label for attributes tab on PEF with view permissions
+- PIM-7395: fix mass upload for assets with special chars
+
+# 2.0.27 (2018-06-13)
+
+# 2.0.26 (2018-06-06) 
 
 ## Bug fixes
 

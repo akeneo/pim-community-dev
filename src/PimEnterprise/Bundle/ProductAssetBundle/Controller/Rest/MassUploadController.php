@@ -134,6 +134,7 @@ class MassUploadController
         if ($files->count() > 0) {
             $file = $files->getIterator()->current();
             $originalFilename = $file->getClientOriginalName();
+            $originalFilename = basename(trim($originalFilename));
             $parsedFilename = $this->uploadChecker->getParsedFilename($originalFilename);
             $targetDir = $this->getUploadContext()->getTemporaryUploadDirectory();
             $uploaded = $file->move($targetDir, $parsedFilename->getRawFilename());
@@ -299,6 +300,8 @@ class MassUploadController
      */
     protected function cleanFilename($filename)
     {
+        $filename = urldecode($filename);
+
         return basename(trim($filename));
     }
 }
