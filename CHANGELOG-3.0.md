@@ -258,3 +258,16 @@
 - Move `Pim\Bundle\EnrichBundle\Normalizer\GroupTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\GroupTypeNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\GroupTypeNormalizer`
 - Move `Pim\Component\Catalog\Updater\GroupTypeUpdater` to `Akeneo\Pim\Structure\Component\Updater\GroupTypeUpdater`
+- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\AssociationTypeController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AssociationTypeController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AssociationTypeController`
+- Move `Pim\Bundle\EnrichBundle\Controller\AssociationTypeController` to `Akeneo\Pim\Structure\Bundle\Controller\Ui\AssociationTypeController`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationTypeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AssociationTypeRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AssociationTypeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AssociationTypeRepository`
+- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\AssociationType` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\AssociationType`
+- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\AssociationType` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\AssociationType`
+- Move `Akeneo\Tool\Component\Api\Normalizer\AssociationTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AssociationTypeNormalizer`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\AssociationTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AssociationTypeNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\AssociationTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\AssociationTypeNormalizer`
+- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AssociationTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AssociationTypeNormalizer`
+- Move `Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface`
+- Remove `Pim\Bundle\EnrichBundle\Form\Type\AssociationType`

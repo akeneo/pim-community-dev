@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\Tool\Component\Api\Normalizer;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\ExternalApi;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Component\Api\Normalizer\AssociationTypeNormalizer;
+use Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AssociationTypeNormalizer;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

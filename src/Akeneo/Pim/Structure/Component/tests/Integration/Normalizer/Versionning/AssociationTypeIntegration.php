@@ -1,15 +1,15 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\VersioningBundle\Normalizer\Flat;
+namespace Akeneo\Pim\Structure\Component\tests\Integration\Normalizer\Versionning;
 
-use Pim\Bundle\VersioningBundle\tests\integration\Normalizer\Flat\AbstractFlatNormalizerTestCase;
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationTypeIntegration extends AbstractFlatNormalizerTestCase
+class AssociationTypeIntegration extends TestCase
 {
     public function testAssociationType()
     {
@@ -21,5 +21,13 @@ class AssociationTypeIntegration extends AbstractFlatNormalizerTestCase
             'label-en_US' => 'Cross sell',
             'label-fr_FR' => 'Vente croisée',
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return $this->catalog->useTechnicalCatalog();
     }
 }

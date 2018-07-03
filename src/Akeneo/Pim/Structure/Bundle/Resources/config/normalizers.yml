@@ -180,3 +180,35 @@ services:
             - '@pim_catalog.normalizer.standard.translation'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+    ### Association type
+    pim_enrich.normalizer.association_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AssociationTypeNormalizer'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.version'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_versioning.serializer.normalizer.flat.association_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Versionning\AssociationTypeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.association_type'
+            - '@pim_versioning.serializer.normalizer.flat.label_translation'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.association_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\Standard\AssociationTypeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.association_type:
+        class: 'Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AssociationTypeNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.association_type'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

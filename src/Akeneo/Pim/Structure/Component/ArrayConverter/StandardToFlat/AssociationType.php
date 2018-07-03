@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\StandardToFlat;
+namespace Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 
 /**
  * Convert standard format to flat format for association type

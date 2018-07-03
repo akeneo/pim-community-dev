@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\Repository;
+namespace Akeneo\Pim\Structure\Component\Repository;
 
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;

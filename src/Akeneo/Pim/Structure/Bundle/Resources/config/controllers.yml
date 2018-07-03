@@ -78,6 +78,21 @@ services:
             - '@pim_api.stream.family_variant_partial_update_stream'
             - '%pim_api.configuration%'
 
+    pim_api.controller.association_type:
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AssociationTypeController'
+        arguments:
+            - '@pim_api.repository.association_type'
+            - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_catalog.factory.association_type'
+            - '@pim_catalog.updater.association_type'
+            - '@validator'
+            - '@router'
+            - '@pim_catalog.saver.association_type'
+            - '@pim_api.stream.association_type_partial_update_stream'
+            - '%pim_api.configuration%'
+
     ### Internal Api
     pim_enrich.controller.rest.attribute:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeController'
@@ -164,3 +179,28 @@ services:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeTypeController'
         arguments:
             - '@pim_catalog.registry.attribute_type'
+
+    pim_enrich.controller.rest.association_type:
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AssociationTypeController'
+        arguments:
+            - '@pim_catalog.repository.association_type'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.remover.association_type'
+            - '@pim_catalog.updater.association_type'
+            - '@pim_catalog.saver.association_type'
+            - '@validator'
+            - '@pim_user.context.user'
+            - '@pim_enrich.normalizer.violation'
+
+    ### UI
+    pim_enrich.controller.association_type:
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\Ui\AssociationTypeController'
+        arguments:
+            - '@request_stack'
+            - '@router'
+            - '@translator'
+            - '@pim_catalog.repository.association'
+            - '@pim_enrich.form.handler.association_type'
+            - '@pim_enrich.form.association_type'
+            - '@pim_catalog.remover.association_type'
+            - '@pim_catalog.repository.association_type'

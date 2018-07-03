@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 
 /**
  * Association repository

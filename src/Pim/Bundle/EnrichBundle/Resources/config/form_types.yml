@@ -106,18 +106,6 @@ services:
         tags:
             - { name: form.type, alias: pim_available_attributes }
 
-    pim_enrich.form.type.association:
-        class: '%pim_enrich.form.type.association.class%'
-        arguments:
-            - '@pim_catalog.repository.product'
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.product.class%'
-            - '%pim_catalog.entity.association_type.class%'
-            - '%pim_catalog.entity.group.class%'
-            - '%pim_catalog.entity.association.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_association }
-
     pim_enrich.form.type.light_entity:
         class: '%pim_enrich.form.type.light_entity.class%'
         tags:

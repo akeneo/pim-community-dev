@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Association\AssociationClassResolver;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\ProductModelAssociation;
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Prophecy\Argument;
 
 /**

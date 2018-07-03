@@ -8,7 +8,6 @@ parameters:
     pim_enrich.normalizer.completeness_collection.class:           Pim\Bundle\EnrichBundle\Normalizer\CompletenessCollectionNormalizer
     pim_enrich.normalizer.version.class:                           Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer
     pim_enrich.normalizer.collection.class:                        Pim\Bundle\EnrichBundle\Normalizer\CollectionNormalizer
-    pim_enrich.normalizer.association_type.class:                  Pim\Bundle\EnrichBundle\Normalizer\AssociationTypeNormalizer
     pim_enrich.normalizer.attribute.versioned.class:               Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
@@ -118,15 +117,6 @@ services:
 
     pim_enrich.normalizer.collection:
         class: '%pim_enrich.normalizer.collection.class%'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
-
-    pim_enrich.normalizer.association_type:
-        class: '%pim_enrich.normalizer.association_type.class%'
-        arguments:
-            - '@pim_serializer'
-            - '@pim_versioning.manager.version'
-            - '@pim_enrich.normalizer.version'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
