@@ -16,6 +16,13 @@ namespace Akeneo\EnrichedEntity\Domain\Query;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 
+/**
+ * Find a record by its composite identifier (made of its Enriched Entity identifier
+ * and its own Record identifier)
+ *
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ */
 interface FindRecordDetailsInterface
 {
     public function __invoke(
