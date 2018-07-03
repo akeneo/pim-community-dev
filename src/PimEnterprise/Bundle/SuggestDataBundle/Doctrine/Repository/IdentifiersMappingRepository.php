@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\SuggestDataBundle\Doctrine\Repository;
 
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -10,11 +19,18 @@ use PimEnterprise\Bundle\SuggestDataBundle\Entity\IdentifierMapping;
 use PimEnterprise\Component\SuggestData\Model\IdentifiersMapping;
 use PimEnterprise\Component\SuggestData\Repository\IdentifiersMappingRepositoryInterface;
 
+/**
+ * Doctrine implementation of the identifiers mapping repository
+ */
 class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterface
 {
     private $em;
     private $attributeRepository;
 
+    /**
+     * @param EntityManagerInterface $em
+     * @param AttributeRepositoryInterface $attributeRepository
+     */
     public function __construct(EntityManagerInterface $em, AttributeRepositoryInterface $attributeRepository)
     {
         $this->em = $em;
@@ -22,7 +38,7 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function save(IdentifiersMapping $identifiersMapping): void
     {
@@ -39,7 +55,7 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function findAll(): IdentifiersMapping
     {

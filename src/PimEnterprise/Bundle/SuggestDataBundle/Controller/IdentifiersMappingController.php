@@ -2,26 +2,40 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\SuggestDataBundle\Controller;
 
-use PimEnterprise\Component\SuggestData\Application\ManageMapping;
+use PimEnterprise\Component\SuggestData\Application\ManageIdentifiersMapping;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class IdentifiersMappingController
 {
-    private $manageMapping;
+    private $manageIdentifiersMapping;
     private $translator;
 
-    public function __construct(ManageMapping $manageMapping, TranslatorInterface $translator)
+    /**
+     * @param ManageIdentifiersMapping $manageIdentifiersMapping
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(ManageIdentifiersMapping $manageIdentifiersMapping, TranslatorInterface $translator)
     {
-        $this->manageMapping = $manageMapping;
+        $this->manageIdentifiersMapping = $manageIdentifiersMapping;
         $this->translator = $translator;
     }
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function updateIdentifiersMappingAction(Request $request): JsonResponse
@@ -29,7 +43,7 @@ class IdentifiersMappingController
         $identifiersMapping = $request->get('identifiersMapping');
 
         try {
-            $this->manageMapping->updateIdentifierMapping($identifiersMapping);
+            $this->manageIdentifiersMapping->updateIdentifierMapping($identifiersMapping);
 
             return new JsonResponse([
                 'successful' => true,
@@ -49,7 +63,7 @@ class IdentifiersMappingController
     public function getIdentifiersMappingAction(): JsonResponse
     {
         return new JsonResponse(
-            $this->manageMapping->getIdentifiersMapping()
+            $this->manageIdentifiersMapping->getIdentifiersMapping()
         );
     }
 }

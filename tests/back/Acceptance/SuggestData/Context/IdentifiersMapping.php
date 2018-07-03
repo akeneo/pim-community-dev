@@ -2,25 +2,38 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace AkeneoEnterprise\Test\Acceptance\SuggestData\Context;
 
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use PimEnterprise\Component\SuggestData\Application\ManageMapping;
+use PimEnterprise\Component\SuggestData\Application\ManageIdentifiersMapping;
 use PimEnterprise\Component\SuggestData\Repository\IdentifiersMappingRepositoryInterface;
 use PHPUnit\Framework\Assert;
 
 class IdentifiersMapping implements Context
 {
-    private
-        $manageMapping,
-        $identifiersMappingRepository,
-        $attributeRepository;
+    private $manageIdentifiersMapping;
+    private $identifiersMappingRepository;
+    private $attributeRepository;
 
-    public function __construct(ManageMapping $manageMapping, IdentifiersMappingRepositoryInterface $identifiersMappingRepository, AttributeRepositoryInterface $attributeRepository)
+    /**
+     * @param ManageIdentifiersMapping $manageIdenfifiersMapping
+     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     */
+    public function __construct(ManageIdentifiersMapping $manageIdenfifiersMapping, IdentifiersMappingRepositoryInterface $identifiersMappingRepository, AttributeRepositoryInterface $attributeRepository)
     {
-        $this->manageMapping = $manageMapping;
+        $this->manageIdentifiersMapping = $manageIdenfifiersMapping;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
         $this->attributeRepository = $attributeRepository;
     }
@@ -33,7 +46,7 @@ class IdentifiersMapping implements Context
     public function theIdentifiersAreMappedWithValidValues(TableNode $table)
     {
         try {
-            $this->manageMapping->updateIdentifierMapping(
+            $this->manageIdentifiersMapping->updateIdentifierMapping(
                 $this->getTableNodeAsArrayWithoutHeaders($table)
             );
 
@@ -70,7 +83,7 @@ class IdentifiersMapping implements Context
     public function theIdentifiersAreMappedWithInvalidValues(TableNode $table)
     {
         try {
-            $this->manageMapping->updateIdentifierMapping(
+            $this->manageIdentifiersMapping->updateIdentifierMapping(
                 $this->getTableNodeAsArrayWithoutHeaders($table)
             );
 
@@ -97,7 +110,7 @@ class IdentifiersMapping implements Context
      * @param TableNode $table
      */
     public function aPredefinedMapping(TableNode $table) {
-        $this->manageMapping->updateIdentifierMapping(
+        $this->manageIdentifiersMapping->updateIdentifierMapping(
             $this->getTableNodeAsArrayWithoutHeaders($table)
         );
     }
@@ -111,7 +124,7 @@ class IdentifiersMapping implements Context
     {
         $identifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
 
-        Assert::assertEquals($identifiers, $this->manageMapping->getIdentifiersMapping());
+        Assert::assertEquals($identifiers, $this->manageIdentifiersMapping->getIdentifiersMapping());
     }
 
     /**
@@ -120,9 +133,9 @@ class IdentifiersMapping implements Context
      * @return array
      */
     private function getTableNodeAsArrayWithoutHeaders(TableNode $tableNode) {
-        $return = $tableNode->getRowsHash();
-        array_shift($return);
+        $identifiersMapping = $tableNode->getRowsHash();
+        array_shift($identifiersMapping);
 
-        return $return;
+        return $identifiersMapping;
     }
 }

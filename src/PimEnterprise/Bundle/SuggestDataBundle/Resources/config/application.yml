@@ -1,6 +1,6 @@
 services:
-    pimee_suggest_data.application.manage_mapping:
-        class: PimEnterprise\Component\SuggestData\Application\ManageMapping
+    pimee_suggest_data.application.manage_identifiers_mapping:
+        class: PimEnterprise\Component\SuggestData\Application\ManageIdentifiersMapping
         arguments:
             - '@pimee_suggest_data.handler.update_identifiers_mapping'
             - '@pimee_suggest_data.repository.identifiers_mapping'

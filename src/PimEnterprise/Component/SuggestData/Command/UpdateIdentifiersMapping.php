@@ -2,14 +2,29 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Component\SuggestData\Command;
 
 use PimEnterprise\Component\SuggestData\Exception\DuplicatedMappingAttributeException;
 
+/**
+ * Command that holds and validates the raw values of the identifiers mapping
+ */
 class UpdateIdentifiersMapping
 {
     private $identifiersMapping;
 
+    /**
+     * @param array $identifiersMapping
+     */
     public function __construct(array $identifiersMapping)
     {
         $this->validateIdentifiers($identifiersMapping);

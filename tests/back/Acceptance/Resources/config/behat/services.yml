@@ -24,10 +24,10 @@ services:
         tags:
             - { name: fob.context_service }
 
-    test.suggest_data.identifiers_mapping:
+    akeneo_acceptance.context.suggest_data.identifiers_mapping:
         class: 'AkeneoEnterprise\Test\Acceptance\SuggestData\Context\IdentifiersMapping'
         arguments:
-            - '@__symfony__.pimee_suggest_data.application.manage_mapping'
+            - '@__symfony__.pimee_suggest_data.application.manage_identifiers_mapping'
             - '@__symfony__.pimee_suggest_data.repository.identifiers_mapping'
             - '@__symfony__.pim_catalog.repository.attribute'
         tags:

@@ -8,5 +8,5 @@ services:
     pimee_suggest_data.controller.identifiers_mapping:
         class: PimEnterprise\Bundle\SuggestDataBundle\Controller\IdentifiersMappingController
         arguments:
-           - '@pimee_suggest_data.application.manage_mapping'
+           - '@pimee_suggest_data.application.manage_identifiers_mapping'
            - '@translator'

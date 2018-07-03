@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Component\SuggestData\Command;
 
 use Akeneo\Pim\Structure\Component\Model\Attribute;
@@ -10,11 +19,20 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Component\SuggestData\Model\IdentifiersMapping;
 use PimEnterprise\Component\SuggestData\Repository\IdentifiersMappingRepositoryInterface;
 
+/**
+ * Handles the UpdateIdentifiersMapping command
+ *
+ * Validates that all attributes exist and creates an IdentifiersMapping entity to save it into the database
+ */
 class UpdateIdentifiersMappingHandler
 {
     private $attributeRepository;
     private $identifiersMappingRepository;
 
+    /**
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+     */
     public function __construct(AttributeRepositoryInterface $attributeRepository, IdentifiersMappingRepositoryInterface $identifiersMappingRepository)
     {
         $this->attributeRepository = $attributeRepository;

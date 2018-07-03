@@ -201,7 +201,7 @@ acceptance:
             paths:
                 - 'tests/features/suggest-data'
             contexts_services:
-                - 'test.suggest_data.identifiers_mapping'
+                - 'akeneo_acceptance.context.suggest_data.identifiers_mapping'
                 - 'test.attribute.context'
             filters:
                 tags: '@acceptance-back'

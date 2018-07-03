@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace spec\PimEnterprise\Component\SuggestData\Model;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -23,12 +32,7 @@ class IdentifiersMappingSpec extends ObjectBehavior
         ]);
     }
 
-    function it_gets_identifiers(
-        AttributeInterface $manufacturer,
-        AttributeInterface $model,
-        AttributeInterface $ean,
-        AttributeInterface $sku
-    ) {
+    function it_gets_identifiers($manufacturer, $model, $ean, $sku) {
         $this->getIdentifiers()->shouldReturn([
             'brand' => $manufacturer,
             'mpn' => $model,
@@ -37,7 +41,7 @@ class IdentifiersMappingSpec extends ObjectBehavior
         ]);
     }
 
-    function it_get_an_identifier(AttributeInterface $manufacturer) {
+    function it_get_an_identifier($manufacturer) {
         $this->getIdentifier('brand')->shouldReturn($manufacturer);
     }
 
@@ -45,13 +49,7 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->getIdentifier('burger')->shouldReturn(null);
     }
 
-    public function it_normalize_identifiers(
-        AttributeInterface $manufacturer,
-        AttributeInterface $model,
-        AttributeInterface $ean,
-        AttributeInterface $sku
-    )
-    {
+    public function it_normalize_identifiers($manufacturer, $model, $ean, $sku) {
         $manufacturer->getCode()->willReturn('brand');
         $model->getCode()->willReturn('mpn');
         $ean->getCode()->willReturn('ean');
