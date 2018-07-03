@@ -3,8 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Extension;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -37,14 +37,14 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data)
     {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function visitResult(DatagridConfiguration $config, ResultsObject $result)
+    public function visitResult(DatagridConfiguration $config, ResultsIterableObject $result)
     {
     }
 

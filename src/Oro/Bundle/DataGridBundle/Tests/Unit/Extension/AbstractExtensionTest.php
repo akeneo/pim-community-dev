@@ -3,8 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\Extension;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\Extension\Configuration;
 use Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\Extension\SomeExtension;
@@ -64,7 +64,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testVisitResult()
     {
-        $result = ResultsObject::create([]);
+        $result = ResultsIterableObject::create([]);
         $config = DatagridConfiguration::create([]);
 
         $this->extension->visitResult($config, $result);
@@ -75,7 +75,7 @@ class AbstractExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testVisitMetadata()
     {
-        $data = MetadataObject::create([]);
+        $data = MetadataIterableObject::create([]);
         $config = DatagridConfiguration::create([]);
 
         $this->extension->visitMetadata($config, $data);

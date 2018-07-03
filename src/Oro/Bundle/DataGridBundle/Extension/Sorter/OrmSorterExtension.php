@@ -4,7 +4,7 @@ namespace Oro\Bundle\DataGridBundle\Extension\Sorter;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
@@ -73,7 +73,7 @@ class OrmSorterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data)
     {
         $multisort = $config->offsetGetByPath(Configuration::MULTISORT_PATH, false);
         $sorters = $this->getSorters($config);
@@ -93,7 +93,7 @@ class OrmSorterExtension extends AbstractExtension
             );
         }
 
-        $data->offsetAddToArray(MetadataObject::OPTIONS_KEY, ['multipleSorting' => $multisort]);
+        $data->offsetAddToArray(MetadataIterableObject::OPTIONS_KEY, ['multipleSorting' => $multisort]);
 
         $sortersState = $data->offsetGetByPath('[state][sorters]', []);
         $sorters = $this->getSortersToApply($config);

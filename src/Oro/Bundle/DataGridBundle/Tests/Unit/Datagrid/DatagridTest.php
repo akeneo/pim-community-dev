@@ -72,7 +72,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $dataSource = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface');
         $this->grid->setDatasource($dataSource);
 
-        $resultFQCN = 'Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject';
+        $resultFQCN = 'Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject';
 
         $this->acceptor->expects($this->once())->method('acceptDatasource')
             ->with($dataSource);
@@ -103,7 +103,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMetaData()
     {
-        $resultFQCN = 'Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject';
+        $resultFQCN = 'Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject';
 
         $this->acceptor->expects($this->once())->method('acceptMetadata')
             ->with($this->isInstanceOf($resultFQCN));
