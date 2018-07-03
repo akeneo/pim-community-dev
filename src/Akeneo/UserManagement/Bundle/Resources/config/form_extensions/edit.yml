@@ -309,6 +309,33 @@ extensions:
                 sectionTitle: ''
                 dropZone: content
 
+    pim-user-edit-form-current-password:
+        module: pim/form/common/fields/password
+        parent: pim-user-edit-form-password-tab-content
+        position: 10
+        targetZone: content
+        config:
+            fieldName: current_password
+            label: 'Current password - to translate'
+
+    pim-user-edit-form-new-password:
+        module: pim/form/common/fields/password
+        parent: pim-user-edit-form-password-tab-content
+        position: 20
+        targetZone: content
+        config:
+            fieldName: new_password
+            label: 'New password - to translate'
+
+    pim-user-edit-form-new-password-repear:
+        module: pim/form/common/fields/password
+        parent: pim-user-edit-form-password-tab-content
+        position: 30
+        targetZone: content
+        config:
+            fieldName: new_password_repeat
+            label: 'New password (repeat) - to translate'
+
     # Interfaces tab
     pim-user-edit-form-interfaces-tab:
         module: pim/common/tab

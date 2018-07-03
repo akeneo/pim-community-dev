@@ -15,6 +15,7 @@ services:
             - '@validator'
             - '@pim_user.saver.user'
             - '@pim_enrich.normalizer.violation'
+            - '@security.password_encoder'
 
     pim_user.controller.security_rest:
         class: '%pim_user.controller.security_rest.class%'

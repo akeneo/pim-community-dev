@@ -82,8 +82,7 @@ class UserUpdater implements ObjectUpdaterInterface
      *     'label': 'Ecommerce',
      *     'locales': ['en_US'],
      *     'currencies': ['EUR', 'USD'],
-     *     'tree': 'master',
-     *     'color': 'orange'
+     *     'tree': 'master'
      * }
      */
     public function update($user, array $data, array $options = [])
