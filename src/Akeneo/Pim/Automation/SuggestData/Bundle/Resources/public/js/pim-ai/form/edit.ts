@@ -43,6 +43,9 @@ class EditView extends BaseView {
     code: '',
   };
 
+  private storedToken: string = '';
+  private isConnectionActivated: boolean = false;
+
   /**
    * {@inheritdoc}
    */
@@ -78,6 +81,7 @@ class EditView extends BaseView {
         }
 
         this.setData(data);
+        this.storedToken = data.token;
       }),
       BaseView.prototype.configure.apply(this, arguments)
     );
@@ -94,6 +98,7 @@ class EditView extends BaseView {
     $.get(url).then((isConnectionActivated) => {
       const formData = this.getFormData();
 
+      this.isConnectionActivated = isConnectionActivated;
       true === isConnectionActivated
         ? this.renderActivated(formData.token)
         : this.renderUnactivated(formData.token);
@@ -109,26 +114,36 @@ class EditView extends BaseView {
     const url = Routing.generate(
       this.config.post_configuration_url, {code: this.config.code}
     );
+    const data = this.getFormData();
 
     $.post(
       url,
-      JSON.stringify(this.getFormData())
+      JSON.stringify(data)
     ).fail((xhr) => {
       Messenger.notify('error', xhr.responseJSON.message);
-      this.render();
+      this.renderUnactivated(data.token);
     }).done((response) => {
       Messenger.notify('success', response.message);
-      this.render();
+      this.storedToken = data.token;
+      this.isConnectionActivated = true;
+      this.renderActivated(data.token);
     });
   }
 
   /**
    * Updates the model.
+   * The state of the activation button will be changed too.
    */
   public updateModel(): void {
     const fieldValue = $('.token-field').val();
 
-    this.setData({token: fieldValue});
+    const token: string = undefined === fieldValue ? '' : fieldValue.toString();
+
+    this.setData({token: token});
+
+    if (true === this.isConnectionActivated) {
+      this.storedToken !== token ? this.buttonCanActivateConnection() : this.buttonCannotActivateConnection();
+    }
   }
 
   /**
@@ -146,7 +161,7 @@ class EditView extends BaseView {
         token: token,
         activationLabel: __(this.config.token_save_pre_activation_title),
         buttonStyle: 'AknButton--slateGrey',
-        buttonAction: 'activate-connection',
+        connectionStatus: 'activate-connection',
       })
     );
   }
@@ -166,9 +181,37 @@ class EditView extends BaseView {
         token: token,
         activationLabel: __(this.config.token_save_post_activation_title),
         buttonStyle: 'AknButton--apply AknButton--disabled',
-        buttonAction: 'connection-activated',
+        connectionStatus: 'connection-activated',
       })
     );
+  }
+
+  /**
+   * Makes the button grey with text "Activate" so the user knows that connection
+   * to PIM.ai is not active and new token can be submitted.
+   */
+  private buttonCanActivateConnection() {
+    $('.suggest-data-connection')
+      .removeClass('AknButton--apply ')
+      .removeClass('AknButton--disabled')
+      .removeClass('connection-activated')
+      .addClass('AknButton--slateGrey')
+      .addClass('activate-connection')
+      .html(__(this.config.token_save_pre_activation_title));
+  }
+
+  /**
+   * Makes the button green with text "Activated" so the user knows that
+   * connection to PIM.ai is already active.
+   */
+  private buttonCannotActivateConnection() {
+    $('.suggest-data-connection')
+      .removeClass('AknButton--slateGrey')
+      .removeClass('activate-connection')
+      .addClass('AknButton--apply ')
+      .addClass('AknButton--disabled')
+      .addClass('connection-activated')
+      .html(__(this.config.token_save_post_activation_title));
   }
 }
 
