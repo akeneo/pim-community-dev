@@ -13,26 +13,38 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Common;
 
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryRecordRepository implements RecordRepository
+class InMemoryRecordRepository implements RecordRepositoryInterface
 {
     /** @var Record[] */
     protected $records = [];
 
     public function save(Record $record): void
     {
-        $this->records[(string) $record->getIdentifier()] = $record;
+        $recordIdentifier = (string) $record->getIdentifier();
+        $enrichedEntityIdentifier = (string) $record->getEnrichedEntityIdentifier();
+
+        $this->records[$enrichedEntityIdentifier][$recordIdentifier] = $record;
     }
 
-    public function getByIdentifier(RecordIdentifier $identifier): ?Record
-    {
-        return $this->records[(string) $identifier] ?? null;
+    public function getByIdentifier(
+        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        RecordIdentifier $identifier
+    ): ?Record {
+        if (!isset($this->records[(string) $enrichedEntityIdentifier])) {
+            return null;
+        }
+
+        $records = $this->records[(string) $enrichedEntityIdentifier];
+
+        return $records[(string) $identifier] ?? null;
     }
 }

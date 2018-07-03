@@ -7,14 +7,14 @@ namespace Akeneo\EnrichedEntity\tests\back\Acceptance;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Common\InMemoryRecordRepository;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryRecordRepositoryTest extends TestCase
 {
-    /** @var RecordRepository */
+    /** @var RecordRepositoryInterface */
     private $recordRepository;
 
     public function setup()
@@ -33,7 +33,7 @@ class InMemoryRecordRepositoryTest extends TestCase
 
         $this->recordRepository->save($record);
 
-        $enrichedEntityFound = $this->recordRepository->getByIdentifier($identifier);
+        $enrichedEntityFound = $this->recordRepository->getByIdentifier($enrichedEntityIdentifier, $identifier);
         $this->assertTrue($record->equals($enrichedEntityFound));
     }
 
@@ -42,7 +42,10 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_returns_null_if_the_identifier_is_not_found()
     {
-        $enrichedEntity = $this->recordRepository->getByIdentifier(RecordIdentifier::fromString('unknown_identifier'));
+        $identifier = RecordIdentifier::fromString('unknown_identifier');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+
+        $enrichedEntity = $this->recordRepository->getByIdentifier($enrichedEntityIdentifier, $identifier);
         Assert::assertNull($enrichedEntity);
     }
 }
