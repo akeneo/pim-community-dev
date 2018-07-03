@@ -14,7 +14,6 @@ use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
@@ -168,6 +167,11 @@ class FilteredProductReader implements
      */
     private function getProductsCursor(array $filters, ChannelInterface $channel = null): CursorInterface
     {
+        $filters[] = [
+            'field'    => 'entity_type',
+            'operator' => '=',
+            'value'    => ProductInterface::class,
+        ];
         $options = ['filters' => $filters];
 
         if (null !== $channel) {
@@ -188,30 +192,19 @@ class FilteredProductReader implements
     {
         $entity = null;
 
-        while ($this->productsAndProductModels->valid()) {
+        if ($this->productsAndProductModels->valid()) {
             if (!$this->firstRead) {
                 $this->productsAndProductModels->next();
             }
 
-            $this->firstRead = false;
             $entity = $this->productsAndProductModels->current();
             if (false === $entity) {
                 return null;
             }
 
             $this->stepExecution->incrementSummaryInfo('read');
-
-            if ($entity instanceof ProductModelInterface) {
-                if ($this->stepExecution) {
-                    $this->stepExecution->incrementSummaryInfo('skip');
-                }
-
-                $entity = null;
-                continue;
-            }
-
-            break;
         }
+        $this->firstRead = false;
 
         return $entity;
     }
