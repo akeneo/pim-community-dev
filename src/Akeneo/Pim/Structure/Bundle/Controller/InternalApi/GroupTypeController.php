@@ -4,12 +4,12 @@ namespace Akeneo\Pim\Structure\Bundle\Controller\InternalApi;
 
 use Akeneo\Pim\Structure\Component\Factory\GroupTypeFactory;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
+use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
