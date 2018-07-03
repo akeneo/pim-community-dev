@@ -33,18 +33,18 @@ class AttributeOptionCreateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('code', TextType::class, ['required' => true])
-            ->add(
-                'optionValues',
-                CollectionType::class,
-                [
-                    'type'         => AttributeOptionValueType::class,
-                    'allow_add'    => true,
-                    'allow_delete' => true,
-                    'by_reference' => false
-                ]
-            );
+//        $builder
+//            ->add('code', TextType::class, ['required' => true])
+//            ->add(
+//                'optionValues',
+//                CollectionType::class,
+//                [
+//                    'type'         => AttributeOptionValueType::class,
+//                    'allow_add'    => true,
+//                    'allow_delete' => true,
+//                    'by_reference' => false
+//                ]
+//            );
     }
 
     /**
