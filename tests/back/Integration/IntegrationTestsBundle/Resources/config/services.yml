@@ -51,7 +51,7 @@ services:
         class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryEnrichedEntityRepository
 
     akeneo_ee_integration_tests.builder.attribute:
-        class: 'Akeneo\Test\Common\Builder\EntityBuilder'
+        class: 'Akeneo\Test\Common\EntityBuilder'
         shared: false
         arguments:
             - '@pim_catalog.factory.attribute'
