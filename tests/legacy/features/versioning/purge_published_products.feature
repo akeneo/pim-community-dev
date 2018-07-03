@@ -27,7 +27,7 @@ Feature: purge product versions
     And I save the product
     And I visit the "History" column tab
     Then there should be 4 updates
-    When I launch the purge versions command for entity "Pim\Component\Catalog\Model\Product"
+    When I launch the purge versions command for entity "Akeneo\Pim\Enrichment\Component\Product\Model\Product"
     And I am on the "jacket" product page
     And I save the product
     Then there should be 3 updates
