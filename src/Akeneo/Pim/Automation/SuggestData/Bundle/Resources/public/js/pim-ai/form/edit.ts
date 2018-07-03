@@ -1,11 +1,11 @@
 import * as _ from 'underscore';
 import BaseView = require('pimenrich/js/view/base');
 import {EventsHash} from 'backbone';
+import {getConfiguration, isConnectionActivated} from 'pimenterprisesuggestdata/js/pim-ai/fetcher/connection-fetcher';
 
 const __ = require('oro/translator');
-const Messenger = require('oro/messenger');
-const Routing = require('routing');
 const ConnectionSaver = require('pimee/saver/pim_ai_connection');
+const Messenger = require('oro/messenger');
 const template = require('pimee/template/pim-ai-connection/edit');
 
 interface EditConfig {
@@ -68,12 +68,8 @@ class EditView extends BaseView {
    * {@inheritdoc}
    */
   public configure(): JQueryPromise<any> {
-    const url = Routing.generate(
-      this.config.get_configuration_url, {code: this.config.code}
-    );
-
     return $.when(
-      $.get(url).then((configuration) => {
+      getConfiguration(this.config.code).then((configuration: any) => {
         const data = {token: ''};
         if (configuration.hasOwnProperty('values')) {
           data.token = configuration.values.token;
@@ -90,11 +86,7 @@ class EditView extends BaseView {
    * {@inheritdoc}
    */
   public render(): BaseView {
-    const url = Routing.generate(
-      this.config.is_connection_activated_url, {code: this.config.code}
-    );
-
-    $.get(url).then((isConnectionActivated) => {
+    isConnectionActivated(this.config.code).then((isConnectionActivated: any) => {
       const formData = this.getFormData();
 
       this.isConnectionActivated = isConnectionActivated;
@@ -112,11 +104,13 @@ class EditView extends BaseView {
   public activate(): void {
     const data = this.getFormData();
 
-    ConnectionSaver.save(this.config.code, data)
+    ConnectionSaver
+      .save(this.config.code, data)
       .fail((xhr: any) => {
         Messenger.notify('error', xhr.responseJSON.message);
         this.renderUnactivated(data.token);
-      }).done((response: any) => {
+      })
+      .done((response: any) => {
         Messenger.notify('success', response.message);
         this.storedToken = data.token;
         this.isConnectionActivated = true;
