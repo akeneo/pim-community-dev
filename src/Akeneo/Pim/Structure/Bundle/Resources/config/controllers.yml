@@ -192,6 +192,19 @@ services:
             - '@pim_user.context.user'
             - '@pim_enrich.normalizer.violation'
 
+    pim_enrich.controller.rest.group_type:
+        class: 'Akeneo\Pim\Structure\Bundle\Controller\InternalApi\GroupTypeController'
+        arguments:
+            - '@pim_catalog.repository.group_type'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.remover.group_type'
+            - '@pim_catalog.updater.group_type'
+            - '@pim_catalog.saver.group_type'
+            - '@validator'
+            - '@pim_user.context.user'
+            - '@pim_catalog.factory.group_type'
+            - '@pim_enrich.normalizer.violation'
+
     ### UI
     pim_enrich.controller.association_type:
         class: 'Akeneo\Pim\Structure\Bundle\Controller\Ui\AssociationTypeController'
