@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product\AbstractProductTestCase;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 class LargeAndOrderedListProductModelIntegration extends AbstractProductTestCase
 {

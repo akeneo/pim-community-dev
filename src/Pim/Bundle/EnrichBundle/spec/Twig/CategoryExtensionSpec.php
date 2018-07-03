@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Twig;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistryInterface;
 use Prophecy\Argument;

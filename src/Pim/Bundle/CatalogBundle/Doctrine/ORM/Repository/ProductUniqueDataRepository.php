@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;
 
 /**
- * Product unique data repository. Please see {@see Pim\Component\Catalog\Model\ProductUniqueDataInterface}
+ * Product unique data repository. Please see {@see Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface}
  * for more information.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>

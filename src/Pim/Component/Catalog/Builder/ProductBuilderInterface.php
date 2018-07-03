@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Builder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Product builder interface

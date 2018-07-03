@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessTestCase;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Abstract class to check that the completeness has been well calculated for each attribute type of the PIM.

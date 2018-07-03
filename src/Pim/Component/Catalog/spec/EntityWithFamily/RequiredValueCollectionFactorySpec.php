@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class RequiredValueCollectionFactorySpec extends ObjectBehavior
 {

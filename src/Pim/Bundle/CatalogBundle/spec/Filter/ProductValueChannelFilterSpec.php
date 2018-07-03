@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 class ProductValueChannelFilterSpec extends ObjectBehavior
 {

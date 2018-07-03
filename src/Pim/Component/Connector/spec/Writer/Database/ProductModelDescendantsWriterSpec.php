@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Connector\Writer\Database;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Connector\Writer\Database\ProductModelDescendantsWriter;
 use PhpSpec\ObjectBehavior;
 

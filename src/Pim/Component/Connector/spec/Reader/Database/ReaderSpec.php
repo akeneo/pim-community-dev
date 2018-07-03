@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Connector\Reader\Database;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class ReaderSpec extends ObjectBehavior
 {

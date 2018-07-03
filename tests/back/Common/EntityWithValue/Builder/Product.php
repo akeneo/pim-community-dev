@@ -13,7 +13,7 @@ use Akeneo\Test\Common\EntityWithValue\Value;
 use Akeneo\Test\Common\EntityWithValue\ListOfValues;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

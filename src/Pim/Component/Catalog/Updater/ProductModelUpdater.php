@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -15,7 +16,6 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Association\ParentAssociationsFilter;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>

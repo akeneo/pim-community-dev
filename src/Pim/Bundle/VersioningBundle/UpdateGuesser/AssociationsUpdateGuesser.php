@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Doctrine\ORM\EntityManager;
-use Pim\Component\Catalog\Model\AssociationInterface;
 
 /**
  * Guess for associations updates and add the owner product entity to pendings versionnning if needed

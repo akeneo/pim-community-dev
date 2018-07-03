@@ -2,12 +2,12 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
-use Pim\Component\Catalog\Value\PriceCollectionValue;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

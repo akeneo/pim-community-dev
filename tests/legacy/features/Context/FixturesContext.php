@@ -6,6 +6,13 @@ use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -35,12 +42,6 @@ use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
-use Pim\Component\Catalog\Model\ProductAssociation;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelAssociation;
-use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Value\OptionValueInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
@@ -144,7 +145,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      *
      * @Given /^a "([^"]*)" user/
      */
@@ -281,7 +282,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $status
      * @param string $sku
      *
-     * @return \Pim\Component\Catalog\Model\ProductInterface
+     * @return ProductInterface
      *
      * @Given /^(?:an|a) (enabled|disabled) "([^"]*)" product$/
      */
@@ -2243,7 +2244,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Component\Catalog\Model\CategoryInterface
+     * @return CategoryInterface
      */
     protected function createCategory($data)
     {

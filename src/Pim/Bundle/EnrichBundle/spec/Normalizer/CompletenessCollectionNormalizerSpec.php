@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeTranslation;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\ChannelTranslationInterface;
-use Pim\Component\Catalog\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
