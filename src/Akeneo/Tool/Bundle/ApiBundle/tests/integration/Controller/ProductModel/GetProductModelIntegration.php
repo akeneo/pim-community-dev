@@ -2,10 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\ProductModel;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\ProductModelAssociation;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
