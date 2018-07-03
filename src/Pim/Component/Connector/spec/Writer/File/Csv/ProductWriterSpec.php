@@ -72,6 +72,7 @@ class ProductWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->willReturn(new \DateTime());
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
@@ -233,6 +234,7 @@ class ProductWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->willReturn(new \DateTime());
         $jobParameters->get('withHeader')->willReturn(true);
         $jobParameters->get('filePath')->willReturn($this->directory . '%job_label%_product.csv');
         $jobParameters->has('ui_locale')->willReturn(false);
@@ -313,6 +315,7 @@ class ProductWriterSpec extends ObjectBehavior
         $flusher->setStepExecution($stepExecution)->shouldBeCalled();
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $stepExecution->getStartTime()->willReturn(new \DateTime());
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getLabel()->willReturn('CSV Product export');
         $jobExecution->getExecutionContext()->willReturn($executionContext);
