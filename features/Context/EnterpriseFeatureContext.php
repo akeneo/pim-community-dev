@@ -143,7 +143,7 @@ class EnterpriseFeatureContext extends FeatureContext
             $selectedRoles[] = $option->getHtml();
         }
 
-        $expectedUserGroups = $this->getMainContext()->listToArray($userGroups);
+        $expectedUserGroups = $this->listToArray($userGroups);
         $missingUserGroups = array_diff($selectedRoles, $expectedUserGroups);
         $extraUserGroups = array_diff($expectedUserGroups, $selectedRoles);
         if (count($missingUserGroups) > 0 || count($extraUserGroups) > 0) {
@@ -192,45 +192,6 @@ class EnterpriseFeatureContext extends FeatureContext
         $rule = $this->getSubcontext('fixtures')->getRule($code);
         $runner = $this->getContainer()->get('akeneo_rule_engine.runner.chained');
         $runner->run($rule);
-    }
-
-    /**
-     * @Then /^I should see the smart icon for the attribute "([^"]*)"$/
-     */
-    public function iShouldSeeTheSmartIconForTheAttribute($attributeLabel)
-    {
-        $this->getAttributeIcon('i.from-smart', $attributeLabel);
-    }
-
-    /**
-     * @Given /^I display the tooltip for the "([^"]*)" rule icon/
-     */
-    public function iDisplayTheTooltipForTheAttribute($attributeLabel)
-    {
-        $icon = $this->getAttributeIcon('i.from-smart', $attributeLabel);
-
-        $icon->mouseOver();
-    }
-
-    /**
-     * @Given /^I display the tooltip for the "([^"]+)" attribute modified$/
-     */
-    public function iDisplayTheTooltipForTheModifiedAttribute($attributeLabel)
-    {
-        $icon = $this->getAttributeIcon('i.from-modified', $attributeLabel);
-
-        $icon->mouseOver();
-    }
-
-    /**
-     * @Then /^I should see "([^"]*)" in the popover$/
-     */
-    public function iShouldSeeInThePopover($search)
-    {
-        $this->getMainContext()->spin(function () use ($search) {
-            return $this->getSession()->getPage()
-                ->find('css', sprintf('.popover .popover-content:contains("%s")', $search));
-        }, sprintf('The popover does not contain "%s"', $search));
     }
 
     /**
@@ -285,16 +246,6 @@ class EnterpriseFeatureContext extends FeatureContext
         }, 'Cannot find button to remove asset in basket');
 
         $removeButton->click();
-    }
-
-    /**
-     * @param string $page
-     *
-     * @When /^I set the current page to "([^"]*)"$/
-     */
-    public function iSetTheCurrentPageTo($page)
-    {
-        $this->getMainContext()->getSubcontext('navigation')->setCurrentPage($page);
     }
 
     /**
