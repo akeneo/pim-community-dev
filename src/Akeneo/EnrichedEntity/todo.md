@@ -14,6 +14,7 @@
 - add session storage for tab situation
 - rework acceptance tests when the locale switcher will work
 - fix the form to take into account what the backend answered
+- test integration controller edit
 
 DONE:
 

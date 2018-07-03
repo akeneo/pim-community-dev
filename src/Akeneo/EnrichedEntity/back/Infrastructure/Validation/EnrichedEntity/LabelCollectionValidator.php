@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Validation\EnrichedEntity;
+namespace Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;

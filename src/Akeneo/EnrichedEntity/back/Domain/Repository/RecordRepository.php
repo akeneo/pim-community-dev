@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Domain\Repository;
+namespace Akeneo\EnrichedEntity\Domain\Repository;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\Record\Record;
-use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 
 interface RecordRepository
 {
