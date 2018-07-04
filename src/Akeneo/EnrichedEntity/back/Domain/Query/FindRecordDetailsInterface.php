@@ -26,7 +26,7 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 interface FindRecordDetailsInterface
 {
     public function __invoke(
-        EnrichedEntityIdentifier $enrichedEntityEnrichedEntityIdentifier,
-        RecordIdentifier $recordIdentifier
+        RecordIdentifier $recordIdentifier,
+        EnrichedEntityIdentifier $enrichedEntityEnrichedEntityIdentifier
     ): ?RecordDetails;
 }

@@ -22,7 +22,7 @@ interface RecordRepositoryInterface
     public function save(Record $record): void;
 
     public function getByIdentifier(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
-        RecordIdentifier $identifier
+        RecordIdentifier $identifier,
+        EnrichedEntityIdentifier $enrichedEntityIdentifier
     ): Record;
 }

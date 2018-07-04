@@ -38,8 +38,8 @@ class EditRecordHandlerSpec extends ObjectBehavior
         ];
 
         $recordRepository->getByIdentifier(
-            Argument::type(EnrichedEntityIdentifier::class),
-            Argument::type(RecordIdentifier::class)
+            Argument::type(RecordIdentifier::class),
+            Argument::type(EnrichedEntityIdentifier::class)
         )->willReturn($record);
 
         $record->updateLabels(Argument::type(LabelCollection::class))->shouldBeCalled();

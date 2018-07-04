@@ -69,8 +69,8 @@ SQL;
     }
 
     public function getByIdentifier(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
-        RecordIdentifier $identifier
+        RecordIdentifier $identifier,
+        EnrichedEntityIdentifier $enrichedEntityIdentifier
     ): Record {
         $fetch = <<<SQL
         SELECT identifier, enriched_entity_identifier, labels

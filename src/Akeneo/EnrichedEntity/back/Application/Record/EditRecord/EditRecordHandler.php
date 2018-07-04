@@ -37,7 +37,7 @@ class EditRecordHandler
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($editRecordCommand->enrichedEntityIdentifier);
         $labelCollection = LabelCollection::fromArray($editRecordCommand->labels);
 
-        $record = $this->recordRepository->getByIdentifier($enrichedEntityIdentifier, $identifier);
+        $record = $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
         $record->updateLabels($labelCollection);
         $this->recordRepository->save($record);
     }

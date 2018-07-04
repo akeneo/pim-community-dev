@@ -40,7 +40,7 @@ class GetAction
     {
         $enrichedEntityIdentifier = $this->getEnrichedEntityIdentifierOr404($enrichedEntityIdentifier);
         $recordIdentifier = $this->getRecordIdentifierOr404($recordIdentifier);
-        $recordDetails = $this->findRecordDetailsOr404($enrichedEntityIdentifier, $recordIdentifier);
+        $recordDetails = $this->findRecordDetailsOr404($recordIdentifier, $enrichedEntityIdentifier);
 
         return new JsonResponse($recordDetails->normalize());
     }
@@ -73,10 +73,10 @@ class GetAction
      * @throws NotFoundHttpException
      */
     private function findRecordDetailsOr404(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
-        RecordIdentifier $recordIdentifier
+        RecordIdentifier $recordIdentifier,
+        EnrichedEntityIdentifier $enrichedEntityIdentifier
     ): RecordDetails {
-        $result = ($this->findRecordDetailsQuery)($enrichedEntityIdentifier, $recordIdentifier);
+        $result = ($this->findRecordDetailsQuery)($recordIdentifier, $enrichedEntityIdentifier);
 
         if (null === $result) {
             throw new NotFoundHttpException();

@@ -69,8 +69,8 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $repository = $this->getRecordRepository();
         $recordItem = $repository->getByIdentifier(
-            EnrichedEntityIdentifier::fromString($postContent['enrichedEntityIdentifier']),
-            RecordIdentifier::fromString($postContent['identifier'])
+            RecordIdentifier::fromString($postContent['identifier']),
+            EnrichedEntityIdentifier::fromString($postContent['enrichedEntityIdentifier'])
         );
 
         Assert::assertEquals(array_keys($postContent['labels']), $recordItem->getLabelCodes());

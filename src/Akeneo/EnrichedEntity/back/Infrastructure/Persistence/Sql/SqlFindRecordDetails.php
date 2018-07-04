@@ -42,8 +42,8 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
      * {@inheritdoc}
      */
     public function __invoke(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
-        RecordIdentifier $recordIdentifier
+        RecordIdentifier $recordIdentifier,
+        EnrichedEntityIdentifier $enrichedEntityIdentifier
     ): ?RecordDetails {
         $result = $this->fetchResult($enrichedEntityIdentifier, $recordIdentifier);
 

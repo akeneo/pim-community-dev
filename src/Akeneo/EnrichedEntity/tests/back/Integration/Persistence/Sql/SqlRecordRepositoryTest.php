@@ -43,7 +43,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->repository->save($record);
 
-        $recordFound = $this->repository->getByIdentifier($enrichedEntityIdentifier, $identifier);
+        $recordFound = $this->repository->getByIdentifier($identifier, $enrichedEntityIdentifier);
         $this->assertRecord($record, $recordFound);
     }
 
@@ -57,7 +57,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         $identifier = RecordIdentifier::fromString('unknown_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
 
-        $this->repository->getByIdentifier($enrichedEntityIdentifier, $identifier);
+        $this->repository->getByIdentifier($identifier, $enrichedEntityIdentifier);
     }
 
     /**
@@ -83,7 +83,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         );
         $this->repository->save($record);
 
-        $enrichedEntityFound = $this->repository->getByIdentifier($enrichedEntityIdentifier, $identifier);
+        $enrichedEntityFound = $this->repository->getByIdentifier($identifier, $enrichedEntityIdentifier);
         $this->assertRecord($record, $enrichedEntityFound);
     }
 

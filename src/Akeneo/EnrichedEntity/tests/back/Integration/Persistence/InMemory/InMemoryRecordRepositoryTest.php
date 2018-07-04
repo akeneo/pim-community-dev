@@ -47,5 +47,6 @@ class InMemoryRecordRepositoryTest extends TestCase
 
         $enrichedEntity = $this->recordRepository->getByIdentifier($enrichedEntityIdentifier, $identifier);
         Assert::assertNull($enrichedEntity);
+        $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
     }
 }
