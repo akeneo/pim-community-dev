@@ -104,4 +104,30 @@ module.exports = async function(cucumber) {
     const editPage = await await getElement(this.page, 'Edit');
     await editPage.save();
   });
+
+  Then('the user should see the saved notification', async function () {
+    const editPage = await await getElement(this.page, 'Edit');
+    const hasSuccessNotification = await editPage.hasSuccessNotification();
+
+    assert.strictEqual(hasSuccessNotification, true);
+  });
+
+  Then('the enriched entity {string} won\'t be saved', function (identifier) {
+    this.page.on('request', request => {
+      if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'POST' === request.method()) {
+        request.respond({
+          status: 500,
+          contentType: 'text/plain',
+          body: 'Internal Error'
+        });
+      }
+    });
+  });
+
+  Then('the user should see the saved notification error', async function () {
+    const editPage = await await getElement(this.page, 'Edit');
+    const hasErrorNotification = await editPage.hasErrorNotification();
+
+    assert.strictEqual(hasErrorNotification, true);
+  });
 };
