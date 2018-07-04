@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>

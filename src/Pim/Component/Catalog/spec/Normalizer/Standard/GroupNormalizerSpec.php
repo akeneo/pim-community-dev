@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
 

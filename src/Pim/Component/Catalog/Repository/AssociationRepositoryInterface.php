@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Repository;
 
-use Pim\Component\Catalog\Model\AssociationInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Interface for association repository

@@ -4,8 +4,8 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParent;
 use Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParentValidator;
 use PhpSpec\ObjectBehavior;

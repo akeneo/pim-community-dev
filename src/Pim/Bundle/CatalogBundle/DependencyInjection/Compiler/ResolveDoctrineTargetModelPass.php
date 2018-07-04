@@ -19,16 +19,11 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'Pim\Component\Catalog\Model\ProductAssociationInterface'        => 'pim_catalog.entity.association.class',
-            'Pim\Component\Catalog\Model\ProductModelAssociationInterface'   => 'pim_catalog.entity.product_model_association.class',
-            'Pim\Component\Catalog\Model\GroupInterface'                     => 'pim_catalog.entity.group.class',
-            'Pim\Component\Catalog\Model\CompletenessInterface'              => 'pim_catalog.entity.completeness.class',
-            'Pim\Component\Catalog\Model\ProductInterface'                   => 'pim_catalog.entity.product.class',
-            'Pim\Component\Catalog\Model\ProductModelInterface'              => 'pim_catalog.entity.product_model.class',
-            'Pim\Component\Catalog\Model\ProductUniqueDataInterface'         => 'pim_catalog.entity.product_unique_data.class',
-            'Pim\Component\Catalog\Model\CategoryInterface'                  => 'pim_catalog.entity.category.class',
-            'Pim\Component\Catalog\Model\CategoryTranslationInterface'       => 'pim_catalog.entity.category_translation.class',
-            'Pim\Component\Catalog\Model\GroupTranslationInterface'          => 'pim_catalog.entity.group_translation.class',
+            'Pim\Component\Catalog\Model\AssociationTypeInterface'           => 'pim_catalog.entity.association_type.class',
+            'Pim\Component\Catalog\Model\AttributeOptionValueInterface'      => 'pim_catalog.entity.attribute_option_value.class',
+            'Pim\Component\Catalog\Model\GroupTypeInterface'                 => 'pim_catalog.entity.group_type.class',
+            'Pim\Component\Catalog\Model\AssociationTypeTranslationInterface'=> 'pim_catalog.entity.association_type_translation.class',
+            'Pim\Component\Catalog\Model\GroupTypeTranslationInterface'      => 'pim_catalog.entity.group_type_translation.class',
         ];
     }
 }

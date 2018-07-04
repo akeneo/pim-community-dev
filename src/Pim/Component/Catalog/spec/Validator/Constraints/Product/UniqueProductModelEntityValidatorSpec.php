@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Component\Catalog\Validator\Constraints\Product;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductModelEntity;
 use Pim\Component\Catalog\Validator\Constraints\Product\UniqueProductModelEntityValidator;
 use Symfony\Component\Validator\Constraint;

@@ -12,7 +12,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Prophecy\Argument;
 
 class IncompleteValueCollectionFactorySpec extends ObjectBehavior

@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Updater\Setter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class AttributeSetterSpec extends ObjectBehavior
 {

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;

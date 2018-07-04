@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTree;
 use Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTreeValidator;
 use Prophecy\Argument;

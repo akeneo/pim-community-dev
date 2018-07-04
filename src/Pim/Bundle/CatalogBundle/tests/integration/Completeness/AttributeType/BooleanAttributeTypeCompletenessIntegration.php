@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness\AttributeType;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Checks that the completeness has been well calculated for boolean attribute type.

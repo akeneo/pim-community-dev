@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Component\Catalog\Model\AbstractAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Association\ParentAssociationsFilter;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\ProductUpdater;
 
 class ProductUpdaterSpec extends ObjectBehavior
@@ -43,7 +43,7 @@ class ProductUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'Pim\Component\Catalog\Model\ProductInterface'
+                'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface'
             )
         )->during(
             'update',

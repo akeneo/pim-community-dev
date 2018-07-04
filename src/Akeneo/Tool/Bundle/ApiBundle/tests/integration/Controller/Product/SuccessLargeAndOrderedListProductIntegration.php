@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * We want to test the API is capable of returning an ordered list twice the size of a cursor page

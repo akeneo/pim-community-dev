@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber;
 use Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Prophecy\Argument;

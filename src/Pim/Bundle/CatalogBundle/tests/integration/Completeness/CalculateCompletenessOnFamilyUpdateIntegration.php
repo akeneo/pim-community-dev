@@ -9,8 +9,8 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessTestCase;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\CompletenessInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Checks the completeness is computed whenever the required attributes of a family is changed.

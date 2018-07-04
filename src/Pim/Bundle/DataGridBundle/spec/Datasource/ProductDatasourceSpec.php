@@ -13,7 +13,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriber;
 use Pim\Bundle\DataGridBundle\EventSubscriber\FilterEntityWithValuesSubscriberConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

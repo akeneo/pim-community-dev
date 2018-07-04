@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ProductUniqueDataRepositoryInterface;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
 use Symfony\Component\Validator\Constraint;

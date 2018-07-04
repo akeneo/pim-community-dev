@@ -3,9 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Pim\Component\Catalog\Model\AssociationInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 

@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Connector\Processor\Denormalization\ProductModelLoaderProcessor;
 use PhpSpec\ObjectBehavior;

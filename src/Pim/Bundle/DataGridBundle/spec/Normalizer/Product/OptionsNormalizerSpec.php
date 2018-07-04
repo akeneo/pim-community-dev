@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Normalizer\Product;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface;
-use Pim\Component\Catalog\Value\OptionsValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
 
 class OptionsNormalizerSpec extends ObjectBehavior
 {

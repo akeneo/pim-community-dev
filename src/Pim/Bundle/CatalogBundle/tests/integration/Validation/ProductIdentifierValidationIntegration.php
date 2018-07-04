@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Validation;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**

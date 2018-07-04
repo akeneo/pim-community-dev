@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Query;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 

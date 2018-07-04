@@ -9,7 +9,7 @@ use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 
 class GroupFactorySpec extends ObjectBehavior
 {
-    const GROUP_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Group';
+    const GROUP_CLASS = 'Akeneo\Pim\Enrichment\Component\Product\Model\Group';
 
     function let(GroupTypeRepositoryInterface $groupTypeRepository)
     {

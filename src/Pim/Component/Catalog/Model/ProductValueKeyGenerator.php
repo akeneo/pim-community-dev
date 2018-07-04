@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+
 /**
  * Product value key generator
  *

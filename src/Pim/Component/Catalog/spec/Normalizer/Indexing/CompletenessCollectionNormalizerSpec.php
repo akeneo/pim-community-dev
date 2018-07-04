@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\CompletenessCollectionNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;

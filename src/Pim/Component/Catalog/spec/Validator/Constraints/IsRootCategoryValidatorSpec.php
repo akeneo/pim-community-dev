@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Pim\Component\Catalog\Validator\Constraints\IsRootCategory;
 use Pim\Component\Catalog\Validator\Constraints\IsRootCategoryValidator;
 use Symfony\Component\Validator\ConstraintValidator;

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -10,7 +11,6 @@ use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
 use Pim\Bundle\CommentBundle\Form\Type\CommentType;
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -5,11 +5,11 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\Value;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\MetricInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\Value\MetricNormalizer;
-use Pim\Component\Catalog\Value\MetricValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MetricNormalizerSpec extends ObjectBehavior

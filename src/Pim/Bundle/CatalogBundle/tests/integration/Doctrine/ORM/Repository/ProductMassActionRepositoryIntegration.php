@@ -6,7 +6,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Doctrine\ORM\Repository;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @author    Damien Carcel <damien.carcel@akeneo.com>

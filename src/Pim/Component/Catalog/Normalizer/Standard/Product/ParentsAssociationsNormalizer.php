@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Normalizer\Standard\Product;
 
-use Pim\Component\Catalog\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

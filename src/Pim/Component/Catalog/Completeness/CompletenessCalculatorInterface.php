@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Completeness;
 
-use Pim\Component\Catalog\Model\CompletenessInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Calculates the completenesses for a provided product.
