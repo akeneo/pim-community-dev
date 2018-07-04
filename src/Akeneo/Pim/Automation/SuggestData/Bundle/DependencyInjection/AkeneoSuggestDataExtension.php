@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class PimEnterpriseSuggestDataExtension extends Extension
+class AkeneoSuggestDataExtension extends Extension
 {
     /**
      * {@inheritdoc}

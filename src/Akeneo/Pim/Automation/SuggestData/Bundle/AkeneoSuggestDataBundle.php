@@ -20,6 +20,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class PimEnterpriseSuggestDataBundle extends Bundle
+class AkeneoSuggestDataBundle extends Bundle
 {
 }
