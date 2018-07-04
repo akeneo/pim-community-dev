@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Form\Type;
+namespace Akeneo\Pim\Structure\Bundle\Form\Type;
 
+use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,18 +34,18 @@ class AttributeOptionCreateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        $builder
-//            ->add('code', TextType::class, ['required' => true])
-//            ->add(
-//                'optionValues',
-//                CollectionType::class,
-//                [
-//                    'type'         => AttributeOptionValueType::class,
-//                    'allow_add'    => true,
-//                    'allow_delete' => true,
-//                    'by_reference' => false
-//                ]
-//            );
+        $builder
+            ->add('code', TextType::class, ['required' => true])
+            ->add(
+                'optionValues',
+                CollectionType::class,
+                [
+                    'type'         => AttributeOptionValueType::class,
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'by_reference' => false
+                ]
+            );
     }
 
     /**

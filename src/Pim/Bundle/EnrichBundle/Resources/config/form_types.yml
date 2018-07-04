@@ -9,7 +9,6 @@ parameters:
     pim_enrich.form.type.product_grid_filter_choice.class: Pim\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType
 
     pim_enrich.form.type.attribute_option.class:                    Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType
-    pim_enrich.form.type.attribute_option_create.class:             Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionCreateType
     pim_enrich.form.type.attribute_option_value.class:              Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType
     pim_enrich.form.type.available_attributes.class:                Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
     pim_enrich.form.type.localized_collection.class:                Pim\Bundle\EnrichBundle\Form\Type\LocalizedCollectionType
@@ -46,13 +45,6 @@ services:
             - '%pim_catalog.entity.attribute_option_value.class%'
         tags:
             - { name: form.type, alias: pim_enrich_attribute_option_value }
-
-    pim_enrich.form.type.attribute_option_create:
-        class: '%pim_enrich.form.type.attribute_option_create.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute_option.class%'
-        tags:
-            - { name: form.type, alias: pim_attribute_option_create }
 
     pim_enrich.form.type.family:
         class: '%pim_enrich.form.type.family.class%'

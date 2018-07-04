@@ -16,3 +16,10 @@ services:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_enrich.form.type.attribute_option_create:
+        class: 'Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionCreateType'
+        arguments:
+            - '%pim_catalog.entity.attribute_option.class%'
+        tags:
+            - { name: form.type, alias: pim_attribute_option_create }
