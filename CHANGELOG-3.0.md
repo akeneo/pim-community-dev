@@ -278,3 +278,6 @@
 - Move `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface`
 - Move `Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption\AttributeOptionRemovalSubscriber` to `Akeneo\Pim\Structure\Bundle\EventListener\AttributeOptionRemovalSubscriber`
 - Move `Pim\Bundle\EnrichBundle\Form\Type\AttributeOption\AttributeOptionCreateType` to `Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionCreateType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType` to `Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\FamilyType` to `Akeneo\Pim\Structure\Bundle\Form\Type\FamilyType`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType` to `Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionValueType`
