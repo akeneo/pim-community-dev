@@ -41,3 +41,15 @@ services:
             - '%akeneo_storage_utils.mapping_overrides%'
         tags:
             - { name: doctrine.event_subscriber }
+
+    akeneo_storage_utils.doctrine.clearer:
+        class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Clearer\CacheClearer
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@doctrine.orm.default_entity_manager'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_attribute_option'
+            - '@pim_catalog.repository.cached_family'
+            - '@pim_catalog.repository.cached_category'
+            - '@pim_catalog.repository.cached_channel'
+            - '@pim_catalog.repository.cached_locale'
