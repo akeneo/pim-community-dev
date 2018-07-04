@@ -109,7 +109,12 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
             $results[$definition->getCode()] = $this->run($definition, $options);
         }
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_EXECUTE_ALL, new GenericEvent($definitions));
+        $eventParams = [
+            'definitions' => $definitions,
+            'usernameToNotify' => array_key_exists('usernameToNotify', $options) ? $options['usernameToNotify'] : null,
+        ];
+
+        $this->eventDispatcher->dispatch(RuleEvents::POST_EXECUTE_ALL, new GenericEvent($eventParams));
 
         return $results;
     }

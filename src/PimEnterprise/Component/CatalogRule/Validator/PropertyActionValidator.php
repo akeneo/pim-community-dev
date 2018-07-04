@@ -112,7 +112,7 @@ class PropertyActionValidator extends ConstraintValidator
      */
     protected function removeIdentifierViolations(ConstraintViolationListInterface $violations)
     {
-        #TODO: Remove this 'if' on master
+//      TODO: @merge on master Remove this 'if' on master
         if (null !== $this->attributeRepository) {
             $identifierAttribute = $this->attributeRepository->getIdentifier();
             $identifierPath = sprintf('values[%s].%s', $identifierAttribute->getCode(), $identifierAttribute->getBackendType());

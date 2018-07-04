@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-7464: Fix memory leak during rule execution.
+
 # 1.7.22 (2018-06-05)
 
 # 1.7.21 (2018-04-23)

@@ -98,6 +98,7 @@ class ProductRuleRunner implements DryRunnerInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(['selected_products' => []]);
+        $resolver->setDefined(['usernameToNotify']);
         $resolver->setAllowedTypes(['selected_products' => 'array']);
         $options = $resolver->resolve($options);
 
