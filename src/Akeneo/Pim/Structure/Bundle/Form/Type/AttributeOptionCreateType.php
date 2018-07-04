@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Bundle\Form\Type;
 
-use Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
