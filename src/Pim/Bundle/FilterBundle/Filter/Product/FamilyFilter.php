@@ -54,7 +54,10 @@ class FamilyFilter extends AjaxChoiceFilter
     {
         return array_merge(
             parent::getFormOptions(),
-            ['choice_url' => 'pim_enrich_family_rest_index']
+            [
+                'choice_url' => 'pim_enrich_family_rest_index',
+                'choice_url_params' => ['options' => ['expanded' => 0]]
+            ]
         );
     }
 }

@@ -70,6 +70,13 @@ class FamilyNormalizer implements NormalizerInterface
         $applyFilters = array_key_exists('apply_filters', $context)
             && true === $context['apply_filters'];
 
+        if (isset($context['expanded']) && false === $context['expanded']) {
+            return [
+                'code' => $family->getCode(),
+                'labels' =>$this->translationNormalizer->normalize($family, 'standard', [])
+            ];
+        }
+
         $normalizedFamily = $this->familyNormalizer->normalize(
             $family,
             'standard',

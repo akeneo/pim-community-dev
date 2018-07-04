@@ -49,6 +49,18 @@ class FamilyNormalizerSpec extends ObjectBehavior
             ->shouldReturn(false);
     }
 
+    function it_normalizes_an_unextended_family($translationNormalizer, FamilyInterface $family)
+    {
+        $family->getCode()->willReturn('camcorders');
+        $translationNormalizer->normalize($family, Argument::cetera())->willReturn([
+            'fr_FR' => 'Caméscopes'
+        ]);
+        $this->normalize($family, null, ['expanded' => false])->shouldReturn([
+            'code' => 'camcorders',
+            'labels' => ['fr_FR' => 'Caméscopes']
+        ]);
+    }
+
     function it_normalizes_family(
         AttributeRepositoryInterface $attributeRepository,
         AttributeGroupInterface $marketingAttributeGroup,

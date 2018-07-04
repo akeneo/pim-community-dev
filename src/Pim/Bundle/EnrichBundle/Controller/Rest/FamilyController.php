@@ -104,7 +104,8 @@ class FamilyController
      */
     public function indexAction(Request $request)
     {
-        $options = $request->query->get('options', ['limit' => 20]);
+        $options = $request->query->get('options', ['limit' => 20, 'expanded' => 1]);
+        $expanded = !isset($options['expanded']) || $options['expanded'] === 1;
 
         if ($request->query->has('identifiers')) {
             $options = $request->query->get('options');
@@ -118,7 +119,9 @@ class FamilyController
 
         $normalizedFamilies = [];
         foreach ($families as $family) {
-            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize($family, 'internal_api');
+            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize(
+                $family, 'internal_api', ['expanded' => $expanded]
+            );
         }
 
         return new JsonResponse($normalizedFamilies);
