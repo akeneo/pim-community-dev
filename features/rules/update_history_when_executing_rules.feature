@@ -46,10 +46,7 @@ Feature: Update product history when rules are executed
     And I should see history:
       | version | property              | value                        |
       | 3       | Description mobile fr | Chaussures noires classiques |
-    And I should see:
-    """
-    Applied rule "set_description"
-    """
+    And I should see the text "Applied rule \"set_description\""
 
   Scenario: Successfully display history after executing multiple rules
     And the following product rule definitions:
@@ -93,11 +90,5 @@ Feature: Update product history when rules are executed
       | version | property              | value                        |
       | 3       | Description mobile fr | Chaussures noires classiques |
       | 4       | Name fr               | Chaussures noires            |
-    And I should see:
-    """
-    Applied rule "set_description"
-    """
-    And I should see:
-    """
-    Applied rule "set_name"
-    """
+    And I should see the text "Applied rule \"set_description\""
+    And I should see the text "Applied rule \"set_name\""
