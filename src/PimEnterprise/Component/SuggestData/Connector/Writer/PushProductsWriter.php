@@ -5,10 +5,10 @@ namespace PimEnterprise\Component\SuggestData\Connector\Writer;
 
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\Adapter\DataProviderAdapterInterface;
-use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory;
-use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataCollection;
-use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\SuggestedDataCollectionInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\Adapter\DataProviderAdapterInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataCollection;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataCollectionInterface;
 
 /**
  * Writer to push products to PIM.ai.

@@ -54,6 +54,11 @@ suites:
         psr4_prefix: Akeneo\EnrichedEntity
         spec_path: src/Akeneo/EnrichedEntity/tests/back
         src_path: src/Akeneo/EnrichedEntity/back
+    SuggestData:
+        namespace: Akeneo\Pim\Automation\SuggestData
+        psr4_prefix: Akeneo\Pim\Automation\SuggestData
+        spec_path: src/Akeneo/Pim/Automation/SuggestData/tests/back
+        src_path: src/Akeneo/Pim/Automation/SuggestData
 
     ## Acceptance
     Acceptance:

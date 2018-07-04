@@ -1,0 +1,5 @@
+services:
+    pimee_suggest_data.repository.configuration:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ConfigurationRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'

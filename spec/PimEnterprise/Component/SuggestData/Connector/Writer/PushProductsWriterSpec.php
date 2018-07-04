@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\SuggestData\Connector\Writer;
 
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SuggestDataBundle\Infra\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\DataProviderFactory;
 use PimEnterprise\Component\SuggestData\Connector\Writer\PushProductsWriter;
 
 class PushProductsWriterSpec extends ObjectBehavior

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\SuggestData\PimAiClient\Api\Subscription;
 
-use PimEnterprise\Bundle\SuggestDataBundle\Infra\Fake\FakeHALProducts;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\Fake\FakeHALProducts;
 use PimEnterprise\Component\SuggestData\PimAiClient\Api\ApiResponse;
 use PimEnterprise\Component\SuggestData\Product\ProductCode;
 use PimEnterprise\Component\SuggestData\Product\ProductCodeCollection;
