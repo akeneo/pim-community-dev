@@ -120,6 +120,28 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
+     * @param string $attribute
+     *
+     * @throws ExpectationException
+     *
+     * @return bool
+     *
+     * @Then /^I should not see that (.*) is a smart$/
+     */
+    public function iShouldNotSeeThatAttributeIsASmart($attribute)
+    {
+        $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
+
+        foreach ($icons as $icon) {
+            if ($icon->getParent()->hasClass('from-smart')) {
+                throw $this->createExpectationException('"Affected by a rule icon" was found');
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * @param string $field
      * @param string $userGroups
      *
@@ -143,7 +165,7 @@ class EnterpriseFeatureContext extends FeatureContext
             $selectedRoles[] = $option->getHtml();
         }
 
-        $expectedUserGroups = $this->getMainContext()->listToArray($userGroups);
+        $expectedUserGroups = $this->listToArray($userGroups);
         $missingUserGroups = array_diff($selectedRoles, $expectedUserGroups);
         $extraUserGroups = array_diff($expectedUserGroups, $selectedRoles);
         if (count($missingUserGroups) > 0 || count($extraUserGroups) > 0) {
@@ -227,7 +249,7 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iShouldSeeInThePopover($search)
     {
-        $this->getMainContext()->spin(function () use ($search) {
+        $this->spin(function () use ($search) {
             return $this->getSession()->getPage()
                 ->find('css', sprintf('.popover .popover-content:contains("%s")', $search));
         }, sprintf('The popover does not contain "%s"', $search));
