@@ -1,0 +1,56 @@
+extensions:
+    pim-pim-ai-connection-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pimee-pim-ai-connection-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-pim-ai-connection-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pimee-pim-ai-connection-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-pim-ai-connection-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pimee-pim-ai-connection-index-title:
+        module: pim/common/title-with-subtitle
+        parent: pim-pim-ai-connection-index
+        targetZone: title
+        config:
+            main_title: pimee_suggest_data.pim_ai.title.main_title
+            sub_title: pimee_suggest_data.pim_ai.title.sub_title
+            illustration: bundles/pimui/images/illustrations/Helpcenter-settings.svg
+            description:
+                - pimee_suggest_data.pim_ai.title.description.first_step
+                - pimee_suggest_data.pim_ai.title.description.second_step
+
+    pimee-pim-ai-connection-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-pim-ai-connection-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-ee-suggest-data-connection
+
+    pimee-pim-ai-connection-edit:
+        module: pimee/pim-ai-connection/edit
+        parent: pim-pim-ai-connection-index
+        template: pimee/template/pim-ai-connection/edit
+        targetZone: content
+        position: 10
+        config:
+            token_label_title: pimee_suggest_data.pim_ai.token.label.title
+            token_label_content: pimee_suggest_data.pim_ai.token.label.content
+            token_field_title: pimee_suggest_data.pim_ai.token.field.title
+            token_field_placeholder: pimee_suggest_data.pim_ai.token.field.placeholder
+            token_save_pre_activation_title: pimee_suggest_data.pim_ai.token.save.to_activate
+            token_save_post_activation_title:  pimee_suggest_data.pim_ai.token.save.activated
+            activation_url: pimee_suggest_data_pim_ai_connection_save
+            code: pim-ai

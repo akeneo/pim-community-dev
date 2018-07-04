@@ -4,5 +4,5 @@ pimee_suggest_data:
     acl:
         suggest_data:
             index: Suggest data
-        pim_dot_ai:
+        pim_ai:
             connection: Manage connection to PIM.AI

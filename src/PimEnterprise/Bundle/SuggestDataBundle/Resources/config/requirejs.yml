@@ -3,18 +3,18 @@ config:
         # Forms
         pimee/product-edit-form/suggest-data-push: pimenterprisesuggestdata/js/product/edit/suggest-data-push
         pimee/mass-edit-form/product/suggest-data: pimenterprisesuggestdata/js/product/mass-edit/suggest-data-operation
-        pimee/pim-dot-ai-connection/edit: pimenterprisesuggestdata/js/pim-dot-ai/form/edit.ts
+        pimee/pim-ai-connection/edit: pimenterprisesuggestdata/js/pim-ai/form/edit.ts
 
         # Templates
         pimee/template/product/suggest-data-push:  pimenterprisesuggestdata/templates/product/edit/suggest-data-push.html
         pimee/template/product/mass-edit/suggest-data: pimenterprisesuggestdata/templates/product/mass-edit/suggest-data.html
-        pimee/template/pim-dot-ai-connection/edit: pimenterprisesuggestdata/templates/pim-dot-ai/form/edit.html
+        pimee/template/pim-ai-connection/edit: pimenterprisesuggestdata/templates/pim-ai/form/edit.html
 
     config:
         pim/controller-registry:
             controllers:
-                pimee_suggest_data_pim_dot_ai_connection_index:
+                pimee_suggest_data_pim_ai_connection_index:
                     module: pim/controller/common/index
                     aclResourceId: pimee_suggest_data_connection
                     config:
-                        entity: pim-dot-ai-connection
+                        entity: pim-ai-connection

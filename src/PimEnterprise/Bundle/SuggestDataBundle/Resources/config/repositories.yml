@@ -1,0 +1,5 @@
+services:
+    pimee_suggest_data.repository.configuration:
+        class: 'PimEnterprise\Bundle\SuggestDataBundle\Doctrine\Repository\ConfigurationRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'

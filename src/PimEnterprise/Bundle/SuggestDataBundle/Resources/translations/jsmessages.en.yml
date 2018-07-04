@@ -1,5 +1,5 @@
-page_title:
-    pimee_suggest_data_pim_dot_ai_connection_index: 'PIM.AI connection'
+pim_title:
+    pimee_suggest_data_pim_ai_connection_index: 'PIM.AI connection'
 
 pimee_suggest_data:
     product:
@@ -14,7 +14,7 @@ pimee_suggest_data:
                 label_count: "{1}Suggest data for <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Suggest data for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                 description: We will suggest data for the products
                 warning: The {{ itemsCount }} selected products will be send.
-    pim_dot_ai:
+    pim_ai:
         title:
             main_title: 'PIM.AI connection'
             sub_title: 'Welcome to the <span class="AknSubTitleContainer-subTitle--main">Product Information AI assistant!</span>'
