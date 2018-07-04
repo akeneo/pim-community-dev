@@ -60,11 +60,12 @@ class EditAction
         if ($violations->count() > 0) {
             $errors = [];
             foreach ($violations as $violation) {
-                // TODO: format the error the way we want for the front
-                $errors[] = $violation->getPropertyPath() .' '. $violation->getMessage();
+                $errors[$violation->getPropertyPath()] = [
+                    'message' => $violation->getMessage()
+                ];
             }
 
-            return new JsonResponse(['errors' => json_encode($errors)], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
         }
 
         ($this->editRecordHandler)($command);
