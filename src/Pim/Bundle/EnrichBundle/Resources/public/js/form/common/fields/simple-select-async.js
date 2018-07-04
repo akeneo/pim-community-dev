@@ -186,6 +186,13 @@ define(
              * @returns {Object}
              */
             convertBackendItem(item) {
+                if (undefined !== item.label) {
+                    return {
+                        id: item.code,
+                        text: item.label
+                    }
+                }
+
                 return {
                     id: item.code,
                     text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code)
