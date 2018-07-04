@@ -1,20 +1,20 @@
 services:
     pimee_suggest_data.pimai_client.uri_generator:
-        class: PimEnterprise\Component\SuggestData\PimAiClient\UriGenerator
+        class: Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\UriGenerator
         public: false
         arguments:
             - 'http://localhost:8080'
 
     pimee_suggest_data.pimai_client.enrichment_webservice:
-        class: PimEnterprise\Component\SuggestData\PimAiClient\Api\Enrichment\EnrichmentWebservice
+        class: Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Enrichment\EnrichmentWebservice
         arguments:
             - '@pimee_suggest_data.pimai_client.uri_generator'
             - !service
               class: GuzzleHttp\Client
 
     pimee_suggest_data.pimai_client.subscribe_webservice:
-        class: PimEnterprise\Component\SuggestData\PimAiClient\Api\Subscription\Memory
-#        class: PimEnterprise\Component\SuggestData\PimAiClient\Api\Subscription\SubscriptionWebservice
+        class: Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription\Memory
+#        class: Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription\SubscriptionWebservice
 #        arguments:
 #            - '@pimee_suggest_data.pimai_client.uri_generator'
 #            - !service

@@ -15,8 +15,8 @@ namespace spec\AkeneoEnterprise\Test\Acceptance\SuggestData\Repository;
 
 use AkeneoEnterprise\Test\Acceptance\SuggestData\Repository\InMemoryConfigurationRepository;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\SuggestData\Model\Configuration;
-use PimEnterprise\Component\SuggestData\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

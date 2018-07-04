@@ -8,9 +8,9 @@ use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\Adapter\DataProv
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\DeserializeSuggestedDataCollection;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataCollectionInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataInterface;
-use PimEnterprise\Component\SuggestData\PimAiClient\Api\Subscription\SubscriptionApiInterface;
-use PimEnterprise\Component\SuggestData\Product\ProductCode;
-use PimEnterprise\Component\SuggestData\Product\ProductCodeCollection;
+use Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCode;
+use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCodeCollection;
 
 /**
  * In memory implementation to connect to a data provider

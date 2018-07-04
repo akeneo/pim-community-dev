@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infra\Fake;
 
-use PimEnterprise\Component\SuggestData\Application\ValidateConnectionInterface;
-use PimEnterprise\Component\SuggestData\Command\SaveConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Component\Application\ValidateConnectionInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
 
 /**
  * Fake validation of a PIM.ai token using a hard coded value.

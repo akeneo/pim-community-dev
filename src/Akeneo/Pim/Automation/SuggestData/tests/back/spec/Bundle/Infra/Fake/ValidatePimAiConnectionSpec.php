@@ -15,8 +15,8 @@ namespace spec\Akeneo\Pim\Automation\SuggestData\Bundle\Infra\Fake;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\Fake\ValidatePimAiConnection;
-use PimEnterprise\Component\SuggestData\Application\ValidateConnectionInterface;
-use PimEnterprise\Component\SuggestData\Command\SaveConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Component\Application\ValidateConnectionInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

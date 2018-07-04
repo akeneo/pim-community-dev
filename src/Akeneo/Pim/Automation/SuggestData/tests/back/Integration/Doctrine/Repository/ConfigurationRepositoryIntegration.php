@@ -15,7 +15,7 @@ namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Doctrine\Repo
 
 use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;
-use PimEnterprise\Component\SuggestData\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

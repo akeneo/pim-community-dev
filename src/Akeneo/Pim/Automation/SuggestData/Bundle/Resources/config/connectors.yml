@@ -31,10 +31,10 @@ services:
 
     # This processor does nothing else but returns what it receives from reader.
     pimee_suggest_data.processor.normalization.push_products:
-        class: PimEnterprise\Component\SuggestData\Connector\Processor\Normalization\PushProductProcessor
+        class: Akeneo\Pim\Automation\SuggestData\Component\Connector\Processor\Normalization\PushProductProcessor
 
     pimee_suggest_data.writer.push_products:
-        class: PimEnterprise\Component\SuggestData\Connector\Writer\PushProductsWriter
+        class: Akeneo\Pim\Automation\SuggestData\Component\Connector\Writer\PushProductsWriter
         arguments:
             - '@pimee_suggest_data.data_provider.factory'
             - 10

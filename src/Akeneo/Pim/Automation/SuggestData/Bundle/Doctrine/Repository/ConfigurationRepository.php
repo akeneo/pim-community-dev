@@ -17,8 +17,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\ConfigBundle\Entity\Config;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
-use PimEnterprise\Component\SuggestData\Model\Configuration;
-use PimEnterprise\Component\SuggestData\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 
 /**
  * Doctrine implementation of the configuration repository.

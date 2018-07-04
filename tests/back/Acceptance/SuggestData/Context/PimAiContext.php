@@ -15,9 +15,9 @@ namespace AkeneoEnterprise\Test\Acceptance\SuggestData\Context;
 
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
-use PimEnterprise\Component\SuggestData\Application\ActivateSuggestDataConnection;
-use PimEnterprise\Component\SuggestData\Application\GetNormalizedConfiguration;
-use PimEnterprise\Component\SuggestData\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Application\ActivateSuggestDataConnection;
+use Akeneo\Pim\Automation\SuggestData\Component\Application\GetNormalizedConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace AkeneoEnterprise\Test\Acceptance\SuggestData\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use PimEnterprise\Component\SuggestData\Model\Configuration;
-use PimEnterprise\Component\SuggestData\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 
 /**
  * In memory implementation of the configuration repository.
