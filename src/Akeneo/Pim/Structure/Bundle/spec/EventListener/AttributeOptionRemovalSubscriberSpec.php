@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption;
+namespace spec\Akeneo\Pim\Structure\Bundle\EventListener;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\ProductAndProductModelQueryBuilderFactory;
-use Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption\AttributeOptionRemovalSubscriber;
+use Akeneo\Pim\Structure\Bundle\EventListener\AttributeOptionRemovalSubscriber;
 use Akeneo\Pim\Structure\Component\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;

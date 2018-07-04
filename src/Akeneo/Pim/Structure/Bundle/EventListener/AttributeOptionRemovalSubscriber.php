@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption;
+namespace Akeneo\Pim\Structure\Bundle\EventListener;
 
 use Akeneo\Pim\Structure\Component\FamilyVariant\Query\FamilyVariantsByAttributeAxesInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
