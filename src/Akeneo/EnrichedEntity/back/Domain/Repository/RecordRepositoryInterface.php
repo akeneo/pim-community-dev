@@ -24,5 +24,5 @@ interface RecordRepositoryInterface
     public function getByIdentifier(
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         RecordIdentifier $identifier
-    ): ?Record;
+    ): Record;
 }
