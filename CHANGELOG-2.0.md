@@ -1,8 +1,12 @@
-# 2.0.x
+# 2.0.29 (2018-07-04)
 
 ## Bug fixes
 
 - PIM-7460: Fix locale flag for locales with two underscores like az_cyrl_AZ.
+- PIM-7472: Fix username display in user form title
+- PIM-7478: Fix memory leak on quick export
+- PIM-7462: Fix step execution read count
+- PIM-7480: Fix generation of export file name with a date
 
 # 2.0.28 (2018-06-26)
 
