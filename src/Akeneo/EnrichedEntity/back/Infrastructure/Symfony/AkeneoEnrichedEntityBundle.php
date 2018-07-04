@@ -19,7 +19,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Symfony;
+namespace Akeneo\EnrichedEntity\Infrastructure\Symfony;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

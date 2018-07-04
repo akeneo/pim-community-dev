@@ -15,9 +15,9 @@ namespace spec\PimEnterprise\Component\Catalog\Normalizer\Standard;
 
 use Akeneo\Asset\Bundle\AttributeType\AttributeTypes;
 use Akeneo\Asset\Component\Model\AssetInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValueInterface;
 use PimEnterprise\Component\Catalog\Normalizer\Standard\ProductValueNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

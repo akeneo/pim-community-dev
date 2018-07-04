@@ -1,0 +1,8 @@
+services:
+    akeneo_enrichedentity.tests.back.acceptance.context.edit_enriched_entity_context:
+        class: Akeneo\EnrichedEntity\tests\back\Acceptance\Context\EditEnrichedEntityContext
+        arguments:
+            - '@__symfony__.akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+            - '@__symfony__.akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler'
+        tags:
+            - { name: fob.context_service }

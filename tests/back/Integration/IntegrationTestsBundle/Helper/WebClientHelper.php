@@ -48,8 +48,8 @@ class WebClientHelper
 
     public function assertResponse(Response $response, int $statusCode, string $expectedContent = ''): void
     {
-        Assert::assertEquals($statusCode, $response->getStatusCode());
-        Assert::assertEquals($expectedContent, $response->getContent());
+        Assert::assertEquals($statusCode, $response->getStatusCode(), 'Expected request status code is not the same as the actual.');
+        Assert::assertEquals($expectedContent, $response->getContent(), 'Expected request content is not the same as the actual.');
     }
 
     public function assert404(Response $response): void

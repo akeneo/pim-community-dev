@@ -24,7 +24,9 @@ class RuleRelationManagerSpec extends ObjectBehavior
         CategoryRepositoryInterface $categoryRepository,
         RuleRelationRepositoryInterface $ruleRelationRepo
     ) {
-        $this->beConstructedWith($ruleRelationRepo, $attributeRepository, $categoryRepository, 'Akeneo\Pim\Structure\Component\Model\Attribute', 'Pim\Bundle\CatalogBundle\Entity\Category');
+        $this->beConstructedWith($ruleRelationRepo, $attributeRepository, $categoryRepository, 'Akeneo\Pim\Structure\Component\Model\Attribute',
+            'Akeneo\Pim\Enrichment\Component\Category\Model\Category'
+        );
     }
 
     function it_returns_impacted_attributes(

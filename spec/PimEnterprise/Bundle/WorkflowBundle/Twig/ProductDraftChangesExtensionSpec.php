@@ -2,13 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Pim\Component\Catalog\Factory\ValueFactory;
-use Pim\Component\Catalog\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
@@ -52,8 +51,8 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
     function it_presents_product_draft_using_a_supporting_presenter(
         $attributePresenter,
         $valuePresenter,
-        Model\ValueInterface $value,
-        Model\ProductInterface $product,
+        ValueInterface $value,
+        ProductInterface $product,
         EntityWithValuesDraftInterface $productDraft
     ) {
         $productDraft->getEntityWithValue()->willReturn($product);
@@ -75,8 +74,8 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $translator,
         $attributePresenter,
         $valuePresenter,
-        Model\ValueInterface $value,
-        Model\ProductInterface $product,
+        ValueInterface $value,
+        ProductInterface $product,
         PresenterInterface $presenter,
         EntityWithValuesDraftInterface $productDraft
     ) {
@@ -104,8 +103,8 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $renderer,
         $attributePresenter,
         $valuePresenter,
-        Model\ValueInterface $value,
-        Model\ProductInterface $product,
+        ValueInterface $value,
+        ProductInterface $product,
         PresenterInterface $presenter,
         EntityWithValuesDraftInterface $productDraft
     ) {
@@ -132,8 +131,8 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
     function it_injects_twig_in_twig_aware_presenter(
         $attributePresenter,
         $valuePresenter,
-        Model\ValueInterface $value,
-        Model\ProductInterface $product,
+        ValueInterface $value,
+        ProductInterface $product,
         PresenterInterface $presenter,
         \Twig_Environment $twig,
         EntityWithValuesDraftInterface $productDraft

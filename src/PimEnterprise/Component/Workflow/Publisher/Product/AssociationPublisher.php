@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\Workflow\Publisher\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\AbstractAssociation;
 use PimEnterprise\Component\Workflow\Publisher\PublisherInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 

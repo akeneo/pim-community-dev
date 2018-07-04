@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Controller\EnrichedEntity;
+namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 
-use Akeneo\EnrichedEntity\back\Domain\Query\EnrichedEntityItem;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindEnrichedEntityItemsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\EnrichedEntityItem;
+use Akeneo\EnrichedEntity\Domain\Query\FindEnrichedEntityItemsInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

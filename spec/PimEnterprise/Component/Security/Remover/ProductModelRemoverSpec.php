@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Security\Remover\ProductModelRemover;
@@ -76,7 +76,9 @@ class ProductModelRemoverSpec extends ObjectBehavior
     {
         $invalidProductModel = new \stdClass();
 
-        $this->shouldThrow(InvalidObjectException::objectExpected('stdClass', 'Pim\Component\Catalog\Model\ProductModelInterface'))
+        $this->shouldThrow(InvalidObjectException::objectExpected('stdClass',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
+        ))
             ->during('remove', [$invalidProductModel]);
     }
 
@@ -88,7 +90,9 @@ class ProductModelRemoverSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $firstProductModel)->willReturn(true);
 
 
-        $this->shouldThrow(InvalidObjectException::objectExpected('stdClass', 'Pim\Component\Catalog\Model\ProductModelInterface'))
+        $this->shouldThrow(InvalidObjectException::objectExpected('stdClass',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
+        ))
             ->during('removeAll', [$productModels]);
     }
 
