@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductAndProductModelQueryBuilderTestCase;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**

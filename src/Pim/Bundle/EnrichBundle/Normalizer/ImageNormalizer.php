@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * This Normalizer will normalize the "image" field, to return paths to get the image to display.

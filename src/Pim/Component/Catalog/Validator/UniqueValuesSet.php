@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Validator;
 
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * Contains the state of the unique value for a product, due to EAV model we cannot ensure it via constraints on

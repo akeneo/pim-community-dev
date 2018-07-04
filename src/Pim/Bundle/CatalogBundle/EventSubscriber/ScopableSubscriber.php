@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Aims to inject selected scope into loaded product

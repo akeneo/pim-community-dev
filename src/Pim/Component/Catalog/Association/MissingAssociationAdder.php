@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Association;
 
-use Pim\Component\Catalog\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 

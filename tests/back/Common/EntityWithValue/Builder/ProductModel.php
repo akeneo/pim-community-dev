@@ -10,7 +10,7 @@ use Akeneo\Test\Common\EntityWithValue\Code;
 use Akeneo\Test\Common\EntityWithValue\ListOfCodes;
 use Akeneo\Test\Common\EntityWithValue\ListOfValues;
 use Akeneo\Test\Common\EntityWithValue\Value;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Create a product model object with product factory, update its data with product model update and validate

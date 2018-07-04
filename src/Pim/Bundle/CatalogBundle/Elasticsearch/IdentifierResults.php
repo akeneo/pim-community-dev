@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 
 /**
  * Simple collection of {@see IdentifierResult}.

@@ -104,6 +104,7 @@ $cPimRules = [
         'Pim\Component\ReferenceData',
         array_merge($cDeps, [
             'Pim\Component\Catalog',
+            'Akeneo\Pim\Enrichment\Component\Product',
             'Akeneo\Pim\Structure\Component'
         ]),
         RuleInterface::TYPE_ONLY

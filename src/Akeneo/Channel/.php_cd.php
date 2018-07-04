@@ -25,7 +25,7 @@ $rules = [
         'Doctrine\Common',
         'Akeneo\Tool\Component',
         'Akeneo\Channel\Component',
-        'Pim\Component\Catalog\Model\CategoryInterface', // TODO: The channel is linked by reference instead of id
+        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface', // TODO: The channel is linked by reference instead of id
         'Pim\Component\Connector', // TODO: Generic classes/interfaces like be moved to Akeneo/Tool
         'Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface', // TODO: The versioning bundle will be moved to Akeneo\Tool
         'Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface', // TODO: we should remove this dependencies, related to permissions

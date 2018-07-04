@@ -15,7 +15,7 @@ Akeneo\Pim\Structure\Component\Model\GroupType:
             unique: true
     oneToMany:
         groups:
-            targetEntity: Pim\Component\Catalog\Model\GroupInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
             mappedBy: type
         translations:
             targetEntity: Akeneo\Pim\Structure\Component\Model\GroupTypeTranslationInterface

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\Query;
 
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use PHPUnit\Framework\Assert;
 use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Integration\Persistence\QueryTestCase;
-use Pim\Component\Catalog\Model\CategoryInterface;
 
 class AverageMaxCategoriesInOneCategoryIntegration extends QueryTestCase
 {

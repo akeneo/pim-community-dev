@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Set the enabled field of a product

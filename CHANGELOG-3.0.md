@@ -10,6 +10,32 @@
 
 ## BC breaks
 
+- Move `Pim\Component\Catalog\Entity\GroupTranslation` to `Akeneo\Pim\Enrichment\Component\Category\Entity\GroupTranslation`
+- Move `Pim\Component\Catalog\Model\GroupTranslationInterface` to `Akeneo\Pim\Enrichment\Component\Category\Model\GroupTranslationInterface`
+- Move `Pim\Component\Catalog\Entity\Group` to `Akeneo\Pim\Enrichment\Component\Category\Entity\Group`
+- Move `Pim\Component\Catalog\Model\GroupInterface` to `Akeneo\Pim\Enrichment\Component\Category\Model\GroupInterface`
+- Move `Pim\Component\Catalog\Entity\CategoryTranslation` to `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation`
+- Move `Pim\Component\Catalog\Model\CategoryTranslationInterface` to `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface`
+- Move `Pim\Component\Catalog\Entity\Category` to `Akeneo\Pim\Enrichment\Component\Category\Model\Category`
+- Move `Pim\Component\Catalog\Model\CategoryInterface` to `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface`
+- Move `Pim\Component\Catalog\Model\AbstractAssociation` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation`
+- Move `Pim\Component\Catalog\Model\AssociationInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface`
+- Move `Pim\Component\Catalog\Model\ProductModelAssociation` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation`
+- Move `Pim\Component\Catalog\Model\ProductModelAssociationInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface`
+- Move `Pim\Component\Catalog\Model\ProductAssociation` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation`
+- Move `Pim\Component\Catalog\Model\ProductAssociationInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociationInterface`
+- Move `Pim\Component\Catalog\Model\ProductUniqueDataInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueDataInterface`
+- Move `Pim\Component\Catalog\Model\AbstractProductUniqueData` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductUniqueData`
+- Move `Pim\Component\Catalog\Model\ProductUniqueData` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductUniqueData`
+- Move `Pim\Component\Catalog\Model\CompletenessInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface`
+- Move `Pim\Component\Catalog\Model\AbstractCompleteness` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractCompleteness`
+- Move `Pim\Component\Catalog\Model\Completeness` to `Akeneo\Pim\Enrichment\Component\Product\Model\Completeness`
+- Move `Pim\Component\Catalog\Model\ValueInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface`
+- Move `Pim\Component\Catalog\Model\ProductModel` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel`
+- Move `Pim\Component\Catalog\Model\ProductModelInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface`
+- Move `Pim\Component\Catalog\Model\Product` to `Akeneo\Pim\Enrichment\Component\Product\Model\Product`
+- Move `Pim\Component\Catalog\Model\AbstractProduct` to `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct`
+- Move `Pim\Component\Catalog\Model\ProductInterface` to `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyVariantRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyVariantRepository`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\FamilyRepository`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository`
@@ -72,6 +98,7 @@
 
 - Change constructor of `Akeneo\UserManagement\Bundle\Form\Type\UserType`, remove `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and `Akeneo\UserManagement\Bundle\Form\Subscriber\UserSubscriber` argument  
 
+- Move namespace `Pim\Component\Catalog\Value` to `Akeneo\Pim\Enrichment\Component\Product\Value`
 - Move namespace `Pim\Component\Api` to `Akeneo\Tool\Component\Api`
 - Move namespace `Pim\Bundle\ApiBundle` to `Akeneo\Tool\Bundle\ApiBundle`
 - Move namespace `Pim\Component\Batch` to `Akeneo\Tool\Component\Batch`

@@ -1,8 +1,8 @@
 <?php
 namespace Pim\Component\Catalog\Factory\Value;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Factory that creates product values.

@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Catalog\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+
 /**
  * Variant product. An entity that belongs to a family variant and that contains flexible values,
  * completeness, categories, associations and much more...

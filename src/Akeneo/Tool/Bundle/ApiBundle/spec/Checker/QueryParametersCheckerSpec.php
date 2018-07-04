@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersChecker;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

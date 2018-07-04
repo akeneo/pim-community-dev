@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

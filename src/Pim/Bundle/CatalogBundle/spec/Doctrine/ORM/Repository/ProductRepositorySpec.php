@@ -2,13 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
 
@@ -19,7 +18,7 @@ class ProductRepositorySpec extends ObjectBehavior
         ClassMetadata $class,
         ConfigurationRegistryInterface $registry
     ) {
-        $class->name = 'Pim\Component\Catalog\Model\Product';
+        $class->name = Product::class;
         $this->beConstructedWith($em, $class);
     }
 
@@ -64,7 +63,7 @@ class ProductRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->select('p')->willReturn($queryBuilder);
-        $queryBuilder->from('Pim\Component\Catalog\Model\Product', 'p', null)->willReturn($queryBuilder);
+        $queryBuilder->from(Product::class, 'p', null)->willReturn($queryBuilder);
         $queryBuilder->select('COUNT(p.id)')->willReturn($queryBuilder);
 
         $queryBuilder->getQuery()->willReturn($query);

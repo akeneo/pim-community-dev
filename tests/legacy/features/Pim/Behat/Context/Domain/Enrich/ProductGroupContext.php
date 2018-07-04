@@ -2,13 +2,13 @@
 
 namespace Pim\Behat\Context\Domain\Enrich;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use Pim\Component\Catalog\Model\GroupInterface;
 
 class ProductGroupContext extends PimContext
 {

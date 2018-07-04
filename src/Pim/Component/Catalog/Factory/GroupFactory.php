@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Factory;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 
 /**

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Collections\Collection;
@@ -9,7 +10,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\PersistentCollection as ORMPersistentCollection;
 use Doctrine\ORM\UnitOfWork;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Detacher, detaches an object from its ObjectManager

@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Normalizer\Indexing;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
