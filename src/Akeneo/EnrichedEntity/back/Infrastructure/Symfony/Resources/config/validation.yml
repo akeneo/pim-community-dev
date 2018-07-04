@@ -3,3 +3,9 @@ Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntityCommand:
         identifier:
             - NotBlank: ~
             - Regex: {pattern: '/^[a-zA-Z0-9_]+$/', message: 'pim_enriched_entity.enriched_entity.validation.identifier.pattern'}
+
+Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand:
+    properties:
+        identifier:
+            - NotBlank: ~
+            - Regex: {pattern: '/^[a-zA-Z0-9_]+$/', message: 'pim_enriched_entity.record.validation.identifier.pattern'}

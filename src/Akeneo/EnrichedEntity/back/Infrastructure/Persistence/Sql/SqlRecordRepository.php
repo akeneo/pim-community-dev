@@ -17,7 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -25,7 +25,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlRecordRepository implements RecordRepository
+class SqlRecordRepository implements RecordRepositoryInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -68,21 +68,28 @@ SQL;
         }
     }
 
-    public function getByIdentifier(RecordIdentifier $identifier): Record
-    {
+    public function getByIdentifier(
+        RecordIdentifier $identifier,
+        EnrichedEntityIdentifier $enrichedEntityIdentifier
+    ): Record {
         $fetch = <<<SQL
         SELECT identifier, enriched_entity_identifier, labels
         FROM akeneo_enriched_entity_record
-        WHERE identifier = :identifier;
+        WHERE identifier = :identifier
+        AND enriched_entity_identifier = :enriched_entity_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
-            ['identifier' => (string) $identifier]
+            [
+                'identifier' => (string) $identifier,
+                'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
+            ]
         );
         $result = $statement->fetch();
         $statement->closeCursor();
 
         if (!$result) {
+            // TODO: Here we only give the Record identifier, it's not enough to identify it
             throw EntityNotFoundException::withIdentifier(Record::class, (string) $identifier);
         }
 
@@ -97,7 +104,8 @@ SQL;
         $platform = $this->sqlConnection->getDatabasePlatform();
 
         $labels = json_decode($normalizedLabels, true);
-        $identifier = Type::getType(Type::STRING)->convertToPHPValue($identifier, $platform);
+        $identifier = Type::getType(Type::STRING)
+            ->convertToPHPValue($identifier, $platform);
         $enrichedEntityIdentifier = Type::getType(Type::STRING)
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
 
