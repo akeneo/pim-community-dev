@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
+namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Query\FindRecordDetailsInterface;
-use Akeneo\EnrichedEntity\back\Domain\Query\RecordDetails;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Query\FindRecordDetailsInterface;
+use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -42,8 +42,8 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
      * {@inheritdoc}
      */
     public function __invoke(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
-        RecordIdentifier $recordIdentifier
+        RecordIdentifier $recordIdentifier,
+        EnrichedEntityIdentifier $enrichedEntityIdentifier
     ): ?RecordDetails {
         $result = $this->fetchResult($enrichedEntityIdentifier, $recordIdentifier);
 

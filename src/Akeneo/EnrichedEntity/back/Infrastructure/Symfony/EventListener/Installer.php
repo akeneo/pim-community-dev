@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Symfony\EventListener;
+namespace Akeneo\EnrichedEntity\Infrastructure\Symfony\EventListener;
 
 use Doctrine\DBAL\Connection;
 use Pim\Bundle\InstallerBundle\Event\InstallerEvents;

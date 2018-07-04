@@ -1,4 +1,3 @@
-- remove `back` from the php namespace
 - See if it's possible to have the routing declared only in our bundle (we will see later with black hawks how to do it)
 - Application/EnrichedEntity/Show/ShowEnrichedEntityHandler should handle only one command it should maybe return only a ReadModel
 - Discuss about Domain/Model/EnrichedEntity/EnrichedEntity getters: they break the tell don't ask principle.
@@ -14,6 +13,7 @@
 - add session storage for tab situation
 - rework acceptance tests when the locale switcher will work
 - fix the form to take into account what the backend answered
+- test integration controller edit
 
 DONE:
 
@@ -22,3 +22,4 @@ DONE:
 - add loading placeholder [DONE]
 - rename hidrate -> hydrate [DONE]
 - rework form.tsx to not remove labels [DONE]
+- remove `back` from the php namespace [DONE]

@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Remover\CategoryProjectRemover;

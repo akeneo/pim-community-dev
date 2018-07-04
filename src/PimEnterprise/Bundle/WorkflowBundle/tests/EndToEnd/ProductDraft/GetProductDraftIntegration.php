@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\ProductDraft;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;

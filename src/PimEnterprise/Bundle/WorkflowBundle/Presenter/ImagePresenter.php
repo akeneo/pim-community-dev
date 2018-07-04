@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Present images side by side

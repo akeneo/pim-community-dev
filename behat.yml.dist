@@ -190,11 +190,9 @@ acceptance:
                 tags: '@acceptance-back'
         enriched-entity:
             paths:
-                - '%paths.base%/tests/features/enriched-entity'
+                - '%paths.base%/src/Akeneo/EnrichedEntity/tests/back/Acceptance/features'
             contexts_services:
-                - test.enriched_entity.enriched_entity_grid.context
-                - test.enriched_entity.enriched_entity_details.context
-                - test.enriched_entity.enriched_entity_edit.context
+                - akeneo_enrichedentity.tests.back.acceptance.context.edit_enriched_entity_context
             filters:
                 tags: '@acceptance-back'
         volume-monitoring:
@@ -230,10 +228,10 @@ acceptance:
     extensions:
         FriendsOfBehat\ContextServiceExtension:
            imports:
-               - "tests/back/Acceptance/Resources/config/behat/services.yml"
                - "vendor/akeneo/pim-community-dev/tests/back/Acceptance/Resources/config/behat/services.yml"
                - "vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/behat/services.yml"
                - "src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/behat/services.yml"
+               - "src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/behat/services.yml"
         FriendsOfBehat\CrossContainerExtension: ~
         FriendsOfBehat\SymfonyExtension:
             kernel:

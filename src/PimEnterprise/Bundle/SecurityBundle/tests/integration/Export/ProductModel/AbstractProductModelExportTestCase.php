@@ -2,10 +2,10 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\tests\integration\Export\ProductModel;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
-use Pim\Component\Catalog\Model\ProductModel;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 
 abstract class AbstractProductModelExportTestCase extends TestCase
 {

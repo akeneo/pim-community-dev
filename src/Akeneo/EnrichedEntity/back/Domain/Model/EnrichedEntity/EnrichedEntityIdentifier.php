@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity;
+namespace Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

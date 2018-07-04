@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Doctrine\Common\Collections\Collection;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
 
@@ -53,8 +54,8 @@ class GroupProductValuesExtension extends \Twig_Extension
     /**
      * Group product values
      *
-     * @param Collection|\Pim\Component\Catalog\Model\ValueInterface[] $values
-     * @param string                                                   $locale
+     * @param Collection|ValueInterface[] $values
+     * @param string                      $locale
      *
      * @return array
      */

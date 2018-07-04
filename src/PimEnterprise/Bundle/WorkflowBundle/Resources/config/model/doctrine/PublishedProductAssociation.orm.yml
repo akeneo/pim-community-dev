@@ -32,7 +32,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProductAssociation:
                     onDelete: CASCADE
     manyToMany:
         groups:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
             joinTable:
                 name: pimee_workflow_published_product_association_published_group
                 joinColumns:

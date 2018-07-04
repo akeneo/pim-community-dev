@@ -10,10 +10,3 @@ parameters:
 
     pimee_product_asset.repository.channel_configuration:
         class: AkeneoEnterprise\Test\Acceptance\ProductAsset\ChannelConfiguration\InMemoryChannelConfigurationRepository
-
-services:
-    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryEnrichedEntityRepository
-
-    akeneo_enrichedentity.infrastructure.persistence.record:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryRecordRepository

@@ -11,6 +11,8 @@ use Akeneo\Asset\Component\Model\TagInterface;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -22,7 +24,6 @@ use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Context\Spin\SpinCapableTrait;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
@@ -553,7 +554,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Component\Catalog\Model\ValueInterface
+     * @return ValueInterface
      */
     protected function getPublishedProductValue($identifier, $attribute, $locale = null, $scope = null)
     {

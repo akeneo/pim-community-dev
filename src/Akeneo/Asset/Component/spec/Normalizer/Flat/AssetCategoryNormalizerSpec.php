@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Asset\Component\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

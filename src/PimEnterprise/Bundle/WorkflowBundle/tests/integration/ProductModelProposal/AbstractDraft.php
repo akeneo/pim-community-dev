@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration\ProductModelProposal;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AbstractDraft extends TestCase

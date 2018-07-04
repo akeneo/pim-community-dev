@@ -11,10 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Domain\Query;
+namespace Akeneo\EnrichedEntity\Domain\Query;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
+/**
+ * Find records by their Enriched Entity identifier
+ *
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ */
 interface FindRecordItemsForEnrichedEntityInterface
 {
     /**

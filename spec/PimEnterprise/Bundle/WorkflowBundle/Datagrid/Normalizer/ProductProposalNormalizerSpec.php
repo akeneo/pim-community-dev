@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
