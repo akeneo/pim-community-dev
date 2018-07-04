@@ -197,7 +197,7 @@ acceptance:
                 tags: '@acceptance-back'
         suggest-data:
             paths:
-                - 'tests/features/suggest-data'
+                - 'src/Akeneo/Pim/Automation/SuggestData/tests/features'
             contexts_services:
                 - 'akeneo_acceptance.context.suggest_data.pim_ai'
             filters:
