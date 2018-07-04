@@ -28,12 +28,12 @@ class ValidatePimAiConnectionSpec extends ObjectBehavior
         $this->shouldHaveType(ValidatePimAiConnection::class);
     }
 
-    function it_is_a_connection_valitidy_checker()
+    function it_is_a_connection_validity_checker()
     {
         $this->shouldImplement(ValidateConnectionInterface::class);
     }
 
-    public function it_checks_that_a_pim_ai_connectionis_valid()
+    public function it_checks_that_a_pim_ai_connection_is_valid()
     {
         $this->validate(
             new SaveConfiguration(

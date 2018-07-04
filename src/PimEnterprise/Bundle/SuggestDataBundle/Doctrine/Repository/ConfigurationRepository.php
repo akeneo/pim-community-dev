@@ -129,6 +129,7 @@ final class ConfigurationRepository implements ConfigurationRepositoryInterface
                     $oroConfigValue->setValue($value);
 
                     $oroConfigValueAreadyExists = true;
+                    break;
                 }
             }
 
