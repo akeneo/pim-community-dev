@@ -116,29 +116,7 @@ class EnterpriseFeatureContext extends FeatureContext
             }
         }
 
-        throw $this->createExpectationException('"Affected by a rule" icon was not found');
-    }
-
-    /**
-     * @param string $attribute
-     *
-     * @throws ExpectationException
-     *
-     * @return bool
-     *
-     * @Then /^I should not see that (.*) is a smart$/
-     */
-    public function iShouldNotSeeThatAttributeIsASmart($attribute)
-    {
-        $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
-
-        foreach ($icons as $icon) {
-            if ($icon->getParent()->hasClass('from-smart')) {
-                throw $this->createExpectationException('"Affected by a rule icon" was found');
-            }
-        }
-
-        return true;
+        throw $this->createExpectationException('Affected by a rule icon was not found');
     }
 
     /**
@@ -294,16 +272,6 @@ class EnterpriseFeatureContext extends FeatureContext
             return $this->getSession()->getPage()
                 ->find('css', '#grid-asset-picker-grid[data-rendered="true"]');
         }, 'Cannot find asset picker grid');
-    }
-
-    /**
-     * @param string $page
-     *
-     * @When /^I set the current page to "([^"]*)"$/
-     */
-    public function iSetTheCurrentPageTo($page)
-    {
-        $this->getMainContext()->getSubcontext('navigation')->setCurrentPage($page);
     }
 
     /**

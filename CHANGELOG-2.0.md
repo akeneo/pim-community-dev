@@ -1,8 +1,10 @@
-# 2.0.x
+# 2.0.29 (2018-07-04)
 
 ## Bug fixes
 
 - PIM-7460: Fix locale flag for locales with two underscores like az_cyrl_AZ.
+- PIM-7441: fix slowness of asset mass upload when too many assets
+- PIM-7479: Fix doctrine mapping for PublishedProductAssociation
  
 # 2.0.28 (2018-06-26)
 
