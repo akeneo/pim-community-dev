@@ -9,7 +9,6 @@ parameters:
     pim_enrich.controller.rest.currency.class:                Pim\Bundle\EnrichBundle\Controller\Rest\CurrencyController
     pim_enrich.controller.rest.form_extension.class:          Pim\Bundle\EnrichBundle\Controller\Rest\FormExtensionController
     pim_enrich.controller.rest.group.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\GroupController
-    pim_enrich.controller.rest.group_type.class:              Pim\Bundle\EnrichBundle\Controller\Rest\GroupTypeController
     pim_enrich.controller.rest.measures.class:                Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
     pim_enrich.controller.rest.media.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\MediaController
     pim_enrich.controller.rest.product.class:                 Pim\Bundle\EnrichBundle\Controller\Rest\ProductController
@@ -106,19 +105,6 @@ services:
             - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@oro_security.security_facade'
             - {'import': 'pim_importexport_import_profile_show', 'export': 'pim_importexport_export_profile_show'}
-
-    pim_enrich.controller.rest.group_type:
-        class: '%pim_enrich.controller.rest.group_type.class%'
-        arguments:
-            - '@pim_catalog.repository.group_type'
-            - '@pim_internal_api_serializer'
-            - '@pim_catalog.remover.group_type'
-            - '@pim_catalog.updater.group_type'
-            - '@pim_catalog.saver.group_type'
-            - '@validator'
-            - '@pim_user.context.user'
-            - '@pim_catalog.factory.group_type'
-            - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.category:
         class: '%pim_enrich.controller.rest.category.class%'
