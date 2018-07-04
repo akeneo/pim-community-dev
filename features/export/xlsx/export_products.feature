@@ -43,6 +43,8 @@ Feature: Export products in XLSX
     And I am on the "xlsx_tablet_product_export" export job page
     And I launch the export job
     And I wait for the "xlsx_tablet_product_export" job to finish
+    Then I should see the text "Read 2"
+    And I should see the text "Written 2"
     Then exported xlsx file of "xlsx_tablet_product_export" should contain:
       | sku          | additional_colors | categories                 | color | cost-EUR | cost-GBP | cost-USD | country_of_manufacture | customer_rating-tablet | datasheet | description-en_GB-tablet | description-en_US-tablet | enabled | family  | groups | handmade | image                                 | legend-en_GB | legend-en_US | manufacturer     | material | name-en_GB    | name-en_US    | number_in_stock-tablet | price-EUR | price-GBP | price-USD | release_date-tablet | size   | thumbnail | washing_temperature | washing_temperature-unit | weight | weight-unit |
       | tshirt-white |                   | men_2013,men_2014,men_2015 | white | 10.00    | 30.00    | 20.00    | usa                    | 2                      |           |                          | A stylish white t-shirt  | 1       | tshirts |        | 1        | files/tshirt-white/image/SNKRS-1R.png |              |              | american_apparel | cotton   | White t-shirt | White t-shirt | 10                     | 10.00     | 9.00      | 15.00     | 2016-10-12          | size_M |           |                     |                          | 5      | KILOGRAM    |

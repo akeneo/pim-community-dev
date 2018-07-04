@@ -169,7 +169,8 @@ abstract class AbstractItemMediaWriter implements
         $filePath = $parameters->get($this->jobParamFilePath);
 
         if (false !== strpos($filePath, '%')) {
-            $defaultPlaceholders = ['%datetime%' => date($this->datetimeFormat), '%job_label%' => ''];
+            $datetime = $this->stepExecution->getStartTime()->format($this->datetimeFormat);
+            $defaultPlaceholders = ['%datetime%' => $datetime, '%job_label%' => ''];
             $jobExecution = $this->stepExecution->getJobExecution();
 
             if (isset($placeholders['%job_label%'])) {
