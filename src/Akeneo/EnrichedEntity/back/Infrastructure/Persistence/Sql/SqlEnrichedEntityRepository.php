@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Infrastructure\Persistence\Sql;
+namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\EnrichedEntity\back\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 

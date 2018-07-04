@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Model;
 
-use Pim\Component\Catalog\Model\AbstractCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractCompleteness;
 
 /**
  * Published product completeness

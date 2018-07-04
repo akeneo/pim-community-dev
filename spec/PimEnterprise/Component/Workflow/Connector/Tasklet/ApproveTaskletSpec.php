@@ -2,12 +2,13 @@
 
 namespace spec\PimEnterprise\Component\Workflow\Connector\Tasklet;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
@@ -20,7 +21,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 class ApproveTaskletSpec extends ObjectBehavior
 {

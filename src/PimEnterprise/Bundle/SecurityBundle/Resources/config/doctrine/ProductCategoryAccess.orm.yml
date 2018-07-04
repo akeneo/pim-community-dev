@@ -31,7 +31,7 @@ PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess:
                 default: false
     manyToOne:
         category:
-            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
             joinColumns:
                 category_id:
                     referencedColumnName: id

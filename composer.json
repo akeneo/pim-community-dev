@@ -14,7 +14,8 @@
             "": "src/"
         },
         "psr-4": {
-            "Pim\\Upgrade\\": "upgrades/"
+            "Pim\\Upgrade\\": "upgrades/",
+            "Akeneo\\EnrichedEntity\\": "src/Akeneo/EnrichedEntity/back"
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/back/Integration/AppKernelTest.php"],
         "exclude-from-classmap": [

@@ -1,0 +1,23 @@
+services:
+    # Repositories
+    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
+        class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryEnrichedEntityRepository
+
+    akeneo_enrichedentity.infrastructure.persistence.record:
+        class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryRecordRepository
+
+    pim_user.repository.user:
+        class: Akeneo\Test\Acceptance\User\InMemoryUserRepository
+
+    # Query functions
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
+        class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryFindEnrichedEntityItems
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
+        class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryFindEnrichedEntityDetails
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
+        class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryFindRecordDetails
+
+    akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
+        class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryFindRecordItemsForEnrichedEntity

@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocale;
 use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocaleValidator;

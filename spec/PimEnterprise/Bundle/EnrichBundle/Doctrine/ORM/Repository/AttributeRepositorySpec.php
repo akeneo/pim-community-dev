@@ -10,7 +10,7 @@ use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Filter\AttributeViewRightFilter;
 
 class AttributeRepositorySpec extends ObjectBehavior

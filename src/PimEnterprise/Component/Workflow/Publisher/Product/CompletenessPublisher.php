@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Publisher\Product;
 
-use Pim\Component\Catalog\Model\CompletenessInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\CompletenessInterface;
 use PimEnterprise\Component\Workflow\Publisher\PublisherInterface;
 
 /**

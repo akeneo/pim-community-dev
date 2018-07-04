@@ -52,7 +52,7 @@ script:
     - yarn acceptance tests/features
     - yarn acceptance vendor/akeneo/pim-community-dev/tests/features
     - vendor/bin/behat -p acceptance --no-interaction
-    - vendor/bin/phpunit -c app tests/back/
+    - vendor/bin/phpunit -c app src/Akeneo/EnrichedEntity/tests/back/Integration/
     - vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
     - vendor/bin/phpspec run --no-interaction
 

@@ -9,8 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductModel;
-use Pim\Component\Catalog\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 

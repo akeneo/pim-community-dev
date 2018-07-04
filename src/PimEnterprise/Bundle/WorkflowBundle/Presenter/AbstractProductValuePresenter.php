@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Pim\Component\Catalog\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
 /**
  * A product value diff presenter

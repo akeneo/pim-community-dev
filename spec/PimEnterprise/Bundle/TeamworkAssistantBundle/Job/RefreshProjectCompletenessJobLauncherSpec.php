@@ -6,7 +6,7 @@ use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

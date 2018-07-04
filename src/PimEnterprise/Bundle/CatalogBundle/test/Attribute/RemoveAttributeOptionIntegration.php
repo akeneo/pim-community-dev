@@ -8,7 +8,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 
 class RemoveAttributeOptionIntegration extends TestCase
 {

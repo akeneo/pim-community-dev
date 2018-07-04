@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Applier\DraftApplier;
 use PimEnterprise\Component\Workflow\Event\EntityWithValuesDraftEvents;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;

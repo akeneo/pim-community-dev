@@ -6,7 +6,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;

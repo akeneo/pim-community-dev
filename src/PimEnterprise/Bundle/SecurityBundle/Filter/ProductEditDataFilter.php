@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter as BaseProductEditFilter;
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**

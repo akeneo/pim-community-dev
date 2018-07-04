@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductProposalIndexer;

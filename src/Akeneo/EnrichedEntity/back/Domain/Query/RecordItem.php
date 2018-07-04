@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\back\Domain\Query;
+namespace Akeneo\EnrichedEntity\Domain\Query;
 
-use Akeneo\EnrichedEntity\back\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\back\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\back\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 
 /**
  * Read model representing a record within the list.

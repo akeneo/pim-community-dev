@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Component\SuggestData\Connector\Processor\Normalization;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\SuggestData\Connector\Processor\Normalization\PushProductProcessor;
 
 class PushProductProcessorSpec extends ObjectBehavior

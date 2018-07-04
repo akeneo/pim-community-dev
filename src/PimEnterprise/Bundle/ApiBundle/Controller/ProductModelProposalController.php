@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\ApiBundle\Controller;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;

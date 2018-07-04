@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;

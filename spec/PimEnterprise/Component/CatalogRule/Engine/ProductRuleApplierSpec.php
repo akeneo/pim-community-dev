@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver;
 use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsUpdater;
 use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsValidator;
