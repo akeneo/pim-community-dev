@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\SuggestData\Connector\Processor\Normalization;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Do nothing for the moment
