@@ -34,7 +34,7 @@ Feature: Edit an enriched entity
   Scenario: Updating an enriched entity when the backend answer an error
     When the user changes the enriched entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
-    Then the enriched entity "designer" won't be saved
+    Then the enriched entity "designer" save will fail
     And the user saves the changes
     And the user should see the saved notification error
 

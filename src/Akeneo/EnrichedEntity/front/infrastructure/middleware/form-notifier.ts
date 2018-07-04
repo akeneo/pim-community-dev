@@ -4,10 +4,7 @@ const messenger = require('oro/messenger');
 
 export default () => () => (next: any) => (action: any) => {
   if ('POST_SAVE' === action.type) {
-    messenger.notify(
-      'success',
-      __('pim_enrich.entity.fallback.flash.update.success')
-    );
+    messenger.notify('success', __('pim_enrich.entity.fallback.flash.update.success'));
 
     return;
   }
@@ -19,10 +16,7 @@ export default () => () => (next: any) => (action: any) => {
       console.error('Errors:', message);
     }
 
-    messenger.notify(
-      'error',
-      __('pim_enrich.entity.fallback.flash.update.fail')
-    );
+    messenger.notify('error', __('pim_enrich.entity.fallback.flash.update.fail'));
 
     return;
   }
