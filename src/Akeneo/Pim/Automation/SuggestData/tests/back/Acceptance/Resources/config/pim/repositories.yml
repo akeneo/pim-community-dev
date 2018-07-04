@@ -1,5 +1,5 @@
 services:
     pimee_suggest_data.repository.configuration:
-        class: 'Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Repository\InMemoryConfigurationRepository'
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository\InMemoryConfigurationRepository'
         arguments:
             - []

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Repository;
+namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;

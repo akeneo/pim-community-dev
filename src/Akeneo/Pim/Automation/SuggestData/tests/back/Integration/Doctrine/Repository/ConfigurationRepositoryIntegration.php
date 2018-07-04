@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\tests\back\Integration\Doctrine\Repository;
+namespace Akeneo\Test\Pim\Automation\SuggestData\Integration\Doctrine\Repository;
 
 use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;
