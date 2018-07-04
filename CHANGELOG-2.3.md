@@ -1,3 +1,7 @@
+# 2.3.x
+
+- PIM-7488: use catalog locale for attributes list in attribute groups
+
 # 2.3.1 (2018-07-04)
 
 ## Enhancements
