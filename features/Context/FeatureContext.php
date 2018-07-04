@@ -456,4 +456,12 @@ class FeatureContext extends MinkContext implements KernelAwareContext
     {
         static::$timeout = $parameters['timeout'];
     }
+
+    /**
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
+     */
+    private function getCurrentPage()
+    {
+        return $this->getSubcontext('navigation')->getCurrentPage();
+    }
 }
