@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Common;
 
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
+use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 
 /**
@@ -36,15 +38,19 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
     }
 
     public function getByIdentifier(
-    ): ?Record {
         RecordIdentifier $identifier,
         EnrichedEntityIdentifier $enrichedEntityIdentifier
+    ): Record {
         if (!isset($this->records[(string) $enrichedEntityIdentifier])) {
-            return null;
+            throw EntityNotFoundException::withIdentifier(EnrichedEntity::class, (string) $enrichedEntityIdentifier);
         }
 
         $records = $this->records[(string) $enrichedEntityIdentifier];
 
-        return $records[(string) $identifier] ?? null;
+        if (!isset($records[(string) $identifier])) {
+            throw EntityNotFoundException::withIdentifier(Record::class, (string) $identifier);
+        }
+
+        return $records[(string) $identifier];
     }
 }
