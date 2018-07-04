@@ -276,3 +276,5 @@
 - Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\GroupType` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\GroupType`
 - Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\GroupType` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\GroupType`
 - Move `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption\AttributeOptionRemovalSubscriber` to `Akeneo\Pim\Structure\Bundle\EventListener\AttributeOptionRemovalSubscriber`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\AttributeOption\AttributeOptionCreateType` to `Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionCreateType`

@@ -248,3 +248,5 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Cont
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\FlatToStandard\\GroupType/Akeneo\\Pim\\Structure\\Component\\ArrayConverter\\FlatToStandard\\GroupType/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Connector\\ArrayConverter\\StandardToFlat\\GroupType/Akeneo\\Pim\\Structure\\Component\\ArrayConverter\\StandardToFlat\\GroupType/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Repository\\GroupTypeRepositoryInterface/Akeneo\\Pim\\Structure\\Component\\Repository\\GroupTypeRepositoryInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber\\AttributeOption\\AttributeOptionRemovalSubscriber/Akeneo\\Pim\\Structure\\Bundle\\EventListener\\AttributeOptionRemovalSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Form\\Type\\AttributeOption\\AttributeOptionCreateType/Akeneo\\Pim\\Structure\\Bundle\\Form\\Type\\AttributeOptionCreateType/g'
