@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
 
 /**
  * Association type entity
@@ -187,7 +187,7 @@ class AssociationType implements AssociationTypeInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation';
+        return 'Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslation';
     }
 
     /**

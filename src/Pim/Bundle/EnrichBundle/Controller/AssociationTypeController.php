@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Component\Catalog\Repository\AssociationRepositoryInterface;

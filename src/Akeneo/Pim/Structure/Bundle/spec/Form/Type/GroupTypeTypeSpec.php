@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
+namespace spec\Akeneo\Pim\Structure\Bundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Akeneo\Pim\Structure\Component\Model\GroupType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

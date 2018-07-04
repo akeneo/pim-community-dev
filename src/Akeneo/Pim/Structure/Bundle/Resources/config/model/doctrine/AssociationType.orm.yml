@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\AssociationType:
+Akeneo\Pim\Structure\Component\Model\AssociationType:
     type: entity
     table: pim_catalog_association_type
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -25,7 +25,7 @@ Pim\Bundle\CatalogBundle\Entity\AssociationType:
                     on: update
     oneToMany:
         translations:
-            targetEntity: Pim\Component\Catalog\Model\AssociationTypeTranslationInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

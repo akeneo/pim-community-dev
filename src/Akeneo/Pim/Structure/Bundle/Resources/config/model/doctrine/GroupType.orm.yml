@@ -1,8 +1,8 @@
-Pim\Bundle\CatalogBundle\Entity\GroupType:
+Akeneo\Pim\Structure\Component\Model\GroupType:
     type: entity
     table: pim_catalog_group_type
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository
+    repositoryClass: Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\GroupTypeRepository
     fields:
         id:
             type: integer
@@ -18,7 +18,7 @@ Pim\Bundle\CatalogBundle\Entity\GroupType:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
             mappedBy: type
         translations:
-            targetEntity: Pim\Component\Catalog\Model\GroupTypeTranslationInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\GroupTypeTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist

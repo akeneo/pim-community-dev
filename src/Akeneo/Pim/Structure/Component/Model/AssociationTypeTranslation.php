@@ -1,18 +1,18 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface;
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
-use Pim\Component\Catalog\Model\GroupTypeTranslationInterface;
 
 /**
- * Group type translation
+ * Association type translation entity
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupTypeTranslation extends AbstractTranslation implements GroupTypeTranslationInterface
+class AssociationTypeTranslation extends AbstractTranslation implements AssociationTypeTranslationInterface
 {
     /** All required columns are mapped through inherited superclass */
 

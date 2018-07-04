@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Akeneo\Pim\Structure\Component\Model;
 
+use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
 
 /**
  * Group type entity
@@ -157,7 +157,7 @@ class GroupType implements GroupTypeInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation';
+        return 'Akeneo\Pim\Structure\Component\Model\GroupTypeTranslation';
     }
 
     /**

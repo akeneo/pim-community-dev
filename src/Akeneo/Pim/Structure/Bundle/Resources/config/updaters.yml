@@ -35,3 +35,6 @@ services:
         class: 'Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater'
         arguments:
             - '@pim_catalog.repository.attribute'
+
+    pim_catalog.updater.group_type:
+        class: 'Akeneo\Pim\Structure\Component\Updater\GroupTypeUpdater'

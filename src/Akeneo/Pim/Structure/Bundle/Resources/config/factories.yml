@@ -18,3 +18,8 @@ services:
             - '@pim_catalog.factory.attribute_requirement'
             - '@pim_catalog.repository.attribute'
             - '%pim_catalog.entity.family.class%'
+
+    pim_catalog.factory.group_type:
+        class: 'Akeneo\Pim\Structure\Component\Factory\GroupTypeFactory'
+        arguments:
+            - '%pim_catalog.entity.group_type.class%'

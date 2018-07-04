@@ -1,9 +1,10 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Normalizer;
+namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
+use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
+use Pim\Bundle\EnrichBundle\Normalizer\StructuredVersionProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

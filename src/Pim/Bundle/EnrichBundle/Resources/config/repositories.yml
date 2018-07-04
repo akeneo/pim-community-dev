@@ -2,7 +2,6 @@ parameters:
     ## Default UI repositories
     pim_enrich.repository.category.class:                Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\CategoryRepository
     pim_enrich.repository.group.class:                   Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupRepository
-    pim_enrich.repository.group_type.class:              Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupTypeRepository
     pim_enrich.repository.association_type.class:        Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AssociationTypeRepository
     pim_enrich.repository.locale.class:                  Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\LocaleRepository
     pim_enrich.repository.channel.class:                 Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\ChannelRepository
@@ -27,13 +26,6 @@ services:
             - '@pim_user.context.user'
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.group.class%'
-
-    pim_enrich.repository.group_type:
-        class: '%pim_enrich.repository.group_type.class%'
-        arguments:
-            - '@pim_user.context.user'
-            - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.group_type.class%'
 
     pim_enrich.repository.association_type:
         class: '%pim_enrich.repository.association_type.class%'

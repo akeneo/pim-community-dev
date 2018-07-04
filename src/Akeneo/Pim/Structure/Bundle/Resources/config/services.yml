@@ -1,3 +1,10 @@
 services:
     pim_catalog.family_variant.add_unique_attributes:
         class: 'Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes'
+
+    pim_enrich.form.type.group_type:
+        class: 'Akeneo\Pim\Structure\Bundle\Form\Type\GroupTypeType'
+        arguments:
+            - '%pim_catalog.entity.group_type.class%'
+        tags:
+            - { name: form.type, alias: pim_enrich_grouptype }

@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Normalizer\Standard;
+namespace spec\Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer;
 
 class GroupTypeNormalizerSpec extends ObjectBehavior
@@ -15,7 +15,7 @@ class GroupTypeNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer');
+        $this->shouldHaveType('Akeneo\Pim\Structure\Component\Normalizer\Standard\GroupTypeNormalizer');
     }
 
     function it_is_a_normalizer()

@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation:
+Akeneo\Pim\Structure\Component\Model\GroupTypeTranslation:
     type: entity
     table: pim_catalog_group_type_translation
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -22,7 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Component\Catalog\Model\GroupTypeInterface
+            targetEntity: Akeneo\Pim\Structure\Component\Model\GroupTypeInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

@@ -268,3 +268,20 @@
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes`
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator`
 - Remove `Pim\Component\Catalog\Model\AttributeTypeTranslationInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\GroupType` to `Akeneo\Pim\Structure\Component\Model\GroupType`
+- Move `Pim\Component\Catalog\Model\GroupTypeInterface` to `Akeneo\Pim\Structure\Component\Model\GroupTypeInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation` to `Akeneo\Pim\Structure\Component\Model\GroupTypeTranslation`
+- Move `Pim\Component\Catalog\Model\GroupTypeTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\GroupTypeTranslationInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AssociationType` to `Akeneo\Pim\Structure\Component\Model\AssociationType`
+- Move `Pim\Component\Catalog\Model\AssociationTypeInterface` to `Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation` to `Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslation`
+- Move `Pim\Component\Catalog\Model\AssociationTypeTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface`
+- Move `Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue` to `Akeneo\Pim\Structure\Component\Model\AttributeOptionValue`
+- Move `Pim\Component\Catalog\Model\AttributeOptionValueInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\GroupTypeRepository`
+- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupTypeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\GroupTypeRepository`
+- Move `Pim\Bundle\EnrichBundle\Form\Type\GroupTypeType` to `Akeneo\Pim\Structure\Bundle\Form\Type\GroupTypeType`
+- Move `Pim\Component\Catalog\Factory\GroupTypeFactory` to `Akeneo\Pim\Structure\Component\Factory\GroupTypeFactory`
+- Move `Pim\Bundle\EnrichBundle\Normalizer\GroupTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\GroupTypeNormalizer`
+- Move `Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\GroupTypeNormalizer`
+- Move `Pim\Component\Catalog\Updater\GroupTypeUpdater` to `Akeneo\Pim\Structure\Component\Updater\GroupTypeUpdater`
