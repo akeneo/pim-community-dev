@@ -1,6 +1,6 @@
 services:
     akeneo_acceptance.context.suggest_data.pim_ai:
-        class: 'AkeneoEnterprise\Test\Acceptance\SuggestData\Context\PimAiContext'
+        class: 'Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Context\PimAiContext'
         arguments:
             - '@__symfony__.pimee_suggest_data.application.activate_connection'
             - '@__symfony__.pimee_suggest_data.repository.configuration'

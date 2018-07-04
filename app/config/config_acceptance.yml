@@ -5,3 +5,4 @@ imports:
     - { resource: ../../vendor/akeneo/pim-community-dev/src/Pim/Bundle/CatalogVolumeMonitoringBundle/tests/Acceptance/Resources/config/pim/queries.yml }
     - { resource: ../../src/Akeneo/Asset/Bundle/tests/Acceptance/Resources/config/pim/queries.yml }
     - { resource: ../../src/Akeneo/EnrichedEntity/tests/back/Acceptance/Resources/config/pim/repositories.yml }
+    - { resource: ../../src/Akeneo/Pim/Automation/SuggestData/tests/back/Acceptance/Resources/config/pim/repositories.yml }

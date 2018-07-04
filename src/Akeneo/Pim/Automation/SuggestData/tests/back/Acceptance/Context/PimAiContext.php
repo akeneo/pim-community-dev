@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Test\Acceptance\SuggestData\Context;
+namespace Akeneo\Pim\Automation\SuggestData\tests\back\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
