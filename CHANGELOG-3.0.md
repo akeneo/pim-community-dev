@@ -3,6 +3,7 @@
 ## Technical improvement
 
 - TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component 
+- GITHUB-8451: Add basic compatibility for PHP 7.2  (Thanks [janmyszkier](https://github.com/janmyszkier)!)
 
 ## Enhancements
 
