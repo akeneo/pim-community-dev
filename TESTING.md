@@ -18,7 +18,7 @@ Characteristics:
 - it tests only one class at a time
 - it performs no [I/O call](#faq)
 - it doesn't require any setup (no fixtures for instance)
-- it mocks only what we own
+- it doubles only what we own
 - it "lives" in memory only
 
 Tools:
@@ -38,8 +38,8 @@ Characteristics:
 - it tests several classes at the same time
 - it uses the business language, which means _Gherkin_ must be used
 - it describes a business use case or it ensures a business rule (it's not about UI, CLI or UX, neither about a text we should see)
-- it mocks only what we own
-- it mocks services performing [I/O calls](#faq)
+- it doubles only what we own
+- it doubles services performing [I/O calls](#faq)
 - it "lives" in memory only
 
 Tools:
@@ -55,7 +55,7 @@ Examples:
 
 Characteristics:
 
-- it has no mock (it tests the real classes)
+- it has no double (it tests the real classes)
 - it may test several classes at the same time
 - it tests only services that perform [I/O calls](#faq)
 
@@ -75,7 +75,7 @@ Characteristics:
 
 - it tests the application as a whole (the backend and the frontend are tested at the same time)
 - it treats the application as a black box
-- it has no mock (it tests the real application)
+- it has no double (it tests the real application)
 - it can require a complex setup (like a browser and Selenium for instance)
 - it tests nominal use cases
 - it tests critical use cases
