@@ -28,7 +28,7 @@ Tools:
 
 Examples:
 
-- backend: TODO
+- backend: test the generation of the completeness from a product
 - frontend: test the dropdown component
 
 ### Acceptance - test a business use case or ensure a business rule
@@ -49,8 +49,7 @@ Tools:
 
 Examples:
 
-- backend: TODO
-- frontend: TODO
+- backend/frontend: test the completeness has been calculated when the user filled in values in a product
 
 ### Integration - test the integration of a brick with the outside world
 
@@ -89,6 +88,7 @@ Examples:
 
 - test that a user can fill in product values via the UI
 - test that an import can be launched via the CLI
+- test the response of a `/GET` product from the web API
 
 
 ## It's all about architecture
