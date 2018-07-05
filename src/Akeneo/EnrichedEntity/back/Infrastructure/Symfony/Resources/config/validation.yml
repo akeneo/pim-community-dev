@@ -16,3 +16,9 @@ Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand:
     properties:
         identifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+
+Akeneo\Pim\Structure\Component\Model\Attribute:
+    constraints:
+        - Akeneo\Pim\EnrichedEntity\Component\Validator\Constraints\IsEnrichedEntityConfigured:
+            groups:
+                - akeneo_enriched_entity_collection

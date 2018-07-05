@@ -106,13 +106,18 @@ SQL;
 REPLACE INTO `akeneo_enriched_entity_enriched_entity` (`identifier`, `labels`)
 VALUES
   ('designer', '{"en_US": "Designer", "fr_FR": "Concepteur"}'),
-  ('brand', '{}');
+  ('brand', '{"fr_FR": "Marque"}');
 
 REPLACE INTO `akeneo_enriched_entity_record` (`identifier`, `enriched_entity_identifier`, `labels`, `data`)
 VALUES
-  ('starck', 'designer', '{"en_US": "Starck"}', '{"name": "Tony Stark"}'),
-  ('bob', 'designer', '{"en_US": "Sponge Bob", "fr_FR": "Bob l\'éponge"}','{"name": "Bob the Builder"}'),
-  ('cogip', 'brand', '{"fr_FR": "Cogip"}','{"country": "France"}');
+  ('starck',   'designer', '{"en_US": "Philippe Starck"}', '{"description": "Famous for the design of the Freebox"}'),
+  ('dyson',    'designer', '{"en_US": "James Dyson"}', '{"description": "James Dyson, creator of dyson"}'),
+  ('newson',   'designer', '{"en_US": "Marc Newson"}', '{"description": "Born in australia"}'),
+  ('vignelli', 'designer', '{"en_US": "Massimo Vignelli"}', '{"description": "Famous display designer"}'),
+  ('arad',     'designer', '{"en_US": "Ron Arad"}', '{"description": "A designer close to the architectural world"}'),
+  ('cogip',    'brand',    '{"fr_FR": "Cogip"}','{"country": "France"}'),
+  ('sbep',     'brand',    '{"fr_FR": "La Société Belgo-Egyptienne d\'Élevage de Poulet"}','{"country": "egypt"}'),
+  ('scep',     'brand',    '{"fr_FR": "Société Cairote d\'Élevage de Poulets"}','{"country": "egypt"}');
 SQL;
 
         $this->dbal->exec($sql);
