@@ -1,0 +1,6 @@
+services:
+    pimee_suggest_data.handler.save_configuration:
+        class: 'Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler'
+        arguments:
+            - '@pimee_suggest_data.connection.is_valid.pim_ai'
+            - '@pimee_suggest_data.repository.configuration'

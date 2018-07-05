@@ -1,6 +1,0 @@
-services:
-    pimee_suggest_data.handler.save_configuration:
-        class: 'PimEnterprise\Component\SuggestData\Command\SaveConfigurationHandler'
-        arguments:
-            - '@pimee_suggest_data.connection.is_valid.pim_ai'
-            - '@pimee_suggest_data.repository.configuration'

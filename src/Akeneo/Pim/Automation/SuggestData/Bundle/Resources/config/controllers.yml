@@ -1,0 +1,6 @@
+services:
+    pimee_suggest_data.controller.suggest_data:
+        class: Akeneo\Pim\Automation\SuggestData\Bundle\Controller\Rest\SuggestDataController
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pimee_suggest_data.data_provider.factory'

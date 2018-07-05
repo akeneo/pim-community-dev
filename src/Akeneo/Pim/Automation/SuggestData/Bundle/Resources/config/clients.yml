@@ -1,0 +1,21 @@
+services:
+    pimee_suggest_data.pimai_client.uri_generator:
+        class: Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\UriGenerator
+        public: false
+        arguments:
+            - 'http://localhost:8080'
+
+    pimee_suggest_data.pimai_client.enrichment_webservice:
+        class: Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Enrichment\EnrichmentWebservice
+        arguments:
+            - '@pimee_suggest_data.pimai_client.uri_generator'
+            - !service
+              class: GuzzleHttp\Client
+
+    pimee_suggest_data.pimai_client.subscribe_webservice:
+        class: Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription\Memory
+#        class: Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription\SubscriptionWebservice
+#        arguments:
+#            - '@pimee_suggest_data.pimai_client.uri_generator'
+#            - !service
+#              class: GuzzleHttp\Client

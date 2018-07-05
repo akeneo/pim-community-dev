@@ -1,0 +1,9 @@
+services:
+    akeneo_acceptance.context.suggest_data.pim_ai:
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\PimAiContext'
+        arguments:
+            - '@__symfony__.pimee_suggest_data.application.activate_connection'
+            - '@__symfony__.pimee_suggest_data.repository.configuration'
+            - '@__symfony__.pimee_suggest_data.connection.get_normalized_configuration'
+        tags:
+            - { name: 'fob.context_service' }
