@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\SuggestDataBundle\Controller\Rest;
+namespace Akeneo\Pim\Automation\SuggestData\Bundle\Controller\Rest;
 
-use PimEnterprise\Component\SuggestData\Application\ActivateSuggestDataConnection;
-use PimEnterprise\Component\SuggestData\Application\GetNormalizedConfiguration;
-use PimEnterprise\Component\SuggestData\Application\GetSuggestDataConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Component\Application\ActivateSuggestDataConnection;
+use Akeneo\Pim\Automation\SuggestData\Component\Application\GetNormalizedConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Component\Application\GetSuggestDataConnectionStatus;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -94,13 +94,13 @@ class PimAiConnectionController
             $this->activateSuggestDataConnection->activate($code, $configurationFields);
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse([
-                'successful' => false,
+                'status' => 'error',
                 'message' => $this->translator->trans('pimee_suggest_data.connection.pim_ai.error'),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new JsonResponse([
-            'successful' => true,
+            'status' => 'success',
             'message' => $this->translator->trans('pimee_suggest_data.connection.pim_ai.success'),
         ]);
     }

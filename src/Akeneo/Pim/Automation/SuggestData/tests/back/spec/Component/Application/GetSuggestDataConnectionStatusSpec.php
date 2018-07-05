@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Component\SuggestData\Application;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Application;
 
+use Akeneo\Pim\Automation\SuggestData\Component\Application\ValidateConnectionInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
+use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\SuggestData\Application\ValidateConnectionInterface;
-use PimEnterprise\Component\SuggestData\Model\Configuration;
-use PimEnterprise\Component\SuggestData\Repository\ConfigurationRepositoryInterface;
 use Prophecy\Argument;
 
 /**

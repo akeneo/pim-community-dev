@@ -15,10 +15,11 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Application\ActivateSuggestDataConnection;
 use Akeneo\Pim\Automation\SuggestData\Component\Application\GetNormalizedConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Component\Application\GetSuggestDataConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
-use PimEnterprise\Component\SuggestData\Application\GetSuggestDataConnectionStatus;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -58,7 +59,7 @@ class PimAiContext implements Context
     }
 
     /**
-     * @Given PIM.ai is not active anymore
+     * @Given Akeneo PIM is not connected to PIM.ai anymore
      */
     public function pimAiIsNotActiveAnymore(): void
     {
@@ -70,8 +71,8 @@ class PimAiContext implements Context
     }
 
     /**
-     * @Given PIM.ai was activated
-     * @When /^a user (re)?activates PIM.ai$/
+     * @Given Akeneo PIM is connected to PIM.ai
+     * @When /^a system administrator tries to (re)?connect Akeneo PIM to PIM.ai$/
      */
     public function activatePimAi(): void
     {
@@ -81,7 +82,7 @@ class PimAiContext implements Context
     }
 
     /**
-     * @When a user tries to activate PIM.ai with an invalid activation code
+     * @When a system administrator tries to connect Akeneo PIM to PIM.ai with an invalid activation code
      */
     public function tryToActivatePimAiWithInvalidToken(): void
     {
@@ -93,7 +94,7 @@ class PimAiContext implements Context
     /**
      * @param string|null $not
      *
-     * @Then /^PIM.ai is( not)? activated$/
+     * @Then /^Akeneo PIM connection to PIM.ai is( not)? activate$/
      */
     public function isPimAiActivated(string $not = null)
     {

@@ -11,9 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\SuggestData\Application;
+namespace Akeneo\Pim\Automation\SuggestData\Component\Application;
 
-use PimEnterprise\Component\SuggestData\Repository\ConfigurationRepositoryInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Application\ValidateConnectionInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 
 /**
  * Checks if a suggest data connection is active or not.

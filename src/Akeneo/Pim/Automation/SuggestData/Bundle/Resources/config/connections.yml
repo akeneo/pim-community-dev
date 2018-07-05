@@ -13,7 +13,7 @@ services:
             - '@pimee_suggest_data.repository.configuration'
 
     pimee_suggest_data.connection.get_status:
-        class: 'PimEnterprise\Component\SuggestData\Application\GetSuggestDataConnectionStatus'
+        class: 'Akeneo\Pim\Automation\SuggestData\Component\Application\GetSuggestDataConnectionStatus'
         arguments:
             - '@pimee_suggest_data.repository.configuration'
             - '@pimee_suggest_data.connection.is_valid.pim_ai'

@@ -5,18 +5,18 @@ Feature: Configure the connection to PIM.ai
   I want to setup the PIM connection to PIM.ai
 
   Scenario: Setup the connection to PIM.ai
-    When a user activates PIM.ai
-    Then PIM.ai is activated
+    When a system administrator tries to connect Akeneo PIM to PIM.ai
+    Then Akeneo PIM connection to PIM.ai is activate
 
   Scenario: Reactivate the connection to PIM.ai
-    Given PIM.ai is not active anymore
-    When a user reactivates PIM.ai
-    Then PIM.ai is activated
+    Given Akeneo PIM is not connected to PIM.ai anymore
+    When a system administrator tries to reconnect Akeneo PIM to PIM.ai
+    Then Akeneo PIM connection to PIM.ai is activate
 
   Scenario: Cannot setup a connection to PIM.ai with an invalid token
-    When a user tries to activate PIM.ai with an invalid activation code
-    Then PIM.ai is not activated
+    When a system administrator tries to connect Akeneo PIM to PIM.ai with an invalid activation code
+    Then Akeneo PIM connection to PIM.ai is not activate
 
   Scenario: Retrieve an activated connection
-    Given PIM.ai was activated
+    Given Akeneo PIM is connected to PIM.ai
     Then PIM.ai configuration can be retrieved

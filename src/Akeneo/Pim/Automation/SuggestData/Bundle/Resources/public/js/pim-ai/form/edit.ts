@@ -1,7 +1,7 @@
 import * as _ from 'underscore';
 import BaseView = require('pimenrich/js/view/base');
 import {EventsHash} from 'backbone';
-import {getConfiguration, isConnectionActivated} from 'pimenterprisesuggestdata/js/pim-ai/fetcher/connection-fetcher';
+import {getConfiguration, isConnectionActivated} from 'akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher';
 
 const __ = require('oro/translator');
 const ConnectionSaver = require('pimee/saver/pim_ai_connection');
@@ -15,8 +15,6 @@ interface EditConfig {
   token_field_placeholder: string;
   token_save_pre_activation_title: string;
   token_save_post_activation_title: string;
-  get_configuration_url: string;
-  is_connection_activated_url: string;
   code: string;
 }
 
@@ -37,8 +35,6 @@ class EditView extends BaseView {
     token_field_placeholder: '',
     token_save_pre_activation_title: '',
     token_save_post_activation_title: '',
-    get_configuration_url: '',
-    is_connection_activated_url: '',
     code: '',
   };
 
@@ -91,8 +87,8 @@ class EditView extends BaseView {
 
       this.isConnectionActivated = isConnectionActivated;
       true === isConnectionActivated
-        ? this.renderActivated(formData.token)
-        : this.renderUnactivated(formData.token);
+        ? this.renderActivatedConnection(formData.token)
+        : this.renderUnactivatedConnection(formData.token);
     });
 
     return this;
@@ -107,14 +103,14 @@ class EditView extends BaseView {
     ConnectionSaver
       .save(this.config.code, data)
       .fail((xhr: any) => {
-        Messenger.notify('error', xhr.responseJSON.message);
-        this.renderUnactivated(data.token);
+        Messenger.notify(xhr.responseJSON.status, xhr.responseJSON.message);
+        this.renderUnactivatedConnection(data.token);
       })
       .done((response: any) => {
-        Messenger.notify('success', response.message);
+        Messenger.notify(response.status, response.message);
         this.storedToken = data.token;
         this.isConnectionActivated = true;
-        this.renderActivated(data.token);
+        this.renderActivatedConnection(data.token);
       });
   }
 
@@ -130,7 +126,7 @@ class EditView extends BaseView {
     this.setData({token: token});
 
     if (true === this.isConnectionActivated) {
-      this.storedToken !== token ? this.buttonCanActivateConnection() : this.buttonCannotActivateConnection();
+      this.storedToken !== token ? this.buttonAllowedToActivateConnection() : this.buttonDisallowedToActivateConnection();
     }
   }
 
@@ -139,7 +135,7 @@ class EditView extends BaseView {
    *
    * @param {string} token
    */
-  private renderUnactivated(token: string): void {
+  private renderUnactivatedConnection(token: string): void {
     this.$el.html(
       this.template({
         tokenLabelTitle: __(this.config.token_label_title),
@@ -159,7 +155,7 @@ class EditView extends BaseView {
    *
    * @param {string} token
    */
-  private renderActivated(token: string): void {
+  private renderActivatedConnection(token: string): void {
     this.$el.html(
       this.template({
         tokenLabelTitle: __(this.config.token_label_title),
@@ -178,7 +174,7 @@ class EditView extends BaseView {
    * Makes the button grey with text "Activate" so the user knows that connection
    * to PIM.ai is not active and new token can be submitted.
    */
-  private buttonCanActivateConnection() {
+  private buttonAllowedToActivateConnection() {
     $('.suggest-data-connection')
       .removeClass('AknButton--apply ')
       .removeClass('AknButton--disabled')
@@ -192,7 +188,7 @@ class EditView extends BaseView {
    * Makes the button green with text "Activated" so the user knows that
    * connection to PIM.ai is already active.
    */
-  private buttonCannotActivateConnection() {
+  private buttonDisallowedToActivateConnection() {
     $('.suggest-data-connection')
       .removeClass('AknButton--slateGrey')
       .removeClass('activate-connection')
