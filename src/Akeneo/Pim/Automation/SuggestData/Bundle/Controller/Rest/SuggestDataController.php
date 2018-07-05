@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Controller\Rest;
 
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\DataProviderFactory;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 

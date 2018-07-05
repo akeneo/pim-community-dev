@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription;
 
-use GuzzleHttp\ClientInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\UriGenerator;
 use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCodeCollection;
+use GuzzleHttp\ClientInterface;
 
 class SubscriptionWebservice implements SubscriptionApiInterface
 {

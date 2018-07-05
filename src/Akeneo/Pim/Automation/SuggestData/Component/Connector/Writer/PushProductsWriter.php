@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Connector\Writer;
 
-use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
-use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\Adapter\DataProviderAdapterInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataCollection;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataCollectionInterface;
+use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
+use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 
 /**
  * Writer to push products to PIM.ai.

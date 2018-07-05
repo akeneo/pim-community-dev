@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\Adapter\PimAI;
 
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\Adapter\DataProviderAdapterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\Adapter\DataProviderAdapterInterface;
 
 /**
  * Pim.ai implementation to connect to a data provider

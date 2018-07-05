@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
-use Behat\Behat\Context\Context;
-use PHPUnit\Framework\Assert;
 use Akeneo\Pim\Automation\SuggestData\Component\Application\ActivateSuggestDataConnection;
 use Akeneo\Pim\Automation\SuggestData\Component\Application\GetNormalizedConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
+use Behat\Behat\Context\Context;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

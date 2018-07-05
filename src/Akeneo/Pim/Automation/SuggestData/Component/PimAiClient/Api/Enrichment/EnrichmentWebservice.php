@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Enrichment;
 
-use GuzzleHttp\ClientInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\SubscriptionId;
 use Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\UriGenerator;
+use GuzzleHttp\ClientInterface;
 
 class EnrichmentWebservice implements EnrichmentApiInterface
 {

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\Adapter;
 
-use Pim\Component\Catalog\Model\ProductInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataCollectionInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>

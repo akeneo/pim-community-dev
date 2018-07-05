@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\Adapter\Memory;
 
-use Pim\Component\Catalog\Model\ProductInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\Adapter\DataProviderAdapterInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\DeserializeSuggestedDataCollection;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataCollectionInterface;
@@ -11,6 +10,7 @@ use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataInt
 use Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCodeCollection;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * In memory implementation to connect to a data provider
