@@ -41,7 +41,7 @@ class IdentifiersMappingSpec extends ObjectBehavior
         ]);
     }
 
-    function it_get_an_identifier($manufacturer) {
+    function it_gets_an_identifier($manufacturer) {
         $this->getIdentifier('brand')->shouldReturn($manufacturer);
     }
 
@@ -49,7 +49,7 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->getIdentifier('burger')->shouldReturn(null);
     }
 
-    public function it_normalize_identifiers($manufacturer, $model, $ean, $sku) {
+    public function it_normalizes_identifiers($manufacturer, $model, $ean, $sku) {
         $manufacturer->getCode()->willReturn('brand');
         $model->getCode()->willReturn('mpn');
         $ean->getCode()->willReturn('ean');

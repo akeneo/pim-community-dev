@@ -17,9 +17,9 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingHandler;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
@@ -29,7 +29,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $this->beConstructedWith($attributeRepository, $identifiersMappingRepository);
     }
 
-    function it_is_a_update_identifiers_mapping_handler()
+    function it_is_an_update_identifiers_mapping_handler()
     {
         $this->shouldHaveType(UpdateIdentifiersMappingHandler::class);
     }

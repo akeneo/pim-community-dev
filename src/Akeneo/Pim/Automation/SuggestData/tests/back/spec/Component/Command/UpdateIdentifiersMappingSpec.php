@@ -15,7 +15,7 @@ namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMapping;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\SuggestData\Component\Exception\DuplicatedMappingAttributeException;
+use Akeneo\Pim\Automation\SuggestData\Component\Exception\DuplicateMappingAttributeException;
 
 class UpdateIdentifiersMappingSpec extends ObjectBehavior
 {
@@ -57,18 +57,19 @@ class UpdateIdentifiersMappingSpec extends ObjectBehavior
         $this->getIdentifiersMapping()->shouldReturn($identifiersMapping);
     }
 
-    function it_throw_an_exception_if_identifiers_are_missing()
+    function it_throws_an_exception_if_identifiers_are_missing()
     {
-        $this->beConstructedWith([
+        $mapping = [
             'brand' => 'manufacturer',
             'mpn' => 'model',
             'upc' => 'ean',
-        ]);
+        ];
+        $this->beConstructedWith($mapping);
 
-        $this->shouldThrow(new \InvalidArgumentException('Some identifiers mapping are missing or invalid'))->duringInstantiation();
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_throw_an_exception_if_an_attribute_is_used_more_than_one_time()
+    function it_throws_an_exception_if_an_attribute_is_used_more_than_once()
     {
         $this->beConstructedWith([
             'brand' => 'ean',
@@ -77,6 +78,6 @@ class UpdateIdentifiersMappingSpec extends ObjectBehavior
             'asin' => 'id',
         ]);
 
-        $this->shouldThrow(new DuplicatedMappingAttributeException('An attribute cannot be used more that 1 time'))->duringInstantiation();
+        $this->shouldThrow(new DuplicateMappingAttributeException('An attribute cannot be used more than once'))->duringInstantiation();
     }
 }

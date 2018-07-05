@@ -52,6 +52,9 @@ class IdentifiersMapping implements \IteratorAggregate
         return null;
     }
 
+    /**
+     * @return array
+     */
     public function normalize(): array
     {
         $result = [];

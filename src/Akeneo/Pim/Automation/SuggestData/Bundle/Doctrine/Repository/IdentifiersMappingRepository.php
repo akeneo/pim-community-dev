@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository;
 
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Entity\IdentifierMapping;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Doctrine implementation of the identifiers mapping repository

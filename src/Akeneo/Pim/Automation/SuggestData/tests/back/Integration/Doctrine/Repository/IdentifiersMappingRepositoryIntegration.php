@@ -81,7 +81,7 @@ class ConfigurationRepositoryIntegration extends TestCase
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
-            'SELECT pim_ai_code, attribute_id from pim_catalog_pimai_identifier_mapping;'
+            'SELECT pim_ai_code, attribute_id from pim_suggest_data_pimai_identifier_mapping;'
         );
 
         return $statement->fetchAll();

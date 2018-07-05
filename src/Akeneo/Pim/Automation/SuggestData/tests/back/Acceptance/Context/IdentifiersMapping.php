@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
+use Akeneo\Pim\Automation\SuggestData\Component\Application\ManageIdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
-use Akeneo\Pim\Automation\SuggestData\Component\Application\ManageIdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
 use PHPUnit\Framework\Assert;
 
 class IdentifiersMapping implements Context
@@ -51,14 +51,13 @@ class IdentifiersMapping implements Context
             );
 
             return true;
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
 
     /**
-     * @Then the identifier mapping is defined as follows:
+     * @Then the identifiers mapping should be defined as follows:
      *
      * @param TableNode $table
      */
@@ -88,14 +87,13 @@ class IdentifiersMapping implements Context
             );
 
             return true;
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return false;
         }
     }
 
     /**
-     * @Then the identifiers mapping is not defined
+     * @Then the identifiers mapping should not be defined
      */
     public function theIdentifiersMappingIsNotDefined()
     {
@@ -109,14 +107,15 @@ class IdentifiersMapping implements Context
      *
      * @param TableNode $table
      */
-    public function aPredefinedMapping(TableNode $table) {
+    public function aPredefinedMapping(TableNode $table)
+    {
         $this->manageIdentifiersMapping->updateIdentifierMapping(
             $this->getTableNodeAsArrayWithoutHeaders($table)
         );
     }
 
     /**
-     * @Then the retrieved mapping is the following:
+     * @Then the retrieved mapping should be the following:
      *
      * @param TableNode $table
      */
@@ -132,7 +131,8 @@ class IdentifiersMapping implements Context
      *
      * @return array
      */
-    private function getTableNodeAsArrayWithoutHeaders(TableNode $tableNode) {
+    private function getTableNodeAsArrayWithoutHeaders(TableNode $tableNode)
+    {
         $identifiersMapping = $tableNode->getRowsHash();
         array_shift($identifiersMapping);
 

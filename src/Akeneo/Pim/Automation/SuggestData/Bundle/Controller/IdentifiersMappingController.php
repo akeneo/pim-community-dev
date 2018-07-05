@@ -18,14 +18,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 
+/**
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ */
 class IdentifiersMappingController
 {
+    /** @var ManageIdentifiersMapping */
     private $manageIdentifiersMapping;
+
+    /** @var TranslatorInterface */
     private $translator;
 
     /**
      * @param ManageIdentifiersMapping $manageIdentifiersMapping
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface      $translator
      */
     public function __construct(ManageIdentifiersMapping $manageIdentifiersMapping, TranslatorInterface $translator)
     {

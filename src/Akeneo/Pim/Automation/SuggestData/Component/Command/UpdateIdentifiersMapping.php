@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Exception\DuplicatedMappingAttributeException;
+use Akeneo\Pim\Automation\SuggestData\Component\Exception\DuplicateMappingAttributeException;
 
 /**
  * Command that holds and validates the raw values of the identifiers mapping
@@ -56,7 +56,11 @@ class UpdateIdentifiersMapping
         sort($mappingKeys);
 
         if ($expectedKeys !== $mappingKeys) {
-            throw new \InvalidArgumentException('Some identifiers mapping are missing or invalid');
+            throw new \InvalidArgumentException(sprintf(
+                'Some identifiers mapping keys are missing or invalid. Expected: %s, got %s',
+                var_export($expectedKeys, true),
+                var_export($mappingKeys, true)
+            ));
         }
 
         $this->ensureAttributesAreMappedOnlyOneTime($identifiersMapping);
@@ -68,7 +72,7 @@ class UpdateIdentifiersMapping
     private function ensureAttributesAreMappedOnlyOneTime(array $identifiersMapping): void
     {
         if (count($identifiersMapping) > count(array_unique($identifiersMapping))) {
-            throw new DuplicatedMappingAttributeException('An attribute cannot be used more that 1 time');
+            throw new DuplicateMappingAttributeException('An attribute cannot be used more than once');
         }
     }
 }

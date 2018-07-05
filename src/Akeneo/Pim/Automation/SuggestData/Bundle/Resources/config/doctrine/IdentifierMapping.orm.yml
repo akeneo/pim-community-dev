@@ -1,6 +1,6 @@
 Akeneo\Pim\Automation\SuggestData\Bundle\Entity\IdentifierMapping:
     type: entity
-    table: pim_catalog_pimai_identifier_mapping
+    table: pim_suggest_data_pimai_identifier_mapping
     changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
         pim_ai_code_idx:

@@ -17,14 +17,14 @@ Feature: map the Pim identifiers with Pim.ai identifiers
       | mpn         | mpn            |
       | upc         | ean            |
       | asin        | asin           |
-    Then the identifier mapping is defined as follows:
+    Then the identifiers mapping should be defined as follows:
       | pim_ai_code | attribute_code |
       | brand       | brand          |
       | mpn         | mpn            |
       | upc         | ean            |
       | asin        | asin           |
 
-  Scenario: fails to map pim.ai attributes to pim attributes
+  Scenario: fail to map pim.ai attributes to invalid pim attributes
     Given the following attribute:
       | code  | type             |
       | brand | pim_catalog_text |
@@ -34,7 +34,7 @@ Feature: map the Pim identifiers with Pim.ai identifiers
     When the identifiers are mapped with invalid values as follows:
       | pim_ai_code | attribute_code |
       | brand       | burger         |
-    Then the identifiers mapping is not defined
+    Then the identifiers mapping should not be defined
 
   Scenario: successfully update an already existing mapping
     Given the following attribute:
@@ -57,7 +57,7 @@ Feature: map the Pim identifiers with Pim.ai identifiers
       | mpn         | mpn            |
       | upc         | sku            |
       | asin        | id           |
-    Then the identifier mapping is defined as follows:
+    Then the identifiers mapping should be defined as follows:
       | pim_ai_code | attribute_code |
       | brand       | brand          |
       | mpn         | mpn            |
@@ -77,7 +77,7 @@ Feature: map the Pim identifiers with Pim.ai identifiers
       | mpn         | mpn            |
       | upc         | ean            |
       | asin        | asin           |
-    Then the retrieved mapping is the following:
+    Then the retrieved mapping should be the following:
       | pim_ai_code | attribute_code |
       | brand       | brand          |
       | mpn         | mpn            |

@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
-use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
 
 /**
  * Handles the UpdateIdentifiersMapping command
  *
- * Validates that all attributes exist and creates an IdentifiersMapping entity to save it into the database
+ * Validates that all attributes exist and creates an IdentifiersMapping entity to save it
  */
 class UpdateIdentifiersMappingHandler
 {

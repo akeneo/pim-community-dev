@@ -7,5 +7,5 @@ pimee_suggest_data:
         pim_ai:
             connection: Manage connection to PIM.AI
     mapping_identifier:
-        success: Mappings have been successfully saved
-        error: An error occurred while saving the mappings
+        success: The mapping has been successfully saved
+        error: An error occurred while saving the mapping
