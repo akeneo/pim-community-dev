@@ -57,7 +57,19 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     await saveButton.click();
   };
 
-  return {isLoaded, getSidebar, getProperties, isUpdated, isSaved, save};
+  const hasSuccessNotification = async () => {
+    await page.waitForSelector('.AknFlash--success');
+
+    return true;
+  };
+
+  const hasErrorNotification = async () => {
+    await page.waitForSelector('.AknFlash--error');
+
+    return true;
+  };
+
+  return {isLoaded, getSidebar, getProperties, isUpdated, isSaved, save, hasSuccessNotification, hasErrorNotification};
 };
 
 module.exports = Edit;

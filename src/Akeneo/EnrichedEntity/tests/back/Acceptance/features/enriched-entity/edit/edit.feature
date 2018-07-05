@@ -25,9 +25,18 @@ Feature: Edit an enriched entity
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
     And the user saves the changes
     And the user shouldn't be notified that modification have been made
+    And the user should see the saved notification
     And the enriched entity "designer" should be:
       | identifier | labels                                      |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
+
+  @acceptance-front
+  Scenario: Updating an enriched entity when the backend answer an error
+    When the user changes the enriched entity "designer" with:
+      | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+    Then the enriched entity "designer" save will fail
+    And the user saves the changes
+    And the user should see the saved notification error
 
   @acceptance-front
   Scenario: Display updated edit form message
