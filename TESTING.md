@@ -182,7 +182,7 @@ The path towards this ideal pyramid will be long and tortuous. But still:
 
 > I don't know if I should write a unit, an acceptance, an integration or an end-to-end test. What should I do?
 
-You should refer to the [ports and adapters architecture](#ports-and-adapters-architecture). Ask yourself, where your class is standing regarding the different layers. Then, you can refer to [this section](#the-relation-with-the-tests).
+You should refer to the [ports and adapters architecture](#i-want-to-know-more-about-that-ports-and-adapters-thing). Ask yourself, where your class is standing regarding the different layers. Then, you can refer to [this section](#the-relation-with-the-tests).
 
 > I'm afraid to write less end to end tests than before. Are you sure it's a good idea?
 
@@ -202,7 +202,7 @@ Your frustration is completely understandable. And yes, the path towards short C
 
 ## Resources
 
-> How can I write useful and powerful Gherkin?
+### How can I write useful and powerful Gherkin?
 
 [Writing Good Gherkin](https://automationpanda.com/2017/01/30/bdd-101-writing-good-gherkin/) by Andrew Knight
 
@@ -212,7 +212,7 @@ Your frustration is completely understandable. And yes, the path towards short C
 
 [Introducing Modelling by Example](http://stakeholderwhisperer.com/posts/2014/10/introducing-modelling-by-example) by Konstantin Kudryashov
 
-> I want to know more about that ports and adapters thing!
+### I want to know more about that ports and adapters thing!
 
 [Hexagonal architecture](http://alistair.cockburn.us/Hexagonal%20architecture), original article by Alistair Cockburn
 
@@ -222,7 +222,7 @@ Your frustration is completely understandable. And yes, the path towards short C
 
 [Ports-And-Adapters / Hexagonal Architecture](http://www.dossier-andreas.net/software_architecture/ports_and_adapters.html)
 
-> I want to know more about the separation layers described in Domain-Driven Design!
+### I want to know more about the separation layers described in Domain-Driven Design!
 
 [Domain Driven Design Quickly](https://www.infoq.com/minibooks/domain-driven-design-quickly) by InfoQ
 
