@@ -9,6 +9,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Akeneo\Pim\Structure\Component\Model;
 
 /**
  * Type for group form
@@ -98,7 +99,7 @@ class GroupType extends AbstractType
                 'type',
                 EntityType::class,
                 [
-                    'class'         => 'PimCatalogBundle:GroupType',
+                    'class'         => Model\GroupType::class,
                     'query_builder' => function (EntityRepository $repository) {
                         return $repository->getAllGroupsExceptVariantQB();
                     },

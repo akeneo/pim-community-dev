@@ -13,7 +13,7 @@ external_api_family:
 
 association_type:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/external_api/association_type.yml'
-    prefix: /rest/v1
+    prefix: /api/rest/v1
 
 ### Internal API
 internal_api_attribute:

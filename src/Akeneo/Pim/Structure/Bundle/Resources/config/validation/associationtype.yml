@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\AssociationType:
+Akeneo\Pim\Structure\Component\Model\AssociationType:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
