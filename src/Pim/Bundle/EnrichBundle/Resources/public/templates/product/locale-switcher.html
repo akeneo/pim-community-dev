@@ -7,7 +7,7 @@
     <div class="AknDropdown-menuTitle"><%- label %></div>
     <% _.each(locales, function (locale) { %>
         <li>
-            <a class="AknDropdown-menuLink<% if (currentLocale.code === locale.code) { %> AknDropdown-menuLink--active<% } %>" data-locale="<%- locale.code %>"><%= i18n.getFlag(locale.code, false) %> <%- locale.language %></a>
+            <span class="AknDropdown-menuLink<% if (currentLocale.code === locale.code) { %> AknDropdown-menuLink--active<% } %>" data-locale="<%- locale.code %>"><%= i18n.getFlag(locale.code, false) %> <%- locale.language %></span>
         </li>
     <% }); %>
 </ul>

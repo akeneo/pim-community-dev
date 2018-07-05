@@ -41,7 +41,7 @@ class BaseDecorator extends ElementDecorator
         }, 'Cannot find the locale switcher. Are you sure that this attribute is localizable?');
 
         $localeSwitcher->find('css', '.dropdown-toggle, *[data-toggle="dropdown"]')->click();
-        $localeSwitcher->find('css', sprintf('a[data-locale="%s"]', $locale))->click();
+        $localeSwitcher->find('css', sprintf('[data-locale="%s"]', $locale))->click();
     }
 
     /**

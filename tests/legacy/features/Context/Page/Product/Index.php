@@ -54,7 +54,7 @@ class Index extends Grid
      */
     public function countLocaleLinks()
     {
-        return count($this->getElement('Locales dropdown')->findAll('css', 'li a'));
+        return count($this->getElement('Locales dropdown')->findAll('css', 'li [data-locale]'));
     }
 
     /**

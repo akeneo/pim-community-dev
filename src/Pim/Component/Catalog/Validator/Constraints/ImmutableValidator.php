@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Model\Locale;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -45,9 +46,9 @@ class ImmutableValidator extends ConstraintValidator
         $accessor = PropertyAccess::createPropertyAccessor();
 
         foreach ($constraint->properties as $property) {
-            $originalValue = $accessor->getValue($originalData, sprintf('[%s]', $property));
+            $originalValue = $this->getOriginalValue($accessor, $originalData, $property);
             if (null !== $originalValue) {
-                $newValue = $accessor->getValue($entity, $property);
+                $newValue = $this->getNewValue($accessor, $entity, $property);
                 $isDifferent = $originalValue !== $newValue;
                 $isDirtyCollection = ($newValue instanceof PersistentCollection && $newValue->isDirty());
                 if ($isDifferent || $isDirtyCollection) {
@@ -57,5 +58,39 @@ class ImmutableValidator extends ConstraintValidator
                 }
             }
         }
+    }
+
+    /**
+     * @param  PropertyAccessor $accessor
+     * @param  mixed            $originalData
+     * @param  string           $property
+     *
+     * @return mixed
+     */
+    private function getOriginalValue(PropertyAccessor $accessor, $originalData, string $property)
+    {
+        $originalValue = $accessor->getValue($originalData, sprintf('[%s]', $property));
+        if (null === $originalValue) {
+            $originalValue = $accessor->getValue($originalData, sprintf('[properties][%s]', $property));
+        }
+
+        return $originalValue;
+    }
+
+    /**
+     * @param  PropertyAccessor $accessor
+     * @param  mixed            $entity
+     * @param  string           $property
+     *
+     * @return mixed
+     */
+    private function getNewValue(PropertyAccessor $accessor, $entity, string $property)
+    {
+        $newValue = $accessor->getValue($entity, $property);
+        if (null === $newValue) {
+            $newValue = $accessor->getValue($entity, sprintf('properties[%s]', $property));
+        }
+
+        return $newValue;
     }
 }
