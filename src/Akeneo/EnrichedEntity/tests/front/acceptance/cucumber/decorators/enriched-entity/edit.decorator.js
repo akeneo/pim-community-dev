@@ -1,23 +1,15 @@
 const Properties = require('./edit/properties.decorator');
 const Sidebar = require('./app/sidebar.decorator');
-const path = require('path');
-
-const {
-  decorators: {createElementDecorator},
-} = require(path.resolve(
-  process.cwd(),
-  './tests/front/acceptance/cucumber/test-helpers.js'
-));
 
 const config = {
   Sidebar: {
     selector: '.AknColumn',
-    decorator: Sidebar,
+    decorator: Sidebar
   },
   Properties: {
     selector: '.AknDefault-mainContent',
-    decorator: Properties,
-  },
+    decorator: Properties
+  }
 };
 
 const Edit = async (nodeElement, createElementDecorator, page) => {

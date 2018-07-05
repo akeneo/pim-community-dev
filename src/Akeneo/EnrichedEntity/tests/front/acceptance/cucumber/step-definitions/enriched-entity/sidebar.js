@@ -2,7 +2,7 @@ const Sidebar = require('../../decorators/enriched-entity/app/sidebar.decorator'
 const path = require('path');
 
 const {
-  decorators: {createElementDecorator},
+  decorators: {createElementDecorator}
 } = require(path.resolve(
   process.cwd(),
   './tests/front/acceptance/cucumber/test-helpers.js'
@@ -15,8 +15,8 @@ module.exports = async function(cucumber) {
   const config = {
     Sidebar: {
       selector: '.AknColumn',
-      decorator: Sidebar,
-    },
+      decorator: Sidebar
+    }
   };
 
   const getElement = createElementDecorator(config);

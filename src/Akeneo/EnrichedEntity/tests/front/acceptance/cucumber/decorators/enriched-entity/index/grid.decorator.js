@@ -7,6 +7,7 @@ const Grid = async (nodeElement, createElementDecorator, page) => {
 
   const getRowsAfterLoading = async () => {
     await page.waitForSelector('.AknGrid-bodyRow:not(.AknLoadingPlaceHolder)');
+
     return await nodeElement.$$('.AknGrid-bodyRow:not(.AknLoadingPlaceHolder)');
   };
 

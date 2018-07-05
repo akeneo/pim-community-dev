@@ -14,7 +14,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
         'POST' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
-          status: 204,
+          status: 204
         });
       }
     });
