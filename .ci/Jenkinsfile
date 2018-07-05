@@ -16,36 +16,36 @@ pipeline {
     stage('Parallel') {
       parallel {
         stage('A') {
-          container('php') {
-            steps {
+          steps {
+            container('php') {
               sh "sleep 60"
             }
           }
         }
         stage('B') {
-          container('php') {
-            steps {
+          steps {
+            container('php') {
               sh "sleep 60"
             }
           }
         }
         stage('C') {
-          container('php') {
-            steps {
+          steps {
+            container('php') {
               sh "sleep 60"
             }
           }
         }
         stage('D') {
-          container('php') {
-            steps {
+          steps {
+            container('php') {
               sh "sleep 60"
             }
           }
         }
         stage('E') {
-          container('php') {
-            steps {
+          steps {
+            container('php') {
               sh "sleep 60"
             }
           }
