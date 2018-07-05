@@ -48,7 +48,7 @@ def mypod(Map params = [:], Closure body) {
                       image: php:fpm
             """
         ) {
-            node(label) {
+            node("label-${index}") {
                 body()
             }
         }
