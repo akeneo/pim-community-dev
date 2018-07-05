@@ -1,109 +1,49 @@
-pipeline {
-  agent none
-  stages {
-    stage('Parallel') {
-      parallel {
-        stage('A') {
-          agent {
-            kubernetes {
-              label 'test'
-              yaml """
-                apiVersion: v1
-                kind: Pod
-                spec:
-                  containers:
-                    - name: php
-                      image: php:fpm
-                """
+stage("Test") {
+  parallel(
+    "A": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("main") {
+                sh "sleep 60"
             }
-          }
-          steps {
-            container('php') {
-              sh "sleep 60"
-            }
-          }
         }
-        stage('B') {
-          agent {
-            kubernetes {
-              label 'test'
-              yaml """
-                apiVersion: v1
-                kind: Pod
-                spec:
-                  containers:
-                    - name: php
-                      image: php:fpm
-                """
+    },
+    "B": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("main") {
+                sh "sleep 60"
             }
-          }
-          steps {
-            container('php') {
-              sh "sleep 60"
-            }
-          }
         }
-        stage('C') {
-          agent {
-            kubernetes {
-              label 'test'
-              yaml """
-                apiVersion: v1
-                kind: Pod
-                spec:
-                  containers:
-                    - name: php
-                      image: php:fpm
-                """
+    },
+    "C": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("main") {
+                sh "sleep 60"
             }
-          }
-          steps {
-            container('php') {
-              sh "sleep 60"
-            }
-          }
         }
-        stage('D') {
-          agent {
-            kubernetes {
-              label 'test'
-              yaml """
-                apiVersion: v1
-                kind: Pod
-                spec:
-                  containers:
-                    - name: php
-                      image: php:fpm
-                """
+    },
+    "D": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("main") {
+                sh "sleep 60"
             }
-          }
-          steps {
-            container('php') {
-              sh "sleep 60"
-            }
-          }
         }
-        stage('E') {
-          agent {
-            kubernetes {
-              label 'test'
-              yaml """
-                apiVersion: v1
-                kind: Pod
-                spec:
-                  containers:
-                    - name: php
-                      image: php:fpm
-                """
+    },
+    "E": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("main") {
+                sh "sleep 60"
             }
-          }
-          steps {
-            container('php') {
-              sh "sleep 60"
-            }
-          }
         }
-      }
     }
-  }
+  )
 }
