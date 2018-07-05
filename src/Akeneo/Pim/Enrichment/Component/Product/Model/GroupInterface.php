@@ -6,7 +6,6 @@ use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 
 /**
