@@ -44,4 +44,9 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
 
         return $enrichedEntity;
     }
+
+    public function count(): int
+    {
+        return count($this->enrichedEntities);
+    }
 }
