@@ -95,6 +95,10 @@ Examples:
 
 ### The foundations: ports and adapters
 
+The goal of the ports and adapters architecture is to segregate the inside of our application from the outside world. 
+The inside is valuable and makes us earn money. The outside is only related to infrastructure concerns and should be easily interchangeable.
+To communicate with the outside world, the inside relies on contracts (a _port_) that are implemented (an _adapter_) in the outside layer.
+
 ### A slight touch of Domain-Driven Design
 
 Domain-Driven Design follows the same principles that ports and adapters regarding the layers segregation. The most important thing is that no external layer should leak into a deeper layer. The main difference is that it introduces a new layer, which means we end up with:
