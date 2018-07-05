@@ -242,3 +242,6 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Valida
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\FamilyRequirementsValidator/Akeneo\\Pim\\Structure\\Component\\Validator\\Constraints\\FamilyRequirementsValidator/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ImmutableVariantAxes/Akeneo\\Pim\\Structure\\Component\\Validator\\Constraints\\ImmutableVariantAxes/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Validator\\Constraints\\ImmutableVariantAxesValidator/Akeneo\\Pim\\Structure\\Component\\Validator\\Constraints\\ImmutableVariantAxesValidator/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\DataGridBundle\\Common\\Object/Oro\\Bundle\\DataGridBundle\\Common\\IterableObject/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\DataGridBundle\\Datagrid\\Common\\ResultsObject/Oro\\Bundle\\DataGridBundle\\Datagrid\\Common\\ResultsIterableObject/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Oro\\Bundle\\DataGridBundle\\Datagrid\\Common\\MetadataObject/Oro\\Bundle\\DataGridBundle\\Datagrid\\Common\\MetadataIterableObject/g'

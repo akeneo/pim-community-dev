@@ -269,3 +269,7 @@
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes`
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator`
 - Remove `Pim\Component\Catalog\Model\AttributeTypeTranslationInterface`
+
+- Rename `Oro\Bundle\DataGridBundle\Common\Object` into `Oro\Bundle\DataGridBundle\Common\IterableObject`
+- Rename `Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject` into `Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject`
+- Rename `Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject` into `Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject`
