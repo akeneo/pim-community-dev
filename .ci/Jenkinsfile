@@ -103,6 +103,426 @@ pipeline {
             }
           }
         }
+        stage('F') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('G') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('H') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('I') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('J') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('K') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('L') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('M') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('N') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('O') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('P') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('Q') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('R') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('S') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('T') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('U') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('V') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('W') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('X') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('Y') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('Z') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
+          steps {
+            container('php') {
+              sh "sleep 60"
+            }
+          }
+        }
       }
     }
   }
