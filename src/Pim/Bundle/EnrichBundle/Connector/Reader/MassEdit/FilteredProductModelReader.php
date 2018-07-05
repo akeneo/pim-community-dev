@@ -150,6 +150,11 @@ class FilteredProductModelReader implements
      */
     private function getProductModelsCursor(array $filters, ChannelInterface $channel = null): CursorInterface
     {
+        $filters[] = [
+            'field' => 'entity_type',
+            'operator' => '=',
+            'value' => ProductModelInterface::class,
+        ];
         $options = ['filters' => $filters];
         if (null !== $channel) {
             $options['default_scope'] = $channel->getCode();
@@ -169,30 +174,18 @@ class FilteredProductModelReader implements
     {
         $entity = null;
 
-        while ($this->productsAndProductModels->valid()) {
+        if ($this->productsAndProductModels->valid()) {
             if (!$this->firstRead) {
                 $this->productsAndProductModels->next();
             }
 
-            $this->firstRead = false;
             $entity = $this->productsAndProductModels->current();
             if (false === $entity) {
                 return null;
             }
-
             $this->stepExecution->incrementSummaryInfo('read');
-
-            if (!$entity instanceof ProductModelInterface) {
-                if ($this->stepExecution) {
-                    $this->stepExecution->incrementSummaryInfo('skip');
-                }
-
-                $entity = null;
-                continue;
-            }
-
-            break;
         }
+        $this->firstRead = false;
 
         return $entity;
     }

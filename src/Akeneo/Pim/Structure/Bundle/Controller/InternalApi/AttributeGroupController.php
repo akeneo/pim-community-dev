@@ -216,7 +216,9 @@ class AttributeGroupController
             return new RedirectResponse('/');
         }
 
+        $maxSortOrder = $this->attributeGroupRepo->getMaxSortOrder();
         $attributeGroup = $this->attributeGroupFactory->create();
+        $attributeGroup->setSortOrder($maxSortOrder + 1);
 
         $data = json_decode($request->getContent(), true);
         $this->updater->update($attributeGroup, $data);

@@ -3,7 +3,7 @@
 namespace Oro\Bundle\DataGridBundle\Extension\Toolbar;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 
 class ToolbarExtension extends AbstractExtension
@@ -40,7 +40,7 @@ class ToolbarExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data)
     {
         /**
          * Default toolbar options
@@ -82,12 +82,12 @@ class ToolbarExtension extends AbstractExtension
         $options = $config->offsetGetByPath(ToolbarExtension::OPTIONS_PATH, []);
 
         // get user specified require js modules from options
-        if (isset($options[MetadataObject::REQUIRED_MODULES_KEY])) {
+        if (isset($options[MetadataIterableObject::REQUIRED_MODULES_KEY])) {
             $data->offsetAddToArray(
-                MetadataObject::REQUIRED_MODULES_KEY,
-                $options[MetadataObject::REQUIRED_MODULES_KEY]
+                MetadataIterableObject::REQUIRED_MODULES_KEY,
+                $options[MetadataIterableObject::REQUIRED_MODULES_KEY]
             );
-            unset($options[MetadataObject::REQUIRED_MODULES_KEY]);
+            unset($options[MetadataIterableObject::REQUIRED_MODULES_KEY]);
         }
 
         // grid options passed under "options" node

@@ -29,6 +29,6 @@ Feature: Create product and save a new product value
       | Tmp Price | 0 EUR |
     And I save the product
     Then the product "gladiator" should have the following values:
-      | rate_sale | 0           |
-      | tmp_price | 0.00 EUR    |
-      | weight    | 0.0000 GRAM |
+      | rate_sale | 0                |
+      | tmp_price | 0.00 EUR         |
+      | weight    | 0.0000 MILLIGRAM |

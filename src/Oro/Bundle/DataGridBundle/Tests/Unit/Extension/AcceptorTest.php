@@ -3,8 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\Extension;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 
 class AcceptorTest extends \PHPUnit_Framework_TestCase
@@ -87,7 +87,7 @@ class AcceptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testAcceptResults()
     {
-        $result = ResultsObject::create([]);
+        $result = ResultsIterableObject::create([]);
 
         $extMock = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface');
         $extMock->expects($this->once())->method('visitResult')->with($this->config, $result);
@@ -101,7 +101,7 @@ class AcceptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testAcceptMetadata()
     {
-        $data = MetadataObject::create([]);
+        $data = MetadataIterableObject::create([]);
 
         $extMock = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface');
         $extMock->expects($this->once())->method('visitMetadata')->with($this->config, $data);

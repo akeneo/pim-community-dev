@@ -70,4 +70,15 @@ class NumberLocalizerSpec extends ObjectBehavior
         $this->delocalize('10,00', ['decimal_separator' => ''])->shouldReturn('10.00');
         $this->delocalize('gruik', ['decimal_separator' => ''])->shouldReturn('gruik');
     }
+
+    function it_returns_always_a_negative_symbol_for_negative_number(
+        $numberFactory
+    ) {
+        $options = ['locale' => 'sv_SE'];
+        $numberFormatter = new \NumberFormatter('sv_SE', \NumberFormatter::DECIMAL);
+
+        $numberFactory->create($options)->willReturn($numberFormatter);
+
+        $this->localize('-10.4', $options)->shouldReturn('-10,40');
+    }
 }
