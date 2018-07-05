@@ -44,6 +44,141 @@ stage("Test") {
                 sh "sleep 60"
             }
         }
+    },
+    "F": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "G": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "H": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "I": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "J": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "K": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "L": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "M": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "N": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "O": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "P": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "Q": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "R": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "S": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "T": {
+        pod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
     }
   )
 }
