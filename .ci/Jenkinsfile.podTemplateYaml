@@ -1,0 +1,56 @@
+
+stage("Test") {
+  parallel(
+    "1": {
+        mypod(label: "test", index: "1") {
+            container("php-1") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "2": {
+        mypod(label: "test", index: "2") {
+            container("php-2") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "3": {
+        mypod(label: "test", index: "3") {
+            container("php-3") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "4": {
+        mypod(label: "test", index: "4") {
+            container("php-4") {
+                sh "sleep 60"
+            }
+        }
+    }
+  )
+}
+
+def mypod(Map params = [:], Closure body) {
+    String label = params.get('label', null)
+    String index = params.get('index', null)
+
+    timeout(time: 4, unit: 'HOURS') {
+        return steps.podTemplate(
+            label: "label-${index}",
+            yaml: """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                    containers:
+                    - name: php-${index}
+                      image: php:fpm
+            """
+        ) {
+            node("label-${index}") {
+                body()
+            }
+        }
+    }
+}
