@@ -1,6 +1,14 @@
 services:
     pimee_suggest_data.controller.suggest_data:
-        class: Akeneo\Pim\Automation\SuggestData\Bundle\Controller\Rest\SuggestDataController
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\Rest\SuggestDataController'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pimee_suggest_data.data_provider.factory'
+
+    pimee_suggest_data.controller.pim_ai:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\Rest\PimAiConnectionController'
+        arguments:
+            - '@pimee_suggest_data.connection.activate'
+            - '@pimee_suggest_data.connection.get_normalized_configuration'
+            - '@pimee_suggest_data.connection.get_status'
+            - '@translator'

@@ -1,5 +1,5 @@
 services:
-    pimee_suggest_data.application.activate_connection:
+    pimee_suggest_data.connection.activate:
         class: 'Akeneo\Pim\Automation\SuggestData\Component\Application\ActivateSuggestDataConnection'
         arguments:
             - '@pimee_suggest_data.handler.save_configuration'
@@ -11,3 +11,9 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Component\Application\GetNormalizedConfiguration'
         arguments:
             - '@pimee_suggest_data.repository.configuration'
+
+    pimee_suggest_data.connection.get_status:
+        class: 'Akeneo\Pim\Automation\SuggestData\Component\Application\GetSuggestDataConnectionStatus'
+        arguments:
+            - '@pimee_suggest_data.repository.configuration'
+            - '@pimee_suggest_data.connection.is_valid.pim_ai'

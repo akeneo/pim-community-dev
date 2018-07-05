@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infra\Fake;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Application\ValidateConnectionInterface;
-use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
 
 /**
  * Fake validation of a PIM.ai token using a hard coded value.
@@ -32,10 +31,8 @@ final class ValidatePimAiConnection implements ValidateConnectionInterface
     /**
      * {@inheritdoc}
      */
-    public function validate(SaveConfiguration $saveConfiguration): bool
+    public function validate(array $configurationValues): bool
     {
-        $saveConfigurationValues = $saveConfiguration->getValues();
-
-        return isset($saveConfigurationValues['token']) && static::PIM_AI_TOKEN === $saveConfigurationValues['token'];
+        return isset($configurationValues['token']) && static::PIM_AI_TOKEN === $configurationValues['token'];
     }
 }

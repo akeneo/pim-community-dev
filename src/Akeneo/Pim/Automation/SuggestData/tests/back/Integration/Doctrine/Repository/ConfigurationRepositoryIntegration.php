@@ -49,7 +49,7 @@ class ConfigurationRepositoryIntegration extends TestCase
      */
     public function it_updates_a_suggest_data_configuration()
     {
-        $configuration = new Configuration('pim-dot-ai', ['token' => 'a_first_token']);
+        $configuration = new Configuration('pim-ai', ['token' => 'a_first_token']);
         $this->get('pimee_suggest_data.repository.configuration')->save($configuration);
 
         $configuration->setValues(['token' => 'a_new_token']);
@@ -62,7 +62,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         $retrievedConfiguration = $statement->fetchAll();
 
         $this->assertSame([[
-            'entity' => 'pim-dot-ai',
+            'entity' => 'pim-ai',
             'name' => 'token',
             'value' => 'a_new_token',
         ]], $retrievedConfiguration);
