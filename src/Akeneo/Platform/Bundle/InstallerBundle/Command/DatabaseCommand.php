@@ -3,6 +3,7 @@
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
 use Akeneo\Platform\Bundle\InstallerBundle\CommandExecutor;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Doctrine\DBAL\Exception\ConnectionException;
@@ -11,7 +12,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Database preparing command
@@ -117,17 +117,26 @@ class DatabaseCommand extends ContainerAwareCommand
         $entityManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         $entityManager->clear();
 
-        $this->getEventDispatcher()->dispatch(InstallerEvents::POST_DB_CREATE);
+        $this->getEventDispatcher()->dispatch(
+            InstallerEvents::POST_DB_CREATE,
+            new InstallerEvent($this->commandExecutor)
+        );
 
         // TODO: Should be in an event subscriber
         $this->createNotMappedTables($output);
 
-        $this->getEventDispatcher()->dispatch(InstallerEvents::PRE_LOAD_FIXTURES);
+        $this->getEventDispatcher()->dispatch(
+            InstallerEvents::PRE_LOAD_FIXTURES,
+            new InstallerEvent($this->commandExecutor)
+        );
 
         if (false === $input->getOption('withoutFixtures')) {
             $this->loadFixturesStep($input, $output);
         }
-        $this->getEventDispatcher()->dispatch(InstallerEvents::POST_LOAD_FIXTURES);
+        $this->getEventDispatcher()->dispatch(
+            InstallerEvents::POST_LOAD_FIXTURES,
+            new InstallerEvent($this->commandExecutor)
+        );
 
         // TODO: Should be in an event subscriber
         $this->launchCommands();
@@ -182,7 +191,7 @@ class DatabaseCommand extends ContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return EnterpriseDatabaseCommand
+     * @return DatabaseCommand
      */
     protected function loadFixturesStep(InputInterface $input, OutputInterface $output)
     {
@@ -204,15 +213,12 @@ class DatabaseCommand extends ContainerAwareCommand
                 'code'       => $jobInstance->getCode(),
                 '--no-debug' => true,
                 '--no-log'   => true,
-                '-v'         => true
+                '-v'         => true,
             ];
 
             $this->getEventDispatcher()->dispatch(
                 InstallerEvents::PRE_LOAD_FIXTURE,
-                new GenericEvent(
-                    $jobInstance->getCode(),
-                    ['command_executor' => $this->commandExecutor]
-                )
+                new InstallerEvent($this->commandExecutor, $jobInstance->getCode())
             );
             if ($input->getOption('verbose')) {
                 $output->writeln(
@@ -225,7 +231,7 @@ class DatabaseCommand extends ContainerAwareCommand
             $this->commandExecutor->runCommand('akeneo:batch:job', $params);
             $this->getEventDispatcher()->dispatch(
                 InstallerEvents::POST_LOAD_FIXTURE,
-                new GenericEvent($jobInstance->getCode())
+                new InstallerEvent($this->commandExecutor, $jobInstance->getCode())
             );
         }
         $output->writeln('');
