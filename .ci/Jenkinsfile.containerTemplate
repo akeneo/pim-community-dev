@@ -29,7 +29,9 @@ stage("Test") {
         }
     },
     "4": {
-        mypod(label: "test", index: "4") {
+        mypod(label: "test", containers: [
+            containerTemplate(name: "php-4", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
             container("php-4") {
                 sh "sleep 60"
             }
@@ -40,21 +42,11 @@ stage("Test") {
 
 def mypod(Map params = [:], Closure body) {
     String label = params.get('label', null)
-    String index = params.get('index', null)
+    String uuid = UUID.randomUUID().toString()
 
     timeout(time: 4, unit: 'HOURS') {
-        return steps.podTemplate(
-            label: label,
-            yaml: """
-                apiVersion: v1
-                kind: Pod
-                spec:
-                    containers:
-                    - name: php-${index}
-                      image: php:fpm
-            """
-        ) {
-            node(label) {
+        return steps.podTemplate(name: label + "-" + uuid, label: label + "-" + uuid, containers: params.get('containers', [])) {
+            node(label + "-" + uuid) {
                 body()
             }
         }
