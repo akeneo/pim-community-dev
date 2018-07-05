@@ -227,3 +227,11 @@ Your frustration is completely understandable. And yes, the path towards short C
 [Domain Driven Design Quickly](https://www.infoq.com/minibooks/domain-driven-design-quickly) by InfoQ
 
 [Domain-Driven Design](https://herbertograca.com/2017/09/07/domain-driven-design/) by Herberto Graça
+
+### How to double correctly?
+
+[Test Data Builders: an alternative to the Object Mother pattern](http://www.natpryce.com/articles/000714.html) by Nat Pryce
+
+[Mocking at architectural boundaries: persistence and time](https://matthiasnoback.nl/2018/02/mocking-at-architectural-boundaries-persistence-and-time/) by Matthias Noback
+
+[Mocking at architectural boundaries: the filesystem and randomness](https://matthiasnoback.nl/2018/03/mocking-the-filesystem-and-randomness/) by Matthias Noback
