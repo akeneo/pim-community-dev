@@ -1,9 +1,13 @@
 const Properties = require('./edit/properties.decorator');
 const Sidebar = require('./app/sidebar.decorator');
+const path = require('path');
 
 const {
   decorators: {createElementDecorator},
-} = require('../../test-helpers.js');
+} = require(path.resolve(
+  process.cwd(),
+  './tests/front/acceptance/cucumber/test-helpers.js'
+));
 
 const config = {
   Sidebar: {

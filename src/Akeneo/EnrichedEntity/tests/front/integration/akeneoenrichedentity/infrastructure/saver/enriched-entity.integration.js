@@ -1,7 +1,5 @@
 const timeout = 5000;
 
-const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
-
 describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () => {
   let page = global.__PAGE__;
 

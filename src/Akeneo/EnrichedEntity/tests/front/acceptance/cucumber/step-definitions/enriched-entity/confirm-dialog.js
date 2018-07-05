@@ -1,8 +1,12 @@
 const Edit = require('../../decorators/enriched-entity/edit.decorator');
+const path = require('path');
 
 const {
   decorators: {createElementDecorator},
-} = require('../../test-helpers.js');
+} = require(path.resolve(
+  process.cwd(),
+  './tests/front/acceptance/cucumber/test-helpers.js'
+));
 
 module.exports = async function(cucumber) {
   const {Then} = cucumber;

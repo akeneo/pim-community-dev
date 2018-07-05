@@ -1,8 +1,12 @@
 const Sidebar = require('../../decorators/enriched-entity/app/sidebar.decorator');
+const path = require('path');
 
 const {
   decorators: {createElementDecorator},
-} = require('../../test-helpers.js');
+} = require(path.resolve(
+  process.cwd(),
+  './tests/front/acceptance/cucumber/test-helpers.js'
+));
 
 module.exports = async function(cucumber) {
   const {Given, Then, When} = cucumber;
