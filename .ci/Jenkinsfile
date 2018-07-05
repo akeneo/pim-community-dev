@@ -2,27 +2,21 @@
 stage("Test") {
   parallel(
     "1": {
-        mypod(label: "test", containers: [
-            containerTemplate(name: "php-1", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
-        ]) {
+        mypod(label: "test", index: "1") {
             container("php-1") {
                 sh "sleep 60"
             }
         }
     },
     "2": {
-        mypod(label: "test", containers: [
-            containerTemplate(name: "php-2", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
-        ]) {
+        mypod(label: "test", index: "2") {
             container("php-2") {
                 sh "sleep 60"
             }
         }
     },
     "3": {
-        mypod(label: "test", containers: [
-            containerTemplate(name: "php-3", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
-        ]) {
+        mypod(label: "test", index: "3") {
             container("php-3") {
                 sh "sleep 60"
             }
