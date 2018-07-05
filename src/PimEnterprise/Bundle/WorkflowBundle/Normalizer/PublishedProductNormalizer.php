@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Normalizer;
 
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

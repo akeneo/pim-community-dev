@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\CatalogRule\Connector\Processor;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class ProductLoaderProcessorSpec extends ObjectBehavior
 {

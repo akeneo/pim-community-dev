@@ -1,6 +1,0 @@
-services:
-    pimee_suggest_data.handler.update_identifiers_mapping:
-        class: 'PimEnterprise\Component\SuggestData\Command\UpdateIdentifiersMappingHandler'
-        arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pimee_suggest_data.repository.identifiers_mapping'

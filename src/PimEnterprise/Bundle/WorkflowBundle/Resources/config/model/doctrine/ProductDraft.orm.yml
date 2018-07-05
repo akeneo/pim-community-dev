@@ -26,7 +26,7 @@ PimEnterprise\Component\Workflow\Model\ProductDraft:
             nullable: false
     manyToOne:
         entityWithValues:
-            targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             joinColumn:
                 name: product_id
                 referencedColumnName: id

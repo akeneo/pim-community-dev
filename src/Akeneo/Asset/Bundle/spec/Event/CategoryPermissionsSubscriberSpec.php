@@ -4,7 +4,7 @@ namespace spec\Akeneo\Asset\Bundle\Event;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Asset\Bundle\Form\Type\CategoryPermissionsType;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Prophecy\Argument;

@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\TeamworkAssistant\Calculator;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>

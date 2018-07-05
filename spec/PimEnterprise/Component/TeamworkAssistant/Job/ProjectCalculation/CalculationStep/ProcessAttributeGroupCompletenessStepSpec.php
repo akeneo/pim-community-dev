@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
 use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
 use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\ProcessAttributeGroupCompletenessStep;

@@ -68,7 +68,7 @@ pim_volume_monitoring:
     resource: "@PimCatalogVolumeMonitoringBundle/Resources/config/routing.yml"
 
 pim_suggest_data:
-    resource: "@PimEnterpriseSuggestDataBundle/Resources/config/routing.yml"
+    resource: "@AkeneoSuggestDataBundle/Resources/config/routing.yml"
 
 # Oro platform
 

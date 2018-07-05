@@ -2,9 +2,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\Product;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PHPUnit\Framework\Assert;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\HttpFoundation\Response;

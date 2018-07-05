@@ -44,12 +44,6 @@ services:
         arguments:
             - '@router'
 
-    akeneo_enrichedentity.infrastructure.persistence.query.find_record_details:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryFindRecordDetails
-
-    akeneo_enrichedentity.infrastructure.persistence.enriched_entity:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryEnrichedEntityRepository
-
     akeneo_ee_integration_tests.builder.attribute:
         class: 'Akeneo\Test\Common\EntityBuilder'
         shared: false
@@ -57,12 +51,3 @@ services:
             - '@pim_catalog.factory.attribute'
             - '@pim_catalog.updater.attribute'
             - '@validator'
-
-    pim_user.repository.user:
-        class: Akeneo\Test\Acceptance\User\InMemoryUserRepository
-
-    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_details:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryFindEnrichedEntityDetails
-
-    akeneo_enrichedentity.infrastructure.persistence.query.find_enriched_entity_items:
-        class: AkeneoEnterprise\Test\Acceptance\EnrichedEntity\InMemoryFindEnrichedEntityItems

@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 
 /**

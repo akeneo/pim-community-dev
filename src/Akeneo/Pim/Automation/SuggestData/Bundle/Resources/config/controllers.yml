@@ -1,0 +1,12 @@
+services:
+    pimee_suggest_data.controller.suggest_data:
+        class: Akeneo\Pim\Automation\SuggestData\Bundle\Controller\Rest\SuggestDataController
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pimee_suggest_data.data_provider.factory'
+
+    pimee_suggest_data.controller.identifiers_mapping:
+        class: Akeneo\Pim\Automation\SuggestData\Bundle\Controller\IdentifiersMappingController
+        arguments:
+           - '@pimee_suggest_data.application.manage_identifiers_mapping'
+           - '@translator'
