@@ -1,10 +1,14 @@
 const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
 const Grid = require('../../decorators/enriched-entity/index/grid.decorator');
+const path = require('path');
 
 const {
   decorators: {createElementDecorator},
-  tools: {answerJson},
-} = require('../../test-helpers.js');
+  tools: {answerJson}
+} = require(path.resolve(
+  process.cwd(),
+  './tests/front/acceptance/cucumber/test-helpers.js'
+));
 
 module.exports = async function(cucumber) {
   const {Given, Then, When} = cucumber;
@@ -13,8 +17,8 @@ module.exports = async function(cucumber) {
   const config = {
     Grid: {
       selector: '.AknGridContainer',
-      decorator: Grid,
-    },
+      decorator: Grid
+    }
   };
 
   const getElement = createElementDecorator(config);
@@ -91,7 +95,7 @@ module.exports = async function(cucumber) {
   });
 
   Then('the user asks for the next enriched entities', async function() {
-    this.page.evaluate(_ => {
+    this.page.evaluate(() => {
       window.scrollBy(0, window.innerHeight);
     });
   });

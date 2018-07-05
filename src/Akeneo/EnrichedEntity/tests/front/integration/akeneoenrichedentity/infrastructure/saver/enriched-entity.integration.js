@@ -1,7 +1,5 @@
 const timeout = 5000;
 
-const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
-
 describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () => {
   let page = global.__PAGE__;
 
@@ -16,7 +14,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
         'POST' === interceptedRequest.method()
       ) {
         interceptedRequest.respond({
-          status: 204,
+          status: 204
         });
       }
     });

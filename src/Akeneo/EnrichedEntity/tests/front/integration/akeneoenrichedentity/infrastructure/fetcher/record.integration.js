@@ -1,7 +1,5 @@
 const timeout = 5000;
 
-const EnrichedEntityBuilder = require('../../../../common/builder/enriched-entity.js');
-
 describe('Akeneoenrichedentity > infrastructure > fetcher > record', () => {
   let page = global.__PAGE__;
 
@@ -19,8 +17,8 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > record', () => {
           contentType: 'application/json',
           body: JSON.stringify({
             items: [],
-            total: 0,
-          }),
+            total: 0
+          })
         });
       }
     });
@@ -29,13 +27,13 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > record', () => {
       const fetcher = require('akeneoenrichedentity/infrastructure/fetcher/record').default;
 
       return await fetcher.search({
-        filters: [{value: 'designer'}],
+        filters: [{value: 'designer'}]
       });
     });
 
     expect(response).toEqual({
       items: [],
-      total: 0,
+      total: 0
     });
   });
 });

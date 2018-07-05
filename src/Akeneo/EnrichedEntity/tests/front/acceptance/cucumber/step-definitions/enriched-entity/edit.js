@@ -1,9 +1,13 @@
 const Edit = require('../../decorators/enriched-entity/edit.decorator');
+const path = require('path');
 
 const {
   decorators: {createElementDecorator},
-  tools: {convertDataTable, convertItemTable, answerJson},
-} = require('../../test-helpers.js');
+  tools: {convertDataTable, convertItemTable, answerJson}
+} = require(path.resolve(
+  process.cwd(),
+  './tests/front/acceptance/cucumber/test-helpers.js'
+));
 
 module.exports = async function(cucumber) {
   const {When, Then} = cucumber;
@@ -12,8 +16,8 @@ module.exports = async function(cucumber) {
   const config = {
     Edit: {
       selector: '.AknDefault-contentWithColumn',
-      decorator: Edit,
-    },
+      decorator: Edit
+    }
   };
 
   const getElement = createElementDecorator(config);
@@ -93,7 +97,7 @@ module.exports = async function(cucumber) {
 
     const labelValue = await properties.getLabel();
     // To rework when we will be able to switch locale
-    assert.strictEqual(labelValue, enrichedEntity.labels['en_US']);
+    assert.strictEqual(labelValue, enrichedEntity.labels.en_US);
   });
 
   Then('the saved enriched entity {string} will be:', function(identifier, updates) {
@@ -118,7 +122,7 @@ module.exports = async function(cucumber) {
         request.respond({
           status: 500,
           contentType: 'text/plain',
-          body: 'Internal Error',
+          body: 'Internal Error'
         });
       }
     });

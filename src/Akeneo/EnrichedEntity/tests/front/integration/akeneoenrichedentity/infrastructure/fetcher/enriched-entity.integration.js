@@ -16,8 +16,8 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
           contentType: 'application/json',
           body: JSON.stringify({
             items: [],
-            total: 0,
-          }),
+            total: 0
+          })
         });
       }
     });
@@ -30,7 +30,7 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
 
     expect(response).toEqual({
       items: [],
-      total: 0,
+      total: 0
     });
   });
 
@@ -44,13 +44,13 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
           .withIdentifier('sofa')
           .withLabels({
             en_US: 'Sofa',
-            fr_FR: 'Canapé',
+            fr_FR: 'Canapé'
           })
           .build();
 
         interceptedRequest.respond({
           contentType: 'application/json',
-          body: JSON.stringify(enrichedEntity),
+          body: JSON.stringify(enrichedEntity)
         });
       }
     });
@@ -63,14 +63,14 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
 
     expect(response).toEqual({
       identifier: {
-        identifier: 'sofa',
+        identifier: 'sofa'
       },
       labelCollection: {
         labels: {
           en_US: 'Sofa',
-          fr_FR: 'Canapé',
-        },
-      },
+          fr_FR: 'Canapé'
+        }
+      }
     });
   });
 });
