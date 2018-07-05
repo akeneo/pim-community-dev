@@ -103,26 +103,27 @@ Domain-Driven Design follows the same principles that ports and adapters regardi
 - Application: it orchestrates the Domain and Infrastructure layers. It translates and validates the outside world to the Domain. It is the realm of use cases.
 - Infrastructure: it talks with the outside world. Typically, it persists domain objects and receives user's inputs. This is where we'll find the repository implementations, the frameworks glue, everything that's related databases, HTTP and all the other ports of the system.
 
-
-
 ### The relation with the tests
+
+Even if we don't use strictly ports and adpaters or domain-driven design layers, we should be able to determine which layer it would belong ideally.
+And once we have that in mind, we can easily determine which kind of test we should write.
 
 Unit:
 
-- it focuses on the Domain layer
+- it focuses on the _Domain_ layer
 
 Acceptance:
 
-- it focuses on the Application layer
+- it focuses on the _Application_ layer
 
 Integration:
 
-- it focuses on the Infrastructure layer
+- it focuses on the _Infrastructure_ layer
 - it tests an Adapter
 
 End to end:
 
-- it crosses over all the layers, from an adapter to another by passing through the Domain layer (for instance: Adapter A -> Application -> Domain -> Application -> Adapter B)
+- it crosses over all the layers, from an adapter to another by passing through the _Domain_ layer (for instance: Adapter A -> Application -> Domain -> Application -> Adapter B)
 
 
 ## Actual vs Expected
