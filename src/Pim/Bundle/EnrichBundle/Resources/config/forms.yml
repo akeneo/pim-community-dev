@@ -5,7 +5,7 @@ services:
         factory: 'form.factory:createNamed'
         arguments:
             - 'pim_enrich_family_form'
-            - '%pim_enrich.form.type.family.class%'
+            - 'Akeneo\Pim\Structure\Bundle\Form\Type\FamilyType'
 
     pim_enrich.form.currency:
         class: 'Symfony\Component\Form\Form'
