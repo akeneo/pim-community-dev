@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Pim\Component\Catalog\Updater\AssociationTypeUpdater;
+use Akeneo\Pim\Structure\Component\Updater\AssociationTypeUpdater;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class AssociationTypeUpdaterSpec extends ObjectBehavior

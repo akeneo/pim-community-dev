@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\tests\integration\Updater;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Pim\Component\Catalog\Updater\AttributeGroupUpdater;
+use Akeneo\Pim\Structure\Component\Updater\AttributeGroupUpdater;
 
 class AttributeGroupUpdaterIntegration extends TestCase
 {

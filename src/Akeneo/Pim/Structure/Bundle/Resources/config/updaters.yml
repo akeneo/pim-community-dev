@@ -38,3 +38,15 @@ services:
 
     pim_catalog.updater.group_type:
         class: 'Akeneo\Pim\Structure\Component\Updater\GroupTypeUpdater'
+
+    pim_catalog.updater.association_type:
+        class: 'Akeneo\Pim\Structure\Component\Updater\AssociationTypeUpdater'
+        arguments:
+            - '@pim_localization.updater.translatable'
+
+    pim_catalog.updater.attribute_group:
+        class: 'Akeneo\Pim\Structure\Component\Updater\AttributeGroupUpdater'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_group'
+            - '@pim_localization.updater.translatable'

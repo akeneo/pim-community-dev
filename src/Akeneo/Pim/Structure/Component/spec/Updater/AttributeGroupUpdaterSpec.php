@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\Akeneo\Pim\Structure\Component\Updater;
 
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
-use Pim\Component\Catalog\Updater\AttributeGroupUpdater;
+use Akeneo\Pim\Structure\Component\Updater\AttributeGroupUpdater;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class AttributeGroupUpdaterSpec extends ObjectBehavior
