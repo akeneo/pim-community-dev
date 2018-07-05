@@ -71,7 +71,7 @@ class PimAiContext implements Context
 
     /**
      * @Given PIM.ai was activated
-     * @When /^a user (re)?activate PIM.ai$/
+     * @When /^a user (re)?activates PIM.ai$/
      */
     public function activatePimAi(): void
     {

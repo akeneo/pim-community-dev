@@ -3,7 +3,7 @@ config:
         pim/controller-registry:
             controllers:
                 pimee_suggest_data_connection_index:
-                    module: pimee/controller/suggest-data/index
+                    module: pim/controller/common/index
                     aclResourceId: pimee_suggest_data_connection
                     config:
                         entity: pim-ai-connection
@@ -11,7 +11,6 @@ config:
             url: pimee_suggest_data_connection_post
 
     paths:
-        pimee/controller/suggest-data/index: pimenrich/js/controller/common/index
         pimee/saver/pim_ai_connection: pimenrich/js/saver/base-saver
 
         # Forms
