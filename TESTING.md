@@ -109,8 +109,9 @@ Domain-Driven Design follows the same principles that ports and adapters regardi
 
 ### The relation with the tests
 
-Even if we don't use strictly ports and adpaters or domain-driven design layers, we should be able to determine which layer it would belong ideally.
-And once we have that in mind, we can easily determine which kind of test we should write.
+It's true, that we don't use strictly ports and adapters or domain-driven design layers. So why is it useful for our test problems?
+When we code something we should be able to determine which layer it would belong ideally. Is it pure domain logic? Is it related to use case? Is it an infrastructure implementation?
+Once we have that in mind, we can easily determine which kind of test we should write for that particular piece of code.
 
 Unit:
 
@@ -163,13 +164,15 @@ Of course, this pyramid is not a recipe to follow blindly. The most important to
 - We should have a very few end to end tests
 - We should have few integration tests
 - We should a lot more of acceptance and unit tests
+- Frontend and backend tests should be able to live separately
+- Frontend and backend tests can follow the same "testing layers"
 
 ### How to move towards the ideal pyramid?
 
 The path towards this ideal pyramid will be long and tortuous. But still:
 
-- We should avoid adding new end to end Behat tests in the `tests/legacy` folder. Instead, we should focus on writing acceptance tests.
-- We should avoid adding new integration phpUnit tests in that are not related to an adapter.
+- We should avoid adding new end to end Behat tests in the `tests/legacy` folder. Instead, we should focus on writing acceptance tests. And yes, it will be hard, especially in the beginning.
+- We should avoid adding new integration phpUnit tests that are not related to an adapter.
 - We should learn how to write correct Gherkin and acceptance tests.
 - We should accept that not everything needs to be tested evenly. Testing is a deliberate act and choice.
 - We should try to embrace TDD: _it helps testing what we need instead of what it does_.
@@ -221,3 +224,6 @@ Your frustration is completely understandable. And yes, the path towards short C
 
 > I want to know more about the separation layers described in Domain-Driven Design!
 
+[Domain Driven Design Quickly](https://www.infoq.com/minibooks/domain-driven-design-quickly) by InfoQ
+
+[Domain-Driven Design](https://herbertograca.com/2017/09/07/domain-driven-design/) by Herberto Graça
