@@ -146,6 +146,10 @@ You should refer to the [ports and adapters architecture](#ports-and-adapters-ar
 
 For sure, end to end tests are a really safe cocoon. They strictly ensure what we have coded works as expected. But you should also remember that they become a burden when they are too numerous. As long as you have many unit and acceptance tests, as well as the necessary integration tests, you're safe. That means all your use cases are covered, and you're able to communicate with the outside world. A few system tests will only ensure that you have correctly glued all the pieces together. They do nothing more. In any case, if you have some doubt, ask the piece of advice of a teammate.
 
+> OK, you convinced me. But now, another thing triggers my mind. When should I write an end to end test?
+
+Try to remember the ideal tests pyramid. We should have just a few end to end to test. Only what's _critical_ should be tested. Also, only nominal use cases should be tested end to end. _Critical_ can mean different things depending on the context. It can be something simple but used everyday by a lot of people. Or it can be something used not so often but that is absolutely mandatory for the feature to work correctly: something that makes us earn money.
+
 > What is a service that performs I/O calls?
 
 Any service that uses an external system (relatively to your code). Can be considered as external systems: the file system, the system time, any system called via the network, a database or a search engine for instance. That means a Doctrine repository, which communicates with the database, is a service performing I/O calls.
@@ -158,7 +162,9 @@ Your frustration is completely understandable. And yes, the path towards short C
 
 > How can I write useful and powerful Gherkin?
 
-[Writing good Gherkin](https://automationpanda.com/2017/01/30/bdd-101-writing-good-gherkin/) by Andrew Knight
+[Writing Good Gherkin](https://automationpanda.com/2017/01/30/bdd-101-writing-good-gherkin/) by Andrew Knight
+
+[Telling Better Stories](http://videos.ncrafts.io/video/275529792) by David Evans
 
 [Modelling by Example Workshop](https://fr.slideshare.net/CiaranMcNulty/modelling-by-example-workshop-phpnw-2016) by Ciaran McNulty
 
