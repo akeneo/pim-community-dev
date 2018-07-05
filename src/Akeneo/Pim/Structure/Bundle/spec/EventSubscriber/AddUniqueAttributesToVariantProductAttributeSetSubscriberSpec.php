@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace spec\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber;
+use Akeneo\Pim\Structure\Bundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber;
 use Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

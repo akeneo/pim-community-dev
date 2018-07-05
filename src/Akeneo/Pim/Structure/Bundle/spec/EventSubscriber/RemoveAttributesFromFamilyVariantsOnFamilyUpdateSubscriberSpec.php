@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace spec\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber;
+use Akeneo\Pim\Structure\Bundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;

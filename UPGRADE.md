@@ -6,6 +6,10 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber\\AddUniqueAttributesToVariantProductAttributeSetSubscriber/Akeneo\\Pim\\Structure\\Bundle\\EventSubscriber\\AddUniqueAttributesToVariantProductAttributeSetSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber\\ComputeFamilyVariantStructureChangesSubscriber/Akeneo\\Pim\\Structure\\Bundle\\EventSubscriber\\ComputeFamilyVariantStructureChangesSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber\\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber/Akeneo\\Pim\\Structure\\Bundle\\EventSubscriber\\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber\\SaveFamilyVariantOnFamilyUpdateSubscriber/Akeneo\\Pim\\Structure\\Bundle\\EventSubscriber\\SaveFamilyVariantOnFamilyUpdateSubscriber/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Entity\\GroupTranslation/Akeneo\\Pim\\Enrichment\\Component\\Category\\Entity\\GroupTranslation/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Model\\GroupTranslationInterface/Akeneo\\Pim\\Enrichment\\Component\\Category\\Model\\GroupTranslationInterface/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Component\\Catalog\\Entity\\Group/Akeneo\\Pim\\Enrichment\\Component\\Category\\Entity\\Group/g'
