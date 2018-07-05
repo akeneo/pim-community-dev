@@ -1,182 +1,56 @@
-#!groovy
-String[] editions = ["ce"]
-String[] legacyFeatures = ["tests/legacy/features"]
-String launchUnitTests = "yes"
-String launchAcceptanceTests = "yes"
-String launchIntegrationTests = "yes"
-String launchEndToEndTests = "yes"
-String verboseOutputs = "yes"
-String slackChannel = ""
-String tag = "eu.gcr.io/akeneo-ci/pim-community-dev:${env.BRANCH_NAME}"
-String composer_command = "update"
-
-stage("Build") {
-    milestone 1
-    if (env.BRANCH_NAME =~ /^PR-/) {
-        timeout(time:5, unit:'DAYS') {
-            userInput = input(message: 'Launch tests?', parameters: [
-                choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
-                choice(choices: 'yes\nno', description: 'Run acceptance tests', name: 'launchAcceptanceTests'),
-                choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
-                choice(choices: 'yes\nno', description: 'Run end to end tests (whole Legacy Behat suite)', name: 'launchEndToEndTests'),
-                string(defaultValue: 'tests/legacy/features,vendor/akeneo/pim-community-dev/tests/legacy/features', description: 'Legacy end to end tests to run', name: 'legacyFeatures'),
-                choice(choices: 'no\nyes', description: 'Enable Verbose mode', name: 'verboseOutputs'),
-                string(defaultValue: '', description: 'Channel or user to notify (example : "#channel,@user")', name: 'slackChannel'),
-                string(defaultValue: 'ee,ce', description: 'PIM edition the behat tests should run on (comma separated values)', name: 'editions'),
-            ])
-
-            editions = userInput['editions'].tokenize(',')
-            legacyFeatures = userInput['legacyFeatures'].tokenize(',')
-            launchUnitTests = userInput['launchUnitTests']
-            launchAcceptanceTests = userInput['launchAcceptanceTests']
-            launchIntegrationTests = userInput['launchIntegrationTests']
-            launchEndToEndTests = userInput['launchEndToEndTests']
-            verboseOutputs = userInput['verboseOutputs']
-            slackChannel = userInput['slackChannel']
-            composer_command = "install"
-        }
+pipeline {
+  agent {
+    kubernetes {
+      label 'test'
+      yaml """
+        apiVersion: v1
+        kind: Pod
+        spec:
+          containers:
+            - name: php
+              image: php:fpm
+        """
     }
-    milestone 2
-
-    withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
-        parallel(
-            "pim-ce": {
-                pod(label: "build", containers: [
-                    containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
-                ]) {container('docker') {
-                    checkout scm
-                    sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag},_COMPOSER_COMMAND=${composer_command} ."
-                }}
-            },
-            "pim-ee": {
-                if (editions.contains("ee")) {
-                    pod(label: "build", containers: [
-                        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud:latest", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi')
-                    ]) {container('docker') {
-                        checkout([$class: 'GitSCM',
-                            branches: [[name: 'master']],
-                            userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
-                        ])
-
-                        dir('packages/pim-community-dev') {
-                            checkout scm
-                        }
-
-                        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee,_COMPOSER_COMMAND=${composer_command} ."
-                    }}
-                } else {
-                    echo "Skipping Enterprise Edition matrix"
-                }
+  }
+  stages {
+    stage('Parallel') {
+      parallel {
+        stage('A') {
+          container('php') {
+            steps {
+              sh "sleep 60"
             }
-        )
+          }
+        }
+        stage('B') {
+          container('php') {
+            steps {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('C') {
+          container('php') {
+            steps {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('D') {
+          container('php') {
+            steps {
+              sh "sleep 60"
+            }
+          }
+        }
+        stage('E') {
+          container('php') {
+            steps {
+              sh "sleep 60"
+            }
+          }
+        }
+      }
     }
-}
-
-stage("Test") {
-    try {
-        parallel(
-            // UNIT TESTS & MISC
-            "back-php-coupling-detector": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/UserManagement/.php_cd.php src/Akeneo/UserManagement && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Channel/.php_cd.php src/Akeneo/Channel"
-            )},
-            "back-phpunit": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit %workspace%/junit_output.xml",
-                junit: "junit_output.xml"
-            )},
-            "back-phpspec": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && su -s /bin/sh www-data -c './vendor/bin/phpspec run --format=junit' > %workspace%/junit_output.xml",
-                junit: "junit_output.xml"
-            )},
-            "back-php-cs-fixer": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > %workspace%/junit_output.xml",
-                junit: "junit_output.xml"
-            )},
-            "front-lint": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && yarn run lint"
-            )},
-            "front-unit": {testif(
-                condition: launchUnitTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && yarn run unit"
-            )},
-
-            // ACCEPTANCE TESTS
-            "front-acceptance-ce": {testif(
-                condition: launchAcceptanceTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./tests/features"
-            )},
-            "front-acceptance-ee": {testif(
-                condition: launchAcceptanceTests.equals("yes") && editions.contains("ee"),
-                container: "${tag}-ee",
-                script: "cd /var/www/pim && yarn run webpack-test && MAX_RANDOM_LATENCY_MS=100 yarn run acceptance ./vendor/akeneo/pim-community-dev/tests/features ./tests/features"
-            )},
-            "back-acceptance-ce": {testif(
-                condition: launchAcceptanceTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
-            )},
-            "back-acceptance-ee": {testif(
-                condition: launchAcceptanceTests.equals("yes") && editions.contains("ee"),
-                container: "${tag}-ee",
-                script: "cd /var/www/pim && vendor/bin/behat --strict -p acceptance -vv"
-            )},
-
-            // INTEGRATION TESTS
-            "front-integration-ce": {testif(
-                condition: launchIntegrationTests.equals("yes"),
-                container: tag,
-                script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
-            )},
-            "front-integration-ee": {testif(
-                condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
-                container: "${tag}-ee",
-                script: "cd /var/www/pim && yarn run webpack-test && yarn run integration"
-            )},
-            "back-legacy-phpunit-integration-ce": {queue(
-                condition: launchIntegrationTests.equals("yes") && editions.contains("ce"),
-                verbose: (verboseOutputs == "yes"),
-                container: tag,
-                containers: pimContainers(image: tag, selenium: false),
-                fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/tests"])},
-                parallelism: 50
-            )},
-            "back-legacy-phpunit-integration-ee": {queue(
-                condition: launchIntegrationTests.equals("yes") && editions.contains("ee"),
-                verbose: (verboseOutputs == "yes"),
-                container: "${tag}-ee",
-                containers: pimContainers(image: "${tag}-ee", selenium: false),
-                fetcher: {return pimPhpunitFetcher(paths:["/var/www/pim/src", "/var/www/pim/vendor/akeneo/pim-community-dev/src", "/var/www/pim/vendor/akeneo/pim-community-dev/tests"])},
-                parallelism: 50
-            )},
-
-            // END TO END TESTS
-            "legacy-end-to-end-behat-ce": {queue(
-                condition: launchEndToEndTests.equals("yes") && editions.contains("ce"),
-                verbose: (verboseOutputs == "yes"),
-                container: tag,
-                containers: pimContainers(image: tag),
-                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
-            )},
-            "legacy-end-to-end-behat-ee": {queue(
-                condition: launchEndToEndTests.equals("yes") && editions.contains("ee"),
-                verbose: (verboseOutputs == "yes"),
-                container: "${tag}-ee",
-                containers: pimContainers(image: "${tag}-ee"),
-                fetcher: {return pimBehatFetcher(hasToInstall: true, profiles: ["legacy"], features: legacyFeatures)}
-            )}
-        )
-    } finally {
-        notifySlack(slackChannel)
-    }
+  }
 }
