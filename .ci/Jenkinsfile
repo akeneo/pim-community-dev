@@ -1,21 +1,22 @@
 pipeline {
-  agent {
-    kubernetes {
-      label 'test'
-      yaml """
-        apiVersion: v1
-        kind: Pod
-        spec:
-          containers:
-            - name: php
-              image: php:fpm
-        """
-    }
-  }
+  agent none
   stages {
     stage('Parallel') {
       parallel {
         stage('A') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
           steps {
             container('php') {
               sh "sleep 60"
@@ -23,6 +24,19 @@ pipeline {
           }
         }
         stage('B') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
           steps {
             container('php') {
               sh "sleep 60"
@@ -30,6 +44,19 @@ pipeline {
           }
         }
         stage('C') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
           steps {
             container('php') {
               sh "sleep 60"
@@ -37,6 +64,19 @@ pipeline {
           }
         }
         stage('D') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
           steps {
             container('php') {
               sh "sleep 60"
@@ -44,6 +84,19 @@ pipeline {
           }
         }
         stage('E') {
+          agent {
+            kubernetes {
+              label 'test'
+              yaml """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                  containers:
+                    - name: php
+                      image: php:fpm
+                """
+            }
+          }
           steps {
             container('php') {
               sh "sleep 60"
