@@ -1,7 +1,7 @@
 stage("Test") {
   parallel(
     "A": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -10,7 +10,7 @@ stage("Test") {
         }
     },
     "B": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -19,7 +19,7 @@ stage("Test") {
         }
     },
     "C": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -28,7 +28,7 @@ stage("Test") {
         }
     },
     "D": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -37,7 +37,7 @@ stage("Test") {
         }
     },
     "E": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -46,7 +46,7 @@ stage("Test") {
         }
     },
     "F": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -55,7 +55,7 @@ stage("Test") {
         }
     },
     "G": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -64,7 +64,7 @@ stage("Test") {
         }
     },
     "H": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -73,7 +73,7 @@ stage("Test") {
         }
     },
     "I": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -82,7 +82,7 @@ stage("Test") {
         }
     },
     "J": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -91,7 +91,7 @@ stage("Test") {
         }
     },
     "K": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -100,7 +100,7 @@ stage("Test") {
         }
     },
     "L": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -109,7 +109,7 @@ stage("Test") {
         }
     },
     "M": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -118,7 +118,7 @@ stage("Test") {
         }
     },
     "N": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -127,7 +127,7 @@ stage("Test") {
         }
     },
     "O": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -136,7 +136,7 @@ stage("Test") {
         }
     },
     "P": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -145,7 +145,7 @@ stage("Test") {
         }
     },
     "Q": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -154,7 +154,7 @@ stage("Test") {
         }
     },
     "R": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -163,7 +163,7 @@ stage("Test") {
         }
     },
     "S": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -172,7 +172,61 @@ stage("Test") {
         }
     },
     "T": {
-        pod(label: "test", containers: [
+        mypod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "U": {
+        mypod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "V": {
+        mypod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "W": {
+        mypod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "X": {
+        mypod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "Y": {
+        mypod(label: "test", containers: [
+            containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
+        ]) {
+            container("php") {
+                sh "sleep 60"
+            }
+        }
+    },
+    "Z": {
+        mypod(label: "test", containers: [
             containerTemplate(name: "php", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php") {
@@ -181,4 +235,17 @@ stage("Test") {
         }
     }
   )
+}
+
+def mypod(Map params = [:], Closure body) {
+    String label = params.get('label', null)
+    String uuid = UUID.randomUUID().toString()
+
+    timeout(time: 4, unit: 'HOURS') {
+        return steps.podTemplate(name: label + "-" + uuid, label: label + "-" + uuid, containers: params.get('containers', [])) {
+            node(label + "-" + uuid) {
+                body()
+            }
+        }
+    }
 }
