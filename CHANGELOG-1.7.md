@@ -1,4 +1,4 @@
-# 1.7.x
+# 1.7.24 (2018-07-05)
 
 ## Bug fixes
 - PIM-7461: Allow to avoid type check on category filter
