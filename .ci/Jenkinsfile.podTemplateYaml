@@ -38,7 +38,7 @@ def mypod(Map params = [:], Closure body) {
 
     timeout(time: 4, unit: 'HOURS') {
         return steps.podTemplate(
-            label: label-${index},
+            label: "label-${index}",
             yaml: """
                 apiVersion: v1
                 kind: Pod
@@ -48,7 +48,7 @@ def mypod(Map params = [:], Closure body) {
                       image: php:fpm
             """
         ) {
-            node(label) {
+            node("label-${index}") {
                 body()
             }
         }

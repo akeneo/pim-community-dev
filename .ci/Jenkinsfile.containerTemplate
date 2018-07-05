@@ -2,7 +2,7 @@
 stage("Test") {
   parallel(
     "1": {
-        mypod(label: "test", containers: [
+        mypod(label: "test-1", containers: [
             containerTemplate(name: "php-1", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php-1") {
@@ -11,7 +11,7 @@ stage("Test") {
         }
     },
     "2": {
-        mypod(label: "test", containers: [
+        mypod(label: "test-2", containers: [
             containerTemplate(name: "php-2", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php-2") {
@@ -20,7 +20,7 @@ stage("Test") {
         }
     },
     "3": {
-        mypod(label: "test", containers: [
+        mypod(label: "test-3", containers: [
             containerTemplate(name: "php-3", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php-3") {
@@ -29,7 +29,7 @@ stage("Test") {
         }
     },
     "4": {
-        mypod(label: "test", containers: [
+        mypod(label: "test-4", containers: [
             containerTemplate(name: "php-4", image: 'php:fpm', resourceRequestCpu: '200m', resourceRequestMemory: '200Mi')
         ]) {
             container("php-4") {
@@ -42,11 +42,10 @@ stage("Test") {
 
 def mypod(Map params = [:], Closure body) {
     String label = params.get('label', null)
-    String uuid = UUID.randomUUID().toString()
 
     timeout(time: 4, unit: 'HOURS') {
-        return steps.podTemplate(name: label + "-" + uuid, label: label + "-" + uuid, containers: params.get('containers', [])) {
-            node(label + "-" + uuid) {
+        return steps.podTemplate(label: label, containers: params.get('containers', [])) {
+            node(label) {
                 body()
             }
         }
