@@ -103,9 +103,9 @@ To communicate with the outside world, the inside relies on contracts (a _port_)
 
 Domain-Driven Design follows the same principles that ports and adapters regarding the layers segregation. The most important thing is that no external layer should leak into a deeper layer. The main difference is that it introduces a new layer, which means we end up with:
 
-- Domain: it holds the model and all the business logic
-- Application: it orchestrates the Domain and Infrastructure layers. It translates and validates the outside world to the Domain. It is the realm of use cases.
-- Infrastructure: it talks with the outside world. Typically, it persists domain objects and receives user's inputs. This is where we'll find the repository implementations, the frameworks glue, everything that's related databases, HTTP and all the other ports of the system.
+- _Domain_: it holds the model and all the business logic
+- _Application_: it orchestrates the Domain and Infrastructure layers. It translates and validates the outside world to the Domain. It is the realm of use cases.
+- _Infrastructure_: it talks with the outside world. Typically, it persists domain objects and receives user's inputs. This is where we'll find the repository implementations, the frameworks glue, everything that's related databases, HTTP and all the other ports of the system.
 
 ### The relation with the tests
 
@@ -134,12 +134,46 @@ End to end:
 
 ### Today's situation
 
+Today, as of July the 5th 2018, we have on master:
+
+- backend tests:
+    - ~2200 end to end Behat tests
+    - ~3100 integration/end to end phpUnit 
+    - ~50 acceptance Behat tests
+    - ~7000 phpSpec
+- a very few frontend tests
+
+Over a long period of time:
+
+- We added end to end Behat without bothering too much. Until the situation become out of control.
+- We wrote Behat tests without considering our business. We were describing a UI behavior, not a business use case.
+- We confused the type of test with the tool we used. We thought for instance that using phpUnit was making integration tests.
+- We accepted the builds to be longer and longer.
+
+But nothing is lost. It's time to change!
+
 ### The ideal pyramid
+
+To enhance the situtation, our goal should be to distribute evenly our tests as described in the following pyramid:
 
 ![Ideal tests pyramid](/tests_pyramid.png "Ideal tests pyramid")
 
+Of course, this pyramid is not a recipe to follow blindly. The most important to understand is that, relatively to our total number of tests:
+
+- We should have a very few end to end tests
+- We should have few integration tests
+- We should a lot more of acceptance and unit tests
+
 ### How to move towards the ideal pyramid?
 
+The path towards this ideal pyramid will be long and tortuous. But still:
+
+- We should avoid adding new end to end Behat tests in the `tests/legacy` folder. Instead, we should focus on writing acceptance tests.
+- We should avoid adding new integration phpUnit tests in that are not related to an adapter.
+- We should learn how to write correct Gherkin and acceptance tests.
+- We should accept that not everything needs to be tested evenly. Testing is a deliberate act and choice.
+- We should try to embrace TDD: _it helps testing what we need instead of what it does_.
+- We should use OOP correctly to avoid writing useless unit tests.
 
 ## FAQ
 
