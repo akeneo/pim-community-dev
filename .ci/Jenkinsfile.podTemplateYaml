@@ -38,7 +38,7 @@ def mypod(Map params = [:], Closure body) {
 
     timeout(time: 4, unit: 'HOURS') {
         return steps.podTemplate(
-            label: label,
+            label: label-${index},
             yaml: """
                 apiVersion: v1
                 kind: Pod

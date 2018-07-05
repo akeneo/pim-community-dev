@@ -1,89 +1,56 @@
-pipeline {
-  agent none
-  stages {
-    stage('Parallel') {
-      parallel {
-        stage('1') {
-          agent {
-            kubernetes {
-              label 'test-1'
-              yaml """
-                apiVersion: v1
-                kind: Pod
-                spec:
-                  containers:
-                    - name: php-1
-                      image: php:fpm
-                """
+
+stage("Test") {
+  parallel(
+    "1": {
+        mypod(label: "test", index: "1") {
+            container("php-1") {
+                sh "sleep 60"
             }
-          }
-          steps {
-            container('php-1') {
-              sh "sleep 60"
-            }
-          }
         }
-        stage('2') {
-          agent {
-            kubernetes {
-              label 'test-2'
-              yaml """
-                apiVersion: v1
-                kind: Pod
-                spec:
-                  containers:
-                    - name: php-2
-                      image: php:fpm
-                """
+    },
+    "2": {
+        mypod(label: "test", index: "2") {
+            container("php-2") {
+                sh "sleep 60"
             }
-          }
-          steps {
-            container('php-2') {
-              sh "sleep 60"
-            }
-          }
         }
-        stage('3') {
-          agent {
-            kubernetes {
-              label 'test-3'
-              yaml """
-                apiVersion: v1
-                kind: Pod
-                spec:
-                  containers:
-                    - name: php-3
-                      image: php:fpm
-                """
+    },
+    "3": {
+        mypod(label: "test", index: "3") {
+            container("php-3") {
+                sh "sleep 60"
             }
-          }
-          steps {
-            container('php-3') {
-              sh "sleep 60"
-            }
-          }
         }
-        stage('4') {
-          agent {
-            kubernetes {
-              label 'test-4'
-              yaml """
-                apiVersion: v1
-                kind: Pod
-                spec:
-                  containers:
-                    - name: php-4
-                      image: php:fpm
-                """
+    },
+    "4": {
+        mypod(label: "test", index: "4") {
+            container("php-4") {
+                sh "sleep 60"
             }
-          }
-          steps {
-            container('php-4') {
-              sh "sleep 60"
-            }
-          }
         }
-      }
     }
-  }
+  )
+}
+
+def mypod(Map params = [:], Closure body) {
+    String label = params.get('label', null)
+    String index = params.get('index', null)
+
+    timeout(time: 4, unit: 'HOURS') {
+        return steps.podTemplate(
+            label: label-${index},
+            yaml: """
+                apiVersion: v1
+                kind: Pod
+                spec:
+                    containers:
+                    - name: php-${index}
+                      image: php:fpm
+            """
+        ) {
+            node(label) {
+                body()
+            }
+        }
+    }
 }
