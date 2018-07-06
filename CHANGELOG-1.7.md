@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-7466: do not escape quotes for translation
+
 # 1.7.24 (2018-07-05)
 
 ## Bug fixes
