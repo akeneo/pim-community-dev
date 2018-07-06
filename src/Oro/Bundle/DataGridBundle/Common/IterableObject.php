@@ -7,7 +7,7 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
-class Object implements \ArrayAccess, \IteratorAggregate
+class IterableObject implements \ArrayAccess, \IteratorAggregate
 {
     const NAME_KEY = 'name';
 
