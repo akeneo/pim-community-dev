@@ -69,7 +69,10 @@ export default class EditForm extends React.Component<FormProps> {
                 type="text"
                 name="label"
                 className="AknTextField AknTextField--withBottomBorder"
-                value={this.props.enrichedEntity.getLabelCollection().getLabel(this.props.locale)}
+                value={this.props.enrichedEntity.getLabelCollection().hasLabel(this.props.locale) ?
+                  this.props.enrichedEntity.getLabelCollection().getLabel(this.props.locale) :
+                  ''
+                }
                 onChange={this.updateLabel}
               />
               <Flag locale={this.props.locale} displayLanguage={false} />

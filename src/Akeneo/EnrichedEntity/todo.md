@@ -9,11 +9,11 @@
 - What to do in a show command handler if the entity is not found? Throw an exception? null?
 - Should we use "list" or "index"? Should we use "get" or "show"? In a lot of places we use one or the other. Could be nice to choose before it's getting too messy
 - add normalizer for enriched entity
-- use decorator for acceptance tests front
 - add session storage for tab situation
 - rework acceptance tests when the locale switcher will work
 - fix the form to take into account what the backend answered
 - test integration controller edit
+- add pqb filter, grid filter and peb filter for the enriched entity value
 
 DONE:
 
@@ -23,3 +23,4 @@ DONE:
 - rename hidrate -> hydrate [DONE]
 - rework form.tsx to not remove labels [DONE]
 - remove `back` from the php namespace [DONE]
+- use decorator for acceptance tests front [DONE]

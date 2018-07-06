@@ -18,22 +18,14 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
-use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager;
-use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * ProductDraft controller

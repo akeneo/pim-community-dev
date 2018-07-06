@@ -49,6 +49,7 @@ install:
 script:
     - yarn unit
     - yarn integration
+    - yarn acceptance src/Akeneo/EnrichedEntity/tests/features
     - yarn acceptance tests/features
     - yarn acceptance vendor/akeneo/pim-community-dev/tests/features
     - vendor/bin/behat -p acceptance --no-interaction
