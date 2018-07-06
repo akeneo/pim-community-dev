@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Exception\DuplicateMappingAttributeException;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 
 /**
  * Command that holds and validates the raw values of the identifiers mapping
@@ -45,12 +46,7 @@ class UpdateIdentifiersMappingCommand
      */
     private function validateIdentifiers(array $identifiersMapping): void
     {
-        $expectedKeys = [
-            'asin',
-            'brand',
-            'mpn',
-            'upc',
-        ];
+        $expectedKeys = IdentifiersMapping::PIM_AI_IDENTIFIERS;
 
         $mappingKeys = array_keys($identifiersMapping);
         sort($mappingKeys);
