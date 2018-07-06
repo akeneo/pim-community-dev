@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 
 /**
  * Resolves association columns

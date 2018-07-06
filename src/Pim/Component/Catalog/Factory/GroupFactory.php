@@ -3,8 +3,8 @@
 namespace Pim\Component\Catalog\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 
 /**
  * Creates and configures a group instance.

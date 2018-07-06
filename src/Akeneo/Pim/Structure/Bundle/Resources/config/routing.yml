@@ -11,6 +11,10 @@ external_api_family:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/external_api/family.yml'
     prefix: /api/rest/v1
 
+association_type:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/external_api/association_type.yml'
+    prefix: /api/rest/v1
+
 ### Internal API
 internal_api_attribute:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute.yml'
@@ -35,6 +39,10 @@ internal_api_attribute_option:
 internal_api_attribute_type:
     resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/attribute_type.yml'
     prefix: /rest/attribute-type
+
+association:
+    resource: '@AkeneoPimStructureBundle/Resources/config/routing/internal_api/associationtype.yml'
+    prefix: /configuration/association-type
 
 ### Front routes
 front_routes:

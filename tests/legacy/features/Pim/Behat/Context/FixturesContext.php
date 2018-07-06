@@ -9,11 +9,13 @@ use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
+use Akeneo\Pim\Structure\Component\Model\GroupType;
 use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
@@ -42,14 +44,14 @@ class FixturesContext extends PimContext
         'FamilyVariant'    => FamilyVariant::class,
         'Category'         => Category::class, // TODO: To remove
         'ProductCategory'  => Category::class,
-        'AssociationType'  => 'PimCatalogBundle:AssociationType',
+        'AssociationType'  => AssociationType::class,
         'JobInstance'      => 'Akeneo\Tool\Component\Batch\Model\JobInstance',
         'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',
         'User'             => 'Akeneo\UserManagement\Component\Model\User',
         'Role'             => 'Akeneo\UserManagement\Component\Model\Role',
         'UserGroup'        => 'Akeneo\UserManagement\Component\Model\Group',
         'Locale'           => Locale::class,
-        'GroupType'        => 'PimCatalogBundle:GroupType',
+        'GroupType'        => GroupType::class,
         'Product'          => Product::class,
         'ProductGroup'     => Group::class,
     ];

@@ -4,13 +4,13 @@ namespace Pim\Component\Catalog\tests\integration\Updater;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 
 class AssociationTypeUpdaterIntegration extends TestCase
 {
     /**
      * @expectedException \Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException
-     * @expectedExceptionMessage Expects a "Pim\Component\Catalog\Model\AssociationTypeInterface", "stdClass" given.
+     * @expectedExceptionMessage Expects a "Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface", "stdClass" given.
      */
     public function testUpdateObjectInAssociationTypeUpdater()
     {

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
-use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface;
 

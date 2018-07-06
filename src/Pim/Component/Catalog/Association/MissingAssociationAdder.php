@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\Association;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
 
 /**
  * Create all missing associations for each existing association type

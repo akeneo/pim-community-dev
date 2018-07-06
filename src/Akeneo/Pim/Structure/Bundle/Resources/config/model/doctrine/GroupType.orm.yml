@@ -1,0 +1,25 @@
+Akeneo\Pim\Structure\Component\Model\GroupType:
+    type: entity
+    table: pim_catalog_group_type
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\GroupTypeRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            unique: true
+    oneToMany:
+        groups:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface
+            mappedBy: type
+        translations:
+            targetEntity: Akeneo\Pim\Structure\Component\Model\GroupTypeTranslationInterface
+            mappedBy: foreignKey
+            cascade:
+                - persist
+                - detach

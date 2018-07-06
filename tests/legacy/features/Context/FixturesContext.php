@@ -17,6 +17,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
+use Akeneo\Pim\Structure\Component\Model\GroupType;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -36,7 +37,6 @@ use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
@@ -2207,7 +2207,7 @@ class FixturesContext extends BaseFixturesContext
      * @param string $code
      * @param string $label
      *
-     * @return \Pim\Component\Catalog\Model\GroupTypeInterface
+     * @return GroupTypeInterface
      */
     protected function createGroupType($code, $label)
     {

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Akeneo\Pim\Structure\Component\Model;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -98,7 +99,7 @@ class GroupType extends AbstractType
                 'type',
                 EntityType::class,
                 [
-                    'class'         => 'PimCatalogBundle:GroupType',
+                    'class'         => Model\GroupType::class,
                     'query_builder' => function (EntityRepository $repository) {
                         return $repository->getAllGroupsExceptVariantQB();
                     },

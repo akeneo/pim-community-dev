@@ -2,7 +2,6 @@ parameters:
     pim_catalog.factory.metric.class:                Pim\Component\Catalog\Factory\MetricFactory
     pim_catalog.factory.price.class:                 Pim\Component\Catalog\Factory\PriceFactory
     pim_catalog.factory.group.class:                 Pim\Component\Catalog\Factory\GroupFactory
-    pim_catalog.factory.group_type.class:            Pim\Component\Catalog\Factory\GroupTypeFactory
     pim_catalog.factory.product_unique_data.class:   Pim\Component\Catalog\Factory\ProductUniqueDataFactory
 
     pim_catalog.factory.value_collection.class:       Pim\Component\Catalog\Factory\ValueCollectionFactory
@@ -35,11 +34,6 @@ services:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
             - '%pim_catalog.entity.attribute_group.class%'
-
-    pim_catalog.factory.group_type:
-        class: '%pim_catalog.factory.group_type.class%'
-        arguments:
-            - '%pim_catalog.entity.group_type.class%'
 
     pim_catalog.factory.attribute_option:
         class: '%akeneo_storage_utils.factory.simple.class%'

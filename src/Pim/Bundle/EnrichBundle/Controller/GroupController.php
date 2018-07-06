@@ -3,11 +3,11 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
+use Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
 use Pim\Component\Catalog\Factory\GroupFactory;
-use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
