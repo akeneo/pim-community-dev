@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
+Akeneo\Pim\Structure\Component\Model\AttributeOptionValue:
     properties:
         value:
             - Length:

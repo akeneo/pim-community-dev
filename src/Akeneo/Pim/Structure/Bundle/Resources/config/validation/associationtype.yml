@@ -15,7 +15,7 @@ Akeneo\Pim\Structure\Component\Model\AssociationType:
         translations:
             - Valid: ~
 
-Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation:
+Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslation:
     properties:
         label:
             - Length:
