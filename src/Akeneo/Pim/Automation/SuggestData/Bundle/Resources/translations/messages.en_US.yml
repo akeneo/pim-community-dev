@@ -1,11 +1,15 @@
 batch_jobs.suggest_data_push_products.perform.label: Suggest data
 
-pimee_suggest_data:
+akeneo_suggest_data:
     acl:
         suggest_data:
             index: Suggest data
         pim_ai:
-            connection: Manage connection to PIM.AI
+            title: Manage connection to PIM.AI
+    connection:
+        pim_ai:
+            success: Thank you for connecting the AI assistant. He's gathering information for your catalog and will notify you when it's ready.
+            error: Sorry, invalid activation code. Please try again with a valid one.
     mapping_identifier:
         success: The mapping has been successfully saved
         error: An error occurred while saving the mapping

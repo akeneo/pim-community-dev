@@ -2,13 +2,13 @@ config:
     config:
         pim/controller-registry:
             controllers:
-                pimee_suggest_data_connection_index:
+                akeneo_suggest_data_connection_index:
                     module: pim/controller/common/index
-                    aclResourceId: pimee_suggest_data_connection
+                    aclResourceId: akeneo_suggest_data_connection
                     config:
                         entity: pim-ai-connection
         pimee/saver/pim_ai_connection:
-            url: pimee_suggest_data_connection_post
+            url: akeneo_suggest_data_connection_post
 
     paths:
         pimee/saver/pim_ai_connection: pimenrich/js/saver/base-saver

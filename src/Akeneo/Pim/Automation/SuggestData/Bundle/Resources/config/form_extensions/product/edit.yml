@@ -3,5 +3,5 @@ extensions:
         module: pimee/product-edit-form/suggest-data-push
         parent: pim-product-edit-form-attributes
         targetZone: other-actions
-        aclResourceId: pimee_suggest_data_product_index
+        aclResourceId: akeneo_suggest_data_product_index
         position: 120

@@ -1,7 +1,7 @@
 pim_title:
-    pimee_suggest_data_connection_index: 'PIM.AI connection'
+    akeneo_suggest_data_connection_index: 'PIM.AI connection'
 
-pimee_suggest_data:
+akeneo_suggest_data:
     product:
         edit:
             btn.push: Suggest data

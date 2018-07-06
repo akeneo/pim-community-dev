@@ -24,12 +24,12 @@ extensions:
         parent: pim-pim-ai-connection-index
         targetZone: title
         config:
-            main_title: pimee_suggest_data.pim_ai.title.main_title
-            sub_title: pimee_suggest_data.pim_ai.title.sub_title
+            main_title: akeneo_suggest_data.pim_ai.title.main_title
+            sub_title: akeneo_suggest_data.pim_ai.title.sub_title
             illustration: bundles/pimui/images/illustrations/Helpcenter-settings.svg
             description:
-                - pimee_suggest_data.pim_ai.title.description.first_step
-                - pimee_suggest_data.pim_ai.title.description.second_step
+                - akeneo_suggest_data.pim_ai.title.description.first_step
+                - akeneo_suggest_data.pim_ai.title.description.second_step
 
     pimee-pim-ai-connection-index-breadcrumbs:
         module: pim/common/breadcrumbs
@@ -46,10 +46,10 @@ extensions:
         targetZone: content
         position: 10
         config:
-            token_label_title: pimee_suggest_data.pim_ai.token.label.title
-            token_label_content: pimee_suggest_data.pim_ai.token.label.content
-            token_field_title: pimee_suggest_data.pim_ai.token.field.title
-            token_field_placeholder: pimee_suggest_data.pim_ai.token.field.placeholder
-            token_save_pre_activation_title: pimee_suggest_data.pim_ai.token.save.to_activate
-            token_save_post_activation_title:  pimee_suggest_data.pim_ai.token.save.activated
+            token_label_title: akeneo_suggest_data.pim_ai.token.label.title
+            token_label_content: akeneo_suggest_data.pim_ai.token.label.content
+            token_field_title: akeneo_suggest_data.pim_ai.token.field.title
+            token_field_placeholder: akeneo_suggest_data.pim_ai.token.field.placeholder
+            token_save_pre_activation_title: akeneo_suggest_data.pim_ai.token.save.to_activate
+            token_save_post_activation_title:  akeneo_suggest_data.pim_ai.token.save.activated
             code: pim-ai
