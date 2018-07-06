@@ -4,7 +4,7 @@ const Routing = require('routing');
 
 export function getConfiguration(code: string): JQueryPromise<any> {
   const url = Routing.generate(
-    'pimee_suggest_data_connection_get',
+    'akeneo_suggest_data_connection_get',
     {code: code}
   );
 
@@ -13,7 +13,7 @@ export function getConfiguration(code: string): JQueryPromise<any> {
 
 export function isConnectionActivated(code: string): JQueryPromise<any> {
   const url = Routing.generate(
-    'pimee_suggest_data_is_connection_activated',
+    'akeneo_suggest_data_is_connection_activated',
     {code: code}
   );
 

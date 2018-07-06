@@ -43,7 +43,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         $identifiersMapping = new IdentifiersMapping([
             'brand' => $this->getAttribute('sku'),
         ]);
-        $this->get('pimee_suggest_data.repository.identifiers_mapping')->save($identifiersMapping);
+        $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->save($identifiersMapping);
 
         $this->createAttribute('ean');
         $mapping = $this->updateMapping(['brand' => $this->getAttribute('ean')]);
@@ -65,7 +65,7 @@ class ConfigurationRepositoryIntegration extends TestCase
             'brand' => $this->getAttribute('sku'),
         ]);
 
-        $identifiersMappingRepository = $this->get('pimee_suggest_data.repository.identifiers_mapping');
+        $identifiersMappingRepository = $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping');
         $identifiersMappingRepository->save($identifiersMapping);
 
         $savedMapping = $identifiersMappingRepository->findAll();
@@ -77,7 +77,7 @@ class ConfigurationRepositoryIntegration extends TestCase
     {
         $identifiersMapping = new IdentifiersMapping($newMapping);
 
-        $this->get('pimee_suggest_data.repository.identifiers_mapping')->save($identifiersMapping);
+        $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->save($identifiersMapping);
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(

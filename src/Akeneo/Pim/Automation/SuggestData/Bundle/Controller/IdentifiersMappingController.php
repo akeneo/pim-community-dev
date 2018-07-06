@@ -52,13 +52,13 @@ class IdentifiersMappingController
             $this->manageIdentifiersMapping->updateIdentifierMapping($identifiersMapping);
 
             return new JsonResponse([
-                'successful' => true,
-                'message' => $this->translator->trans('pimee_suggest_data.mapping_identifier.success'),
+                'status' => 'success',
+                'message' => $this->translator->trans('akeneo_suggest_data.mapping_identifier.success'),
             ]);
         } catch (\Exception $e) {
             return new JsonResponse([
-                'successful' => false,
-                'message' => $this->translator->trans('pimee_suggest_data.mapping_identifier.error'),
+                'status' => 'error',
+                'message' => $this->translator->trans('akeneo_suggest_data.mapping_identifier.error'),
             ]);
         }
     }

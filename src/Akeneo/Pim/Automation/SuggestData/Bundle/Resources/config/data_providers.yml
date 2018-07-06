@@ -1,14 +1,14 @@
 services:
-    pimee_suggest_data.data_provider.factory:
-        class: Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\DataProviderFactory
+    akeneo.pim.automation.suggest_data.data_provider.factory:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\DataProviderFactory'
         arguments:
-            - '@pimee_suggest_data.deserialize_suggested_data_collection'
-            - '@pimee_suggest_data.pimai_client.subscribe_webservice'
+            - '@akeneo.pim.automation.suggest_data.data_provider.deserialize_suggested_data_collection'
+            - '@akeneo.pim.automation.suggest_data.pimai_client.subscribe_webservice'
 
-    pimee_suggest_data.deserialize_suggested_data_collection:
-        class: Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\DeserializeSuggestedDataCollection
+    akeneo.pim.automation.suggest_data.data_provider.deserialize_suggested_data_collection:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\DeserializeSuggestedDataCollection'
         arguments:
-            - '@pimee_suggest_data.suggested_data_factory'
+            - '@akeneo.pim.automation.suggest_data.data_provider.suggested_data_factory'
 
-    pimee_suggest_data.suggested_data_factory:
-        class: Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataFactory
+    akeneo.pim.automation.suggest_data.data_provider.suggested_data_factory:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\SuggestedDataFactory'

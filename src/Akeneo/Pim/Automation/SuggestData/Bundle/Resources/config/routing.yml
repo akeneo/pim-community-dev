@@ -1,39 +1,39 @@
-pimee_suggest_data_push_product:
+akeneo_suggest_data_push_product:
     path: /suggest-data/{productId}/push-product
-    defaults: { _controller: pimee_suggest_data.controller.suggest_data:pushAction }
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.suggest_data:pushAction }
     methods: [GET]
 
-pimee_suggest_data_connection_index:
+akeneo_suggest_data_connection_index:
     path: /suggest-data/connection
     methods: [GET]
 
-pimee_suggest_data_connection_get:
+akeneo_suggest_data_connection_get:
     path: /suggest-data/connection/{code}
-    defaults: { _controller: pimee_suggest_data.controller.pim_ai:getAction }
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:getAction }
     requirements:
         code: '[\w._-]+'
     methods: [GET]
 
-pimee_suggest_data_connection_post:
+akeneo_suggest_data_connection_post:
     path: /suggest-data/connection/{code}
-    defaults: { _controller: pimee_suggest_data.controller.pim_ai:postAction }
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:postAction }
     requirements:
         code: '[\w._-]+'
     methods: [POST]
 
-pimee_suggest_data_is_connection_activated:
+akeneo_suggest_data_is_connection_activated:
     path: /suggest-data/connection/{code}/is-activated
-    defaults: { _controller: pimee_suggest_data.controller.pim_ai:isActiveAction }
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.pim_ai:isActiveAction }
     requirements:
         code: '[\w._-]+'
     methods: [GET]
 
-pimee_suggest_data_identifiers_mapping_save:
+akeneo_suggest_data_identifiers_mapping_save:
     path: /suggest-data/identifiers-mapping
-    defaults: { _controller: pimee_suggest_data.controller.identifiers_mapping:updateIdentifiersMappingAction}
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.identifiers_mapping:updateIdentifiersMappingAction}
     methods: [POST]
 
-pimee_suggest_data_identifiers_mapping_get:
+akeneo_suggest_data_identifiers_mapping_get:
     path: /suggest-data/identifiers-mapping
-    defaults: { _controller: pimee_suggest_data.controller.identifiers_mapping:getIdentifiersMappingAction}
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.identifiers_mapping:getIdentifiersMappingAction}
     methods: [GET]

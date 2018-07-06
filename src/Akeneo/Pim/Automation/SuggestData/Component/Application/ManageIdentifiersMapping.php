@@ -22,15 +22,20 @@ use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRep
  */
 class ManageIdentifiersMapping
 {
+    /** @var UpdateIdentifiersMappingHandler */
     private $updateIdentifiersMappingHandler;
+
+    /** @var IdentifiersMappingRepositoryInterface */
     private $identifiersMappingRepository;
 
     /**
      * @param UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
-    public function __construct(UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler, IdentifiersMappingRepositoryInterface $identifiersMappingRepository)
-    {
+    public function __construct(
+        UpdateIdentifiersMappingHandler $updateIdentifiersMappingHandler,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+    ) {
         $this->updateIdentifiersMappingHandler = $updateIdentifiersMappingHandler;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
@@ -44,6 +49,9 @@ class ManageIdentifiersMapping
         $this->updateIdentifiersMappingHandler->handle($updateIdentifierCommand);
     }
 
+    /**
+     * @return array
+     */
     public function getIdentifiersMapping(): array
     {
         $identifiersMapping = $this->identifiersMappingRepository->findAll();

@@ -32,7 +32,7 @@ define(
 
             render: function () {
                 this.$el.html(
-                    this.template({label: __('pimee_suggest_data.product.edit.btn.push')})
+                    this.template({label: __('akeneo_suggest_data.product.edit.btn.push')})
                 );
 
                 return this;
@@ -41,16 +41,16 @@ define(
             pushData: function () {
                 $.ajax({
                     method: 'GET',
-                    url: Routing.generate('pimee_suggest_data_push_product', {productId: this.getFormData().meta.id})
+                    url: Routing.generate('akeneo_suggest_data_push_product', {productId: this.getFormData().meta.id})
                 }).done(function (xhr) {
                     console.log(xhr);
                     messenger.notify(
                         'success',
-                        _.__('pimee_suggest_data.product.edit.flash.success')
+                        _.__('akeneo_suggest_data.product.edit.flash.success')
                     );
                 }).fail(function (xhr) {
                     const response = xhr.responseJSON;
-                    let errorMessage = _.__('pimee_suggest_data.product.edit.flash.error');
+                    let errorMessage = _.__('akeneo_suggest_data.product.edit.flash.error');
 
                     console.log(xhr);
                     if (!_.isUndefined(response.error)) {
