@@ -1,7 +1,8 @@
 {
   "parser": "babel-eslint",
   "env": {
-    "browser": true
+    "browser": true,
+    "jasmine": true
   },
   "globals": {
     "Translator": true,
@@ -13,7 +14,8 @@
     "__contextPlaceholder": true,
     "__contextPaths": true,
     "process": true,
-    "Promise"
+    "Promise": true,
+    "global": true
   },
   "rules": {
     "space-infix-ops": 2,

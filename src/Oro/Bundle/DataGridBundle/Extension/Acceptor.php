@@ -3,8 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Extension;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 class Acceptor
@@ -41,9 +41,9 @@ class Acceptor
     }
 
     /**
-     * @param ResultsObject $result
+     * @param ResultsIterableObject $result
      */
-    public function acceptResult(ResultsObject $result)
+    public function acceptResult(ResultsIterableObject $result)
     {
         foreach ($this->getExtensions() as $extension) {
             $extension->visitResult($this->getConfig(), $result);
@@ -51,9 +51,9 @@ class Acceptor
     }
 
     /**
-     * @param MetadataObject $data
+     * @param MetadataIterableObject $data
      */
-    public function acceptMetadata(MetadataObject $data)
+    public function acceptMetadata(MetadataIterableObject $data)
     {
         foreach ($this->getExtensions() as $extension) {
             $extension->visitMetadata($this->getConfig(), $data);

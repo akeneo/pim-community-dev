@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 
@@ -62,7 +62,7 @@ interface DatagridInterface
      *    ....      => some additional info added by extensions
      * )
      *
-     * @return ResultsObject
+     * @return ResultsIterableObject
      */
     public function getData();
 
@@ -70,7 +70,7 @@ interface DatagridInterface
      * Retrieve metadata from all extensions
      * Metadata needed to create view layer
      *
-     * @return MetadataObject
+     * @return MetadataIterableObject
      */
     public function getMetadata();
 }
