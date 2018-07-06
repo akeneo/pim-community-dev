@@ -43,3 +43,11 @@ services:
         class: 'AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\WebClientHelper'
         arguments:
             - '@router'
+
+    akeneo_ee_integration_tests.builder.attribute:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        shared: false
+        arguments:
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'

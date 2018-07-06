@@ -8,3 +8,12 @@ services:
             - '@__symfony__.pimee_suggest_data.connection.get_status'
         tags:
             - { name: 'fob.context_service' }
+
+    akeneo_acceptance.context.suggest_data.identifiers_mapping:
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\IdentifiersMapping'
+        arguments:
+            - '@__symfony__.pimee_suggest_data.application.manage_identifiers_mapping'
+            - '@__symfony__.pimee_suggest_data.repository.identifiers_mapping'
+            - '@__symfony__.pim_catalog.repository.attribute'
+        tags:
+            - { name: 'fob.context_service' }

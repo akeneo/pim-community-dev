@@ -3,3 +3,9 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ConfigurationRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    pimee_suggest_data.repository.identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\IdentifiersMappingRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.repository.attribute'

@@ -12,3 +12,9 @@ services:
             - '@pimee_suggest_data.connection.get_normalized_configuration'
             - '@pimee_suggest_data.connection.get_status'
             - '@translator'
+
+    pimee_suggest_data.controller.identifiers_mapping:
+        class: Akeneo\Pim\Automation\SuggestData\Bundle\Controller\IdentifiersMappingController
+        arguments:
+           - '@pimee_suggest_data.application.manage_identifiers_mapping'
+           - '@translator'
