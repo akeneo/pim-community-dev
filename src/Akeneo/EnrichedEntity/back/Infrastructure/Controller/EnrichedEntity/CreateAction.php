@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -33,14 +34,19 @@ class CreateAction
     /** @var CreateEnrichedEntityHandler */
     private $createEnrichedEntityHandler;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     /** @var ValidatorInterface */
     private $validator;
 
     public function __construct(
         CreateEnrichedEntityHandler $createEnrichedEntityHandler,
+        NormalizerInterface $normalizer,
         ValidatorInterface $validator
     ) {
         $this->createEnrichedEntityHandler = $createEnrichedEntityHandler;
+        $this->normalizer = $normalizer;
         $this->validator = $validator;
     }
 
@@ -51,9 +57,9 @@ class CreateAction
         }
 
         $command = $this->getCreateCommand($request);
-        $errors = $this->validateCommand($command);
-        if (!empty($errors)) {
-            return new JsonResponse(['errors' => json_encode($errors)], Response::HTTP_BAD_REQUEST);
+        $violations = $this->validator->validate($command);
+        if ($violations->count() > 0) {
+            return new JsonResponse($this->normalizer->normalize($violations, 'internal_api'), Response::HTTP_BAD_REQUEST);
         }
 
         ($this->createEnrichedEntityHandler)($command);
@@ -70,19 +76,5 @@ class CreateAction
         $command->labels = $normalizedCommand['labels'] ?? [];
 
         return $command;
-    }
-
-    private function validateCommand(CreateEnrichedEntityCommand $command): array
-    {
-        $errors = [];
-        $violations = $this->validator->validate($command);
-
-        if ($violations->count() > 0) {
-            foreach ($violations as $violation) {
-                $errors[$violation->getPropertyPath()] = $violation->getMessage();
-            }
-        }
-
-        return $errors;
     }
 }

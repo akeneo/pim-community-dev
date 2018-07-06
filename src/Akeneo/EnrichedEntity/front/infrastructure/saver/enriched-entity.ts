@@ -1,6 +1,7 @@
 import Saver from 'akeneoenrichedentity/domain/saver/saver';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {postJSON} from 'akeneoenrichedentity/tools/fetch';
+import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 
 const routing = require('routing');
 
@@ -11,13 +12,15 @@ export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
     Object.freeze(this);
   }
 
-  async save(enrichedEntity: EnrichedEntity): Promise<void> {
-    await postJSON(
+  async save(enrichedEntity: EnrichedEntity): Promise<ValidationError[]|null> {
+    return await postJSON(
       routing.generate('akeneo_enriched_entities_enriched_entity_edit_rest', {
         identifier: enrichedEntity.getIdentifier().stringValue(),
       }),
       enrichedEntity.normalize()
-    );
+    ).catch((error) => {
+      return error.responseJSON;
+    });
   }
 }
 
