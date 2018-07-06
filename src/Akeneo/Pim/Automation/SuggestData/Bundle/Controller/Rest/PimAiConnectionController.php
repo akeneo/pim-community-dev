@@ -95,13 +95,13 @@ class PimAiConnectionController
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse([
                 'status' => 'error',
-                'message' => $this->translator->trans('pimee_suggest_data.connection.pim_ai.error'),
+                'message' => $this->translator->trans('akeneo.pim.automation.suggest_data.connection.pim_ai.error'),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return new JsonResponse([
             'status' => 'success',
-            'message' => $this->translator->trans('pimee_suggest_data.connection.pim_ai.success'),
+            'message' => $this->translator->trans('akeneo.pim.automation.suggest_data.connection.pim_ai.success'),
         ]);
     }
 }

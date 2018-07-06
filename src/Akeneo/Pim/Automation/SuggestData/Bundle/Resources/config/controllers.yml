@@ -1,20 +1,20 @@
 services:
-    pimee_suggest_data.controller.suggest_data:
+    akeneo.pim.automation.suggest_data.controller.suggest_data:
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\Rest\SuggestDataController'
         arguments:
             - '@pim_catalog.repository.product'
-            - '@pimee_suggest_data.data_provider.factory'
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
 
-    pimee_suggest_data.controller.pim_ai:
+    akeneo.pim.automation.suggest_data.controller.pim_ai:
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\Rest\PimAiConnectionController'
         arguments:
-            - '@pimee_suggest_data.connection.activate'
-            - '@pimee_suggest_data.connection.get_normalized_configuration'
-            - '@pimee_suggest_data.connection.get_status'
+            - '@akeneo.pim.automation.suggest_data.connection.activate'
+            - '@akeneo.pim.automation.suggest_data.connection.get_normalized_configuration'
+            - '@akeneo.pim.automation.suggest_data.connection.get_status'
             - '@translator'
 
-    pimee_suggest_data.controller.identifiers_mapping:
-        class: Akeneo\Pim\Automation\SuggestData\Bundle\Controller\IdentifiersMappingController
+    akeneo.pim.automation.suggest_data.controller.identifiers_mapping:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Controller\IdentifiersMappingController'
         arguments:
-           - '@pimee_suggest_data.application.manage_identifiers_mapping'
+           - '@akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping'
            - '@translator'

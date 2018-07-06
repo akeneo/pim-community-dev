@@ -29,7 +29,7 @@ class ConfigurationRepositoryIntegration extends TestCase
     {
         $configuration = new Configuration('pim-ai', ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
 
-        $this->get('pimee_suggest_data.repository.configuration')->save($configuration);
+        $this->get('akeneo.pim.automation.suggest_data.repository.configuration')->save($configuration);
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
@@ -50,10 +50,10 @@ class ConfigurationRepositoryIntegration extends TestCase
     public function it_updates_a_suggest_data_configuration()
     {
         $configuration = new Configuration('pim-ai', ['token' => 'a_first_token']);
-        $this->get('pimee_suggest_data.repository.configuration')->save($configuration);
+        $this->get('akeneo.pim.automation.suggest_data.repository.configuration')->save($configuration);
 
         $configuration->setValues(['token' => 'a_new_token']);
-        $this->get('pimee_suggest_data.repository.configuration')->save($configuration);
+        $this->get('akeneo.pim.automation.suggest_data.repository.configuration')->save($configuration);
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
@@ -75,7 +75,7 @@ class ConfigurationRepositoryIntegration extends TestCase
     {
         $configuration = new Configuration('pim-ai', ['token' => 'gtuzfkjkqsoftkrugtjkfqfqmsldktumtuufj']);
 
-        $repository = $this->get('pimee_suggest_data.repository.configuration');
+        $repository = $this->get('akeneo.pim.automation.suggest_data.repository.configuration');
         $repository->save($configuration);
 
         $retrievedConfiguration = $repository->findOneByCode('pim-ai');

@@ -1,12 +1,12 @@
 services:
-    pimee_suggest_data.handler.save_configuration:
+    akeneo.pim.automation.suggest_data.handler.save_configuration:
         class: 'Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler'
         arguments:
-            - '@pimee_suggest_data.connection.is_valid.pim_ai'
-            - '@pimee_suggest_data.repository.configuration'
+            - '@akeneo.pim.automation.suggest_data.connection.is_valid.pim_ai'
+            - '@akeneo.pim.automation.suggest_data.repository.configuration'
 
-    pimee_suggest_data.handler.update_identifiers_mapping:
+    akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping:
         class: 'Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingHandler'
         arguments:
             - '@pim_catalog.repository.attribute'
-            - '@pimee_suggest_data.repository.identifiers_mapping'
+            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
