@@ -40,15 +40,17 @@ class ActivateSuggestDataConnectionSpec extends ObjectBehavior
             ->handle(new SaveConfiguration('foobar', ['foo' => 'bar']))
             ->shouldBeCalled();
 
-        $this->activate('foobar', ['foo' => 'bar'])->shouldReturn(true);
+        $this->activate('foobar', ['foo' => 'bar']);
     }
 
     function it_does_not_activate_an_invalid_connection($saveConnectorConfigurationHandler)
     {
         $saveConnectorConfigurationHandler
             ->handle(new SaveConfiguration('foobar', ['bar' => 'baz']))
-            ->willThrow(new InvalidConnectionConfiguration('foobar'));
+            ->willThrow(InvalidConnectionConfiguration::forCode('foobar'));
 
-        $this->activate('foobar', ['bar' => 'baz'])->shouldReturn(false);
+        $this->shouldThrow(new \InvalidArgumentException(
+            'Provided configuration for connection to "foobar" is invalid.'
+        ))->during('activate', ['foobar', ['bar' => 'baz']]);
     }
 }

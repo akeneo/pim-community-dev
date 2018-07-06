@@ -3,22 +3,30 @@ pimee_suggest_data_push_product:
     defaults: { _controller: pimee_suggest_data.controller.suggest_data:pushAction }
     methods: [GET]
 
-pimee_suggest_data_pim_ai_connection_index:
+pimee_suggest_data_connection_index:
     path: /suggest-data/connection
+    methods: [GET]
 
-pimee_suggest_data_pim_ai_connection_save:
+pimee_suggest_data_connection_get:
     path: /suggest-data/connection/{code}
-    defaults: { _controller: '' }
+    defaults: { _controller: pimee_suggest_data.controller.pim_ai:getAction }
     requirements:
-        code: '[a-zA-Z0-9_]+'
+        code: '[\w._-]+'
+    methods: [GET]
+
+pimee_suggest_data_connection_post:
+    path: /suggest-data/connection/{code}
+    defaults: { _controller: pimee_suggest_data.controller.pim_ai:postAction }
+    requirements:
+        code: '[\w._-]+'
     methods: [POST]
 
-pimee_suggest_data_pim_ai_connection_map_identifiers:
-    path: /suggest-data/connection/mapping
-    defaults: { _controller: '' }
+pimee_suggest_data_is_connection_activated:
+    path: /suggest-data/connection/{code}/is-activated
+    defaults: { _controller: pimee_suggest_data.controller.pim_ai:isActiveAction }
     requirements:
-        code: '[a-zA-Z0-9_]+'
-    methods: [POST]
+        code: '[\w._-]+'
+    methods: [GET]
 
 pimee_suggest_data_identifiers_mapping_save:
     path: /suggest-data/identifiers-mapping

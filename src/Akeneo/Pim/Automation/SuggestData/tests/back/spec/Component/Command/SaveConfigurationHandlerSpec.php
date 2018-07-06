@@ -44,7 +44,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $command = new SaveConfiguration('foobar', ['foo' => 'bar']);
         $configuration = new Configuration('foobar', ['foo' => 'bar']);
 
-        $connectionValidator->validate($command)->willReturn(true);
+        $connectionValidator->validate(['foo' => 'bar'])->willReturn(true);
         $repository->findOneByCode('foobar')->willReturn($configuration);
 
         $repository->save($configuration)->shouldBeCalled();
@@ -56,7 +56,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
     {
         $command = new SaveConfiguration('foobar', ['foo' => 'bar']);
 
-        $connectionValidator->validate($command)->willReturn(true);
+        $connectionValidator->validate(['foo' => 'bar'])->willReturn(true);
         $repository->findOneByCode('foobar')->willReturn(null);
 
         $repository->save(new Configuration('foobar', ['foo' => 'bar']))->shouldBeCalled();
@@ -68,7 +68,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
     {
         $command = new SaveConfiguration('foobar', ['bar' => 'baz']);
 
-        $connectionValidator->validate($command)->willReturn(false);
+        $connectionValidator->validate(['bar' => 'baz'])->willReturn(false);
 
         $repository->findOneByCode(Argument::any())->shouldNotBeCalled();
         $repository->save(Argument::any())->shouldNotBeCalled();

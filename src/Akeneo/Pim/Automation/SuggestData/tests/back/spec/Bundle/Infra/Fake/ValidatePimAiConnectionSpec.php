@@ -35,20 +35,8 @@ class ValidatePimAiConnectionSpec extends ObjectBehavior
 
     public function it_checks_that_a_pim_ai_connection_is_valid()
     {
-        $this->validate(
-            new SaveConfiguration(
-                'code',
-                ['token' => 'the-only-valid-token-for-acceptance']
-            )
-        )->shouldReturn(true);
-
-        $this->validate(
-            new SaveConfiguration(
-                'code',
-                ['token' => 'an-invalid-token-for-acceptance']
-            )
-        )->shouldReturn(false);
-
-        $this->validate(new SaveConfiguration('code', ['foo' => 'bar']))->shouldReturn(false);
+        $this->validate(['token' => 'the-only-valid-token-for-acceptance'])->shouldReturn(true);
+        $this->validate(['token' => 'an-invalid-token-for-acceptance'])->shouldReturn(false);
+        $this->validate(['foo' => 'bar'])->shouldReturn(false);
     }
 }

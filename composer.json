@@ -36,7 +36,7 @@
             "Akeneo\\Test\\Acceptance\\": "vendor/akeneo/pim-community-dev/tests/back/Acceptance/",
             "Akeneo\\Test\\Common\\": "vendor/akeneo/pim-community-dev/tests/back/Common/",
             "Akeneo\\Test\\Pim\\Automation\\SuggestData\\": "src/Akeneo/Pim/Automation/SuggestData/tests/back",
-            "PimEnterprise\\Behat\\": "tests/legacy/features/Pim/Behat/",
+            "PimEnterprise\\Behat\\": "tests/legacy/features/PimEnterprise/Behat/",
             "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
             "AkeneoEnterprise\\Test\\Acceptance\\": "tests/back/Acceptance/"
         }

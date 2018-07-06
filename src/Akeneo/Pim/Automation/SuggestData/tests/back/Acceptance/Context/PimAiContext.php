@@ -15,6 +15,8 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Application\ActivateSuggestDataConnection;
 use Akeneo\Pim\Automation\SuggestData\Component\Application\GetNormalizedConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Component\Application\GetSuggestDataConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
@@ -35,69 +37,80 @@ class PimAiContext implements Context
     /** @var GetNormalizedConfiguration */
     private $getNormalizedConfiguration;
 
+    /** @var GetSuggestDataConnectionStatus */
+    private $getConnectionStatus;
+
     /**
      * @param ActivateSuggestDataConnection    $pimAiConnection
      * @param ConfigurationRepositoryInterface $configurationRepository
      * @param GetNormalizedConfiguration       $getNormalizedConfiguration
+     * @param GetSuggestDataConnectionStatus   $getConnectionStatus
      */
     public function __construct(
         ActivateSuggestDataConnection $pimAiConnection,
         ConfigurationRepositoryInterface $configurationRepository,
-        GetNormalizedConfiguration $getNormalizedConfiguration
+        GetNormalizedConfiguration $getNormalizedConfiguration,
+        GetSuggestDataConnectionStatus $getConnectionStatus
     ) {
         $this->pimAiConnection = $pimAiConnection;
         $this->configurationRepository = $configurationRepository;
         $this->getNormalizedConfiguration = $getNormalizedConfiguration;
+        $this->getConnectionStatus = $getConnectionStatus;
     }
 
     /**
-     * @When a valid activation code is used to activate PIM.ai connection
+     * @Given Akeneo PIM is not connected to PIM.ai anymore
      */
-    public function tryToActivatePimAiWithValidToken(): void
+    public function pimAiIsNotActiveAnymore(): void
     {
-        $success = $this->activatePimAi(static::PIM_AI_VALID_TOKEN);
+        $configuration = new Configuration('pim-ai', ['token' => 'invalid-token']);
+        $this->configurationRepository->save($configuration);
+
+        $isActive = $this->getConnectionStatus->forCode('pim-ai');
+        Assert::assertFalse($isActive);
+    }
+
+    /**
+     * @Given Akeneo PIM is connected to PIM.ai
+     * @When /^a system administrator tries to (re)?connect Akeneo PIM to PIM.ai$/
+     */
+    public function activatePimAi(): void
+    {
+        $success = $this->activatePimAiConnection(static::PIM_AI_VALID_TOKEN);
 
         Assert::assertTrue($success);
     }
 
     /**
-     * @When an invalid activation code is used to activate PIM.ai connection
+     * @When a system administrator tries to connect Akeneo PIM to PIM.ai with an invalid activation code
      */
     public function tryToActivatePimAiWithInvalidToken(): void
     {
-        $success = $this->activatePimAi('foobar');
+        $success = $this->activatePimAiConnection('foobar');
 
         Assert::assertFalse($success);
     }
 
     /**
-     * @When PIM.ai connection is activated
-     */
-    public function pimAiConnectionIsActivated(): void
-    {
-        $this->activatePimAi(static::PIM_AI_VALID_TOKEN);
-    }
-
-    /**
      * @param string|null $not
      *
-     * @Then /^the PIM.ai connection is( not)? activated$/
+     * @Then /^Akeneo PIM connection to PIM.ai is( not)? activate$/
      */
     public function isPimAiActivated(string $not = null)
     {
-        $isActive = $this->configurationRepository->findOneByCode('pim-ai');
+        $isActive = $this->getConnectionStatus->forCode('pim-ai');
 
         if (null === $not) {
-            Assert::assertNotNull($isActive);
+            Assert::assertTrue($isActive);
         } else {
-            Assert::assertNull($isActive);
+            Assert::assertFalse($isActive);
         }
     }
 
     /**
-     * @Then I can retrieve the configuration of PIM.ai connection
+     * @Then PIM.ai configuration can be retrieved
      */
-    public function retrievePimAiConnectionConfiguration()
+    public function configurationCanBeRetrieved()
     {
         $configuration = $this->getNormalizedConfiguration->fromCode('pim-ai');
 
@@ -114,8 +127,14 @@ class PimAiContext implements Context
      *
      * @return bool
      */
-    private function activatePimAi(string $activationCode): bool
+    private function activatePimAiConnection(string $activationCode): bool
     {
-        return $this->pimAiConnection->activate('pim-ai', ['token' => $activationCode]);
+        try {
+            $this->pimAiConnection->activate('pim-ai', ['token' => $activationCode]);
+        } catch (\InvalidArgumentException $exception) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -1,5 +1,18 @@
 config:
+    config:
+        pim/controller-registry:
+            controllers:
+                pimee_suggest_data_connection_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pimee_suggest_data_connection
+                    config:
+                        entity: pim-ai-connection
+        pimee/saver/pim_ai_connection:
+            url: pimee_suggest_data_connection_post
+
     paths:
+        pimee/saver/pim_ai_connection: pimenrich/js/saver/base-saver
+
         # Forms
         pimee/product-edit-form/suggest-data-push: akeneosuggestdata/js/product/edit/suggest-data-push
         pimee/mass-edit-form/product/suggest-data: akeneosuggestdata/js/product/mass-edit/suggest-data-operation
@@ -9,12 +22,3 @@ config:
         pimee/template/product/suggest-data-push:  akeneosuggestdata/templates/product/edit/suggest-data-push.html
         pimee/template/product/mass-edit/suggest-data: akeneosuggestdata/templates/product/mass-edit/suggest-data.html
         pimee/template/pim-ai-connection/edit: akeneosuggestdata/templates/pim-ai/form/edit.html
-
-    config:
-        pim/controller-registry:
-            controllers:
-                pimee_suggest_data_pim_ai_connection_index:
-                    module: pim/controller/common/index
-                    aclResourceId: pimee_suggest_data_connection
-                    config:
-                        entity: pim-ai-connection

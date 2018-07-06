@@ -54,7 +54,7 @@ class SaveConfigurationHandler
      */
     public function handle(SaveConfiguration $saveConfiguration): void
     {
-        if (!$this->connectionValidator->validate($saveConfiguration)) {
+        if (!$this->connectionValidator->validate($saveConfiguration->getValues())) {
             throw InvalidConnectionConfiguration::forCode($saveConfiguration->getCode());
         }
 
