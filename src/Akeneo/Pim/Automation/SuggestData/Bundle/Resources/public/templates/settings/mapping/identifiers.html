@@ -1,16 +1,14 @@
 <table class="AknGrid">
     <tr>
         <th class="AknGrid-headerCell"><%= headers.identifiersLabel %></th>
-        <th class="AknGrid-headerCell"><%= headers.attributeGroupLabel %></th>
         <th class="AknGrid-headerCell"><%= headers.attributeLabel %></th>
         <th class="AknGrid-headerCell"><%= headers.suggestDataLabel %></th>
     </tr>
-    <% identifiers.forEach(identifier => { %>
+    <% Object.keys(identifiers).forEach(pimAiAttributeLabel => { %>
     <tr class="AknGrid-bodyRow">
-        <td class="AknGrid-bodyCell"><%= identifier.label %></td>
-        <td class="AknGrid-bodyCell">Content 2</td>
-        <td class="AknGrid-bodyCell">Content 3</td>
-        <td class="AknGrid-bodyCell">Content 4</td>
+        <td class="AknGrid-bodyCell"><%= pimAiAttributeLabel %></td>
+        <td class="AknGrid-bodyCell"><%= identifiers[pimAiAttributeLabel] %></td>
+        <td class="AknGrid-bodyCell">Active</td>
     </tr>
     <% }) %>
 </table>

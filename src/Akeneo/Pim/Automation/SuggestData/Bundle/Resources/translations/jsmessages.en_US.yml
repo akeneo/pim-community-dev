@@ -45,10 +45,12 @@ akeneo_suggest_data:
                 identifiers:
                     title: Identifiers
                     headers:
-                        identifiers_label: Identifiers label
-                        attribute_group_label: Attribute group
-                        attribute_label: Attribute
-                        suggest_data_label: Suggest data
+                        identifiers_label: Identifiers Label
+                        attribute_label: Catalog Attribute
+                        suggest_data_label: Suggest Data
                         brand_label: Brand
+                        asin_label: ASIN
+                        mpn_label: MPN
+                        upc_label: UPC
                 families.title: Families
                 attributes.title: Attributes
