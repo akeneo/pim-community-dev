@@ -2,8 +2,6 @@
 
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;

@@ -2,17 +2,14 @@
 
 namespace spec\Akeneo\Asset\Bundle\Datagrid\Datasource;
 
+use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Assetic\Asset\AssetInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
-use Prophecy\Argument;
 
 class AssetDatasourceSpec extends ObjectBehavior
 {
