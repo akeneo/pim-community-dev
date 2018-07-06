@@ -192,7 +192,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         $matchingProducts = array_filter(
             $matchingProducts,
             function ($product) use ($entity) {
-                return $product['id'] !== $entity->getId();
+                return (string) $product['id'] !== (string) $entity->getId();
             }
         );
 
