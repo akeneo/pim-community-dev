@@ -62,8 +62,9 @@ Feature: Edit a product with localized attributes
     And I fill in the following information:
       | Langue de l'interface | anglais (États-Unis) |
     And I save the user
+    And I should not see the text "There are unsaved changes."
     And I am on the "foo" product page
-    Then the field Date should contain "28/05/2015"
+    Then the field Date should contain "05/28/2015"
 
   Scenario: Successfully show datetimepicker in my UI locale
     Given I am on the "foo" product page
