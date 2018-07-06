@@ -1,0 +1,70 @@
+extensions:
+    pim-suggest-data-settings-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-suggest-data-settings-index-breadcrumb:
+        module: pim/common/breadcrumbs
+        parent: pim-suggest-data-settings-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pimee-suggest-data-menu-settings-mapping
+
+    pim-suggest-data-settings-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-suggest-data-settings-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-suggest-data-settings-index-title:
+        module: pim/common/title-with-subtitle
+        parent: pim-suggest-data-settings-index
+        targetZone: title
+        config:
+            main_title: akeneo_suggest_data.settings.index.title
+            sub_title: akeneo_suggest_data.settings.index.sub_title
+            illustration: bundles/pimui/images/illustrations/Helpcenter-settings.svg
+            description:
+                - akeneo_suggest_data.settings.index.description.first_step
+                - akeneo_suggest_data.settings.index.description.second_step
+
+    pim-suggest-data-settings-index-form-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-suggest-data-settings-index
+        targetZone: content
+        position: 90
+
+    pim-suggest-data-settings-index-identifier-tab:
+        module: pim/common/tab
+        parent: pim-suggest-data-settings-index-form-tabs
+        targetZone: container
+        position: 100
+        config:
+            label: akeneo_suggest_data.settings.index.tab.identifiers.title
+
+    pimee-suggest-data-settings-edit-mapping-identifier:
+        module: pimee/settings/mapping/identifiers
+        parent: pim-suggest-data-settings-index-identifier-tab
+        targetZone: self
+
+    pim-suggest-data-settings-index-family-tab:
+        module: pim/common/tab
+        parent: pim-suggest-data-settings-index-form-tabs
+        targetZone: container
+        position: 110
+        config:
+            label: akeneo_suggest_data.settings.index.tab.families.title
+
+    pim-suggest-data-settings-index-attribute-tab:
+        module: pim/common/tab
+        parent: pim-suggest-data-settings-index-form-tabs
+        targetZone: container
+        position: 120
+        config:
+            label: akeneo_suggest_data.settings.index.tab.attributes.title
+
+# TODO: save buttons on index page pim-suggest-data-settings-index-save

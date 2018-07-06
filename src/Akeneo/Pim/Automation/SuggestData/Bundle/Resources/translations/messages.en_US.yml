@@ -6,6 +6,7 @@ akeneo_suggest_data:
             index: Suggest data
         pim_ai:
             title: Manage connection to PIM.ai
+        settings.mapping: Map structure between your catalog and PIM.ai
     connection:
         pim_ai:
             success: Thank you for connecting the AI assistant. He's gathering information for your catalog and will notify you when it's ready.
