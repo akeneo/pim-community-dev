@@ -55,6 +55,10 @@ pim_datagrid:
       empty: er tom
       not_empty: ikke er tom
       in_list: i listen
+      contains: indeholder
+      does_not_contain: indeholder ikke
+      equal: er lig med
+      start_with: starter med
       operator: Operatør
     price_filter:
       label: Valuta
