@@ -736,10 +736,14 @@ pim_enrich:
           label_count: "{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à un modèle de produit existant|] 1, Inf [Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à un modèle de produit existant"
           description: Le modèle de produit sélectionné va rassembler des produits et améliorer l'enrichissement de leurs propriétés communes.
         associate_to_product_and_product_model:
-          label: Associer aux produits
+          label: Associer
           label_count: "{1}Associer <span class=\"AknFullPage-title--highlight\">1 produit</span> à des produits ou modèles de produits|] 1, Inf [Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à des produits ou modèles de produits"
           description: Les produits sélectionnés depuis la grille seront associés aux produits et modèles de produits sélectionnés, pour le type d'association sélectionné
           validate: Veuillez ajouter une association avant de passer à l’étape suivante
+        change_parent_product_model:
+          label: Changer le parent de produits
+          label_count: "{1}Changer le parent d'<span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Changer le parent de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+          description: Le parent des produits variants et des sous modèles de produits sélectionnés dans la grille va être modifié avec ce modèle de produit.
     family:
       title: Action de masse sur les familles
       confirm: "{1}Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
@@ -765,7 +769,7 @@ pim_title:
   pim_enrich_attributegroup_index: Groupes d'attributs
   pim_enrich_attributegroup_create: Groupe d'attributs | Création
   pim_enrich_attributegroup_edit: Groupe d'attributs {{ group.label }} | Édition
-  pim_enrich_catalog_volume_index: Surveillance de la volumétrie du catalogue
+  pim_enrich_catalog_volume_index: Volumétrie du catalogue
   pim_enrich_categorytree_index: Arborescences des catégories
   pim_enrich_categorytree_create: Arborescences | Création
   pim_enrich_categorytree_edit: Arbre de catégories {{ category.label }} | Édition
@@ -837,7 +841,7 @@ pim_menu:
     info: Informations système
     job_tracker: Traqueur de processus
     api_connection: Connexions API
-    catalog_volume: Surveillance de la volumétrie du catalogue
+    catalog_volume: Volumétrie du catalogue
   navigation:
     activity: Centre d'activité
     system: Navigation système
