@@ -1003,7 +1003,7 @@ pim_enrich:
       title: "] -Inf, 1] {{ count }} Gruppe|] 1, Inf [{{ count }} Gruppen"
       create_btn: Gruppe anlegen
     process_tracker:
-      title: "] -Inf, 1] {{ count }} Benutzer|] 1, Inf [{{ count }} Benutzer"
+      title: "] -Inf, 1] {{ count }} Operation|] 1, Inf [{{ count }} Operationen"
     channel:
       title: "] -Inf, 1] {{ count }} Regel|] 1, Inf [{{ count }} Regeln"
       create_btn: Ausgabekanal anlegen
