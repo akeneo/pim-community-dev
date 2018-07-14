@@ -6,10 +6,16 @@ import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/e
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
 
 export const saveEnrichedEntity = (enrichedEntity: EnrichedEntity) => async (dispatch: any): Promise<void> => {
-  const errors = await enrichedEntitySaver.save(enrichedEntity);
+  try {
+    var errors = await enrichedEntitySaver.save(enrichedEntity);
 
-  if (errors) {
-    dispatch(failSave(errors.map((error: ValidationError) => createValidationError(error))));
+    if (errors) {
+      dispatch(failSave(errors.map((error: ValidationError) => createValidationError(error))));
+
+      return;
+    }
+  } catch (error) {
+    dispatch(failSave(error));
 
     return;
   }

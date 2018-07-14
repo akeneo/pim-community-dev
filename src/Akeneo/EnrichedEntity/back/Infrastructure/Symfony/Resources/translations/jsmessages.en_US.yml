@@ -3,6 +3,7 @@ pim_enriched_entity:
         save: Save
     enriched_entity:
         title: Entities
+        img: The main image of the enriched entity named "{{ label }}"
         tab:
             records: Records
             attributes: Attributes

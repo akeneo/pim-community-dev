@@ -28,7 +28,10 @@ class Sidebar extends React.Component<SidebarProps> {
   };
 
   updateCurrentTab = (event: any) => {
+    event.preventDefault();
     this.props.events.updateCurrentTab(event.target.attributes.getNamedItem('data-tab').value);
+
+    return false;
   };
 
   render(): JSX.Element | JSX.Element[] {
@@ -44,14 +47,16 @@ class Sidebar extends React.Component<SidebarProps> {
                 const activeClass = (this.props.currentTab === tab.code) ? 'AknColumn-navigationLink--active' : '';
 
                 return (
-                  <div
+                  <span
                     key={tab.code}
+                    role="button"
                     className={`AknColumn-navigationLink column-navigation-link ${activeClass}`}
                     data-tab={tab.code}
                     onClick={this.updateCurrentTab}
+                    onKeyPress={this.updateCurrentTab}
                   >
                     {__(tab.label)}
-                  </div>
+                  </span>
                 );
               })}
             </div>
