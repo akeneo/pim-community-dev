@@ -138,6 +138,7 @@ Warnings: Advertencias
 Summary: Resumen
 Start: Iniciar
 End: Finalizar
+set_attribute_requirements: Establecer los requisitos de atributos
 COMPLETED: Finalizado
 STARTING: Iniciando
 STARTED: Iniciado
