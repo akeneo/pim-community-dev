@@ -56,6 +56,10 @@ pim_datagrid:
     common:
       empty: on tyhjä
       in_list: '-luettelosta'
+      contains: sisältää
+      does_not_contain: ei sisällä
+      equal: vastaa
+      start_with: alkaa
       operator: Operaattori
     price_filter:
       label: Valuutta
