@@ -26,6 +26,13 @@ export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
       return error.responseJSON;
     });
   }
+
+  async create(enrichedEntity: EnrichedEntity): Promise<void> {
+    await postJSON(
+        routing.generate('akeneo_enriched_entities_enriched_entity_create_rest'),
+        enrichedEntity.normalize()
+    );
+  }
 }
 
 export default new EnrichedEntitySaverImplementation();

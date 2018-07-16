@@ -2,13 +2,14 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
 import __ from 'akeneoenrichedentity/tools/translator';
-import {Error} from 'akeneoenrichedentity/domain/event/enriched-entity/create.ts';
+import {Error} from 'akeneoenrichedentity/domain/event/enriched-entity/create';
 import Flag from 'akeneoenrichedentity/tools/component/flag';
 import {
   enrichedEntityCreationCodeUpdated,
   enrichedEntityCreationLabelUpdated,
   enrichedEntityCreationCancel
 } from 'akeneoenrichedentity/domain/event/enriched-entity/create';
+import {createEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/create';
 
 interface StateProps {
   context: {
@@ -28,6 +29,7 @@ interface DispatchProps {
     onCodeUpdated: (value: string) => void
     onLabelUpdated: (value: string, locale: string) => void
     onCancel: () => void
+    onSubmit: (identifier: string, labels: { [localeCode: string]: string }) => void
   }
 }
 
@@ -50,6 +52,10 @@ class Create extends React.Component<CreateProps> {
 
   private onCancel = () => {
     this.props.events.onCancel();
+  };
+
+  private onSubmit = () => {
+    this.props.events.onSubmit(this.props.data.code, this.props.data.labels);
   };
 
   render(): JSX.Element | JSX.Element[] | null {
@@ -104,7 +110,7 @@ class Create extends React.Component<CreateProps> {
                   onClick={this.onCancel}
             >{__('pim_enriched_entity.enriched_entity.create.cancel')}</span>
             <a title="Save"
-               className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text">{__('pim_enriched_entity.enriched_entity.create.save')}</a>
+               className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text" onClick={this.onSubmit}>{__('pim_enriched_entity.enriched_entity.create.save')}</a>
           </div>
         </div>
     );
@@ -125,14 +131,17 @@ export default connect((state: State): StateProps => {
   return {
     events: {
       onCodeUpdated: (value: string) => {
-        dispatch(enrichedEntityCreationCodeUpdated(value))
+        dispatch(enrichedEntityCreationCodeUpdated(value));
       },
       onLabelUpdated: (value: string, locale: string) => {
-        dispatch(enrichedEntityCreationLabelUpdated(value, locale))
+        dispatch(enrichedEntityCreationLabelUpdated(value, locale));
       },
       onCancel: () => {
-        dispatch(enrichedEntityCreationCancel())
+        dispatch(enrichedEntityCreationCancel());
+      },
+      onSubmit: (identifier: string, labels: { [localeCode: string]: string }) => {
+        dispatch(createEnrichedEntity(identifier, labels));
       }
     }
-  }
+  } as DispatchProps
 })(Create);
