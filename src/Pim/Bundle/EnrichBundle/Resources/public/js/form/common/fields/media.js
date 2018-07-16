@@ -50,7 +50,8 @@ function (
          */
         renderInput: function (templateContext) {
             return this.template(_.extend(templateContext, {
-                media: this.getFormData()[this.fieldName]
+                media: this.getFormData()[this.fieldName],
+                readOnly: this.readOnly
             }));
         },
 

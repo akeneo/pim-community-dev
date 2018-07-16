@@ -66,9 +66,11 @@ class UserNormalizer implements NormalizerInterface
             ] : $this->fileNormalizer->normalize($user->getAvatar()),
             'meta'                   => [
                 'id'    => $user->getId(),
-                'form'  => 'pim-user-edit-form',
+                'form'  => $this->isEditGranted($user) ? 'pim-user-edit-form' : 'pim-user-show',
                 'image' => [
-                    'filePath' => $user->getImagePath()
+                    'filePath' => null === $user->getAvatar() ?
+                        null :
+                        $this->fileNormalizer->normalize($user->getAvatar())['filePath']
                 ]
             ]
         ];
@@ -96,5 +98,16 @@ class UserNormalizer implements NormalizerInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return bool
+     */
+    private function isEditGranted($user): bool
+    {
+        // TODO
+        return false;
     }
 }

@@ -1,6 +1,6 @@
-<div class="AknMediaField <%- media.filePath ? 'has-file' : '' %>" >
+<div class="AknMediaField<%- media.filePath ? ' has-file' : '' %><%- readOnly ? ' AknMediaField--disabled' : '' %>" >
     <% if (media.filePath === null) { %>
-        <input class="AknMediaField-fileUploaderInput" type="file" />
+        <input class="AknMediaField-fileUploaderInput<%- readOnly ? ' AknMediaField-fileUploaderInput--disabled' : '' %>" type="file" />
         <div class="AknMediaField-emptyContainer">
             <span title="upload icon" class="AknMediaField-uploadIcon"/>
             <span>Upload</span>
@@ -23,8 +23,10 @@
                     <% if (null != mediaPreviewUrl) { %>
                         <span class="AknButtonList-item AknIconButton AknIconButton--grey open-media"><i class="icon icon-eye-open"></i></span>
                     <% } %>
-                    <a href="<%- mediaDownloadUrl %>" class="AknButtonList-item AknIconButton AknIconButton--grey download-file" download><i class="icon icon-cloud-download"></i></a>
-                    <span class="AknButtonList-item AknIconButton AknIconButton--grey clear-field %>"><i class="icon icon-trash"></i></span>
+                    <% if (!readOnly) { %>
+                        <a href="<%- mediaDownloadUrl %>" class="AknButtonList-item AknIconButton AknIconButton--grey download-file" download><i class="icon icon-cloud-download"></i></a>
+                        <span class="AknButtonList-item AknIconButton AknIconButton--grey clear-field %>"><i class="icon icon-trash"></i></span>
+                    <% } %>
                 </div>
             </div>
         </div>

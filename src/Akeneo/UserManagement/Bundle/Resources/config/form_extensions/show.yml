@@ -1,78 +1,61 @@
 extensions:
-    pim-user-edit-form:
+    pim-user-show:
         module: pim/form/common/edit-form
 
-    pim-user-edit-form-breadcrumbs:
+    pim-user-show-breadcrumbs:
         module: pim/common/breadcrumbs
-        parent: pim-user-edit-form
+        parent: pim-user-show
         targetZone: breadcrumbs
         config:
             tab: pim-menu-system
             item: pim-menu-system-user-user
 
-    pim-user-edit-form-user-navigation:
+    pim-user-show-user-navigation:
         module: pim/menu/user-navigation
-        parent: pim-user-edit-form
+        parent: pim-user-show
         targetZone: user-menu
         config:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
-    pim-user-edit-form-main-image:
+    pim-user-show-main-image:
         module: pim/form/common/main-image
-        parent: pim-user-edit-form
+        parent: pim-user-show
         targetZone: main-image
         config:
             fallback: '/bundles/pimui/images/info-user.png'
 
-    pim-user-edit-form-cache-invalidator:
+    pim-user-show-cache-invalidator:
         module: pim/cache-invalidator
-        parent: pim-user-edit-form
+        parent: pim-user-show
         position: 1000
 
-    pim-user-edit-form-label:
+    pim-user-show-label:
         module: pim/form/common/label
-        parent: pim-user-edit-form
+        parent: pim-user-show
         targetZone: title
         position: 110
         config:
             field: username
 
-    pim-user-edit-form-save-buttons:
-        module: pim/form/common/save-buttons
-        parent: pim-user-edit-form
-        targetZone: buttons
-        position: 110
-
-    pim-user-edit-form-save:
-        module: pim/form/common/save-form
-        parent: pim-user-edit-form
-        targetZone: buttons
-        position: 0
-        config:
-            updateSuccessMessage: 'Success ! to translate'
-            updateFailureMessage: 'Fail ! to translate'
-            notReadyMessage: 'Not ready ! to translate'
-            url: pim_user_user_rest_post
-
-    pim-user-edit-form-form-tabs:
+    pim-user-show-form-tabs:
         module: pim/form/common/form-tabs
-        parent: pim-user-edit-form
+        parent: pim-user-show
         targetZone: content
         position: 90
 
     # General tab
-    pim-user-edit-form-general-tab:
+    pim-user-show-general-tab:
         module: pim/common/tab
-        parent: pim-user-edit-form-form-tabs
+        parent: pim-user-show-form-tabs
         targetZone: container
         position: 10
         config:
             label: 'General - to translate'
 
-    pim-user-edit-form-general-tab-content:
+    pim-user-show-general-tab-content:
         module: pim/common/simple-view
-        parent: pim-user-edit-form-general-tab
+        parent: pim-user-show-general-tab
         position: 10
         config:
             template: pim/template/form/tab/section
@@ -80,9 +63,9 @@ extensions:
                 sectionTitle: ''
                 dropZone: content
 
-    pim-user-edit-form-enabled:
+    pim-user-show-enabled:
         module: pim/form/common/fields/boolean
-        parent: pim-user-edit-form-general-tab-content
+        parent: pim-user-show-general-tab-content
         position: 10
         targetZone: content
         config:
@@ -91,112 +74,122 @@ extensions:
             required: true
             readOnly: true
 
-    pim-user-edit-form-username:
+    pim-user-show-username:
         module: pim/form/common/fields/text
-        parent: pim-user-edit-form-general-tab-content
+        parent: pim-user-show-general-tab-content
         position: 20
         targetZone: content
         config:
             fieldName: username
             label: 'Username - to translate'
             required: true
+            readOnly: true
 
-    pim-user-edit-form-name-prefix:
+    pim-user-show-name-prefix:
         module: pim/form/common/fields/text
-        parent: pim-user-edit-form-general-tab-content
+        parent: pim-user-show-general-tab-content
         position: 30
         targetZone: content
         config:
             fieldName: name_prefix
             label: 'Name prefix - to translate'
+            readOnly: true
 
-    pim-user-edit-form-first-name:
+    pim-user-show-first-name:
         module: pim/form/common/fields/text
-        parent: pim-user-edit-form-general-tab-content
+        parent: pim-user-show-general-tab-content
         position: 40
         targetZone: content
         config:
             fieldName: first_name
             label: 'First Name - to translate'
             required: true
+            readOnly: true
 
-    pim-user-edit-form-middle-name:
+    pim-user-show-middle-name:
         module: pim/form/common/fields/text
-        parent: pim-user-edit-form-general-tab-content
+        parent: pim-user-show-general-tab-content
         position: 50
         targetZone: content
         config:
             fieldName: middle_name
             label: 'Middle Name - to translate'
+            readOnly: true
 
-    pim-user-edit-form-last-name:
+    pim-user-show-last-name:
         module: pim/form/common/fields/text
-        parent: pim-user-edit-form-general-tab-content
+        parent: pim-user-show-general-tab-content
         position: 60
         targetZone: content
         config:
             fieldName: last_name
             label: 'Last Name - to translate'
             required: true
+            readOnly: true
 
-    pim-user-edit-form-name-suffix:
+    pim-user-show-name-suffix:
         module: pim/form/common/fields/text
-        parent: pim-user-edit-form-general-tab-content
+        parent: pim-user-show-general-tab-content
         position: 70
         targetZone: content
         config:
             fieldName: name_suffix
             label: 'Name Suffix - to translate'
+            readOnly: true
 
-    pim-user-edit-form-phone:
+    pim-user-show-phone:
         module: pim/form/common/fields/text
-        parent: pim-user-edit-form-general-tab-content
+        parent: pim-user-show-general-tab-content
         position: 80
         targetZone: content
         config:
             fieldName: phone
             label: 'Phone - to translate'
+            readOnly: true
 
-    pim-user-edit-form-birthday:
+    pim-user-show-birthday:
         module: pim/form/common/fields/date
-        parent: pim-user-edit-form-general-tab-content
+        parent: pim-user-show-general-tab-content
         position: 90
         targetZone: content
         config:
             fieldName: birthday
             label: 'Birthday - to translate'
+            readOnly: true
 
-    pim-user-edit-form-avatar:
+    pim-user-show-avatar:
         module: pim/form/common/fields/media
-        parent: pim-user-edit-form-general-tab-content
+        parent: pim-user-show-general-tab-content
         position: 100
         targetZone: content
         config:
             fieldName: avatar
             label: 'Avatar - to translate'
+            readOnly: true
 
-    pim-user-edit-form-email:
+    pim-user-show-email:
         module: pim/form/common/fields/text
-        parent: pim-user-edit-form-general-tab-content
+        parent: pim-user-show-general-tab-content
         position: 110
         targetZone: content
         config:
             fieldName: email
             label: 'Email - to translate'
             required: true
+            readOnly: true
 
     # Additional tab
-    pim-user-edit-form-additional-tab:
+    pim-user-show-additional-tab:
         module: pim/common/tab
-        parent: pim-user-edit-form-form-tabs
+        parent: pim-user-show-form-tabs
         targetZone: container
         position: 20
         config:
             label: 'Additional - to translate'
 
-    pim-user-edit-form-additional-tab-content:
+    pim-user-show-additional-tab-content:
         module: pim/common/simple-view
-        parent: pim-user-edit-form-additional-tab
+        parent: pim-user-show-additional-tab
         position: 10
         config:
             template: pim/template/form/tab/section
@@ -204,9 +197,9 @@ extensions:
                 sectionTitle: ''
                 dropZone: content
 
-    pim-user-edit-form-catalog-locale:
+    pim-user-show-catalog-locale:
         module: pim/form/common/fields/available-locales
-        parent: pim-user-edit-form-additional-tab-content
+        parent: pim-user-show-additional-tab-content
         position: 10
         targetZone: content
         config:
@@ -215,10 +208,11 @@ extensions:
             required: true
             isMultiple: false
             allowClear: false
+            readOnly: true
 
-    pim-user-edit-form-catalog-scope:
+    pim-user-show-catalog-scope:
         module: pim/form/common/fields/scope
-        parent: pim-user-edit-form-additional-tab-content
+        parent: pim-user-show-additional-tab-content
         position: 20
         targetZone: content
         config:
@@ -227,10 +221,11 @@ extensions:
             required: true
             isMultiple: false
             allowClear: false
+            readOnly: true
 
-    pim-user-edit-form-default-tree:
+    pim-user-show-default-tree:
         module: pim/form/common/fields/category-tree
-        parent: pim-user-edit-form-additional-tab-content
+        parent: pim-user-show-additional-tab-content
         targetZone: content
         position: 30
         config:
@@ -239,29 +234,31 @@ extensions:
             required: true
             isMultiple: false
             allowClear: false
+            readOnly: true
 
-    pim-user-edit-form-product-grid-filters:
+    pim-user-show-product-grid-filters:
         module: pim/form/common/fields/text
-        parent: pim-user-edit-form-additional-tab-content
+        parent: pim-user-show-additional-tab-content
         position: 40
         targetZone: content
         config:
             fieldName: productGridFilters
             label: 'Product Grid Filters - to translate'
             required: true
+            readOnly: true
 
     # Groups and Roles tab
-    pim-user-edit-form-groups-and-roles-tab:
+    pim-user-show-groups-and-roles-tab:
         module: pim/common/tab
-        parent: pim-user-edit-form-form-tabs
+        parent: pim-user-show-form-tabs
         targetZone: container
         position: 30
         config:
             label: 'Groups and roles - to translate'
 
-    pim-user-edit-form-groups-and-roles-tab-content:
+    pim-user-show-groups-and-roles-tab-content:
         module: pim/common/simple-view
-        parent: pim-user-edit-form-groups-and-roles-tab
+        parent: pim-user-show-groups-and-roles-tab
         position: 10
         config:
             template: pim/template/form/tab/section
@@ -269,9 +266,9 @@ extensions:
                 sectionTitle: ''
                 dropZone: content
 
-    pim-user-edit-form-groups:
+    pim-user-show-groups:
         module: pim/form/common/fields/user-group
-        parent: pim-user-edit-form-groups-and-roles-tab-content
+        parent: pim-user-show-groups-and-roles-tab-content
         targetZone: content
         position: 10
         config:
@@ -279,10 +276,11 @@ extensions:
             label: 'Groups - to translate'
             isMultiple: true
             allowClear: true
+            readOnly: true
 
-    pim-user-edit-form-roles:
+    pim-user-show-roles:
         module: pim/form/common/fields/user-role
-        parent: pim-user-edit-form-groups-and-roles-tab-content
+        parent: pim-user-show-groups-and-roles-tab-content
         targetZone: content
         position: 20
         config:
@@ -290,65 +288,20 @@ extensions:
             label: 'Roles - to translate'
             isMultiple: true
             allowClear: true
-
-    # Password tab
-    pim-user-edit-form-password-tab:
-        module: pim/common/tab
-        parent: pim-user-edit-form-form-tabs
-        targetZone: container
-        position: 40
-        config:
-            label: 'Password - to translate'
-
-    pim-user-edit-form-password-tab-content:
-        module: pim/common/simple-view
-        parent: pim-user-edit-form-password-tab
-        position: 10
-        config:
-            template: pim/template/form/tab/section
-            templateParams:
-                sectionTitle: ''
-                dropZone: content
-
-    pim-user-edit-form-current-password:
-        module: pim/form/common/fields/password
-        parent: pim-user-edit-form-password-tab-content
-        position: 10
-        targetZone: content
-        config:
-            fieldName: current_password
-            label: 'Current password - to translate'
-
-    pim-user-edit-form-new-password:
-        module: pim/form/common/fields/password
-        parent: pim-user-edit-form-password-tab-content
-        position: 20
-        targetZone: content
-        config:
-            fieldName: new_password
-            label: 'New password - to translate'
-
-    pim-user-edit-form-new-password-repear:
-        module: pim/form/common/fields/password
-        parent: pim-user-edit-form-password-tab-content
-        position: 30
-        targetZone: content
-        config:
-            fieldName: new_password_repeat
-            label: 'New password (repeat) - to translate'
+            readOnly: true
 
     # Interfaces tab
-    pim-user-edit-form-interfaces-tab:
+    pim-user-show-interfaces-tab:
         module: pim/common/tab
-        parent: pim-user-edit-form-form-tabs
+        parent: pim-user-show-form-tabs
         targetZone: container
         position: 50
         config:
             label: 'Interfaces - to translate'
 
-    pim-user-edit-form-interfaces-tab-content:
+    pim-user-show-interfaces-tab-content:
         module: pim/common/simple-view
-        parent: pim-user-edit-form-interfaces-tab
+        parent: pim-user-show-interfaces-tab
         position: 10
         config:
             template: pim/template/form/tab/section
@@ -356,9 +309,9 @@ extensions:
                 sectionTitle: ''
                 dropZone: content
 
-    pim-user-edit-form-ui-locale:
+    pim-user-show-ui-locale:
         module: pim/form/common/fields/ui-locale
-        parent: pim-user-edit-form-interfaces-tab-content
+        parent: pim-user-show-interfaces-tab-content
         position: 10
         targetZone: content
         config:
@@ -367,10 +320,11 @@ extensions:
             required: true
             isMultiple: false
             allowClear: false
+            readOnly: true
 
-    pim-user-edit-form-timezone:
+    pim-user-show-timezone:
         module: pim/form/common/fields/timezone
-        parent: pim-user-edit-form-interfaces-tab-content
+        parent: pim-user-show-interfaces-tab-content
         position: 20
         targetZone: content
         config:
@@ -379,3 +333,4 @@ extensions:
             required: true
             isMultiple: false
             allowClear: false
+            readOnly: true

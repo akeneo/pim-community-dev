@@ -12,6 +12,17 @@
   border-radius: 3px;
   border: 1px solid @AknMediumGrey;
 
+  &--disabled {
+    background: @AknDisabledInputColor;
+    background-image: url("../../../images/icon-lock.svg");
+    background-repeat: no-repeat;
+    background-position: ~"calc(100% - 12px) center";
+  }
+
+  &--disabled &-preview {
+    opacity: 0.5;
+  }
+
   &-fileUploaderInput {
     position: absolute;
     width: 100%;

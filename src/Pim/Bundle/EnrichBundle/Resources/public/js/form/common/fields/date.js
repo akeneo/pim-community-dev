@@ -45,7 +45,8 @@ function (
             );
 
             return this.template(_.extend(templateContext, {
-                value: value
+                value: value,
+                readOnly: this.readOnly,
             }));
         },
 
