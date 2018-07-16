@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Elasticsearch;
 
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 
 /**
  * Simple data holder for the results of an Elasticsearch search about products draft and product models draft.

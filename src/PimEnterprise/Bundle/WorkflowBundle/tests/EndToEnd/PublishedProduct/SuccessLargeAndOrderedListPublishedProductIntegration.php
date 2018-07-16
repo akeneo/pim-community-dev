@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\PublishedProduct;
 
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 
 /**
  * We want to test the API is capable of returning an ordered list of 100 items.

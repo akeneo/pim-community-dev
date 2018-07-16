@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Component\WorkFlow\Normalizer\ExternalApi;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
-use PimEnterprise\Component\Workflow\Normalizer\ExternalApi\PublishedProductNormalizer;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\PublishedProductNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PublishedProductNormalizerSpec extends ObjectBehavior

@@ -6,7 +6,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PublishedProductNormalizerSpec extends ObjectBehavior

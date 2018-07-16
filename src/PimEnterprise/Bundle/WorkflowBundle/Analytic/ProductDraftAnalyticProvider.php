@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 
 /**
  * Returns count of Product Draft

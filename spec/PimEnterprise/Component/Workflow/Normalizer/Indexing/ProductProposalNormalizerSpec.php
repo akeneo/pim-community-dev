@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Component\Workflow\Normalizer\Indexing;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposalNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductProposalNormalizerSpec extends ObjectBehavior

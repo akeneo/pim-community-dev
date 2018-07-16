@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
-use PimEnterprise\Component\Workflow\Repository\PublishedAssociationRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedAssociationRepositoryInterface;
 
 /**
  * Published association repository

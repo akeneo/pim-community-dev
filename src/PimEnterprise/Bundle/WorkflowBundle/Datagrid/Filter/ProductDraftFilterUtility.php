@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
-use PimEnterprise\Component\Workflow\Repository\EntityWithValuesDraftRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 
 /**
  * ProductDraft filter utility

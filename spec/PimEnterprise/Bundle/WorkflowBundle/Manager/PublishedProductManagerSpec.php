@@ -12,11 +12,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Component\Workflow\Event\PublishedProductEvents;
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
-use PimEnterprise\Component\Workflow\Publisher\PublisherInterface;
-use PimEnterprise\Component\Workflow\Publisher\UnpublisherInterface;
-use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvents;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\UnpublisherInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

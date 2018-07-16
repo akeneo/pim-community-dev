@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Normalizer;
 
-use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

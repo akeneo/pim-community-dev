@@ -10,8 +10,8 @@ use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Pim\Component\Catalog\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use PimEnterprise\Component\Workflow\Event\PublishedProductEvent;
-use PimEnterprise\Component\Workflow\Event\PublishedProductEvents;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvents;
 
 class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
 {

@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\ProductProposal;
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductModelProposalIntegration extends ApiTestCase

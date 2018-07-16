@@ -6,9 +6,9 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
-use PimEnterprise\Component\Workflow\Normalizer\Indexing\LabelNormalizer;
-use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer;
-use PimEnterprise\Component\Workflow\Normalizer\Indexing\TextNormalizer;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\LabelNormalizer;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposalNormalizer;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\TextNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class LabelNormalizerSpec extends ObjectBehavior

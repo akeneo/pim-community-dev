@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\Datasource\ResultRecord;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 
 /**
  * Hydrator for product history (ORM support)

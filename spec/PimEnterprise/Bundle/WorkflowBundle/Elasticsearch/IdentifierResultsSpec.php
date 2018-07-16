@@ -4,8 +4,8 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Elasticsearch;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\IdentifierResult;
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 
 class IdentifierResultsSpec extends ObjectBehavior
 {

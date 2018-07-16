@@ -16,7 +16,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\ProductProposal;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 
 class AbstractProposalIntegration extends ApiTestCase
 {

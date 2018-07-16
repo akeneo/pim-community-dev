@@ -5,8 +5,8 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductModelP
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductModelProposalIndexer;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

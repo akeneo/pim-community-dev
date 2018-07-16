@@ -14,7 +14,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Command\CreateDraftCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\QueryPublishedProductCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\SendDraftForApprovalCommand;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;

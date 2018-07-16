@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Asset\Component\Model\AssetInterface;
-use PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class AssetEventSubscriberSpec extends ObjectBehavior

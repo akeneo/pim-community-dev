@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\tests\EndToEnd\ProductProposal;
 
 use PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\ProductProposal\AbstractProposalIntegration;
-use PimEnterprise\Component\Workflow\Model\ProductDraft;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

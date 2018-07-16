@@ -21,7 +21,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 use PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity;
 use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
-use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 
 /**
  * Published products repository with permission applied

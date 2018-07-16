@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Provider\Form;
 
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 
 /**
  * Form provider for published product

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Helper;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>

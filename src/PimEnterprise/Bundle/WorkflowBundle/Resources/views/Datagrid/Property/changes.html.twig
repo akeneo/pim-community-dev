@@ -1,4 +1,4 @@
-{% if record.getValue('status') == constant('PimEnterprise\\Component\\Workflow\\Model\\EntityWithValuesDraftInterface::IN_PROGRESS') %}
+{% if record.getValue('status') == constant('Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Model\\EntityWithValuesDraftInterface::IN_PROGRESS') %}
     <em>{{ 'pimee_workflow.proposal.draft_in_progress'|trans({'%author%': record.getValue('author')}) }}</em>
 {% else %}
     {% for code, changes in value %}

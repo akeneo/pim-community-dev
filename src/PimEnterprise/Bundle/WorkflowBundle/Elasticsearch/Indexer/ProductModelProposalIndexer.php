@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
-use PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductModelProposalNormalizer;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposalNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class ProductDraftChangesExtensionSpec extends ObjectBehavior

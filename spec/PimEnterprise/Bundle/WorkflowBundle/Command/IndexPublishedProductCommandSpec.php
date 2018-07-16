@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer;
 use PimEnterprise\Bundle\WorkflowBundle\Command\IndexPublishedProductCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductRepository;
-use PimEnterprise\Component\Workflow\Model\PublishedProduct;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Application;

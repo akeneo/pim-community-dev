@@ -5,8 +5,8 @@ namespace spec\PimEnterprise\Component\Workflow\Factory;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
-use PimEnterprise\Component\Workflow\Factory\EntityWithValuesDraftFactory;
-use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 
 class ProductModelDraftFactorySpec extends ObjectBehavior
 {

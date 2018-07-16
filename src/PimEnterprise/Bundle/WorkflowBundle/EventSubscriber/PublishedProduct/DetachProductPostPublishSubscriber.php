@@ -15,8 +15,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Pim\Component\Catalog\AttributeTypes;
-use PimEnterprise\Component\Workflow\Event\PublishedProductEvent;
-use PimEnterprise\Component\Workflow\Event\PublishedProductEvents;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

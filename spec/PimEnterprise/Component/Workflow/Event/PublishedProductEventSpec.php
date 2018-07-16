@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\Workflow\Event;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 
 class PublishedProductEventSpec extends ObjectBehavior
 {

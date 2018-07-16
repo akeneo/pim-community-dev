@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace PimEnterprise\Bundle\WorkflowBundle\tests\integration\ProductModelProposal;
 
 use PHPUnit\Framework\Assert;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
-use PimEnterprise\Component\Workflow\Model\ProductModelDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 
 class SaveRootProductModelDraftIntegration extends AbstractDraft
 {
