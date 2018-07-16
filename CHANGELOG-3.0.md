@@ -82,6 +82,8 @@
 - Move class `PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM\AssetEventSubscriber` to `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Asset\AssetEventSubscriber`
 - Move class `PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter\AssetsCollectionPresenter` to `PimEnterprise\Bundle\WorkflowBundle\Presenter\AssetsCollectionPresenter`
 - Remove class `Akeneo\Asset\Bundle\TwigExtension\ImageExtension`
+- Move namespace `PimEnterprise\Component\TeamworkAssistant` to `Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component`
+- Move namespace `PimEnterprise\Bundle\TeamworkAssistantBundle` to `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle`
 
 ## Security
 
