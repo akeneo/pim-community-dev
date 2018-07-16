@@ -16,8 +16,11 @@ define(
              * {@inheritdoc}
              */
             render: function () {
+                var jobInstance = this.getFormData();
+
                 this.$el.html(this.template({
-                    jobInstance: this.getFormData(),
+                    jobInstance: jobInstance,
+                    jobInstanceLabel: __('batch_jobs.' + jobInstance.code + '.label'),
                     __: __
                 }));
 
