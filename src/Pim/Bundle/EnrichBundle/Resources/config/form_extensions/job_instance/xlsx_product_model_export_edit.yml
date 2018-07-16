@@ -263,12 +263,9 @@ extensions:
                 -
                     field: completeness
                     view: akeneo-product-model-completeness-filter
-
-    pim-job-instance-xlsx-product-model-export-edit-content-default-attribute-filters:
-        module: pim/job/product/edit/content/data/default-attribute-filters
-        parent: pim-job-instance-xlsx-product-model-export-edit-content-data
-        config:
-            types: [pim_catalog_identifier]
+                -
+                    field: identifier
+                    view: akeneo-attribute-identifier-filter
 
     pim-job-instance-xlsx-product-model-export-edit-content-data-help:
         module: pim/job/common/edit/content/data/help
