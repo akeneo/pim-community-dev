@@ -40,13 +40,14 @@ class ResponseHistoryListener
      *
      * @param  FilterResponseEvent $event
      *
-     * @return bool|void
+     * @return bool|null
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function onResponse(FilterResponseEvent $event)
     {
         if (HttpKernel::MASTER_REQUEST != $event->getRequestType()) {
             // Do not do anything
-            return;
+            return false;
         }
 
         $request = $event->getRequest();
@@ -64,21 +65,20 @@ class ResponseHistoryListener
         ];
 
         /** @var $historyItem  NavigationHistoryItem */
-        $historyItem = $this->getEntityManager()->getRepository('Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem')
+        $historyItem = $this->getEntityManager()
+            ->getRepository('Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem')
             ->findOneBy($postArray);
+
         if (!$historyItem) {
-            /** @var $historyItem \Oro\Bundle\NavigationBundle\Entity\NavigationItemInterface */
+            /** @var $historyItem \Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem */
             $historyItem = $this->getItemFactory()->createItem(
                 NavigationHistoryItem::NAVIGATION_HISTORY_ITEM_TYPE,
                 $postArray
             );
-        }
-
-        $titleService = $this->getTitleService();
-        if (!empty($historyItem->getCode())) {
+            $titleService = $this->getTitleService();
             $titleService->setData(['params' => ['%code%' => $historyItem->getCode()]]);
+            $historyItem->setTitle($this->getTitleService()->getSerialized());
         }
-        $historyItem->setTitle($this->getTitleService()->getSerialized());
 
         // force update
         $historyItem->doUpdate();
