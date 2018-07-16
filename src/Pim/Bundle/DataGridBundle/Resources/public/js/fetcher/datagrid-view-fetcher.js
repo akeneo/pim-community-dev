@@ -25,7 +25,14 @@ define(
              * @return Promise
              */
             defaultColumns: function (alias) {
-                return $.getJSON(Routing.generate(this.options.urls.columns, { alias: alias }));
+                let columns = this.entityPromises['columns']
+
+                if (!columns) {
+                    columns = $.getJSON(Routing.generate(this.options.urls.columns, { alias: alias }));
+                    this.entityPromises['columns'] = columns;
+                }
+
+                return columns;
             },
 
             /**
@@ -36,7 +43,14 @@ define(
              * @return Promise
              */
             defaultUserView: function (alias) {
-                return $.getJSON(Routing.generate(this.options.urls.userDefaultView, { alias: alias }));
+                let view = this.entityPromises['view']
+
+                if (!view) {
+                    view = $.getJSON(Routing.generate(this.options.urls.userDefaultView, { alias: alias }));
+                    this.entityPromises['view'] = view
+                }
+
+                return view
             }
         });
     }
