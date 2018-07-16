@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Catalog\tests\integration\Normalizer\Standard;
+namespace Akeneo\Pim\Structure\Component\tests\Integration\Normalizer\Standard;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

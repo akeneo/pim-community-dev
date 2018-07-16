@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\tests\integration\Updater\Remover;
+namespace Akeneo\Pim\Structure\Component\tests\integration\Remover;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
