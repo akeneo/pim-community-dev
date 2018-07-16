@@ -41,11 +41,6 @@ datagrid:
                 route: pim_user_edit
                 params:
                     code: username
-            view_link:
-                type: url
-                route: pim_user_view
-                params:
-                    - id
             delete_link:
                 type: url
                 route: pim_user_user_delete
@@ -85,14 +80,6 @@ datagrid:
                                Active : 1
 
         actions:
-            view:
-                launcherOptions:
-                    className: AknIconButton AknIconButton--small AknIconButton--view
-                type:          navigate
-                label:         pim_common.view
-                link:          view_link
-                acl_resource:  pim_user_user_index
-                rowAction:     true
             update:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
@@ -100,6 +87,7 @@ datagrid:
                 label:         pim_common.update
                 link:          update_link
                 acl_resource:  pim_user_user_edit
+                rowAction:     true
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash

@@ -18,6 +18,7 @@ define(
         'pim/router',
         'pim/user-context',
         'pim/notifications',
+        'pim/media-url-generator',
         'pim/template/menu/user-navigation'
     ],
     function (
@@ -27,6 +28,7 @@ define(
         router,
         UserContext,
         Notifications,
+        MediaUrlGenerator,
         template
     ) {
         return BaseForm.extend({
@@ -53,7 +55,7 @@ define(
                 this.$el.html(this.template({
                     firstName: UserContext.get('first_name'),
                     lastName: UserContext.get('last_name'),
-                    avatar: UserContext.get('avatar'),
+                    avatar: this.getAvatar(),
                     logoutLabel: __(this.config.logout),
                     userAccountLabel: __(this.config.userAccount)
                 }));
@@ -82,6 +84,15 @@ define(
              */
             userAccount: function () {
                 router.redirectToRoute('pim_user_profile_view');
+            },
+
+            getAvatar: function () {
+                const filePath = UserContext.get('avatar').filePath;
+                if (null === filePath || undefined === filePath) {
+                    return null;
+                }
+
+                return MediaUrlGenerator.getMediaShowUrl(UserContext.get('avatar').filePath, 'thumbnail_small');
             }
         });
     });

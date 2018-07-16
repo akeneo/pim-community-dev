@@ -17,26 +17,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class UserController extends Controller
 {
     /**
-     * @Template
-     *
-     * @AclAncestor("pim_user_user_index")
-     */
-    public function viewAction($id)
-    {
-        $user = $this->get('pim_user.repository.user')->find($id);
-
-        return $this->view($user);
-    }
-
-    /**
-     * @Template("PimUserBundle:User:view.html.twig")
-     */
-    public function viewProfileAction()
-    {
-        return $this->view($this->getUser(), 'pim_user_profile_update');
-    }
-
-    /**
      * @Template("PimUserBundle:User:update.html.twig")
      */
     public function updateProfileAction()
