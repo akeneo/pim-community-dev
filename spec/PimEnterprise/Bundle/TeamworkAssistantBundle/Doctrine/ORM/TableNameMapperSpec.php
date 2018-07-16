@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\TableNameMapper;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\TableNameMapper;
 
 class TableNameMapperSpec extends ObjectBehavior
 {

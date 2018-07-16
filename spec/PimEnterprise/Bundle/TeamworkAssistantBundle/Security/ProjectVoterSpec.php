@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Security;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Security\ProjectVoter;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Security\ProjectVoter;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\UserRepositoryInterface;

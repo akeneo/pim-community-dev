@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\NotificationSubscriber;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\NotificationSubscriber;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvent;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvents;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Factory\ProjectStatusFactoryInterface;

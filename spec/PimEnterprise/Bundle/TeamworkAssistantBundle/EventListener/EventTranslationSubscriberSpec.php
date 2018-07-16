@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\EventTranslationSubscriber;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\EventTranslationSubscriber;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvent;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvents;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;

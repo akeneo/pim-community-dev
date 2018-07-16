@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Command;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Command\ProjectRecalculationCommand;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Command\ProjectRecalculationCommand;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

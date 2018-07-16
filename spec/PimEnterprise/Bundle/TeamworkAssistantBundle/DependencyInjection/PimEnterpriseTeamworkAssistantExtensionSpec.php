@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\PimEnterpriseTeamworkAssistantExtension;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\DependencyInjection\PimEnterpriseTeamworkAssistantExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PimEnterpriseTeamworkAssistantExtensionSpec extends ObjectBehavior

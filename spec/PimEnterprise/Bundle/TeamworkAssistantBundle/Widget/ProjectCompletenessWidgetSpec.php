@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Widget\ProjectCompletenessWidget;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Widget\ProjectCompletenessWidget;
 
 class ProjectCompletenessWidgetSpec extends ObjectBehavior
 {

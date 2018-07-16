@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Command;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Command\NotificationDueDateWarningCommand;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Command\NotificationDueDateWarningCommand;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface;

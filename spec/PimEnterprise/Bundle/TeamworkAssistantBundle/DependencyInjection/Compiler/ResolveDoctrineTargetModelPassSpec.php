@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 
 class ResolveDoctrineTargetModelPassSpec extends ObjectBehavior
 {

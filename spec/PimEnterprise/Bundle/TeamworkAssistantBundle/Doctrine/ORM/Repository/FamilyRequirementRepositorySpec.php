@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Reposit
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\FamilyRequirementRepository;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\FamilyRequirementRepository;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\FamilyRequirementRepositoryInterface;
 
 class FamilyRequirementRepositorySpec extends ObjectBehavior

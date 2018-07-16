@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener\ProjectSubscriber;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\ProjectSubscriber;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\PreProcessingRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
