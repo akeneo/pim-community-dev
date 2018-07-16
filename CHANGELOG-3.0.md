@@ -84,6 +84,7 @@
 - Remove class `Akeneo\Asset\Bundle\TwigExtension\ImageExtension`
 - Move namespace `PimEnterprise\Component\TeamworkAssistant` to `Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component`
 - Move namespace `PimEnterprise\Bundle\TeamworkAssistantBundle` to `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle`
+- Move namespace `PimEnterprise\Bundle\RevertBundle` to `Akeneo\Pim\WorkOrganization\ProductRevert`
 
 ## Security
 

@@ -69,4 +69,5 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ProductA
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ProductAssetBundle\\Workflow\\Presenter\\AssetsCollectionPresenter/PimEnterprise\\Bundle\\WorkflowBundle\\Presenter\\AssetsCollectionPresenter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\TeamworkAssistant/Akeneo\\Pim\\WorkOrganization\\TeamWorkAssistant\\Component/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\TeamworkAssistantBundle/Akeneo\\Pim\\WorkOrganization\\TeamworkAssistant\\Bundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\RevertBundle/Akeneo\\Pim\\WorkOrganization\\ProductRevert/g'
 ```
