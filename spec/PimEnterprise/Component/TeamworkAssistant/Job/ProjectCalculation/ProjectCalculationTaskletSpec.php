@@ -10,10 +10,10 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\ProjectCalculationTasklet;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\ProjectCalculationTasklet;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProductRepositoryInterface;
 
 class ProjectCalculationTaskletSpec extends ObjectBehavior
 {

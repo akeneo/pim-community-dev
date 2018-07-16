@@ -17,8 +17,8 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepositoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

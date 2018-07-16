@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Model;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectCompleteness;
 
 class ProjectCompletenessSpec extends ObjectBehavior
 {

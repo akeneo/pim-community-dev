@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\UserRepository;
-use PimEnterprise\Component\TeamworkAssistant\Repository\UserRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\UserRepositoryInterface;
 
 class UserRepositorySpec extends ObjectBehavior
 {

@@ -11,7 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectCalculationNotificationFactory;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
 
 class ProjectCalculationNotificationFactorySpec extends ObjectBehavior

@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDate;
-use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDateValidator;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Validator\Constraints\ProjectDueDate;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Validator\Constraints\ProjectDueDateValidator;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Choice;

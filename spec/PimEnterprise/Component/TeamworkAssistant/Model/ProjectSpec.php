@@ -9,8 +9,8 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\Project;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\Project;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
 
 class ProjectSpec extends ObjectBehavior
 {

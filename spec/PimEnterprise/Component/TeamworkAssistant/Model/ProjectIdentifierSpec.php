@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Model;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectIdentifier;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectIdentifier;
 use Prophecy\Argument;
 
 class ProjectIdentifierSpec extends ObjectBehavior

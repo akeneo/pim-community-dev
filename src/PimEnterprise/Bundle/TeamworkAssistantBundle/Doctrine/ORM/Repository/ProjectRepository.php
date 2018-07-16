@@ -18,8 +18,8 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

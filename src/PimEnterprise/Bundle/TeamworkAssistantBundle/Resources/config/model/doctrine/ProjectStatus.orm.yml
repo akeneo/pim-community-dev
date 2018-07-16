@@ -23,7 +23,7 @@ PimEnterprise\Component\TeamworkAssistant\Model\ProjectStatus:
                     nullable: false
                     referencedColumnName: id
         project:
-            targetEntity: PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface
+            targetEntity: Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface
             joinColumns:
                 project_id:
                     nullable: false

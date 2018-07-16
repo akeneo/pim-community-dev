@@ -42,7 +42,7 @@
 
 - AOB-58: Change signature of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor` constructor to add the `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - AOB-139: Change constructor of `PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter` to add `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`.
-- AOB-139: Rename method `PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepositoryInterface::findProductIds` to `findProductIdentifiers`.
+- AOB-139: Rename method `Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface::findProductIds` to `findProductIdentifiers`.
 - PIM-7407: Remove unused class parameters `pimee_product_asset.upload_context.class`
 - PIM-7407: Move class `PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor` to `PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor`
 - PIM-7407: Change the constructor of `PimEnterprise\Component\ProductAsset\Upload\Processor\MassUploadProcessor` to  remove

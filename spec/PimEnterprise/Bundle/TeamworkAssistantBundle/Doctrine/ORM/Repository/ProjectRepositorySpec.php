@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\ProjectRepository;
-use PimEnterprise\Component\TeamworkAssistant\Model\Project;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\Project;
 
 class ProjectRepositorySpec extends ObjectBehavior
 {

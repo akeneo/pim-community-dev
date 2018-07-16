@@ -10,8 +10,8 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\PreProcessingRepository;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\TableNameMapper;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\PreProcessingRepositoryInterface;
 
 class PreProcessingRepositorySpec extends ObjectBehavior
 {

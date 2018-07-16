@@ -4,12 +4,12 @@ namespace spec\PimEnterprise\Bundle\TeamworkAssistantBundle\Command;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Command\NotificationDueDateWarningCommand;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Notification\ProjectNotifierInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepositoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\UserRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Notification\ProjectNotifierInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;

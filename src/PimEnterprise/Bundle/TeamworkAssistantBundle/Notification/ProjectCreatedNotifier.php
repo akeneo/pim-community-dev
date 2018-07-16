@@ -13,10 +13,10 @@ namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Notification;
 
 use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Notification\ProjectNotifierInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectStatusRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Notification\ProjectNotifierInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

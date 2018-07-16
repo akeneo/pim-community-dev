@@ -10,9 +10,9 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectDueDateReminderNotifier;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectNotificationFactory;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Notification\ProjectNotifierInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Notification\ProjectNotifierInterface;
 
 class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
 {

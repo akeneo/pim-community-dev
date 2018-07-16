@@ -7,10 +7,10 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\AddUserGroupStep;
-use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Calculator\ProjectItemCalculatorInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CalculationStep\AddUserGroupStep;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
 
 class AddUserGroupStepSpec extends ObjectBehavior
 {

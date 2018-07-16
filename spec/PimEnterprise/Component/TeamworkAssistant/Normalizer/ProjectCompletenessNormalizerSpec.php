@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
-use PimEnterprise\Component\TeamworkAssistant\Normalizer\ProjectCompletenessNormalizer;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Normalizer\ProjectCompletenessNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProjectCompletenessNormalizerSpec extends ObjectBehavior

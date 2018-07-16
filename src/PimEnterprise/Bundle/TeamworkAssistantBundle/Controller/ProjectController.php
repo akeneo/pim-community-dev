@@ -19,8 +19,8 @@ use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectComplete
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\FilterConverter;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Job\ProjectCalculationJobLauncher;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Security\ProjectVoter;
-use PimEnterprise\Component\TeamworkAssistant\Factory\ProjectFactoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Factory\ProjectFactoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
 use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;

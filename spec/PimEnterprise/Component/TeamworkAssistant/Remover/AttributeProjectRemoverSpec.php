@@ -9,9 +9,9 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Remover\AttributeProjectRemover;
-use PimEnterprise\Component\TeamworkAssistant\Remover\ProjectRemoverInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\AttributeProjectRemover;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\ProjectRemoverInterface;
 
 class AttributeProjectRemoverSpec extends ObjectBehavior
 {

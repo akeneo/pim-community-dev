@@ -7,9 +7,9 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Step\TaskletInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\PrepareProjectCalculationTasklet;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\PrepareProjectCalculationTasklet;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\PreProcessingRepositoryInterface;
 use Prophecy\Argument;
 
 class PrepareProjectCalculationTaskletSpec extends ObjectBehavior

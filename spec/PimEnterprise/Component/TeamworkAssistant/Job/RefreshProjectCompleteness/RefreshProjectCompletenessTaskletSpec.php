@@ -11,9 +11,9 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
-use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompleteness\RefreshProjectCompletenessTasklet;
-use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Calculator\ProjectItemCalculatorInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\RefreshProjectCompleteness\RefreshProjectCompletenessTasklet;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\PreProcessingRepositoryInterface;
 use Prophecy\Argument;
 
 class RefreshProjectCompletenessTaskletSpec extends ObjectBehavior

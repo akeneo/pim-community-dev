@@ -8,15 +8,15 @@ parameters:
     pimee_teamwork_assistant.project_calculation.tasklet_name: 'project_calculation'
     pimee_teamwork_assistant.clean_contributor_group.tasklet_name: 'clean_contributor_group'
 
-    pimee_teamwork_assistant.tasklet.prepare_project_calculation.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\PrepareProjectCalculationTasklet'
-    pimee_teamwork_assistant.tasklet.clean_contributor_group.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CleanContributorGroupTasklet'
-    pimee_teamwork_assistant.tasklet.project_calculation.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\ProjectCalculationTasklet'
-    pimee_teamwork_assistant.calculation_step.chained.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\ChainedCalculationStep'
-    pimee_teamwork_assistant.calculation_step.add_user_group.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\AddUserGroupStep'
-    pimee_teamwork_assistant.calculation_step.add_product.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\AddProductStep'
-    pimee_teamwork_assistant.calculation_step.process_attribute_group_completeness.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\ProcessAttributeGroupCompletenessStep'
+    pimee_teamwork_assistant.tasklet.prepare_project_calculation.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\PrepareProjectCalculationTasklet'
+    pimee_teamwork_assistant.tasklet.clean_contributor_group.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CleanContributorGroupTasklet'
+    pimee_teamwork_assistant.tasklet.project_calculation.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\ProjectCalculationTasklet'
+    pimee_teamwork_assistant.calculation_step.chained.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CalculationStep\ChainedCalculationStep'
+    pimee_teamwork_assistant.calculation_step.add_user_group.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CalculationStep\AddUserGroupStep'
+    pimee_teamwork_assistant.calculation_step.add_product.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CalculationStep\AddProductStep'
+    pimee_teamwork_assistant.calculation_step.process_attribute_group_completeness.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CalculationStep\ProcessAttributeGroupCompletenessStep'
     pimee_teamwork_assistant.launcher.job.project_calculation.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Job\ProjectCalculationJobLauncher'
-    pimee_teamwork_assistant.job.project_calculation_parameter.class: 'PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\ProjectCalculationJobParameters'
+    pimee_teamwork_assistant.job.project_calculation_parameter.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\ProjectCalculationJobParameters'
 
     ### Attribute group completeness calculation
     pimee_teamwork_assistant.refresh_project_completeness_calculation.job_name: 'refresh_project_completeness_calculation'
@@ -24,8 +24,8 @@ parameters:
     pimee_teamwork_assistant.refresh_project_completeness_calculation.tasklet_name: 'refresh_project_completeness_calculation'
 
     pimee_teamwork_assistant.launcher.job.refresh_project_completeness_calculation.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher'
-    pimee_teamwork_assistant.tasklet.refresh_project_completeness_calculation.class: 'PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompleteness\RefreshProjectCompletenessTasklet'
-    pimee_teamwork_assistant.job.refresh_project_completeness_calculation_parameter.class: 'PimEnterprise\Component\TeamworkAssistant\Job\RefreshProjectCompleteness\RefreshProjectCompletenessJobParameter'
+    pimee_teamwork_assistant.tasklet.refresh_project_completeness_calculation.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\RefreshProjectCompleteness\RefreshProjectCompletenessTasklet'
+    pimee_teamwork_assistant.job.refresh_project_completeness_calculation_parameter.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\RefreshProjectCompleteness\RefreshProjectCompletenessJobParameter'
 
 services:
     ### Project calculation

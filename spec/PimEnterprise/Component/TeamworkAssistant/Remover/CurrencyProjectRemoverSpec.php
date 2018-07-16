@@ -10,10 +10,10 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Remover\CurrencyProjectRemover;
-use PimEnterprise\Component\TeamworkAssistant\Remover\ProjectRemoverInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\CurrencyProjectRemover;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\ProjectRemoverInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Prophecy\Argument;
 
 class CurrencyProjectRemoverSpec extends ObjectBehavior

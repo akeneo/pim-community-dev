@@ -10,11 +10,11 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectCreatedNotifier;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectNotificationFactory;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectStatusInterface;
-use PimEnterprise\Component\TeamworkAssistant\Notification\ProjectNotifierInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectStatusRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectStatusInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Notification\ProjectNotifierInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
 
 class ProjectCreatedNotifierSpec extends ObjectBehavior
 {

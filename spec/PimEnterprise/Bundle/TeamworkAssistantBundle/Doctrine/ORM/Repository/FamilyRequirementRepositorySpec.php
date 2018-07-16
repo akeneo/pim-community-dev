@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\FamilyRequirementRepository;
-use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\FamilyRequirementRepositoryInterface;
 
 class FamilyRequirementRepositorySpec extends ObjectBehavior
 {

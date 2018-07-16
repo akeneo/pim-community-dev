@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocale;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Validator\Constraints\ProjectLocale;
 use Symfony\Component\Validator\Constraint;
 
 class ProjectLocaleSpec extends ObjectBehavior

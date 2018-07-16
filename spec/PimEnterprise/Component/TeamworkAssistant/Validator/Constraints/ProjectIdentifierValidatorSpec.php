@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifier;
-use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifierValidator;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Validator\Constraints\ProjectIdentifier;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Validator\Constraints\ProjectIdentifierValidator;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Choice;

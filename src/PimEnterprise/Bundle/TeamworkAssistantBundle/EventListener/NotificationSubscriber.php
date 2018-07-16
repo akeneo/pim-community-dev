@@ -12,16 +12,16 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvent;
-use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvents;
-use PimEnterprise\Component\TeamworkAssistant\Factory\ProjectStatusFactoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectStatusInterface;
-use PimEnterprise\Component\TeamworkAssistant\Notification\ProjectNotifierInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectCompletenessRepositoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectStatusRepositoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\UserRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Event\ProjectEvent;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Event\ProjectEvents;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Factory\ProjectStatusFactoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectStatusInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Notification\ProjectNotifierInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Event;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\TeamworkAssistant\Event\ProjectEvents;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Event\ProjectEvents;
 
 class ProjectEventsSpec extends ObjectBehavior
 {

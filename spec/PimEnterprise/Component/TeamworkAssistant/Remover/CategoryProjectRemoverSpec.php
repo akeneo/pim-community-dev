@@ -9,9 +9,9 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Remover\CategoryProjectRemover;
-use PimEnterprise\Component\TeamworkAssistant\Remover\ProjectRemoverInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\CategoryProjectRemover;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\ProjectRemoverInterface;
 
 class CategoryProjectRemoverSpec extends ObjectBehavior
 {

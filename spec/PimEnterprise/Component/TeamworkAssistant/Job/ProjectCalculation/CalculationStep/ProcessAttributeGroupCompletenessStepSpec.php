@@ -6,13 +6,13 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\ProcessAttributeGroupCompletenessStep;
-use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\PreProcessingRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Calculator\ProjectItemCalculatorInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CalculationStep\ProcessAttributeGroupCompletenessStep;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\AttributeGroupCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\FamilyRequirementRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\PreProcessingRepositoryInterface;
 
 class ProcessAttributeGroupCompletenessStepSpec extends ObjectBehavior
 {

@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
-use PimEnterprise\Component\TeamworkAssistant\Job\ProjectCalculation\CalculationStep\LoggableStep;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CalculationStep\CalculationStepInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Job\ProjectCalculation\CalculationStep\LoggableStep;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
 use Prophecy\Argument;
 
 class LoggableStepSpec extends ObjectBehavior

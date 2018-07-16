@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\TeamworkAssistant\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifier;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Validator\Constraints\ProjectIdentifier;
 use Symfony\Component\Validator\Constraint;
 
 class ProjectIdentifierSpec extends ObjectBehavior

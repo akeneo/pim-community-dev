@@ -11,10 +11,10 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use PimEnterprise\Component\TeamworkAssistant\Calculator\AttributeGroupCompletenessCalculator;
-use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\AttributeGroupCompleteness;
-use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Calculator\AttributeGroupCompletenessCalculator;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Calculator\ProjectItemCalculatorInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\AttributeGroupCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\FamilyRequirementRepositoryInterface;
 
 class AttributeGroupCompletenessCalculatorSpec extends ObjectBehavior
 {

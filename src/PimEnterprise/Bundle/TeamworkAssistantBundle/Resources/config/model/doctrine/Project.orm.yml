@@ -59,7 +59,7 @@ PimEnterprise\Component\TeamworkAssistant\Model\Project:
                 - remove
     oneToMany:
         projectStatus:
-            targetEntity: PimEnterprise\Component\TeamworkAssistant\Model\ProjectStatus
+            targetEntity: Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectStatus
             mappedBy: project
             cascade:
                 - remove

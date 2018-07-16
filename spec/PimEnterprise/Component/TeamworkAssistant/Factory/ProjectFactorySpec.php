@@ -7,9 +7,9 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\DatagridViewTypes;
-use PimEnterprise\Component\TeamworkAssistant\Factory\ProjectFactory;
-use PimEnterprise\Component\TeamworkAssistant\Factory\ProjectFactoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Factory\ProjectFactory;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Factory\ProjectFactoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\User\UserInterface;
 

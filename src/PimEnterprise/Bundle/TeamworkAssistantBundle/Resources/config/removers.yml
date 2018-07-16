@@ -1,10 +1,10 @@
 parameters:
-    pimee_teamwork_assistant.project_remover.chained.class: PimEnterprise\Component\TeamworkAssistant\Remover\ChainedProjectRemover
-    pimee_teamwork_assistant.project_remover.channel.class: PimEnterprise\Component\TeamworkAssistant\Remover\ChannelProjectRemover
-    pimee_teamwork_assistant.project_remover.locale.class: PimEnterprise\Component\TeamworkAssistant\Remover\LocaleProjectRemover
-    pimee_teamwork_assistant.project_remover.attribute.class: PimEnterprise\Component\TeamworkAssistant\Remover\AttributeProjectRemover
-    pimee_teamwork_assistant.project_remover.category.class: PimEnterprise\Component\TeamworkAssistant\Remover\CategoryProjectRemover
-    pimee_teamwork_assistant.project_remover.currency.class: PimEnterprise\Component\TeamworkAssistant\Remover\CurrencyProjectRemover
+    pimee_teamwork_assistant.project_remover.chained.class: Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\ChainedProjectRemover
+    pimee_teamwork_assistant.project_remover.channel.class: Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\ChannelProjectRemover
+    pimee_teamwork_assistant.project_remover.locale.class: Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\LocaleProjectRemover
+    pimee_teamwork_assistant.project_remover.attribute.class: Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\AttributeProjectRemover
+    pimee_teamwork_assistant.project_remover.category.class: Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\CategoryProjectRemover
+    pimee_teamwork_assistant.project_remover.currency.class: Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Remover\CurrencyProjectRemover
 
 services:
     pimee_teamwork_assistant.project_remover.chained:

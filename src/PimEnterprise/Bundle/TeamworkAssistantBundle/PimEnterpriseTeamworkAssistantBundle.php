@@ -33,7 +33,7 @@ class PimEnterpriseTeamworkAssistantBundle extends Bundle
         $container->addCompilerPass(new RegisterProjectRemoverPass());
 
         $mappingConfig = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Component\TeamworkAssistant\Model',
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model',
         ];
 
         $container->addCompilerPass(

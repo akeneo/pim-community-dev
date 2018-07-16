@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\AttributePermissionRepository;
-use PimEnterprise\Component\TeamworkAssistant\Repository\AttributePermissionRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\AttributePermissionRepositoryInterface;
 
 class AttributePermissionRepositorySpec extends ObjectBehavior
 {

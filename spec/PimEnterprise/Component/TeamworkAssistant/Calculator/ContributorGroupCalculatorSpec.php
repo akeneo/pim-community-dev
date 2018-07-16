@@ -10,11 +10,11 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\TeamworkAssistant\Calculator\ContributorGroupCalculator;
-use PimEnterprise\Component\TeamworkAssistant\Calculator\ProjectItemCalculatorInterface;
-use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\AttributePermissionRepositoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\FamilyRequirementRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Calculator\ContributorGroupCalculator;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Calculator\ProjectItemCalculatorInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\AttributePermissionRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\FamilyRequirementRepositoryInterface;
 
 class ContributorGroupCalculatorSpec extends ObjectBehavior
 {
