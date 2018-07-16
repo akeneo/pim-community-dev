@@ -19,6 +19,10 @@ export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
       }),
       enrichedEntity.normalize()
     ).catch((error) => {
+      if (500 === error.status) {
+        throw new Error('Internal Server error');
+      }
+
       return error.responseJSON;
     });
   }
