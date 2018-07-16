@@ -13,6 +13,7 @@
 ## Bug fixes
 
 - PIM-7466: do not escape quotes for translation
+- PIM-7474: Show job name label in job profile header
 
 # 1.7.24 (2018-07-05)
 
