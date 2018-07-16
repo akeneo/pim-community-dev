@@ -57,6 +57,10 @@ define(
                     _.each(_.pluck(trees, 'id'), function (id) {
                         categoriesCount[id] = 0;
                     });
+                    if (undefined === this.state.toJSON().currentTree) {
+                        this.state.set('currentTree', _.first(trees).code);
+                        this.state.set('currentTreeId', _.first(trees).id);
+                    }
 
                     this.$el.html(
                         this.template({
@@ -74,8 +78,6 @@ define(
                         children:        'pim_enrich_categorytree_children'
                     });
                     this.delegateEvents();
-                    this.state.set('currentTree', _.first(trees).code);
-                    this.state.set('currentTreeId', _.first(trees).id);
                     this.initCategoryCount(trees);
                 }.bind(this));
 
