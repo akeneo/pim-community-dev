@@ -84,6 +84,8 @@
 - Move namespace `PimEnterprise\Component\TeamworkAssistant` to `Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component`
 - Move namespace `PimEnterprise\Bundle\TeamworkAssistantBundle` to `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle`
 - Move namespace `PimEnterprise\Bundle\VersioningBundle` to `Akeneo\Pim\WorkOrganization\ProductRevert`
+- Move namespace `PimEnterprise\Component\Workflow` to `Akeneo\Pim\WorkOrganization\Workflow\Component`
+- Move namespace `PimEnterprise\Bundle\Workflow` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle`
 
 ## Security
 

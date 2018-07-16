@@ -306,7 +306,7 @@
 - Move `PimEnterprise\Bundle\WorkflowBundle\Normalizer` to `PimEnterprise\Component\Workflow\Normalizer`.
 - Move `PimEnterprise\Bundle\WorkflowBundle\Applier` to `PimEnterprise\Component\Workflow\Applier`.
 - Move `PimEnterprise\Bundle\WorkflowBundle\Repository` to `PimEnterprise\Component\Workflow\Repository`.
-- Move `PimEnterprise\Bundle\WorkflowBundle\PimEnterprise\Helper\SortProductValuesHelper` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\SortProductValuesHelper`.
+- Move `PimEnterprise\Bundle\WorkflowBundle\PimEnterprise\Helper\SortProductValuesHelper` to `PimEnterprise\Bundle\WorkflowBundle\Twig\SortProductValuesHelper`.
 - Move `PimEnterprise\Bundle\WorkflowBundle\Publisher` to `PimEnterprise\Component\Workflow\Publisher`.
 - Move `PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet` to `PimEnterprise\Component\Workflow\Connector\Tasklet`.
 - Move `PimEnterprise\Bundle\CatalogBundle\Model` to `PimEnterprise\Component\Catalog\Model`.
