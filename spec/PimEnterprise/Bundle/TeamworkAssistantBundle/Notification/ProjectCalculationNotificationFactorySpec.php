@@ -12,7 +12,7 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectCalculationNotificationFactory;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 
 class ProjectCalculationNotificationFactorySpec extends ObjectBehavior
 {
