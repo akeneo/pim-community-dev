@@ -6,5 +6,6 @@ services:
         class: '%pim_user.normalizer.user.class%'
         arguments:
             - '@serializer.normalizer.datetime'
+            - '@pim_enrich.normalizer.file'
         tags:
             - { name: pim_internal_api_serializer.normalizer }

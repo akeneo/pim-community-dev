@@ -911,6 +911,7 @@ config:
         pim/form/common/fields/password:                pimenrich/js/form/common/fields/password
         pim/form/common/fields/textarea:                pimenrich/js/form/common/fields/textarea
         pim/form/common/fields/metric:                  pimenrich/js/form/common/fields/metric
+        pim/form/common/fields/media:                   pimenrich/js/form/common/fields/media
         pim/form/common/fields/available-locales:       pimenrich/js/form/common/fields/available-locales
         pim/form/common/fields/scope:                   pimenrich/js/form/common/fields/scope
         pim/form/common/fields/category-tree:           pimenrich/js/form/common/fields/category-tree
@@ -1036,6 +1037,7 @@ config:
         pim/template/form/common/fields/password:                 pimenrich/templates/form/common/fields/password.html
         pim/template/form/common/fields/textarea:                 pimenrich/templates/form/common/fields/textarea.html
         pim/template/form/common/fields/metric:                   pimenrich/templates/form/common/fields/metric.html
+        pim/template/form/common/fields/media:                    pimenrich/templates/form/common/fields/media.html
 
         # Attribute group
         pim/template/form/attribute-group/tab/attribute: pimenrich/templates/attribute-group/tab/attribute.html

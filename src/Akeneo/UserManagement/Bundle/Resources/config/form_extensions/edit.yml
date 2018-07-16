@@ -166,13 +166,13 @@ extensions:
             label: 'Birthday - to translate'
 
     pim-user-edit-form-avatar:
-        module: pim/form/common/fields/text
+        module: pim/form/common/fields/media
         parent: pim-user-edit-form-general-tab-content
         position: 100
         targetZone: content
         config:
-            fieldName: image
-            label: 'Image - to translate'
+            fieldName: avatar
+            label: 'Avatar - to translate'
 
     pim-user-edit-form-email:
         module: pim/form/common/fields/text

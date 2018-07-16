@@ -152,6 +152,12 @@ Akeneo\UserManagement\Component\Model\User:
             targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
         defaultTree:
             targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+    oneToOne:
+        avatar:
+            targetEntity: Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface
+            joinColumn:
+                name: file_info_id
+                referencedColumnName: id
     lifecycleCallbacks:
         prePersist: [beforeSave]
         preUpdate: [preUpdate]

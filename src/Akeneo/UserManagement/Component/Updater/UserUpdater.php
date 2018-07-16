@@ -5,6 +5,10 @@ namespace Akeneo\UserManagement\Component\Updater;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
+use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
+use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
@@ -15,6 +19,7 @@ use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\FileStorage;
 
 /**
  * Updates an user
@@ -43,6 +48,15 @@ class UserUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
+    /** @var FileInfoRepositoryInterface */
+    protected $fileInfoRepository;
+
+    /** @var FileStorerInterface */
+    protected $fileStorer;
+
+    /** @var string */
+    protected $fileStorageFolder;
+
     /** @var IdentifiableObjectRepositoryInterface */
     private $categoryAssetRepository;
 
@@ -62,6 +76,9 @@ class UserUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $roleRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
+        FileInfoRepositoryInterface $fileInfoRepository,
+        FileStorerInterface $fileStorer,
+        string $fileStorageFolder,
         IdentifiableObjectRepositoryInterface $categoryAssetRepository = null
     ) {
         $this->userManager = $userManager;
@@ -70,6 +87,9 @@ class UserUpdater implements ObjectUpdaterInterface
         $this->channelRepository = $channelRepository;
         $this->roleRepository = $roleRepository;
         $this->groupRepository = $groupRepository;
+        $this->fileInfoRepository = $fileInfoRepository;
+        $this->fileStorer = $fileStorer;
+        $this->fileStorageFolder = $fileStorageFolder;
         $this->categoryAssetRepository = $categoryAssetRepository;
     }
 
@@ -169,6 +189,7 @@ class UserUpdater implements ObjectUpdaterInterface
                 $user->setRoles($roles);
                 break;
             case 'groups':
+                // TODO Check this on the UI
                 foreach ($data as $code) {
                     $role = $this->findGroup($code);
                     $user->addGroup($role);
@@ -191,6 +212,9 @@ class UserUpdater implements ObjectUpdaterInterface
                 break;
             case 'proposals_state_notifications':
                 $user->setProposalsStateNotification($data);
+                break;
+            case 'avatar':
+                $this->setAvatar($user, $data);
                 break;
             default:
                 throw UnknownPropertyException::unknownProperty($field);
@@ -348,5 +372,34 @@ class UserUpdater implements ObjectUpdaterInterface
         }
 
         return $category;
+    }
+
+    /**
+     * @param $user UserInterface
+     * @param $data array
+     *
+     * @throws FileRemovalException
+     * @throws FileTransferException
+     * @throws \Exception
+     */
+    private function setAvatar($user, $data)
+    {
+        $fileInfo = $this->fileInfoRepository->findOneBy([
+            'key' => str_replace($this->fileStorageFolder, '', $data['filePath']),
+        ]);
+
+        if (null === $fileInfo) {
+            $rawFile = new \SplFileInfo($data['filePath']);
+            if (!$rawFile->isFile()) {
+                throw InvalidPropertyException::validPathExpected(
+                    'media',
+                    static::class,
+                    $data['filePath']
+                );
+            }
+            $fileInfo = $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
+        }
+
+        $user->setAvatar($fileInfo);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Akeneo\UserManagement\Component\Normalizer;
 
-use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -19,12 +18,18 @@ class UserNormalizer implements NormalizerInterface
     /** @var DateTimeNormalizer */
     private $dateTimeNormalizer;
 
+    /** @var NormalizerInterface */
+    private $fileNormalizer;
+
     /** @var array */
     protected $supportedFormats = ['array', 'standard', 'internal_api'];
 
-    public function __construct(DateTimeNormalizer $dateTimeNormalizer)
-    {
+    public function __construct(
+        DateTimeNormalizer $dateTimeNormalizer,
+        NormalizerInterface $fileNormalizer
+    ) {
         $this->dateTimeNormalizer = $dateTimeNormalizer;
+        $this->fileNormalizer = $fileNormalizer;
     }
 
     /**
@@ -56,6 +61,10 @@ class UserNormalizer implements NormalizerInterface
             'timezone'               => $user->getTimezone(),
             'groups'                 => $user->getGroupNames(),
             'roles'                  => $this->getRoleNames($user),
+            'avatar'                 => null === $user->getAvatar() ? [
+                'filePath'         => null,
+                'originalFilename' => null,
+            ] : $this->fileNormalizer->normalize($user->getAvatar()),
             'meta'                   => [
                 'id'    => $user->getId(),
                 'form'  => 'pim-user-edit-form',
