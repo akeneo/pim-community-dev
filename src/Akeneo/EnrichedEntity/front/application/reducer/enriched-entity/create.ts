@@ -1,4 +1,4 @@
-import {Error} from 'akeneoenrichedentity/domain/event/enriched-entity/create.ts';
+import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 
 export interface CreateState {
   active: boolean;
@@ -8,7 +8,7 @@ export interface CreateState {
       [localeCode: string]: string
     }
   };
-  errors: Error[];
+  errors: ValidationError[];
 }
 
 const initCreateState = (): CreateState => ({
@@ -29,7 +29,7 @@ const sanitize = (value: string) => {
       .toLocaleLowerCase();
 };
 
-export default (state: CreateState = initCreateState(), action: { type: string, locale: string, value: string, errors: Error[] }) => {
+export default (state: CreateState = initCreateState(), action: { type: string, locale: string, value: string, errors: ValidationError[] }) => {
   switch (action.type) {
     case 'ENRICHED_ENTITY_CREATION_START':
       state = {

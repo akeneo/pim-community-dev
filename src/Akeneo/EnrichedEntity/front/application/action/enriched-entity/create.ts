@@ -4,13 +4,20 @@ import LabelCollection from 'akeneoenrichedentity/domain/model/label-collection'
 import enrichedEntitySaver from 'akeneoenrichedentity/infrastructure/saver/enriched-entity';
 import {enrichedEntityCreationSucceeded, enrichedEntityCreationErrorOccured} from 'akeneoenrichedentity/domain/event/enriched-entity/create';
 import { updateEnrichedEntityResults } from 'akeneoenrichedentity/application/action/enriched-entity/search';
+import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
 
 export const createEnrichedEntity = (identifier: string, labels: {[localeCode: string]: string}) => async (dispatch: any): Promise<void> => {
   try {
     const enrichedEntity = enrichedEntityFactory(Identifier.create(identifier), LabelCollection.create(labels));
-    await enrichedEntitySaver.create(enrichedEntity);
+    let errors = await enrichedEntitySaver.create(enrichedEntity);
+
+    if (errors) {
+      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
+      dispatch(enrichedEntityCreationErrorOccured(validationErrors));
+
+      return;
+    }
   } catch (error) {
-    console.log(error);
     dispatch(enrichedEntityCreationErrorOccured(error));
 
     return;

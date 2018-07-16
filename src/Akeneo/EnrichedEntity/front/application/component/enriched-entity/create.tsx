@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
 import __ from 'akeneoenrichedentity/tools/translator';
-import {Error} from 'akeneoenrichedentity/domain/event/enriched-entity/create';
+import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import Flag from 'akeneoenrichedentity/tools/component/flag';
 import {
   enrichedEntityCreationCodeUpdated,
@@ -21,7 +21,7 @@ interface StateProps {
       [localeCode: string]: string;
     };
   };
-  errors: Error[];
+  errors: ValidationError[];
 }
 
 interface DispatchProps {
@@ -58,7 +58,32 @@ class Create extends React.Component<CreateProps> {
     this.props.events.onSubmit(this.props.data.code, this.props.data.labels);
   };
 
+  private getCodeValidationErrorsMessages = () => {
+    let errors = this.props.errors.filter((error: ValidationError) => {
+      return 'identifier' == error.propertyPath;
+    });
+
+    let errorMessages = errors.map((error: ValidationError, key:number) => {
+      return <span className="error-message" key={key}>{__(error.messageTemplate, error.parameters)}</span>;
+    });
+
+    if (errorMessages.length > 0) {
+      return (
+          <div className="AknFieldContainer-footer AknFieldContainer-validationErrors validation-errors">
+                        <span className="AknFieldContainer-validationError">
+                          <i className="icon-warning-sign"></i>
+                          {errorMessages}
+                        </span>
+          </div>
+      );
+    }
+
+    return null;
+  };
+
   render(): JSX.Element | JSX.Element[] | null {
+    const errorContainer: JSX.Element | null = this.getCodeValidationErrorsMessages();
+
     return (
         <div className="modal in modal--fullPage" aria-hidden="false" style={{zIndex: 1041}}>
           <div className="modal-header">
@@ -98,6 +123,7 @@ class Create extends React.Component<CreateProps> {
                                value={this.props.data.code}
                                onChange={this.onCodeUpdate} />
                       </div>
+                      {errorContainer}
                     </div>
                   </div>
                 </div>

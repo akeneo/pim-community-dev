@@ -2,8 +2,8 @@ pim_enriched_entity:
     enriched_entity:
         validation:
             identifier:
-                pattern: 'This field may onlay contain letters, numbers and underscores.'
+                pattern: 'This field may only contain letters, numbers and underscores.'
     record:
         validation:
             identifier:
-                pattern: 'This field may onlay contain letters, numbers and underscores.'
+                pattern: 'This field may only contain letters, numbers and underscores.'

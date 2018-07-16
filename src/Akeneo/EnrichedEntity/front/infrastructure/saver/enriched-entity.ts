@@ -27,11 +27,17 @@ export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
     });
   }
 
-  async create(enrichedEntity: EnrichedEntity): Promise<void> {
-    await postJSON(
+  async create(enrichedEntity: EnrichedEntity): Promise<ValidationError[]|null> {
+    return await postJSON(
         routing.generate('akeneo_enriched_entities_enriched_entity_create_rest'),
         enrichedEntity.normalize()
-    );
+    ).catch((error) => {
+      if (500 === error.status) {
+        throw new Error('Internal Server error');
+      }
+
+      return error.responseJSON;
+    });
   }
 }
 

@@ -1,7 +1,4 @@
-export interface Error {
-    propertyPath: string;
-    message: string;
-}
+import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 
 export const enrichedEntityCreationStart = () => {
     return {type: 'ENRICHED_ENTITY_CREATION_START'};
@@ -27,6 +24,6 @@ export const enrichedEntityCreationSucceeded = () => {
     return {type: 'ENRICHED_ENTITY_CREATION_SUCCEEDED'};
 };
 
-export const enrichedEntityCreationErrorOccured = (errors: Error[]) => {
+export const enrichedEntityCreationErrorOccured = (errors: ValidationError[]) => {
     return {type: 'ENRICHED_ENTITY_CREATION_ERROR_OCCURED', errors};
 };
