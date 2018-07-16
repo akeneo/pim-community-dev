@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infra\Fake;
+namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\Fake;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Application\ValidateConnectionInterface;
 

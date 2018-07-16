@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider;
+namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider;
 
 /**
  * Represents a collection of suggested data from PIM.ai

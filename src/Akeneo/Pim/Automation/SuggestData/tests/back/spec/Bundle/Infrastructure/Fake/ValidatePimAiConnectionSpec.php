@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Pim\Automation\SuggestData\Bundle\Infra\Fake;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\Fake\ValidatePimAiConnection;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\Fake\ValidatePimAiConnection;
 use Akeneo\Pim\Automation\SuggestData\Component\Application\ValidateConnectionInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
 

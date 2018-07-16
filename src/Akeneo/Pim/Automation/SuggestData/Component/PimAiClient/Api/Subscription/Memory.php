@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\Fake\FakeHALProducts;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\Fake\FakeHALProducts;
 use Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCodeCollection;

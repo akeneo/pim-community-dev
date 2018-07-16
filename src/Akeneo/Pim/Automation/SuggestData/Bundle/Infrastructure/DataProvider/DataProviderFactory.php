@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider;
+namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\Adapter\DataProviderAdapterInterface;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infra\DataProvider\Adapter\Memory\InMemoryAdapter;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\Memory\InMemoryAdapter;
 use Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription\SubscriptionApiInterface;
 
 /**
