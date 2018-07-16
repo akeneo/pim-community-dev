@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\RevertBundle\Reverter;
+namespace spec\Akeneo\Pim\WorkOrganization\ProductRevert\Reverter;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
