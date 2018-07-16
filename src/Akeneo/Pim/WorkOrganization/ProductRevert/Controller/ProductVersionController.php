@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RevertBundle\Controller;
+namespace Akeneo\Pim\WorkOrganization\ProductRevert\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\RevertBundle\Reverter\ProductReverter;
+use Akeneo\Pim\WorkOrganization\ProductRevert\Reverter\ProductReverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

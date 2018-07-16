@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RevertBundle\Reverter;
+namespace Akeneo\Pim\WorkOrganization\ProductRevert\Reverter;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -19,7 +19,7 @@ use Akeneo\Tool\Component\Versioning\Model\Version;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use PimEnterprise\Bundle\RevertBundle\Exception\RevertException;
+use Akeneo\Pim\WorkOrganization\ProductRevert\Exception\RevertException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

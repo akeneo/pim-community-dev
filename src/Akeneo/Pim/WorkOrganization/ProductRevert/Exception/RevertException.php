@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\RevertBundle\Exception;
+namespace Akeneo\Pim\WorkOrganization\ProductRevert\Exception;
 
 /**
  * Revert exception

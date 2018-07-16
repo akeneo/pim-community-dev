@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\RevertBundle\tests\integration\Reverter;
+namespace Akeneo\Pim\WorkOrganization\ProductRevert\tests\integration\Reverter;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -9,7 +9,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Bundle\RevertBundle\Reverter\ProductReverter;
+use Akeneo\Pim\WorkOrganization\ProductRevert\Reverter\ProductReverter;
 
 /**
  * Integration tests that ensure that a product is revertable to a prior version.
