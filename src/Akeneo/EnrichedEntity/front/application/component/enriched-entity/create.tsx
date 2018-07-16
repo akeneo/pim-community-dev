@@ -6,7 +6,8 @@ import {Error} from 'akeneoenrichedentity/domain/event/enriched-entity/create.ts
 import Flag from 'akeneoenrichedentity/tools/component/flag';
 import {
   enrichedEntityCreationCodeUpdated,
-  enrichedEntityCreationLabelUpdated
+  enrichedEntityCreationLabelUpdated,
+  enrichedEntityCreationCancel
 } from 'akeneoenrichedentity/domain/event/enriched-entity/create';
 
 interface StateProps {
@@ -26,6 +27,7 @@ interface DispatchProps {
   events: {
     onCodeUpdated: (value: string) => void
     onLabelUpdated: (value: string, locale: string) => void
+    onCancel: () => void
   }
 }
 
@@ -129,7 +131,7 @@ export default connect((state: State): StateProps => {
         dispatch(enrichedEntityCreationLabelUpdated(value, locale))
       },
       onCancel: () => {
-        dispatch()
+        dispatch(enrichedEntityCreationCancel())
       }
     }
   }

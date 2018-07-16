@@ -38,7 +38,8 @@ export default (state: CreateState = initCreateState(), action: { type: string, 
         data: {
           code: '',
           labels: {}
-        }
+        },
+        errors: []
       };
       break;
 
@@ -60,6 +61,13 @@ export default (state: CreateState = initCreateState(), action: { type: string, 
         data: {...state.data, labels: {...state.data.labels, [action.locale]: action.value}, code}
       };
 
+      break;
+
+    case 'ENRICHED_ENTITY_CREATION_CANCEL':
+      state = {
+        ...state,
+        active: false,
+      };
       break;
 
     case 'ENRICHED_ENTITY_CREATION_SUBMISSION':

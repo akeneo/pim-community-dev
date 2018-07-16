@@ -15,6 +15,10 @@ export const enrichedEntityCreationLabelUpdated = (value: string, locale: string
   return {type: 'ENRICHED_ENTITY_CREATION_LABEL_UPDATED', value, locale};
 };
 
+export const enrichedEntityCreationCancel = () => {
+  return {type: 'ENRICHED_ENTITY_CREATION_CANCEL'};
+};
+
 export const enrichedEntityCreationSubmission = () => {
     return {type: 'ENRICHED_ENTITY_CREATION_SUBMISSION'};
 };
