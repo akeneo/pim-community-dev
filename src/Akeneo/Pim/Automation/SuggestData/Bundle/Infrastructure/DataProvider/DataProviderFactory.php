@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider;
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\Memory\InMemoryAdapter;
-use Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription\SubscriptionApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Subscription\SubscriptionApiInterface;
 
 /**
  * Data provider factory

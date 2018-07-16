@@ -1,20 +1,20 @@
 services:
     akeneo.pim.automation.suggest_data.pimai_client.uri_generator:
-        class: 'Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\UriGenerator'
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\UriGenerator'
         public: false
         arguments:
             - 'http://localhost:8080'
 
     akeneo.pim.automation.suggest_data.pimai_client.enrichment_webservice:
-        class: 'Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Enrichment\EnrichmentWebservice'
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Enrichment\EnrichmentWebservice'
         arguments:
             - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
             - !service
               class: 'GuzzleHttp\Client'
 
     akeneo.pim.automation.suggest_data.pimai_client.subscribe_webservice:
-        class: 'Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription\Memory'
-#        class: 'Akeneo\Pim\Automation\SuggestData\Component\PimAiClient\Api\Subscription\SubscriptionWebservice'
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Subscription\Memory'
+#        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Subscription\SubscriptionWebservice'
 #        arguments:
 #            - '@akeneo.pim.automation.suggest_data.pimai_client.uri_generator'
 #            - !service
