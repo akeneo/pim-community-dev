@@ -23,6 +23,7 @@ class JobInstanceNormalizer implements NormalizerInterface
     {
         $results = [
             'code'          => $object->getCode(),
+            'jobName'       => $object->getJobName(),
             'label'         => $object->getLabel(),
             'connector'     => $object->getConnector(),
             'type'          => $object->getType(),
