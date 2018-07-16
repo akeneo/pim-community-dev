@@ -15,6 +15,9 @@ suites:
     Akeneo:
         namespace: Akeneo
 
+    Akeneo:
+        namespace: Akeneo
+
     ## Asset
     AssetBundle:
         namespace: Akeneo\Asset\Bundle
@@ -26,13 +29,6 @@ suites:
         psr4_prefix: Akeneo\Asset\Component
         spec_path: src/Akeneo/Asset/Component
         src_path: src/Akeneo/Asset/Component
-
-    ### Work Organization
-    TeamworkAssistantComponent:
-        namespace: Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component
-        psr4_prefix: Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component
-        spec_path: src/Akeneo/Pim/WorkOrganization/TeamworkAssistant/Component
-        src_path: src/Akeneo/Pim/WorkOrganization/TeamworkAssistant/Component
 
     ## Tool
     FileMetadata:
