@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\PreProcessing;
 
 use PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\TeamworkAssistantTestCase;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 
 class ProjectProductIntegration extends TeamworkAssistantTestCase
 {

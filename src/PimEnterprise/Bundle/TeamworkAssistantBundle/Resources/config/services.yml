@@ -15,8 +15,8 @@ parameters:
     pimee_teamwork_assistant.notifier.project_finished.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectFinishedNotifier'
     pimee_teamwork_assistant.notifier.project_due_date_reminder.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Notification\ProjectDueDateReminderNotifier'
     pimee_teamwork_assistant.reminder.days: [7, 3, 1]
-    pimee_teamwork_assistant.calculator.attribute_group_completeness.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Calculator\AttributeGroupCompletenessCalculator'
-    pimee_teamwork_assistant.calculator.contributor_group.class: 'Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Calculator\ContributorGroupCalculator'
+    pimee_teamwork_assistant.calculator.attribute_group_completeness.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator\AttributeGroupCompletenessCalculator'
+    pimee_teamwork_assistant.calculator.contributor_group.class: 'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Calculator\ContributorGroupCalculator'
     pimee_teamwork_assistant.analytic.project.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Analytic\ProjectAnalyticProvider'
     pimee_teamwork_assistant.project_completeness_filter.class: 'PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter'
 

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\Project;
 
 use PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration\TeamworkAssistantTestCase;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
 
 class ProjectCompletenessIntegration extends TeamworkAssistantTestCase
 {

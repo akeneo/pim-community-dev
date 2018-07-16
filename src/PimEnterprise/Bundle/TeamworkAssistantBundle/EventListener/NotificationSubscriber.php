@@ -12,16 +12,16 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\EventListener;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Event\ProjectEvent;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Event\ProjectEvents;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Factory\ProjectStatusFactoryInterface;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectCompleteness;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectInterface;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Model\ProjectStatusInterface;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Notification\ProjectNotifierInterface;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
-use Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component\Repository\UserRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvent;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvents;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Factory\ProjectStatusFactoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectStatusInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

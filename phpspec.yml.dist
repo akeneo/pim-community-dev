@@ -28,11 +28,11 @@ suites:
         src_path: src/Akeneo/Asset/Component
 
     ### Work Organization
-    TeamWorkAssistantComponent:
-        namespace: Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component
-        psr4_prefix: Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component
-        spec_path: src/Akeneo/Pim/WorkOrganization/TeamWorkAssistant/Component
-        src_path: src/Akeneo/Pim/WorkOrganization/TeamWorkAssistant/Component
+    TeamworkAssistantComponent:
+        namespace: Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component
+        psr4_prefix: Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component
+        spec_path: src/Akeneo/Pim/WorkOrganization/TeamworkAssistant/Component
+        src_path: src/Akeneo/Pim/WorkOrganization/TeamworkAssistant/Component
 
     ## Tool
     FileMetadata:
