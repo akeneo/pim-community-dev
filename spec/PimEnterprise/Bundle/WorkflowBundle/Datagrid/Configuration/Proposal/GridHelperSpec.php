@@ -3,8 +3,8 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configuration\Proposal\GridHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configuration\Proposal\GridHelper;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class GridHelperSpec extends ObjectBehavior

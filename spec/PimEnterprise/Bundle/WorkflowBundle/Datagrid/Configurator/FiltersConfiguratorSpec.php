@@ -7,7 +7,7 @@ use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
-use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Configurator\FiltersConfigurator;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Configurator\FiltersConfigurator;
 
 class FiltersConfiguratorSpec extends ObjectBehavior
 {

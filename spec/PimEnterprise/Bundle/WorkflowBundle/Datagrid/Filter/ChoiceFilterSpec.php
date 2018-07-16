@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\ProductDraftFilterUtility;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\ProductDraftFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class ChoiceFilterSpec extends ObjectBehavior

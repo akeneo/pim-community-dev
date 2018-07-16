@@ -8,7 +8,7 @@ use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class ReferenceDataPresenterSpec extends ObjectBehavior
 {

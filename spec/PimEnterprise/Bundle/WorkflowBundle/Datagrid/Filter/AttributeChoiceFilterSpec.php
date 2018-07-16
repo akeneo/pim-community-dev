@@ -6,7 +6,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\ProductDraftFilterUtility;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\ProductDraftFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class AttributeChoiceFilterSpec extends ObjectBehavior

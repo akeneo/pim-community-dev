@@ -52,8 +52,8 @@
 - Move `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget` to `PimEnterprise\Bundle\WorkflowBundle\Widget\ProposalWidget`
 - Move `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget` to `PimEnterprise\Bundle\WorkflowBundle\Widget\ProposalWidget`
 - Move `PimEnterprise\Component\Api\Updater\AssetUpdater` to `PimEnterprise\Component\ProductAsset\Updater\ExternalApi\AssetUpdater`
-- Move `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductDraftController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi\ProductDraftController`
-- Move `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductProposalController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi\ProductProposalController`
+- Move `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductDraftController` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductDraftController`
+- Move `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductProposalController` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductProposalController`
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\PublishedProductController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi\PublishedProductController`
 - Move `PimEnterprise\Component\Api\Normalizer\PublishedProductNormalizer` to `PimEnterprise\Component\Workflow\Normalizer\ExternalApi\PublishedProductNormalizer`
 - Remove `PimEnterprise\Component\Api\Repository\PublishedProductRepositoryInterface`

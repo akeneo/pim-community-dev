@@ -10,9 +10,9 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\PriceFilter;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\PriceFilter;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver;
 
 class PriceFilterSpec extends ObjectBehavior
 {

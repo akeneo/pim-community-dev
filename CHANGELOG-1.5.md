@@ -145,7 +145,7 @@
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductDraft\GridHelper`. Add `PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper`.
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper`. Add `PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper`.
 - Remove constructor of `PimEnterprise\Bundle\SecurityBundle\Voter\ProductDraftVoter` which now takes no argument at all.
-- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet\AbstractReviewTasklet`. Add `PimEnterprise\Bundle\WorkflowBundle\Helper\ProductDraftChangesPermissionHelper`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet\AbstractReviewTasklet`. Add `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController`. Add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`.
 - Update `PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController`, remove method `approveAction` and `refuseAction` to a unique method `reviewAction`.
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController`. Add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`.
@@ -158,7 +158,7 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` and to remove `Oro\Bundle\SecurityBundle\SecurityFacade`, `Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Catalog\Repository\LocaleRepositoryInterface` and `Pim\Component\Catalog\Repository\ChannelRepositoryInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to add `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 - Update `PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager`. Renamed method `approveValue` to `approveChange` and `refuseValue` to `refuseChange`.
-- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\AbstractProposalStateNotificationSubscriber`. Add `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\AbstractProposalStateNotificationSubscriber`. Add `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Repository\ProductDraftRepositoryInterface`.
 
 # 1.5.0-ALPHA1 (2016-01-26)
 

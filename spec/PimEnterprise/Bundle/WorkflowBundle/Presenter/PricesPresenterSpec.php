@@ -9,7 +9,7 @@ use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Model;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class PricesPresenterSpec extends ObjectBehavior
 {

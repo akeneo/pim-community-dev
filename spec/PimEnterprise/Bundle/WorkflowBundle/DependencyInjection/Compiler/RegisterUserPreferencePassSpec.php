@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler;
 
-use PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\RegisterUserPreferencePass;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\DependencyInjection\Compiler\RegisterUserPreferencePass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

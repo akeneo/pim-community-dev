@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Rendering;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\DiffFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\DiffFactory;
 
 class PhpDiffRendererSpec extends ObjectBehavior
 {

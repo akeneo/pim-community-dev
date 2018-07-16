@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Field\AuthorFilter;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Field\AuthorFilter;
 
 class AuthorFilterSpec extends ObjectBehavior
 {

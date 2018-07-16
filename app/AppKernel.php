@@ -97,7 +97,7 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
             new Akeneo\Pim\WorkOrganization\ProductRevert\PimEnterpriseRevertBundle(),
-            new PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle(),
+            new Akeneo\Pim\WorkOrganization\Workflow\Bundle\PimEnterpriseWorkflowBundle(),
             new PimEnterprise\Bundle\ApiBundle\PimEnterpriseApiBundle(),
         ];
     }

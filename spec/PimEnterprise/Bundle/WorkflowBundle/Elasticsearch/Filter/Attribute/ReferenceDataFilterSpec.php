@@ -15,8 +15,8 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver;
-use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter;
 
 class ReferenceDataFilterSpec extends ObjectBehavior
 {

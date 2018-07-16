@@ -4,8 +4,8 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Command;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer;
-use PimEnterprise\Bundle\WorkflowBundle\Command\IndexPublishedProductCommand;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductRepository;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Command\IndexPublishedProductCommand;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\PublishedProductRepository;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

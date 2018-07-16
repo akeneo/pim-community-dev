@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\FromSizeCursorFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\FromSizeCursorFactory;
 
 class FromSizeCursorFactorySpec extends ObjectBehavior
 {

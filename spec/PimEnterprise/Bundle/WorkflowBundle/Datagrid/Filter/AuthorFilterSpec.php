@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Datagrid\Filter\AuthorFilter;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter\AuthorFilter;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class AuthorFilterSpec extends ObjectBehavior
