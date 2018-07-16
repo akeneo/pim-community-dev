@@ -41,7 +41,7 @@ stage("Build") {
                 withBuildNode({
                     checkout scm
                     container("php") {
-                        sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-suggest"
+                        sh "php -d memory_limit=4G /usr/local/bin/composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-suggest"
                         sh "app/console oro:requirejs:generate-config"
                         sh "app/console assets:install"
                     }
@@ -548,7 +548,7 @@ spec:
     command: ['cat']
     tty: true
     resources:
-      requests: {cpu: "750m", memory: "2048Mi"} 
+      requests: {cpu: "750m", memory: "2048Mi"}
   initContainers:
   - name: init-php
     image: eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce
@@ -582,7 +582,7 @@ spec:
     command: ['cat']
     tty: true
     resources:
-      requests: {cpu: "100m", memory: "200Mi"} 
+      requests: {cpu: "100m", memory: "200Mi"}
   - name: gcloud
     image: eu.gcr.io/akeneo-ci/gcloud:1.1
     command: ['cat']
@@ -591,7 +591,7 @@ spec:
       - name: "PUBSUB_PROJECT_ID"
         value: "akeneo-ci"
     resources:
-      requests: {cpu: "100m", memory: "200Mi"} 
+      requests: {cpu: "100m", memory: "200Mi"}
   initContainers:
   - name: init-php
     image: eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce
