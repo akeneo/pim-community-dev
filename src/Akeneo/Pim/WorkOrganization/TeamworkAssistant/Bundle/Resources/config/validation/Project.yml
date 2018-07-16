@@ -1,8 +1,8 @@
-PimEnterprise\Component\TeamworkAssistant\Model\Project:
+Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\Project:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: ['label', 'channel', 'locale']
-        - PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectLocale: ~
-        - PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectDueDate: ~
+        - Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Validator\Constraints\ProjectLocale: ~
+        - Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Validator\Constraints\ProjectDueDate: ~
     properties:
         label:
             - NotBlank: ~

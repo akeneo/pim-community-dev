@@ -21,7 +21,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\ProjectCalculationJ
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Security\ProjectVoter;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Factory\ProjectFactoryInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
-use PimEnterprise\Component\TeamworkAssistant\Repository\ProjectRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

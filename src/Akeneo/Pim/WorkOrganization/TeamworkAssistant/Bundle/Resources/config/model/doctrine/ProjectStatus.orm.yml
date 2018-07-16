@@ -1,7 +1,7 @@
-PimEnterprise\Component\TeamworkAssistant\Model\ProjectStatus:
+Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectStatus:
     type: entity
     table: pimee_teamwork_assistant_project_status
-    repositoryClass: PimEnterprise\Bundle\TeamworkAssistantBundle\Doctrine\ORM\Repository\ProjectStatusRepository
+    repositoryClass: Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\ProjectStatusRepository
     changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:

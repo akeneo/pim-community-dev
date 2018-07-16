@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\DependencyInjection\Compiler;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
 /**
@@ -24,7 +25,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface' => 'pimee_teamwork_assistant.model.project.class',
+            ProjectInterface::class => 'pimee_teamwork_assistant.model.project.class',
         ];
     }
 }
