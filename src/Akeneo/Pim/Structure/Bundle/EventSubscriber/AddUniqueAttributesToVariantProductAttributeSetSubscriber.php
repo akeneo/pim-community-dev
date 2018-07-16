@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

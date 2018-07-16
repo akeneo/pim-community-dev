@@ -11,6 +11,10 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber`
 - Move `Pim\Component\Catalog\Entity\GroupTranslation` to `Akeneo\Pim\Enrichment\Component\Category\Entity\GroupTranslation`
 - Move `Pim\Component\Catalog\Model\GroupTranslationInterface` to `Akeneo\Pim\Enrichment\Component\Category\Model\GroupTranslationInterface`
 - Move `Pim\Component\Catalog\Entity\Group` to `Akeneo\Pim\Enrichment\Component\Category\Entity\Group`

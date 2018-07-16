@@ -7,8 +7,6 @@ parameters:
     pim_catalog.updater.property_copier.class:                Pim\Component\Catalog\Updater\PropertyCopier
     pim_catalog.updater.property_remover.class:               Pim\Component\Catalog\Updater\PropertyRemover
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
-    pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater
-    pim_catalog.updater.attribute_group.class:                Pim\Component\Catalog\Updater\AttributeGroupUpdater
     pim_catalog.updater.setter.registry.class:                Pim\Component\Catalog\Updater\Setter\SetterRegistry
     pim_catalog.updater.setter.abstract.class:                Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter
     pim_catalog.updater.setter.value.class:                   Pim\Component\Catalog\Updater\Setter\AttributeSetter
@@ -104,18 +102,6 @@ services:
         class: '%pim_catalog.updater.category_translatable.class%'
         arguments:
             - '@pim_catalog.updater.category.base'
-            - '@pim_localization.updater.translatable'
-
-    pim_catalog.updater.attribute_group:
-        class: '%pim_catalog.updater.attribute_group.class%'
-        arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.attribute_group'
-            - '@pim_localization.updater.translatable'
-
-    pim_catalog.updater.association_type:
-        class: '%pim_catalog.updater.association_type.class%'
-        arguments:
             - '@pim_localization.updater.translatable'
 
     pim_catalog.updater.group:

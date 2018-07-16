@@ -1,8 +1,8 @@
 <?php
 
-namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
+namespace Akeneo\Pim\Structure\Component\tests\Integration\Normalizer\Standard;
 
-use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
+use Akeneo\Test\Integration\TestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -11,7 +11,7 @@ use Pim\Component\Catalog\tests\integration\Normalizer\Standard\AbstractStandard
  *
  * @group ce
  */
-class AttributeIntegration extends AbstractStandardNormalizerTestCase
+class AttributeIntegration extends TestCase
 {
     public function testAttributeIdentifier()
     {
@@ -900,5 +900,13 @@ class AttributeIntegration extends AbstractStandardNormalizerTestCase
         $result = $serializer->normalize($repository->findOneByIdentifier($identifier), 'standard');
 
         $this->assertSame($expected, $result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return $this->catalog->useTechnicalCatalog();
     }
 }
