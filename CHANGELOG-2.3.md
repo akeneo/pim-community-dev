@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7488: use catalog locale for attributes list in attribute groups
+- PIM-7482: Sequential Edit does not work if sort enabled on a scopable attribute
 
 # 2.3.1 (2018-07-04)
 
