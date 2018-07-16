@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.applier.draft.class: PimEnterprise\Component\Workflow\Applier\DraftApplier
+    pimee_workflow.applier.draft.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplier
 
 services:
     pimee_workflow.applier.draft:

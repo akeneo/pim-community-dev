@@ -1,21 +1,21 @@
 parameters:
-  pimee_workflow.query.elasticsearch.filter.author.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Field\AuthorFilter
-  pimee_workflow.query.elasticsearch.filter.label_or_identifier.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
-  pimee_workflow.query.elasticsearch.sorter.author.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Sorter\Field\AuthorSorter
+  pimee_workflow.query.elasticsearch.filter.author.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Field\AuthorFilter
+  pimee_workflow.query.elasticsearch.filter.label_or_identifier.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
+  pimee_workflow.query.elasticsearch.sorter.author.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Sorter\Field\AuthorSorter
 
   # attribute filters
-  pimee_workflow.query.elasticsearch.filter.text.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\TextFilter
-  pimee_workflow.query.elasticsearch.filter.text_area.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\TextAreaFilter
-  pimee_workflow.query.elasticsearch.filter.price.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\PriceFilter
-  pimee_workflow.query.elasticsearch.filter.option.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\OptionFilter
-  pimee_workflow.query.elasticsearch.filter.number.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\NumberFilter
-  pimee_workflow.query.elasticsearch.filter.metric.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\MetricFilter
-  pimee_workflow.query.elasticsearch.filter.media.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\MediaFilter
-  pimee_workflow.query.elasticsearch.filter.date.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\DateFilter
-  pimee_workflow.query.elasticsearch.filter.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\BooleanFilter
-  pimee_workflow.query.elasticsearch.filter.reference_data.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter
+  pimee_workflow.query.elasticsearch.filter.text.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\TextFilter
+  pimee_workflow.query.elasticsearch.filter.text_area.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\TextAreaFilter
+  pimee_workflow.query.elasticsearch.filter.price.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\PriceFilter
+  pimee_workflow.query.elasticsearch.filter.option.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\OptionFilter
+  pimee_workflow.query.elasticsearch.filter.number.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\NumberFilter
+  pimee_workflow.query.elasticsearch.filter.metric.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\MetricFilter
+  pimee_workflow.query.elasticsearch.filter.media.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\MediaFilter
+  pimee_workflow.query.elasticsearch.filter.date.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\DateFilter
+  pimee_workflow.query.elasticsearch.filter.boolean.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\BooleanFilter
+  pimee_workflow.query.elasticsearch.filter.reference_data.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter
 
-  pimee_workflow.query.elasticsearch.attribute_path_resolver.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver
+  pimee_workflow.query.elasticsearch.attribute_path_resolver.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver
 
 services:
     pimee_workflow.query.elasticsearch.attribute_path_resolver:

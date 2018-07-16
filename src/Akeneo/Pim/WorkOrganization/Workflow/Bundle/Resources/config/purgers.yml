@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.purger.advisor.published_products.class: PimEnterprise\Bundle\WorkflowBundle\Purger\PublishedProductVersionPurgerAdvisor
+    pimee_workflow.purger.advisor.published_products.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Purger\PublishedProductVersionPurgerAdvisor
 
 services:
     # advisors

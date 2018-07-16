@@ -1,6 +1,6 @@
 parameters:
-    pimee_workflow.manager.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager
-    pimee_workflow.manager.entity_with_values_draft.class: PimEnterprise\Bundle\WorkflowBundle\Manager\EntityWithValuesDraftManager
+    pimee_workflow.manager.published_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager
+    pimee_workflow.manager.entity_with_values_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftManager
 
 services:
     pimee_workflow.manager.published_product:

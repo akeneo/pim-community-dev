@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * Product publisher.
  * At this step, completenesses of the published product are not calculated.
  * They will be calculated once the published will be saved.
- * This is automatically done via the {@link PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager}
+ * This is automatically done via the {@link Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager}
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */

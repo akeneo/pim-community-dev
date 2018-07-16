@@ -19,7 +19,7 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
 
     function it_is_a_presenter()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
+        $this->shouldBeAnInstanceOf('Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface');
     }
 
     function it_supports_a_multi_reference_data()

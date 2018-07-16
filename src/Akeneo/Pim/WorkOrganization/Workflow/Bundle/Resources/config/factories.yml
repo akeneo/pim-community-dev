@@ -1,6 +1,6 @@
 parameters:
-    pimee_workflow.factory.product_draft.class: PimEnterprise\Component\Workflow\Factory\ProductDraftFactory
-    pimee_workflow.factory.product_model_draft.class: PimEnterprise\Component\Workflow\Factory\ProductModelDraftFactory
+    pimee_workflow.factory.product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\ProductDraftFactory
+    pimee_workflow.factory.product_model_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\ProductModelDraftFactory
 
 services:
     pimee_workflow.factory.product_draft:

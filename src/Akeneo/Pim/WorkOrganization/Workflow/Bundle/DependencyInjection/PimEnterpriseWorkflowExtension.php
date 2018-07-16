@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
- * PimEnterprise\Bundle\WorkflowBundle\DependencyInjection
+ * Akeneo\Pim\WorkOrganization\Workflow\Bundle\DependencyInjection
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */

@@ -1,12 +1,12 @@
 parameters:
-    pimee_workflow.controller.product_draft.class:          PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController
-    pimee_workflow.controller.product_model_draft.class:    PimEnterprise\Bundle\WorkflowBundle\Controller\ProductModelDraftController
-    pimee_workflow.controller.published_product.class:      PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
-    pimee_workflow.controller.published_product_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\PublishedProductController
-    pimee_workflow.controller.product_draft_rest.class:     PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController
-    pimee_workflow.controller.rest.product.class:           PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductController
-    pimee_workflow.controller.product_model_draft_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductModelDraftController
-    pimee_workflow.controller.author_draft.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\AuthorDraftController
+    pimee_workflow.controller.product_draft.class:          Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ProductDraftController
+    pimee_workflow.controller.product_model_draft.class:    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ProductModelDraftController
+    pimee_workflow.controller.published_product.class:      Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\PublishedProductController
+    pimee_workflow.controller.published_product_rest.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\PublishedProductController
+    pimee_workflow.controller.product_draft_rest.class:     Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductDraftController
+    pimee_workflow.controller.rest.product.class:           Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductController
+    pimee_workflow.controller.product_model_draft_rest.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductModelDraftController
+    pimee_workflow.controller.author_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\AuthorDraftController
 
 services:
     pimee_workflow.controller.product_draft:

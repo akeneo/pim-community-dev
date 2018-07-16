@@ -1,5 +1,5 @@
 parameters:
-    pim_base_connector.writer.database.product_draft.class: PimEnterprise\Component\Workflow\Connector\Writer\Database\ProductDraftWriter
+    pim_base_connector.writer.database.product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Writer\Database\ProductDraftWriter
 
 services:
     pim_base_connector.writer.database.product_draft:

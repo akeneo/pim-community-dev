@@ -1,6 +1,6 @@
 parameters:
-    pimee_workflow.elasticsearch.from_size_cursor_factory.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\FromSizeCursorFactory
-    pimee_workflow.elasticsearch.cursor_factory.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\CursorFactory
+    pimee_workflow.elasticsearch.from_size_cursor_factory.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\FromSizeCursorFactory
+    pimee_workflow.elasticsearch.cursor_factory.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\CursorFactory
 
 services:
     pimee_workflow.factory.published_product_cursor:

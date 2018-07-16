@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.connector.job.job_parameters.default_values_provider.mass_review.class: PimEnterprise\Component\Workflow\Connector\Job\JobParameters\DefaultValuesProvider\MassReview
+    pimee_workflow.connector.job.job_parameters.default_values_provider.mass_review.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Job\JobParameters\DefaultValuesProvider\MassReview
 
 services:
     # Default Parameters for Imports ----------------------------------------------------------------------------------

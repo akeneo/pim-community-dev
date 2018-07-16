@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.security.voter.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Security\ProductDraftVoter
+    pimee_workflow.security.voter.product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Security\ProductDraftVoter
 
 services:
     pimee_workflow.security.voter.product_draft:

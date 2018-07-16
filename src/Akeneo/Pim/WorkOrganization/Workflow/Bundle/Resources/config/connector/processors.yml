@@ -1,6 +1,6 @@
 parameters:
-    pimee_workflow.processor.denormalization.product_draft.class: PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor
-    pimee_workflow.processor.denormalization.product_model_draft.class: PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductModelDraftProcessor
+    pimee_workflow.processor.denormalization.product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization\ProductDraftProcessor
+    pimee_workflow.processor.denormalization.product_model_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\Denormalization\ProductModelDraftProcessor
 
 services:
     pimee_workflow.processor.denormalization.product_draft:

@@ -1,4 +1,4 @@
-PimEnterprise\Component\Workflow\Model\PublishedProductAssociation:
+Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociation:
     type: entity
     table: pimee_workflow_published_product_association
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -23,7 +23,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProductAssociation:
                     nullable: false
                     onDelete: CASCADE
         owner:
-            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductInterface
+            targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface
             inversedBy: associations
             joinColumns:
                 owner_id:
@@ -44,7 +44,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProductAssociation:
                         referencedColumnName: id
                         onDelete: CASCADE
         products:
-            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductInterface
+            targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface
             joinTable:
                 name: pimee_workflow_published_product_association_published_product
                 joinColumns:

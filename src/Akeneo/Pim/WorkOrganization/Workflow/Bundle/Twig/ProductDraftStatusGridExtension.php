@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>

@@ -1,9 +1,9 @@
 parameters:
-    pimee_workflow.repository.entity_with_values_draft.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\EntityWithValuesDraftRepository
-    pimee_workflow.repository.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductRepository
-    pimee_workflow.repository.published_product_with_permission.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductWithPermissionRepository
-    pimee_workflow.repository.published_association.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedAssociationRepository
-    pimee_workflow.repository.delegating_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\DelegatingProductRepository
+    pimee_workflow.repository.entity_with_values_draft.class:       Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\EntityWithValuesDraftRepository
+    pimee_workflow.repository.published_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\PublishedProductRepository
+    pimee_workflow.repository.published_product_with_permission.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\PublishedProductWithPermissionRepository
+    pimee_workflow.repository.published_association.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\PublishedAssociationRepository
+    pimee_workflow.repository.delegating_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository\DelegatingProductRepository
 
 
 services:

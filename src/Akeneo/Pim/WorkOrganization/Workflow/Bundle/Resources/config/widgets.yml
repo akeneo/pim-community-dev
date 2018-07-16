@@ -1,5 +1,5 @@
 parameters:
-    pimee_dashboard.widget.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Widget\ProposalWidget
+    pimee_dashboard.widget.proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Widget\ProposalWidget
 
 services:
     pimee_dashboard.widget.proposal:

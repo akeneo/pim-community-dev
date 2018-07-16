@@ -1,8 +1,8 @@
 parameters:
-    pimee_workflow.provider.form.published_product.class:          PimEnterprise\Bundle\WorkflowBundle\Provider\Form\PublishedProductFormProvider
-    pimee_workflow.provider.product_draft_granted_attribute.class: PimEnterprise\Bundle\WorkflowBundle\Provider\ProductDraftGrantedAttributeProvider
-    pimee_workflow.provider.users_to_notify.class:                 PimEnterprise\Bundle\WorkflowBundle\Provider\UsersToNotifyProvider
-    pimee_workflow.provider.owner_groups.class:                    PimEnterprise\Bundle\WorkflowBundle\Provider\OwnerGroupsProvider
+    pimee_workflow.provider.form.published_product.class:          Akeneo\Pim\WorkOrganization\Workflow\Bundle\Provider\Form\PublishedProductFormProvider
+    pimee_workflow.provider.product_draft_granted_attribute.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Provider\ProductDraftGrantedAttributeProvider
+    pimee_workflow.provider.users_to_notify.class:                 Akeneo\Pim\WorkOrganization\Workflow\Bundle\Provider\UsersToNotifyProvider
+    pimee_workflow.provider.owner_groups.class:                    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Provider\OwnerGroupsProvider
 
 services:
     pimee_workflow.provider.form.published_product:

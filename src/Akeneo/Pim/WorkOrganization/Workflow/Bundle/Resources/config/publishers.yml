@@ -1,11 +1,11 @@
 parameters:
-    pimee_workflow.publisher.chained.class:                     PimEnterprise\Component\Workflow\Publisher\ChainedPublisher
-    pimee_workflow.publisher.product.class:                     PimEnterprise\Component\Workflow\Publisher\Product\ProductPublisher
-    pimee_workflow.publisher.product_association.class:         PimEnterprise\Component\Workflow\Publisher\Product\AssociationPublisher
-    pimee_workflow.publisher.product_completeness.class:        PimEnterprise\Component\Workflow\Publisher\Product\CompletenessPublisher
-    pimee_workflow.publisher.datetime.class:                    PimEnterprise\Component\Workflow\Publisher\DateTimePublisher
-    pimee_workflow.publisher.product_related_association.class: PimEnterprise\Component\Workflow\Publisher\Product\RelatedAssociationPublisher
-    pimee_workflow.unpublisher.product.class:                   PimEnterprise\Component\Workflow\Publisher\Product\ProductUnpublisher
+    pimee_workflow.publisher.chained.class:                     Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\ChainedPublisher
+    pimee_workflow.publisher.product.class:                     Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\ProductPublisher
+    pimee_workflow.publisher.product_association.class:         Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\AssociationPublisher
+    pimee_workflow.publisher.product_completeness.class:        Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\CompletenessPublisher
+    pimee_workflow.publisher.datetime.class:                    Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\DateTimePublisher
+    pimee_workflow.publisher.product_related_association.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\RelatedAssociationPublisher
+    pimee_workflow.unpublisher.product.class:                   Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\ProductUnpublisher
 
 services:
     pimee_workflow.publisher.chained:

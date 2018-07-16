@@ -1,7 +1,7 @@
 parameters:
-    pimee_workflow.twig.extension.group_product_values.class: PimEnterprise\Bundle\WorkflowBundle\Twig\GroupProductValuesExtension
-    pimee_workflow.twig.extension.product_draft_status_grid.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProductDraftStatusGridExtension
-    pimee_security.twig_extension.visible_user_preferences.class: PimEnterprise\Bundle\WorkflowBundle\Twig\VisibleUserPreferencesExtension
+    pimee_workflow.twig.extension.group_product_values.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\GroupProductValuesExtension
+    pimee_workflow.twig.extension.product_draft_status_grid.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftStatusGridExtension
+    pimee_security.twig_extension.visible_user_preferences.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\VisibleUserPreferencesExtension
 
 services:
     pimee_workflow.twig.extension.group_product_values:

@@ -1,8 +1,8 @@
-PimEnterprise\Component\Workflow\Model\PublishedProduct:
+Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct:
     type: entity
     table: pimee_workflow_published_product
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PublishedProductRepository
+    repositoryClass: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\PublishedProductRepository
     fields:
         id:
             type: integer
@@ -70,14 +70,14 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
                         onDelete: CASCADE
     oneToMany:
         associations:
-            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductAssociationInterface
+            targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductAssociationInterface
             mappedBy: owner
             cascade:
                 - persist
                 - refresh
                 - detach
         completenesses:
-            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductCompletenessInterface
+            targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductCompletenessInterface
             mappedBy: product
             cascade:
                 - remove
@@ -85,7 +85,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProduct:
                 - refresh
                 - detach
         uniqueData:
-            targetEntity: PimEnterprise\Component\Workflow\Model\PublishedProductUniqueDataInterface
+            targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductUniqueDataInterface
             mappedBy: product
             cascade:
                 - remove

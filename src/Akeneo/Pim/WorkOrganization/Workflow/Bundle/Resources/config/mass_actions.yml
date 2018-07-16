@@ -1,8 +1,8 @@
 parameters:
-    pimee_workflow.mass_edit_tasklet.publish_product.class: PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\PublishProductTasklet
-    pimee_workflow.mass_edit_tasklet.unpublish_product.class: PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\UnpublishProductTasklet
-    pimee_workflow.mass_edit_tasklet.job_parameters.default_values_provider.mass_publish.class: PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\JobParameters\DefaultValues
-    pimee_workflow.mass_edit_tasklet.job_parameters.constraint_collection_provider.mass_publish.class: PimEnterprise\Bundle\WorkflowBundle\MassEditAction\Tasklet\JobParameters\ConstraintCollection
+    pimee_workflow.mass_edit_tasklet.publish_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet\PublishProductTasklet
+    pimee_workflow.mass_edit_tasklet.unpublish_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet\UnpublishProductTasklet
+    pimee_workflow.mass_edit_tasklet.job_parameters.default_values_provider.mass_publish.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet\JobParameters\DefaultValues
+    pimee_workflow.mass_edit_tasklet.job_parameters.constraint_collection_provider.mass_publish.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\MassEditAction\Tasklet\JobParameters\ConstraintCollection
 
 services:
     # Job parameter

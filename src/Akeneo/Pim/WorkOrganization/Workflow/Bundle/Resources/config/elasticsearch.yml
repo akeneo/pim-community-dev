@@ -1,6 +1,6 @@
 parameters:
-    pimee_workflow.elasticsearch.indexer.product_proposal.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductProposalIndexer
-    pimee_workflow.elasticsearch.indexer.product_model_proposal.class: PimEnterprise\Bundle\WorkflowBundle\Elasticsearch\Indexer\ProductModelProposalIndexer
+    pimee_workflow.elasticsearch.indexer.product_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductProposalIndexer
+    pimee_workflow.elasticsearch.indexer.product_model_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductModelProposalIndexer
 
 services:
     pim_catalog.elasticsearch.published_product_indexer:

@@ -1,25 +1,25 @@
 parameters:
-    pimee_workflow.twig.extension.product_draft_changes.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProductDraftChangesExtension
-    pimee_workflow.rendering.diff_factory.class: PimEnterprise\Bundle\WorkflowBundle\Rendering\DiffFactory
-    pimee_workflow.twig.extension.product_value_presenter.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProductValuePresenterExtension
-    pimee_workflow.renderer.html.simple_list.class: PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html\SimpleList
-    pimee_workflow.product_draft_renderer.class: PimEnterprise\Bundle\WorkflowBundle\Rendering\PhpDiffRenderer
-    pimee_workflow.presenter.text.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\TextPresenter
-    pimee_workflow.presenter.textarea.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\TextareaPresenter
-    pimee_workflow.presenter.metric.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter
-    pimee_workflow.presenter.date.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DatePresenter
-    pimee_workflow.presenter.prices.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter
-    pimee_workflow.presenter.number.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\NumberPresenter
-    pimee_workflow.presenter.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\BooleanPresenter
-    pimee_workflow.presenter.default.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DefaultPresenter
-    pimee_workflow.presenter.option.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionPresenter
-    pimee_workflow.presenter.options.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionsPresenter
-    pimee_workflow.presenter.file.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\FilePresenter
-    pimee_workflow.presenter.image.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ImagePresenter
-    pimee_workflow.presenter.product_value.date.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DatePresenter
-    pimee_workflow.presenter.product_value.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\BooleanPresenter
-    pimee_workflow.presenter.product_value.image.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ImagePresenter
-    pimee_workflow.presenter.product_value.file.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\FilePresenter
+    pimee_workflow.twig.extension.product_draft_changes.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductDraftChangesExtension
+    pimee_workflow.rendering.diff_factory.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\DiffFactory
+    pimee_workflow.twig.extension.product_value_presenter.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\ProductValuePresenterExtension
+    pimee_workflow.renderer.html.simple_list.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Diff\Renderer\Html\SimpleList
+    pimee_workflow.product_draft_renderer.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\PhpDiffRenderer
+    pimee_workflow.presenter.text.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TextPresenter
+    pimee_workflow.presenter.textarea.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TextareaPresenter
+    pimee_workflow.presenter.metric.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\MetricPresenter
+    pimee_workflow.presenter.date.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter
+    pimee_workflow.presenter.prices.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PricesPresenter
+    pimee_workflow.presenter.number.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\NumberPresenter
+    pimee_workflow.presenter.boolean.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\BooleanPresenter
+    pimee_workflow.presenter.default.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DefaultPresenter
+    pimee_workflow.presenter.option.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\OptionPresenter
+    pimee_workflow.presenter.options.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\OptionsPresenter
+    pimee_workflow.presenter.file.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\FilePresenter
+    pimee_workflow.presenter.image.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ImagePresenter
+    pimee_workflow.presenter.product_value.date.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter
+    pimee_workflow.presenter.product_value.boolean.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\BooleanPresenter
+    pimee_workflow.presenter.product_value.image.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ImagePresenter
+    pimee_workflow.presenter.product_value.file.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\FilePresenter
 
 services:
     ##

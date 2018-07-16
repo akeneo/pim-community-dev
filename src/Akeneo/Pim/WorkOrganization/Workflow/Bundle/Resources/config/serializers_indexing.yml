@@ -1,9 +1,9 @@
 parameters:
-    pimee_workflow.normalizer.indexing_product_proposal.class: PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposalNormalizer
-    pimee_workflow.normalizer.indexing_product_model_proposal.class: PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductModelProposalNormalizer
-    pimee_workflow.normalizer.indexing_product_proposal.properties.class: PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductProposal\PropertiesNormalizer
-    pimee_workflow.normalizer.indexing_product_model_proposal.properties.class: PimEnterprise\Component\Workflow\Normalizer\Indexing\ProductModelProposal\PropertiesNormalizer
-    pimee_workflow.normalizer.indexing_product_proposal.label.class: PimEnterprise\Component\Workflow\Normalizer\Indexing\LabelNormalizer
+    pimee_workflow.normalizer.indexing_product_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposalNormalizer
+    pimee_workflow.normalizer.indexing_product_model_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposalNormalizer
+    pimee_workflow.normalizer.indexing_product_proposal.properties.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductProposal\PropertiesNormalizer
+    pimee_workflow.normalizer.indexing_product_model_proposal.properties.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposal\PropertiesNormalizer
+    pimee_workflow.normalizer.indexing_product_proposal.label.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\LabelNormalizer
 
 services:
     pimee_workflow.normalizer.indexing_product.product_proposal:

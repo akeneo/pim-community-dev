@@ -1,6 +1,6 @@
 parameters:
-  pimee_workflow.analytic.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Analytic\ProductDraftAnalyticProvider
-  pimee_workflow.analytic.published_products.class: PimEnterprise\Bundle\WorkflowBundle\Analytic\PublishedProductAnalyticProvider
+  pimee_workflow.analytic.product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Analytic\ProductDraftAnalyticProvider
+  pimee_workflow.analytic.published_products.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Analytic\PublishedProductAnalyticProvider
 
 services:
     pimee_workflow.analytic.product_draft:

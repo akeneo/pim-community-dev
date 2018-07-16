@@ -22,7 +22,7 @@ class PublishedProductEvents
      * This event is dispatched before a product is published
      *
      * The event listener receives an
-     * PimEnterprise\Component\Workflow\Event\PublishedProductEvent instance
+     * Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent instance
      *
      * @staticvar string
      */
@@ -32,7 +32,7 @@ class PublishedProductEvents
      * This event is dispatched after a product has just been published
      *
      * The event listener receives an
-     * PimEnterprise\Component\Workflow\Event\PublishedProductEvent instance
+     * Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent instance
      *
      * @staticvar string
      */
@@ -42,7 +42,7 @@ class PublishedProductEvents
      * This event is dispatched before a product is unpublished
      *
      * The event listener receives an
-     * PimEnterprise\Component\Workflow\Event\PublishedProductEvent instance
+     * Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent instance
      *
      * @staticvar string
      */
@@ -52,7 +52,7 @@ class PublishedProductEvents
      * This event is dispatched after a product has just been unpublished
      *
      * The event listener receives an
-     * PimEnterprise\Component\Workflow\Event\PublishedProductEvent instance
+     * Akeneo\Pim\WorkOrganization\Workflow\Component\Event\PublishedProductEvent instance
      *
      * @staticvar string
      */

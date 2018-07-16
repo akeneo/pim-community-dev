@@ -1,17 +1,17 @@
 parameters:
-    pim_versioning.event_subscriber.addversion.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber
-    pimee_workflow.event_subscriber.published_product.check_removal.class:              PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\CheckPublishedProductOnRemovalSubscriber
-    pimee_workflow.event_subscriber.published_product.detach_product.class:             PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\DetachProductPostPublishSubscriber
-    pimee_workflow.event_subscriber.product_draft.replace_flash_message.class:          PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ReplaceProductUpdatedFlashMessageSubscriber
-    pimee_workflow.event_subscriber.product_draft.send_for_approval.class:              PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\SendForApprovalSubscriber
-    pimee_workflow.event_subscriber.import.new_proposals.class:                         PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Import\ImportProposalsSubscriber
-    pimee_workflow.event_subscriber.product_draft.approve_notification.class:           PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ApproveNotificationSubscriber
-    pimee_workflow.event_subscriber.product_draft.refuse_notification.class:            PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RefuseNotificationSubscriber
-    pimee_workflow.event_subscriber.product_draft.remove_notification.class:            PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RemoveNotificationSubscriber
-    pimee_workflow.event_subscriber.product_draft.ensure_global_status.class:           PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\EnsureProductDraftGlobalStatusSubscriber
-    pimee_workflow.subscriber.product_draft.exclude_deleted_attribute.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ORM\ExcludeDeletedAttributeSubscriber
-    pimee_workflow.event_subscriber.index_product_proposals.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductProposal\IndexProductProposalsSubscriber
-    pimee_workflow.event_subscriber.index_product_model_proposals.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductModelProposal\IndexProductModelProposalsSubscriber
+    pim_versioning.event_subscriber.addversion.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber
+    pimee_workflow.event_subscriber.published_product.check_removal.class:              Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\CheckPublishedProductOnRemovalSubscriber
+    pimee_workflow.event_subscriber.published_product.detach_product.class:             Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\DetachProductPostPublishSubscriber
+    pimee_workflow.event_subscriber.product_draft.replace_flash_message.class:          Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ReplaceProductUpdatedFlashMessageSubscriber
+    pimee_workflow.event_subscriber.product_draft.send_for_approval.class:              Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\SendForApprovalSubscriber
+    pimee_workflow.event_subscriber.import.new_proposals.class:                         Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\Import\ImportProposalsSubscriber
+    pimee_workflow.event_subscriber.product_draft.approve_notification.class:           Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ApproveNotificationSubscriber
+    pimee_workflow.event_subscriber.product_draft.refuse_notification.class:            Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\RefuseNotificationSubscriber
+    pimee_workflow.event_subscriber.product_draft.remove_notification.class:            Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\RemoveNotificationSubscriber
+    pimee_workflow.event_subscriber.product_draft.ensure_global_status.class:           Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\EnsureProductDraftGlobalStatusSubscriber
+    pimee_workflow.subscriber.product_draft.exclude_deleted_attribute.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ORM\ExcludeDeletedAttributeSubscriber
+    pimee_workflow.event_subscriber.index_product_proposals.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductProposal\IndexProductProposalsSubscriber
+    pimee_workflow.event_subscriber.index_product_model_proposals.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductModelProposal\IndexProductModelProposalsSubscriber
 
 services:
     ##

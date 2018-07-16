@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.connector.job.job_parameters.constraint_collection_provider.mass_review.class: PimEnterprise\Component\Workflow\Connector\Job\JobParameters\ConstraintCollectionProvider\MassReview
+    pimee_workflow.connector.job.job_parameters.constraint_collection_provider.mass_review.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\MassReview
 
 services:
     # Validation constraints for Imports ------------------------------------------------------------------------------

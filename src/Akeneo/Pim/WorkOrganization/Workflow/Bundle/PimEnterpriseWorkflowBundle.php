@@ -34,7 +34,7 @@ class PimEnterpriseWorkflowBundle extends Bundle
             ->addCompilerPass(new Compiler\RegisterProductProposalQueryFilterPass('product_proposal'));
 
         $mappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Component\Workflow\Model'
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model'
         ];
 
         $container->addCompilerPass(
