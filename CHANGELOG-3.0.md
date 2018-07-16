@@ -4,6 +4,7 @@
 
 - TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component 
 - GITHUB-8451: Add basic compatibility for PHP 7.2  (Thanks [janmyszkier](https://github.com/janmyszkier)!)
+- PIM-7371: Improve the performance to display the category tree in the product grid
 
 ## Enhancements
 
@@ -273,47 +274,3 @@
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes`
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator`
 - Remove `Pim\Component\Catalog\Model\AttributeTypeTranslationInterface`
-- Move `Pim\Bundle\CatalogBundle\Entity\GroupType` to `Akeneo\Pim\Structure\Component\Model\GroupType`
-- Move `Pim\Component\Catalog\Model\GroupTypeInterface` to `Akeneo\Pim\Structure\Component\Model\GroupTypeInterface`
-- Move `Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation` to `Akeneo\Pim\Structure\Component\Model\GroupTypeTranslation`
-- Move `Pim\Component\Catalog\Model\GroupTypeTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\GroupTypeTranslationInterface`
-- Move `Pim\Bundle\CatalogBundle\Entity\AssociationType` to `Akeneo\Pim\Structure\Component\Model\AssociationType`
-- Move `Pim\Component\Catalog\Model\AssociationTypeInterface` to `Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface`
-- Move `Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation` to `Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslation`
-- Move `Pim\Component\Catalog\Model\AssociationTypeTranslationInterface` to `Akeneo\Pim\Structure\Component\Model\AssociationTypeTranslationInterface`
-- Move `Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue` to `Akeneo\Pim\Structure\Component\Model\AttributeOptionValue`
-- Move `Pim\Component\Catalog\Model\AttributeOptionValueInterface` to `Akeneo\Pim\Structure\Component\Model\AttributeOptionValueInterface`
-- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\GroupTypeRepository`
-- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\GroupTypeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\GroupTypeRepository`
-- Move `Pim\Bundle\EnrichBundle\Form\Type\GroupTypeType` to `Akeneo\Pim\Structure\Bundle\Form\Type\GroupTypeType`
-- Move `Pim\Component\Catalog\Factory\GroupTypeFactory` to `Akeneo\Pim\Structure\Component\Factory\GroupTypeFactory`
-- Move `Pim\Bundle\EnrichBundle\Normalizer\GroupTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\GroupTypeNormalizer`
-- Move `Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\GroupTypeNormalizer`
-- Move `Pim\Component\Catalog\Updater\GroupTypeUpdater` to `Akeneo\Pim\Structure\Component\Updater\GroupTypeUpdater`
-- Move `Akeneo\Tool\Bundle\ApiBundle\Controller\AssociationTypeController` to `Akeneo\Pim\Structure\Bundle\Controller\ExternalApi\AssociationTypeController`
-- Move `Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AssociationTypeController`
-- Move `Pim\Bundle\EnrichBundle\Controller\AssociationTypeController` to `Akeneo\Pim\Structure\Bundle\Controller\Ui\AssociationTypeController`
-- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationTypeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AssociationTypeRepository`
-- Move `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\AssociationTypeRepository` to `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\InternalApi\AssociationTypeRepository`
-- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\AssociationType` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\AssociationType`
-- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\AssociationType` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\AssociationType`
-- Move `Akeneo\Tool\Component\Api\Normalizer\AssociationTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AssociationTypeNormalizer`
-- Move `Pim\Bundle\EnrichBundle\Normalizer\AssociationTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AssociationTypeNormalizer`
-- Move `Pim\Component\Catalog\Normalizer\Standard\AssociationTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Standard\AssociationTypeNormalizer`
-- Move `Pim\Bundle\VersioningBundle\Normalizer\Flat\AssociationTypeNormalizer` to `Akeneo\Pim\Structure\Component\Normalizer\Versionning\AssociationTypeNormalizer`
-- Move `Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface`
-- Remove `Pim\Bundle\EnrichBundle\Form\Type\AssociationType`
-- Remove `Pim\Bundle\EnrichBundle\Controller\GroupTypeController`
-- Move `Pim\Bundle\EnrichBundle\Controller\Rest\GroupTypeController` to `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\GroupTypeController`
-- Move `Pim\Component\Connector\ArrayConverter\FlatToStandard\GroupType` to `Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStandard\GroupType`
-- Move `Pim\Component\Connector\ArrayConverter\StandardToFlat\GroupType` to `Akeneo\Pim\Structure\Component\ArrayConverter\StandardToFlat\GroupType`
-- Move `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface` to `Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface`
-- Move `Pim\Bundle\CatalogBundle\EventSubscriber\AttributeOption\AttributeOptionRemovalSubscriber` to `Akeneo\Pim\Structure\Bundle\EventListener\AttributeOptionRemovalSubscriber`
-- Move `Pim\Bundle\EnrichBundle\Form\Type\AttributeOption\AttributeOptionCreateType` to `Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionCreateType`
-- Move `Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType` to `Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionType`
-- Move `Pim\Bundle\EnrichBundle\Form\Type\FamilyType` to `Akeneo\Pim\Structure\Bundle\Form\Type\FamilyType`
-- Move `Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionValueType` to `Akeneo\Pim\Structure\Bundle\Form\Type\AttributeOptionValueType`
-
-- Rename `Oro\Bundle\DataGridBundle\Common\Object` into `Oro\Bundle\DataGridBundle\Common\IterableObject`
-- Rename `Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject` into `Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject`
-- Rename `Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject` into `Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject`
