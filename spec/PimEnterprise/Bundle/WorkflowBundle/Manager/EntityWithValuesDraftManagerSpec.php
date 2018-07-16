@@ -51,7 +51,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
-        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('approveChange', [$draft, $attribute]);
+        $this->shouldThrow('Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException')->during('approveChange', [$draft, $attribute]);
     }
 
     function it_approves_a_change(
@@ -106,7 +106,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
-        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('refuseChange', [$draft, $attribute]);
+        $this->shouldThrow('Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException')->during('refuseChange', [$draft, $attribute]);
     }
 
     function it_refuses_a_change(
@@ -146,7 +146,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_approve_a_whole_non_ready_draft(EntityWithValuesDraftInterface $draft)
     {
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
-        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('approve', [$draft]);
+        $this->shouldThrow('Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException')->during('approve', [$draft]);
     }
 
     function it_approves_a_whole_draft_with_all_changes_approvable(
@@ -265,7 +265,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
     function it_throws_an_exception_when_trying_to_refuse_a_whole_non_ready_draft(EntityWithValuesDraftInterface $draft)
     {
         $draft->getStatus()->willReturn(EntityWithValuesDraftInterface::IN_PROGRESS);
-        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('refuse', [$draft]);
+        $this->shouldThrow('Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException')->during('refuse', [$draft]);
     }
 
     function it_refuses_a_whole_draft(
@@ -462,7 +462,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
         $productDraft->getStatus()->willReturn(EntityWithValuesDraftInterface::READY);
 
         $remover->remove($productDraft)->shouldNotBeCalled();
-        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('remove', [$productDraft]);
+        $this->shouldThrow('Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException')->during('remove', [$productDraft]);
     }
 
     function it_throws_an_exception_when_trying_to_approve_a_single_change_without_permission(
@@ -482,7 +482,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
             ]
         ], 'pim.internal_api.attribute.edit')->willReturn([]);
 
-        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('approveChange', [
+        $this->shouldThrow('Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException')->during('approveChange', [
             $productDraft,
             $attribute,
             $locale,
@@ -507,7 +507,7 @@ class EntityWithValuesDraftManagerSpec extends ObjectBehavior
             ]
         ], 'pim.internal_api.attribute.edit')->willReturn([]);
 
-        $this->shouldThrow('PimEnterprise\Component\Workflow\Exception\DraftNotReviewableException')->during('refuseChange', [
+        $this->shouldThrow('Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\DraftNotReviewableException')->during('refuseChange', [
             $productDraft,
             $attribute,
             $locale,
