@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess:
+Akeneo\Pim\Permission\Bundle\Entity\AssetCategoryAccess:
     type: entity
     table: pimee_security_asset_category_access
     changeTrackingPolicy: DEFERRED_EXPLICIT

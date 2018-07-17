@@ -1,12 +1,12 @@
 services:
     pimee_catalog.security.merger.not_granted_category:
-        class: 'PimEnterprise\Component\Security\Merger\NotGrantedCategoryMerger'
+        class: 'Akeneo\Pim\Permission\Component\Merger\NotGrantedCategoryMerger'
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.updater.category_field_without_permission'
 
     pimee_catalog.security.merger.not_granted_associated_product:
-        class: 'PimEnterprise\Component\Security\Merger\NotGrantedAssociatedProductMerger'
+        class: 'Akeneo\Pim\Permission\Component\Merger\NotGrantedAssociatedProductMerger'
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.updater.association_field_without_permission'
@@ -15,7 +15,7 @@ services:
             - '@security.token_storage'
 
     pimee_catalog.security.merger.not_granted_values:
-        class: 'PimEnterprise\Component\Security\Merger\NotGrantedValuesMerger'
+        class: 'Akeneo\Pim\Permission\Component\Merger\NotGrantedValuesMerger'
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.cached_attribute'
@@ -23,7 +23,7 @@ services:
             - '@pim_catalog.factory.value_collection'
 
     pimee_catalog.security.merger.merge_data_on_product:
-        class: 'PimEnterprise\Component\Security\Merger\MergeDataOnProduct'
+        class: 'Akeneo\Pim\Permission\Component\Merger\MergeDataOnProduct'
         arguments:
             -
                 - '@pimee_catalog.security.merger.not_granted_values'
@@ -34,7 +34,7 @@ services:
             - '@pim_catalog.repository.product_model_without_permission'
 
     pimee_catalog.security.merger.merge_data_on_product_model:
-        class: 'PimEnterprise\Component\Security\Merger\MergeDataOnProductModel'
+        class: 'Akeneo\Pim\Permission\Component\Merger\MergeDataOnProductModel'
         arguments:
             -
                 - '@pimee_catalog.security.merger.not_granted_values'

@@ -6,7 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
-use PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\PermissionFixturesLoader;
+use Akeneo\Pim\Permission\Bundle\tests\EndToEnd\PermissionFixturesLoader;
 use Symfony\Component\HttpFoundation\Response;
 
 class ListProductModelWithPermissionIntegration extends ApiTestCase

@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess:
+Akeneo\Pim\Permission\Bundle\Entity\LocaleAccess:
     type: entity
     table: pimee_security_locale_access
     repositoryClass: Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository

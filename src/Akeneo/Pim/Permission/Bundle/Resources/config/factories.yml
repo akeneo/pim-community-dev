@@ -25,7 +25,7 @@ services:
             - '%pimee_security.entity.job_profile_access.class%'
 
     pimee_catalog.security.factory.filtered_product:
-        class: 'PimEnterprise\Component\Security\Factory\FilteredEntityFactory'
+        class: 'Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory'
         arguments:
             -
               - '@pimee_catalog.security.filter.not_granted_parent'
@@ -34,7 +34,7 @@ services:
               - '@pimee_catalog.security.filter.not_granted_values'
 
     pimee_catalog.security.factory.filtered_product_model:
-        class: 'PimEnterprise\Component\Security\Factory\FilteredEntityFactory'
+        class: 'Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory'
         arguments:
             -
               - '@pimee_catalog.security.filter.not_granted_parent'

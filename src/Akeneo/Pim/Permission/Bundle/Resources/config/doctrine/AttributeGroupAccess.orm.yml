@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
+Akeneo\Pim\Permission\Bundle\Entity\AttributeGroupAccess:
     type: entity
     table: pimee_security_attribute_group_access
     changeTrackingPolicy: DEFERRED_EXPLICIT

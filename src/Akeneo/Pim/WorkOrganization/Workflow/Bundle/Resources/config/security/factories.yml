@@ -1,6 +1,6 @@
 services:
     pimee_workflow.security.factory.filtered_published_product:
-        class: 'PimEnterprise\Component\Security\Factory\FilteredEntityFactory'
+        class: 'Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory'
         arguments:
             -
               - '@pimee_catalog.security.filter.not_granted_parent'

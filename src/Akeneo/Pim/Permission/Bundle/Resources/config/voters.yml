@@ -7,8 +7,8 @@ parameters:
     pimee_security.voter.locale.class: Akeneo\Pim\Permission\Bundle\Voter\LocaleVoter
     pimee_security.voter.datagrid_view.class: Akeneo\Pim\Permission\Bundle\Voter\DatagridViewVoter
     pimee_security.voter.category_owner.class: Akeneo\Pim\Permission\Bundle\Voter\CategoryOwnerVoter
-    pimee_security.cached_authorization_checker.class: PimEnterprise\Component\Security\Authorization\CachedAuthorizationChecker
-    pimee_security.deny_not_granted_categorized_entity.class: PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity
+    pimee_security.cached_authorization_checker.class: Akeneo\Pim\Permission\Component\Authorization\CachedAuthorizationChecker
+    pimee_security.deny_not_granted_categorized_entity.class: Akeneo\Pim\Permission\Component\Authorization\DenyNotGrantedCategorizedEntity
 
 services:
     pimee_security.voter.attribute:

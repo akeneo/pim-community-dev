@@ -164,12 +164,12 @@ services:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.job_instance.edit }
 
     pimee_catalog.security.filter.not_granted_category:
-        class: 'PimEnterprise\Component\Security\Filter\NotGrantedCategoryFilter'
+        class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedCategoryFilter'
         arguments:
             - '@security.authorization_checker'
 
     pimee_catalog.security.filter.not_granted_associated_product:
-        class: 'PimEnterprise\Component\Security\Filter\NotGrantedAssociatedProductFilter'
+        class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedAssociatedProductFilter'
         arguments:
             - '@security.authorization_checker'
             - '@pimee_security.query.product_category_access'
@@ -177,13 +177,13 @@ services:
             - '@security.token_storage'
 
     pimee_catalog.security.filter.not_granted_values:
-        class: 'PimEnterprise\Component\Security\Filter\NotGrantedValuesFilter'
+        class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedValuesFilter'
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.cached_locale'
 
     pimee_catalog.security.filter.not_granted_parent:
-        class: 'PimEnterprise\Component\Security\Filter\NotGrantedParentFilter'
+        class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedParentFilter'
         arguments:
             - '@pimee_catalog.security.factory.filtered_product_model'
         lazy: true
