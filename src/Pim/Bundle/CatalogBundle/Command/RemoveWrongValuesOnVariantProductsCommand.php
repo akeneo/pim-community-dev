@@ -54,7 +54,7 @@ class RemoveWrongValuesOnVariantProductsCommand extends ContainerAwareCommand
         $productBatchSize = $this->getContainer()->getParameter('pim_job_product_batch_size');
         $rootDir = $this->getContainer()->get('kernel')->getRootDir();
         $family = $input->getArgument('family');
-        $env = $input->getOption('env');
+        $env = $this->getContainer()->get('kernel')->getEnvironment();
         $cacheClearer = $this->getContainer()->get('pim_connector.doctrine.cache_clearer');
 
         $variantProducts = $this->getVariantProducts($family);

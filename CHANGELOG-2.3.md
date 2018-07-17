@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7488: use catalog locale for attributes list in attribute groups
+- PIM-7518: fix memory leak in channel/locale clean command
 
 # 2.3.1 (2018-07-04)
 
