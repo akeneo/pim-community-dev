@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Query\Filter\Operators;
-use Akeneo\Pim\Automation\Bundle\Validator\Constraint\NonEmptyValueCondition;
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\NonEmptyValueCondition;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
