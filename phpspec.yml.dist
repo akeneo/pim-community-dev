@@ -15,9 +15,6 @@ suites:
     Akeneo:
         namespace: Akeneo
 
-    Akeneo:
-        namespace: Akeneo
-
     ## Asset
     AssetBundle:
         namespace: Akeneo\Asset\Bundle
