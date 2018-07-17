@@ -11,7 +11,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Model\ProductCopyActionInterface;
 use Prophecy\Argument;
 
 class CopierActionApplierSpec extends ObjectBehavior

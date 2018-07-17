@@ -14,7 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Model\ProductSetActionInterface;
 use Prophecy\Argument;
 
 class SetterActionApplierSpec extends ObjectBehavior

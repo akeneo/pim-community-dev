@@ -14,7 +14,7 @@ use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
-use PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder;
+use Akeneo\Pim\Automation\RuleEngine\Engine\ProductRuleBuilder;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

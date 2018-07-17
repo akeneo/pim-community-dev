@@ -17,8 +17,8 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleRelationInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleRelationRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use PimEnterprise\Component\CatalogRule\Model\FieldImpactActionInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\FieldImpactActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddActionInterface;
 
 /**
  * Class RuleRelationManager

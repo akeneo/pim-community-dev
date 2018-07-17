@@ -10,8 +10,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Model\ProductCopyActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Model\ProductSetActionInterface;
 use Prophecy\Argument;
 
 class ProductsUpdaterSpec extends ObjectBehavior

@@ -11,9 +11,9 @@ use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver;
-use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsUpdater;
-use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsValidator;
+use Akeneo\Pim\Automation\RuleEngine\Engine\ProductRuleApplier\ProductsSaver;
+use Akeneo\Pim\Automation\RuleEngine\Engine\ProductRuleApplier\ProductsUpdater;
+use Akeneo\Pim\Automation\RuleEngine\Engine\ProductRuleApplier\ProductsValidator;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

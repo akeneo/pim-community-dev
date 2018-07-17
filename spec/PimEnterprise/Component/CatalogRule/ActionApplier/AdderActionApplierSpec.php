@@ -12,7 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Model\ProductAddActionInterface;
 use Prophecy\Argument;
 
 class AdderActionApplierSpec extends ObjectBehavior
