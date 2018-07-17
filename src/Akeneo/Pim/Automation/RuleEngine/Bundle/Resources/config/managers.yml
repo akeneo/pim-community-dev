@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog_rule.manager.rule_relation.class: PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager
+    pimee_catalog_rule.manager.rule_relation.class: Akeneo\Pim\Automation\RuleEngine\Bundle\Manager\RuleRelationManager
 
 services:
     # Managers

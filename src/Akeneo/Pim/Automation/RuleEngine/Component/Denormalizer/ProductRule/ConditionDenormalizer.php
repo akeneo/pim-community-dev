@@ -25,7 +25,7 @@ class ConditionDenormalizer implements DenormalizerInterface
 
     /**
      * @param string $conditionClass should implement
-     *                               \PimEnterprise\Component\CatalogRule\Model\ProductConditionInterface
+     *                               \Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductConditionInterface
      */
     public function __construct($conditionClass)
     {

@@ -1,6 +1,6 @@
-PimEnterprise\Component\CatalogRule\Model\ProductAddAction:
+Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddAction:
     constraints:
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\PropertyAction: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\PropertyAction: ~
     properties:
         field:
            - Type:
@@ -8,7 +8,7 @@ PimEnterprise\Component\CatalogRule\Model\ProductAddAction:
            - NotBlank: ~
            - Length:
                max: 255
-           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingAddField: ~
+           - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingAddField: ~
         items:
             - Type:
                 type: array

@@ -1,8 +1,8 @@
 parameters:
-    pimee_catalog_rule.action_applier.setter.class:  PimEnterprise\Component\CatalogRule\ActionApplier\SetterActionApplier
-    pimee_catalog_rule.action_applier.copier.class:  PimEnterprise\Component\CatalogRule\ActionApplier\CopierActionApplier
-    pimee_catalog_rule.action_applier.adder.class:   PimEnterprise\Component\CatalogRule\ActionApplier\AdderActionApplier
-    pimee_catalog_rule.action_applier.remover.class: PimEnterprise\Component\CatalogRule\ActionApplier\RemoverActionApplier
+    pimee_catalog_rule.action_applier.setter.class:  Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\SetterActionApplier
+    pimee_catalog_rule.action_applier.copier.class:  Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\CopierActionApplier
+    pimee_catalog_rule.action_applier.adder.class:   Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\AdderActionApplier
+    pimee_catalog_rule.action_applier.remover.class: Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\RemoverActionApplier
 
 services:
     pimee_catalog_rule.action_applier.setter:

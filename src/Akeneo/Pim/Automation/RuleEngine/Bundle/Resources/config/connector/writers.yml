@@ -1,6 +1,6 @@
 parameters:
     # execute rules
-    pimee_catalog_rule.executor.rules.class: PimEnterprise\Component\CatalogRule\Connector\Executor\RulesExecutor
+    pimee_catalog_rule.executor.rules.class: Akeneo\Pim\Automation\RuleEngine\Component\Connector\Executor\RulesExecutor
 
 services:
     # import rules

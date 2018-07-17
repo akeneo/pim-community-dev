@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog_rule.datagrid.extension.mass_action.execute_mass_action_handler.class: PimEnterprise\Bundle\CatalogRuleBundle\Datagrid\Extension\MassAction\ExecuteMassActionHandler
+    pimee_catalog_rule.datagrid.extension.mass_action.execute_mass_action_handler.class: Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\MassAction\ExecuteMassActionHandler
 
 services:
     pim_catalog_rule.extension.mass_action.handler.mass_delete_rule:
