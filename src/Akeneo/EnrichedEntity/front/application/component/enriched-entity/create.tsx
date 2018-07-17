@@ -70,10 +70,10 @@ class Create extends React.Component<CreateProps> {
     if (errorMessages.length > 0) {
       return (
           <div className="AknFieldContainer-footer AknFieldContainer-validationErrors validation-errors">
-                        <span className="AknFieldContainer-validationError">
-                          <i className="icon-warning-sign"></i>
-                          {errorMessages}
-                        </span>
+            <span className="AknFieldContainer-validationError">
+              <i className="icon-warning-sign"></i>
+              {errorMessages}
+            </span>
           </div>
       );
     }

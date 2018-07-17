@@ -1,4 +1,5 @@
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
+import sanitize from "akeneoenrichedentity/tools/sanitize";
 
 export interface CreateState {
   active: boolean;
@@ -19,15 +20,6 @@ const initCreateState = (): CreateState => ({
   },
   errors: []
 });
-
-const sanitize = (value: string) => {
-  const regex = /[a-zA-Z0-9_]/;
-
-  return value.split('')
-      .map((char: string) => char.match(regex) ? char : '_')
-      .join('')
-      .toLocaleLowerCase();
-};
 
 export default (state: CreateState = initCreateState(), action: { type: string, locale: string, value: string, errors: ValidationError[] }) => {
   switch (action.type) {
