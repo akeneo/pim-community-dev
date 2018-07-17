@@ -160,7 +160,7 @@ class AttributeController
         }
 
         if (empty($options)) {
-            $options = $request->request->get(
+            $options = $request->get(
                 'options',
                 ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null]
             );
@@ -173,7 +173,7 @@ class AttributeController
         $options['user_groups_ids'] = $token->getUser()->getGroupsIds();
 
         $attributes = $this->attributeSearchRepository->findBySearch(
-            $request->request->get('search'),
+            $request->get('search'),
             $options
         );
 
