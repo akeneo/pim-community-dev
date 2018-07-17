@@ -4,3 +4,4 @@
 - Common: Regroup by technical pattern (repo, builder...) inside Common
 - Integration: Drop the IntegrationTestsBundle
 - Create a Common/Integration folder to move all stuff inside
+- Create folder structure inside tests/features for each bounded context
