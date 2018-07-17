@@ -23,6 +23,22 @@ define([
 
                 return parent;
             },
+
+
+            /**
+             * {@inheritdoc}
+             *
+             * Removes the useless catalogLocale field
+             */
+            select2Data(term, page) {
+                return {
+                    search: term,
+                    options: {
+                        limit: this.resultsPerPage,
+                        page: page
+                    }
+                };
+            },
         });
     }
 );
