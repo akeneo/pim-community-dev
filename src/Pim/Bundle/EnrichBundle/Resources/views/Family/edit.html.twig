@@ -41,7 +41,7 @@
                                                     family.code
                                                 )
                                             );
-                                            createForm(family, label, family.meta.form);
+                                            createForm(family, family.code, family.meta.form);
                                         }).fail(function (response, textStatus, errorThrown) {
                                             var errorView = new Error(response.responseJSON.message, response.status);
                                             errorView.setElement('#family-edit-form').render();
@@ -49,14 +49,14 @@
                                     });
 
                                     function createForm(family, label, formExtension) {
-                                        var newTitle = document.title.replace('%family.label%', label);
+                                        var newTitle = document.title.replace('%code%', label);
 
                                         document.title  = newTitle;
 
                                         var navigation  = Navigation.getInstance();
                                         var navTitle    = navigation.getPinButtonsData('title');
 
-                                        navTitle.params = {'%family.label%': label};
+                                        navTitle.params = {'%code%': label};
                                         navigation.setPinButtonsData('title', navTitle);
                                         navigation.setPinButtonsData('title-rendered-short', newTitle);
 

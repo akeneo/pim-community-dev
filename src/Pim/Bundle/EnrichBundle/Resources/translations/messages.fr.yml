@@ -621,7 +621,7 @@ pim_title.product:
   edit: "Produit %product.sku% | Édition"
 pim_title.family:
   index: "Familles"
-  edit: "Famille %family.label% | Édition"
+  edit: "Famille %code% | Édition"
 pim_title.channel:
   index: "Canaux"
   create: "Canaux | Création"

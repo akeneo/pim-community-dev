@@ -626,7 +626,7 @@ pim_title.product:
   edit: Produtos %product.sku% | Editar
 pim_title.family:
   index: Famílias
-  edit: Famílias %family.label% | Editar
+  edit: Famílias %code% | Editar
 pim_title.channel:
   index: Canais
   create: Canais | Criar

@@ -42,6 +42,9 @@ class NavigationHistoryItem implements NavigationItemInterface
      */
     protected $url;
 
+    /** @var string */
+    protected $code;
+
     /**
      * @var string $title
      *
@@ -199,6 +202,14 @@ class NavigationHistoryItem implements NavigationItemInterface
     }
 
     /**
+     * @return string|null
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
      * Set entity properties
      *
      * @param array $values
@@ -213,6 +224,9 @@ class NavigationHistoryItem implements NavigationItemInterface
         }
         if (isset($values['user'])) {
             $this->setUser($values['user']);
+        }
+        if (isset($values['_route']['code'])) {
+            $this->code = $values['_route']['code'];
         }
     }
 
