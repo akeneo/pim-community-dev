@@ -18,7 +18,7 @@ use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 
-class ConfigurationRepositoryIntegration extends TestCase
+class IdentifiersMappingRepositoryIntegration extends TestCase
 {
     /**
      * @test
