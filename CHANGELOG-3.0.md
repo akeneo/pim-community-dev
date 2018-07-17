@@ -12,6 +12,30 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\Command\Cleaner\WrongBooleanValuesOnVariantProductCleaner` to `Akeneo\Pim\Enrichment\Bundle\Command\Cleaner\WrongBooleanValuesOnVariantProductCleaner`
+- Move `Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\AttributeFilterDumper` to `Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\AttributeFilterDumper`
+- Move `Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\FieldFilterDumper` to `Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\FieldFilterDumper`
+- Move `Pim\Bundle\CatalogBundle\Command\CalculateCompletenessCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\CreateProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\CreateProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\DumperInterface` to `Akeneo\Pim\Enrichment\Bundle\Command\DumperInterface`
+- Move `Pim\Bundle\CatalogBundle\Command\GetProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\GetProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\IndexProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\IndexProductModelCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\PurgeCompletenessCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\PurgeCompletenessCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\PurgeProductsCompletenessCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\PurgeProductsCompletenessCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\QueryHelpProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\QueryHelpProductModelCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductModelCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\QueryProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\QueryProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\RefreshProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\RefreshProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\RemoveCompletenessForChannelAndLocaleCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\RemoveCompletenessForChannelAndLocaleCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\RemoveProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\RemoveProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\RemoveWrongBooleanValuesOnVariantProductsBatchCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\RemoveWrongBooleanValuesOnVariantProductsBatchCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\RemoveWrongBooleanValuesOnVariantProductsCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\RemoveWrongBooleanValuesOnVariantProductsCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\UpdateProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\UpdateProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\ValidateObjectsCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\ValidateObjectsCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\ValidateProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\ValidateProductCommand`
+
 - Move `Pim\Bundle\CatalogBundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber`
 - Move `Pim\Bundle\CatalogBundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber`
 - Move `Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber`

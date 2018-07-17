@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\Command\Cleaner;
+namespace Akeneo\Pim\Enrichment\Bundle\Command\Cleaner;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
