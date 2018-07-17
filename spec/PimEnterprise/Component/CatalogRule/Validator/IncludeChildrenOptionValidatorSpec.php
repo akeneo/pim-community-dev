@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Component\CatalogRule\Validator;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\CatalogRule\Model\ProductRemoveActionInterface;
-use PimEnterprise\Component\CatalogRule\Validator\Constraint\IncludeChildrenOption;
-use PimEnterprise\Component\CatalogRule\Validator\IncludeChildrenOptionValidator;
+use Akeneo\Pim\Automation\RuleEngine\Model\ProductRemoveActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Validator\Constraint\IncludeChildrenOption;
+use Akeneo\Pim\Automation\RuleEngine\Validator\IncludeChildrenOptionValidator;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

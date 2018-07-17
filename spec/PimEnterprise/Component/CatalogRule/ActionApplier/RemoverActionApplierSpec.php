@@ -16,8 +16,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Component\CatalogRule\ActionApplier\RemoverActionApplier;
-use PimEnterprise\Component\CatalogRule\Model\ProductRemoveActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\ActionApplier\RemoverActionApplier;
+use Akeneo\Pim\Automation\RuleEngine\Model\ProductRemoveActionInterface;
 use Prophecy\Argument;
 
 class RemoverActionApplierSpec extends ObjectBehavior

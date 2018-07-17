@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\CatalogRule\Validator;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingFilterField;
-use PimEnterprise\Component\CatalogRule\Model\ProductConditionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Model\ProductConditionInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;

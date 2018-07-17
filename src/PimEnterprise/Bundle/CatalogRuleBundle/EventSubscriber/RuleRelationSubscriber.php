@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
-use PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder;
+use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

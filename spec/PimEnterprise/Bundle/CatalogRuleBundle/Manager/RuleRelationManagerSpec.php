@@ -12,9 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductCopyActionInterface;
-use PimEnterprise\Component\CatalogRule\Model\ProductSetActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Model\ProductAddActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Model\ProductCopyActionInterface;
+use Akeneo\Pim\Automation\RuleEngine\Model\ProductSetActionInterface;
 use Prophecy\Argument;
 
 class RuleRelationManagerSpec extends ObjectBehavior
