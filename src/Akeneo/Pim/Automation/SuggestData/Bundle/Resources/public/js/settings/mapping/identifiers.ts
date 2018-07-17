@@ -1,6 +1,7 @@
 import * as _ from "underscore";
 import BaseView = require('pimenrich/js/view/base');
 import {getIdentifiersMapping} from 'akeneosuggestdata/js/settings/mapping/fetcher/mapping-fetcher';
+const simpleAttribute = require('akeneosuggestdata/js/settings/mapping/simple-attribute');
 
 const __ = require('oro/translator');
 const template = require('pimee/template/settings/mapping/identifiers');
@@ -38,22 +39,36 @@ class EditIdentifiersMappingView extends BaseView {
   /**
    * {@inheritdoc}
    */
+  configure() {
+    return $.when(
+      getIdentifiersMapping().then((identifiersMapping: any) => {
+        this.setData(identifiersMapping);
+      })
+    );
+  };
+
+  /**
+   * {@inheritdoc}
+   */
   public render(): BaseView {
-    getIdentifiersMapping().then((identifiersMapping: any) => {
-      const translatedIdentifiersMapping: any = {};
+    const identifiersMapping = this.getFormData();
+    this.$el.html(this.template({
+      headers: this.headers,
+      identifiers: identifiersMapping,
+      __
+    }));
 
-      Object.keys(identifiersMapping).forEach((pimAiAttributeCode: string) => {
-        const pimAiAttributeLabel: string = __(
-          `akeneo_suggest_data.settings.index.tab.identifiers.headers.${pimAiAttributeCode}_label`
-        );
-
-        translatedIdentifiersMapping[pimAiAttributeLabel] = identifiersMapping[pimAiAttributeCode];
+    Object.keys(identifiersMapping).forEach((pimAiAttributeCode: string) => {
+      const $dom = this.$el.find('.attribute-selector[data-identifier="' + pimAiAttributeCode + '"]');
+      const attributeSelector = new simpleAttribute({
+        config: {
+          fieldName: pimAiAttributeCode,
+          label: '',
+          choiceRoute: 'pim_enrich_attribute_rest_index'
+        }
       });
-
-      this.$el.html(this.template({
-        headers: this.headers,
-        identifiers: translatedIdentifiersMapping,
-      }));
+      attributeSelector.setParent(this);
+      $dom.html(attributeSelector.render().$el);
     });
 
     return this;

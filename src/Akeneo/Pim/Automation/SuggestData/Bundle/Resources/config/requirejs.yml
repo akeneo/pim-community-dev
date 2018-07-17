@@ -23,9 +23,11 @@ config:
         pimee/mass-edit-form/product/suggest-data: akeneosuggestdata/js/product/mass-edit/suggest-data-operation
         pimee/pim-ai-connection/edit: akeneosuggestdata/js/pim-ai/form/edit.ts
         pimee/settings/mapping/identifiers: akeneosuggestdata/js/settings/mapping/identifiers.ts
+        pimee/settings/mapping/simple-attribute: akeneosuggestdata/js/settings/mapping/simple-attribute
 
         # Templates
         pimee/template/product/suggest-data-push:  akeneosuggestdata/templates/product/edit/suggest-data-push.html
         pimee/template/product/mass-edit/suggest-data: akeneosuggestdata/templates/product/mass-edit/suggest-data.html
         pimee/template/pim-ai-connection/edit: akeneosuggestdata/templates/pim-ai/form/edit.html
         pimee/template/settings/mapping/identifiers: akeneosuggestdata/templates/settings/mapping/identifiers.html
+        pimee/template/settings/mapping/simple-attribute: akeneosuggestdata/templates/settings/mapping/simple-attribute.html

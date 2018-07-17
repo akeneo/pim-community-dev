@@ -1,13 +1,13 @@
-<table class="AknGrid">
+<table class="AknGrid AknGrid--unclickable">
     <tr>
-        <th class="AknGrid-headerCell"><%= headers.identifiersLabel %></th>
-        <th class="AknGrid-headerCell"><%= headers.attributeLabel %></th>
-        <th class="AknGrid-headerCell"><%= headers.suggestDataLabel %></th>
+        <th class="AknGrid-headerCell"><%- headers.identifiersLabel %></th>
+        <th class="AknGrid-headerCell"><%- headers.attributeLabel %></th>
+        <th class="AknGrid-headerCell"><%- headers.suggestDataLabel %></th>
     </tr>
     <% Object.keys(identifiers).forEach(pimAiAttributeLabel => { %>
     <tr class="AknGrid-bodyRow">
-        <td class="AknGrid-bodyCell"><%= pimAiAttributeLabel %></td>
-        <td class="AknGrid-bodyCell"><%= identifiers[pimAiAttributeLabel] %></td>
+        <td class="AknGrid-bodyCell"><%- __(`akeneo_suggest_data.settings.index.tab.identifiers.headers.${pimAiAttributeLabel}_label`) %></td>
+        <td class="AknGrid-bodyCell attribute-selector" data-identifier="<%- pimAiAttributeLabel %>"></td>
         <td class="AknGrid-bodyCell">Active</td>
     </tr>
     <% }) %>
