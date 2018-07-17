@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Automation\Bundle\EventListener\Datagrid;
+namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\EventListener\Datagrid;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\ORM\QueryBuilder\RuleQueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
@@ -19,7 +19,7 @@ class ConfigureRuleRelationGridListenerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\EventListener\Datagrid\ConfigureRuleRelationGridListener');
+        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Bundle\EventListener\Datagrid\ConfigureRuleRelationGridListener');
     }
 
     function it_doesnt_configure_if_no_params(
