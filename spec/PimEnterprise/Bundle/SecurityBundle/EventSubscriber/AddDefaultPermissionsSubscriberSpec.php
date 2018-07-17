@@ -14,7 +14,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Akeneo\Asset\Component\Model\CategoryInterface as ProductAssetCategoryInterface;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

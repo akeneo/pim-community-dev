@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
+use Akeneo\Pim\Permission\Component\Model\LocaleAccessInterface;
 
 class LocaleAccessUpdateGuesserSpec extends ObjectBehavior
 {

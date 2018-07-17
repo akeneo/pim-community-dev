@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use PimEnterprise\Component\Security\Model\CategoryAccessInterface;
+use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
 
 class CategoryAccessUpdateGuesserSpec extends ObjectBehavior
 {

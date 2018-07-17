@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
+use Akeneo\Pim\Permission\Component\Model\AttributeGroupAccessInterface;
 
 class AttributeGroupAccessUpdateGuesserSpec extends ObjectBehavior
 {
