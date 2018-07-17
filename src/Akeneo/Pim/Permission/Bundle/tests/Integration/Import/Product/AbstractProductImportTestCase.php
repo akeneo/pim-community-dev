@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Permission\Bundle\tests\integration\Import\Product;
+namespace Akeneo\Pim\Permission\Bundle\tests\Integration\Import\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Permission\Bundle\tests\integration\Export\ProductModel;
+namespace Akeneo\Pim\Permission\Bundle\tests\Integration\Export\ProductModel;
 
 /**
  * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+

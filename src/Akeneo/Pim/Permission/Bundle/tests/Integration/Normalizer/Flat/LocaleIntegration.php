@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Permission\Bundle\tests\integration\Normalizer\Flat;
+namespace Akeneo\Pim\Permission\Bundle\tests\Integration\Normalizer\Flat;
 
 class LocaleIntegration extends AbstractFlatNormalizerTestCase
 {

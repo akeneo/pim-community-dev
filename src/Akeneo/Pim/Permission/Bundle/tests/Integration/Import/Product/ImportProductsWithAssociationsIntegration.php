@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Permission\Bundle\tests\integration\Import\Product;
+namespace Akeneo\Pim\Permission\Bundle\tests\Integration\Import\Product;
 
 /**
  * +--------------+-----------------------------------+
