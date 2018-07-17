@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\UserManagement\Component\tests\integration\Updater;
+namespace AkeneoTest\UserManagement\Integration\Updater;
 
 use Akeneo\Test\Integration\TestCase;
 

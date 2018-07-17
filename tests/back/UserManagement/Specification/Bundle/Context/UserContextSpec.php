@@ -1,5 +1,7 @@
 <?php
 
+namespace AkeneoTest\UserManagement\Specification\Bundle\Context;
+namespace Specification\Akeneo\UserManagement\Bundle\Context;
 namespace spec\Akeneo\UserManagement\Bundle\Context;
 
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;

@@ -5,3 +5,9 @@
 - Integration: Drop the IntegrationTestsBundle
 - Create a Common/Integration folder to move all stuff inside
 - Create folder structure inside tests/features for each bounded context
+- namespace for non spec: AkeneoTest\UserManagement\Integration\Updater
+- namespace for specs:  
+    namespace AkeneoTest\UserManagement\Specification\Bundle\Context;
+    namespace Specification\Akeneo\UserManagement\Bundle\Context;
+    namespace spec\Akeneo\UserManagement\Bundle\Context;
+    
