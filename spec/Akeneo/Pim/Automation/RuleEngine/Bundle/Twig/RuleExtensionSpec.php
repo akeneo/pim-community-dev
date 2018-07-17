@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Automation\Bundle\Twig;
+namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\Twig;
 
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;

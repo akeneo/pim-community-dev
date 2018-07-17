@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Automation\Bundle\EventSubscriber;
+namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use PhpSpec\ObjectBehavior;
@@ -20,7 +20,7 @@ class RuleExecutionSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleExecutionSubscriber');
+        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RuleExecutionSubscriber');
     }
 
     function it_is_a_subscriber()

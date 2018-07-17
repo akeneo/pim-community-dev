@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Automation\Bundle\EventSubscriber;
+namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;

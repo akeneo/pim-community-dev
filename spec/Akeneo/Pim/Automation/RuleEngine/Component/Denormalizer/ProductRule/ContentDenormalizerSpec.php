@@ -14,8 +14,8 @@ class ContentDenormalizerSpec extends ObjectBehavior
             'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule',
             'Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition',
             [
-                'copy_value' => 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction',
-                'set_value' => 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction',
+                'copy_value' => 'Akeneo\Pim\Automation\RuleEngine\Bundle\Model\ProductCopyValueAction',
+                'set_value' => 'Akeneo\Pim\Automation\RuleEngine\Bundle\Model\ProductSetValueAction',
             ]
         );
 

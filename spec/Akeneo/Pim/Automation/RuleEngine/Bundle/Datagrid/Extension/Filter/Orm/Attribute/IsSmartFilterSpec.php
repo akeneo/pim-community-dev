@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Automation\Bundle\Datagrid\Extension\Filter\Orm\Attribute;
+namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Filter\Orm\Attribute;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -28,7 +28,7 @@ class IsSmartFilterSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(
-            'PimEnterprise\Bundle\CatalogRuleBundle\Datagrid\Extension\Filter\Orm\Attribute\IsSmartFilter'
+            'Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Filter\Orm\Attribute\IsSmartFilter'
         );
     }
 

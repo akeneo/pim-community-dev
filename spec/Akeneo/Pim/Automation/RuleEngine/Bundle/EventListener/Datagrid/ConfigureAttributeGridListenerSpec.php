@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Pim\Automation\Bundle\EventListener\Datagrid;
+namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\EventListener\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
@@ -10,7 +10,7 @@ class ConfigureAttributeGridListenerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\EventListener\Datagrid\ConfigureAttributeGridListener');
+        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Bundle\EventListener\Datagrid\ConfigureAttributeGridListener');
     }
 
     function it_adds_a_smart_column_and_filter_to_the_grid(BuildBefore $event, DatagridConfiguration $config)
