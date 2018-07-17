@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Normalizer;
+namespace spec\Akeneo\Pim\Automation\Bundle\Normalizer;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;

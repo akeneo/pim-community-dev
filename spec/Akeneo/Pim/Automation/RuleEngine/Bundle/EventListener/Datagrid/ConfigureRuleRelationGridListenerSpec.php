@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\EventListener\Datagrid;
+namespace spec\Akeneo\Pim\Automation\Bundle\EventListener\Datagrid;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\ORM\QueryBuilder\RuleQueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
