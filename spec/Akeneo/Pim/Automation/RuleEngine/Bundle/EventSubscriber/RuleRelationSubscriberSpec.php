@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AbstractAttribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Automation\Bundle\Manager\RuleRelationManager;
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Manager\RuleRelationManager;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;

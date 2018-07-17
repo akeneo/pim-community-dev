@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Automation\Bundle\Validator\Constraint\PropertyAction;
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\PropertyAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyAction;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\PropertyActionValidator;
 use Prophecy\Argument;
