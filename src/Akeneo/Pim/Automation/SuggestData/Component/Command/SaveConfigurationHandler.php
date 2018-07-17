@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Application\ValidateConnectionInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
@@ -29,21 +29,21 @@ use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationReposito
  */
 class SaveConfigurationHandler
 {
-    /** @var ValidateConnectionInterface */
-    private $connectionValidator;
+    /** @var DataProviderFactory */
+    private $dataProviderFactory;
 
     /** @var ConfigurationRepositoryInterface */
     private $repository;
 
     /**
-     * @param ValidateConnectionInterface      $connectionValidator
+     * @param DataProviderFactory $dataProviderFactory
      * @param ConfigurationRepositoryInterface $repository
      */
     public function __construct(
-        ValidateConnectionInterface $connectionValidator,
+        DataProviderFactory $dataProviderFactory,
         ConfigurationRepositoryInterface $repository
     ) {
-        $this->connectionValidator = $connectionValidator;
+        $this->dataProviderFactory = $dataProviderFactory;
         $this->repository = $repository;
     }
 
@@ -54,7 +54,9 @@ class SaveConfigurationHandler
      */
     public function handle(SaveConfiguration $saveConfiguration): void
     {
-        if (!$this->connectionValidator->validate($saveConfiguration->getValues())) {
+        $dataProvider = $this->dataProviderFactory->create();
+        $isAuthenticated = $dataProvider->authenticate($saveConfiguration->getValues()['token']);
+        if ($isAuthenticated !== true) {
             throw InvalidConnectionConfiguration::forCode($saveConfiguration->getCode());
         }
 

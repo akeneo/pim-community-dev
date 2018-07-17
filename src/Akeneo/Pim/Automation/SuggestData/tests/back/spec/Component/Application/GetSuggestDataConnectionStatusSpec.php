@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Application;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Application\ValidateConnectionInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -26,35 +26,36 @@ class GetSuggestDataConnectionStatusSpec extends ObjectBehavior
 {
     function let(
         ConfigurationRepositoryInterface $configurationRepository,
-        ValidateConnectionInterface $connectionValidator
+        DataProviderFactory $dataProviderFactory
     ) {
-        $this->beConstructedWith($configurationRepository, $connectionValidator);
+        $this->beConstructedWith($configurationRepository, $dataProviderFactory);
     }
 
-    function it_checks_that_a_connection_is_active($configurationRepository, $connectionValidator)
+    function it_checks_that_a_connection_is_active(DataProviderAdapterInterface $dataProvider, $dataProviderFactory, $configurationRepository)
     {
-        $configuration = new Configuration('foobar', ['foo', 'bar']);
+        $configuration = new Configuration('foobar', ['token' => 'bar']);
 
         $configurationRepository->findOneByCode('foobar')->willReturn($configuration);
-        $connectionValidator->validate(['foo', 'bar'])->willReturn(true);
+        $dataProviderFactory->create()->willReturn($dataProvider);
+        $dataProvider->authenticate('bar')->willReturn(true);
 
         $this->forCode('foobar')->shouldReturn(true);
     }
 
-    function it_checks_that_a_connection_is_inactive($configurationRepository, $connectionValidator)
+    function it_checks_that_a_connection_is_inactive(DataProviderAdapterInterface $dataProvider, $dataProviderFactory, $configurationRepository)
     {
-        $configuration = new Configuration('foobar', ['foo', 'bar']);
+        $configuration = new Configuration('foobar', ['token' => 'bar']);
 
         $configurationRepository->findOneByCode('foobar')->willReturn($configuration);
-        $connectionValidator->validate(['foo', 'bar'])->willReturn(false);
+        $dataProviderFactory->create()->willReturn($dataProvider);
+        $dataProvider->authenticate('bar')->willReturn(false);
 
         $this->forCode('foobar')->shouldReturn(false);
     }
 
-    function it_checks_that_a_connection_does_not_exist($configurationRepository, $connectionValidator)
+    function it_checks_that_a_connection_does_not_exist($configurationRepository)
     {
         $configurationRepository->findOneByCode('foobar')->willReturn(null);
-        $connectionValidator->validate(Argument::any())->shouldNotBeCalled();
 
         $this->forCode('foobar')->shouldReturn(false);
     }

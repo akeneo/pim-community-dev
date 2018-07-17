@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\SuggestData\Component\Application\ValidateConnectionInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler;
 use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
-use Prophecy\Argument;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -28,10 +28,10 @@ use Prophecy\Argument;
 class SaveConfigurationHandlerSpec extends ObjectBehavior
 {
     public function let(
-        ValidateConnectionInterface $connectionValidator,
+        DataProviderFactory $dataProviderFactory,
         ConfigurationRepositoryInterface $repository
     ) {
-        $this->beConstructedWith($connectionValidator, $repository);
+        $this->beConstructedWith($dataProviderFactory, $repository);
     }
 
     function it_is_a_save_connector_configuration_command_handler()
@@ -39,12 +39,13 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(SaveConfigurationHandler::class);
     }
 
-    function it_updates_an_existing_configuration($connectionValidator, $repository)
+    function it_updates_an_existing_configuration(DataProviderAdapterInterface $dataProvider, $dataProviderFactory, $repository)
     {
-        $command = new SaveConfiguration('foobar', ['foo' => 'bar']);
-        $configuration = new Configuration('foobar', ['foo' => 'bar']);
+        $command = new SaveConfiguration('foobar', ['token' => 'bar']);
+        $configuration = new Configuration('foobar', ['token' => 'bar']);
 
-        $connectionValidator->validate(['foo' => 'bar'])->willReturn(true);
+        $dataProviderFactory->create()->willReturn($dataProvider);
+        $dataProvider->authenticate('bar')->willReturn(true);
         $repository->findOneByCode('foobar')->willReturn($configuration);
 
         $repository->save($configuration)->shouldBeCalled();
@@ -52,26 +53,25 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    function it_saves_a_new_connector_configuration($connectionValidator, $repository)
+    function it_saves_a_new_connector_configuration(DataProviderAdapterInterface $dataProvider, $dataProviderFactory, $repository)
     {
-        $command = new SaveConfiguration('foobar', ['foo' => 'bar']);
+        $command = new SaveConfiguration('foobar', ['token' => 'bar']);
 
-        $connectionValidator->validate(['foo' => 'bar'])->willReturn(true);
+        $dataProviderFactory->create()->willReturn($dataProvider);
+        $dataProvider->authenticate('bar')->willReturn(true);
         $repository->findOneByCode('foobar')->willReturn(null);
 
-        $repository->save(new Configuration('foobar', ['foo' => 'bar']))->shouldBeCalled();
+        $repository->save(new Configuration('foobar', ['token' => 'bar']))->shouldBeCalled();
 
         $this->handle($command);
     }
 
-    function it_throws_an_exception_if_configuration_is_invalid($connectionValidator, $repository)
+    function it_throws_an_exception_if_configuration_is_invalid(DataProviderAdapterInterface $dataProvider, $dataProviderFactory)
     {
-        $command = new SaveConfiguration('foobar', ['bar' => 'baz']);
+        $command = new SaveConfiguration('foobar', ['token' => 'bar']);
 
-        $connectionValidator->validate(['bar' => 'baz'])->willReturn(false);
-
-        $repository->findOneByCode(Argument::any())->shouldNotBeCalled();
-        $repository->save(Argument::any())->shouldNotBeCalled();
+        $dataProviderFactory->create()->willReturn($dataProvider);
+        $dataProvider->authenticate('bar')->willReturn(false);
 
         $this->shouldThrow(InvalidConnectionConfiguration::forCode('foobar'))->during('handle', [$command]);
     }

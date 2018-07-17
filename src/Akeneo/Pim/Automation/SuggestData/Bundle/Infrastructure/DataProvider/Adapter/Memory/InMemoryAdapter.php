@@ -10,7 +10,7 @@ use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Suggest
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCodeCollection;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * In memory implementation to connect to a data provider
@@ -30,13 +30,13 @@ class InMemoryAdapter implements DataProviderAdapterInterface
     /**
      * @param DeserializeSuggestedDataCollection $deserializer
      * @param SubscriptionApiInterface $subscriptionApi
-     * @param array $config
      */
-    public function __construct(DeserializeSuggestedDataCollection $deserializer, SubscriptionApiInterface $subscriptionApi, array $config)
+    public function __construct(DeserializeSuggestedDataCollection $deserializer, SubscriptionApiInterface $subscriptionApi)
     {
         $this->deserializer = $deserializer;
         $this->subscriptionApi = $subscriptionApi;
 
+        $config = ['url' => 'pim.ai.host', 'token' => 'my_personal_token'];
         $this->configure($config);
     }
 
@@ -85,7 +85,7 @@ class InMemoryAdapter implements DataProviderAdapterInterface
         );
     }
 
-    public function authenticate()
+    public function authenticate(?string $token): bool
     {
         throw new \Exception(
             sprintf('"%s" is not yet implemented'),

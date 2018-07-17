@@ -22,7 +22,7 @@ use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 class ConfigurationSpec extends ObjectBehavior
 {
     function let() {
-        $this->beConstructedWith('foobar', ['field' => 'value']);
+        $this->beConstructedWith('foobar', ['token' => 'value']);
     }
 
     function it_is_configuration()
@@ -37,7 +37,12 @@ class ConfigurationSpec extends ObjectBehavior
 
     function it_gets_the_values()
     {
-        $this->getValues()->shouldReturn(['field' => 'value']);
+        $this->getValues()->shouldReturn(['token' => 'value']);
+    }
+
+    function it_gets_the_token()
+    {
+        $this->getToken()->shouldReturn('value');
     }
 
     function it_sets_new_values()
@@ -51,7 +56,7 @@ class ConfigurationSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
             'code' => 'foobar',
-            'values' => ['field' => 'value'],
+            'values' => ['token' => 'value'],
         ]);
     }
 }

@@ -11,3 +11,6 @@ services:
               class: Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping
               arguments:
                   - []
+
+    akeneo.pim.automation.suggest_data.connection.is_valid.pim_ai:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\Fake\ValidatePimAiConnection'

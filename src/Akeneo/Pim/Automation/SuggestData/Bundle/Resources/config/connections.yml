@@ -5,6 +5,7 @@ services:
             - '@akeneo.pim.automation.suggest_data.handler.save_configuration'
 
     akeneo.pim.automation.suggest_data.connection.is_valid.pim_ai:
+        #class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infra\Fake\ValidatePimAiConnection'
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\Fake\ValidatePimAiConnection'
 
     akeneo.pim.automation.suggest_data.connection.get_normalized_configuration:
@@ -16,4 +17,4 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Component\Application\GetSuggestDataConnectionStatus'
         arguments:
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
-            - '@akeneo.pim.automation.suggest_data.connection.is_valid.pim_ai'
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
