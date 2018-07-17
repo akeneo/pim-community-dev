@@ -4,7 +4,7 @@ namespace spec\Akeneo\Test\Acceptance\User;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Test\Acceptance\User\InMemoryGroupRepository;
+use Akeneo\Test\Acceptance\User\InMemoryUserGroupRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\Group;
 use Prophecy\Argument;
@@ -13,7 +13,7 @@ class InMemoryGroupRepositorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(InMemoryGroupRepository::class);
+        $this->shouldHaveType(InMemoryUserGroupRepository::class);
     }
 
     function it_is_a_identifiable_object_repository()
