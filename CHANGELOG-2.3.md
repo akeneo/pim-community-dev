@@ -3,6 +3,11 @@
 ## Bug fixes
 
 - PIM-7488: use catalog locale for attributes list in attribute groups
+- PIM-7517: fix the product models export filter on identifier
+
+## Migration
+
+**IMPORTANT** Please run the doctrine migrations command to fix the product models export profiles : `bin/console doctrine:migrations:migrate --env=prod`
 
 # 2.3.1 (2018-07-04)
 
