@@ -8,6 +8,12 @@ PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess:
             columns:
                 - category_id
                 - user_group_id
+    indexes:
+        view_category_user_group_idx:
+            columns:
+                - view_items
+                - user_group_id
+                - category_id
     fields:
         id:
             type: integer

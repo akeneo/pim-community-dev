@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Extension\Filter;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver;
@@ -109,7 +109,7 @@ class FilterExtension extends BaseFilterExtension
      *
      * We do that here because the ContextConfigurator didn't remove them to allow the PQB to be filtered.
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataIterableObject $data)
     {
         parent::visitMetadata($config, $data);
 

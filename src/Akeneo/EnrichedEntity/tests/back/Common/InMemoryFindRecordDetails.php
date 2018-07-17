@@ -34,7 +34,7 @@ class InMemoryFindRecordDetails implements FindRecordDetailsInterface
 
     public function save(RecordDetails $recordDetails)
     {
-        $key = $this->getKey($recordDetails->enrichedEntityIdentifier, $recordDetails->identifier);
+        $key = $this->getKey($recordDetails->identifier, $recordDetails->enrichedEntityIdentifier);
         $this->results[$key] = $recordDetails;
     }
 
@@ -42,17 +42,17 @@ class InMemoryFindRecordDetails implements FindRecordDetailsInterface
      * {@inheritdoc}
      */
     public function __invoke(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
-        RecordIdentifier $recordIdentifier
+        RecordIdentifier $recordIdentifier,
+        EnrichedEntityIdentifier $enrichedEntityIdentifier
     ): ?RecordDetails {
-        $key = $this->getKey($enrichedEntityIdentifier, $recordIdentifier);
+        $key = $this->getKey($recordIdentifier, $enrichedEntityIdentifier);
 
         return $this->results[$key] ?? null;
     }
 
     private function getKey(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
-        RecordIdentifier $recordIdentifier
+        RecordIdentifier $recordIdentifier,
+        EnrichedEntityIdentifier $enrichedEntityIdentifier
     ): string {
         return sprintf('%s_%s', (string) $enrichedEntityIdentifier, (string) $recordIdentifier);
     }

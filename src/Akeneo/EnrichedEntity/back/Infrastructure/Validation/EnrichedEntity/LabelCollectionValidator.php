@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -33,21 +34,45 @@ class LabelCollectionValidator extends ConstraintValidator
         $validator = Validation::createValidator();
 
         foreach ($value as $localeCode => $label) {
-            $violations = $validator->validate($localeCode, [
-                new Constraints\NotBlank(),
-                new Constraints\NotNull(),
-                new Constraints\Type([
-                    'type' => 'string',
-                ]),
-            ]);
+            $this->validateLocaleCode($validator, $localeCode);
+            $this->validateLabelForLocale($validator, $localeCode, $label);
+        }
+    }
 
-            if ($violations->count() > 0) {
-                foreach ($violations as $violation) {
-                    $this->context->addViolation(
-                        sprintf('Invalid key: %s', $violation->getMessage()),
-                        $violation->getParameters()
-                    );
-                }
+    /**
+     * @param mixed $localeCode
+     */
+    private function validateLocaleCode(ValidatorInterface $validator, $localeCode): void
+    {
+        $violations = $validator->validate($localeCode, [
+            new Constraints\Type(['type' => 'string']),
+        ]);
+
+        if ($violations->count() > 0) {
+            foreach ($violations as $violation) {
+                $this->context->addViolation(
+                    sprintf('invalid locale code: %s', $violation->getMessage()),
+                    $violation->getParameters()
+                );
+            }
+        }
+    }
+
+    /**
+     * @param mixed $label
+     */
+    private function validateLabelForLocale(ValidatorInterface $validator, $localeCode, $label): void
+    {
+        $violations = $validator->validate($label, [
+            new Constraints\Type(['type' => 'string']),
+        ]);
+
+        if ($violations->count() > 0) {
+            foreach ($violations as $violation) {
+                $this->context->addViolation(
+                    sprintf('invalid label for locale code "%s": %s', $localeCode, $violation->getMessage()),
+                    $violation->getParameters()
+                );
             }
         }
     }

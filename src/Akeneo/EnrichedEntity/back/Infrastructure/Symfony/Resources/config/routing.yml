@@ -12,6 +12,11 @@ akeneo_enriched_entities_enriched_entity_index_rest:
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.index }
     methods: [GET]
 
+akeneo_enriched_entities_enriched_entity_create_rest:
+    path: '/rest/enriched_entity'
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.create }
+    methods: [POST]
+
 akeneo_enriched_entities_enriched_entity_get_rest:
     path: '/rest/enriched_entity/{identifier}'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.enriched_entity.get }
@@ -31,3 +36,8 @@ akeneo_enriched_entities_records_get_rest:
     path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record/{recordIdentifier}'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.record.get }
     methods: [GET]
+
+akeneo_enriched_entities_record_edit_rest:
+    path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record/{recordIdentifier}'
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.record.edit }
+    methods: [POST]

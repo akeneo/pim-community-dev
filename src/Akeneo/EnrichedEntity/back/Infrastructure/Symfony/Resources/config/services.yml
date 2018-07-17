@@ -8,6 +8,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    akeneo_enrichedentity.infrastructure.action.enriched_entity.create:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\CreateAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.create_enriched_entity_handler'
+            - '@validator'
+
     akeneo_enrichedentity.infrastructure.action.enriched_entity.index:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\IndexAction'
         arguments:
@@ -40,6 +46,13 @@ services:
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.query.find_record_details'
 
+    akeneo_enrichedentity.infrastructure.action.record.edit:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\EditAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.edit_record_handler'
+            - '@serializer'
+            - '@validator'
+
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlRecordRepository'
         arguments:
@@ -67,5 +80,15 @@ services:
 
     akeneo_enrichedentity.application.enriched_entity.edit_enriched_entity_handler:
         class: 'Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+
+    akeneo_enrichedentity.application.enriched_entity.edit_record_handler:
+        class: 'Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordHandler'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.record'
+
+    akeneo_enrichedentity.application.enriched_entity.create_enriched_entity_handler:
+        class: 'Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityHandler'
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Publisher\Product;
 
-use Pim\Component\Catalog\Repository\AssociationTypeRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Publisher\UnpublisherInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedAssociationRepositoryInterface;
