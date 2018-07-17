@@ -2,6 +2,31 @@
 
 ## Bug fixes
 
+- PIM-7429: Fix category tab in product edit form
+- PIM-7523: Fix accessibility for boolean switches
+
+# 1.7.25 (2018-07-06)
+
+## Bug fixes
+
+- PIM-7466: do not escape quotes for translation
+
+# 1.7.24 (2018-07-05)
+
+## Bug fixes
+
+- PIM-7461: Allow to avoid type check on category filter
+- PIM-7366: Fix performance issue related to reloading of selected category children ids on the grid
+- PIM-7373: Fix deletion and reinsertion of all attributes relations at family save time
+- PIM-7474: Show job profile label instead of code in the headers
+- PIM-7466: do not escape quotes for translation
+- PIM-7470: reduce loading time for family selects
+- PIM-7475: Add family to Families edit history
+
+# 1.7.23 (2018-06-25)
+
+## Bug fixes
+
 - PIM-7400: Fix 'ensure-indexes' timeout command
 
 # 1.7.22 (2018-06-05)
