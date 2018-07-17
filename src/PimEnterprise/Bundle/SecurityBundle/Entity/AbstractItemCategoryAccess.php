@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use PimEnterprise\Component\Security\Model\CategoryAccessInterface;
+use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
 
 /**
  * Abstract implementation of the item category access interface

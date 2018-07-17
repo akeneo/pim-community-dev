@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

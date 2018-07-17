@@ -16,8 +16,8 @@ use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
-use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Model\JobProfileAccessInterface;
+use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Permission\Component\Model\JobProfileAccessInterface;
 
 /**
  * Job profile access manager

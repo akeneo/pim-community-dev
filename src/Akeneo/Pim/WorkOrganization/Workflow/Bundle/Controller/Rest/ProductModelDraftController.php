@@ -23,8 +23,8 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Attributes as SecurityAttributes;
+use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes as SecurityAttributes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

@@ -20,7 +20,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**

@@ -6,7 +6,7 @@ namespace PimEnterprise\Component\Catalog\ProductModel\Filter;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**

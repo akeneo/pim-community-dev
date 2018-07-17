@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 

@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 
 /**
  * Product view filter

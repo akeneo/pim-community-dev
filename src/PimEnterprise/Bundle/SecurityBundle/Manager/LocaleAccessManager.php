@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 
 /**
  * Locale access manager

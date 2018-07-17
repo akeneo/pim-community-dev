@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\tests\integration\PreProcessing;
 
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\tests\integration\TeamworkAssistantTestCase;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 
 class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase

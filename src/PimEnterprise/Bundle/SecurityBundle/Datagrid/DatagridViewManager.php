@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager as BaseDatagridViewManager;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
-use PimEnterprise\Component\Security\Repository\AccessRepositoryInterface;
+use Akeneo\Pim\Permission\Component\Repository\AccessRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

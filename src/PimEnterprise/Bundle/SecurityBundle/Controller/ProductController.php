@@ -16,7 +16,7 @@ use Pim\Bundle\PdfGeneratorBundle\Controller\ProductController as BaseController
 use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;

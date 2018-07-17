@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Datagrid;
 
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use PimEnterprise\Bundle\SecurityBundle\Filter\AbstractAuthorizationFilter;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 
 /**
  * Datagrid View filter to only keep views the current user has access to.

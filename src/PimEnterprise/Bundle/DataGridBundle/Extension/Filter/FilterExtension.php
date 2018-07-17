@@ -23,7 +23,7 @@ use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use PimEnterprise\Bundle\EnrichBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

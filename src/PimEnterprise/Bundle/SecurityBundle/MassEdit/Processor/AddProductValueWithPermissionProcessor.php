@@ -17,7 +17,7 @@ use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor as BaseProcessor;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

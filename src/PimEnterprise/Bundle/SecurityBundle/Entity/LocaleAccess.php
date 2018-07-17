@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use PimEnterprise\Component\Security\Model\LocaleAccessInterface;
+use Akeneo\Pim\Permission\Component\Model\LocaleAccessInterface;
 
 /**
  * Locale Access entity

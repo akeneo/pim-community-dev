@@ -46,7 +46,7 @@ use Pim\Bundle\EnrichBundle\Controller\FileController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

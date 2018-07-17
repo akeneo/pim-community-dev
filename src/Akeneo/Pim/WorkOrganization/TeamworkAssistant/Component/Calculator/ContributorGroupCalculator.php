@@ -18,7 +18,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\Attribute
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\FamilyRequirementRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>

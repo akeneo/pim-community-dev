@@ -18,8 +18,8 @@ use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Repository\AccessRepositoryInterface;
+use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Permission\Component\Repository\AccessRepositoryInterface;
 
 /**
  * Job profile access repository

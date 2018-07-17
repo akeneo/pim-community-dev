@@ -19,8 +19,8 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
-use PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity;
-use PimEnterprise\Component\Security\Factory\FilteredEntityFactory;
+use Akeneo\Pim\Permission\Component\Authorization\DenyNotGrantedCategorizedEntity;
+use Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory;
 
 /**
  * Decorates CE product model repository to apply permissions.

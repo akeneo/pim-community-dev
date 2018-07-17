@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Api;
 
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
-use PimEnterprise\Component\Security\Exception\ResourceViewAccessDeniedException;
+use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
+use Akeneo\Pim\Permission\Component\Exception\ResourceViewAccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;

@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter as BaseProductEditFilter;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 
 /**
  * Enterprise override to add product ownership check for product classification
