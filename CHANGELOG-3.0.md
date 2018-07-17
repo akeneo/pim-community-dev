@@ -14,7 +14,6 @@
 - Change constructor of `PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter`. Add arguments `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface`, `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
 - Change constructor of `PimEnterprise\Component\Catalog\Security\Merger\NotGrantedAssociatedProductMerger`. Add arguments `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
 - Change constructor of `PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter`. Add arguments `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
-- Move namespace `PimEnterprise\Bundle\VersioningBundle` to `PimEnterprise\Bundle\RevertBundle`
 - Move namespace `PimEnterprise\Bundle\VersioningBundle\UpdateGuesser` to `PimEnterprise\Bundle\SecurityBundle\UpdateGuesser`
 - Move `PimEnterprise\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber` to `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber`
 - Move namespace `PimEnterprise\Bundle\VersioningBundle\Purger` to `PimEnterprise\Bundle\WorkflowBundle\Purger`
@@ -84,7 +83,7 @@
 - Remove class `Akeneo\Asset\Bundle\TwigExtension\ImageExtension`
 - Move namespace `PimEnterprise\Component\TeamworkAssistant` to `Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component`
 - Move namespace `PimEnterprise\Bundle\TeamworkAssistantBundle` to `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle`
-- Move namespace `PimEnterprise\Bundle\RevertBundle` to `Akeneo\Pim\WorkOrganization\ProductRevert`
+- Move namespace `PimEnterprise\Bundle\VersioningBundle` to `Akeneo\Pim\WorkOrganization\ProductRevert`
 
 ## Security
 
