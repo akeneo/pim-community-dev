@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
 use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
+use Akeneo\Pim\Automation\Bundle\Model\ProductCopyValueActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
