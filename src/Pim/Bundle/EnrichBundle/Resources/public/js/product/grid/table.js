@@ -74,6 +74,7 @@ define(
              * @param  {Object} resp Datagrid load response
              */
             loadDataGrid(resp) {
+                console.time('loadDatagrid')
                 if (typeof resp === 'string' || null === resp) {
                     return;
                 }
@@ -107,7 +108,8 @@ define(
 
                 datagridBuilder([StateListener]);
 
-                this.loadingMask.hide();
+                console.timeEnd('loadDatagrid')
+                // this.loadingMask.hide();
             },
 
             /**
@@ -235,28 +237,29 @@ define(
              * @param {String} defaultView
              */
             setDatagridState(defaultColumns, defaultView) {
-                const { gridName, datagridLoadUrl} = this.config;
-                let params = this.getInitialParams();
+                console.time('setDatagridState')
+                // const { gridName, datagridLoadUrl} = this.config;
+                // let params = this.getInitialParams();
 
-                if (!DatagridState.get(gridName, ['view'])) {
-                    DatagridState.refreshFiltersFromUrl(gridName);
-                }
+                // if (!DatagridState.get(gridName, ['view'])) {
+                //     DatagridState.refreshFiltersFromUrl(gridName);
+                // }
 
-                const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
+                // const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
-                if (defaultView && ('0' === state.view || null === state.view)) {
-                    params = this.applyView(defaultView.id, params);
-                    params = this.applyFilters(defaultView.filters, params);
-                    params = this.applyColumns(defaultView.columns, params);
-                } else {
-                    if (state.view) params = this.applyView(state.view, params);
-                    if (state.filters) params = this.applyFilters(state.filters, params);
-                    params = this.applyColumns(state.columns || defaultColumns, params);
-                }
+                // if (defaultView && ('0' === state.view || null === state.view)) {
+                //     params = this.applyView(defaultView.id, params);
+                //     params = this.applyFilters(defaultView.filters, params);
+                //     params = this.applyColumns(defaultView.columns, params);
+                // } else {
+                //     if (state.view) params = this.applyView(state.view, params);
+                //     if (state.filters) params = this.applyFilters(state.filters, params);
+                //     params = this.applyColumns(state.columns || defaultColumns, params);
+                // }
 
-                this.getRoot().trigger('datagrid:getParams', params);
+                // this.getRoot().trigger('datagrid:getParams', params);
 
-                return new Promise((resolve, reject) => {
+                const promise = new Promise((resolve, reject) => {
                     this.loadDataGrid({
   "metadata": {
     "requireJSModules": [],
@@ -3934,6 +3937,9 @@ define(
 })
                     resolve()
                 })
+
+                console.timeEnd('setDatagridState')
+                return promise
                 // return $.get(
                 //     Routing.generate(datagridLoadUrl, params),
                 //     this.loadDataGrid.bind(this)
@@ -3944,12 +3950,17 @@ define(
              * @inheritdoc
              */
             render() {
-                this.$el.empty().append(this.loadingMask.$el);
-                this.loadingMask.render().show();
+                console.time('renderGrid')
+                this.$el.empty()
+                // .append(this.loadingMask.$el);
+                // this.loadingMask.render().show();
 
                 // $.when(this.getDefaultColumns(), this.getDefaultView())
                 //     .then((defaultColumns, defaultView) => {
-                return this.setDatagridState(["identifier","image","label","family","enabled","completeness","created","updated","complete_variant_products"], {"view":null});
+                const state = this.setDatagridState(["identifier","image","label","family","enabled","completeness","created","updated","complete_variant_products"], {"view":null});
+
+                console.timeEnd('renderGrid')
+                return state;
                     // });
             }
         });
