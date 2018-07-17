@@ -86,6 +86,8 @@
 - Move namespace `PimEnterprise\Bundle\VersioningBundle` to `Akeneo\Pim\WorkOrganization\ProductRevert`
 - Move namespace `PimEnterprise\Component\Workflow` to `Akeneo\Pim\WorkOrganization\Workflow\Component`
 - Move namespace `PimEnterprise\Bundle\Workflow` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle`
+- Move namespace `PimEnterprise\Bundle\CatalogRuleBundle` to `Akeneo\Pim\Automation\RuleEngine\Bundle`
+- Move namespace `PimEnterprise\Component\CatalogRule` to `Akeneo\Pim\Automation\RuleEngine\Component`
 
 ## Security
 
