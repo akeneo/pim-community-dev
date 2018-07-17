@@ -19,6 +19,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  */
 class InMemoryAdapter implements DataProviderAdapterInterface
 {
+    /**
+     * @const string A hard-coded token for acceptance tests.
+     */
+    private const PIM_AI_TOKEN = 'the-only-valid-token-for-acceptance';
+
     /** @var array */
     private $config;
 
@@ -87,10 +92,7 @@ class InMemoryAdapter implements DataProviderAdapterInterface
 
     public function authenticate(?string $token): bool
     {
-        throw new \Exception(
-            sprintf('"%s" is not yet implemented'),
-            __METHOD__
-        );
+        return static::PIM_AI_TOKEN === $token;
     }
 
     /**
