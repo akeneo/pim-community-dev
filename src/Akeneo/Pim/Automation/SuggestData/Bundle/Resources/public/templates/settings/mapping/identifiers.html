@@ -6,8 +6,10 @@
     </tr>
     <% Object.keys(identifiers).forEach(pimAiAttributeLabel => { %>
     <tr class="AknGrid-bodyRow">
-        <td class="AknGrid-bodyCell"><%- __(`akeneo_suggest_data.settings.index.tab.identifiers.headers.${pimAiAttributeLabel}_label`) %></td>
-        <td class="AknGrid-bodyCell attribute-selector" data-identifier="<%- pimAiAttributeLabel %>"></td>
+        <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight"><%- __(`akeneo_suggest_data.settings.index.tab.identifiers.headers.${pimAiAttributeLabel}_label`) %></td>
+        <td class="AknGrid-bodyCell">
+            <div class="AknFormContainer attribute-selector" data-identifier="<%- pimAiAttributeLabel %>"></div>
+        </td>
         <td class="AknGrid-bodyCell">Active</td>
     </tr>
     <% }) %>

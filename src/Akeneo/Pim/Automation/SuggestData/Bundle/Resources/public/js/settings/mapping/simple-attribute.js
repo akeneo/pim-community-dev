@@ -14,6 +14,15 @@ define([
         BaseSimpleSelect
     ) {
         return BaseSimpleSelect.extend({
+            /**
+             * {@inheritdoc}
+             */
+            getSelect2Options() {
+                const parent = BaseSimpleSelect.prototype.getSelect2Options.apply(this, arguments);
+                parent.allowClear = true;
+
+                return parent;
+            },
         });
     }
 );
