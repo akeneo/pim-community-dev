@@ -3,7 +3,7 @@ Feature: Create an enriched entity
   As a user
   I want create an enriched entity
 
-  @acceptance-back
+  @acceptance-back @acceptance-front
   Scenario: Creating an enriched entity
     When the user creates an enriched entity "designer" with:
       | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
