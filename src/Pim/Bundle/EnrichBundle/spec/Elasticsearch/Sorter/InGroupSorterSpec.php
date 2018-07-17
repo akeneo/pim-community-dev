@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\EnrichBundle\Elasticsearch\Sorter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Pim\Bundle\EnrichBundle\Elasticsearch\Sorter\InGroupSorter;
 use Pim\Component\Catalog\Exception\InvalidArgumentException;

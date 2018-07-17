@@ -1,7 +1,7 @@
 parameters:
-    pim_catalog.elasticsearch.indexer.product.class: 'Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer'
-    pim_catalog.elasticsearch.indexer.product_model_indexer.class: 'Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductModelIndexer'
-    pim_catalog.elasticsearch.indexer.product_model_descendants_indexer.class: 'Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer'
+    pim_catalog.elasticsearch.indexer.product.class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer'
+    pim_catalog.elasticsearch.indexer.product_model_indexer.class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer'
+    pim_catalog.elasticsearch.indexer.product_model_descendants_indexer.class: 'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsIndexer'
 
 services:
     pim_catalog.elasticsearch.indexer.product:

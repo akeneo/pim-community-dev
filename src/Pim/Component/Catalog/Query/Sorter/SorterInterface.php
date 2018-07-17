@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Query\Sorter;
 
-use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 
 /**
  * Sorter interface

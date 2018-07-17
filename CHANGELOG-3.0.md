@@ -12,6 +12,8 @@
 
 ## BC breaks
 
+- Move namespace `Pim\Bundle\CatalogBundle\Elasticsearch` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch`
+
 - Move `Pim\Bundle\CatalogBundle\Command\Cleaner\WrongBooleanValuesOnVariantProductCleaner` to `Akeneo\Pim\Enrichment\Bundle\Command\Cleaner\WrongBooleanValuesOnVariantProductCleaner`
 - Move `Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\AttributeFilterDumper` to `Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\AttributeFilterDumper`
 - Move `Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\FieldFilterDumper` to `Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\FieldFilterDumper`

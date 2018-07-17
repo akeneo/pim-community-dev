@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Query;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a product
