@@ -3,6 +3,8 @@
 namespace Akeneo\UserManagement\Component\Normalizer;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -21,15 +23,25 @@ class UserNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $fileNormalizer;
 
+    /** @var SecurityFacade */
+    private $securityFacade;
+
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     /** @var array */
     protected $supportedFormats = ['array', 'standard', 'internal_api'];
 
     public function __construct(
         DateTimeNormalizer $dateTimeNormalizer,
-        NormalizerInterface $fileNormalizer
+        NormalizerInterface $fileNormalizer,
+        SecurityFacade $securityFacade,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->dateTimeNormalizer = $dateTimeNormalizer;
         $this->fileNormalizer = $fileNormalizer;
+        $this->securityFacade = $securityFacade;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -101,13 +113,21 @@ class UserNormalizer implements NormalizerInterface
     }
 
     /**
+     * Returns true if the current user has permission to edit user or is the current user.
+     *
      * @param UserInterface $user
      *
      * @return bool
      */
     private function isEditGranted($user): bool
     {
-        // TODO
-        return false;
+        if ($this->securityFacade->isGranted('pim_user_user_edit')) {
+            return true;
+        }
+
+        $token = $this->tokenStorage->getToken();
+        $currentUser = $token ? $token->getUser() : null;
+
+        return ($user->getId() && is_object($currentUser) && $currentUser->getId() == $user->getId());
     }
 }

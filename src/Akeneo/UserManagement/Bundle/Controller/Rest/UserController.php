@@ -116,8 +116,7 @@ class UserController
      *
      * @return Response
      *
-     * TODO Change ACL Ancestor
-     * @AclAncestor("pim_enrich_grouptype_edit")
+     * @AclAncestor("pim_user_user_edit")
      */
     public function postAction(Request $request, $identifier): Response
     {

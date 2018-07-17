@@ -7,5 +7,7 @@ services:
         arguments:
             - '@serializer.normalizer.datetime'
             - '@pim_enrich.normalizer.file'
+            - '@oro_security.security_facade'
+            - '@security.token_storage'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
