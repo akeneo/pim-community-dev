@@ -1,6 +1,6 @@
 parameters:
-    pimee_catalog_rule.event_listener.datagrid.configure_attribute_grid.class: PimEnterprise\Bundle\CatalogRuleBundle\EventListener\Datagrid\ConfigureAttributeGridListener
-    pimee_catalog_rule.event_listener.datagrid.configure_rule_grid.class:      PimEnterprise\Bundle\CatalogRuleBundle\EventListener\Datagrid\ConfigureRuleRelationGridListener
+    pimee_catalog_rule.event_listener.datagrid.configure_attribute_grid.class: Akeneo\Pim\Automation\RuleEngine\Bundle\EventListener\Datagrid\ConfigureAttributeGridListener
+    pimee_catalog_rule.event_listener.datagrid.configure_rule_grid.class:      Akeneo\Pim\Automation\RuleEngine\Bundle\EventListener\Datagrid\ConfigureRuleRelationGridListener
 
 services:
     pimee_catalog_rule.event_listener.datagrid.configure_attribute_grid:

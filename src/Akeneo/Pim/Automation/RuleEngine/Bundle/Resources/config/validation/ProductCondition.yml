@@ -1,10 +1,10 @@
-PimEnterprise\Component\CatalogRule\Model\ProductCondition:
+Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition:
     constraints:
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\NonEmptyValueCondition: ~
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ValueCondition: ~
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\ExistingFilterField: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\NonEmptyValueCondition: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ValueCondition: ~
+        - \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\ExistingFilterField: ~
     properties:
-        # value is checked with \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\NonEmptyValueCondition
+        # value is checked with \Akeneo\Pim\Automation\RuleEngine\Bundle\Validator\Constraint\NonEmptyValueCondition
         field:
            - Type:
                 type: string

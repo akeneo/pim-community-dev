@@ -1,5 +1,5 @@
 parameters:
-    pim_connector.job.job_parameters.constraint_collection_provider.impacted_product_count.class: PimEnterprise\Component\CatalogRule\Connector\Job\JobParameters\ConstraintCollectionProvider\ImpactedProductCount
+    pim_connector.job.job_parameters.constraint_collection_provider.impacted_product_count.class: Akeneo\Pim\Automation\RuleEngine\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ImpactedProductCount
 
 services:
     # Validation constraints for Exports ------------------------------------------------------------------------------

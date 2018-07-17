@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog_rule.datagrid.extension.selector.orm.attribute.is_smart.class: PimEnterprise\Bundle\CatalogRuleBundle\Datagrid\Extension\Selector\Orm\Attribute\IsSmartSelectorExtension
+    pim_catalog_rule.datagrid.extension.selector.orm.attribute.is_smart.class: Akeneo\Pim\Automation\RuleEngine\Bundle\Datagrid\Extension\Selector\Orm\Attribute\IsSmartSelectorExtension
 
 services:
     pim_catalog_rule.datagrid.extension.selector.orm.attribute.is_smart:

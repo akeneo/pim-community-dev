@@ -1,13 +1,13 @@
 parameters:
-    pimee_catalog_rule.validator.existing_filter_field.class:   PimEnterprise\Component\CatalogRule\Validator\ExistingFilterFieldValidator
-    pimee_catalog_rule.validator.existing_set_field.class:      PimEnterprise\Component\CatalogRule\Validator\ExistingSetFieldValidator
-    pimee_catalog_rule.validator.existing_copy_fields.class:    PimEnterprise\Component\CatalogRule\Validator\ExistingCopyFieldsValidator
-    pimee_catalog_rule.validator.existing_add_field.class:      PimEnterprise\Component\CatalogRule\Validator\ExistingAddFieldValidator
-    pimee_catalog_rule.validator.non_empty_value.class:         PimEnterprise\Component\CatalogRule\Validator\NonEmptyValueConditionValidator
-    pimee_catalog_rule.validator.value_condition.class:         PimEnterprise\Component\CatalogRule\Validator\ValueConditionValidator
-    pimee_catalog_rule.validator.property_action.class:         PimEnterprise\Component\CatalogRule\Validator\PropertyActionValidator
-    pimee_catalog_rule.validator.existing_remove_field.class:   PimEnterprise\Component\CatalogRule\Validator\ExistingRemoveFieldValidator
-    pimee_catalog_rule.validator.include_children_option.class: PimEnterprise\Component\CatalogRule\Validator\IncludeChildrenOptionValidator
+    pimee_catalog_rule.validator.existing_filter_field.class:   Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingFilterFieldValidator
+    pimee_catalog_rule.validator.existing_set_field.class:      Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingSetFieldValidator
+    pimee_catalog_rule.validator.existing_copy_fields.class:    Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingCopyFieldsValidator
+    pimee_catalog_rule.validator.existing_add_field.class:      Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingAddFieldValidator
+    pimee_catalog_rule.validator.non_empty_value.class:         Akeneo\Pim\Automation\RuleEngine\Component\Validator\NonEmptyValueConditionValidator
+    pimee_catalog_rule.validator.value_condition.class:         Akeneo\Pim\Automation\RuleEngine\Component\Validator\ValueConditionValidator
+    pimee_catalog_rule.validator.property_action.class:         Akeneo\Pim\Automation\RuleEngine\Component\Validator\PropertyActionValidator
+    pimee_catalog_rule.validator.existing_remove_field.class:   Akeneo\Pim\Automation\RuleEngine\Component\Validator\ExistingRemoveFieldValidator
+    pimee_catalog_rule.validator.include_children_option.class: Akeneo\Pim\Automation\RuleEngine\Component\Validator\IncludeChildrenOptionValidator
 
 services:
     pimee_catalog_rule.validator.existing_filter_field:

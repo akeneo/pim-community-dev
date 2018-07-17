@@ -1,5 +1,5 @@
 parameters:
-    pim_connector.job.job_parameters.default_values_provider.impacted_product_count.class: PimEnterprise\Component\CatalogRule\Connector\Job\JobParameters\DefaultValuesProvider\ImpactedProductCount
+    pim_connector.job.job_parameters.default_values_provider.impacted_product_count.class: Akeneo\Pim\Automation\RuleEngine\Component\Connector\Job\JobParameters\DefaultValuesProvider\ImpactedProductCount
 
 services:
     # Default Parameters for Exports ----------------------------------------------------------------------------------

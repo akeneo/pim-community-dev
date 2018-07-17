@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog_rule.factory.rule_notification.class: PimEnterprise\Component\CatalogRule\Factory\RuleNotificationFactory
+    pimee_catalog_rule.factory.rule_notification.class: Akeneo\Pim\Automation\RuleEngine\Component\Factory\RuleNotificationFactory
 
 services:
     pimee_catalog_rule.factory.rule_notification:

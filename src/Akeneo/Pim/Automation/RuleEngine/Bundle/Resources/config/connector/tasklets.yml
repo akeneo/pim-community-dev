@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog_rule.tasklet.impacted_product_count.class: PimEnterprise\Component\CatalogRule\Connector\Tasklet\ImpactedProductCountTasklet
+    pimee_catalog_rule.tasklet.impacted_product_count.class: Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet\ImpactedProductCountTasklet
 
 services:
     pimee_catalog_rule.tasklet.impacted_product_count:

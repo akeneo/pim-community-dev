@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog_rule.runner.product.class: PimEnterprise\Component\CatalogRule\Runner\ProductRuleRunner
+    pimee_catalog_rule.runner.product.class: Akeneo\Pim\Automation\RuleEngine\Component\Runner\ProductRuleRunner
 
 services:
     pimee_catalog_rule.runner.product:
