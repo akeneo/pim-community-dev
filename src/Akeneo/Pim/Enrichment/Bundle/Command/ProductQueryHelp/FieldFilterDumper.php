@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Command\ProductQueryHelp;
+namespace Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp;
 
-use Pim\Bundle\CatalogBundle\Command\DumperInterface;
+use Akeneo\Pim\Enrichment\Bundle\Command\DumperInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;

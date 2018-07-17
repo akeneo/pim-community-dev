@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle\Command;
 
-use Pim\Bundle\CatalogBundle\Command\IndexProductCommand;
-use Pim\Bundle\CatalogBundle\Command\IndexProductModelCommand;
+use Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand;
+use Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

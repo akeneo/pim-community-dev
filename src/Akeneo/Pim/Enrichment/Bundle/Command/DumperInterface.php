@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Command;
+namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Symfony\Component\Console\Output\OutputInterface;
 

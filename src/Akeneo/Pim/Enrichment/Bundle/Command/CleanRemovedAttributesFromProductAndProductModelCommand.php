@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\Command;
+namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;

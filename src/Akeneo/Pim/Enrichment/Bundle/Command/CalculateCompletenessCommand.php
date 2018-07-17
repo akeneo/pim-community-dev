@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Command;
+namespace Akeneo\Pim\Enrichment\Bundle\Command;
 
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

@@ -38,7 +38,7 @@ parameters:
     pim_catalog.updater.remover.multiselect_value.class:      Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover
     pim_catalog.updater.category_translatable.class:          Pim\Component\Catalog\Localization\CategoryUpdater
 
-    pim_catalog.command.cleaner.wrong_boolean_value_on_variant_product.class: Pim\Bundle\CatalogBundle\Command\Cleaner\WrongBooleanValuesOnVariantProductCleaner
+    pim_catalog.command.cleaner.wrong_boolean_value_on_variant_product.class: Akeneo\Pim\Enrichment\Bundle\Command\Cleaner\WrongBooleanValuesOnVariantProductCleaner
 
 services:
     # Updaters
