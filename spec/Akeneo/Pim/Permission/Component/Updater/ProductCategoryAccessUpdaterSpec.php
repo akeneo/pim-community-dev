@@ -34,7 +34,7 @@ class ProductCategoryAccessUpdaterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidObjectException::objectExpected(
                 'stdClass',
-                'PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess'
+                'Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess'
             )
         )->during('update', [new \stdClass(), []]);
     }
