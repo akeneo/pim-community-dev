@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Query\Filter;
 
-use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 
 /**
  * Filter interface

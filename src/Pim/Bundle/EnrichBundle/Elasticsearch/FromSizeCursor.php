@@ -5,8 +5,8 @@ namespace Pim\Bundle\EnrichBundle\Elasticsearch;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Elasticsearch\AbstractCursor;
-use Pim\Bundle\CatalogBundle\Elasticsearch\IdentifierResults;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\AbstractCursor;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResults;
 
 /**
  * Bounded cursor to iterate over items where a start and a limit are defined.
