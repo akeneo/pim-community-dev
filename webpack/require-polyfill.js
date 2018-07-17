@@ -8,6 +8,8 @@ define(['jquery', 'underscore', 'require-context'], function ($, _, requireConte
     return function(modules, cb) {
         var resolvedModules = [];
 
+        console.log('require-polyfill', modules)
+
         if (typeof modules === 'string') {
             return requireContext(modules);
         } else {
