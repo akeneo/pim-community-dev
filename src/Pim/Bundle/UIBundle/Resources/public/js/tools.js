@@ -14,6 +14,7 @@ function (_, requireContext) {
          * @param {function (Object)} callback
          */
         loadModules: function (modules, callback) {
+            console.time('loadModules')
             const type = Math.random()
             var arrayArguments = _.object(requirements,  arguments)
             var requirements = _.values(modules);
@@ -22,6 +23,8 @@ function (_, requireContext) {
                 var module = requireContext(value)
                 modules[key] = module
             }, arrayArguments));
+
+            console.timeEnd('loadModules')
 
             callback(modules);
         }

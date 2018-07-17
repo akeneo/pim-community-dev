@@ -87,10 +87,13 @@ function(_, Backgrid, Row) {
          * @inheritDoc
          */
         render: function() {
+            console.time('-----gridbody render')
             Backgrid.Body.prototype.render.apply(this, arguments);
-            if (this.rowClassName) {
-                this.$('> *').addClass(this.rowClassName);
-            }
+            // if (this.rowClassName) {
+            //     this.$('> *').addClass(this.rowClassName);
+            // }
+
+            console.timeEnd('-----gridbody render')
             return this;
         }
     });

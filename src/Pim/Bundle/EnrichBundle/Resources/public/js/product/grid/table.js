@@ -83,19 +83,19 @@ define(
                 const dataLocale = UserContext.get('catalogLocale');
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
-                if (state.columns) {
-                    resp.metadata.state.parameters = _.extend({},
-                        resp.metadata.state.parameters,
-                        {
-                            view: {
-                                columns: state.columns,
-                                id: state.view
-                            }
-                        }
-                    );
-                }
+                // if (state.columns) {
+                //     resp.metadata.state.parameters = _.extend({},
+                //         resp.metadata.state.parameters,
+                //         {
+                //             view: {
+                //                 columns: state.columns,
+                //                 id: state.view
+                //             }
+                //         }
+                //     );
+                // }
 
-                resp.metadata = this.applyDisplayType(resp.metadata);
+                // resp.metadata = this.applyDisplayType(resp.metadata);
 
                 $(`#grid-${gridName}`).data({
                     metadata: resp.metadata,
