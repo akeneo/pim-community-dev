@@ -10,8 +10,8 @@ use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
 

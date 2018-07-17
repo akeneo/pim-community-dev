@@ -2,7 +2,7 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
     type: entity
     table: pimee_security_attribute_group_access
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository
+    repositoryClass: Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository
     uniqueConstraints:
         group_user_group_idx:
             columns:

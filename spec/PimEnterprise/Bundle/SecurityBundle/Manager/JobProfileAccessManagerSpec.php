@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\JobProfileAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
 

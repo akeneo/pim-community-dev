@@ -15,7 +15,7 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

@@ -8,9 +8,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator;
-use PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProductGridListener;
-use PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\ContextConfigurator;
-use PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator;
+use Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\ConfigureProductGridListener;
+use Akeneo\Pim\Permission\Bundle\Datagrid\Product\ContextConfigurator;
+use Akeneo\Pim\Permission\Bundle\Datagrid\Product\RowActionsConfigurator;
 
 class ConfigureProductGridListenerSpec extends ObjectBehavior
 {

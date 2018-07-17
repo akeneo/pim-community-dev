@@ -20,7 +20,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
-use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
+use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes as SecurityAttributes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

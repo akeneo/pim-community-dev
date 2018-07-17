@@ -1,24 +1,24 @@
 parameters:
     pimee_security.filter.granted_product_attribute_filter.class: PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter
     pimee_security.filter.granted_product_model_attribute_filter.class: PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter
-    pimee_catalog.filter.attribute_view_right.class: PimEnterprise\Bundle\SecurityBundle\Filter\AttributeViewRightFilter
-    pimee_catalog.filter.attribute_edit_right.class: PimEnterprise\Bundle\SecurityBundle\Filter\AttributeEditRightFilter
-    pimee_catalog.filter.attribute_group_view_right.class: PimEnterprise\Bundle\SecurityBundle\Filter\AttributeGroupViewRightFilter
-    pimee_catalog.filter.product_value_attribute_group_right.class: PimEnterprise\Bundle\SecurityBundle\Filter\ProductValueAttributeGroupRightFilter
-    pimee_catalog.filter.product_value_locale_right.class: PimEnterprise\Bundle\SecurityBundle\Filter\ProductValueLocaleRightFilter
-    pimee_catalog.filter.product_right_view.class: PimEnterprise\Bundle\SecurityBundle\Filter\ProductRightViewFilter
-    pimee_catalog.filter.product_right_edit.class: PimEnterprise\Bundle\SecurityBundle\Filter\ProductRightEditFilter
-    pimee_catalog.filter.locale_view_right.class: PimEnterprise\Bundle\SecurityBundle\Filter\LocaleViewRightFilter
-    pimee_catalog.filter.locale_edit_right.class: PimEnterprise\Bundle\SecurityBundle\Filter\LocaleEditRightFilter
-    pimee_catalog.filter.category.class: PimEnterprise\Bundle\SecurityBundle\Filter\CategoryRightFilter
-    pimee_catalog.filter.abstract_authorization.class: PimEnterprise\Bundle\SecurityBundle\Filter\AbstractAuthorizationFilter
-    pimee_catalog.filter.product_and_product_model_delete_right.class: PimEnterprise\Bundle\SecurityBundle\Filter\ProductAndProductModelDeleteRightFilter
-    pimee_security.filter.product_edit_data.class: PimEnterprise\Bundle\SecurityBundle\Filter\ProductEditDataFilter
-    pimee_security.filter.product_values_edit_data.class: PimEnterprise\Bundle\SecurityBundle\Filter\ProductValuesEditDataFilter
-    pimee_security.filter.job_instance_execute_right.class: PimEnterprise\Bundle\SecurityBundle\Filter\JobInstanceExecuteRightFilter
-    pimee_security.filter.job_instance_edit_right.class: PimEnterprise\Bundle\SecurityBundle\Filter\JobInstanceEditRightFilter
-    pimee_security.filter.attribute_group_edit.class: PimEnterprise\Bundle\SecurityBundle\Filter\EntityWithPermissionsEditFilter
-    pimee_security.filter.job_instance_edit.class: PimEnterprise\Bundle\SecurityBundle\Filter\EntityWithPermissionsEditFilter
+    pimee_catalog.filter.attribute_view_right.class: Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter
+    pimee_catalog.filter.attribute_edit_right.class: Akeneo\Pim\Permission\Bundle\Filter\AttributeEditRightFilter
+    pimee_catalog.filter.attribute_group_view_right.class: Akeneo\Pim\Permission\Bundle\Filter\AttributeGroupViewRightFilter
+    pimee_catalog.filter.product_value_attribute_group_right.class: Akeneo\Pim\Permission\Bundle\Filter\ProductValueAttributeGroupRightFilter
+    pimee_catalog.filter.product_value_locale_right.class: Akeneo\Pim\Permission\Bundle\Filter\ProductValueLocaleRightFilter
+    pimee_catalog.filter.product_right_view.class: Akeneo\Pim\Permission\Bundle\Filter\ProductRightViewFilter
+    pimee_catalog.filter.product_right_edit.class: Akeneo\Pim\Permission\Bundle\Filter\ProductRightEditFilter
+    pimee_catalog.filter.locale_view_right.class: Akeneo\Pim\Permission\Bundle\Filter\LocaleViewRightFilter
+    pimee_catalog.filter.locale_edit_right.class: Akeneo\Pim\Permission\Bundle\Filter\LocaleEditRightFilter
+    pimee_catalog.filter.category.class: Akeneo\Pim\Permission\Bundle\Filter\CategoryRightFilter
+    pimee_catalog.filter.abstract_authorization.class: Akeneo\Pim\Permission\Bundle\Filter\AbstractAuthorizationFilter
+    pimee_catalog.filter.product_and_product_model_delete_right.class: Akeneo\Pim\Permission\Bundle\Filter\ProductAndProductModelDeleteRightFilter
+    pimee_security.filter.product_edit_data.class: Akeneo\Pim\Permission\Bundle\Filter\ProductEditDataFilter
+    pimee_security.filter.product_values_edit_data.class: Akeneo\Pim\Permission\Bundle\Filter\ProductValuesEditDataFilter
+    pimee_security.filter.job_instance_execute_right.class: Akeneo\Pim\Permission\Bundle\Filter\JobInstanceExecuteRightFilter
+    pimee_security.filter.job_instance_edit_right.class: Akeneo\Pim\Permission\Bundle\Filter\JobInstanceEditRightFilter
+    pimee_security.filter.attribute_group_edit.class: Akeneo\Pim\Permission\Bundle\Filter\EntityWithPermissionsEditFilter
+    pimee_security.filter.job_instance_edit.class: Akeneo\Pim\Permission\Bundle\Filter\EntityWithPermissionsEditFilter
 
 services:
     pimee_security.filter.granted_product_attribute_filter:

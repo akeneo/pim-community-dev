@@ -14,7 +14,7 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repo
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 
 /**

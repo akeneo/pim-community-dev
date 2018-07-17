@@ -21,8 +21,8 @@ use Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver;
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension as BaseFilterExtension;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use PimEnterprise\Bundle\EnrichBundle\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
+use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Translation\TranslatorInterface;
 

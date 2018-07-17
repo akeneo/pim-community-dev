@@ -1,5 +1,5 @@
 parameters:
-    pimee_security.renderer.product_pdf.class: PimEnterprise\Bundle\SecurityBundle\Pdf\ProductPdfRenderer
+    pimee_security.renderer.product_pdf.class: Akeneo\Pim\Permission\Bundle\Pdf\ProductPdfRenderer
 
 services:
     pimee_security.renderer.product_pdf:

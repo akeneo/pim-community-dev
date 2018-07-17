@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Updater\Setter\GrantedCategoryFieldSetter;
 use Prophecy\Argument;

@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
 

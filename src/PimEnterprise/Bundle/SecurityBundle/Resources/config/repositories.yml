@@ -1,12 +1,12 @@
 parameters:
-    pimee_security.repository.attribute_group_access.class: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository
-    pimee_security.repository.category_access.class:        PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository
-    pimee_security.repository.job_profile_access.class:     PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository
-    pimee_security.repository.locale_access.class:          PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository
-    pimee_security.repository.product_model.class: PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductModelRepository
-    pimee_security.repository.product.class: PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductRepository
-    pim_catalog.repository.product_mass_action.class: PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductMassActionRepository
-    pim_catalog.repository.attribute.class: PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Attribute\AttributeRepository
+    pimee_security.repository.attribute_group_access.class: Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository
+    pimee_security.repository.category_access.class:        Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository
+    pimee_security.repository.job_profile_access.class:     Akeneo\Pim\Permission\Bundle\Entity\Repository\JobProfileAccessRepository
+    pimee_security.repository.locale_access.class:          Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository
+    pimee_security.repository.product_model.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductModelRepository
+    pimee_security.repository.product.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductRepository
+    pim_catalog.repository.product_mass_action.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductMassActionRepository
+    pim_catalog.repository.attribute.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\Attribute\AttributeRepository
 
 services:
     pimee_security.repository.attribute_group_access:

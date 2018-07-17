@@ -16,7 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess;
+use Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess;
 
 /**
  * Updates a Product Category Access

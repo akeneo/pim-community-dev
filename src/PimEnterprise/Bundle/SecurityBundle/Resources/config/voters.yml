@@ -1,12 +1,12 @@
 parameters:
-    pimee_security.voter.attribute.class: PimEnterprise\Bundle\SecurityBundle\Voter\AttributeVoter
-    pimee_security.voter.attribute_group.class: PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter
-    pimee_security.voter.category.class: PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter
-    pimee_security.voter.product_and_product_model.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductAndProductModelVoter
-    pimee_security.voter.job_profile.class: PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter
-    pimee_security.voter.locale.class: PimEnterprise\Bundle\SecurityBundle\Voter\LocaleVoter
-    pimee_security.voter.datagrid_view.class: PimEnterprise\Bundle\SecurityBundle\Voter\DatagridViewVoter
-    pimee_security.voter.category_owner.class: PimEnterprise\Bundle\SecurityBundle\Voter\CategoryOwnerVoter
+    pimee_security.voter.attribute.class: Akeneo\Pim\Permission\Bundle\Voter\AttributeVoter
+    pimee_security.voter.attribute_group.class: Akeneo\Pim\Permission\Bundle\Voter\AttributeGroupVoter
+    pimee_security.voter.category.class: Akeneo\Pim\Permission\Bundle\Voter\CategoryVoter
+    pimee_security.voter.product_and_product_model.class: Akeneo\Pim\Permission\Bundle\Voter\ProductAndProductModelVoter
+    pimee_security.voter.job_profile.class: Akeneo\Pim\Permission\Bundle\Voter\JobProfileVoter
+    pimee_security.voter.locale.class: Akeneo\Pim\Permission\Bundle\Voter\LocaleVoter
+    pimee_security.voter.datagrid_view.class: Akeneo\Pim\Permission\Bundle\Voter\DatagridViewVoter
+    pimee_security.voter.category_owner.class: Akeneo\Pim\Permission\Bundle\Voter\CategoryOwnerVoter
     pimee_security.cached_authorization_checker.class: PimEnterprise\Component\Security\Authorization\CachedAuthorizationChecker
     pimee_security.deny_not_granted_categorized_entity.class: PimEnterprise\Component\Security\Authorization\DenyNotGrantedCategorizedEntity
 

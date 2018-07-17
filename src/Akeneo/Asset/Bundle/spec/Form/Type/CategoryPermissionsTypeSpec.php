@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Asset\Bundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType;
+use Akeneo\Pim\Permission\Bundle\Form\Type\GroupsType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

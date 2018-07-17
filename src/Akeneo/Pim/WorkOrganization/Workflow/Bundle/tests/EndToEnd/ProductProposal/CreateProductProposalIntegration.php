@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\tests\EndToEnd\ProductProposal;
 
-use PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\ProductProposal\AbstractProposalIntegration;
+use Akeneo\Pim\Permission\Bundle\tests\EndToEnd\ProductProposal\AbstractProposalIntegration;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\HttpFoundation\Response;

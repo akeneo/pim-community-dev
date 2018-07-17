@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Prophecy\Argument;
 

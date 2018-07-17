@@ -1,6 +1,6 @@
 parameters:
-    pimee_security.controller.permission_rest.class: PimEnterprise\Bundle\SecurityBundle\Controller\InternalApi\PermissionRestController
-    pimee_security.controller.product.class: PimEnterprise\Bundle\SecurityBundle\Controller\ProductController
+    pimee_security.controller.permission_rest.class: Akeneo\Pim\Permission\Bundle\Controller\InternalApi\PermissionRestController
+    pimee_security.controller.product.class: Akeneo\Pim\Permission\Bundle\Controller\ProductController
 
 services:
     pimee_security.controller.permission_rest:

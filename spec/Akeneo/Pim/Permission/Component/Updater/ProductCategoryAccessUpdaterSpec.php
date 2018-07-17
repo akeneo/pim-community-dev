@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess;
+use Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess;
 
 class ProductCategoryAccessUpdaterSpec extends ObjectBehavior
 {

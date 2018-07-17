@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CategoryNormalizerSpec extends ObjectBehavior

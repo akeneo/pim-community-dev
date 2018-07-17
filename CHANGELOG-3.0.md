@@ -124,7 +124,7 @@
 - Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator`
 - Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryItemsCounter` to `Akeneo\Asset\Bundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter`
 - Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryProductsCounter` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter`
-- Move `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\ProductCategoryAccessSubscriber` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ProductCategoryAccessSubscriber`
+- Move `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\ProductCategoryAccessSubscriber` to `Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\ProductCategoryAccessSubscriber`
 - Move `PimEnterprise\Bundle\EnrichBundle\EventSubscriber\SavePermissionsSubscriber` to `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\SavePermissionsSubscriber`
 - Move namespace `PimEnterprise\Bundle\EnrichBundle\Filter` to `PimEnterprise\Bundle\SecurityBundle\Filter`
 - Move namespace `PimEnterprise\Bundle\EnrichBundle\Form\Subscriber` to `PimEnterprise\Bundle\SecurityBundle\Form\EventListener`
@@ -140,7 +140,7 @@
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter` to `PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter`
 - Move `PimEnterprise\Bundle\UIBundle\Controller\AjaxOptionController` to `Akeneo\Asset\Bundle\Controller\Rest\AjaxOptionController`
 - Move `PimEnterprise\Bundle\PdfGeneratorBundle\Twig\ImageExtension` to `Akeneo\Asset\Bundle\TwigExtension\ImageExtension`
-- Move `PimEnterprise\Bundle\SecurityBundle\Controller\PermissionRestController` to `PimEnterprise\Bundle\SecurityBundle\Controller\InternalApi\PermissionRestController`
+- Move `PimEnterprise\Bundle\SecurityBundle\Controller\PermissionRestController` to `Akeneo\Pim\Permission\Bundle\Controller\InternalApi\PermissionRestController`
 - Move `PimEnterprise\Bundle\PdfGeneratorBundle\Controller\ProductController` to `PimEnterprise\Bundle\SecurityBundle\Controller\ProductController`
 - Move `PimEnterprise\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer` to `PimEnterprise\Bundle\SecurityBundle\Pdf\ProductPdfRenderer`
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\PublishedProductNormalizer` to `PimEnterprise\Component\Workflow\Normalizer\InternalApi\PublishedProductNormalizer`

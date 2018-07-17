@@ -13,7 +13,7 @@ namespace Akeneo\Asset\Bundle\Datagrid\Extension\Formatter\Property\Asset;
 
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
+use Akeneo\Pim\Permission\Bundle\User\UserContext;
 
 /**
  * Datetime property for an asset.

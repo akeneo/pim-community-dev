@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog.query.elasticsearch.product_query_builder_factory.class: PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductQueryBuilderFactory
+    pimee_catalog.query.elasticsearch.product_query_builder_factory.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductQueryBuilderFactory
 
 services:
     pimee_catalog.query.product_query_builder_factory_with_permissions:

@@ -17,7 +17,7 @@ class AttributeGroupAccessRepositorySpec extends ObjectBehavior
 {
     function let(EntityManager $em, ClassMetadata $class)
     {
-        $class->name = 'PimEnterprise\Bundle\SecurityBundle\Entity';
+        $class->name = 'Akeneo\Pim\Permission\Bundle\Entity';
         $this->beConstructedWith($em, $class);
     }
 
@@ -71,7 +71,7 @@ class AttributeGroupAccessRepositorySpec extends ObjectBehavior
         $qb->select('aga', null)->willReturn($qb);
         $qb->select('ag.id', null)->willReturn($qb);
         $qb->select('a.id', null)->willReturn($qb);
-        $qb->from('PimEnterprise\Bundle\SecurityBundle\Entity', 'aga', null)->willReturn($qb);
+        $qb->from('Akeneo\Pim\Permission\Bundle\Entity', 'aga', null)->willReturn($qb);
         $qb->innerJoin('aga.attributeGroup', 'ag', 'ag.id')->willReturn($qb);
         $qb->innerJoin('ag.attributes', 'a')->willReturn($qb);
         $qb->andWhere(null)->willReturn($qb);

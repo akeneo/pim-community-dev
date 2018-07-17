@@ -1,6 +1,6 @@
 parameters:
-    pimee_security.api.checker.query_parameters.class: PimEnterprise\Bundle\SecurityBundle\Api\QueryParametersChecker
-    pimee_security.api.access_denied_handler.class: PimEnterprise\Bundle\SecurityBundle\Api\AccessDeniedHandler
+    pimee_security.api.checker.query_parameters.class: Akeneo\Pim\Permission\Bundle\Api\QueryParametersChecker
+    pimee_security.api.access_denied_handler.class: Akeneo\Pim\Permission\Bundle\Api\AccessDeniedHandler
 
 services:
     pimee_security.api.checker.query_parameters:

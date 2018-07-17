@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\DependencyInjection\Compiler;
 
-use PimEnterprise\Bundle\SecurityBundle\Datagrid\Filter\PermissionFilter;
-use PimEnterprise\Bundle\SecurityBundle\DependencyInjection\Compiler\AddPermissionFilterPass;
+use Akeneo\Pim\Permission\Bundle\Datagrid\Filter\PermissionFilter;
+use Akeneo\Pim\Permission\Bundle\DependencyInjection\Compiler\AddPermissionFilterPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

@@ -6,7 +6,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
-use PimEnterprise\Bundle\SecurityBundle\Form\Type\ProductGridFilterChoiceType;
+use Akeneo\Pim\Permission\Bundle\Form\Type\ProductGridFilterChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductGridFilterChoiceTypeSpec extends ObjectBehavior

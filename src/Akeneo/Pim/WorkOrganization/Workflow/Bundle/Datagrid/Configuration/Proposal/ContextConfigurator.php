@@ -17,7 +17,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
-use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
+use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 

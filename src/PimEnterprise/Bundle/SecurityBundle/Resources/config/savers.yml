@@ -1,5 +1,5 @@
 parameters:
-    pimee_catalog.security.saver.filtered_entity.class: PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\FilteredEntitySaver
+    pimee_catalog.security.saver.filtered_entity.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\FilteredEntitySaver
 
 services:
     pimee_security.saver.attribute_group_access:

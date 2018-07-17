@@ -9,8 +9,8 @@ use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
+use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\User\UserInterface;
 

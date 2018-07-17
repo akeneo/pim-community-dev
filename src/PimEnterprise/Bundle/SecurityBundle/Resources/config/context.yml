@@ -1,5 +1,5 @@
 parameters:
-    pimee_security.context.user.class: PimEnterprise\Bundle\SecurityBundle\User\UserContext
+    pimee_security.context.user.class: Akeneo\Pim\Permission\Bundle\User\UserContext
 
 services:
     pim_user.context.user:

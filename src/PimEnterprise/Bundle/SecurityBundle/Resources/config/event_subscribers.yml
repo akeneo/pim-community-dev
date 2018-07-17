@@ -1,12 +1,12 @@
 parameters:
     # Datagrid
-    pimee_security.event_subscriber.datagrid.product_category_access.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ProductCategoryAccessSubscriber
+    pimee_security.event_subscriber.datagrid.product_category_access.class: Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\ProductCategoryAccessSubscriber
 
     # Enrich
-    pimee_security.event_subscriber.enrich.job_permissions.class:            PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\JobPermissionsSubscriber
+    pimee_security.event_subscriber.enrich.job_permissions.class:            Akeneo\Pim\Permission\Bundle\EventSubscriber\Enrich\JobPermissionsSubscriber
 
-    pimee_security.event_subscriber.add_default_permissions.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\AddDefaultPermissionsSubscriber
-    pimee_security.subscriber.save_permissions.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\SavePermissionsSubscriber
+    pimee_security.event_subscriber.add_default_permissions.class: Akeneo\Pim\Permission\Bundle\EventSubscriber\AddDefaultPermissionsSubscriber
+    pimee_security.subscriber.save_permissions.class: Akeneo\Pim\Permission\Bundle\EventSubscriber\SavePermissionsSubscriber
 
 services:
     # Datagrid

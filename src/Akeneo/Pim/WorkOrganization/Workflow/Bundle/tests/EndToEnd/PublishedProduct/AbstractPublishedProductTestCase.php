@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\tests\EndToEnd\PublishedProduct;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Permission\Bundle\tests\EndToEnd\Product\AbstractProductTestCase;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\tests\EndToEnd\Product\AbstractProductTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**

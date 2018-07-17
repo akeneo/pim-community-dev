@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat;
 use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
+use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class LocaleNormalizerSpec extends ObjectBehavior

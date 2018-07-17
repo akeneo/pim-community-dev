@@ -12,7 +12,7 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 
 /**

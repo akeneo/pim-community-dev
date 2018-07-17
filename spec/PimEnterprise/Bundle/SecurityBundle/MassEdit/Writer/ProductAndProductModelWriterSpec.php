@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use PimEnterprise\Bundle\SecurityBundle\MassEdit\Writer\ProductAndProductModelWriter;
+use Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

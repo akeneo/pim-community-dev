@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 

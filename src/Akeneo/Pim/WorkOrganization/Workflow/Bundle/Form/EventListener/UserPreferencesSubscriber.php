@@ -13,7 +13,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Form\EventListener;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Pim\Bundle\UIBundle\Form\Type\SwitchType;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;

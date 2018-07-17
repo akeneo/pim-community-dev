@@ -11,7 +11,7 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use PimEnterprise\Bundle\SecurityBundle\Filter\AttributeViewRightFilter;
+use Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter;
 
 class AttributeRepositorySpec extends ObjectBehavior
 {

@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery;
+use Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery;
 use Akeneo\Pim\Permission\Component\Updater\Setter\GrantedAssociationFieldSetter;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

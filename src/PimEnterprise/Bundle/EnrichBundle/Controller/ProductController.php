@@ -20,7 +20,7 @@ use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductControlle
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
-use PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

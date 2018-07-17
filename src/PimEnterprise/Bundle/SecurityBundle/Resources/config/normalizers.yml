@@ -1,10 +1,10 @@
 parameters:
-    pimee_versioning.normalizer.category.class:        PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat\CategoryNormalizer
-    pimee_versioning.normalizer.attribute_group.class: PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat\AttributeGroupNormalizer
-    pimee_versioning.normalizer.locale.class:          PimEnterprise\Bundle\SecurityBundle\Normalizer\Flat\LocaleNormalizer
+    pimee_versioning.normalizer.category.class:        Akeneo\Pim\Permission\Bundle\Normalizer\Flat\CategoryNormalizer
+    pimee_versioning.normalizer.attribute_group.class: Akeneo\Pim\Permission\Bundle\Normalizer\Flat\AttributeGroupNormalizer
+    pimee_versioning.normalizer.locale.class:          Akeneo\Pim\Permission\Bundle\Normalizer\Flat\LocaleNormalizer
     pimee_security.normalizer.job_instance.class:      PimEnterprise\Component\Security\Normalizer\Standard\JobInstanceNormalizer
     pimee_security.normalizer.attribute_group.class:   PimEnterprise\Component\Security\Normalizer\Standard\AttributeGroupNormalizer
-    pimee_security.normalizer.incomplete_values.class: PimEnterprise\Bundle\SecurityBundle\Normalizer\InternalApi\IncompleteValuesNormalizer
+    pimee_security.normalizer.incomplete_values.class: Akeneo\Pim\Permission\Bundle\Normalizer\InternalApi\IncompleteValuesNormalizer
     pimee_api.normalizer.product_model.class: PimEnterprise\Component\Api\Normalizer\ProductModelNormalizer
     pimee_security.normalizer.authorization.product.class: PimEnterprise\Component\Security\Normalizer\Authorization\ProductNormalizer
     pimee_security.normalizer.authorization.product_model.class: PimEnterprise\Component\Security\Normalizer\Authorization\ProductModelNormalizer

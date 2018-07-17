@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use Akeneo\Pim\Permission\Bundle\Voter\AttributeGroupVoter;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

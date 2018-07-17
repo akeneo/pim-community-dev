@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Bundle\Event;
 
 use Akeneo\Asset\Bundle\Form\Type\CategoryPermissionsType;
-use PimEnterprise\Bundle\SecurityBundle\Form\EventListener\CategoryPermissionsSubscriber as BaseCategoryPermissionsSubscriber;
+use Akeneo\Pim\Permission\Bundle\Form\EventListener\CategoryPermissionsSubscriber as BaseCategoryPermissionsSubscriber;
 use Symfony\Component\Form\FormEvent;
 
 /**

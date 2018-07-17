@@ -1,7 +1,7 @@
 PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess:
     type: entity
     table: pimee_security_locale_access
-    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository
+    repositoryClass: Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository
     uniqueConstraints:
         locale_user_group_idx:
             columns:

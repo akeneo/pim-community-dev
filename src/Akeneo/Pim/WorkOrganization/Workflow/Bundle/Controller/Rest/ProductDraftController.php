@@ -24,7 +24,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDr
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
+use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes as SecurityAttributes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

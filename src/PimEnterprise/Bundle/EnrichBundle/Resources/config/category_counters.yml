@@ -1,5 +1,5 @@
 parameters:
-    pimee_enrich.doctrine.counter.granted_category_products.class: PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter
+    pimee_enrich.doctrine.counter.granted_category_products.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter
 
 services:
     pimee_enrich.doctrine.counter.category_product:

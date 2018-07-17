@@ -6,7 +6,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Asset\Bundle\Form\Type\CategoryPermissionsType;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;

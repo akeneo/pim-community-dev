@@ -1,13 +1,13 @@
 parameters:
     pimee_security.datagrid.configuration.product.filters_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator
-    pimee_security.datagrid.configuration.product.row_actions_configurator.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator
-    pim_datagrid.event_listener.configure_product_grid_listener.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProductGridListener
-    pimee_security.datagrid.event_listener.add_permissions_to_grid.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\AddPermissionsToGridListener
-    pimee_security.datagrid.event_listener.configure_job_profile_grid_listener.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureJobProfileGridListener
-    pimee_security.datagrid.filter.datagrid_view.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\DatagridViewFilter
-    pimee_security.datagrid.manager.datagrid_view.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\DatagridViewManager
-    pimee_security.datagrid.product_permission_filter.class: PimEnterprise\Bundle\SecurityBundle\Datagrid\Filter\PermissionFilter
-    pim_datagrid.datagrid.configuration.product.context_configurator.class:       PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\ContextConfigurator
+    pimee_security.datagrid.configuration.product.row_actions_configurator.class: Akeneo\Pim\Permission\Bundle\Datagrid\Product\RowActionsConfigurator
+    pim_datagrid.event_listener.configure_product_grid_listener.class: Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\ConfigureProductGridListener
+    pimee_security.datagrid.event_listener.add_permissions_to_grid.class: Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\AddPermissionsToGridListener
+    pimee_security.datagrid.event_listener.configure_job_profile_grid_listener.class: Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\ConfigureJobProfileGridListener
+    pimee_security.datagrid.filter.datagrid_view.class: Akeneo\Pim\Permission\Bundle\Datagrid\DatagridViewFilter
+    pimee_security.datagrid.manager.datagrid_view.class: Akeneo\Pim\Permission\Bundle\Datagrid\DatagridViewManager
+    pimee_security.datagrid.product_permission_filter.class: Akeneo\Pim\Permission\Bundle\Datagrid\Filter\PermissionFilter
+    pim_datagrid.datagrid.configuration.product.context_configurator.class:       Akeneo\Pim\Permission\Bundle\Datagrid\Product\ContextConfigurator
 
 services:
     # Configuration
