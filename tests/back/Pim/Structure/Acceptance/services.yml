@@ -1,0 +1,12 @@
+services:
+    test.attribute.context:
+        class: 'Akeneo\Test\Acceptance\Attribute\AttributeContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.attribute'
+            - '@test.attribute.builder'
+            - '@__symfony__.pim_catalog.repository.attribute_group'
+            - '@test.attribute_group.builder'
+        tags:
+            - { name: fob.context_service }
+
+

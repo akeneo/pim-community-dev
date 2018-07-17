@@ -1,0 +1,21 @@
+services:
+    test.locale.context:
+        class: 'Akeneo\Test\Acceptance\Locale\LocaleContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.locale'
+            - '@test.locale.builder'
+        tags:
+            - { name: fob.context_service }
+
+    test.channel.context:
+        class: 'Akeneo\Test\Acceptance\Channel\ChannelContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.locale'
+            - '@__symfony__.pim_catalog.repository.category'
+            - '@__symfony__.pim_catalog.repository.channel'
+            - '@__symfony__.pim_catalog.repository.currency'
+            - '@test.category.builder'
+            - '@test.channel.builder'
+            - '@test.currency.builder'
+        tags:
+            - { name: fob.context_service }
