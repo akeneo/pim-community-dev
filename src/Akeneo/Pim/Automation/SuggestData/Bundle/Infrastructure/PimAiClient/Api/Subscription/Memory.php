@@ -6,8 +6,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Ap
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\Fake\FakeHALProducts;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\ApiResponse;
-use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCode;
-use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCodeCollection;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject\ProductCode;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject\ProductCodeCollection;
 use Symfony\Component\HttpFoundation\Response;
 
 final class Memory implements SubscriptionApiInterface
@@ -25,7 +25,7 @@ final class Memory implements SubscriptionApiInterface
     public function subscribeProduct(ProductCode $productCode): ApiResponse
     {
         $hal = $this->fakeHALProducts->addProduct($productCode->value())->getFakeHAL();
-         
+
         return new ApiResponse(
              Response::HTTP_OK,
              json_decode($hal, true)
@@ -40,9 +40,9 @@ final class Memory implements SubscriptionApiInterface
         foreach ($productCodeCollection as $productCode) {
             $this->fakeHALProducts->addProduct($productCode->value());
         }
-        
+
         $hal = $this->fakeHALProducts->getFakeHAL();
-        
+
         return new ApiResponse(
             Response::HTTP_OK,
             json_decode($hal, true)
