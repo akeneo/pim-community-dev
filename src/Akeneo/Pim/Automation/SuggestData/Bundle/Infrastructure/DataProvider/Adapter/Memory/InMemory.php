@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\Memory;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DeserializeSuggestedDataCollection;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataInterface;
@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class InMemoryAdapter implements DataProviderAdapterInterface
+class InMemory implements DataProviderInterface
 {
     /**
      * @const string A hard-coded token for acceptance tests.

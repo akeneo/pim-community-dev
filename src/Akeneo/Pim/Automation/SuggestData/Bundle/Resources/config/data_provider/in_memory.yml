@@ -1,6 +1,6 @@
 services:
     akeneo.pim.automation.suggest_data.data_provider.in_memory:
-        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\Memory\InMemoryAdapter'
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\Memory\InMemory'
         arguments:
             - '@akeneo.pim.automation.suggest_data.data_provider.deserialize_suggested_data_collection'
             - '@akeneo.pim.automation.suggest_data.pimai_client.subscribe_webservice'

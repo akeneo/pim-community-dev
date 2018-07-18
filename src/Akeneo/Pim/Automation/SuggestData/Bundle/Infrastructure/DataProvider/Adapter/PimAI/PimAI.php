@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\PimAI;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Authentication\AuthenticationApiInterface;
@@ -14,7 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class PimAIAdapter implements DataProviderAdapterInterface
+class PimAI implements DataProviderInterface
 {
     private $authenticationApi;
 

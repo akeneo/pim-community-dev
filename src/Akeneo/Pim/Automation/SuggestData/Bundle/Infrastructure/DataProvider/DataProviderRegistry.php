@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderInterface;
 
 /**
  * Registry for data providers
@@ -23,14 +23,14 @@ use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter
  */
 class DataProviderRegistry
 {
-    /** @var DataProviderAdapterInterface[] */
+    /** @var DataProviderInterface[] */
     private $dataProviders = [];
 
     /**
      * @param string $alias
-     * @param DataProviderAdapterInterface $dataProvider
+     * @param DataProviderInterface $dataProvider
      */
-    public function addDataProvider(string $alias, DataProviderAdapterInterface $dataProvider): void
+    public function addDataProvider(string $alias, DataProviderInterface $dataProvider): void
     {
         $this->dataProviders[$alias] = $dataProvider;
     }
@@ -38,11 +38,11 @@ class DataProviderRegistry
     /**
      * @param string $alias
      *
-     * @return DataProviderAdapterInterface
+     * @return DataProviderInterface
      *
      * @throws \Exception
      */
-    public function getDataProvider(string $alias): DataProviderAdapterInterface
+    public function getDataProvider(string $alias): DataProviderInterface
     {
         if (!isset($this->dataProviders[$alias])) {
             throw new \Exception(sprintf('Data provider "%s" not found', $alias));
