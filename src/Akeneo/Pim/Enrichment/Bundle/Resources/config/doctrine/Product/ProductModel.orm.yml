@@ -2,7 +2,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
     type: entity
     table: pim_catalog_product_model
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository
+    repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelRepository
     gedmo:
         tree:
             type: nested

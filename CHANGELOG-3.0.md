@@ -12,6 +12,25 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CompleteFilter` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountProductsWithFamily` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountProductsWithFamily`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\VariantProductRatio` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\VariantProductRatio`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\AssociationRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CompletenessRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\CompletenessRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\GroupRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductCategoryRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductCategoryRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductMassActionRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelCategoryRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelCategoryRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductUniqueDataRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductUniqueDataRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\VariantProductRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\VariantProductRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRemover` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\QueryBuilderUtility`
+
 - Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectCodeResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectCodeResolver`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectIdResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolver`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectIdResolverInterface` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolverInterface`

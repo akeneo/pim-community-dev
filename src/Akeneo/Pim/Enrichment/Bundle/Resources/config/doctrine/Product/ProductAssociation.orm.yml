@@ -2,7 +2,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
     type: entity
     table: pim_catalog_association
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository
+    repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\AssociationRepository
     fields:
         id:
             type: integer
