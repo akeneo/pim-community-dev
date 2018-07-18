@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository;
 
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

@@ -12,12 +12,12 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductProposal;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\ProductProposalIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

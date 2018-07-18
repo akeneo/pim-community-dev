@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Factory;
 
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * EntityWithValues factory interface

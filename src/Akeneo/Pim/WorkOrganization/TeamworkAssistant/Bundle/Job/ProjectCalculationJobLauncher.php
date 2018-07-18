@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 
 /**
  * Launch the project calculation job for the a project and an user.

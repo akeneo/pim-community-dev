@@ -11,10 +11,10 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectIdentifier;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\PreProcessingRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

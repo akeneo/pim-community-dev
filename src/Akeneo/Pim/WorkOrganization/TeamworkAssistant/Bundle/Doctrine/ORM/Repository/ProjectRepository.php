@@ -13,13 +13,13 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repo
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\ORM\EntityRepository;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

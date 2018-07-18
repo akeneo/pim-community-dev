@@ -11,12 +11,12 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\tests\integration;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Doctrine\DBAL\Connection;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 
 class TeamworkAssistantTestCase extends TestCase
 {

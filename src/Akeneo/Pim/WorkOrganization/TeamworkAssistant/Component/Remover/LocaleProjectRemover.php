@@ -12,11 +12,11 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Remover;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>

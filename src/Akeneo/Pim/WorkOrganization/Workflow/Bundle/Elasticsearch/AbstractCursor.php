@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 
 /**
  * Common logic shared by all our product and product model draft cursors.

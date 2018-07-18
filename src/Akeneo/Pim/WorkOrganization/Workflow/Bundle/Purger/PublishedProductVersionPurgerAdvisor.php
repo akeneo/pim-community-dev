@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Purger;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Pim\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 
 /**
  * Prevents published versions of a product from being purged

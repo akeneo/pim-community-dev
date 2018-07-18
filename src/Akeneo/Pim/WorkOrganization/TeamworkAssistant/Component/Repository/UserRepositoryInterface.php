@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository;
 
-use Doctrine\Common\Persistence\ObjectRepository;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

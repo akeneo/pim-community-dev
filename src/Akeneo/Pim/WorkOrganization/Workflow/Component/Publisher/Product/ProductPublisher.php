@@ -12,12 +12,12 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

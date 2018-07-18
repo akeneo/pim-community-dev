@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\DependencyInjection\Compiler;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

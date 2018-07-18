@@ -11,12 +11,12 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\NotificationBundle\Factory\AbstractNotificationFactory;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 
 /**
  * Factory that creates a notification for project calculation from a job instance.

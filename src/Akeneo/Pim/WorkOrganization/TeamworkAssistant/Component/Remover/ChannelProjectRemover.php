@@ -12,9 +12,9 @@
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Remover;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
 
 /**
  * @author Willy Mesnage <willy.mesnage@akeneo.com>

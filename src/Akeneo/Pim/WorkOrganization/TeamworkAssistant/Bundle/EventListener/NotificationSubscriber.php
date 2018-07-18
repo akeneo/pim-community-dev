@@ -11,7 +11,6 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvent;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvents;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Factory\ProjectStatusFactoryInterface;
@@ -22,6 +21,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\Project
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectStatusRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\UserRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

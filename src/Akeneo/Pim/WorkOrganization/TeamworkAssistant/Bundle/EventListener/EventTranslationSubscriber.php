@@ -11,11 +11,11 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvent;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvents;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvent;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Event\ProjectEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

@@ -14,9 +14,9 @@ namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\AttributeGroupCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>

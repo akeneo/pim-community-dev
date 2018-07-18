@@ -12,9 +12,9 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation;
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Product association publisher

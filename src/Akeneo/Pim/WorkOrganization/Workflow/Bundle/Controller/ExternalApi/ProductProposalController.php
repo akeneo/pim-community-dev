@@ -11,12 +11,12 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi;
 
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftManager;
-use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

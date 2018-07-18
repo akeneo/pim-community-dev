@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Applier;
 
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 
 /**
  * Draft applier interface

@@ -13,14 +13,14 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Factory\AttributeFactory;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Component\Catalog\Factory\ValueFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\RendererAwareInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TranslatorAwareInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\TwigAwareInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\Factory\ValueFactory;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig_Extension_InitRuntimeInterface;
 

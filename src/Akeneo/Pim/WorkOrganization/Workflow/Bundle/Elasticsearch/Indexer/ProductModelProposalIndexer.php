@@ -2,13 +2,13 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposalNormalizer;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\Indexing\ProductModelProposalNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

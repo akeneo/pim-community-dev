@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\MassAction\Handler;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

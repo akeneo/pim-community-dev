@@ -18,8 +18,8 @@ use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
 /**
  * Published product repository interface

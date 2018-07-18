@@ -11,10 +11,6 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Controller;
 
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\Filter\ProjectCompletenessFilter;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\FilterConverter;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Job\ProjectCalculationJobLauncher;
@@ -22,6 +18,10 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Security\ProjectVoter;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Factory\ProjectFactoryInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectCompletenessRepositoryInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\ProjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

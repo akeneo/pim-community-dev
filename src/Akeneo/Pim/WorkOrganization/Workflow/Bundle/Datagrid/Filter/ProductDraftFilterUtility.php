@@ -11,10 +11,10 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Filter;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterProductDatasourceAdapterInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 
 /**
  * ProductDraft filter utility

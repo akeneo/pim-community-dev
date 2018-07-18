@@ -12,11 +12,11 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository as BaseProductMassActionRepository;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

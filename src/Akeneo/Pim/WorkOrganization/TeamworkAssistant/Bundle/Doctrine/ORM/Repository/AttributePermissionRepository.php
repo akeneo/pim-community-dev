@@ -11,10 +11,10 @@
 
 namespace Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\AttributePermissionRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Repository\AttributePermissionRepositoryInterface;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>

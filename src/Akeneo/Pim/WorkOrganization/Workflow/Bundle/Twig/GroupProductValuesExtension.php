@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Doctrine\Common\Collections\Collection;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Twig extension to group and sort product values to prepare them for display

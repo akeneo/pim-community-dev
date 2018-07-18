@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Analytic;
 
-use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
+use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 
 /**
  * Returns count of Published products

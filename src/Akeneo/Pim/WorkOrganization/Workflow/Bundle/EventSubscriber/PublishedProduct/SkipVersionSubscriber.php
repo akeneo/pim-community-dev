@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct;
 
-use Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber as BaseAddVersionSubscriber;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
+use Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber as BaseAddVersionSubscriber;
 
 /**
  * Disable the versioning of published product in EE.

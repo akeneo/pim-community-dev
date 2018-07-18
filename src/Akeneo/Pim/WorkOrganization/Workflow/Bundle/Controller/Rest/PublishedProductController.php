@@ -11,11 +11,11 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
