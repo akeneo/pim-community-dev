@@ -84,4 +84,9 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\Referenc
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Api\\Normalizer\\ProductModelNormalizer/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Normalizer\\ExternalApi\\ProductModelNormalizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ReferenceDataBundle\\Publisher\\ReferenceDataPublisher/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Publisher\\ReferenceDataPublisher/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ReferenceDataBundle\\Publisher\\ReferenceDataPublisher/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Publisher\\ReferenceDataPublisher/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Asset\Bundle\PimEnterpriseProductAssetBundle/Akeneo\Asset\Bundle\AkeneoAssetBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\PimEnterpriseTeamworkAssistantBundle/Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\WorkOrganization\ProductRevert\PimEnterpriseRevertBundle/Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\WorkOrganization\Workflow\Bundle\PimEnterpriseWorkflowBundle/Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Akeneo\Pim\Automation\RuleEngine\Bundle\PimEnterpriseCatalogRuleBundle/Akeneo\Pim\Automation\RuleEngine\Bundle\AkeneoPimRuleEngineBundle/g'
 ```

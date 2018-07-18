@@ -100,6 +100,11 @@
 - Remove class `PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle`
 - Remove class `PimEnterprise\Bundle\ReferenceDataBundle\DependencyInjection\PimEnterpriseReferenceDataExtension`
 - Remove class `PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle`
+- Rename class `Akeneo\Asset\Bundle\PimEnterpriseProductAssetBundle` to `Akeneo\Asset\Bundle\AkeneoAssetBundle`
+- Rename class `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\PimEnterpriseTeamworkAssistantBundle` to `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle`
+- Rename class `Akeneo\Pim\WorkOrganization\ProductRevert\PimEnterpriseRevertBundle` to `Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle`
+- Rename class `Akeneo\Pim\WorkOrganization\Workflow\Bundle\PimEnterpriseWorkflowBundle` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle`
+- Rename class `Akeneo\Pim\Automation\RuleEngine\Bundle\PimEnterpriseCatalogRuleBundle` to `Akeneo\Pim\Automation\RuleEngine\Bundle\AkeneoPimRuleEngineBundle`
 
 ## Security
 
