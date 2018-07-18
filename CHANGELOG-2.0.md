@@ -1,5 +1,11 @@
 # 2.0.x
 
+## Technical improvements
+
+- PIM-7396: Improve family import performances.
+
+## Bug fixes
+
 - PIM-7452: Fix a memory leak when computing the completeness of all the products of a family.
 
 # 2.0.29 (2018-07-04)

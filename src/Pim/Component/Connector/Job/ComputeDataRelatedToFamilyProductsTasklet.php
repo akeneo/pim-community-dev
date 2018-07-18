@@ -24,7 +24,9 @@ use Pim\Component\Connector\Step\TaskletInterface;
  * - fetch the corresponding family object
  * - fetch all the products of this family
  * - save theses products
- * This way on family import the family's product completeness will be computed and all family's attributes will be indexed.
+ *
+ * This way on family import the family's product completeness will be computed
+ * and all family's attributes will be indexed.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -56,13 +58,20 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     /** @var ObjectDetacherInterface */
     private $objectDetacher;
 
+    /** @var int */
+    private $batchSize;
+
     /**
+     * @todo merge master: remove the object detacher.
+     *
      * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
      * @param ItemReaderInterface                   $familyReader
      * @param BulkSaverInterface                    $productSaver
+     * @param ObjectDetacherInterface               $objectDetacher
      * @param CacheClearerInterface                 $cacheClearer
      * @param JobRepositoryInterface                $jobRepository
+     * @param int                                   $batchSize
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
@@ -71,7 +80,8 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         BulkSaverInterface $productSaver,
         ObjectDetacherInterface $objectDetacher,
         CacheClearerInterface $cacheClearer,
-        JobRepositoryInterface $jobRepository
+        JobRepositoryInterface $jobRepository,
+        int $batchSize = 10
     ) {
         $this->familyReader = $familyReader;
         $this->familyRepository = $familyRepository;
@@ -80,6 +90,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         $this->cacheClearer = $cacheClearer;
         $this->jobRepository = $jobRepository;
         $this->objectDetacher = $objectDetacher;
+        $this->batchSize = $batchSize;
     }
 
     /**
@@ -113,13 +124,20 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
                 continue;
             }
 
+            $productsToSave = [];
             $products = $this->getProductsForFamily($family);
             foreach ($products as $product) {
-                $this->productSaver->saveAll([$product]);
-                $this->stepExecution->incrementSummaryInfo('process');
-                $this->jobRepository->updateStepExecution($this->stepExecution);
+                $productsToSave[] = $product;
 
-                $this->objectDetacher->detach($product);
+                if (0 === count($productsToSave) % $this->batchSize) {
+                    $this->saveProducts($productsToSave);
+                    $productsToSave= [];
+                    $this->cacheClearer->clear();
+                }
+            }
+
+            if (!empty($productsToSave)) {
+                $this->saveProducts($productsToSave);
             }
         }
     }
@@ -130,6 +148,16 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     public function initialize()
     {
         $this->cacheClearer->clear();
+    }
+
+    /**
+     * @param array $products
+     */
+    public function saveProducts(array $products): void
+    {
+        $this->productSaver->saveAll($products);
+        $this->stepExecution->incrementSummaryInfo('process', count($products));
+        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     /**

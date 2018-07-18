@@ -95,6 +95,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.doctrine.cache_clearer'
             - '@akeneo_batch.job_repository'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.csv_family_variant.import:
         class: '%pim_connector.step.item_step.class%'
@@ -456,6 +457,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.doctrine.cache_clearer'
             - '@akeneo_batch.job_repository'
+            - '%pim_job_product_batch_size%'
 
     pim_connector.step.xlsx_family_variant.import:
         class: '%pim_connector.step.item_step.class%'

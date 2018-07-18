@@ -41,7 +41,8 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
             $productSaver,
             $objectDetacher,
             $cacheClearer,
-            $jobRepository
+            $jobRepository,
+            10
         );
     }
 
@@ -56,9 +57,10 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $productSaver,
         $productQueryBuilderFactory,
         $jobRepository,
-        $objectDetacher,
+        $cacheClearer,
         FamilyInterface $family,
-        ProductInterface $product,
+        ProductInterface $product1,
+        ProductInterface $product2,
         StepExecution $stepExecution,
         ProductAndProductModelQueryBuilder $pqb,
         CursorInterface $cursor,
@@ -74,16 +76,16 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $pqb->execute()->willReturn($cursor);
 
         $cursor->rewind()->shouldBeCalled();
-        $cursor->valid()->willReturn(true, false);
-        $cursor->next()->willReturn([$product]);
-        $cursor->current()->willReturn($product);
+        $cursor->valid()->willReturn(true, true, false);
+        $cursor->current()->willReturn($product1, $product2);
+        $cursor->next()->shouldBeCalled();
 
         $productViolationLists->count()->willReturn(0);
 
-        $productSaver->saveAll([$product])->shouldBeCalled();
-        $objectDetacher->detach($product)->shouldBeCalled();
+        $productSaver->saveAll([$product1, $product2])->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalledTimes(1);
 
-        $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
