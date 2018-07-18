@@ -1,5 +1,24 @@
-Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntityCommand:
+Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityCommand:
     properties:
         identifier:
-            - NotBlank: ~
-            - Regex: {pattern: '/^[a-zA-Z0-9_]+$/', message: 'pim_enriched_entity.enriched_entity.validation.identifier.pattern'}
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+        labels:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+
+Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityCommand:
+    properties:
+        identifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+        labels:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
+
+Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand:
+    properties:
+        identifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+
+Akeneo\Pim\Structure\Component\Model\Attribute:
+    constraints:
+        - Akeneo\Pim\EnrichedEntity\Component\Validator\Constraints\IsEnrichedEntityConfigured:
+            groups:
+                - akeneo_enriched_entity_collection

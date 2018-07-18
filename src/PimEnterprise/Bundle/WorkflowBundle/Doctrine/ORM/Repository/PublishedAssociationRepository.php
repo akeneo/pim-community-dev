@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedAssociationRepositoryInterface;
 

@@ -16,7 +16,7 @@ PimEnterprise\Component\Workflow\Model\PublishedProductAssociation:
                 - association_type_id
     manyToOne:
         associationType:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationType
+            targetEntity: Akeneo\Pim\Structure\Component\Model\AssociationType
             joinColumns:
                 association_type_id:
                     referencedColumnName: id
