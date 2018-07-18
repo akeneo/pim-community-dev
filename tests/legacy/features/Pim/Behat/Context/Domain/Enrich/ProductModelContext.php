@@ -12,7 +12,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

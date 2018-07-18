@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Tool\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductModelDescendantsSaver;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

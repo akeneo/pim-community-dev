@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
