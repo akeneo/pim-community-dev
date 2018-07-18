@@ -92,3 +92,13 @@ services:
             - '@pim_api.normalizer.product.community'
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }
+
+    pimee_api.normalizer.product_model:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\ProductModelNormalizer'
+        decorates: pim_api.normalizer.product_model
+        decoration_inner_name: pim_api.normalizer.product_model.community
+        arguments:
+            - '@pim_api.normalizer.product_model.community'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_security.cached_authorization_checker'
+            - '@security.token_storage'

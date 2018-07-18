@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Api\Normalizer;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Permission\Component\Attributes;

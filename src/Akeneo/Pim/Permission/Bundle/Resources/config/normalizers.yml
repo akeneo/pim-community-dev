@@ -5,7 +5,6 @@ parameters:
     pimee_security.normalizer.job_instance.class:      Akeneo\Pim\Permission\Component\Normalizer\Standard\JobInstanceNormalizer
     pimee_security.normalizer.attribute_group.class:   Akeneo\Pim\Permission\Component\Normalizer\Standard\AttributeGroupNormalizer
     pimee_security.normalizer.incomplete_values.class: Akeneo\Pim\Permission\Bundle\Normalizer\InternalApi\IncompleteValuesNormalizer
-    pimee_api.normalizer.product_model.class: PimEnterprise\Component\Api\Normalizer\ProductModelNormalizer
     pimee_security.normalizer.authorization.product.class: Akeneo\Pim\Permission\Component\Normalizer\Authorization\ProductNormalizer
     pimee_security.normalizer.authorization.product_model.class: Akeneo\Pim\Permission\Component\Normalizer\Authorization\ProductModelNormalizer
 
@@ -62,16 +61,6 @@ services:
             - '@security.authorization_checker'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
-
-    pimee_api.normalizer.product_model:
-        class: '%pimee_api.normalizer.product_model.class%'
-        decorates: pim_api.normalizer.product_model
-        decoration_inner_name: pim_api.normalizer.product_model.community
-        arguments:
-            - '@pim_api.normalizer.product_model.community'
-            - '@pimee_workflow.repository.product_model_draft'
-            - '@pimee_security.cached_authorization_checker'
-            - '@security.token_storage'
 
     # authorization
     pimee_authorization_serializer:

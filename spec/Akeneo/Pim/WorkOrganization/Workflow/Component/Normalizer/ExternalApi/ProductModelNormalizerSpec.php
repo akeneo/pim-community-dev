@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Api\Normalizer;
+namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\Api\Normalizer\ProductModelNormalizer;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\ProductModelNormalizer;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
@@ -26,7 +26,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductModelNormalizer::class);
+        $this->shouldHaveType(
+            ProductModelNormalizer::class);
     }
 
     function it_should_implement()
