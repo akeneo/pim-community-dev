@@ -51,7 +51,7 @@ extensions:
         targetZone: container
         position: 10
         config:
-            label: 'General - to translate'
+            label: pim_common.general_properties
 
     pim-user-show-general-tab-content:
         module: pim/common/simple-view
@@ -70,7 +70,7 @@ extensions:
         targetZone: content
         config:
             fieldName: enabled
-            label: 'Status - to translate'
+            label: pim_common.status
             required: true
             readOnly: true
 
@@ -81,7 +81,7 @@ extensions:
         targetZone: content
         config:
             fieldName: username
-            label: 'Username - to translate'
+            label: pim_user_management.entity.user.properties.username
             required: true
             readOnly: true
 
@@ -92,7 +92,7 @@ extensions:
         targetZone: content
         config:
             fieldName: name_prefix
-            label: 'Name prefix - to translate'
+            label: pim_user_management.entity.user.properties.name_prefix
             readOnly: true
 
     pim-user-show-first-name:
@@ -102,7 +102,7 @@ extensions:
         targetZone: content
         config:
             fieldName: first_name
-            label: 'First Name - to translate'
+            label: pim_user_management.entity.user.properties.first_name
             required: true
             readOnly: true
 
@@ -113,7 +113,7 @@ extensions:
         targetZone: content
         config:
             fieldName: middle_name
-            label: 'Middle Name - to translate'
+            label: pim_user_management.entity.user.properties.middle_name
             readOnly: true
 
     pim-user-show-last-name:
@@ -123,7 +123,7 @@ extensions:
         targetZone: content
         config:
             fieldName: last_name
-            label: 'Last Name - to translate'
+            label: pim_user_management.entity.user.properties.last_name
             required: true
             readOnly: true
 
@@ -134,7 +134,7 @@ extensions:
         targetZone: content
         config:
             fieldName: name_suffix
-            label: 'Name Suffix - to translate'
+            label: pim_user_management.entity.user.properties.name_suffix
             readOnly: true
 
     pim-user-show-phone:
@@ -144,7 +144,7 @@ extensions:
         targetZone: content
         config:
             fieldName: phone
-            label: 'Phone - to translate'
+            label: pim_user_management.entity.user.properties.phone
             readOnly: true
 
     pim-user-show-birthday:
@@ -154,7 +154,7 @@ extensions:
         targetZone: content
         config:
             fieldName: birthday
-            label: 'Birthday - to translate'
+            label: pim_user_management.entity.user.properties.birthday
             readOnly: true
 
     pim-user-show-avatar:
@@ -164,7 +164,7 @@ extensions:
         targetZone: content
         config:
             fieldName: avatar
-            label: 'Avatar - to translate'
+            label: pim_user_management.entity.user.properties.avatar
             readOnly: true
 
     pim-user-show-email:
@@ -174,7 +174,7 @@ extensions:
         targetZone: content
         config:
             fieldName: email
-            label: 'Email - to translate'
+            label: pim_user_management.entity.user.properties.email
             required: true
             readOnly: true
 
@@ -185,7 +185,7 @@ extensions:
         targetZone: container
         position: 20
         config:
-            label: 'Additional - to translate'
+            label: pim_user_management.entity.user.module.update.additional
 
     pim-user-show-additional-tab-content:
         module: pim/common/simple-view
@@ -204,7 +204,7 @@ extensions:
         targetZone: content
         config:
             fieldName: catalog_default_locale
-            label: 'Catalog locale - to translate'
+            label: pim_user_management.entity.user.properties.catalog_locale
             required: true
             isMultiple: false
             allowClear: false
@@ -217,7 +217,7 @@ extensions:
         targetZone: content
         config:
             fieldName: catalog_default_scope
-            label: 'Catalog scope - to translate'
+            label: pim_user_management.entity.user.properties.catalog_scope
             required: true
             isMultiple: false
             allowClear: false
@@ -230,7 +230,7 @@ extensions:
         position: 30
         config:
             fieldName: default_category_tree
-            label: 'Default tree - to translate'
+            label: pim_user_management.entity.user.properties.default_tree
             required: true
             isMultiple: false
             allowClear: false
@@ -243,8 +243,17 @@ extensions:
         targetZone: content
         config:
             fieldName: productGridFilters
-            label: 'Product Grid Filters - to translate'
-            required: true
+            label: pim_user_management.entity.user.properties.product_grid_filters
+            readOnly: true
+
+    pim-user-edit-form-default-product-grid-view:
+        module: pim/form/common/fields/default-product-grid-view
+        parent: pim-user-edit-form-additional-tab-content
+        position: 40
+        targetZone: content
+        config:
+            fieldName: default_product_grid_view
+            label: pim_user_management.entity.user.properties.default_product_grid_view
             readOnly: true
 
     # Groups and Roles tab
@@ -254,7 +263,7 @@ extensions:
         targetZone: container
         position: 30
         config:
-            label: 'Groups and roles - to translate'
+            label: pim_user_management.entity.user.module.update.groups_and_roles
 
     pim-user-show-groups-and-roles-tab-content:
         module: pim/common/simple-view
@@ -273,7 +282,7 @@ extensions:
         position: 10
         config:
             fieldName: groups
-            label: 'Groups - to translate'
+            label: pim_user_management.entity.group.plural_label
             isMultiple: true
             allowClear: true
             readOnly: true
@@ -285,7 +294,7 @@ extensions:
         position: 20
         config:
             fieldName: roles
-            label: 'Roles - to translate'
+            label: pim_user_management.entity.role.plural_label
             isMultiple: true
             allowClear: true
             readOnly: true
@@ -297,7 +306,7 @@ extensions:
         targetZone: container
         position: 50
         config:
-            label: 'Interfaces - to translate'
+            label: pim_user_management.entity.user.module.update.interfaces
 
     pim-user-show-interfaces-tab-content:
         module: pim/common/simple-view
@@ -316,7 +325,7 @@ extensions:
         targetZone: content
         config:
             fieldName: user_default_locale
-            label: 'UI Locale - to translate'
+            label: pim_user_management.entity.user.properties.ui_locale
             required: true
             isMultiple: false
             allowClear: false
@@ -329,7 +338,7 @@ extensions:
         targetZone: content
         config:
             fieldName: timezone
-            label: 'Timezone - to translate'
+            label: pim_user_management.entity.user.properties.timezone
             required: true
             isMultiple: false
             allowClear: false

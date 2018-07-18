@@ -4,6 +4,7 @@ namespace Akeneo\UserManagement\Component\Normalizer;
 
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -51,32 +52,36 @@ class UserNormalizer implements NormalizerInterface
     {
         /** @var UserInterface $user */
         return [
-            'code'                   => $user->getUsername(), # Every Form Extension requires 'code' field.
-            'enabled'                => $user->isEnabled(),
-            'username'               => $user->getUsername(),
-            'email'                  => $user->getEmail(),
-            'name_prefix'            => $user->getNamePrefix(),
-            'first_name'             => $user->getFirstName(),
-            'middle_name'            => $user->getMiddleName(),
-            'last_name'              => $user->getLastName(),
-            'name_suffix'            => $user->getNameSuffix(),
-            'phone'                  => $user->getPhone(),
-            'birthday'               => $user->getBirthday() ? $user->getBirthday()->format('Y-m-d') : null,
-            'image'                  => $user->getImagePath(),
-            'last_login'             => $user->getLastLogin() ? $user->getLastLogin()->getTimestamp() : null,
-            'login_count'            => $user->getLoginCount(),
-            'catalog_default_locale' => $user->getCatalogLocale()->getCode(),
-            'user_default_locale'    => $user->getUiLocale()->getCode(),
-            'catalog_default_scope'  => $user->getCatalogScope()->getCode(),
-            'default_category_tree'  => $user->getDefaultTree()->getCode(),
-            'timezone'               => $user->getTimezone(),
-            'groups'                 => $user->getGroupNames(),
-            'roles'                  => $this->getRoleNames($user),
-            'avatar'                 => null === $user->getAvatar() ? [
+            'code'                      => $user->getUsername(), # Every Form Extension requires 'code' field.
+            'enabled'                   => $user->isEnabled(),
+            'username'                  => $user->getUsername(),
+            'email'                     => $user->getEmail(),
+            'name_prefix'               => $user->getNamePrefix(),
+            'first_name'                => $user->getFirstName(),
+            'middle_name'               => $user->getMiddleName(),
+            'last_name'                 => $user->getLastName(),
+            'name_suffix'               => $user->getNameSuffix(),
+            'phone'                     => $user->getPhone(),
+            'birthday'                  => $user->getBirthday() ? $user->getBirthday()->format('Y-m-d') : null,
+            'image'                     => $user->getImagePath(),
+            'last_login'                => $user->getLastLogin() ? $user->getLastLogin()->getTimestamp() : null,
+            'login_count'               => $user->getLoginCount(),
+            'catalog_default_locale'    => $user->getCatalogLocale()->getCode(),
+            'user_default_locale'       => $user->getUiLocale()->getCode(),
+            'catalog_default_scope'     => $user->getCatalogScope()->getCode(),
+            'default_category_tree'     => $user->getDefaultTree()->getCode(),
+            'timezone'                  => $user->getTimezone(),
+            'groups'                    => $user->getGroupNames(),
+            'default_product_grid_view' =>
+                $user->getDefaultGridView(OroToPimGridFilterAdapter::PRODUCT_GRID_NAME) ?
+                $user->getDefaultGridView(OroToPimGridFilterAdapter::PRODUCT_GRID_NAME)->getId() :
+                null,
+            'roles'                     => $this->getRoleNames($user),
+            'avatar'                    => null === $user->getAvatar() ? [
                 'filePath'         => null,
                 'originalFilename' => null,
             ] : $this->fileNormalizer->normalize($user->getAvatar()),
-            'meta'                   => [
+            'meta'                      => [
                 'id'    => $user->getId(),
                 'form'  => $this->isEditGranted($user) ? 'pim-user-edit-form' : 'pim-user-show',
                 'image' => [

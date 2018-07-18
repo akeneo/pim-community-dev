@@ -12,11 +12,6 @@ parameters:
     pim_user.form.handler.acl_role.class:       Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler
 
 services:
-    pim_user.form.user:
-        class:                        Symfony\Component\Form\Form
-        factory:                      'form.factory:createNamed'
-        arguments:                    ["pim_user_user_form", '%pim_user.form.type.user.class%', null]
-
     pim_user.form.user.api:
         class:                        Symfony\Component\Form\Form
         factory:                      'form.factory:createNamed'
@@ -73,12 +68,6 @@ services:
         arguments:                    ['%pim_user.entity.user.class%']
         tags:
             - { name: form.type, alias: pim_user_reset }
-
-    pim_user.form.handler.user:
-        class:                        '%pim_user.form.handler.user.class%'
-        arguments:                    ["@pim_user.form.user", "@request_stack", "@pim_user.manager"]
-        tags:
-            - { name: oro_tag.tag_manager }
 
     pim_user.form.handler.user.api:
         class:                        '%pim_user.form.handler.user.class%'

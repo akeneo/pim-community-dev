@@ -912,6 +912,8 @@ config:
         pim/form/common/fields/textarea:                pimenrich/js/form/common/fields/textarea
         pim/form/common/fields/metric:                  pimenrich/js/form/common/fields/metric
         pim/form/common/fields/media:                   pimenrich/js/form/common/fields/media
+
+        # TODO Move all this to 'user' namespace
         pim/form/common/fields/available-locales:       pimenrich/js/form/common/fields/available-locales
         pim/form/common/fields/scope:                   pimenrich/js/form/common/fields/scope
         pim/form/common/fields/category-tree:           pimenrich/js/form/common/fields/category-tree
@@ -919,6 +921,7 @@ config:
         pim/form/common/fields/timezone:                pimenrich/js/form/common/fields/timezone
         pim/form/common/fields/user-group:              pimenrich/js/form/common/fields/user-group
         pim/form/common/fields/user-role:               pimenrich/js/form/common/fields/user-role
+        pim/form/common/fields/default-product-grid-view: pimenrich/js/form/common/fields/default-product-grid-view
 
         # Values fields
         pim/form/common/fields/values/boolean:              pimenrich/js/form/common/fields/values/boolean

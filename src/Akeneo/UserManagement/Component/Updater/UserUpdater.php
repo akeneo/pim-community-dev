@@ -18,7 +18,10 @@ use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Pim\Component\Catalog\FileStorage;
 
 /**
@@ -48,6 +51,9 @@ class UserUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $groupRepository;
 
+    /** @var ObjectRepository */
+    protected $gridViewRepository;
+
     /** @var FileInfoRepositoryInterface */
     protected $fileInfoRepository;
 
@@ -67,6 +73,10 @@ class UserUpdater implements ObjectUpdaterInterface
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param IdentifiableObjectRepositoryInterface $roleRepository
      * @param IdentifiableObjectRepositoryInterface $groupRepository
+     * @param ObjectRepository                      $gridViewRepository
+     * @param FileInfoRepositoryInterface           $fileInfoRepository
+     * @param FileStorerInterface                   $fileStorer
+     * @param string                                $fileStorageFolder
      * @param IdentifiableObjectRepositoryInterface $categoryAssetRepository
      */
     public function __construct(
@@ -76,6 +86,7 @@ class UserUpdater implements ObjectUpdaterInterface
         IdentifiableObjectRepositoryInterface $channelRepository,
         IdentifiableObjectRepositoryInterface $roleRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
+        ObjectRepository $gridViewRepository,
         FileInfoRepositoryInterface $fileInfoRepository,
         FileStorerInterface $fileStorer,
         string $fileStorageFolder,
@@ -87,6 +98,7 @@ class UserUpdater implements ObjectUpdaterInterface
         $this->channelRepository = $channelRepository;
         $this->roleRepository = $roleRepository;
         $this->groupRepository = $groupRepository;
+        $this->gridViewRepository = $gridViewRepository;
         $this->fileInfoRepository = $fileInfoRepository;
         $this->fileStorer = $fileStorer;
         $this->fileStorageFolder = $fileStorageFolder;
@@ -216,13 +228,16 @@ class UserUpdater implements ObjectUpdaterInterface
             case 'avatar':
                 $this->setAvatar($user, $data);
                 break;
+            case 'default_product_grid_view':
+                $user->setDefaultGridView('product-grid', $this->findDefaultGridView($data));
+                break;
             default:
                 throw UnknownPropertyException::unknownProperty($field);
         }
     }
 
     /**
-     * @param string $code
+     * @param string        $code
      *
      * @throws InvalidPropertyException
      *
@@ -243,6 +258,38 @@ class UserUpdater implements ObjectUpdaterInterface
         }
 
         return $category;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @throws InvalidPropertyException
+     *
+     * @return DatagridView|null
+     */
+    protected function findDefaultGridView($code): ?DatagridView
+    {
+        if ($code === '') {
+            return null;
+        }
+
+        $defaultGridView = $this->gridViewRepository->findOneBy([
+            'type' => DatagridView::TYPE_PUBLIC,
+            'datagridAlias' => 'product-grid',
+            'id' => $code
+        ]);
+
+        if (null === $defaultGridView) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'default_product_grid_view',
+                'grid view code',
+                'The grid view does not exist',
+                static::class,
+                $code
+            );
+        }
+
+        return $defaultGridView;
     }
 
     /**
@@ -384,6 +431,10 @@ class UserUpdater implements ObjectUpdaterInterface
      */
     private function setAvatar($user, $data)
     {
+        if ($data['filePath'] === null || $data['filePath'] === '') {
+            return;
+        }
+
         $fileInfo = $this->fileInfoRepository->findOneBy([
             'key' => str_replace($this->fileStorageFolder, '', $data['filePath']),
         ]);
@@ -392,7 +443,7 @@ class UserUpdater implements ObjectUpdaterInterface
             $rawFile = new \SplFileInfo($data['filePath']);
             if (!$rawFile->isFile()) {
                 throw InvalidPropertyException::validPathExpected(
-                    'media',
+                    'avatar',
                     static::class,
                     $data['filePath']
                 );

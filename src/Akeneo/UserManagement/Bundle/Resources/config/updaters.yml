@@ -13,6 +13,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_user.repository.role'
             - '@pim_user.repository.group'
+            - '@pim_datagrid.repository.datagrid_view'
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '/tmp/pim/file_storage'

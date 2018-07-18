@@ -20,14 +20,14 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
          *
          * @return {Promise}
          */
-        fetchAll: function () {
+        fetchAll: function (searchOptions) {
             if (!this.entityListPromise) {
                 if (!_.has(this.options.urls, 'list')) {
                     return $.Deferred().reject().promise();
                 }
 
                 this.entityListPromise = $.getJSON(
-                    Routing.generate(this.options.urls.list)
+                    Routing.generate(this.options.urls.list, searchOptions),
                 ).then(_.identity).promise();
             }
 

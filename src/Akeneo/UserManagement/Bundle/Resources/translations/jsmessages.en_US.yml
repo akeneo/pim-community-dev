@@ -52,6 +52,7 @@ pim_user_management:
                 new_password_repeat: New password (repeat)
                 ui_locale: UI locale
                 timezone: Timezone
+                default_product_grid_view: Default product grid view
             module:
                 create:
                     button: Create user

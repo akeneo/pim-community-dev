@@ -248,7 +248,18 @@ extensions:
         config:
             fieldName: productGridFilters
             label: pim_user_management.entity.user.properties.product_grid_filters
-            required: true
+
+    pim-user-edit-form-default-product-grid-view:
+        module: pim/form/common/fields/default-product-grid-view
+        parent: pim-user-edit-form-additional-tab-content
+        position: 40
+        targetZone: content
+        config:
+            fieldName: default_product_grid_view
+            label: pim_user_management.entity.user.properties.default_product_grid_view
+            allowClear: true
+            isMultiple: false
+            readOnly: false
 
     # Groups and Roles tab
     pim-user-edit-form-groups-and-roles-tab:
