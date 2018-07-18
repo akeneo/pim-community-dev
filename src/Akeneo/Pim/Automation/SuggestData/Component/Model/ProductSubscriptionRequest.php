@@ -44,16 +44,6 @@ final class ProductSubscriptionRequest
     {
         $mapped = [];
         foreach ($mapping as $pimAiCode => $mappedAttribute) {
-            if ($mappedAttribute->isScopable() || $mappedAttribute->isLocalizable(
-                ) || $mappedAttribute->isLocaleSpecific()) {
-                throw new \LogicException(
-                    sprintf(
-                        'Mapped attribute "%s" for code "%s" should not be localizable, scopable nor locale specific',
-                        $mappedAttribute->getCode(),
-                        $pimAiCode
-                    )
-                );
-            }
             $value = $this->product->getValue($mappedAttribute->getCode());
             if (null !== $value && $value->hasData()) {
                 $mapped[$pimAiCode] = $value->__toString();

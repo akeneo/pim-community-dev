@@ -22,66 +22,6 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         $this->shouldHaveType(ProductSubscriptionRequest::class);
     }
 
-    function it_throws_an_exception_if_mapped_attribute_is_scopable(
-        IdentifiersMapping $mapping,
-        AttributeInterface $attribute
-    ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->getCode()->willReturn('foo');
-        $mapping->getIterator()->willReturn(new \ArrayIterator(['asin' => $attribute->getWrappedObject()]));
-
-        $this->shouldThrow(
-            new \LogicException(
-                sprintf(
-                    'Mapped attribute "%s" for code "%s" should not be localizable, scopable nor locale specific',
-                    'foo',
-                    'asin'
-                )
-            )
-        )->during('getMappedValues', [$mapping]);
-    }
-
-    function it_throws_an_exception_if_mapped_attribute_is_localizable(
-        IdentifiersMapping $mapping,
-        AttributeInterface $attribute
-    ) {
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(true);
-        $attribute->getCode()->willReturn('foo');
-        $mapping->getIterator()->willReturn(new \ArrayIterator(['asin' => $attribute->getWrappedObject()]));
-
-        $this->shouldThrow(
-            new \LogicException(
-                sprintf(
-                    'Mapped attribute "%s" for code "%s" should not be localizable, scopable nor locale specific',
-                    'foo',
-                    'asin'
-                )
-            )
-        )->during('getMappedValues', [$mapping]);
-    }
-
-    function it_throws_an_exception_if_mapped_attribute_is_locale_specific(
-        IdentifiersMapping $mapping,
-        AttributeInterface $attribute
-    ) {
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->isLocaleSpecific()->willReturn(true);
-        $attribute->getCode()->willReturn('foo');
-        $mapping->getIterator()->willReturn(new \ArrayIterator(['asin' => $attribute->getWrappedObject()]));
-
-        $this->shouldThrow(
-            new \LogicException(
-                sprintf(
-                    'Mapped attribute "%s" for code "%s" should not be localizable, scopable nor locale specific',
-                    'foo',
-                    'asin'
-                )
-            )
-        )->during('getMappedValues', [$mapping]);
-    }
-
     function it_does_not_take_missing_values_into_account(
         $product,
         IdentifiersMapping $mapping,
@@ -92,19 +32,8 @@ class ProductSubscriptionRequestSpec extends ObjectBehavior
         ValueInterface $eanValue
     ) {
         $manufacturer->getCode()->willReturn('manufacturer');
-        $manufacturer->isScopable()->willReturn(false);
-        $manufacturer->isLocalizable()->willReturn(false);
-        $manufacturer->isLocaleSpecific()->willReturn(false);
-
         $model->getCode()->willReturn('model');
-        $model->isScopable()->willReturn(false);
-        $model->isLocalizable()->willReturn(false);
-        $model->isLocaleSpecific()->willReturn(false);
-
         $ean->getCode()->willReturn('ean');
-        $ean->isScopable()->willReturn(false);
-        $ean->isLocalizable()->willReturn(false);
-        $ean->isLocaleSpecific()->willReturn(false);
 
         $modelValue->hasData()->willReturn(false);
         $eanValue->hasData()->willReturn(true);
