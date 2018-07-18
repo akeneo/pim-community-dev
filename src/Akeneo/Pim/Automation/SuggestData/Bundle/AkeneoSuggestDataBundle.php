@@ -22,6 +22,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AkeneoSuggestDataBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         $container

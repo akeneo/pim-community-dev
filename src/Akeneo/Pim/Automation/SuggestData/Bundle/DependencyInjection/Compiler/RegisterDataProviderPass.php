@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Compiler pass du register data providers in a registry
+ * Compiler pass to register data providers
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
