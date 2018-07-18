@@ -25,15 +25,46 @@ pim_title:
 pim_user_management:
     entity:
         user:
+            flash:
+                update:
+                    success: User successfully updated.
+                    fail: The user could not be updated.
+                    fields_not_ready: "The user cannot be saved right now. The following fields are not ready: {{ fields }}"
             page_title:
                 index: "]-Inf, 1] {{ count }} user|]1, Inf [{{ count }} users"
+            properties:
+                username: Username
+                name_prefix: Name prefix
+                first_name: First name
+                middle_name: Middle name
+                last_name: Last name
+                name_suffix: Name suffix
+                phone: Phone
+                birthday: Birthday
+                avatar: Avatar
+                email: Email
+                catalog_locale: Catalog locale
+                catalog_scope: Catalog scope
+                default_tree: Default tree
+                product_grid_filters: Product grid filters
+                current_password: Password
+                new_password: New password
+                new_password_repeat: New password (repeat)
+                ui_locale: UI locale
+                timezone: Timezone
             module:
                 create:
                     button: Create user
                 delete:
                     confirm: Are you sure you want to delete this user?
+                update:
+                    additional: Additional
+                    groups_and_roles: Groups and roles
+                    password: Password
+                    interfaces: Interfaces
 
         role:
+            plural_label: Roles
             page_title:
                 index: "]-Inf, 1] {{ count }} role|]1, Inf [{{ count }} roles"
             module:
@@ -43,6 +74,7 @@ pim_user_management:
                     confirm: Are you sure you want to delete this role?
 
         group:
+            plural_label: User groups
             page_title:
                 index: "]-Inf, 1] {{ count }} group|]1, Inf [{{ count }} groups"
             module:

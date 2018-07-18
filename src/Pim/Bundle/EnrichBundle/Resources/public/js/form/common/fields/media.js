@@ -11,6 +11,7 @@ define([
     'jquery',
     'pim/form/common/fields/field',
     'underscore',
+    'oro/translator',
     'routing',
     'pim/template/form/common/fields/media',
     'oro/mediator',
@@ -22,6 +23,7 @@ function (
     $,
     BaseField,
     _,
+    __,
     Routing,
     template,
     mediator,
@@ -51,7 +53,8 @@ function (
         renderInput: function (templateContext) {
             return this.template(_.extend(templateContext, {
                 media: this.getFormData()[this.fieldName],
-                readOnly: this.readOnly
+                readOnly: this.readOnly,
+                uploadLabel: __('pim_common.media_upload')
             }));
         },
 

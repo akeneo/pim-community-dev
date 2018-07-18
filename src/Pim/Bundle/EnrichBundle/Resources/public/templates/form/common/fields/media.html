@@ -3,7 +3,7 @@
         <input class="AknMediaField-fileUploaderInput<%- readOnly ? ' AknMediaField-fileUploaderInput--disabled' : '' %>" type="file" />
         <div class="AknMediaField-emptyContainer">
             <span title="upload icon" class="AknMediaField-uploadIcon"/>
-            <span>Upload</span>
+            <span><%- uploadLabel %></span>
         </div>
     <% } else { %>
         <div class="AknMediaField-preview preview">
