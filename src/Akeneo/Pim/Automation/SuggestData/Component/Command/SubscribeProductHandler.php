@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
@@ -28,12 +29,19 @@ class SubscribeProductHandler
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
+    /** @var IdentifiersMappingRepositoryInterface */
+    private $identifiersMappingRepository;
+
     /**
      * @param ProductRepositoryInterface $productRepository
+     * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
-    public function __construct(ProductRepositoryInterface $productRepository)
-    {
+    public function __construct(
+        ProductRepositoryInterface $productRepository,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+    ) {
         $this->productRepository = $productRepository;
+        $this->identifiersMappingRepository = $identifiersMappingRepository;
     }
 
     /**
@@ -41,10 +49,16 @@ class SubscribeProductHandler
      */
     public function handle(SubscribeProduct $command): void
     {
+        $identifiersMapping = $this->identifiersMappingRepository->findAll();
+        if ($identifiersMapping->isEmpty()) {
+            throw new \Exception('Identifiers mapping has not identifier defined');
+        }
+
         $product = $this->productRepository->find($command->getProductId());
         if (null === $product) {
             throw new \Exception(sprintf('Could not find product with id "%s"', $command->getProductId()));
         }
+
         $this->subscribe($product);
     }
 
