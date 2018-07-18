@@ -247,7 +247,9 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
                 $this->getAccessColumn($accessLevel)
             )
         );
-        $stmt->bindParam(':user_id', $user->getId());
+
+        $userId = $user->getId();
+        $stmt->bindParam('user_id', $userId);
         $stmt->execute();
 
         $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN, 'ca.id');
