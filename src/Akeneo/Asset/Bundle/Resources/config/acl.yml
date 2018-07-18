@@ -59,3 +59,21 @@ pimee_product_asset_mass_upload:
     type: action
     label: pimee_product_asset.acl.asset.mass_upload
     group_name: pimee_product_asset.acl_group.asset
+
+# External API
+pim_api_asset_category_list:
+    type: action
+    label: pim_api.acl.asset_category.list
+    group_name: pim_api.acl_group.asset_category
+pim_api_asset_category_edit:
+    type: action
+    label: pim_api.acl.asset_category.edit
+    group_name: pim_api.acl_group.asset_category
+pim_api_asset_list:
+    type: action
+    label: pim_api.acl.asset.list
+    group_name: pim_api.acl_group.asset
+pim_api_asset_edit:
+    type: action
+    label: pim_api.acl.asset.edit
+    group_name: pim_api.acl_group.asset
