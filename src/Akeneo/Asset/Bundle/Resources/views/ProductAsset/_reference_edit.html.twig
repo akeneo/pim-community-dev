@@ -24,7 +24,7 @@
 
             <div class="AknWidget-content row-fluid">
                 {% if referenceModel.fileInfo %}
-                    {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_core.html.twig' %}
+                    {% embed 'AkeneoAssetBundle:ProductAsset:_reference_core.html.twig' %}
                         {% block reference_buttons %}
                             <button class="AknButtonList-item AknButton AknButton--important AknButton--small delete"
                                     data-href="{{ path('pimee_product_asset_reference_delete', {'id': referenceModel.id}) }}" >
@@ -44,6 +44,6 @@
     </div>
 
     {% for variation in reference.variations %}
-        {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_edit.html.twig' with {'variationModel': variation.vars.data} %}
+        {% include 'AkeneoAssetBundle:ProductAsset:_variation_edit.html.twig' with {'variationModel': variation.vars.data} %}
     {% endfor %}
 </div>

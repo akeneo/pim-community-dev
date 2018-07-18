@@ -1,7 +1,7 @@
 parameters:
-    pimee_product_asset.view_element.asset.tab.variations.template: 'PimEnterpriseProductAssetBundle:ProductAsset:_variations-tab.html.twig'
-    pimee_product_asset.view_element.asset.tab.properties.template: 'PimEnterpriseProductAssetBundle:ProductAsset:_properties-tab.html.twig'
-    pimee_product_asset.view_element.asset.tab.categories.template: 'PimEnterpriseProductAssetBundle:ProductAsset:_categories-tab.html.twig'
+    pimee_product_asset.view_element.asset.tab.variations.template: 'AkeneoAssetBundle:ProductAsset:_variations-tab.html.twig'
+    pimee_product_asset.view_element.asset.tab.properties.template: 'AkeneoAssetBundle:ProductAsset:_properties-tab.html.twig'
+    pimee_product_asset.view_element.asset.tab.categories.template: 'AkeneoAssetBundle:ProductAsset:_categories-tab.html.twig'
 
 services:
     pimee_product_asset.view_element.asset.tab.variations:

@@ -31,7 +31,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @author Julien Janvier <jjanvier@akeneo.com>
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class PimEnterpriseProductAssetBundle extends Bundle
+class AkeneoAssetBundle extends Bundle
 {
     /**
      * {@inheritdoc}

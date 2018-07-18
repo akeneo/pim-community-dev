@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class PimEnterpriseProductAssetExtension extends Extension
+class AkeneoAssetExtension extends Extension
 {
     /**
      * {@inheritdoc}
