@@ -1,0 +1,27 @@
+Feature: Create a record
+  In order to have records
+  As a user
+  I want create a record
+
+  @acceptance-back
+  Scenario: Creating a record
+    When the user creates a record "stark" for entity "designer" with:
+      | labels | {"en_US": "Tony Stark", "fr_FR": "Thierry Stark"} |
+    Then there is a record with:
+      | identifier | entity_identifier | labels                                            |
+      | stark      | designer          | {"en_US": "Tony Stark", "fr_FR": "Thierry Stark"} |
+
+  @acceptance-back
+  Scenario: Creating a record with no labels
+    When the user creates a record "stark" for entity "designer" with:
+      | labels | {} |
+    Then there is a record with:
+      | identifier | entity_identifier | labels |
+      | stark      | designer          | {}     |
+
+  @acceptance-back
+  Scenario: Cannot create a record with invalid identifier
+    When the user creates a record "invalid/identifier" for entity "designer" with:
+      | labels | {} |
+    Then an exception is thrown with message "Record identifier may contain only letters, numbers and underscores"
+    And there should be no enriched entity

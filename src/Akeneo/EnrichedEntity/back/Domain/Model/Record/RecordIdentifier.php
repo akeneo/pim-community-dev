@@ -24,6 +24,10 @@ class RecordIdentifier
 
     private function __construct(string $identifier)
     {
+        if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $identifier)) {
+            throw new \InvalidArgumentException('Record identifier may contain only letters, numbers and underscores');
+        }
+
         $this->identifier = $identifier;
     }
 

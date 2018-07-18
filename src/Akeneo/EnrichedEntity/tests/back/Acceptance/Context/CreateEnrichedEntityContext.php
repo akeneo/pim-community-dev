@@ -26,15 +26,17 @@ final class CreateEnrichedEntityContext implements Context
     /** @var CreateEnrichedEntityHandler */
     private $createEnrichedEntityHandler;
 
-    /** @var \Exception */
-    private $exceptionThrown;
+    /** @var ExceptionContext */
+    private $exceptionContext;
 
     public function __construct(
         EnrichedEntityRepository $enrichedEntityRepository,
-        CreateEnrichedEntityHandler $createEnrichedEntityHandler
+        CreateEnrichedEntityHandler $createEnrichedEntityHandler,
+        ExceptionContext $exceptionContext
     ) {
         $this->enrichedEntityRepository = $enrichedEntityRepository;
         $this->createEnrichedEntityHandler = $createEnrichedEntityHandler;
+        $this->exceptionContext = $exceptionContext;
     }
 
     /**
@@ -49,7 +51,7 @@ final class CreateEnrichedEntityContext implements Context
         try {
             ($this->createEnrichedEntityHandler)($command);
         } catch (\Exception $e) {
-            $this->exceptionThrown = $e;
+            $this->exceptionContext->setException($e);
         }
     }
 
@@ -83,14 +85,6 @@ final class CreateEnrichedEntityContext implements Context
             $differences,
             sprintf('Expected labels "%s", but found %s', json_encode($expectedLabels), json_encode($actualLabels))
         );
-    }
-
-    /**
-     * @Then /^an exception is thrown with message "([^"]+)"$/
-     */
-    public function anExceptionIsThrownWithMessage(string $errorMessage)
-    {
-        Assert::eq($errorMessage, $this->exceptionThrown->getMessage());
     }
 
     /**

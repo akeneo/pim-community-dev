@@ -23,6 +23,12 @@ class RecordIdentifierSpec extends ObjectBehavior
         $this->__toString()->shouldReturn('an_identifier');
     }
 
+    public function it_should_contain_only_letters_numbers_and_underscores()
+    {
+        $this->beConstructedThrough('fromString', ['badId!']);
+        $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
+    }
+
     public function it_is_possible_to_compare_it()
     {
         $this->equals(RecordIdentifier::fromString('an_identifier'))->shouldReturn(true);

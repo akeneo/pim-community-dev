@@ -53,4 +53,15 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
 
         return $records[(string) $identifier];
     }
+
+    public function count(): int
+    {
+        $recordCount = 0;
+
+        foreach ($this->records as $enrichedEntity) {
+            $recordCount += count($enrichedEntity);
+        }
+
+        return $recordCount;
+    }
 }

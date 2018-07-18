@@ -50,6 +50,30 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
+    public function it_counts_the_records()
+    {
+        $this->assertEquals(0, $this->repository->count());
+
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+
+        $identifier = RecordIdentifier::fromString('record_identifier');
+        $record = Record::create($identifier, $enrichedEntityIdentifier, []);
+
+        $this->repository->save($record);
+
+        $this->assertEquals(1, $this->repository->count());
+
+        $identifier = RecordIdentifier::fromString('record_identifier2');
+        $record = Record::create($identifier, $enrichedEntityIdentifier, []);
+
+        $this->repository->save($record);
+
+        $this->assertEquals(2, $this->repository->count());
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_the_identifier_is_not_found()
     {
         $this->expectException(EntityNotFoundException::class);

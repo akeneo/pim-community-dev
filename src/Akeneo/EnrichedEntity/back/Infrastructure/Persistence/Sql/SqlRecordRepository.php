@@ -38,6 +38,15 @@ class SqlRecordRepository implements RecordRepositoryInterface
         $this->sqlConnection = $sqlConnection;
     }
 
+    public function count(): int
+    {
+        $sql = 'SELECT COUNT(*) FROM akeneo_enriched_entity_record';
+        $statement = $this->sqlConnection->executeQuery($sql);
+        $count = (int) $statement->fetchColumn();
+
+        return $count;
+    }
+
     /**
      * Depending on the database table state, the sql query "REPLACE INTO ... " might affect one row (the insert use
      * case) or two rows (the update use case)

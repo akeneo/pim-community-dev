@@ -33,8 +33,31 @@ class InMemoryRecordRepositoryTest extends TestCase
 
         $this->recordRepository->save($record);
 
-        $enrichedEntityFound = $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
-        $this->assertTrue($record->equals($enrichedEntityFound));
+        $recordFound = $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
+        $this->assertTrue($record->equals($recordFound));
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_the_records()
+    {
+        $this->assertEquals(0, $this->recordRepository->count());
+
+        $identifier = RecordIdentifier::fromString('record_identifier');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $record = Record::create($identifier, $enrichedEntityIdentifier, []);
+
+        $this->recordRepository->save($record);
+
+        $this->assertEquals(1, $this->recordRepository->count());
+
+        $identifier = RecordIdentifier::fromString('record_identifier2');
+        $record = Record::create($identifier, $enrichedEntityIdentifier, []);
+
+        $this->recordRepository->save($record);
+
+        $this->assertEquals(2, $this->recordRepository->count());
     }
 
     /**
