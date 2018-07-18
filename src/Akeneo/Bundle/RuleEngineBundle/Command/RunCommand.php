@@ -24,9 +24,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\User\ChainUserProvider;
 
 /**
  * Command to run a rule
@@ -93,8 +90,6 @@ class RunCommand extends ContainerAwareCommand
      * @param bool                      $dryRun
      * @param bool                      $stopOnError
      * @param string|null               $username
-     *
-     * @return array
      *
      * @throws \Exception
      */
