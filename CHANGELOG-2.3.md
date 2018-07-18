@@ -5,6 +5,8 @@
 - PIM-7488: use catalog locale for attributes list in attribute groups
 - PIM-7518: fix memory leak in channel/locale clean command
 - PIM-7517: fix the product models export filter on identifier
+- PIM-7476: fix family select2 to have the right limit
+- PIM-7516: fix metric default value on product edit form
 
 ## Migration
 
