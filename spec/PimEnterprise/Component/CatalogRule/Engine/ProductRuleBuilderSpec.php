@@ -9,7 +9,6 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductRuleBuilderSpec extends ObjectBehavior
@@ -37,7 +36,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface');
     }
 
-    function it_builds_a_rule($eventDispatcher, $validator, $ruleContentDenormalizer, RuleDefinitionInterface $definition)
+    function it_builds_a_rule($eventDispatcher, $ruleContentDenormalizer, RuleDefinitionInterface $definition)
     {
         $content = $this->buildRuleContent();
 
@@ -46,7 +45,6 @@ class ProductRuleBuilderSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(RuleEvents::PRE_BUILD, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_BUILD, Argument::any())->shouldBeCalled();
-        $validator->validate(Argument::any())->shouldBeCalled()->willReturn([]);
 
         $this->build($definition)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface');
     }
@@ -64,32 +62,6 @@ class ProductRuleBuilderSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new BuilderException('Impossible to build the rule "rule1". Bad content!'))
-            ->during('build', [$definition])
-        ;
-    }
-
-    function it_does_not_build_a_rule_with_a_content_that_is_not_valid(
-        $eventDispatcher,
-        $validator,
-        $ruleContentDenormalizer,
-        RuleDefinitionInterface $definition,
-        ConstraintViolationListInterface $violations
-    ) {
-        $content = $this->buildRuleContent();
-
-        $definition->getCode()->willReturn('rule1');
-        $definition->getContent()->shouldBeCalled()->willReturn([]);
-        $ruleContentDenormalizer->denormalize(Argument::cetera())->shouldBeCalled()->willReturn($content);
-
-        $eventDispatcher->dispatch(RuleEvents::PRE_BUILD, Argument::any())->shouldBeCalled();
-
-        $violations->count()->willReturn(2);
-        $violations->rewind()->willReturn(null);
-        $violations->valid()->shouldBeCalled();
-        $validator->validate(Argument::any())->willReturn($violations);
-
-        $this
-            ->shouldThrow('Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException')
             ->during('build', [$definition])
         ;
     }
