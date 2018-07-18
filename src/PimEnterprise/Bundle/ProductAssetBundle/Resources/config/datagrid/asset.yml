@@ -123,7 +123,7 @@ datagrid:
                 type: edit
                 label: pim.grid.mass_action.asset_edit
                 acl_resource: pimee_product_asset_index
-                route: pim_enrich_mass_edit_action
+                route: pimee_product_asset_mass_edit_action
                 route_parameters:
                     actionName: asset-edit
                 className: 'AknButton AknButton--action AknButtonList-item'

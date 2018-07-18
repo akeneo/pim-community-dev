@@ -1,3 +1,9 @@
+# 2.3.x
+
+## Bug fixes
+
+- PIM-7443: Fix product mass action permissions also apply on other grid mass actions 
+
 # 2.3.1 (2018-07-04)
 
 ## Bug fixes

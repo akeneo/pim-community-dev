@@ -32,3 +32,9 @@ config:
                 pim_assets_collection:
                     create: pim-attribute-form-assets-collection
                     edit:   pim-attribute-form-assets-collection
+
+        pim/controller-registry:
+            controllers:
+                pimee_product_asset_mass_edit_action:
+                    module: pim/controller/mass-edit
+                    aclResourceId: pimee_product_asset_index
