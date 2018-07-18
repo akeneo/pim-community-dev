@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class PimEnterpriseRevertBundle extends Bundle
+class AkeneoPimProductRevertBundle extends Bundle
 {
     /**
      * {@inheritdoc}

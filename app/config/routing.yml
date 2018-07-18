@@ -37,7 +37,7 @@ pimee_workflow:
     resource: "@AkeneoPimWorkflowBundle/Resources/config/routing.yml"
 
 pim_versioning:
-    resource: "@PimEnterpriseRevertBundle/Resources/config/routing.yml"
+    resource: "@AkeneoPimProductRevertBundle/Resources/config/routing.yml"
 
 pim_comment:
     resource: "@PimCommentBundle/Resources/config/routing.yml"
