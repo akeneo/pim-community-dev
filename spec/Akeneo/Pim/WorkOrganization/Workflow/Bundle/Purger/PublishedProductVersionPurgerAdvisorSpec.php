@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\VersioningBundle\Purger;
+namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Purger;
 
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use PhpSpec\ObjectBehavior;
