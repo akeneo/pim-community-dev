@@ -3,26 +3,48 @@ Feature: Create an enriched entity
   As a user
   I want create an enriched entity
 
-  @acceptance-back @acceptance-front
+  @acceptance-back
   Scenario: Creating an enriched entity
     When the user creates an enriched entity "designer" with:
       | labels                                    |
       | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then there is an enriched entity "designer" with:
-      | labels                                    |
-      | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+      | identifier | labels                                    |
+      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
 
-  @acceptance-back
+  @acceptance-back @acceptance-front
   Scenario: Creating an enriched entity with no labels
     When the user creates an enriched entity "designer" with:
-      | labels | {} |
+      | labels |
+      | {}     |
     Then there is an enriched entity "designer" with:
       | identifier | labels |
-      | designer   | {}     |
+      | [designer] | {}     |
 
   @acceptance-back
   Scenario: Cannot create an enriched entity with invalid identifier
     When the user creates an enriched entity "invalid/identifier" with:
-      | labels | {} |
+      | labels |
+      | {}     |
     Then an exception is thrown with message "Enriched Entity identifier may contain only letters, numbers and underscores"
     And there should be no enriched entity
+
+  @acceptance-front
+  Scenario: Creating an enriched entity
+    When the user creates an enriched entity "designer" with:
+      | labels                                    |
+      | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+    Then the enriched entity will be saved
+    And the user saves the enriched entity
+    And there is an enriched entity "designer" with:
+      | identifier | labels                                    |
+      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+
+  @acceptance-front
+  Scenario: Cannot create an enriched entity with invalid identifier
+    When the user creates an enriched entity "invalid/identifier" with:
+      | labels |
+      | {}     |
+    Then The validation error will be "This field may only contain letters, numbers and underscores."
+    And the user saves the enriched entity
+    And a validation message is displayed "This field may only contain letters, numbers and underscores."

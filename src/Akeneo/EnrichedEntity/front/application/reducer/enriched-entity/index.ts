@@ -6,7 +6,7 @@ import create, {CreateState} from 'akeneoenrichedentity/application/reducer/enri
 export interface State {
   user: UserState;
   grid: GridState<EnrichedEntity>;
-  create: CreateState
+  create: CreateState;
 }
 
 export default {

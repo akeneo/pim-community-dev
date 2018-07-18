@@ -30,7 +30,16 @@ const Modal = async (nodeElement, createElementDecorator, page) => {
     await saveButton.click();
   };
 
-  return {setCode, setLabel, save};
+  const getValidationMessageForCode = async () => {
+    await page.waitForSelector('.error-message');
+
+    const error = await nodeElement.$('.error-message');
+    const property = await error.getProperty('textContent');
+
+    return await property.jsonValue();
+  };
+
+  return {setCode, setLabel, save, getValidationMessageForCode};
 };
 
 module.exports = Modal;

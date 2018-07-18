@@ -1,17 +1,17 @@
 export default interface ValidationError {
-  messageTemplate: string
+  messageTemplate: string;
   parameters: {
-    [key: string]: string
-  },
-  message: string,
-  propertyPath: string,
-  invalidValue: string
+    [key: string]: string;
+  };
+  message: string;
+  propertyPath: string;
+  invalidValue: string;
 }
 
 class ConcreteValidationError implements ValidationError {
   readonly messageTemplate: string;
   readonly parameters: {
-    [key: string]: string
+    [key: string]: string;
   };
   readonly message: string;
   readonly propertyPath: string;
@@ -23,7 +23,7 @@ class ConcreteValidationError implements ValidationError {
     this.message = error.message;
     this.propertyPath = error.propertyPath;
     this.invalidValue = error.invalidValue;
-  };
+  }
 
   static fromError(error: ValidationError) {
     return new ConcreteValidationError(error);

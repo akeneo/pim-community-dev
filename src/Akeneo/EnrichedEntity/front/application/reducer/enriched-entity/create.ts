@@ -1,13 +1,13 @@
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
-import sanitize from "akeneoenrichedentity/tools/sanitize";
+import sanitize from 'akeneoenrichedentity/tools/sanitize';
 
 export interface CreateState {
   active: boolean;
   data: {
-    code: string
+    code: string;
     labels: {
-      [localeCode: string]: string
-    }
+      [localeCode: string]: string;
+    };
   };
   errors: ValidationError[];
 }
@@ -16,12 +16,15 @@ const initCreateState = (): CreateState => ({
   active: false,
   data: {
     code: '',
-    labels: {}
+    labels: {},
   },
-  errors: []
+  errors: [],
 });
 
-export default (state: CreateState = initCreateState(), action: { type: string, locale: string, value: string, errors: ValidationError[] }) => {
+export default (
+  state: CreateState = initCreateState(),
+  action: {type: string; locale: string; value: string; errors: ValidationError[]}
+) => {
   switch (action.type) {
     case 'ENRICHED_ENTITY_CREATION_START':
       state = {
@@ -29,28 +32,28 @@ export default (state: CreateState = initCreateState(), action: { type: string, 
         active: true,
         data: {
           code: '',
-          labels: {}
+          labels: {},
         },
-        errors: []
+        errors: [],
       };
       break;
 
     case 'ENRICHED_ENTITY_CREATION_CODE_UPDATED':
       state = {
         ...state,
-        data: {...state.data, 'code': action.value}
+        data: {...state.data, code: action.value},
       };
 
       break;
 
     case 'ENRICHED_ENTITY_CREATION_LABEL_UPDATED':
-      const previousLabel = state.data.labels[action.locale] ;
+      const previousLabel = state.data.labels[action.locale];
       const expectedSanitizedCode = sanitize(undefined === previousLabel ? '' : previousLabel);
-      const code = (expectedSanitizedCode === state.data.code) ? sanitize(action.value) : state.data.code;
+      const code = expectedSanitizedCode === state.data.code ? sanitize(action.value) : state.data.code;
 
       state = {
         ...state,
-        data: {...state.data, labels: {...state.data.labels, [action.locale]: action.value}, code}
+        data: {...state.data, labels: {...state.data.labels, [action.locale]: action.value}, code},
       };
 
       break;
@@ -65,25 +68,25 @@ export default (state: CreateState = initCreateState(), action: { type: string, 
     case 'ENRICHED_ENTITY_CREATION_SUBMISSION':
       state = {
         ...state,
-        errors: []
+        errors: [],
       };
       break;
 
     case 'ENRICHED_ENTITY_CREATION_SUCCEEDED':
       state = {
         ...state,
-        active: false
+        active: false,
       };
       break;
 
     case 'ENRICHED_ENTITY_CREATION_ERROR_OCCURED':
       state = {
         ...state,
-        errors: action.errors
+        errors: action.errors,
       };
       break;
     default:
   }
 
   return state;
-}
+};

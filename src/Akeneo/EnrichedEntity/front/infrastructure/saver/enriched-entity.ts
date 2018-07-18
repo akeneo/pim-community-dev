@@ -12,13 +12,13 @@ export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
     Object.freeze(this);
   }
 
-  async save(enrichedEntity: EnrichedEntity): Promise<ValidationError[]|null> {
+  async save(enrichedEntity: EnrichedEntity): Promise<ValidationError[] | null> {
     return await postJSON(
       routing.generate('akeneo_enriched_entities_enriched_entity_edit_rest', {
         identifier: enrichedEntity.getIdentifier().stringValue(),
       }),
       enrichedEntity.normalize()
-    ).catch((error) => {
+    ).catch(error => {
       if (500 === error.status) {
         throw new Error('Internal Server error');
       }
@@ -27,11 +27,12 @@ export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
     });
   }
 
-  async create(enrichedEntity: EnrichedEntity): Promise<ValidationError[]|null> {
+  async create(enrichedEntity: EnrichedEntity): Promise<ValidationError[] | null> {
+    debugger;
     return await postJSON(
-        routing.generate('akeneo_enriched_entities_enriched_entity_create_rest'),
-        enrichedEntity.normalize()
-    ).catch((error) => {
+      routing.generate('akeneo_enriched_entities_enriched_entity_create_rest'),
+      enrichedEntity.normalize()
+    ).catch(error => {
       if (500 === error.status) {
         throw new Error('Internal Server error');
       }

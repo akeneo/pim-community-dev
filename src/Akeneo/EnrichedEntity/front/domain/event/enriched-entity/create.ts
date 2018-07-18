@@ -1,11 +1,11 @@
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 
 export const enrichedEntityCreationStart = () => {
-    return {type: 'ENRICHED_ENTITY_CREATION_START'};
+  return {type: 'ENRICHED_ENTITY_CREATION_START'};
 };
 
 export const enrichedEntityCreationCodeUpdated = (value: string) => {
-    return {type: 'ENRICHED_ENTITY_CREATION_CODE_UPDATED', value};
+  return {type: 'ENRICHED_ENTITY_CREATION_CODE_UPDATED', value};
 };
 
 export const enrichedEntityCreationLabelUpdated = (value: string, locale: string) => {
@@ -17,13 +17,13 @@ export const enrichedEntityCreationCancel = () => {
 };
 
 export const enrichedEntityCreationSubmission = () => {
-    return {type: 'ENRICHED_ENTITY_CREATION_SUBMISSION'};
+  return {type: 'ENRICHED_ENTITY_CREATION_SUBMISSION'};
 };
 
 export const enrichedEntityCreationSucceeded = () => {
-    return {type: 'ENRICHED_ENTITY_CREATION_SUCCEEDED'};
+  return {type: 'ENRICHED_ENTITY_CREATION_SUCCEEDED'};
 };
 
 export const enrichedEntityCreationErrorOccured = (errors: ValidationError[]) => {
-    return {type: 'ENRICHED_ENTITY_CREATION_ERROR_OCCURED', errors};
+  return {type: 'ENRICHED_ENTITY_CREATION_ERROR_OCCURED', errors};
 };

@@ -23,9 +23,9 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       active: false,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
-      errors: []
+      errors: [],
     };
     const newState = reducer(state, {
       type: 'ENRICHED_ENTITY_CREATION_START',
@@ -35,9 +35,9 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       active: true,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
-      errors: []
+      errors: [],
     });
   });
 
@@ -46,22 +46,22 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       active: true,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
-      errors: []
+      errors: [],
     };
     const newState = reducer(state, {
       type: 'ENRICHED_ENTITY_CREATION_CODE_UPDATED',
-      value: 'code_test'
+      value: 'code_test',
     });
 
     expect(newState).toEqual({
       active: true,
       data: {
         code: 'code_test',
-        labels: {}
+        labels: {},
       },
-      errors: []
+      errors: [],
     });
   });
 
@@ -70,14 +70,14 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       active: true,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
-      errors: []
+      errors: [],
     };
     const newState = reducer(state, {
       type: 'ENRICHED_ENTITY_CREATION_LABEL_UPDATED',
       value: 'label testé-/$',
-      locale: 'en_US'
+      locale: 'en_US',
     });
 
     expect(newState).toEqual({
@@ -85,10 +85,10 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       data: {
         code: 'label_test____',
         labels: {
-          'en_US': 'label testé-/$'
-        }
+          en_US: 'label testé-/$',
+        },
       },
-      errors: []
+      errors: [],
     });
   });
 
@@ -97,9 +97,9 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       active: true,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
-      errors: []
+      errors: [],
     };
     const newState = reducer(state, {
       type: 'ENRICHED_ENTITY_CREATION_CANCEL',
@@ -109,9 +109,9 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       active: false,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
-      errors: []
+      errors: [],
     });
   });
 
@@ -120,17 +120,17 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       active: false,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
       errors: [
         {
-          messageTemplate:'This value should not be blank.',
-          parameters:{'{{ value }}':'""'},
-          message:'This value should not be blank.',
-          propertyPath:'identifier',
-          invalidValue:''
-        }
-      ]
+          messageTemplate: 'This value should not be blank.',
+          parameters: {'{{ value }}': '""'},
+          message: 'This value should not be blank.',
+          propertyPath: 'identifier',
+          invalidValue: '',
+        },
+      ],
     };
 
     const newState = reducer(state, {
@@ -141,9 +141,9 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       active: false,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
-      errors: []
+      errors: [],
     });
   });
 
@@ -152,9 +152,9 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       active: true,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
-      errors: []
+      errors: [],
     };
 
     const newState = reducer(state, {
@@ -165,9 +165,9 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       active: false,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
-      errors: []
+      errors: [],
     });
   });
 
@@ -176,33 +176,33 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       active: false,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
-      errors: []
+      errors: [],
     };
 
     const errors = [
       {
-        messageTemplate:'This value should not be blank.',
-        parameters:{'{{ value }}':'""'},
-        message:'This value should not be blank.',
-        propertyPath:'identifier',
-        invalidValue:''
-      }
+        messageTemplate: 'This value should not be blank.',
+        parameters: {'{{ value }}': '""'},
+        message: 'This value should not be blank.',
+        propertyPath: 'identifier',
+        invalidValue: '',
+      },
     ];
 
     const newState = reducer(state, {
       type: 'ENRICHED_ENTITY_CREATION_ERROR_OCCURED',
-      errors
+      errors,
     });
 
     expect(newState).toEqual({
       active: false,
       data: {
         code: '',
-        labels: {}
+        labels: {},
       },
-      errors
+      errors,
     });
   });
 });
