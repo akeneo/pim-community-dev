@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\DependencyInjection\Compiler\RegisterCalculationStepPass;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\DependencyInjection\Compiler\RegisterProjectRemoverPass;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
-use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\PimEnterpriseTeamworkAssistantBundle;
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -15,7 +15,7 @@ class PimEnterpriseTeamworkAssistantBundleSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(PimEnterpriseTeamworkAssistantBundle::class);
+        $this->shouldHaveType(AkeneoPimTeamworkAssistantBundle::class);
     }
 
     function it_is_bundle()

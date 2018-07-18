@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class PimEnterpriseTeamworkAssistantBundle extends Bundle
+class AkeneoPimTeamworkAssistantBundle extends Bundle
 {
     /**
      * {@inheritdoc}

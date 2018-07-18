@@ -7,7 +7,7 @@ akeneo_pim_structure:
 
 # PIM
 pimee_teamwork_assistant:
-    resource: "@PimEnterpriseTeamworkAssistantBundle/Resources/config/routing/routing.yml"
+    resource: "@AkeneoPimTeamworkAssistantBundle/Resources/config/routing/routing.yml"
 
 pim_analytics:
     resource: "@PimAnalyticsBundle/Resources/config/routing.yml"

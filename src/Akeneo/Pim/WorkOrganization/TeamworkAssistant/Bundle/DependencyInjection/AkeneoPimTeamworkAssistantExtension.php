@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class PimEnterpriseTeamworkAssistantExtension extends Extension
+class AkeneoPimTeamworkAssistantExtension extends Extension
 {
     /**
      * {@inheritdoc}
