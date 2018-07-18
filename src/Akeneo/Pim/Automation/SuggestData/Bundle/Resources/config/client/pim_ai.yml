@@ -1,5 +1,4 @@
 services:
-
     akeneo.pim.automation.suggest_data.pimai_client.guzzle_client:
         class: GuzzleHttp\Client
         arguments:

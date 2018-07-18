@@ -1,6 +1,15 @@
 <?php
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2018 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider;
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
@@ -8,23 +17,26 @@ use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter
 /**
  * Data provider factory
  * Creates the right adapter depending of the data provider used
- * and configures it
  *
  * @author Romain Monceau <romain@akeneo.com>
+ * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
 class DataProviderFactory
 {
-    private $memoryDataProvider;
+    /** @var DataProviderRegistry */
+    private $dataProviderRegistry;
 
-    private $pimAiDataProvider;
+    /** @var string */
+    private $dataProviderAlias;
 
-    private $environment;
-
-    public function __construct(DataProviderAdapterInterface $memoryDataProvider, DataProviderAdapterInterface $pimAiDataProvider, string $environment)
+    /**
+     * @param DataProviderRegistry $dataProviderRegistry
+     * @param string $dataProviderAlias
+     */
+    public function __construct(DataProviderRegistry $dataProviderRegistry, string $dataProviderAlias)
     {
-        $this->memoryDataProvider = $memoryDataProvider;
-        $this->pimAiDataProvider = $pimAiDataProvider;
-        $this->environment = $environment;
+        $this->dataProviderRegistry = $dataProviderRegistry;
+        $this->dataProviderAlias = $dataProviderAlias;
     }
 
     /**
@@ -32,11 +44,6 @@ class DataProviderFactory
      */
     public function create(): DataProviderAdapterInterface
     {
-        //Will be refactored
-        if ($this->environment === 'prod') {
-            return $this->pimAiDataProvider;
-        }
-
-        return $this->memoryDataProvider;
+        return $this->dataProviderRegistry->getDataProvider($this->dataProviderAlias);
     }
 }
