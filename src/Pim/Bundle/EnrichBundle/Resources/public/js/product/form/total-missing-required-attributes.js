@@ -58,7 +58,7 @@ define(
                     this.$el.append(this.template({
                         __: __,
                         missingRequiredAttributesCount: missingAttributes.length,
-                        missingValues: 'pim_enrich.form.product.panel.completeness.missing_values'
+                        missingValues: 'pim_enrich.entity.product.module.completeness.missing_values'
                     }));
                 }
 

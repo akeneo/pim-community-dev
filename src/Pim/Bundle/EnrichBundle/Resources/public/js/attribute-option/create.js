@@ -36,7 +36,7 @@ define(
                         },
                         allowCancel: true,
                         okCloses: false,
-                        title: _.__('pim_enrich.form.attribute_option.add_option_modal.title'),
+                        title: _.__('pim_enrich.form.product.module.attribute.add_attribute_option'),
                         content: '',
                         cancelText: _.__('pim_common.cancel'),
                         okText: _.__('pim_common.add')

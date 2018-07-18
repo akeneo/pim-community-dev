@@ -30,7 +30,7 @@ extensions:
         targetZone: container
         position: 100
         config:
-            label: 'pim_enrich.form.family_variant.tab.attributes.title'
+            label: 'pim_enrich.entity.family_variant.module.edit.variant_attributes'
 
     pim-family-variant-edit-form-labels-tab:
         module: pim/common/tab
@@ -38,7 +38,7 @@ extensions:
         targetZone: container
         position: 110
         config:
-            label: 'pim_enrich.form.family_variant.tab.labels.title'
+            label: 'pim_common.label_translations'
 
     pim-family-variant-edit-form-attribute-set:
         module: pim/family-variant-edit-form/attribute-set

@@ -50,7 +50,7 @@ define([
             this.$el.html(this.template({
                 identifier: this.identifier,
                 label: __(this.config.label),
-                requiredLabel: __('pim_enrich.form.required'),
+                requiredLabel: __('pim_common.required_label'),
                 errors: errors.filter(error => {
                     const id = this.identifier;
                     const {path, attribute} = error;

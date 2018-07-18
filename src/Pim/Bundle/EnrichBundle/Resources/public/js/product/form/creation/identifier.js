@@ -31,7 +31,7 @@ define([
                 this.$el.html(this.template({
                     identifier: this.identifier,
                     label: i18n.getLabel(identifier.labels, UserContext.get('catalogLocale'), identifier.code),
-                    requiredLabel: __('pim_enrich.form.required'),
+                    requiredLabel: __('pim_common.required_label'),
                     errors: this.getRoot().validationErrors,
                     value: this.getFormData()[this.identifier]
                 }));

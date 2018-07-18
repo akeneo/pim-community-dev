@@ -104,7 +104,7 @@ define([
             this.$el.html(this.template({
                 label: __('pim_common.type'),
                 type: formData.type,
-                required: __('pim_enrich.form.required'),
+                required: __('pim_common.required_label'),
                 isEditable: this.options.config.editable
             }));
 

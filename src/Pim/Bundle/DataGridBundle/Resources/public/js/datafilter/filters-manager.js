@@ -427,7 +427,7 @@ define(
 
             this.$('.filter-list span:first').replaceWith(
                 this.addFilterButtonTemplate({
-                    label: __('pim_enrich.entity.product.filters')
+                    label: __('pim_datagrid.filters.label')
                 })
             );
 

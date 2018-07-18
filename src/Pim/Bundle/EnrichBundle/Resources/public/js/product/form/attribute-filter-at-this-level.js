@@ -22,7 +22,7 @@ define(
              * @returns {String}
              */
             getLabel() {
-                return __('pim_enrich.form.product.tab.attributes.attribute_filter.at_this_level');
+                return __('pim_enrich.entity.product.module.attribute_filter.at_this_level');
             },
 
             /**

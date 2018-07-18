@@ -9,13 +9,13 @@ define(
             defaultOptions: {
                 allowClear: false,
                 formatSearching: function () {
-                    return _.__('pim_enrich.form.product.tab.attributes.info.search_attributes');
+                    return _.__('pim_common.select2.search');
                 },
                 formatNoMatches: function () {
-                    return _.__('pim_enrich.form.product.tab.attributes.info.no_match');
+                    return _.__('pim_common.select2.no_match');
                 },
                 formatLoadMore: function () {
-                    return _.__('pim_enrich.form.product.tab.attributes.info.load_more');
+                    return _.__('pim_enrich.select2.load_more');
                 }
             },
             init: function ($target, options) {

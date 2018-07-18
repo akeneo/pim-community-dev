@@ -81,5 +81,5 @@ extensions:
         aclResourceId: pim_enrich_family_create
         config:
            iconName:  plus
-           title:     pim_enrich.index.family.create_btn
+           title:     pim_enrich.entity.family.module.create.button
            modalForm: pim-family-create-modal

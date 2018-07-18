@@ -49,7 +49,7 @@ extensions:
         position: 90
         config:
             trans:
-                title: confirmation.remove.channel
+                title: pim_enrich.entity.channel.module.delete.confirm
                 subTitle: pim_menu.item.channel
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.channel.flash.delete.success
@@ -99,7 +99,7 @@ extensions:
         targetZone: accordion
         position: 100
         config:
-            title: pim_enrich.form.channel.tab.properties.general
+            title: pim_common.general_properties
             codeLabel: pim_common.code
 
     pim-channel-edit-form-properties-general-currencies:
@@ -145,7 +145,7 @@ extensions:
         targetZone: accordion
         position: 150
         config:
-            label: 'pim_enrich.form.channel.tab.properties.label_conversion_units'
+            label: 'pim_enrich.entity.channel.property.label_conversion_units'
             fieldBaseId: 'pim_enrich_channel_form_conversion_unit_'
 
     pim-channel-edit-form-history:

@@ -28,13 +28,25 @@ pim_import_export:
 
         import_profile:
             uppercase_label: Import profile
+            flash:
+                create:
+                    success: Import profile successfully created
             page_title:
-                index: "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} import profiles"
+                index: "]Inf, 1] {{ count }} import profile|]1, Inf [{{ count }} import profiles"
+            module:
+                create:
+                    button: Create import profile
 
         export_profile:
             uppercase_label: Export profile
+            flash:
+                create:
+                    success: Export profile successfully created
             page_title:
-                index: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} export profiles"
+                index: "]Inf, 1] {{ count }} export profile|]1, Inf [{{ count }} export profiles"
+            module:
+                create:
+                    button: Create export profile
 
     form:
         job_execution:

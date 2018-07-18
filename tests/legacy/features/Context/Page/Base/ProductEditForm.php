@@ -139,7 +139,7 @@ class ProductEditForm extends Form
             }
 
             return false;
-        }, 'Cannot find the field label');
+        }, sprintf('Cannot find the field label of "%s"', $label));
 
         $container = $this->getClosest($labelNode, 'AknComparableFields');
         $container->name = $label;

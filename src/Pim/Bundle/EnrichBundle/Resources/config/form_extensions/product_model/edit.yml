@@ -63,7 +63,7 @@ extensions:
         targetZone: bottom
         position: 10
         config:
-            label: pim_enrich.entity.product.meta.infos
+            label: pim_menu.navigation.product_infos
 
     pim-product-model-edit-form-column-tabs:
         module: pim/form/common/column-tabs
@@ -97,7 +97,7 @@ extensions:
         position: 100
         config:
             trans:
-                title: confirmation.remove.product_model
+                title: pim_enrich.entity.product_model.module.delete.confirm
                 subTitle: pim_enrich.entity.product.plural_label_model
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.product_model.flash.delete.success
@@ -151,7 +151,7 @@ extensions:
         targetZone: meta
         position: 100
         config:
-            label: pim_enrich.entity.product.meta.updated
+            label: pim_enrich.entity.product.module.meta.updated
             labelBy: pim_common.by
 
     pim-product-model-edit-form-attributes:
