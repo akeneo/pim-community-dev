@@ -1,4 +1,6 @@
 job_profile;execute_job_profile;edit_job_profile;
+csv_catalog_modeling_family_import;All;All;
+xlsx_catalog_modeling_family_import;All;All;
 csv_catalog_modeling_family_variant_import;All;All;
 csv_catalog_modeling_family_variant_export;All;All;
 add_product_value;All;
