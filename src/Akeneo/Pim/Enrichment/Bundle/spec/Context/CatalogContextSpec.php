@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Context;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\Context;
 
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use PhpSpec\ObjectBehavior;
 
 class CatalogContextSpec extends ObjectBehavior
@@ -13,7 +14,7 @@ class CatalogContextSpec extends ObjectBehavior
                 new \LogicException(
                     sprintf(
                         '"%s" expects to be configured with "%s"',
-                        'Pim\Bundle\CatalogBundle\Context\CatalogContext',
+                        CatalogContext::class,
                         'localeCode'
                     )
                 )

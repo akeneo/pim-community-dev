@@ -6,7 +6,7 @@ use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;

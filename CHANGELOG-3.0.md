@@ -12,6 +12,9 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\Resolver\FQCNResolver` to `Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver`
+- Move `Pim\Bundle\CatalogBundle\Context\CatalogContext` to `Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext`
+
 - Move `Pim\Bundle\CatalogBundle\Filter\AbstractFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\AbstractFilter`
 - Move `Pim\Bundle\CatalogBundle\Filter\ChainedFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\ChainedFilter`
 - Move `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` to `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface`

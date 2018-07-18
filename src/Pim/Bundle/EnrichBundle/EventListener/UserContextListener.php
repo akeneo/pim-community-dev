@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\EventListener;
 
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;

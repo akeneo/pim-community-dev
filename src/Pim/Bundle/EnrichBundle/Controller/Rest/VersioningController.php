@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Resolver\FQCNResolver;
+use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,7 +20,7 @@ class VersioningController
     /** @var VersionRepositoryInterface */
     protected $versionRepository;
 
-    /** @var FQCNResolver */
+    /** @var \Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver */
     protected $FQCNResolver;
 
     /** @var NormalizerInterface */
@@ -30,10 +30,10 @@ class VersioningController
     protected $userContext;
 
     /**
-     * @param VersionRepositoryInterface $versionRepository
-     * @param FQCNResolver               $FQCNResolver
-     * @param NormalizerInterface        $normalizer
-     * @param UserContext                $userContext
+     * @param VersionRepositoryInterface                          $versionRepository
+     * @param \Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver $FQCNResolver
+     * @param NormalizerInterface                                 $normalizer
+     * @param UserContext                                         $userContext
      */
     public function __construct(
         VersionRepositoryInterface $versionRepository,

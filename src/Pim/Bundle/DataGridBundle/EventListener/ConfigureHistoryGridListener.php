@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Pim\Bundle\CatalogBundle\Resolver\FQCNResolver;
+use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -34,13 +34,13 @@ class ConfigureHistoryGridListener
     protected $requestParams;
 
     /**
-     * @var FQCNResolver
+     * @var \Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver
      */
     protected $FQCNResolver;
 
     /**
-     * @param RequestParameters $requestParams
-     * @param FQCNResolver      $FQCNResolver
+     * @param RequestParameters                                   $requestParams
+     * @param \Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver $FQCNResolver
      */
     public function __construct(RequestParameters $requestParams, FQCNResolver $FQCNResolver)
     {
