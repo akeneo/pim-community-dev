@@ -2,8 +2,8 @@ parameters:
     pimee_workflow.controller.external_api.product_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductDraftController
     pimee_workflow.controller.external_api.product_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductProposalController
     pimee_workflow_controller.external_api.publish_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\PublishedProductController
-    pimee_api.controller.product_model_draft.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductModelDraftController
-    pimee_api.controller.product_model_proposal.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductModelProposalController
+    pimee_api.controller.product_model_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductModelDraftController
+    pimee_api.controller.product_model_proposal.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductModelProposalController
     pimee_workflow.router.proxy_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Router\ProxyProductRouter
     pimee_workflow.normalizer.external_api.product.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\ProductNormalizer
     pimee_workflow.normalizer.external_api.published_product.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\PublishedProductNormalizer

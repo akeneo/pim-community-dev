@@ -11,24 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ApiBundle\Controller;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
-use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\EntityWithValuesDraftManager;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductModelProposalController
+class ProductModelDraftController
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $productModelRepository;
@@ -36,8 +33,11 @@ class ProductModelProposalController
     /** @var EntityWithValuesDraftRepositoryInterface */
     protected $productModelDraftRepository;
 
-    /** @var EntityWithValuesDraftManager */
-    protected $draftManager;
+    /** @var DraftApplierInterface */
+    protected $draftApplier;
+
+    /** @var NormalizerInterface */
+    protected $normalizer;
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
@@ -45,64 +45,49 @@ class ProductModelProposalController
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /**
-     * @param IdentifiableObjectRepositoryInterface    $productModelRepository
-     * @param EntityWithValuesDraftRepositoryInterface $productModelDraftRepository
-     * @param EntityWithValuesDraftManager             $draftManager
-     * @param TokenStorageInterface                    $tokenStorage
-     * @param AuthorizationCheckerInterface            $authorizationChecker
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productModelRepository,
         EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
-        EntityWithValuesDraftManager $draftManager,
+        DraftApplierInterface $draftApplier,
+        NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
-        $this->draftManager = $draftManager;
+        $this->draftApplier = $draftApplier;
+        $this->normalizer = $normalizer;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
-     * Submit a product model draft proposal.
-     *
-     * @throws NotFoundHttpException            If the product does not exist
-     * @throws ResourceAccessDeniedException    If the user has ownership on the product
-     *                                          Or if user has only view permission on the product
-     * @throws UnprocessableEntityHttpException If there is no draft on the product
-     *                                          Or if the proposal has already been submitted
+     * @throws NotFoundHttpException         If the product model does not exist
+     *                                       Or if there is no draft created for the product model and the current user
+     * @throws ResourceAccessDeniedException If the user has ownership on the product mode
+     *                                       Or if user has only view permission on the product model
      */
-    public function createAction(Request $request, string $code): Response
+    public function getAction(string $code): JsonResponse
     {
-        $decodedContent = json_decode($request->getContent(), true);
-        if (null === $decodedContent) {
-            throw new BadRequestHttpException('Invalid json message received.');
-        }
-
         $productModel = $this->productModelRepository->findOneByIdentifier($code);
         if (null === $productModel) {
             throw new NotFoundHttpException(sprintf('Product model "%s" does not exist.', $code));
         }
 
         $this->userHasOwnPermissions($productModel, $code);
-        $this->userHasNotEditPermissions($productModel, $code);
+        $this->userHasViewPermissions($productModel, $code);
 
         $userToken = $this->tokenStorage->getToken();
         $productModelDraft = $this->productModelDraftRepository->findUserEntityWithValuesDraft($productModel, $userToken->getUsername());
+
         if (null === $productModelDraft) {
-            throw new UnprocessableEntityHttpException('You should create a draft before submitting it for approval.');
+            throw new NotFoundHttpException(sprintf('There is no draft created for the product model "%s".', $code));
         }
 
-        if (ProductModelDraft::READY === $productModelDraft->getStatus()) {
-            throw new UnprocessableEntityHttpException('You already submit your draft for approval.');
-        }
+        $this->draftApplier->applyAllChanges($productModel, $productModelDraft);
+        $normalizedProductModelDraft = $this->normalizer->normalize($productModel, 'external_api');
 
-        $this->draftManager->markAsReady($productModelDraft);
-
-        return new Response(null, Response::HTTP_CREATED);
+        return new JsonResponse($normalizedProductModelDraft);
     }
 
     private function userHasOwnPermissions(ProductModelInterface $productModel, string $code): void
@@ -111,19 +96,20 @@ class ProductModelProposalController
 
         if ($isOwner) {
             throw new ResourceAccessDeniedException($productModel, sprintf(
-                'You have ownership on the product model "%s", you cannot send a draft for approval.',
+                'You have ownership on the product model "%s", you cannot create or retrieve a draft from this product model.',
                 $code
             ));
         }
     }
 
-    private function userHasNotEditPermissions(ProductModelInterface $productModel, string $code): void
+    private function userHasViewPermissions(ProductModelInterface $productModel, string $code): void
     {
+        $canView = $this->authorizationChecker->isGranted(Attributes::VIEW, $productModel);
         $canEdit = $this->authorizationChecker->isGranted(Attributes::EDIT, $productModel);
 
-        if (!$canEdit) {
+        if ($canView && !$canEdit) {
             throw new ResourceAccessDeniedException($productModel, sprintf(
-                'You only have view permission on the product model "%s", you cannot send a draft for approval.',
+                'You only have view permission on the product model "%s", you cannot create or retrieve a draft from this product model.',
                 $code
             ));
         }
