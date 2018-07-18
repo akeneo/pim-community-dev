@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle;
 
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
+use Akeneo\Pim\Automation\SuggestData\Bundle\DependencyInjection\Compiler\RegisterDataProviderPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -22,4 +22,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AkeneoSuggestDataBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        $container
+            ->addCompilerPass(new RegisterDataProviderPass());
+    }
 }

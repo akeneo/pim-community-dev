@@ -12,3 +12,16 @@ services:
 
     akeneo.pim.automation.suggest_data.data_provider.suggested_data_factory:
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataFactory'
+
+    akeneo.pim.automation.suggest_data.data_provider.registry:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderAdapterRegistry'
+
+    akeneo.pim.automation.suggest_data.data_provider.in_memory:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\InMemoryAdapter'
+        tags:
+            - { name: 'akeneo.pim.automation.suggest_data.data_provider.adapter', alias: 'in_memory' }
+
+    akeneo.pim.automation.suggest_data.data_provider.pim_ai:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\PimAIAdapter'
+        tags:
+            - { name: 'akeneo.pim.automation.suggest_data.data_provider.adapter', alias: 'pim_ai' }
