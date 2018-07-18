@@ -88,6 +88,18 @@
 - Move namespace `PimEnterprise\Bundle\Workflow` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle`
 - Move namespace `PimEnterprise\Bundle\CatalogRuleBundle` to `Akeneo\Pim\Automation\RuleEngine\Bundle`
 - Move namespace `PimEnterprise\Component\CatalogRule` to `Akeneo\Pim\Automation\RuleEngine\Component`
+- Move class `PimEnterprise\Bundle\ApiBundle\Controller\ProductModelDraftController` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductModelDraftController`
+- Move class `PimEnterprise\Bundle\ApiBundle\Controller\ProductModelProposalController` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductModelProposalController`
+- Move class `PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter\AbstractReferenceDataPresenter` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\AbstractReferenceDataPresenter`
+- Move class `PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter\ReferenceDataCollectionPresenter` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\ReferenceDataCollectionPresenter`
+- Move class `PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter\ReferenceDataPresenter` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData\ReferenceDataPresenter`
+- Move class `PimEnterprise\Component\Api\Normalizer\ProductModelNormalizer` to `Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\ExternalApi\ProductModelNormalizer`
+- Move class `PimEnterprise\Bundle\ReferenceDataBundle\Publisher\ReferenceDataPublisher` to ` Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\ReferenceDataPublisher`
+- Remove class `PimEnterprise\Bundle\ApiBundle\PimEnterpriseApiBundle`
+- Remove class `PimEnterprise\Bundle\ConnectorBundle\DependencyInjection\PimEnterpriseConnectorExtension`
+- Remove class `PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle`
+- Remove class `PimEnterprise\Bundle\ReferenceDataBundle\DependencyInjection\PimEnterpriseReferenceDataExtension`
+- Remove class `PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle`
 
 ## Security
 

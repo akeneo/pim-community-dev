@@ -76,4 +76,12 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Catal
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogRuleBundle/Akeneo\\Pim\\Automation\\RuleEngine\\Bundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\SecurityBundle/Akeneo\\Pim\\Permission\\Bundle/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Security/Akeneo\\Pim\\Automation\\RuleEngine\\Component/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ApiBundle\\Controller\\ProductModelDraftController/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Controller\\ExternalApi\\ProductModelDraftController/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ApiBundle\\Controller\\ProductModelProposalController/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Controller\\ExternalApi\\ProductModelProposalController/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ReferenceDataBundle\\Workflow\\Presenter\\AbstractReferenceDataPresenter/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Presenter\\ReferenceData\\AbstractReferenceDataPresenter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ReferenceDataBundle\\Workflow\\Presenter\\ReferenceDataCollectionPresenter/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Presenter\\ReferenceData\\ReferenceDataCollectionPresenter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ReferenceDataBundle\\Workflow\\Presenter\\ReferenceDataPresenter/Akeneo\\Pim\\WorkOrganization\\Workflow\\Bundle\\Presenter\\ReferenceData\\ReferenceDataPresenter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Component\\Api\\Normalizer\\ProductModelNormalizer/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Normalizer\\ExternalApi\\ProductModelNormalizer/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ReferenceDataBundle\\Publisher\\ReferenceDataPublisher/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Publisher\\ReferenceDataPublisher/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\ReferenceDataBundle\\Publisher\\ReferenceDataPublisher/Akeneo\\Pim\\WorkOrganization\\Workflow\\Component\\Publisher\\ReferenceDataPublisher/g'
 ```
