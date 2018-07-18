@@ -69,7 +69,6 @@ describe('Akeneoenrichedentity > infrastructure > saver > enriched-entity', () =
 
   // TODO : Need to fix the test when we get 400 errors (also collision with previous test)
   // it('It returns errors when we create an invalid enriched entity', async () => {
-  //   debugger;
   //   page.on('request', interceptedRequest => {
   //     if (
   //       'http://pim.com/rest/enriched_entity' === interceptedRequest.url() &&

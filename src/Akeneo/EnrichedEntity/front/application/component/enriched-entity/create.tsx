@@ -135,8 +135,8 @@ class Create extends React.Component<CreateProps> {
                   className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
                   onClick={this.onCancel}
             >{__('pim_enriched_entity.enriched_entity.create.cancel')}</span>
-            <a title="Save"
-               className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text" onClick={this.onSubmit}>{__('pim_enriched_entity.enriched_entity.create.save')}</a>
+            <button title="Save"
+               className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text" onClick={this.onSubmit}>{__('pim_enriched_entity.enriched_entity.create.save')}</button>
           </div>
         </div>
     );

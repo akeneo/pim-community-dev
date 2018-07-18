@@ -6,10 +6,11 @@ Feature: Create an enriched entity
   @acceptance-back @acceptance-front
   Scenario: Creating an enriched entity
     When the user creates an enriched entity "designer" with:
-      | labels | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+      | labels                                    |
+      | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then there is an enriched entity "designer" with:
-      | identifier | labels                                    |
-      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
+      | labels                                    |
+      | {"en_US": "Stylist", "fr_FR": "Styliste"} |
 
   @acceptance-back
   Scenario: Creating an enriched entity with no labels
