@@ -13,9 +13,10 @@ define(
         'oro/translator',
         'pim/job/common/edit/launch',
         'oro/navigation',
-        'oro/messenger'
+        'oro/messenger',
+        'oro/loading-mask'
     ],
-    function ($, _, __, BaseLaunch, Navigation, messenger) {
+    function ($, _, __, BaseLaunch, Navigation, messenger, LoadingMask) {
         return BaseLaunch.extend({
             /**
              * {@inherit}
@@ -41,6 +42,8 @@ define(
              * Launch the job
              */
             launch: function () {
+                var loadingMask = new LoadingMask();
+                loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 if (this.getFormData().file) {
                     var formData = new FormData();
                     formData.append('file', this.getFormData().file);
@@ -56,13 +59,19 @@ define(
                     .then(function (response) {
                         Navigation.getInstance().setLocation(response.redirectUrl);
                     }.bind(this))
-                    .fail(this.handleErrors);
+                    .fail(this.handleErrors)
+                    .always(function () {
+                        loadingMask.hide().$el.remove();
+                    });
                 } else {
                     $.post(this.getUrl(), {method: 'POST'}).
                         then(function (response) {
                             Navigation.getInstance().setLocation(response.redirectUrl);
                         })
-                        .fail(this.handleErrors);
+                        .fail(this.handleErrors)
+                        .always(function () {
+                            loadingMask.hide().$el.remove();
+                        });
                 }
             },
 

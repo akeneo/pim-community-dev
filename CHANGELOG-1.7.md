@@ -6,6 +6,7 @@
 - PIM-7523: Fix accessibility for boolean switches
 - PIM-7473: Enables cache to avoid reloading validation mapping files
 - PIM-7459: Fix completeness performances issues with high number of locales on MongoDB
+- PIM-7525: Add loading mask to avoid multiple import launches
 
 # 1.7.25 (2018-07-06)
 
