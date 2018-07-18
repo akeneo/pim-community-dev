@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-7526: Prevent warnings about the generation of asset variation from being shown after uploading a non-image file.
+
 # 1.7.24 (2018-07-05)
 
 ## Bug fixes
