@@ -1,3 +1,5 @@
+{# @todo: Still used? #}
+
 {% spaceless %}
 {% if elements is not defined %}
     {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
@@ -13,8 +15,6 @@
         'data-button-cancel': 'btn.cancel'|trans|capitalize
     }
 }) }}
-    {{ JSFV(form) }}
-
     {{ elements.form_errors(form) }}
 
     <div class="row-fluid">

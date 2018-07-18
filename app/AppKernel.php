@@ -77,7 +77,6 @@ class AppKernel extends Kernel
         return [
             // BAP overriden bundles
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
-            new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
 
@@ -115,7 +114,6 @@ class AppKernel extends Kernel
             new Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
             new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
             new Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
-            new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),

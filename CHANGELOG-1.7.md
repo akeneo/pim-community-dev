@@ -28,6 +28,7 @@
 ## Bug fixes
 
 - PIM-7400: Fix 'ensure-indexes' timeout command
+- PIM-7456: Security vulnerabilities in dependencies
 
 # 1.7.22 (2018-06-05)
 
