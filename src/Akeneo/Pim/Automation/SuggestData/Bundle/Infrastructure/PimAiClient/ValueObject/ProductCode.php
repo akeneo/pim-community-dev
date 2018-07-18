@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Component\Product;
+namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject;
 
 final class ProductCode
 {
     private $identifierName;
-    
+
     private $value;
 
     public function __construct(string $identifierName, string $value)

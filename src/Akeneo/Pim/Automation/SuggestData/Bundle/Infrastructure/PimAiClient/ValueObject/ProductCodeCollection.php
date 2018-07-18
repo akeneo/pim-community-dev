@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Component\Product;
+namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject;
 
 final class ProductCodeCollection implements \IteratorAggregate
 {

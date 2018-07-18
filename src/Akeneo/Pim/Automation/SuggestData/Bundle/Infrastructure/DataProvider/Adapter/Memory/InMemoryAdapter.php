@@ -8,8 +8,8 @@ use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Deseria
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Subscription\SubscriptionApiInterface;
-use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCode;
-use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCodeCollection;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject\ProductCode;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject\ProductCodeCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
@@ -29,7 +29,7 @@ class InMemoryAdapter implements DataProviderAdapterInterface
 
     /** @var DeserializeSuggestedDataCollection */
     protected $deserializer;
-    
+
     private $subscriptionApi;
 
     /**

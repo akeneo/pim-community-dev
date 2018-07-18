@@ -6,8 +6,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Ap
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\ApiResponse;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\UriGenerator;
-use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCode;
-use Akeneo\Pim\Automation\SuggestData\Component\Product\ProductCodeCollection;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject\ProductCode;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject\ProductCodeCollection;
 use GuzzleHttp\ClientInterface;
 
 class SubscriptionWebservice implements SubscriptionApiInterface
