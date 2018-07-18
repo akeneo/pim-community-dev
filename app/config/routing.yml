@@ -34,7 +34,7 @@ pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
 
 pimee_workflow:
-    resource: "@PimEnterpriseWorkflowBundle/Resources/config/routing.yml"
+    resource: "@AkeneoPimWorkflowBundle/Resources/config/routing.yml"
 
 pim_versioning:
     resource: "@PimEnterpriseRevertBundle/Resources/config/routing.yml"

@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class PimEnterpriseWorkflowBundle extends Bundle
+class AkeneoPimWorkflowBundle extends Bundle
 {
     /**
      * {@inheritdoc}

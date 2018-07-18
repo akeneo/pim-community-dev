@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class PimEnterpriseWorkflowExtension extends Extension
+class AkeneoPimWorkflowExtension extends Extension
 {
     /**
      * {@inheritdoc}
