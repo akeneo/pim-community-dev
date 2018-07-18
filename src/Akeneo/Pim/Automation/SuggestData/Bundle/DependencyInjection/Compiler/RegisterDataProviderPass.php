@@ -32,12 +32,12 @@ class RegisterDataProviderPass implements CompilerPassInterface
     {
         $definition = $container->getDefinition('akeneo.pim.automation.suggest_data.data_provider.registry');
 
-        $taggedServiceIds = $container->findTaggedServiceIds('akeneo.pim.automation.suggest_data.data_provider.adapter');
+        $taggedServiceIds = $container->findTaggedServiceIds('akeneo.pim.automation.suggest_data.data_provider');
         foreach ($taggedServiceIds as $serviceId => $tags) {
             if (!isset($tags[0]['alias'])) {
                 throw new \Exception(sprintf('Tagged service "%s" needs an alias', $serviceId));
             }
-            $definition->addMethodCall('addAdapter', [$tags[0]['alias'], new Reference($serviceId)]);
+            $definition->addMethodCall('addDataProvider', [$tags[0]['alias'], new Reference($serviceId)]);
         }
     }
 }
