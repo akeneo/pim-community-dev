@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Context;
+namespace Akeneo\Pim\Enrichment\Bundle\Context;
 
 /**
  * Allows to configure the context to use in queries you can execute and to ensure that

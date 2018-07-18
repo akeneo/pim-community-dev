@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.resolver.fqcn.class: Pim\Bundle\CatalogBundle\Resolver\FQCNResolver
+    pim_catalog.resolver.fqcn.class: Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver
 
 services:
     pim_catalog.resolver.fqcn:

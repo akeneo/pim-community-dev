@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.context.catalog.class: Pim\Bundle\CatalogBundle\Context\CatalogContext
+    pim_catalog.context.catalog.class: Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext
 
 services:
     pim_catalog.context.catalog:

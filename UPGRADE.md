@@ -6,6 +6,8 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Resolver\\FQCNResolver/Akeneo\\Pim\\Enrichment\\Bundle\\Resolver\\FQCNResolver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Context\\CatalogContext/Akeneo\\Pim\\Enrichment\\Bundle\\Context\\CatalogContext/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Filter\\AbstractFilter/Akeneo\\Pim\\Enrichment\\Bundle\\Filter\\AbstractFilter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Filter\\ChainedFilter/Akeneo\\Pim\\Enrichment\\Bundle\\Filter\\ChainedFilter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Filter\\CollectionFilterInterface/Akeneo\\Pim\\Enrichment\\Bundle\\Filter\\CollectionFilterInterface/g'

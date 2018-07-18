@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class ScopableSubscriberSpec extends ObjectBehavior
