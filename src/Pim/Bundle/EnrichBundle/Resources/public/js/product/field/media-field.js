@@ -77,7 +77,6 @@ define([
                     'scope':  this.context.scope
                 };
 
-
                 $.ajax({
                     url: Routing.generate('pim_enrich_media_rest_post'),
                     type: 'POST',
