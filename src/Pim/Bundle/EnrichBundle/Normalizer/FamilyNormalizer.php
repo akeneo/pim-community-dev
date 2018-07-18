@@ -41,6 +41,9 @@ class FamilyNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
+    /** @var NormalizerInterface */
+    private $translationNormalizer;
+
     /**
      * @param NormalizerInterface          $familyNormalizer
      * @param NormalizerInterface          $attributeNormalizer
@@ -48,6 +51,8 @@ class FamilyNormalizer implements NormalizerInterface
      * @param AttributeRepositoryInterface $attributeRepository
      * @param VersionManager               $versionManager
      * @param NormalizerInterface          $versionNormalizer
+     *
+     * @todo @merge set $translationNormalizer mandatory when merging in master.
      */
     public function __construct(
         NormalizerInterface $familyNormalizer,
@@ -55,7 +60,8 @@ class FamilyNormalizer implements NormalizerInterface
         CollectionFilterInterface $collectionFilter,
         AttributeRepositoryInterface $attributeRepository,
         VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer
+        NormalizerInterface $versionNormalizer,
+        NormalizerInterface $translationNormalizer = null
     ) {
         $this->familyNormalizer = $familyNormalizer;
         $this->attributeNormalizer = $attributeNormalizer;
@@ -63,6 +69,7 @@ class FamilyNormalizer implements NormalizerInterface
         $this->attributeRepository = $attributeRepository;
         $this->versionManager = $versionManager;
         $this->versionNormalizer = $versionNormalizer;
+        $this->translationNormalizer = $translationNormalizer;
     }
 
     /**
@@ -72,6 +79,13 @@ class FamilyNormalizer implements NormalizerInterface
     {
         $fullAttributes = array_key_exists('full_attributes', $context)
             && true === $context['full_attributes'];
+
+        if (isset($context['expanded']) && false === $context['expanded']) {
+            return [
+                'code' => $family->getCode(),
+                'labels' =>$this->translationNormalizer->normalize($family, 'standard', [])
+            ];
+        }
 
         $normalizedFamily = $this->familyNormalizer->normalize(
             $family,
