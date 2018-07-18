@@ -570,7 +570,7 @@ class ProductAssetController extends Controller
     /**
      * Action to render the asset thumbnail depending on a channel (and a locale if the asset is localizable).
      *
-     * @see PimEnterprise\Component\ProductAsset\Model\AssetInterface::getFileForContext()
+     * @see \PimEnterprise\Component\ProductAsset\Model\AssetInterface::getFileForContext()
      *
      * @param Request $request
      * @param string  $code
@@ -620,6 +620,10 @@ class ProductAssetController extends Controller
 
         if ($items->hasItemInState(ProcessedItem::STATE_ERROR)) {
             foreach ($items->getItemsInState(ProcessedItem::STATE_ERROR) as $item) {
+                if (!$this->canVariationBeGeneratedForMimeType($item->getItem())) {
+                    continue;
+                }
+
                 $flashParameters = ['%channel%' => $item->getItem()->getChannel()->getCode()];
                 switch (true) {
                     case $item->getException() instanceof InvalidOptionsTransformationException:
@@ -648,6 +652,24 @@ class ProductAssetController extends Controller
         } elseif ($items->hasItemInState(ProcessedItem::STATE_SUCCESS)) {
             $this->addFlashMessage('success', 'pimee_product_asset.enrich_variation.flash.transformation.success');
         }
+    }
+
+    /**
+     * @param mixed $item
+     *
+     * @return bool
+     */
+    protected function canVariationBeGeneratedForMimeType($item)
+    {
+        $supportedMimeTypes = [
+            'image/jpeg',
+            'image/tiff',
+            'image/png',
+        ];
+
+        return $item instanceof VariationInterface
+            && null !== $item->getReference()->getFileInfo()
+            && in_array($item->getReference()->getFileInfo()->getMimeType(), $supportedMimeTypes);
     }
 
     /**
