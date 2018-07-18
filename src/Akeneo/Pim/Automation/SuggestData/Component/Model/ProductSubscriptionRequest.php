@@ -16,6 +16,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Component\Model;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
+ * Holds a ProductInterface, and provides its values given a defined mapping
+ *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
 final class ProductSubscriptionRequest
