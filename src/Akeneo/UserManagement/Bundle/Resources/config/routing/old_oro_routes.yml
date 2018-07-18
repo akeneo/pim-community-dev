@@ -78,10 +78,6 @@ pim_user_view:
     requirements:
         id: \d+
 
-pim_user_profile_view:
-    path: /user/profile/view
-    defaults: { _controller: PimUserBundle:User:viewProfile }
-
 pim_user_profile_update:
     path: /user/profile/edit
     defaults: { _controller: PimUserBundle:User:updateProfile }

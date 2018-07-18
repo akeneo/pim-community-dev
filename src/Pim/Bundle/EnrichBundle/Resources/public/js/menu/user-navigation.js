@@ -83,7 +83,10 @@ define(
              * Redirect user it's account details
              */
             userAccount: function () {
-                router.redirectToRoute('pim_user_profile_view');
+                router.redirectToRoute(
+                    'pim_user_edit',
+                    {code: UserContext.get('code')}
+                );
             },
 
             getAvatar: function () {

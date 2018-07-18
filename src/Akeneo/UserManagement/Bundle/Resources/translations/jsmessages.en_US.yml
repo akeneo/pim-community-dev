@@ -8,7 +8,6 @@ pim_title:
     pim_user_update: 'User {{ username }} | Edit'
     pim_user_create: 'Users | Create'
 
-    pim_user_profile_view: '{{ username }}'
     pim_user_profile_update: '{{ username }} | Edit'
 
     pim_user_role_update: 'Role {{ role }} | Edit'
