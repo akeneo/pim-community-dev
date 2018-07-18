@@ -25,7 +25,7 @@ Feature: Create a user
     And I scroll down
     And I fill in the following information:
       | E-mail | jack+doe@example.com |
-    And I visit the "Groups and Roles" tab
+    And I visit the "Groups and roles" tab
     And I select the role "User"
     When I save the user
     Then there should be a "jack" user
@@ -42,7 +42,7 @@ Feature: Create a user
     And I scroll down
     And I fill in the following information:
       | E-mail | jack.doeexample.com |
-    And I visit the "Groups and Roles" tab
+    And I visit the "Groups and roles" tab
     And I select the role "User"
     When I save the user
     Then I should see a validation tooltip "This value is not a valid email address."

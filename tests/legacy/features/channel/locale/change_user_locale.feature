@@ -9,7 +9,7 @@ Feature: Change user locale
     And I am logged in as "Peter"
 
   Scenario: Successfully change my locale
-    Given I am on the User profile edit page
+    Given I edit the "Peter" user
     Then I visit the "Interfaces" tab
     And I fill in the following information:
      | UI locale | French (France) |
@@ -27,7 +27,7 @@ Feature: Change user locale
     Then I should not see the text "Collecter"
 
   Scenario: Should only see translated locales
-    Given I am on the User profile edit page
+    Given I edit the "Peter" user
     And I visit the "Interfaces" tab
     Then I should see English locale option
     And I should not see Breton locale option

@@ -21,7 +21,7 @@ Feature: Change my profile
     When I visit the "Permissions" tab
     And I revoke rights to resources Edit users
     And I save the role
-    And I am on the User profile edit page
+    And I edit the "Peter" user
     When I attach file "akeneo.jpg" to "Avatar"
     And I save the user
     Then I should see the flash message "User saved"

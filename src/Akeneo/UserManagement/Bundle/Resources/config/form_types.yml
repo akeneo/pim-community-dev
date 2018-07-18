@@ -1,5 +1,4 @@
 parameters:
-    pim_user.form.type.user.class:                      Akeneo\UserManagement\Bundle\Form\Type\UserType
     pim_user.form.type.acl_collection.class:            Akeneo\UserManagement\Bundle\Form\Type\PrivilegeCollectionType
     pim_user.form.type.acl_role.class:                  Akeneo\UserManagement\Bundle\Form\Type\AclRoleType
     pim_user.form.handler.user.class:                   Akeneo\UserManagement\Bundle\Form\Handler\UserHandler
@@ -17,24 +16,6 @@ services:
         class: '%pim_user.form.type.acl_access_level_selector.class%'
         tags:
             - { name: form.type, alias: pim_acl_access_level_selector }
-
-    pim_user.form.type.user:
-        class: '%pim_user.form.type.user.class%'
-        arguments:
-            - '@request_stack'
-            - '@pim_user.repository.role'
-            - '@pim_user.repository.group'
-            - '@event_dispatcher'
-            - 'Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType'
-        tags:
-            - { name: form.type, alias: pim_user_user }
-        calls:
-            - method: 'addEventSubscribers'
-              arguments:
-                  - '@pim_user.form.subscriber.user'
-            - method: 'addEventSubscribers'
-              arguments:
-                  - '@pim_user.form.subscriber.user_preferences'
 
     pim_user.form.type.acl_role:
         class: '%pim_user.form.type.acl_role.class%'

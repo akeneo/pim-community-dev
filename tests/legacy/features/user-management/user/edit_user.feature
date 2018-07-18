@@ -47,7 +47,7 @@ Feature: Edit a user
     And I grant rights to resource Edit users
     Then I save the role
     When I edit the "mary" user
-    And I visit the "Groups and Roles" tab
+    And I visit the "Groups and roles" tab
     And I check "Tata role"
     And I uncheck "User"
     Then I save the user

@@ -10,13 +10,13 @@ Feature: Edit a user groups and roles
 
   Scenario: Successfully change a user group
     Given I edit the "admin" user
-    And I visit the "Groups and Roles" tab
+    And I visit the "Groups and roles" tab
     And I check "Redactor"
     And I save the user
     Then I should not see the text "There are unsaved changes."
     When I refresh current page
     And I edit the "admin" user
-    And I visit the "Groups and Roles" tab
+    And I visit the "Groups and roles" tab
     Then the "Redactor" checkbox should be checked
     And the "IT support" checkbox should be checked
     When I uncheck "IT support"
@@ -25,11 +25,10 @@ Feature: Edit a user groups and roles
     Then I should not see the text "There are unsaved changes."
     When I refresh current page
     And I edit the "admin" user
-    And I visit the "Groups and Roles" tab
+    And I visit the "Groups and roles" tab
     And the "Redactor" checkbox should not be checked
     And the "IT support" checkbox should not be checked
     But the "Administrator" checkbox should be checked
-
 
   Scenario: Assign a group to a user from the group page
     Given I edit the "Redactor" user group

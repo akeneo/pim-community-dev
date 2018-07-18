@@ -30,7 +30,6 @@ Feature: Navigate the application in hash navigation mode
       | pim_user_group_create                   |
       | pim_user_group_index                    |
       | pim_user_index                          |
-      | pim_user_profile_update                 |
       | pim_user_role_create                    |
       | pim_user_role_index                     |
 

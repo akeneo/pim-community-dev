@@ -58,7 +58,6 @@ class NavigationContext extends PimContext implements PageObjectAware
         'dashboard'                => 'Dashboard index',
         'search'                   => 'Search index',
         'job tracker'              => 'JobTracker index',
-        'my account'               => 'User profile',
         'clients'                  => 'Client index',
     ];
 
@@ -247,8 +246,10 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I edit the "([^"]*)" (\w+)$/
-     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)(?!attribute)\w+) page$/
+     * @throws \Context\Spin\TimeoutException
+     *
+     * @Given /^I edit the "([^"]*)" ((?!user)\w+)$/
+     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)(?!attribute)(?!user)\w+) page$/
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
@@ -273,7 +274,8 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I am on the "([^"]*)" (channel|family) page$/
+     * @Given /^I edit the "([^"]*)" (user)$/
+     * @Given /^I am on the "([^"]*)" (channel|family|user) page$/
      */
     public function iAmOnTheRedoEntityEditPage($identifier, $page)
     {
