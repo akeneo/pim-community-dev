@@ -2,7 +2,7 @@ services:
     akeneo.pim.automation.suggest_data.handler.save_configuration:
         class: 'Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler'
         arguments:
-            - '@akeneo.pim.automation.suggest_data.connection.is_valid.pim_ai'
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
             - '@akeneo.pim.automation.suggest_data.repository.configuration'
 
     akeneo.pim.automation.suggest_data.handler.update_identifiers_mapping:

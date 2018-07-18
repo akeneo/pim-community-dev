@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\A
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * @author Romain Monceau <romain@akeneo.com>
@@ -30,7 +30,7 @@ interface DataProviderAdapterInterface
 
     public function bulkPull(array $products);
 
-    public function authenticate();
+    public function authenticate(?string $token): bool;
 
     public function configure(array $config);
 }

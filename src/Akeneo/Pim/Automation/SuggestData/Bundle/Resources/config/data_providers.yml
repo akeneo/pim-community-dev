@@ -2,8 +2,20 @@ services:
     akeneo.pim.automation.suggest_data.data_provider.factory:
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory'
         arguments:
+            - '@akeneo.pim.automation.suggest_data.data_provider.memory'
+            - '@akeneo.pim.automation.suggest_data.data_provider.pim_ai'
+            - '%kernel.environment%'
+
+    akeneo.pim.automation.suggest_data.data_provider.memory:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\Memory\InMemoryAdapter'
+        arguments:
             - '@akeneo.pim.automation.suggest_data.data_provider.deserialize_suggested_data_collection'
             - '@akeneo.pim.automation.suggest_data.pimai_client.subscribe_webservice'
+
+    akeneo.pim.automation.suggest_data.data_provider.pim_ai:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\PimAI\PimAIAdapter'
+        arguments:
+            - '@akeneo.pim.automation.suggest_data.pimai_client.authentication_webservice'
 
     akeneo.pim.automation.suggest_data.data_provider.deserialize_suggested_data_collection:
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DeserializeSuggestedDataCollection'

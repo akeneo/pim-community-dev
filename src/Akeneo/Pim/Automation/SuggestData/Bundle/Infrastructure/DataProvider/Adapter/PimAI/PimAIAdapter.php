@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\PimAI;
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
-use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Authentication\AuthenticationApiInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
  * Pim.ai implementation to connect to a data provider
@@ -14,12 +16,14 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class PimAIAdapter implements DataProviderAdapterInterface
 {
-    public function __construct(array $config)
+    private $authenticationApi;
+
+    public function __construct(AuthenticationApiInterface $authenticationApi)
     {
-        $this->configure($config);
+        $this->authenticationApi = $authenticationApi;
     }
 
-    public function push(ProductInterface $product)
+    public function push(ProductInterface $product): SuggestedDataInterface
     {
         throw new \Exception(
             sprintf('"%s is not yet implemented'),
@@ -27,7 +31,7 @@ class PimAIAdapter implements DataProviderAdapterInterface
         );
     }
 
-    public function bulkPush(array $products)
+    public function bulkPush(array $products): SuggestedDataCollectionInterface
     {
         throw new \Exception(
             sprintf('"%s is not yet implemented'),
@@ -51,12 +55,9 @@ class PimAIAdapter implements DataProviderAdapterInterface
         );
     }
 
-    public function authenticate()
+    public function authenticate(?string $token): bool
     {
-        throw new \Exception(
-            sprintf('"%s is not yet implemented'),
-            __METHOD__
-        );
+        return $this->authenticationApi->authenticate($token);
     }
 
     public function configure(array $config)

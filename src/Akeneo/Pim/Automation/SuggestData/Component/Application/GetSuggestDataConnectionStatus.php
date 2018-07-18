@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Application;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Application\ValidateConnectionInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 
 /**
@@ -26,19 +26,19 @@ class GetSuggestDataConnectionStatus
     /** @var ConfigurationRepositoryInterface */
     private $configurationRepository;
 
-    /** @var ValidateConnectionInterface */
-    private $connectionValidator;
+    /** @var DataProviderFactory */
+    private $dataProviderFactory;
 
     /**
      * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param ValidateConnectionInterface      $connectionValidator
+     * @param DataProviderFactory $dataProviderFactory
      */
     public function __construct(
         ConfigurationRepositoryInterface $configurationRepository,
-        ValidateConnectionInterface $connectionValidator
+        DataProviderFactory $dataProviderFactory
     ) {
         $this->configurationRepository = $configurationRepository;
-        $this->connectionValidator = $connectionValidator;
+        $this->dataProviderFactory = $dataProviderFactory;
     }
 
     /**
@@ -53,6 +53,8 @@ class GetSuggestDataConnectionStatus
             return false;
         }
 
-        return $this->connectionValidator->validate($configuration->getValues());
+        $dataProvider = $this->dataProviderFactory->create();
+
+        return $dataProvider->authenticate($configuration->getToken());
     }
 }
