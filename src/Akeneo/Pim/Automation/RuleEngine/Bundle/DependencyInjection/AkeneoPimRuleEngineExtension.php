@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class PimEnterpriseCatalogRuleExtension extends AkeneoStorageUtilsExtension
+class AkeneoPimRuleEngineExtension extends AkeneoStorageUtilsExtension
 {
     /**
      * {@inheritdoc}

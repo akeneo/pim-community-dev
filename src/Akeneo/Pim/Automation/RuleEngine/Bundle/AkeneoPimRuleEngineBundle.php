@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class PimEnterpriseCatalogRuleBundle extends Bundle
+class AkeneoPimRuleEngineBundle extends Bundle
 {
     /**
      * {@inheritdoc}

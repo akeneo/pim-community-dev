@@ -49,7 +49,7 @@ pim_reference_data:
     resource: "@PimReferenceDataBundle/Resources/config/routing.yml"
 
 pim_catalog_rule:
-    resource: "@PimEnterpriseCatalogRuleBundle/Resources/config/routing.yml"
+    resource: "@AkeneoPimRuleEngineBundle/Resources/config/routing.yml"
 
 pimee_product_asset:
     resource: "@AkeneoAssetBundle/Resources/config/routing.yml"
