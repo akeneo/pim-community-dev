@@ -6,6 +6,12 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Filter\\AbstractFilter/Akeneo\\Pim\\Enrichment\\Bundle\\Filter\\AbstractFilter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Filter\\ChainedFilter/Akeneo\\Pim\\Enrichment\\Bundle\\Filter\\ChainedFilter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Filter\\CollectionFilterInterface/Akeneo\\Pim\\Enrichment\\Bundle\\Filter\\CollectionFilterInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Filter\\ObjectFilterInterface/Akeneo\\Pim\\Enrichment\\Bundle\\Filter\\ObjectFilterInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Filter\\ProductValueChannelFilter/Akeneo\\Pim\\Enrichment\\Bundle\\Filter\\ProductValueChannelFilter/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Filter\\ProductValueLocaleFilter/Akeneo\\Pim\\Enrichment\\Bundle\\Filter\\ProductValueLocaleFilter/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\Filter\\ObjectCodeResolver/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\Common\\Filter\\ObjectCodeResolver/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\Filter\\ObjectIdResolver/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\Common\\Filter\\ObjectIdResolver/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\Filter\\ObjectIdResolverInterface/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\Common\\Filter\\ObjectIdResolverInterface/g'

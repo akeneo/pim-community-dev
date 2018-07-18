@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\DataGridBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Normalizer\ProductNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Akeneo\Channel\Component\Model\ChannelInterface;

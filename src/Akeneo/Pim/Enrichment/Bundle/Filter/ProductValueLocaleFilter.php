@@ -1,18 +1,18 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Filter;
+namespace Akeneo\Pim\Enrichment\Bundle\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 
 /**
- * Filter the values according to channel codes provided in options.
+ * Filter the product values according to locale codes provided in options.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueChannelFilter implements CollectionFilterInterface, ObjectFilterInterface
+class ProductValueLocaleFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
     /**
      * {@inheritdoc}
@@ -23,12 +23,12 @@ class ProductValueChannelFilter implements CollectionFilterInterface, ObjectFilt
             throw new \LogicException('This filter only handles objects of type "ValueInterface"');
         }
 
-        $channelCodes = isset($options['channels']) ? $options['channels'] : [];
+        $localeCodes = isset($options['locales']) ? $options['locales'] : [];
         $attribute = $value->getAttribute();
 
-        return !empty($channelCodes) &&
-            $attribute->isScopable() &&
-            !in_array($value->getScope(), $channelCodes);
+        return !empty($localeCodes) &&
+            $attribute->isLocalizable() &&
+            !in_array($value->getLocale(), $localeCodes);
     }
 
     /**

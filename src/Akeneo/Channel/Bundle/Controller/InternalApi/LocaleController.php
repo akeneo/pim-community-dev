@@ -3,7 +3,7 @@
 namespace Akeneo\Channel\Bundle\Controller\InternalApi;
 
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

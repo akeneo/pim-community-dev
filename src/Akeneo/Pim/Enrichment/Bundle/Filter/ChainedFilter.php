@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Filter;
+namespace Akeneo\Pim\Enrichment\Bundle\Filter;
 
 /**
  * Chained filter: iterate over every filter for a given type and filter the given collection

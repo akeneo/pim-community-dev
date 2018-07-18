@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 
 /**
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>

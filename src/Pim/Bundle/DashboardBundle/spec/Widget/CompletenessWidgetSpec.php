@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 use Prophecy\Argument;
