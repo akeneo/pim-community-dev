@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 
 /**
  * Product edit data filter

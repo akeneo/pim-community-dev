@@ -3,8 +3,6 @@
 namespace Pim\Component\Catalog\Normalizer\Storage\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;

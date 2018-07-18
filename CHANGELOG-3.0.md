@@ -12,6 +12,13 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\Filter\AbstractFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\AbstractFilter`
+- Move `Pim\Bundle\CatalogBundle\Filter\ChainedFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\ChainedFilter`
+- Move `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` to `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface`
+- Move `Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface` to `Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface`
+- Move `Pim\Bundle\CatalogBundle\Filter\ProductValueChannelFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\ProductValueChannelFilter`
+- Move `Pim\Bundle\CatalogBundle\Filter\ProductValueLocaleFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\ProductValueLocaleFilter`
+
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CompleteFilter` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant`

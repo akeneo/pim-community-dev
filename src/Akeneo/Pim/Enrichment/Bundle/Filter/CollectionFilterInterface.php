@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Filter;
+namespace Akeneo\Pim\Enrichment\Bundle\Filter;
 
 /**
  * Collection filter interface
