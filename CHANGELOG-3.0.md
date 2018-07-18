@@ -12,6 +12,15 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectCodeResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectCodeResolver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectIdResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectIdResolverInterface` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolverInterface`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\GroupSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSaver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\GroupSavingOptionsResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSavingOptionsResolver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\ProductModelDescendantsSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\ProductSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\ProductUniqueDataSynchronizer` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`
+
 - Move namespace `Pim\Bundle\CatalogBundle\Elasticsearch` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch`
 
 - Move `Pim\Bundle\CatalogBundle\Command\Cleaner\WrongBooleanValuesOnVariantProductCleaner` to `Akeneo\Pim\Enrichment\Bundle\Command\Cleaner\WrongBooleanValuesOnVariantProductCleaner`

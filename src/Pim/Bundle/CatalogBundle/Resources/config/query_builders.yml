@@ -14,8 +14,8 @@ parameters:
     pim_catalog.query.sorter.registry.class:                      Pim\Component\Catalog\Query\Sorter\SorterRegistry
     pim_catalog.query.filter.field_dumper.class:                  Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\FieldFilterDumper
     pim_catalog.query.filter.attribute_dumper.class:              Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\AttributeFilterDumper
-    pim_catalog.doctrine.query.filter.object_id_resolver.class:   Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
-    pim_catalog.doctrine.query.filter.object_code_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver
+    pim_catalog.doctrine.query.filter.object_id_resolver.class:   Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolver
+    pim_catalog.doctrine.query.filter.object_code_resolver.class: Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectCodeResolver
 
     pim_catalog.query.elasticsearch.filter.label_or_identifier.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
     pim_catalog.query.elasticsearch.filter.identifier_field.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\IdentifierFilter

@@ -6,6 +6,14 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\Filter\\ObjectCodeResolver/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\Common\\Filter\\ObjectCodeResolver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\Filter\\ObjectIdResolver/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\Common\\Filter\\ObjectIdResolver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\Filter\\ObjectIdResolverInterface/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\Common\\Filter\\ObjectIdResolverInterface/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\Saver\\GroupSaver/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\Common\\Saver\\GroupSaver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\Saver\\GroupSavingOptionsResolver/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\Common\\Saver\\GroupSavingOptionsResolver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\Saver\\ProductModelDescendantsSaver/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\Common\\Saver\\ProductModelDescendantsSaver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\Saver\\ProductSaver/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\Common\\Saver\\ProductSaver/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\Common\\Saver\\Saver\\ProductUniqueDataSynchronizer/Akeneo\\Pim\\Enrichment\\Bundle\\Doctrine\\Common\\Saver\\ProductUniqueDataSynchronizer/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Elasticsearch/Akeneo\\Pim\\Enrichment\\Bundle\\Elasticsearch/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Command\\Cleaner\\WrongBooleanValuesOnVariantProductCleaner/Akeneo\\Pim\\Enrichment\\Bundle\\Command\\Cleaner\\WrongBooleanValuesOnVariantProductCleaner/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Command\\ProductQueryHelp\\AttributeFilterDumper/Akeneo\\Pim\\Enrichment\\Bundle\\Command\\ProductQueryHelp\\AttributeFilterDumper/g'

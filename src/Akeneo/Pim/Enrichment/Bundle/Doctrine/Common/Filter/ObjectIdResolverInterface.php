@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 

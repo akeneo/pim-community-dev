@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;

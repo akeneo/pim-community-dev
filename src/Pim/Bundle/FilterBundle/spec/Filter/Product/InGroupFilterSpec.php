@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectCodeResolver;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectCodeResolver;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;

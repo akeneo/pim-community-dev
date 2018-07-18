@@ -1,19 +1,22 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 
 /**
- * Object code resolver
+ * Object id resolver
  *
- * @author    Julien Janvier <j.janvier@gmail.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.8. The filters will only handle identifiers. No more IDs.
+ * @deprecated Which means we won't have to convert IDs <=> codes.
  */
-class ObjectCodeResolver
+class ObjectIdResolver implements ObjectIdResolverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -30,16 +33,9 @@ class ObjectCodeResolver
     }
 
     /**
-     * Get codes for the given ids
-     *
-     * @param string             $entityName
-     * @param array              $ids
-     * @param AttributeInterface $attribute
-     *
-     * @throws ObjectNotFoundException
-     * @return array
+     * {@inheritdoc}
      */
-    public function getCodesFromIds($entityName, array $ids, AttributeInterface $attribute = null)
+    public function getIdsFromCodes($entityName, array $codes, AttributeInterface $attribute = null)
     {
         if (!isset($this->fieldMapping[$entityName])) {
             throw new \InvalidArgumentException(sprintf('The class %s cannot be found', $entityName));
@@ -47,32 +43,30 @@ class ObjectCodeResolver
 
         $repository = $this->objectManager->getRepository($this->fieldMapping[$entityName]);
 
-        $codes = [];
-        foreach ($ids as $id) {
-            $entity = $repository->findOneBy(['id' => $id]);
+        $ids = [];
+        foreach ($codes as $code) {
+            $criterias = ['code' => $code];
+            if (null !== $attribute) {
+                $criterias['attribute'] = $attribute->getId();
+            }
 
-            if (null === $entity) {
+            //TODO: do not hydrate them, use a scalar result
+            $entity = $repository->findOneBy($criterias);
+
+            if (!$entity) {
                 throw new ObjectNotFoundException(
-                    sprintf('Object "%s" with id "%s" does not exist', $entityName, $id)
+                    sprintf('Object "%s" with code "%s" does not exist', $entityName, $code)
                 );
             }
 
-            $code = $entity->getCode();
-            if (null !== $attribute) {
-                $code = $attribute->getCode() . '.' . $code;
-            }
-
-            $codes[] = $code;
+            $ids[] = $entity->getId();
         }
 
-        return $codes;
+        return $ids;
     }
 
     /**
-     * Add a mapping to the field mapping
-     *
-     * @param string $entityName
-     * @param string $className
+     * {@inheritdoc}
      */
     public function addFieldMapping($entityName, $className)
     {
