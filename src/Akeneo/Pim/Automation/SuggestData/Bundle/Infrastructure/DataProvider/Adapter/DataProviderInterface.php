@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 /**
  * @author Romain Monceau <romain@akeneo.com>
  */
-interface DataProviderAdapterInterface
+interface DataProviderInterface
 {
     /**
      * @param ProductInterface $product

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Application;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
@@ -31,7 +31,7 @@ class GetSuggestDataConnectionStatusSpec extends ObjectBehavior
         $this->beConstructedWith($configurationRepository, $dataProviderFactory);
     }
 
-    function it_checks_that_a_connection_is_active(DataProviderAdapterInterface $dataProvider, $dataProviderFactory, $configurationRepository)
+    function it_checks_that_a_connection_is_active(DataProviderInterface $dataProvider, $dataProviderFactory, $configurationRepository)
     {
         $configuration = new Configuration('foobar', ['token' => 'bar']);
 
@@ -42,7 +42,7 @@ class GetSuggestDataConnectionStatusSpec extends ObjectBehavior
         $this->forCode('foobar')->shouldReturn(true);
     }
 
-    function it_checks_that_a_connection_is_inactive(DataProviderAdapterInterface $dataProvider, $dataProviderFactory, $configurationRepository)
+    function it_checks_that_a_connection_is_inactive(DataProviderInterface $dataProvider, $dataProviderFactory, $configurationRepository)
     {
         $configuration = new Configuration('foobar', ['token' => 'bar']);
 

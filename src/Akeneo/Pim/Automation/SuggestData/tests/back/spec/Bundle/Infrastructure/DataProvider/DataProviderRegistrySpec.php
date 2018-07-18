@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderRegistry;
 use PhpSpec\ObjectBehavior;
 
@@ -24,20 +24,20 @@ class DataProviderRegistrySpec extends ObjectBehavior
         $this->shouldHaveType(DataProviderRegistry::class);
     }
 
-    function it_registers_a_data_provider(DataProviderAdapterInterface $inMemoryAdapter)
+    function it_registers_a_data_provider(DataProviderInterface $inMemoryAdapter)
     {
         $this->addDataProvider('in_memory', $inMemoryAdapter)->shouldReturn(null);
     }
 
-    function it_returns_defined_adapter(DataProviderAdapterInterface $inMemoryAdapter)
+    function it_returns_defined_adapter(DataProviderInterface $inMemoryAdapter)
     {
         $this->addDataProvider('in_memory', $inMemoryAdapter)->shouldReturn(null);
         $this->getDataProvider('in_memory')->shouldReturn($inMemoryAdapter);
     }
 
     function it_returns_the_right_data_provider(
-        DataProviderAdapterInterface $inMemoryAdapter,
-        DataProviderAdapterInterface $pimAiAdapter
+        DataProviderInterface $inMemoryAdapter,
+        DataProviderInterface $pimAiAdapter
     ) {
         $this->addDataProvider('in_memory', $inMemoryAdapter)->shouldReturn(null);
         $this->addDataProvider('pim_ai', $pimAiAdapter)->shouldReturn(null);
@@ -46,7 +46,7 @@ class DataProviderRegistrySpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_the_data_provider_is_not_registered(
-        DataProviderAdapterInterface $inMemoryAdapter
+        DataProviderInterface $inMemoryAdapter
     ) {
         $this->addDataProvider('in_memory', $inMemoryAdapter)->shouldReturn(null);
         $this

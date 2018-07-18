@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderInterface;
 
 /**
  * Data provider factory
@@ -40,9 +40,9 @@ class DataProviderFactory
     }
 
     /**
-     * @return DataProviderAdapterInterface
+     * @return DataProviderInterface
      */
-    public function create(): DataProviderAdapterInterface
+    public function create(): DataProviderInterface
     {
         return $this->dataProviderRegistry->getDataProvider($this->dataProviderAlias);
     }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderAdapterInterface;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
@@ -39,7 +39,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(SaveConfigurationHandler::class);
     }
 
-    function it_updates_an_existing_configuration(DataProviderAdapterInterface $dataProvider, $dataProviderFactory, $repository)
+    function it_updates_an_existing_configuration(DataProviderInterface $dataProvider, $dataProviderFactory, $repository)
     {
         $command = new SaveConfiguration('foobar', ['token' => 'bar']);
         $configuration = new Configuration('foobar', ['token' => 'bar']);
@@ -53,7 +53,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    function it_saves_a_new_connector_configuration(DataProviderAdapterInterface $dataProvider, $dataProviderFactory, $repository)
+    function it_saves_a_new_connector_configuration(DataProviderInterface $dataProvider, $dataProviderFactory, $repository)
     {
         $command = new SaveConfiguration('foobar', ['token' => 'bar']);
 
@@ -66,7 +66,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $this->handle($command);
     }
 
-    function it_throws_an_exception_if_configuration_is_invalid(DataProviderAdapterInterface $dataProvider, $dataProviderFactory)
+    function it_throws_an_exception_if_configuration_is_invalid(DataProviderInterface $dataProvider, $dataProviderFactory)
     {
         $command = new SaveConfiguration('foobar', ['token' => 'bar']);
 
