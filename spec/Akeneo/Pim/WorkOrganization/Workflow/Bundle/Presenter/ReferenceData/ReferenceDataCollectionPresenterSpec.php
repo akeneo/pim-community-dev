@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
+namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;

@@ -57,3 +57,8 @@ services:
         arguments:
             - '@pimee_workflow.repository.published_association'
             - '@pim_catalog.repository.association_type'
+
+    pimee_reference_data.publisher.reference_data:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\ReferenceDataPublisher'
+        tags:
+            - { name: pimee_workflow.publisher }

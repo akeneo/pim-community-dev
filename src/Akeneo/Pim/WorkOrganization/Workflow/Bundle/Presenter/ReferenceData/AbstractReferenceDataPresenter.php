@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\ReferenceData;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\AbstractProductValuePresenter;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ReferenceDataBundle\Publisher;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;

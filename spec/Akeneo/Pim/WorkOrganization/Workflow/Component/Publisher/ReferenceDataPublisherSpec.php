@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ReferenceDataBundle\Publisher;
+namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
