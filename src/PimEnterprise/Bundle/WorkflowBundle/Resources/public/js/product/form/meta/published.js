@@ -36,7 +36,7 @@ define(
                 if (product.meta.published) {
                     this.$el.html(
                         this.template({
-                            label: __('pimee_enrich.entity.product.meta.published'),
+                            label: __('pimee_enrich.entity.product.module.meta.published_version'),
                             publishedVersion: this.getPublishedVersion(product)
                         })
                     );

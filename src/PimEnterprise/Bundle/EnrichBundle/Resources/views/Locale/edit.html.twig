@@ -12,8 +12,8 @@
                     var options = {
                         elementId: '#{{form.permissions.vars.id}}',
                         changeBlockLabel: '{{ 'Changes'|trans }}',
-                        grantMessage: 'permission-changes.locale.grant',
-                        revokeMessage: 'permission-changes.locale.revoke',
+                        grantMessage: 'pimee_enrich.entity.locale.module.permissions.grant',
+                        revokeMessage: 'pimee_enrich.entity.locale.module.permissions.revoke',
                         update: {
                             add: {
                                 '{{ form.permissions.edit.vars.id }}': ['{{ form.permissions.view.vars.id }}']
@@ -35,7 +35,7 @@
     {{ form_start(form, {
         'action': path('pimee_enrich_locale_edit', { id: form.vars.value.id }),
         'attr': {
-            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-title': 'pim_enrich.entity.fallback.module.edit.leave'|trans,
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'locale.title'|trans })
         }
     }) }}

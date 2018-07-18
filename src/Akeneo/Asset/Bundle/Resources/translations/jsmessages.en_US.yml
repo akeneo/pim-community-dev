@@ -146,7 +146,7 @@ jstree:
         all:          All assets
         unclassified: Unclassified assets
 asset_grid:
-    title: "] -Inf, 1] {{ count }} Product asset|] 1, Inf [{{ count }} Product assets"
+    title: "]-Inf, 1]{{ count }} Product asset|]1, Inf[{{ count }} Product assets"
     selected: selected assets
     label: Product assets
 create_asset:

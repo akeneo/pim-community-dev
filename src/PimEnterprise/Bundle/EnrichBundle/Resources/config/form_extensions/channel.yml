@@ -6,5 +6,5 @@ extensions:
         aclResourceId: pim_enrich_channel_edit
         position: 160
         config:
-            title: 'pimee_enrich.form.channel.tab.asset-transformation.title'
+            title: 'pimee_enrich.entity.channel.module.asset_transformation.title'
             url: pimee_enrich_channel_asset_transformation

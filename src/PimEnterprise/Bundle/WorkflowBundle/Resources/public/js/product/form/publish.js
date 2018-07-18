@@ -52,16 +52,16 @@ define(
             },
             publish: function () {
                 Dialog.confirm(
-                    __('pimee_enrich.entity.product.confirmation.publish.content'),
-                    __('pimee_enrich.entity.product.confirmation.publish.title'),
+                    __('pimee_enrich.entity.product.module.publish.content'),
+                    __('pimee_enrich.entity.product.module.publish.title'),
                     this.doPublish.bind(this),
                     __('pim_enrich.entity.product.plural_label')
                 );
             },
             unpublish: function () {
                 Dialog.confirm(
-                    __('pimee_enrich.entity.product.confirmation.unpublish.content'),
-                    __('pimee_enrich.entity.product.confirmation.unpublish.title'),
+                    __('pimee_enrich.entity.product.module.unpublish.content'),
+                    __('pimee_enrich.entity.product.module.unpublish.title'),
                     this.doUnpublish.bind(this),
                     __('pim_menu.item.published_product')
                 );
@@ -87,9 +87,9 @@ define(
                                 loadingMask.hide().$el.remove();
                                 messenger.notify(
                                     'success',
-                                    __(
-                                        'pimee_enrich.entity.product.flash.product_' +
-                                        (publish ? 'published' : 'unpublished')
+                                    __(publish ?
+                                        'pimee_enrich.entity.published_product.flash.publish.success' :
+                                        'pimee_enrich.entity.published_product.flash.unpublish.success'
                                     )
                                 );
 
@@ -103,8 +103,9 @@ define(
                         messenger.notify(
                             'error',
                             __(
-                                'pimee_enrich.entity.product.flash.product_not_' +
-                                (publish ? 'published' : 'unpublished')
+                                publish ?
+                                'pimee_enrich.entity.published_product.flash.publish.fail' :
+                                'pimee_enrich.entity.published_product.flash.unpublish.fail'
                             )
                         );
                     })

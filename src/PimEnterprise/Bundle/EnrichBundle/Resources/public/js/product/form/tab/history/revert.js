@@ -54,8 +54,8 @@ define(
                 event.stopPropagation();
 
                 Dialog.confirm(
-                    __('pimee_enrich.entity.product.confirmation.revert.content'),
-                    __('pimee_enrich.entity.product.confirmation.revert.title'),
+                    __('pimee_enrich.entity.product.module.revert.content'),
+                    __('pimee_enrich.entity.product.module.revert.title'),
                     function () {
                         var loadingMask = new LoadingMask();
                         loadingMask.render().$el.appendTo(this.getRoot().$el).show();
@@ -74,7 +74,7 @@ define(
                                         loadingMask.hide().$el.remove();
                                         messenger.notify(
                                             'success',
-                                            __('pimee_enrich.entity.product.flash.product_reverted')
+                                            __('pimee_enrich.entity.published_product.flash.revert.success')
                                         );
 
                                         this.setData(product);

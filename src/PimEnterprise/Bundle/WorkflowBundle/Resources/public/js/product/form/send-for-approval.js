@@ -31,8 +31,8 @@ define(
         return BaseForm.extend({
             className: 'btn-group',
             submitTemplate: _.template(submitTemplate),
-            confirmationMessage: __('pimee_enrich.entity.product_draft.confirmation.discard_changes'),
-            confirmationTitle: __('pimee_enrich.entity.product_draft.confirmation.discard_changes_title'),
+            confirmationMessage: __('pimee_enrich.entity.product_draft.module.edit.discard_changes'),
+            confirmationTitle: __('pimee_enrich.entity.product_draft.module.edit.discard_changes_title'),
             events: {
                 'click .submit-draft': 'onSubmitDraft'
             },
@@ -110,9 +110,9 @@ define(
                     'pimee-workflow-send-for-approval-comment',
                     callback,
                     {
-                        title: __('pimee_enrich.entity.product_draft.modal.send_for_approval'),
+                        title: __('pimee_enrich.entity.product.module.approval.send'),
                         cancelText: __('pim_common.cancel'),
-                        okText: __('pimee_enrich.entity.product_draft.modal.confirm')
+                        okText: __('pimee_enrich.entity.product.module.approval.send')
                     }
                 );
 
@@ -153,13 +153,13 @@ define(
 
                     messenger.notify(
                         'success',
-                        __('pimee_enrich.entity.product_draft.flash.sent_for_approval')
+                        __('pimee_enrich.entity.product_draft.flash.create.success')
                     );
                 }.bind(this))
                 .fail(function () {
                     messenger.notify(
                         'error',
-                        __('pimee_enrich.entity.product_draft.flash.draft_not_sendable')
+                        __('pimee_enrich.entity.product_draft.flash.create.fail')
                     );
                 });
             }

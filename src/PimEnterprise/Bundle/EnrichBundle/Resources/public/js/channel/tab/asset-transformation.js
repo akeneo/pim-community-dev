@@ -52,9 +52,9 @@ define([
              */
             render: function () {
                 var hasId = _.has(this.getFormData().meta, 'id');
-                var notFoundLabel = __('pimee_enrich.asset_transformation.not_found');
-                var transformationLabel = __('pimee_enrich.asset_transformation.title.transformation');
-                var optionsLabel = __('pimee_enrich.asset_transformation.title.options');
+                var notFoundLabel = __('pimee_enrich.entity.channel.module.asset_transformation.not_found');
+                var transformationLabel = __('pimee_enrich.entity.channel.module.asset_transformation.transformation');
+                var optionsLabel = __('pimee_enrich.entity.channel.module.asset_transformation.options');
                 var configuration = {};
 
                 if (!hasId) {
