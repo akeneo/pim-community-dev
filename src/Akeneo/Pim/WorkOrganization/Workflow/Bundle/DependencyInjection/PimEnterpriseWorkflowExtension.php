@@ -74,5 +74,7 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('widgets.yml');
         $loader->load('mass_actions.yml');
         $loader->load('form.yml');
+        $loader->load('processors.yml');
+        $loader->load('writers.yml');
     }
 }

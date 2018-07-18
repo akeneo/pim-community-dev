@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PimEnterprise\Bundle\ConnectorBundle\tests\integration\Export\PublishedProduct;
+namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\tests\EndToEnd\PublishedProduct;
 
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Test\Integration\TestCase;
