@@ -59,11 +59,11 @@ class Create extends React.Component<CreateProps> {
   };
 
   private getCodeValidationErrorsMessages = () => {
-    let errors = this.props.errors.filter((error: ValidationError) => {
-      return 'identifier' == error.propertyPath;
+    const errors = this.props.errors.filter((error: ValidationError) => {
+      return 'identifier' === error.propertyPath;
     });
 
-    let errorMessages = errors.map((error: ValidationError, key:number) => {
+    const errorMessages = errors.map((error: ValidationError, key: number) => {
       return <span className="error-message" key={key}>{__(error.messageTemplate, error.parameters)}</span>;
     });
 
@@ -87,10 +87,10 @@ class Create extends React.Component<CreateProps> {
     return (
         <div className="modal in modal--fullPage" aria-hidden="false" style={{zIndex: 1041}}>
           <div className="modal-header">
-            <a className="close">×</a>
-            <h3>Create</h3>
+            <span className="close" tabIndex={0}>×</span>
+            <h3>{__('pim_enriched_entity.enriched_entity.create.header.title')}</h3>
           </div>
-          <div className="modal-body  creation">
+          <div>
             <div className="AknFullPage AknFullPage--modal">
               <div className="AknFullPage-content">
                 <div className="AknFullPage-left">
@@ -103,11 +103,18 @@ class Create extends React.Component<CreateProps> {
                   <div data-drop-zone="fields">
                     <div className="AknFieldContainer" data-code="label">
                       <div className="AknFieldContainer-header">
-                        <label title="Code" className="AknFieldContainer-label control-label required truncate"
-                               htmlFor="creation_label">{__('pim_enriched_entity.enriched_entity.create.input.label')}</label>
+                        <label title="{__('pim_enriched_entity.enriched_entity.create.input.label')}"
+                               className="AknFieldContainer-label control-label required truncate"
+                               htmlFor="pim_enriched_entity.enriched_entity.create.input.label"
+                        >
+                          {__('pim_enriched_entity.enriched_entity.create.input.label')}
+                        </label>
                       </div>
                       <div className="AknFieldContainer-inputContainer field-input">
-                        <input type="text" className="AknTextField" id="creation_label" name="label"
+                        <input type="text"
+                               className="AknTextField"
+                               id="pim_enriched_entity.enriched_entity.create.input.label"
+                               name="label"
                                value={this.props.data.labels[this.props.context.locale]}
                                onChange={this.onLabelUpdate} />
                         <Flag locale={this.props.context.locale} displayLanguage={false}/>
@@ -115,11 +122,17 @@ class Create extends React.Component<CreateProps> {
                     </div>
                     <div className="AknFieldContainer" data-code="code">
                       <div className="AknFieldContainer-header">
-                        <label title="Code" className="AknFieldContainer-label control-label required truncate"
-                               htmlFor="creation_code">{__('pim_enriched_entity.enriched_entity.create.input.code')}</label>
+                        <label title="{__('pim_enriched_entity.enriched_entity.create.input.code')}"
+                               className="AknFieldContainer-label control-label required truncate"
+                               htmlFor="pim_enriched_entity.enriched_entity.create.input.code"
+                        >
+                          {__('pim_enriched_entity.enriched_entity.create.input.code')}
+                        </label>
                       </div>
                       <div className="AknFieldContainer-inputContainer field-input">
-                        <input type="text" className="AknTextField" id="creation_code" name="code"
+                        <input type="text" className="AknTextField"
+                               id="pim_enriched_entity.enriched_entity.create.input.code"
+                               name="code"
                                value={this.props.data.code}
                                onChange={this.onCodeUpdate} />
                       </div>
@@ -131,12 +144,19 @@ class Create extends React.Component<CreateProps> {
             </div>
           </div>
           <div className="AknButtonList AknButtonList--right modal-footer">
-            <span title="Cancel"
+            <span title="{__('pim_enriched_entity.enriched_entity.create.cancel')}"
                   className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
                   onClick={this.onCancel}
-            >{__('pim_enriched_entity.enriched_entity.create.cancel')}</span>
-            <button title="Save"
-               className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text" onClick={this.onSubmit}>{__('pim_enriched_entity.enriched_entity.create.save')}</button>
+                  tabIndex={0}
+            >
+              {__('pim_enriched_entity.enriched_entity.create.cancel')}
+            </span>
+            <button title="{__('pim_enriched_entity.enriched_entity.create.save')}"
+                    className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
+                    onClick={this.onSubmit}
+            >
+              {__('pim_enriched_entity.enriched_entity.create.save')}
+            </button>
           </div>
         </div>
     );

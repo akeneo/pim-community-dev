@@ -12,7 +12,7 @@ Feature: Create an enriched entity
       | identifier | labels                                    |
       | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
 
-  @acceptance-back @acceptance-front
+  @acceptance-back
   Scenario: Creating an enriched entity with no labels
     When the user creates an enriched entity "designer" with:
       | labels |
