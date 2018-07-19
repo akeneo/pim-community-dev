@@ -30,7 +30,6 @@ class IdentifierMapping
      */
     public function __construct(string $pimAiCode, AttributeInterface $attribute)
     {
-        $this->id = null;
         $this->pimAiCode = $pimAiCode;
         $this->attribute = $attribute;
     }
@@ -56,7 +55,7 @@ class IdentifierMapping
      *
      * @return IdentifierMapping
      */
-    public function updateAttribute($attribute): self
+    public function setAttribute($attribute): self
     {
         $this->attribute = $attribute;
 

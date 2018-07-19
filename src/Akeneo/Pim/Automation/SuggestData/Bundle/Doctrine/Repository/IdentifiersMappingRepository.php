@@ -47,7 +47,7 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
             if (! $identifierMapping instanceof IdentifierMapping) {
                 $identifierMapping = new IdentifierMapping($pimAiCode, $attribute);
             }
-            $identifierMapping->updateAttribute($attribute);
+            $identifierMapping->setAttribute($attribute);
 
             $this->em->persist($identifierMapping);
         }
