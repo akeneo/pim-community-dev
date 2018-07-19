@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Model\ProductCopyValueActionInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCopyActionInterface;
+use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

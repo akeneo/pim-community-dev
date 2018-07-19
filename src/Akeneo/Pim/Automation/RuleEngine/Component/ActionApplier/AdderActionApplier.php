@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddActionInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductAddActionInterface;
 
 /**
  * Adder action applier
