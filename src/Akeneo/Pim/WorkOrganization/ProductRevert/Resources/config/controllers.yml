@@ -1,5 +1,5 @@
 parameters:
-    pimee_revert.controller.product_version.class: PimEnterprise\Bundle\RevertBundle\Controller\ProductVersionController
+    pimee_revert.controller.product_version.class: Akeneo\Pim\WorkOrganization\ProductRevert\Controller\ProductVersionController
 
 services:
     pimee_revert.controller.product_version:

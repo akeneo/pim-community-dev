@@ -647,8 +647,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see the text "skipped 2"
-    And I should see the text "conditions[0]: Property \"side_view\" expects a string as data, \"array\" given.: PimEnterprise\Component\CatalogRule\Model\ProductCondition"
-    And I should see the text "actions[0]: Property \"side_view\" expects a valid pathname as data, \"invalid/path/to/image\" given.: PimEnterprise\Component\CatalogRule\Model\ProductSetAction"
+    And I should see the text "conditions[0]: Property \"side_view\" expects a string as data, \"array\" given.: Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductCondition"
+    And I should see the text "actions[0]: Property \"side_view\" expects a valid pathname as data, \"invalid/path/to/image\" given.: Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductSetAction"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see the text "SNKRS-1R"
