@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Exception;
 
-class DuplicateMappingAttributeException extends \Exception
+final class DuplicateMappingAttributeException extends \Exception
 {
 }

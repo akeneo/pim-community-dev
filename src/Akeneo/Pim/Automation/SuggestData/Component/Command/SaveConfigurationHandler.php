@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory;
-use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 
@@ -50,14 +50,16 @@ class SaveConfigurationHandler
     /**
      * @param SaveConfiguration $saveConfiguration
      *
-     * @throws InvalidConnectionConfiguration
+     * @throws InvalidConnectionConfigurationException
      */
     public function handle(SaveConfiguration $saveConfiguration): void
     {
         $dataProvider = $this->dataProviderFactory->create();
         $isAuthenticated = $dataProvider->authenticate($saveConfiguration->getValues()['token']);
         if ($isAuthenticated !== true) {
-            throw InvalidConnectionConfiguration::forCode($saveConfiguration->getCode());
+            throw new InvalidConnectionConfigurationException(
+                sprintf('Provided configuration for connection to "%s" is invalid.', $saveConfiguration->getCode())
+            );
         }
 
         $configuration = $this->repository->findOneByCode($saveConfiguration->getCode());

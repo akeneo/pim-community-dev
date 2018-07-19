@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Component\Application;
+namespace Akeneo\Pim\Automation\SuggestData\Component\Service;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler;
-use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfiguration;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -39,16 +38,10 @@ class ActivateSuggestDataConnection
      *
      * @param string $code
      * @param array  $configuration
-     *
-     * @throws \InvalidArgumentException
      */
     public function activate(string $code, array $configuration): void
     {
-        try {
-            $saveConfiguration = new SaveConfiguration($code, $configuration);
-            $this->saveConfigurationHandler->handle($saveConfiguration);
-        } catch (InvalidConnectionConfiguration $exception) {
-            throw new \InvalidArgumentException($exception->getMessage());
-        }
+        $saveConfiguration = new SaveConfiguration($code, $configuration);
+        $this->saveConfigurationHandler->handle($saveConfiguration);
     }
 }

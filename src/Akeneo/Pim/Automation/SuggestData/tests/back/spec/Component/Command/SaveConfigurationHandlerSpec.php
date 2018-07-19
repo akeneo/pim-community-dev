@@ -15,10 +15,10 @@ namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfigurationException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler;
-use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 
@@ -73,6 +73,6 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(false);
 
-        $this->shouldThrow(InvalidConnectionConfiguration::forCode('foobar'))->during('handle', [$command]);
+        $this->shouldThrow(InvalidConnectionConfigurationException::class)->during('handle', [$command]);
     }
 }
