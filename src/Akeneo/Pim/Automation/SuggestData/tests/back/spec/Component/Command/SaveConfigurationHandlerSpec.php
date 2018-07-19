@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfigurationException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationCommand;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
@@ -41,7 +41,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
 
     function it_updates_an_existing_configuration(DataProviderInterface $dataProvider, $dataProviderFactory, $repository)
     {
-        $command = new SaveConfiguration('foobar', ['token' => 'bar']);
+        $command = new SaveConfigurationCommand('foobar', ['token' => 'bar']);
         $configuration = new Configuration('foobar', ['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
@@ -55,7 +55,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
 
     function it_saves_a_new_connector_configuration(DataProviderInterface $dataProvider, $dataProviderFactory, $repository)
     {
-        $command = new SaveConfiguration('foobar', ['token' => 'bar']);
+        $command = new SaveConfigurationCommand('foobar', ['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(true);
@@ -68,7 +68,7 @@ class SaveConfigurationHandlerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_configuration_is_invalid(DataProviderInterface $dataProvider, $dataProviderFactory)
     {
-        $command = new SaveConfiguration('foobar', ['token' => 'bar']);
+        $command = new SaveConfigurationCommand('foobar', ['token' => 'bar']);
 
         $dataProviderFactory->create()->willReturn($dataProvider);
         $dataProvider->authenticate('bar')->willReturn(false);

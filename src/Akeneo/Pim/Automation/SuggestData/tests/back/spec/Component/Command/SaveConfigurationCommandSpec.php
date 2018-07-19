@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationCommand;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SaveConfigurationSpec extends ObjectBehavior
+class SaveConfigurationCommandSpec extends ObjectBehavior
 {
     function it_is_a_save_configuration_command()
     {
         $this->beConstructedWith('foobar', ['foo' => 'bar']);
 
-        $this->shouldHaveType(SaveConfiguration::class);
+        $this->shouldHaveType(SaveConfigurationCommand::class);
     }
 
     function it_returns_a_configuration_code()
