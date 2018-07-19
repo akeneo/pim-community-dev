@@ -72,4 +72,12 @@ class IdentifiersMapping implements \IteratorAggregate
     {
         return new \ArrayIterator($this->identifiers);
     }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return empty($this->identifiers);
+    }
 }
