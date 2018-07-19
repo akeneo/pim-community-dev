@@ -14,7 +14,8 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/"
-        }
+        },
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
     "autoload-dev": {
         "psr-0": {
@@ -27,7 +28,7 @@
             "Akeneo\\Test\\Acceptance\\": "tests/back/Acceptance/",
             "Akeneo\\Test\\Common\\": "tests/back/Common/"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/back/Integration/AppKernelTest.php" ]
+        "classmap": [ "tests/back/Integration/AppKernelTest.php" ]
     },
     "require": {
         "php": ">=7.1.0",
