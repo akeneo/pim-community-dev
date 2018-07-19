@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\Permission\Bundle\Entity;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\Pim\Permission\Component\Model\LocaleAccessInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 
 /**
  * Locale Access entity

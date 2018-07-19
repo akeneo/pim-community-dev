@@ -12,9 +12,9 @@
 namespace Akeneo\Pim\Permission\Bundle\Voter;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

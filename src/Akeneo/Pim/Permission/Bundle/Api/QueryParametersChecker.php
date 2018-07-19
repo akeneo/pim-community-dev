@@ -12,9 +12,9 @@
 namespace Akeneo\Pim\Permission\Bundle\Api;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

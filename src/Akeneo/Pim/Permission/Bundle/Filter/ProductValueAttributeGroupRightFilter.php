@@ -12,10 +12,10 @@
 namespace Akeneo\Pim\Permission\Bundle\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
 
 /**
  * Product Value filter

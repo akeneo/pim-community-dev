@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\Permission\Bundle\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter as BaseProductEditFilter;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter as BaseProductEditFilter;
 
 /**
  * Enterprise override to add product ownership check for product classification

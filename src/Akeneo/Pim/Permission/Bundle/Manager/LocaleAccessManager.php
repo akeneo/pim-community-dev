@@ -12,11 +12,11 @@
 namespace Akeneo\Pim\Permission\Bundle\Manager;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\LocaleAccess;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\LocaleAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 
 /**
  * Locale access manager

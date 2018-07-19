@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\UpdateGuesser;
 
+use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
 
 /**
  * Category access update guesser

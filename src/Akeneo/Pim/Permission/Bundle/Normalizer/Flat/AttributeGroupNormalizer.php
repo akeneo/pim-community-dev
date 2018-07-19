@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Normalizer\Flat;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

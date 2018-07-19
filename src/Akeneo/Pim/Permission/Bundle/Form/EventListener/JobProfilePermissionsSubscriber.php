@@ -11,11 +11,11 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Form\EventListener;
 
+use Akeneo\Pim\Permission\Bundle\Form\Type\JobProfilePermissionsType;
+use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Akeneo\Pim\Permission\Bundle\Form\Type\JobProfilePermissionsType;
-use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Datagrid;
 
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Akeneo\Pim\Permission\Bundle\Filter\AbstractAuthorizationFilter;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
  * Datagrid View filter to only keep views the current user has access to.

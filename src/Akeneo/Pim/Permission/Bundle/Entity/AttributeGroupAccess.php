@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Entity;
 
+use Akeneo\Pim\Permission\Component\Model\AttributeGroupAccessInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use Akeneo\Pim\Permission\Component\Model\AttributeGroupAccessInterface;
 
 /**
  * Attribute Group Access entity

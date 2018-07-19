@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Entity;
 
+use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use Akeneo\Pim\Permission\Component\Model\CategoryAccessInterface;
 
 /**
  * Abstract implementation of the item category access interface

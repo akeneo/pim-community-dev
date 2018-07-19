@@ -11,13 +11,13 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Manager;
 
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\JobProfileAccessRepository;
+use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Permission\Component\Model\JobProfileAccessInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\JobProfileAccessRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
-use Akeneo\Pim\Permission\Component\Model\JobProfileAccessInterface;
 
 /**
  * Job profile access manager

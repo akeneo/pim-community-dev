@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Voter;
 
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

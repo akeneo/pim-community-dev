@@ -11,11 +11,11 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Form\EventListener;
 
+use Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType;
+use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType;
-use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\EventListener;
 
-use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Akeneo\Pim\Permission\Component\Repository\AccessRepositoryInterface;
+use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

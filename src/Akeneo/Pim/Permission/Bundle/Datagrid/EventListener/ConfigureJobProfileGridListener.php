@@ -11,10 +11,10 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\EventListener;
 
+use Akeneo\Pim\Permission\Component\Attributes;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**

@@ -11,13 +11,13 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Datagrid\EventListener;
 
+use Akeneo\Pim\Permission\Bundle\Datagrid\Product\RowActionsConfigurator;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener as BaseConfigureProductGridListener;
-use Akeneo\Pim\Permission\Bundle\Datagrid\Product\RowActionsConfigurator;
 
 /**
  * Grid listener to configure columns, filters, sorters and rows actions

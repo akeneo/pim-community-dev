@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Form\EventListener;
 
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Akeneo\Pim\Permission\Bundle\Form\Type\LocalePermissionsType;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

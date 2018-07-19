@@ -11,12 +11,12 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Manager;
 
-use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\AttributeGroupAccess;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

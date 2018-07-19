@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Factory;
 
+use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
 
 /**
  * Create a filtered entity (meaning with only granted data) from the entity.

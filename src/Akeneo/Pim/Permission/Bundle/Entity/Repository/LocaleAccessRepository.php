@@ -12,11 +12,11 @@
 namespace Akeneo\Pim\Permission\Bundle\Entity\Repository;
 
 use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\ORM\EntityRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
 
 /**
  * Locale access repository

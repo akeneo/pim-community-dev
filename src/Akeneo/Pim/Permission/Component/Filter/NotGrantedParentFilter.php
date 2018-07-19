@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Filter;
 
-use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 
 /**
  * Filter not granted values, associations, categories and parents in parents of entities with family variants

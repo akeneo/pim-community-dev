@@ -11,12 +11,12 @@
 
 namespace Akeneo\Pim\Permission\Component\Updater;
 
+use Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Pim\Permission\Bundle\Entity\ProductCategoryAccess;
 
 /**
  * Updates a Product Category Access

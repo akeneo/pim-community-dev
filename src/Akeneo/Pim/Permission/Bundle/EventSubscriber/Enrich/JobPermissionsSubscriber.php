@@ -11,10 +11,10 @@
 
 namespace Akeneo\Pim\Permission\Bundle\EventSubscriber\Enrich;
 
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

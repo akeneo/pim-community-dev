@@ -13,13 +13,13 @@ namespace Akeneo\Pim\Permission\Bundle\Datagrid\MassAction;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Permission\Bundle\Entity\Repository\AttributeGroupAccessRepository;
-use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

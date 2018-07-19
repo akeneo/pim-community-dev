@@ -11,14 +11,14 @@
 
 namespace Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
+use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
+use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\JobInstanceEvents;
-use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
-use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

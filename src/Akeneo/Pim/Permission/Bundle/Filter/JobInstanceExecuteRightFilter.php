@@ -11,10 +11,10 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Filter;
 
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
 
 /**
  * Job instance filter for execution

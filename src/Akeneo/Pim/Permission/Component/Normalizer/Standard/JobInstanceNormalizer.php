@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Permission\Component\Normalizer\Standard;
 
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

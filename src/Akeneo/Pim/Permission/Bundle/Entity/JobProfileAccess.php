@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Entity;
 
+use Akeneo\Pim\Permission\Component\Model\JobProfileAccessInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
-use Akeneo\Pim\Permission\Component\Model\JobProfileAccessInterface;
 
 /**
  * Job profile access entity
