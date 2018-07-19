@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Service;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
 
@@ -45,7 +45,7 @@ class ManageIdentifiersMapping
      */
     public function updateIdentifierMapping(array $identifiers): void
     {
-        $updateIdentifierCommand = new UpdateIdentifiersMapping($identifiers);
+        $updateIdentifierCommand = new UpdateIdentifiersMappingCommand($identifiers);
         $this->updateIdentifiersMappingHandler->handle($updateIdentifierCommand);
     }
 

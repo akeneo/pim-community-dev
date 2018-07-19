@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\SuggestData\Component\Exception\DuplicateMappingAttrib
 /**
  * Command that holds and validates the raw values of the identifiers mapping
  */
-class UpdateIdentifiersMapping
+class UpdateIdentifiersMappingCommand
 {
     private $identifiersMapping;
 

@@ -40,9 +40,9 @@ class UpdateIdentifiersMappingHandler
     }
 
     /**
-     * @param UpdateIdentifiersMapping $updateIdentifiersMappingCommand
+     * @param UpdateIdentifiersMappingCommand $updateIdentifiersMappingCommand
      */
-    public function handle(UpdateIdentifiersMapping $updateIdentifiersMappingCommand): void
+    public function handle(UpdateIdentifiersMappingCommand $updateIdentifiersMappingCommand): void
     {
         $identifiers = $updateIdentifiersMappingCommand->getIdentifiersMapping();
 

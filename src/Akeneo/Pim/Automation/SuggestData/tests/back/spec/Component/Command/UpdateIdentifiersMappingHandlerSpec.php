@@ -15,7 +15,7 @@ namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingCommand;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingHandler;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
@@ -36,7 +36,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
 
     function it_should_throw_an_exception_with_invalid_attributes(
         AttributeRepositoryInterface $attributeRepository,
-        UpdateIdentifiersMapping $command
+        UpdateIdentifiersMappingCommand $command
     ) {
         $attributeRepository->findOneByIdentifier(Argument::any())->willReturn(null);
         $command->getIdentifiersMapping()->willReturn([
@@ -52,7 +52,7 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
     function it_should_save_the_identifiers_mapping(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
-        UpdateIdentifiersMapping $command,
+        UpdateIdentifiersMappingCommand $command,
         AttributeInterface $manufacturer,
         AttributeInterface $model,
         AttributeInterface $ean,
