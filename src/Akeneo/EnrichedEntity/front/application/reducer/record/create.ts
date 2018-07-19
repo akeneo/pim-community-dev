@@ -1,11 +1,10 @@
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import sanitize from "akeneoenrichedentity/tools/sanitize";
 
-export interface CreateState {
+export interface CreateRecordState {
     active: boolean;
     data: {
         recordCode: string;
-        entityCode: string;
         labels: {
             [localeCode: string]: string
         }
@@ -13,17 +12,16 @@ export interface CreateState {
     errors: ValidationError[];
 }
 
-const initCreateState = (): CreateState => ({
+const initCreateState = (): CreateRecordState => ({
     active: false,
     data: {
         recordCode: '',
-        entityCode: '',
         labels: {}
     },
     errors: []
 });
 
-export default (state: CreateState = initCreateState(), action: { type: string, locale: string, value: string, errors: ValidationError[] }) => {
+export default (state: CreateRecordState = initCreateState(), action: { type: string, locale: string, value: string, errors: ValidationError[] }) => {
     switch (action.type) {
         case 'RECORD_CREATION_START':
             state = {
@@ -31,7 +29,6 @@ export default (state: CreateState = initCreateState(), action: { type: string, 
                 active: true,
                 data: {
                     recordCode: '',
-                    entityCode: '',
                     labels: {}
                 },
                 errors: []
@@ -42,14 +39,6 @@ export default (state: CreateState = initCreateState(), action: { type: string, 
             state = {
                 ...state,
                 data: {...state.data, recordCode: action.value}
-            };
-
-            break;
-
-        case 'RECORD_CREATION_ENTITY_CODE_UPDATED':
-            state = {
-                ...state,
-                data: {...state.data, entityCode: action.value}
             };
 
             break;

@@ -1,12 +1,11 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {State} from 'akeneoenrichedentity/application/reducer/record/index';
+import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import __ from 'akeneoenrichedentity/tools/translator';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import Flag from 'akeneoenrichedentity/tools/component/flag';
 import {
     recordCreationRecordCodeUpdated,
-    recordCreationEntityCodeUpdated,
     recordCreationLabelUpdated,
     recordCreationCancel
 } from 'akeneoenrichedentity/domain/event/record/create';
@@ -28,11 +27,10 @@ interface StateProps {
 
 interface DispatchProps {
     events: {
-        onRecordCodeUpdated: (value: string) => void
-        onEntityCodeUpdated: (value: string) => void
-        onLabelUpdated: (value: string, locale: string) => void
-        onCancel: () => void
-        onSubmit: (recordCode: string, entityCode: string, labels: { [localeCode: string]: string }) => void
+        onRecordCodeUpdated: (value: string) => void;
+        onLabelUpdated: (value: string, locale: string) => void;
+        onCancel: () => void;
+        onSubmit: (recordCode: string, labels: { [localeCode: string]: string }) => void;
     }
 }
 
@@ -49,10 +47,6 @@ class Create extends React.Component<CreateProps> {
         this.props.events.onRecordCodeUpdated(event.target.value);
     };
 
-    private onEntityCodeUpdate = (event: any) => {
-        this.props.events.onEntityCodeUpdated(event.target.value);
-    };
-
     private onLabelUpdate = (event: any) => {
         this.props.events.onLabelUpdated(event.target.value, this.props.context.locale);
     };
@@ -62,15 +56,15 @@ class Create extends React.Component<CreateProps> {
     };
 
     private onSubmit = () => {
-        this.props.events.onSubmit(this.props.data.recordCode, this.props.data.entityCode, this.props.data.labels);
+        this.props.events.onSubmit(this.props.data.recordCode, this.props.data.labels);
     };
 
     private getCodeValidationErrorsMessages = () => {
-        let errors = this.props.errors.filter((error: ValidationError) => {
+        const errors = this.props.errors.filter((error: ValidationError) => {
             return 'identifier' == error.propertyPath;
         });
 
-        let errorMessages = errors.map((error: ValidationError, key:number) => {
+        const errorMessages = errors.map((error: ValidationError, key:number) => {
             return <span className="error-message" key={key}>{__(error.messageTemplate, error.parameters)}</span>;
         });
 
@@ -130,17 +124,6 @@ class Create extends React.Component<CreateProps> {
                                                    value={this.props.data.recordCode}
                                                    onChange={this.onRecordCodeUpdate} />
                                         </div>
-                                    </div>
-                                    <div className="AknFieldContainer" data-code="entity_code">
-                                        <div className="AknFieldContainer-header">
-                                            <label title="Code" className="AknFieldContainer-label control-label required truncate"
-                                                   htmlFor="creation_entity_code">{__('pim_enriched_entity.record.create.input.entity_code')}</label>
-                                        </div>
-                                        <div className="AknFieldContainer-inputContainer field-input">
-                                            <input type="text" className="AknTextField" id="creation_entity_code" name="entity_code"
-                                                   value={this.props.data.entityCode}
-                                                   onChange={this.onEntityCodeUpdate} />
-                                        </div>
                                         {errorContainer}
                                     </div>
                                 </div>
@@ -149,12 +132,18 @@ class Create extends React.Component<CreateProps> {
                     </div>
                 </div>
                 <div className="AknButtonList AknButtonList--right modal-footer">
-            <span title="Cancel"
-                  className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
-                  onClick={this.onCancel}
-            >{__('pim_enriched_entity.record.create.cancel')}</span>
+                    <span title="Cancel"
+                          className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
+                          onClick={this.onCancel}
+                    >
+                        {__('pim_enriched_entity.record.create.cancel')}
+                    </span>
                     <button title="Save"
-                            className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text" onClick={this.onSubmit}>{__('pim_enriched_entity.record.create.save')}</button>
+                            className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
+                            onClick={this.onSubmit}
+                    >
+                        {__('pim_enriched_entity.record.create.save')}
+                    </button>
                 </div>
             </div>
         );
@@ -165,8 +154,8 @@ export default connect((state: State): StateProps => {
     const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
     return {
-        data: state.create.data,
-        errors: state.create.errors,
+        data: state.createRecord.data,
+        errors: state.createRecord.errors,
         context: {
             locale: locale
         }
@@ -177,17 +166,14 @@ export default connect((state: State): StateProps => {
             onRecordCodeUpdated: (value: string) => {
                 dispatch(recordCreationRecordCodeUpdated(value));
             },
-            onEntityCodeUpdated: (value: string) => {
-                dispatch(recordCreationEntityCodeUpdated(value));
-            },
             onLabelUpdated: (value: string, locale: string) => {
                 dispatch(recordCreationLabelUpdated(value, locale));
             },
             onCancel: () => {
                 dispatch(recordCreationCancel());
             },
-            onSubmit: (recordCode: string, entityCode: string, labels: { [localeCode: string]: string }) => {
-                dispatch(createRecord(recordCode, entityCode, labels));
+            onSubmit: (recordCode: string, labels: { [localeCode: string]: string }) => {
+                dispatch(createRecord(recordCode, labels));
             }
         }
     } as DispatchProps

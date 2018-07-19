@@ -11,6 +11,8 @@ import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {saveEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
+import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/create';
+import CreateRecordModal from 'akeneoenrichedentity/application/component/record/create';
 
 interface StateProps {
   sidebar: {
@@ -24,11 +26,15 @@ interface StateProps {
     locale: string;
   };
   enrichedEntity: EnrichedEntity|null;
+  createRecord: {
+    active: boolean;
+  }
 }
 
 interface DispatchProps {
   events: {
-    onSaveEditForm: (enrichedEntity: EnrichedEntity) => void
+    onSaveEditForm: (enrichedEntity: EnrichedEntity) => void;
+    onRecordCreationStart: () => void;
   }
 }
 
@@ -62,6 +68,22 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     if (null !== this.props.enrichedEntity) {
       this.props.events.onSaveEditForm(this.props.enrichedEntity);
     }
+  };
+
+  private getHeaderButton = (currentTab: string): JSX.Element | JSX.Element[] => {
+    if (currentTab === 'pim-enriched-entity-edit-form-records') {
+      return (
+        <button className="AknButton AknButton--apply" onClick={this.props.events.onRecordCreationStart}>
+          {__('pim_enriched_entity.button.create.record')}
+        </button>
+      );
+    }
+
+    return (
+      <button className="AknButton AknButton--apply save" onClick={this.saveEditForm}>
+        {__('pim_enriched_entity.button.save')}
+      </button>
+    );
   };
 
   render(): JSX.Element | JSX.Element[] {
@@ -102,9 +124,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                         </div>
                         <div className="AknButtonList" >
                           <div className="AknTitleContainer-rightButton">
-                            <button className="AknButton AknButton--apply save" onClick={this.saveEditForm}>
-                              {__('pim_enriched_entity.button.save')}
-                            </button>
+                            {this.getHeaderButton(this.props.sidebar.currentTab)}
                           </div>
                         </div>
                       </div>
@@ -136,6 +156,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
           </div>
         </div>
         <Sidebar />
+        {this.props.createRecord.active ? <CreateRecordModal /> : null}
       </div>
     );
   }
@@ -158,13 +179,19 @@ export default connect((state: State): StateProps => {
     context: {
       locale
     },
-    enrichedEntity
+    enrichedEntity,
+    createRecord: {
+      active: state.createRecord.active
+    }
   }
 }, (dispatch: any): DispatchProps => {
   return {
     events: {
       onSaveEditForm: (enrichedEntity: EnrichedEntity) => {
         dispatch(saveEnrichedEntity(enrichedEntity));
+      },
+      onRecordCreationStart: () => {
+        dispatch(recordCreationStart());
       }
     }
   }
