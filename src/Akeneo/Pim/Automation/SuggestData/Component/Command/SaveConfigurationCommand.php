@@ -18,7 +18,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-class SaveConfiguration
+class SaveConfigurationCommand
 {
     /** @var string */
     private $code;

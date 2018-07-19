@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMapping;
+use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingCommand;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Component\Exception\DuplicateMappingAttributeException;
 
-class UpdateIdentifiersMappingSpec extends ObjectBehavior
+class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
 {
     function it_is_an_update_identifiers_mapping_command()
     {
@@ -28,7 +28,7 @@ class UpdateIdentifiersMappingSpec extends ObjectBehavior
             'asin' => 'id',
         ]);
 
-        $this->shouldHaveType(UpdateIdentifiersMapping::class);
+        $this->shouldHaveType(UpdateIdentifiersMappingCommand::class);
     }
 
     function it_returns_identifiers_mapping()

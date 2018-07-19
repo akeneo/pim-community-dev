@@ -31,7 +31,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         SubscribeProduct $command,
         IdentifiersMapping $identifiersMapping)
     {
-        $identifiersMappingRepository->findAll()->willReturn($identifiersMapping);
+        $identifiersMappingRepository->find()->willReturn($identifiersMapping);
         $identifiersMapping->isEmpty()->willReturn(false);
 
         $productId = 42;
@@ -50,7 +50,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
         SubscribeProduct $command,
         IdentifiersMapping $identifierMapping
     ) {
-        $identifiersMappingRepository->findAll()->willReturn($identifierMapping);
+        $identifiersMappingRepository->find()->willReturn($identifierMapping);
         $identifierMapping->isEmpty()->willReturn(true);
 
         $this

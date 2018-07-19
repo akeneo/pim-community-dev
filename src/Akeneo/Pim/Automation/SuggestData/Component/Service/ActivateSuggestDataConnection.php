@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Service;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationCommand;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler;
 
 /**
@@ -41,7 +41,7 @@ class ActivateSuggestDataConnection
      */
     public function activate(string $code, array $configuration): void
     {
-        $saveConfiguration = new SaveConfiguration($code, $configuration);
+        $saveConfiguration = new SaveConfigurationCommand($code, $configuration);
         $this->saveConfigurationHandler->handle($saveConfiguration);
     }
 }

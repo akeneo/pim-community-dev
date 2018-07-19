@@ -49,7 +49,7 @@ class SubscribeProductHandler
      */
     public function handle(SubscribeProduct $command): void
     {
-        $identifiersMapping = $this->identifiersMappingRepository->findAll();
+        $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {
             throw new \Exception('Identifiers mapping has not identifier defined');
         }

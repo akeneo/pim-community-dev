@@ -48,11 +48,11 @@ class SaveConfigurationHandler
     }
 
     /**
-     * @param SaveConfiguration $saveConfiguration
+     * @param SaveConfigurationCommand $saveConfiguration
      *
      * @throws InvalidConnectionConfigurationException
      */
-    public function handle(SaveConfiguration $saveConfiguration): void
+    public function handle(SaveConfigurationCommand $saveConfiguration): void
     {
         $dataProvider = $this->dataProviderFactory->create();
         $isAuthenticated = $dataProvider->authenticate($saveConfiguration->getValues()['token']);
