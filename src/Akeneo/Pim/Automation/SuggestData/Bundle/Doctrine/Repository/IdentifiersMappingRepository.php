@@ -45,7 +45,7 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
         foreach ($identifiersMapping as $pimAiCode => $attribute) {
             $identifierMapping = $this->em->getRepository(IdentifierMapping::class)->findOneBy(['pimAiCode' => $pimAiCode]);
             if (! $identifierMapping instanceof IdentifierMapping) {
-                $identifierMapping = new IdentifierMapping(null, $pimAiCode, $attribute);
+                $identifierMapping = new IdentifierMapping($pimAiCode, $attribute);
             }
             $identifierMapping->updateAttribute($attribute);
 

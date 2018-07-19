@@ -25,13 +25,12 @@ class IdentifierMapping
     private $attribute;
 
     /**
-     * @param int|null $id
      * @param string $pimAiCode
      * @param AttributeInterface $attribute
      */
-    public function __construct(?int $id, string $pimAiCode, AttributeInterface $attribute)
+    public function __construct(string $pimAiCode, AttributeInterface $attribute)
     {
-        $this->id = $id;
+        $this->id = null;
         $this->pimAiCode = $pimAiCode;
         $this->attribute = $attribute;
     }
