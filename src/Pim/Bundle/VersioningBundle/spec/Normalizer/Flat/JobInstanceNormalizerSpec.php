@@ -41,7 +41,7 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
         $this->normalize($jobinstance)->shouldReturn(
             [
                 'code'          => 'product_export',
-                'jobName'       => 'csv_product_export',
+                'job_name'       => 'csv_product_export',
                 'label'         => 'Product export',
                 'connector'     => 'myconnector',
                 'type'          => 'EXPORT',
