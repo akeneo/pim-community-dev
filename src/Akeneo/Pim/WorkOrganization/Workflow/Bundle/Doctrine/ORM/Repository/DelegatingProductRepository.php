@@ -16,10 +16,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Repository;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
