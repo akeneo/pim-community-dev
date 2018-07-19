@@ -161,11 +161,39 @@ class CreateActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
+    /** @test */
+    public function it_returns_an_error_when_the_user_do_not_have_the_rights()
+    {
+        $this->revokeCreationRights();
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_ENRICHED_ENTITIY_ROUTE,
+            [],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            [
+                'identifier' => 'designer',
+                'labels'     => [
+                    'fr_FR' => 'Concepteur',
+                    'en_US' => 'Designer',
+                ],
+            ]
+        );
+
+        $this->webClientHelper->assert403Forbidden($this->client->getResponse());
+    }
+
     private function loadFixtures(): void
     {
         $user = new User();
         $user->setUsername('julia');
         $this->get('pim_user.repository.user')->save($user);
+
+        $securityFacade = $this->get('oro_security.security_facade');
+        $securityFacade->setIsGranted('akeneo_enrichedentity_enriched_entity_create', true);
     }
 
     public function invalidIdentifiers()
@@ -202,5 +230,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 '[{"messageTemplate":"invalid locale code: This value should be of type string.","parameters":{"{{ value }}":"1","{{ type }}":"string"},"plural":null,"message":"invalid locale code: This value should be of type string.","root":{"identifier":"designer","labels":{"1":"Designer"}},"propertyPath":"labels","invalidValue":{"1":"Designer"},"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
         ];
+    }
+
+    private function revokeCreationRights(): void
+    {
+        $securityFacade = $this->get('oro_security.security_facade');
+        $securityFacade->setIsGranted('akeneo_enrichedentity_enriched_entity_create', false);
     }
 }

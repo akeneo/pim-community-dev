@@ -29,7 +29,6 @@ class SqlIntegrationTestCase extends KernelTestCase
 
     protected function bootTestKernel(): void
     {
-        static::bootKernel(['debug' => false]);
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
     }

@@ -1,0 +1,6 @@
+akeneo_enrichedentity:
+    acl_group:
+        enriched_entity: Enriched entities
+    acl:
+        enriched_entity:
+            create: Create an entity

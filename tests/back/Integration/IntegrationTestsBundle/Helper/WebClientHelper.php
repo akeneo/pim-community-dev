@@ -52,7 +52,36 @@ class WebClientHelper
         Assert::assertEquals($expectedContent, $response->getContent(), 'Expected request content is not the same as the actual.');
     }
 
-    public function assert404(Response $response): void
+    public function assert403Forbidden(Response $response)
+    {
+        $expectedForbiddenContent = <<<HTML
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>An Error Occurred: Forbidden</title>
+    </head>
+    <body>
+        <h1>Oops! An Error Occurred</h1>
+        <h2>The server returned a "403 Forbidden".</h2>
+
+        <div>
+            Something is broken. Please let us know what you were doing when this error occurred.
+            We will fix it as soon as possible. Sorry for any inconvenience caused.
+        </div>
+    </body>
+</html>
+
+HTML;
+        Assert::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode(), 'Expected 403 Forbidden response');
+        Assert::assertEquals(
+            $expectedForbiddenContent,
+            $response->getContent(),
+            'The content of the 403 forbidden response is not the same'
+        );
+    }
+
+    public function assert404NotFound(Response $response): void
     {
         Assert::assertEquals(404, $response->getStatusCode());
     }

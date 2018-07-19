@@ -9,6 +9,7 @@ import {redirectToEnrichedEntity} from 'akeneoenrichedentity/application/action/
 import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
 import {enrichedEntityCreationStart} from 'akeneoenrichedentity/domain/event/enriched-entity/create';
 import CreateEnrichedEntityModal from 'akeneoenrichedentity/application/component/enriched-entity/create';
+const securityContext = require('pim/security-context')
 
 interface StateProps {
   context: {
@@ -24,6 +25,10 @@ interface StateProps {
   create: {
     active: boolean;
   };
+
+  acls: {
+    create: boolean;
+  };
 };
 
 interface DispatchProps {
@@ -33,7 +38,7 @@ interface DispatchProps {
   }
 }
 
-const enrichedEntityListView = ({ grid, context, events, create }: StateProps & DispatchProps) => (
+const enrichedEntityListView = ({ grid, context, events, create, acls}: StateProps & DispatchProps) => (
   <div className="AknDefault-contentWithColumn">
     <div className="AknDefault-thirdColumnContainer">
       <div className="AknDefault-thirdColumn"></div>
@@ -56,12 +61,14 @@ const enrichedEntityListView = ({ grid, context, events, create }: StateProps & 
                   ]}/>
                 </div>
                 <div className="AknTitleContainer-buttonsContainer">
-                  <div className="AknTitleContainer-userMenu">
-                    <PimView className="AknTitleContainer-userMenu" viewName="pim-enriched-entity-index-user-navigation"/>
-                    <div className="AknButtonList">
-                        <span className="AknButton AknButton--apply AknButtonList-item" onClick={events.onCreationStart}>{__('pim_enriched_entity.button.create')}</span>
-                    </div>
-                  </div>
+                  <PimView className="AknTitleContainer-userMenu" viewName="pim-enriched-entity-index-user-navigation"/>
+                  {
+                    acls.create ?
+                        <div className="AknButtonList">
+                          <span className="AknButton AknButton--apply AknButtonList-item" onClick={events.onCreationStart}>{__('pim_enriched_entity.button.create')}</span>
+                        </div> :
+                        null
+                  }
                 </div>
               </div>
               <div className="AknTitleContainer-line">
@@ -121,6 +128,9 @@ export default connect((state: State): StateProps => {
     },
     create: {
       active: state.create.active
+    },
+    acls: {
+      create: securityContext.isGranted('akeneo_enrichedentity_enriched_entity_create')
     }
   }
 }, (dispatch: any): DispatchProps => {
