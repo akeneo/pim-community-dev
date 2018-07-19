@@ -18,7 +18,7 @@ namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
  *
  * @author Mathias METAYER <mathias.metayer@akeneo.com>
  */
-class SubscribeProduct
+class SubscribeProductCommand
 {
     /** @var int */
     private $productId;

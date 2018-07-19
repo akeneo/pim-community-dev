@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProduct;
+use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProductCommand;
 use PhpSpec\ObjectBehavior;
 
-class SubscribeProductSpec extends ObjectBehavior
+class SubscribeProductCommandSpec extends ObjectBehavior
 {
     function it_is_a_subscribe_product_command()
     {
         $this->beConstructedWith(42);
-        $this->shouldHaveType(SubscribeProduct::class);
+        $this->shouldHaveType(SubscribeProductCommand::class);
     }
 
     function it_exposes_product_id()

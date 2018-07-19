@@ -45,9 +45,9 @@ class SubscribeProductHandler
     }
 
     /**
-     * @param SubscribeProduct $command
+     * @param SubscribeProductCommand $command
      */
-    public function handle(SubscribeProduct $command): void
+    public function handle(SubscribeProductCommand $command): void
     {
         $identifiersMapping = $this->identifiersMappingRepository->find();
         if ($identifiersMapping->isEmpty()) {

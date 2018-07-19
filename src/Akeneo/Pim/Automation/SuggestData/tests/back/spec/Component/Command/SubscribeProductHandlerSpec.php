@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProduct;
+use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProductCommand;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProductHandler;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
@@ -28,7 +28,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
     function it_throws_an_exception_if_the_product_does_not_exist(
         $productRepository,
         $identifiersMappingRepository,
-        SubscribeProduct $command,
+        SubscribeProductCommand $command,
         IdentifiersMapping $identifiersMapping)
     {
         $identifiersMappingRepository->find()->willReturn($identifiersMapping);
@@ -47,7 +47,7 @@ class SubscribeProductHandlerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_identifiers_mapping_is_empty(
         $identifiersMappingRepository,
-        SubscribeProduct $command,
+        SubscribeProductCommand $command,
         IdentifiersMapping $identifierMapping
     ) {
         $identifiersMappingRepository->find()->willReturn($identifierMapping);
