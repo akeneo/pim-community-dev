@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
+use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfigurationException;
 use Akeneo\Pim\Automation\SuggestData\Component\Service\ActivateSuggestDataConnection;
 use Akeneo\Pim\Automation\SuggestData\Component\Service\GetNormalizedConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Component\Service\GetSuggestDataConnectionStatus;
@@ -131,7 +132,7 @@ class PimAiContext implements Context
     {
         try {
             $this->pimAiConnection->activate('pim-ai', ['token' => $activationCode]);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (InvalidConnectionConfigurationException $exception) {
             return false;
         }
 
