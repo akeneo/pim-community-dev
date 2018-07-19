@@ -39,7 +39,7 @@ class InMemoryIdentifiersMappingRepository implements IdentifiersMappingReposito
     /**
      * {@inheritdoc}
      */
-    public function findAll(): IdentifiersMapping
+    public function find(): IdentifiersMapping
     {
         return $this->identifiers;
     }

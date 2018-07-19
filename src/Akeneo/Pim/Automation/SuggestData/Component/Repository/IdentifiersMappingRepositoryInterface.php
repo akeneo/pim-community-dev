@@ -29,5 +29,5 @@ interface IdentifiersMappingRepositoryInterface
      *
      * @return IdentifiersMapping
      */
-    public function findAll(): IdentifiersMapping;
+    public function find(): IdentifiersMapping;
 }

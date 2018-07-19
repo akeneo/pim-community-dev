@@ -68,7 +68,7 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         $identifiersMappingRepository = $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping');
         $identifiersMappingRepository->save($identifiersMapping);
 
-        $savedMapping = $identifiersMappingRepository->findAll();
+        $savedMapping = $identifiersMappingRepository->find();
 
         $this->assertEquals($identifiersMapping, $savedMapping);
     }

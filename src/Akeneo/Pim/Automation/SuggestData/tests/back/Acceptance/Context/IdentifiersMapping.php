@@ -63,7 +63,7 @@ class IdentifiersMapping implements Context
      */
     public function theIdentifiersMappingIsDefined(TableNode $table)
     {
-        $databaseIdentifiers = $this->identifiersMappingRepository->findAll()->getIdentifiers();
+        $databaseIdentifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
 
         $identifiers = $this->getTableNodeAsArrayWithoutHeaders($table);
 
@@ -97,7 +97,7 @@ class IdentifiersMapping implements Context
      */
     public function theIdentifiersMappingIsNotDefined()
     {
-        $identifiers = $this->identifiersMappingRepository->findAll()->getIdentifiers();
+        $identifiers = $this->identifiersMappingRepository->find()->getIdentifiers();
 
         Assert::assertEquals([], $identifiers);
     }

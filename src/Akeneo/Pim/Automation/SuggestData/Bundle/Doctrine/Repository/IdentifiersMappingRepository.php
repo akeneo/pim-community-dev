@@ -57,7 +57,7 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     /**
      * {@inheritdoc}
      */
-    public function findAll(): IdentifiersMapping
+    public function find(): IdentifiersMapping
     {
         $identifiers = $this->em->getRepository(IdentifierMapping::class)->findAll();
 
