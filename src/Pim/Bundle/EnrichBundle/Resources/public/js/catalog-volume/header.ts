@@ -43,13 +43,7 @@ class HeaderView extends BaseView {
     if (undefined !== productValues && productValues.value > 0) {
       const headerContents: string = this.headerTemplate({
         title: __(this.config.title)
-          .replace(
-            '{{values}}',
-            productValues.value.toLocaleString(
-              'en',
-              {useGrouping: true}
-            )
-          )
+          .replace('{{values}}', productValues.value.toLocaleString('en', {useGrouping: true}))
           .replace('{{average}}', productValuesAverage.value.average),
         description: __(this.config.description).replace('{{link}}', __('catalog_volume.link')),
       });

@@ -8,7 +8,7 @@ interface TitleWithSubTitleConfig {
   main_title: string;
   sub_title: string;
   illustration: string;
-  description:  Array<string>;
+  description: Array<string>;
 }
 
 /**
@@ -32,7 +32,7 @@ class TitleWithSubtitleView extends BaseView {
     super(options);
 
     this.config = {...this.config, ...options.config};
-  };
+  }
 
   /**
    * {@inheritdoc}
@@ -41,16 +41,16 @@ class TitleWithSubtitleView extends BaseView {
     const translatedDescriptionLines: Array<string> = this.config.description.map(translationKey => __(translationKey));
 
     this.$el.empty().html(
-        this.template({
-          mainTitle: __(this.config.main_title),
-          subTitle: __(this.config.sub_title),
-          illustration: this.config.illustration,
-          descriptionLines: translatedDescriptionLines,
-        })
+      this.template({
+        mainTitle: __(this.config.main_title),
+        subTitle: __(this.config.sub_title),
+        illustration: this.config.illustration,
+        descriptionLines: translatedDescriptionLines,
+      })
     );
 
     return this;
-  };
+  }
 }
 
 export = TitleWithSubtitleView;
