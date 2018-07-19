@@ -11,6 +11,8 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber;
 
+use Akeneo\Pim\Automation\RuleEngine\Bundle\Manager\RuleRelationManager;
+use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvent;
@@ -21,8 +23,6 @@ use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Pim\Automation\RuleEngine\Bundle\Manager\RuleRelationManager;
-use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

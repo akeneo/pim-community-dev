@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -21,7 +22,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Akeneo\Pim\Automation\RuleEngine\Component\Model\ProductRemoveActionInterface;
 
 /**
  * Remove action interface used in product rules.
