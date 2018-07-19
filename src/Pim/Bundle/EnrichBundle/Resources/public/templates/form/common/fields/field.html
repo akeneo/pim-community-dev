@@ -1,8 +1,8 @@
-<div class="AknFieldContainer-header">
+<% if (fieldLabel !== '') { %><div class="AknFieldContainer-header">
     <label class="AknFieldContainer-label control-label" for="pim_enrich_form_<%- fieldId %>">
         <%- fieldLabel %><% if (required) { %> <em><%- requiredLabel %></em><% } %>
     </label>
-</div>
+</div><% } %>
 <div class="AknFieldContainer-inputContainer">
     <div class="field-input"></div>
 </div>
