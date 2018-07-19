@@ -230,7 +230,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      */
     public function getGrantedCategoryIds(UserInterface $user, $accessLevel)
     {
-        $categoryAccessTable = $this->getTableName('pimee_security.entity.product_category_access.class');
+        $categoryAccessTable = $this->_class->table['name'];
         $userGroupsTable = $this->getTableName('pim_user.entity.user.class', 'groups');
 
         $pdo = $this->_em->getConnection()->getWrappedConnection();
