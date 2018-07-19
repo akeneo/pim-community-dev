@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Application\ActivateSuggestDataConnection;
-use Akeneo\Pim\Automation\SuggestData\Component\Application\GetNormalizedConfiguration;
-use Akeneo\Pim\Automation\SuggestData\Component\Application\GetSuggestDataConnectionStatus;
+use Akeneo\Pim\Automation\SuggestData\Component\Service\ActivateSuggestDataConnection;
+use Akeneo\Pim\Automation\SuggestData\Component\Service\GetNormalizedConfiguration;
+use Akeneo\Pim\Automation\SuggestData\Component\Service\GetSuggestDataConnectionStatus;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\Configuration;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ConfigurationRepositoryInterface;
 use Behat\Behat\Context\Context;
