@@ -28,10 +28,13 @@ define([
             /**
              * {@inheritdoc}
              *
-             * Removes the useless catalogLocale field
+             * Removes the useless catalogLocale field, and adds localizable, is_locale_specific and scopable filters.
              */
             select2Data(term, page) {
                 return {
+                    localizable: false,
+                    is_locale_specific: false,
+                    scopable: false,
                     search: term,
                     options: {
                         limit: this.resultsPerPage,
