@@ -3,8 +3,8 @@ import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched
 import LabelCollection, {RawLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 
 interface NormalizedRecord {
-  code: string;
-  entityCode: string;
+  identifier: string;
+  enrichedEntityIdentifier: string;
   labels: RawLabelCollection;
 }
 
@@ -73,8 +73,8 @@ class RecordImplementation implements Record {
 
   public normalize(): NormalizedRecord {
     return {
-      code: this.getIdentifier().stringValue(),
-      entityCode: this.getEnrichedEntityIdentifier().stringValue(),
+      identifier: this.getIdentifier().stringValue(),
+      enrichedEntityIdentifier: this.getEnrichedEntityIdentifier().stringValue(),
       labels: this.getLabelCollection().getLabels(),
     };
   }

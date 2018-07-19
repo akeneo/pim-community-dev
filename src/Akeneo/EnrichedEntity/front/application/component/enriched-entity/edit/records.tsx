@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import Table from 'akeneoenrichedentity/application/component/record/index/table';
 import Record from 'akeneoenrichedentity/domain/model/record/record';
-import {State} from 'akeneoenrichedentity/application/reducer/record/index'
+import {State} from 'akeneoenrichedentity/application/reducer/record/index';
 import {redirectToRecord} from 'akeneoenrichedentity/application/action/record/router';
 
 interface StateProps {

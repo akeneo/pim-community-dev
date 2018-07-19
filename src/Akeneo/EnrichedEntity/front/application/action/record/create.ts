@@ -4,6 +4,7 @@ import LabelCollection from 'akeneoenrichedentity/domain/model/label-collection'
 import recordSaver from 'akeneoenrichedentity/infrastructure/saver/record';
 import {recordCreationSucceeded, recordCreationErrorOccured} from 'akeneoenrichedentity/domain/event/record/create';
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
+import {updateRecordResults} from 'akeneoenrichedentity/application/action/record/search';
 
 
 export const createRecord = (recordCode: string, labels: {[localeCode: string]: string}) => async (dispatch: any, getState: any): Promise<void> => {
@@ -29,6 +30,7 @@ export const createRecord = (recordCode: string, labels: {[localeCode: string]: 
     }
 
     dispatch(recordCreationSucceeded());
+    dispatch(updateRecordResults());
 
     return;
 };
