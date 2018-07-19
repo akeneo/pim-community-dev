@@ -1,5 +1,5 @@
 parameters:
-    pimee_revert.reverter.product.class: PimEnterprise\Bundle\RevertBundle\Reverter\ProductReverter
+    pimee_revert.reverter.product.class: Akeneo\Pim\WorkOrganization\ProductRevert\Reverter\ProductReverter
 
 services:
     pimee_revert.reverter.product:
