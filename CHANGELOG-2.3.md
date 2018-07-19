@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-7528: Fix Product and Product Model date attribute rendering in history panel, no timezone needed.
 - PIM-7488: use catalog locale for attributes list in attribute groups
 - PIM-7518: fix memory leak in channel/locale clean command
 - PIM-7517: fix the product models export filter on identifier
