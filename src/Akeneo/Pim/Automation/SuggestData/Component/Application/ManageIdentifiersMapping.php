@@ -54,7 +54,7 @@ class ManageIdentifiersMapping
      */
     public function getIdentifiersMapping(): array
     {
-        $identifiersMapping = $this->identifiersMappingRepository->findAll();
+        $identifiersMapping = $this->identifiersMappingRepository->find();
 
         return $identifiersMapping->normalize();
     }
