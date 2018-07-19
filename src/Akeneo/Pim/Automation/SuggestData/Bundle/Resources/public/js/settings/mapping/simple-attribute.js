@@ -14,6 +14,8 @@ define([
         BaseSimpleSelect
     ) {
         return BaseSimpleSelect.extend({
+            className: 'AknFieldContainer AknFieldContainer--withoutMargin',
+
             /**
              * {@inheritdoc}
              */
