@@ -18,7 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper;
 use Akeneo\Asset\Component\Model\AssetInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 

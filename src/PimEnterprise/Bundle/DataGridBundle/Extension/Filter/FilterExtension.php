@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Extension\Filter;
 
+use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Datagrid\DatagridViewTypes;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataIterableObject;
@@ -22,7 +23,6 @@ use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use PimEnterprise\Bundle\EnrichBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\DatagridViewTypes;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Translation\TranslatorInterface;
 

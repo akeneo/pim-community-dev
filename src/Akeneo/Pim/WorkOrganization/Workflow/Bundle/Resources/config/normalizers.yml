@@ -1,0 +1,45 @@
+parameters:
+    pimee_workflow.normalizer.product_draft.class:     Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductDraftNormalizer
+    pimee_workflow.normalizer.published_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\PublishedProductNormalizer
+    pimee_workflow.normalizer.proposal_product.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ProductProposalNormalizer
+    pimee_workflow.normalizer.proposal_product_model.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer\ProductModelProposalNormalizer
+    pimee_workflow.normalizer.published_product_version.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Versioning\VersionNormalizer
+
+services:
+    pimee_workflow.normalizer.product_draft:
+        class: '%pimee_workflow.normalizer.product_draft.class%'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 120 }
+
+    pimee_workflow.normalizer.published_product:
+        class: '%pimee_workflow.normalizer.published_product.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 130 }
+
+    pimee_workflow.normalizer.proposal_product:
+        class: '%pimee_workflow.normalizer.proposal_product.class%'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pimee_workflow.normalizer.proposal_product_model:
+        class: '%pimee_workflow.normalizer.proposal_product_model.class%'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pimee_enrich.normalizer.published_product:
+        class: '\Akeneo\Pim\WorkOrganization\Workflow\Component\Normalizer\InternalApi\PublishedProductNormalizer'
+        arguments:
+            - '@pimee_enrich.normalizer.product'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 130 }
+
+    # Versioning
+    pimee_workflow.normalizer.published_product_version:
+        class: '%pimee_workflow.normalizer.published_product_version.class%'
+        arguments:
+            - '@pim_enrich.normalizer.version'
+            - '@pimee_workflow.repository.published_product'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 120 }

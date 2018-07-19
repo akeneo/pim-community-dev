@@ -8,7 +8,7 @@ use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Rendering\RendererInterface;
 
 class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
 {
@@ -19,7 +19,7 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
 
     function it_is_a_presenter()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
+        $this->shouldBeAnInstanceOf('Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\PresenterInterface');
     }
 
     function it_supports_a_multi_reference_data()

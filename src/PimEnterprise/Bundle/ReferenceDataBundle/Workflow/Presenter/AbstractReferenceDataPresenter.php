@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
 
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\AbstractProductValuePresenter;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\AbstractProductValuePresenter;
 
 /**
  * Abstract Present changes of reference data

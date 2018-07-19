@@ -1,0 +1,18 @@
+parameters:
+    pimee_workflow.helper.filter_product_values.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\FilterProductValuesHelper
+    pimee_workflow.helper.sort_product_values.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Twig\SortProductValuesHelper
+    pimee_workflow.helper.product_draft_changes_permission.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper\ProductDraftChangesPermissionHelper
+
+services:
+    pimee_workflow.helper.filter_product_values:
+        class: '%pimee_workflow.helper.filter_product_values.class%'
+        arguments:
+            - '@security.authorization_checker'
+
+    pimee_workflow.helper.product_draft_changes_permission:
+        class: '%pimee_workflow.helper.product_draft_changes_permission.class%'
+        arguments:
+            - '@pim_enrich.filter.product_values_edit_data'
+
+    pimee_workflow.helper.sort_product_values:
+        class: '%pimee_workflow.helper.sort_product_values.class%'

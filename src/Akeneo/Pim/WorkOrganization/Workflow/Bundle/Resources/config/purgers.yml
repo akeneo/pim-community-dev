@@ -1,0 +1,12 @@
+parameters:
+    pimee_workflow.purger.advisor.published_products.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Purger\PublishedProductVersionPurgerAdvisor
+
+services:
+    # advisors
+    pimee_workflow.purger.advisor.published_products:
+        class: '%pimee_workflow.purger.advisor.published_products.class%'
+        arguments:
+            - '@pimee_workflow.repository.published_product'
+            - '%pim_catalog.entity.product.class%'
+        tags:
+            - { name: pim_versioning.purger.advisor, priority: 100 }

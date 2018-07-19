@@ -1,8 +1,0 @@
-parameters:
-    pimee_workflow.security.voter.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Security\ProductDraftVoter
-
-services:
-    pimee_workflow.security.voter.product_draft:
-        class: '%pimee_workflow.security.voter.product_draft.class%'
-        tags:
-            - { name: security.voter }

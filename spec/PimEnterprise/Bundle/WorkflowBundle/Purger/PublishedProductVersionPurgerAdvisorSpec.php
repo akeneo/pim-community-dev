@@ -5,8 +5,8 @@ namespace spec\PimEnterprise\Bundle\VersioningBundle\Purger;
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Purger\VersionPurgerAdvisorInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Purger\PublishedProductVersionPurgerAdvisor;
-use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Purger\PublishedProductVersionPurgerAdvisor;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Prophecy\Argument;
 
 class PublishedProductVersionPurgerAdvisorSpec extends ObjectBehavior

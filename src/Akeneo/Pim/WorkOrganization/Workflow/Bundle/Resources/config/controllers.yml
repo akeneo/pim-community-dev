@@ -1,0 +1,127 @@
+parameters:
+    pimee_workflow.controller.product_draft.class:          Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ProductDraftController
+    pimee_workflow.controller.product_model_draft.class:    Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ProductModelDraftController
+    pimee_workflow.controller.published_product.class:      Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\PublishedProductController
+    pimee_workflow.controller.published_product_rest.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\PublishedProductController
+    pimee_workflow.controller.product_draft_rest.class:     Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductDraftController
+    pimee_workflow.controller.rest.product.class:           Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductController
+    pimee_workflow.controller.product_model_draft_rest.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\ProductModelDraftController
+    pimee_workflow.controller.author_draft.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest\AuthorDraftController
+
+services:
+    pimee_workflow.controller.product_draft:
+        class: '%pimee_workflow.controller.product_draft.class%'
+        arguments:
+            - '@request_stack'
+            - '@router'
+            - '@security.token_storage'
+            - '@translator'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.manager.product_draft'
+            - '@pim_user.context.user'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@security.authorization_checker'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_catalog.filter.chained'
+            - '@oro_datagrid.mass_action.parameters_parser'
+
+    pimee_workflow.controller.published_product:
+        class: '%pimee_workflow.controller.published_product.class%'
+        arguments:
+            - '@request_stack'
+            - '@router'
+            - '@templating'
+            - '@translator'
+            - '@pim_user.context.user'
+            - '@pimee_workflow.manager.published_product'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.repository.channel'
+            - '@security.authorization_checker'
+
+    pimee_workflow.controller.published_product_rest:
+        class: '%pimee_workflow.controller.published_product_rest.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pimee_workflow.manager.published_product'
+            - '@pim_user.context.user'
+            - '@pim_internal_api_serializer'
+
+    pimee_workflow.controller.product_draft_rest:
+        class: '%pimee_workflow.controller.product_draft_rest.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.manager.product_draft'
+            - '@pim_catalog.repository.product'
+            - '@pim_internal_api_serializer'
+            - '@security.token_storage'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_user.context.user'
+            - '@pim_catalog.filter.chained'
+            - '@pimee_enrich.repository.attribute.search'
+
+    pimee_workflow.controller.rest.product:
+        class: '%pimee_workflow.controller.rest.product.class%'
+        arguments:
+            - '@pimee_workflow.repository.product_draft'
+            - '@pim_catalog.repository.product'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
+
+    pimee_workflow.controller.product_model_draft_rest:
+        class: '%pimee_workflow.controller.product_model_draft_rest.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@security.token_storage'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@security.authorization_checker'
+            - '@pimee_workflow.manager.product_model_draft'
+            - '@pim_internal_api_serializer'
+            - '@pim_user.context.user'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+
+    pimee_workflow.controller.product_model_draft:
+        class: '%pimee_workflow.controller.product_model_draft.class%'
+        arguments:
+            - '@request_stack'
+            - '@router'
+            - '@security.token_storage'
+            - '@translator'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '@pimee_workflow.manager.product_model_draft'
+            - '@pim_user.context.user'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@security.authorization_checker'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_catalog.filter.chained'
+            - '@oro_datagrid.mass_action.parameters_parser'
+
+    pimee_workflow.controller.author_draft:
+        class: '%pimee_workflow.controller.author_draft.class%'
+        arguments:
+            - '@pimee_workflow.query.draft_authors'
+            - '@pim_user.context.user'
+
+    pimee_workflow.controller.category_tree.published_product:
+        class: '%pim_enrich.controller.category_tree.class%'
+        arguments:
+            - '@event_dispatcher'
+            - '@pim_user.context.user'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.remover.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - { related_entity: published_product, form_type: '%pim_enrich.form.type.category.class%', acl: pim_enrich_product, route: pim_enrich }
+            - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
+        calls:
+            - [ setContainer, [ '@service_container' ] ]

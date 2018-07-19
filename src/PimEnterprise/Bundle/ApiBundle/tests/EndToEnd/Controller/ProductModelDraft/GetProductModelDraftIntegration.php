@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\ProductModelD
 
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
-use PimEnterprise\Component\Workflow\Model\EntityWithValuesDraftInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetProductModelDraftIntegration extends ApiTestCase

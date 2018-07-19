@@ -1,0 +1,73 @@
+parameters:
+    pimee_workflow.connector.job.job_parameters.default_values_provider.mass_review.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Job\JobParameters\DefaultValuesProvider\MassReview
+
+services:
+    # Default Parameters for Imports ----------------------------------------------------------------------------------
+    pimee_workflow.connector.job.job_parameters.default_values_provider.product_csv_import:
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_csv_import.class%'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'csv_product_proposal_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_workflow.connector.job.job_parameters.default_values_provider.product_model_csv_import:
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_model_csv_import.class%'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
+            -
+                - 'csv_product_model_proposal_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_workflow.connector.job.job_parameters.default_values_provider.product_xlsx_import:
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_xlsx_import.class%'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
+            -
+                - 'xlsx_product_proposal_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_workflow.connector.job.job_parameters.default_values_provider.product_model_xlsx_import:
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_model_xlsx_import.class%'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
+            -
+                - 'xlsx_product_model_proposal_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # Default Parameters for Exports ----------------------------------------------------------------------------------
+    pimee_workflow.connector.job.job_parameters.default_values_provider.product_csv_export:
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_csv_export.class%'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - 'csv_published_product_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pimee_workflow.connector.job.job_parameters.default_values_provider.product_xlsx_export:
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_xlsx_export.class%'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            -
+                - 'xlsx_published_product_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # Validation constraints for MassEdit -----------------------------------------------------------------------------
+    pimee_workflow.connector.job.job_parameters.default_values_provider.mass_review:
+        class: '%pimee_workflow.connector.job.job_parameters.default_values_provider.mass_review.class%'
+        arguments:
+            -
+                - 'approve_product_draft'
+                - 'refuse_product_draft'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

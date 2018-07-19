@@ -14,7 +14,6 @@
 - Change constructor of `PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter`. Add arguments `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface`, `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
 - Change constructor of `PimEnterprise\Component\Catalog\Security\Merger\NotGrantedAssociatedProductMerger`. Add arguments `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
 - Change constructor of `PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter`. Add arguments `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
-- Move namespace `PimEnterprise\Bundle\VersioningBundle` to `PimEnterprise\Bundle\RevertBundle`
 - Move namespace `PimEnterprise\Bundle\VersioningBundle\UpdateGuesser` to `PimEnterprise\Bundle\SecurityBundle\UpdateGuesser`
 - Move `PimEnterprise\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber` to `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber`
 - Move namespace `PimEnterprise\Bundle\VersioningBundle\Purger` to `PimEnterprise\Bundle\WorkflowBundle\Purger`
@@ -53,8 +52,8 @@
 - Move `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget` to `PimEnterprise\Bundle\WorkflowBundle\Widget\ProposalWidget`
 - Move `PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget` to `PimEnterprise\Bundle\WorkflowBundle\Widget\ProposalWidget`
 - Move `PimEnterprise\Component\Api\Updater\AssetUpdater` to `PimEnterprise\Component\ProductAsset\Updater\ExternalApi\AssetUpdater`
-- Move `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductDraftController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi\ProductDraftController`
-- Move `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductProposalController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi\ProductProposalController`
+- Move `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductDraftController` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductDraftController`
+- Move `PimEnterprise\Bundle\WorkflowBundle\Controller\Api\ProductProposalController` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi\ProductProposalController`
 - Move `PimEnterprise\Bundle\ApiBundle\Controller\PublishedProductController` to `PimEnterprise\Bundle\WorkflowBundle\Controller\ExternalApi\PublishedProductController`
 - Move `PimEnterprise\Component\Api\Normalizer\PublishedProductNormalizer` to `PimEnterprise\Component\Workflow\Normalizer\ExternalApi\PublishedProductNormalizer`
 - Remove `PimEnterprise\Component\Api\Repository\PublishedProductRepositoryInterface`
@@ -82,6 +81,11 @@
 - Move class `PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM\AssetEventSubscriber` to `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Asset\AssetEventSubscriber`
 - Move class `PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter\AssetsCollectionPresenter` to `PimEnterprise\Bundle\WorkflowBundle\Presenter\AssetsCollectionPresenter`
 - Remove class `Akeneo\Asset\Bundle\TwigExtension\ImageExtension`
+- Move namespace `PimEnterprise\Component\TeamworkAssistant` to `Akeneo\Pim\WorkOrganization\TeamWorkAssistant\Component`
+- Move namespace `PimEnterprise\Bundle\TeamworkAssistantBundle` to `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle`
+- Move namespace `PimEnterprise\Bundle\VersioningBundle` to `Akeneo\Pim\WorkOrganization\ProductRevert`
+- Move namespace `PimEnterprise\Component\Workflow` to `Akeneo\Pim\WorkOrganization\Workflow\Component`
+- Move namespace `PimEnterprise\Bundle\Workflow` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle`
 
 ## Security
 
