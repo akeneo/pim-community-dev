@@ -19,15 +19,6 @@ namespace Akeneo\Pim\Automation\SuggestData\Component\Exception;
  *
  * @author Damien Carcel <damien.carcel@akeneo.com>
  */
-final class InvalidConnectionConfiguration extends \LogicException
+final class InvalidConnectionConfigurationException extends \Exception
 {
-    /**
-     * @param string $code
-     *
-     * @return InvalidConnectionConfiguration
-     */
-    public static function forCode(string $code): self
-    {
-        return new self(sprintf('Provided configuration for connection to "%s" is invalid.', $code));
-    }
 }

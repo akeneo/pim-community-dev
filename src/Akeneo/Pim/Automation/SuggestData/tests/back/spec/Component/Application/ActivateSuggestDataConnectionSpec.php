@@ -17,7 +17,6 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfiguration;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\SaveConfigurationHandler;
 use Akeneo\Pim\Automation\SuggestData\Component\Application\ActivateSuggestDataConnection;
-use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidConnectionConfiguration;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>
@@ -41,16 +40,5 @@ class ActivateSuggestDataConnectionSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->activate('foobar', ['foo' => 'bar']);
-    }
-
-    function it_does_not_activate_an_invalid_connection($saveConnectorConfigurationHandler)
-    {
-        $saveConnectorConfigurationHandler
-            ->handle(new SaveConfiguration('foobar', ['bar' => 'baz']))
-            ->willThrow(InvalidConnectionConfiguration::forCode('foobar'));
-
-        $this->shouldThrow(new \InvalidArgumentException(
-            'Provided configuration for connection to "foobar" is invalid.'
-        ))->during('activate', ['foobar', ['bar' => 'baz']]);
     }
 }
