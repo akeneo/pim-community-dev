@@ -1,6 +1,7 @@
 const Header = async (nodeElement, createElementDecorator, page) => {
   const clickOnCreateButton = async () => {
     // As the button doesn't have any size, we need to make it clickable by giving him a size
+    await page.waitForSelector('.AknButton');
     await page.evaluate(header => {
       const button = header.querySelector('.AknButton');
 
@@ -12,7 +13,13 @@ const Header = async (nodeElement, createElementDecorator, page) => {
     await button.click();
   };
 
-  return {clickOnCreateButton};
+  const isCreateButtonVisible = async () => {
+    await page.waitForSelector('.AknTitleContainer-userIcon');
+
+    return null !== await nodeElement.$('.AknButton');
+  };
+
+  return {clickOnCreateButton, isCreateButtonVisible};
 };
 
 module.exports = Header;

@@ -192,8 +192,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $user->setUsername('julia');
         $this->get('pim_user.repository.user')->save($user);
 
-        $securityFacade = $this->get('oro_security.security_facade');
-        $securityFacade->setIsGranted('akeneo_enrichedentity_enriched_entity_create', true);
+        $securityFacadeStub = $this->get('oro_security.security_facade');
+        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_enriched_entity_create', true);
     }
 
     public function invalidIdentifiers()
@@ -234,7 +234,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
 
     private function revokeCreationRights(): void
     {
-        $securityFacade = $this->get('oro_security.security_facade');
-        $securityFacade->setIsGranted('akeneo_enrichedentity_enriched_entity_create', false);
+        $securityFacadeStub = $this->get('oro_security.security_facade');
+        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_enriched_entity_create', false);
     }
 }

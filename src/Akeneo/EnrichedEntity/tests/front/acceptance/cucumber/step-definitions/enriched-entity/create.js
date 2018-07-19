@@ -115,13 +115,18 @@ module.exports = async function(cucumber) {
     await validationMessageShown(this.page, expectedMessage);
   });
 
-  Then('the enriched entity will be saved', async function (expectedMessage) {
-    await saveEnrichedEntity(this.page, expectedMessage);
+  Then('the enriched entity will be saved', async function () {
+    await saveEnrichedEntity(this.page);
   });
 
   Then('a validation message is displayed {string}', async function (expectedMessage) {
     const modal = await await getElement(this.page, 'Modal');
     const actualMesssage = await modal.getValidationMessageForCode();
     assert.strictEqual(expectedMessage, actualMesssage);
+  });
+
+  Then('the user should not be able to create an enriched entity', async function() {
+    const header = await await getElement(this.page, 'Header');
+    assert.strictEqual(false, await header.isCreateButtonVisible())
   });
 };

@@ -28,7 +28,6 @@ export class EnrichedEntitySaverImplementation implements EnrichedEntitySaver {
   }
 
   async create(enrichedEntity: EnrichedEntity): Promise<ValidationError[] | null> {
-    debugger;
     return await postJSON(
       routing.generate('akeneo_enriched_entities_enriched_entity_create_rest'),
       enrichedEntity.normalize()

@@ -9,7 +9,7 @@ import {redirectToEnrichedEntity} from 'akeneoenrichedentity/application/action/
 import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
 import {enrichedEntityCreationStart} from 'akeneoenrichedentity/domain/event/enriched-entity/create';
 import CreateEnrichedEntityModal from 'akeneoenrichedentity/application/component/enriched-entity/create';
-const securityContext = require('pim/security-context')
+const securityContext = require('pim/security-context');
 
 interface StateProps {
   context: {

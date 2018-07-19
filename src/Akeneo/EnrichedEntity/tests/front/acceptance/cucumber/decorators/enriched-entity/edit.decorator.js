@@ -50,7 +50,7 @@ const Edit = async (nodeElement, createElementDecorator, page) => {
     }, nodeElement);
 
     const saveButton = await nodeElement.$('.AknButton.save');
-    await saveButton.click();
+    await saveButton.click()
   };
 
   const hasSuccessNotification = async () => {

@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -63,7 +62,7 @@ class CreateAction
             return new RedirectResponse('/');
         }
 
-        if(!$this->securityFacade->isGranted('akeneo_enrichedentity_enriched_entity_create')) {
+        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_enriched_entity_create')) {
             throw new AccessDeniedException();
         }
 
