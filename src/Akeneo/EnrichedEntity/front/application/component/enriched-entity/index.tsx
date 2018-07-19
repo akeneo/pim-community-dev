@@ -59,7 +59,7 @@ const enrichedEntityListView = ({ grid, context, events, create }: StateProps & 
                   <div className="AknTitleContainer-userMenu">
                     <PimView className="AknTitleContainer-userMenu" viewName="pim-enriched-entity-index-user-navigation"/>
                     <div className="AknButtonList">
-                        <span className="AknButton AknButton--apply AknButtonList-item" onClick={events.onCreationStart}>{__('pim_enriched_entity.enriched_entity.create')}</span>
+                        <span className="AknButton AknButton--apply AknButtonList-item" onClick={events.onCreationStart}>{__('pim_enriched_entity.button.create')}</span>
                     </div>
                   </div>
                 </div>

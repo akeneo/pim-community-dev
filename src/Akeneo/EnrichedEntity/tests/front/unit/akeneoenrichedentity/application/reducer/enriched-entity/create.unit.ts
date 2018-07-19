@@ -83,7 +83,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
     expect(newState).toEqual({
       active: true,
       data: {
-        code: 'label_test____',
+        code: 'labeltest____',
         labels: {
           en_US: 'label testé-/$',
         },

@@ -1,6 +1,10 @@
+pim_title:
+    akeneo_enriched_entities_enriched_entity_index: Create a new enriched entity
+
 pim_enriched_entity:
     button:
         save: Save
+        create: Create
     enriched_entity:
         title: Entities
         img: The main image of the enriched entity named "{{ label }}"
@@ -15,6 +19,15 @@ pim_enriched_entity:
         index:
             grid:
                 count: "{{ count }} results"
+        create:
+            header:
+                title: Create
+            subtitle: Entities
+            title: Create a new entity
+            input:
+                label: Label
+                code: Code
+            confirm: confirm
 
 pim_enrich:
     confirmation:

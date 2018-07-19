@@ -63,7 +63,7 @@ class Create extends React.Component<CreateProps> {
       return 'identifier' === error.propertyPath;
     });
 
-    const errorMessages = errors.map((error: ValidationError, key: number) => {
+    let errorMessages = errors.map((error: ValidationError, key:number) => {
       return <span className="error-message" key={key}>{__(error.messageTemplate, error.parameters)}</span>;
     });
 
@@ -86,15 +86,11 @@ class Create extends React.Component<CreateProps> {
 
     return (
         <div className="modal in modal--fullPage" aria-hidden="false" style={{zIndex: 1041}}>
-          <div className="modal-header">
-            <span className="close" tabIndex={0}>×</span>
-            <h3>{__('pim_enriched_entity.enriched_entity.create.header.title')}</h3>
-          </div>
           <div>
             <div className="AknFullPage AknFullPage--modal">
               <div className="AknFullPage-content">
                 <div className="AknFullPage-left">
-                  <img src="bundles/pimui/images/illustrations/Product.svg" className="AknFullPage-image"/>
+                  <img src="bundles/pimui/images/illustrations/Family.svg" className="AknFullPage-image"/>
                 </div>
                 <div className="AknFullPage-right">
                   <div
@@ -151,11 +147,11 @@ class Create extends React.Component<CreateProps> {
             >
               {__('pim_enriched_entity.enriched_entity.create.cancel')}
             </span>
-            <button title="{__('pim_enriched_entity.enriched_entity.create.save')}"
+            <button title="{__('pim_enriched_entity.enriched_entity.create.confirm')}"
                     className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
                     onClick={this.onSubmit}
             >
-              {__('pim_enriched_entity.enriched_entity.create.save')}
+              {__('pim_enriched_entity.enriched_entity.create.confirm')}
             </button>
           </div>
         </div>

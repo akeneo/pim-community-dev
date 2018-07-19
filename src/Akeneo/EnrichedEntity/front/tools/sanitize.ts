@@ -3,6 +3,7 @@ export default (value: string) => {
 
   return value
     .split('')
+    .filter((char: string) => char !== ' ')
     .map((char: string) => (char.match(regex) ? char : '_'))
     .join('')
     .toLocaleLowerCase();
