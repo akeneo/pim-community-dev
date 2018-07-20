@@ -36,17 +36,6 @@ class ConfigureUserServicesPassSpec extends ObjectBehavior
 
         $userUpdater->addArgument($assetCategoryRepository)->shouldBeCalled();
 
-        $container->getDefinition('pim_user.form.type.user')
-            ->willreturn($userFormType);
-
-        $container->getDefinition('pimee_product_asset.form_event_listener.user_preference_subscriber')
-            ->willreturn($userSubscriberPreference);
-
-        $userFormType->addMethodCall(
-            'addEventSubscribers',
-            [$userSubscriberPreference]
-        )->shouldBeCalled();
-
         $this->process($container)->shouldReturn(null);
     }
 }
