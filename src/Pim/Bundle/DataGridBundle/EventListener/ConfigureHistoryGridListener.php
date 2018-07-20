@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
+use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Symfony\Component\HttpFoundation\Request;
 
