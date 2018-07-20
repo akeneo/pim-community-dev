@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Pim\Automation\SuggestData\tests\back\spec\Bundle\Doctrine\Repository;
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ProductSubscriptionRepository;
+use Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\ProductSubscriptionRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -25,7 +26,7 @@ class ProductSubscriptionRepositorySpec extends ObjectBehavior
 {
     function it_is_a_product_subscription_repository(ObjectManager $em)
     {
-        $this->beConstructedWith($em, 'A\\Fully\\Qualified\\Class\\Name');
+        $this->beConstructedWith($em, ProductSubscription::class);
         $this->shouldHaveType(ProductSubscriptionRepository::class);
         $this->shouldImplement(ProductSubscriptionRepositoryInterface::class);
     }

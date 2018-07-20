@@ -31,6 +31,7 @@ class ProductSubscriptionRepository implements ProductSubscriptionRepositoryInte
 
     /**
      * @param ObjectManager $em
+     * @param string $className
      */
     public function __construct(ObjectManager $em, string $className)
     {

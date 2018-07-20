@@ -1,9 +1,9 @@
 Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription:
     type: entity
-    table: pim_suggest_data_pimai_product_subscription
+    table: pim_suggest_data_product_subscription
     changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
-        pim_ai_subscription_idx:
+        suggest_data_subscription_idx:
             columns:
                 - subscription_id
                 - product_id

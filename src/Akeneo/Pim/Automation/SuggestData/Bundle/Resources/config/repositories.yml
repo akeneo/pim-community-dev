@@ -1,6 +1,3 @@
-parameters:
-    akeneo.pim.automation.suggest_data.product_subscription.class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription'
-
 services:
     akeneo.pim.automation.suggest_data.repository.configuration:
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ConfigurationRepository'
@@ -17,4 +14,4 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ProductSubscriptionRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '%akeneo.pim.automation.suggest_data.product_subscription.class%'
+            - 'Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription'

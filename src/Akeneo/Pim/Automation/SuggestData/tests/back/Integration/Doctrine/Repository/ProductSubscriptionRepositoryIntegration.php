@@ -25,9 +25,6 @@ use Doctrine\ORM\EntityManager;
  */
 class ProductSubscriptionRepositoryIntegration extends TestCase
 {
-    /** @var ProductSubscriptionRepositoryInterface */
-    private $repository;
-
     /**
      * @test
      */
@@ -36,7 +33,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $product = $this->createProduct('a_product');
         $subscriptionId = 'a-random-string';
         $subscription = new ProductSubscription($product, $subscriptionId, ['foo' => 'bar']);
-        $this->repository->save($subscription);
+        $this->getRepository()->save($subscription);
 
         /** @var EntityManager $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
@@ -81,20 +78,11 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
             ]
         );
 
-        $subscription = $this->repository->findOneByProductAndSubscriptionId($product, $subscriptionId);
+        $subscription = $this->getRepository()->findOneByProductAndSubscriptionId($product, $subscriptionId);
         static::assertInstanceOf(ProductSubscriptionInterface::class, $subscription);
         static::assertSame($product, $subscription->getProduct());
         static::assertSame($subscriptionId, $subscription->getSubscriptionId());
         static::assertSame($suggestedData, $subscription->getSuggestedData());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->repository = $this->get('akeneo.pim.automation.suggest_data.repository.product_subscription');
     }
 
     /**
@@ -117,5 +105,13 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
+    }
+
+    /**
+     * @return ProductSubscriptionRepositoryInterface
+     */
+    private function getRepository(): ProductSubscriptionRepositoryInterface
+    {
+        return $this->get('akeneo.pim.automation.suggest_data.repository.product_subscription');
     }
 }
