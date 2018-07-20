@@ -10,7 +10,7 @@ services:
             - { name: 'fob.context_service' }
 
     akeneo_acceptance.context.suggest_data.identifiers_mapping:
-        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\IdentifiersMapping'
+        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\IdentifiersMappingContext'
         arguments:
             - '@__symfony__.akeneo.pim.automation.suggest_data.mapping.manage_identifiers_mapping'
             - '@__symfony__.akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
