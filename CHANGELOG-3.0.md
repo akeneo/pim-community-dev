@@ -565,7 +565,6 @@ TODO Add BC
 - Move `Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber` to `Akeneo\UserManagement\Bundle\EventSubscriber\UploadedImageSubscriber`
 - Move `Oro\Bundle\UserBundle\Form\Handler\AbstractUserHandler` to `Akeneo\UserManagement\Bundle\Form\Handler\AbstractUserHandler`
 - Move `Oro\Bundle\UserBundle\Form\Handler\GroupHandler` to `Akeneo\UserManagement\Bundle\Form\Handler\GroupHandler`
-- Move `Oro\Bundle\UserBundle\Form\Type\ChangePasswordType` to `Akeneo\UserManagement\Bundle\Form\Type\ChangePasswordType`
 - Move `Oro\Bundle\UserBundle\Form\Type\GroupApiType` to `Akeneo\UserManagement\Bundle\Form\Type\GroupApiType`
 - Move `Oro\Bundle\UserBundle\Form\Type\GroupType` to `Akeneo\UserManagement\Bundle\Form\Type\GroupType`
 - Move `Oro\Bundle\UserBundle\Form\Type\ResetType` to `Akeneo\UserManagement\Bundle\Form\Type\ResetType`
@@ -581,6 +580,7 @@ TODO Add BC
 
 - Remove `Oro\Bundle\UserBundle\OroUserBundle`
 - Remove `Oro\Bundle\UserBundle\DependencyInjection`
+- Remove `Oro\Bundle\UserBundle\Form\Type\ChangePasswordType`
 - Remove `Pim\Bundle\ImportExportBundle\JobLabel\TranslatedLabelProvider`
 - Remove `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyVariantsTasklet`\
   Remove 2 service definitions `pim_connector.tasklet.csv_family.compute_data_related_to_family_variants` and `pim_connector.tasklet.xlsx_family.compute_data_related_to_family_variants`\

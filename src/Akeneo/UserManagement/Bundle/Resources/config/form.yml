@@ -4,7 +4,6 @@ parameters:
     pim_user.form.type.role.api.class:          Akeneo\UserManagement\Bundle\Form\Type\RoleApiType
     pim_user.form.type.group.class:             Akeneo\UserManagement\Bundle\Form\Type\GroupType
     pim_user.form.type.group.api.class:         Akeneo\UserManagement\Bundle\Form\Type\GroupApiType
-    pim_user.form.type.change_password.class:   Akeneo\UserManagement\Bundle\Form\Type\ChangePasswordType
     pim_user.form.handler.user.class:           Akeneo\UserManagement\Bundle\Form\Handler\UserHandler
     pim_user.form.handler.reset.class:          Akeneo\UserManagement\Bundle\Form\Handler\ResetHandler
     pim_user.form.handler.role.class:           Akeneo\UserManagement\Bundle\Form\Handler\RoleHandler
@@ -12,6 +11,11 @@ parameters:
     pim_user.form.handler.acl_role.class:       Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler
 
 services:
+    pim_user.form.user:
+        class:                        Symfony\Component\Form\Form
+        factory:                      'form.factory:createNamed'
+        arguments:                    ["pim_user_user_form", '%pim_user.form.type.user.class%', null]
+
     pim_user.form.user.api:
         class:                        Symfony\Component\Form\Form
         factory:                      'form.factory:createNamed'
@@ -42,12 +46,6 @@ services:
         factory:                      'form.factory:createNamed'
         arguments:                    ["pim_user_reset_form", '%pim_user.form.type.reset.class%', null, { validation_groups: [ResetPassword, Default] }]
 
-    pim_user.form.type.change_password:
-        class: '%pim_user.form.type.change_password.class%'
-        arguments:                    ["@pim_user.change_password.subscriber"]
-        tags:
-             - { name: form.type, alias: oro_change_password }
-
     pim_user.form.type.role.api:
         class:                        '%pim_user.form.type.role.api.class%'
         tags:
@@ -68,6 +66,12 @@ services:
         arguments:                    ['%pim_user.entity.user.class%']
         tags:
             - { name: form.type, alias: pim_user_reset }
+
+    pim_user.form.handler.user:
+        class:                        '%pim_user.form.handler.user.class%'
+        arguments:                    ["@pim_user.form.user", "@request_stack", "@pim_user.manager"]
+        tags:
+            - { name: oro_tag.tag_manager }
 
     pim_user.form.handler.user.api:
         class:                        '%pim_user.form.handler.user.class%'
