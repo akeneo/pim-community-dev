@@ -127,8 +127,8 @@ extensions:
 
     pimee-product-view-scope-switcher:
         module: pim/product-edit-form/scope-switcher
-        parent: pimee-product-view-attributes
-        targetZone: context-selectors
+        parent: pimee-product-view-form
+        targetZone: context
         position: 100
         config:
             context: base_product
@@ -136,11 +136,16 @@ extensions:
 
     pimee-product-view-locale-switcher:
         module: pim/product-edit-form/locale-switcher
-        parent: pimee-product-view-attributes
-        targetZone: context-selectors
+        parent: pimee-product-view-form
+        targetZone: context
         position: 110
         config:
             context: base_product
+
+    pimee-product-view-form-variant-navigation:
+        module: pim/product-edit-form/variant-navigation
+        parent: pimee-product-view-form
+        targetZone: navigation
 
     pimee-product-view-locale-specific:
         module: pim/product-edit-form/attributes/locale-specific
