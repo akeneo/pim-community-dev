@@ -5,7 +5,7 @@ import Sidebar from 'akeneoenrichedentity/application/component/app/sidebar';
 import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
 import editTabsProvider from 'akeneoenrichedentity/application/configuration/edit-tabs';
 import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrumb';
-import {getImageShowUrl} from 'akeneoenrichedentity/tools/media-url-generator';
+import Image from 'akeneoenrichedentity/application/component/app/image';
 import __ from 'akeneoenrichedentity/tools/translator';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import EnrichedEntity, {denormalizeEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
@@ -14,6 +14,7 @@ import EditState from 'akeneoenrichedentity/application/component/app/edit-state
 import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/create';
 import CreateRecordModal from 'akeneoenrichedentity/application/component/record/create';
 const securityContext = require('pim/security-context');
+import ImageModel from 'akeneoenrichedentity/domain/model/image';
 
 interface StateProps {
   sidebar: {
@@ -72,6 +73,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     this.props.events.onSaveEditForm();
   };
 
+<<<<<<< HEAD
   private getHeaderButton = (canCreate: boolean, currentTab: string): JSX.Element | JSX.Element[] => {
     if (currentTab === 'pim-enriched-entity-edit-form-records' && canCreate) {
       return (
@@ -88,9 +90,14 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     );
   };
 
+  private onImageChange = (image: ImageModel) => {
+    console.log(image);
+  }
+
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
     const label = null !== this.props.enrichedEntity ? this.props.enrichedEntity.getLabel(this.props.context.locale) : '';
+
     return (
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-thirdColumnContainer">
@@ -100,12 +107,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
           <div className="AknDefault-mainContent" data-tab={this.props.sidebar.currentTab}>
             <header className="AknTitleContainer navigation">
               <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-imageContainer">
-                  <img className="AknTitleContainer-image"
-                    src={getImageShowUrl(null, 'thumbnail')}
-                    alt={__('pim_enriched_entity.enriched_entity.img', {'{{ label }}': label})}
-                  />
-                </div>
+                <Image alt={__('pim_enriched_entity.enriched_entity.img', {'{{ label }}': label})} image={null} onImageChange={this.onImageChange}/>
                 <div className="AknTitleContainer-mainContainer">
                   <div>
                     <div className="AknTitleContainer-line">

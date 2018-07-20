@@ -3,10 +3,12 @@ import LabelCollection, {
   RawLabelCollection,
   createLabelCollection,
 } from 'akeneoenrichedentity/domain/model/label-collection';
+import Image from 'akeneoenrichedentity/domain/model/image';
 
 export interface NormalizedEnrichedEntity {
   identifier: string;
   labels: RawLabelCollection;
+  image: Image
 }
 
 export default interface EnrichedEntity {
@@ -19,7 +21,7 @@ export default interface EnrichedEntity {
 class InvalidArgumentError extends Error {}
 
 class EnrichedEntityImplementation implements EnrichedEntity {
-  private constructor(private identifier: Identifier, private labelCollection: LabelCollection) {
+  private constructor(private identifier: Identifier, private labelCollection: LabelCollection, private image: Image|null) {
     if (!(identifier instanceof Identifier)) {
       throw new InvalidArgumentError('EnrichedEntity expect an EnrichedEntityIdentifier as first argument');
     }
@@ -30,8 +32,8 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     Object.freeze(this);
   }
 
-  public static create(identifier: Identifier, labelCollection: LabelCollection): EnrichedEntity {
-    return new EnrichedEntityImplementation(identifier, labelCollection);
+  public static create(identifier: Identifier, labelCollection: LabelCollection, image: Image|null = null): EnrichedEntity {
+    return new EnrichedEntityImplementation(identifier, labelCollection, image);
   }
 
   public static createFormNormalized(normalizedEnrichedEntity: NormalizedEnrichedEntity): EnrichedEntity {
@@ -55,6 +57,10 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return this.labelCollection;
   }
 
+  public getImage(): Image|null {
+    return this.image;
+  }
+
   public equals(enrichedEntity: EnrichedEntity): boolean {
     return enrichedEntity.getIdentifier().equals(this.identifier);
   }
@@ -63,6 +69,7 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return {
       identifier: this.getIdentifier().stringValue(),
       labels: this.getLabelCollection().getLabels(),
+      image: this.getImage()
     };
   }
 }

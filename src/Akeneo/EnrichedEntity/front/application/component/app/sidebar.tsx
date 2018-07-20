@@ -50,6 +50,7 @@ class Sidebar extends React.Component<SidebarProps> {
                   <span
                     key={tab.code}
                     role="button"
+                    tabIndex={0}
                     className={`AknColumn-navigationLink column-navigation-link ${activeClass}`}
                     data-tab={tab.code}
                     onClick={this.updateCurrentTab}
