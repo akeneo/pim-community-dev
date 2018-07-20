@@ -12,6 +12,17 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterComparatorsPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterComparatorsPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterCompleteCheckerPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterCompleteCheckerPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterFilterPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterFilterPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductUpdaterPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductUpdaterPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
 
 - Move `Pim\Bundle\CatalogBundle\EventSubscriber/Category/CheckChannelsOnDeletionSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/Category/CheckChannelsOnDeletionSubscriber`
 - Move `Pim\Bundle\CatalogBundle\EventSubscriber/AddBooleanValuesToNewProductSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/AddBooleanValuesToNewProductSubscriber`

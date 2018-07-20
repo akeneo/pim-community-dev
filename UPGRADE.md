@@ -6,6 +6,17 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\Localization\\RegisterLocalizersPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\Localization\\RegisterLocalizersPass/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\Localization\\RegisterPresentersPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\Localization\\RegisterPresentersPass/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterAttributeConstraintGuessersPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\RegisterAttributeConstraintGuessersPass/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterComparatorsPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\RegisterComparatorsPass/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterCompleteCheckerPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\RegisterCompleteCheckerPass/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterFilterPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\RegisterFilterPass/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterProductQueryFilterPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\RegisterProductQueryFilterPass/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterProductQuerySorterPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\RegisterProductQuerySorterPass/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterProductUpdaterPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\RegisterProductUpdaterPass/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterSerializerPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\RegisterSerializerPass/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\DependencyInjection\\Compiler\\RegisterValueFactoryPass/Akeneo\\Pim\\Enrichment\\Bundle\\DependencyInjection\\Compiler\\RegisterValueFactoryPass/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/Category/CheckChannelsOnDeletionSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/Category/CheckChannelsOnDeletionSubscriber/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/AddBooleanValuesToNewProductSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/AddBooleanValuesToNewProductSubscriber/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/ComputeCompletenessOnFamilyUpdateSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ComputeCompletenessOnFamilyUpdateSubscriber/g'

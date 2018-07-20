@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

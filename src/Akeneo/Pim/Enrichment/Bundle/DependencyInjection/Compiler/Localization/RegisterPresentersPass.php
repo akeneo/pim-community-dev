@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization;
+namespace Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

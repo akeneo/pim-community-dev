@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle;
 
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
 use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
