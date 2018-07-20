@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Connector\Writer;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory;
+use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderFactory;
 use Akeneo\Pim\Automation\SuggestData\Component\Connector\Writer\PushProductsWriter;
 
 class PushProductsWriterSpec extends ObjectBehavior

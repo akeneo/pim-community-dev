@@ -11,9 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider;
-
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderInterface;
+namespace Akeneo\Pim\Automation\SuggestData\Component\DataProvider;
 
 /**
  * Registry for data providers
