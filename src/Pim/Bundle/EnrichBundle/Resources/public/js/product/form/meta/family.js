@@ -29,8 +29,8 @@ define(
              */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
-                UserContext.off('change:catalogLocale change:catalogScope', this.render);
-                this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
+                UserContext.off('change:catalog_default_locale change:catalog_default_scope', this.render);
+                this.listenTo(UserContext, 'change:catalog_default_locale change:catalog_default_scope', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

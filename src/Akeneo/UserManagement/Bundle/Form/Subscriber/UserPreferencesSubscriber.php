@@ -26,6 +26,8 @@ use Symfony\Component\Form\FormInterface;
  */
 class UserPreferencesSubscriber implements EventSubscriberInterface
 {
+    // TODO Remove
+
     /** @var LocaleProviderInterface */
     protected $localeProvider;
 

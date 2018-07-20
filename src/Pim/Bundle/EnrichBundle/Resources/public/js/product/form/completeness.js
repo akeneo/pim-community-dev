@@ -43,7 +43,7 @@ define(
                 });
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
-                this.listenTo(UserContext, 'change:catalogLocale', this.render);
+                this.listenTo(UserContext, 'change:catalog_default_locale', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

@@ -34,7 +34,7 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(UserContext, 'change:catalogLocale', this.render);
+                this.listenTo(UserContext, 'change:catalog_default_locale', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

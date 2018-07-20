@@ -1,7 +1,6 @@
 parameters:
     pim_user.form.type.acl_collection.class:            Akeneo\UserManagement\Bundle\Form\Type\PrivilegeCollectionType
     pim_user.form.type.acl_role.class:                  Akeneo\UserManagement\Bundle\Form\Type\AclRoleType
-    pim_user.form.handler.user.class:                   Akeneo\UserManagement\Bundle\Form\Handler\UserHandler
     pim_user.form.handler.acl_role.class:               Akeneo\UserManagement\Bundle\Form\Handler\AclRoleHandler
     pim_user.form.subscriber.user_preferences.class:    Akeneo\UserManagement\Bundle\Form\Subscriber\UserPreferencesSubscriber
     pim_user.form.type.acl_access_level_selector.class: Akeneo\UserManagement\Bundle\Form\Type\AclAccessLevelSelectorType
