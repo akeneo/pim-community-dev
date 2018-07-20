@@ -119,7 +119,7 @@ Feature: Datagrid views
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     When I edit the "Mary" user
-    Then I should see the text "Mary Smith"
+    Then I should see the text "Mary"
     And I should see the text "Save"
     When I visit the "Additional" tab
     Then I should see the text "Default product grid view"
@@ -158,7 +158,6 @@ Feature: Datagrid views
     Then I should be on the products page
     And I should see the flash message "Datagrid view successfully created"
     When I edit the "Mary" user
-    And I press the "Edit" button
     Then I should see the text "Mary Smith"
     And I should see the text "Save"
     When I visit the "Additional" tab

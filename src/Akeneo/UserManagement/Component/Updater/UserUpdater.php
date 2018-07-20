@@ -402,7 +402,7 @@ class UserUpdater implements ObjectUpdaterInterface
     {
         if (null === $this->categoryAssetRepository) {
             throw new \LogicException(
-                'The catagory asset repository is not configured yet. Please update the user updater service.'
+                'The category asset repository is not configured yet. Please update the user updater service.'
             );
         }
 

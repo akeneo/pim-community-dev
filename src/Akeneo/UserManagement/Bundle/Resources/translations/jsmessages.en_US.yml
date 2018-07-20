@@ -47,7 +47,7 @@ pim_user_management:
                 catalog_scope: Catalog scope
                 default_tree: Default tree
                 product_grid_filters: Product grid filters
-                current_password: Password
+                current_password: Current password
                 new_password: New password
                 new_password_repeat: New password (repeat)
                 ui_locale: UI locale

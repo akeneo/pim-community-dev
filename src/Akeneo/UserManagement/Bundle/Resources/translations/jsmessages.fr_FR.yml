@@ -26,6 +26,8 @@ pim_user_management:
           button: Créer un utilisateur
         delete:
           confirm: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
+      properties:
+        ui_locale: "Langue de l'interface"
     role:
       page_title:
         index: "]-Inf, 1]{{ count }} rôle|]1, Inf[{{ count }} rôles"

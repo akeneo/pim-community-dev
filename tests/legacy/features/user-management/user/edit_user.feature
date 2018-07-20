@@ -16,14 +16,14 @@ Feature: Edit a user
       | Phone      | +33755337788 |
     And I save the user
     Then I should see the flash message "User saved"
-    And I should see the text "John Smith"
+    And I should see the text "John"
     And the field Phone should contain "+33755337788"
 
   Scenario: Successfully edit and apply user preferences
     When I edit the "Peter" user
     And I visit the "Additional" tab
     And I fill in the following information:
-      | Catalog locale       | de_DE             |
+      | Catalog locale       | German            |
       | Catalog scope        | Print             |
       | Default tree         | 2015 collection   |
       | Product grid filters | SKU, Name, Family |
@@ -48,8 +48,8 @@ Feature: Edit a user
     Then I save the role
     When I edit the "mary" user
     And I visit the "Groups and roles" tab
-    And I check "Tata role"
-    And I uncheck "User"
+    And I fill in the following information:
+      | Role | Tata role |
     Then I save the user
     And I logout
     When I am logged in as "Mary"
