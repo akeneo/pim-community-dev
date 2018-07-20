@@ -20,7 +20,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
 
-class IdentifiersMapping implements Context
+class IdentifiersMappingContext implements Context
 {
     private $manageIdentifiersMapping;
     private $identifiersMappingRepository;
