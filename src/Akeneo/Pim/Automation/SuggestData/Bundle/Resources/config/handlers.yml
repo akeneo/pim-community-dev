@@ -10,3 +10,11 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
+
+    akeneo.pim.automation.suggest_data.handler.subscribe_product:
+        class: 'Akeneo\Pim\Automation\SuggestData\Component\Command\SubscribeProductHandler'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@akeneo.pim.automation.suggest_data.repository.identifiers_mapping'
+            - '@akeneo.pim.automation.suggest_data.repository.product_subscription'
+            - '@akeneo.pim.automation.suggest_data.data_provider.factory'
