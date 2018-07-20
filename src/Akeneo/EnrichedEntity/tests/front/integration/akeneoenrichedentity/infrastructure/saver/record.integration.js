@@ -23,8 +23,10 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
     const response = await page.evaluate(async () => {
       const createRecord = require('akeneoenrichedentity/domain/model/record/record').createRecord;
       const createIdentifier = require('akeneoenrichedentity/domain/model/record/identifier').createIdentifier;
-      const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier').createIdentifier;
-      const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection').createLabelCollection;
+      const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier')
+        .createIdentifier;
+      const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection')
+        .createLabelCollection;
       const saver = require('akeneoenrichedentity/infrastructure/saver/record').default;
 
       const recordCreated = createRecord(
@@ -83,8 +85,10 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
     const response = await page.evaluate(async () => {
       const createRecord = require('akeneoenrichedentity/domain/model/record/record').createRecord;
       const createIdentifier = require('akeneoenrichedentity/domain/model/record/identifier').createIdentifier;
-      const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier').createIdentifier;
-      const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection').createLabelCollection;
+      const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier')
+        .createIdentifier;
+      const createLabelCollection = require('akeneoenrichedentity/domain/model/label-collection')
+        .createLabelCollection;
       const saver = require('akeneoenrichedentity/infrastructure/saver/record').default;
 
       const recordCreated = createRecord(

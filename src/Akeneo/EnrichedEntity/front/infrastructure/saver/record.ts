@@ -19,7 +19,7 @@ export class RecordSaverImplementation implements RecordSaver {
         identifier: record.getIdentifier().stringValue(),
       }),
       record.normalize()
-    ).catch((error) => {
+    ).catch(error => {
       if (500 === error.status) {
         throw new Error('Internal Server error');
       }
@@ -28,13 +28,13 @@ export class RecordSaverImplementation implements RecordSaver {
     });
   }
 
-  async create(record: Record): Promise<ValidationError[]|null> {
+  async create(record: Record): Promise<ValidationError[] | null> {
     return await postJSON(
-        routing.generate('akeneo_enriched_entities_record_create_rest', {
-          enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
-        }),
-        record.normalize()
-    ).catch((error) => {
+      routing.generate('akeneo_enriched_entities_record_create_rest', {
+        enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
+      }),
+      record.normalize()
+    ).catch(error => {
       if (500 === error.status) {
         throw new Error('Internal Server error');
       }
