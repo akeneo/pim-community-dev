@@ -9,3 +9,9 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.repository.attribute'
+
+    akeneo.pim.automation.suggest_data.repository.product_subscription:
+        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Doctrine\Repository\ProductSubscriptionRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - 'Akeneo\Pim\Automation\SuggestData\Bundle\Entity\ProductSubscription'
