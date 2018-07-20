@@ -34,6 +34,8 @@ Feature: Create a record
   @acceptance-front
   Scenario: Creating a record
     When the user asks for the enriched entity "designer"
+    Given the user has the following rights:
+      | akeneo_enrichedentity_record_create | true |
     And the user creates a record of "designer" with:
       | identifier | labels             |
       | stark      | {"en_US": "Stark"} |
@@ -46,6 +48,8 @@ Feature: Create a record
   @acceptance-front
   Scenario: Cannot create a record with invalid identifier
     When the user asks for the enriched entity "designer"
+    Given the user has the following rights:
+      | akeneo_enrichedentity_record_create | true |
     And the user creates a record of "designer" with:
       | identifier         | labels |
       | invalid/identifier | {}     |

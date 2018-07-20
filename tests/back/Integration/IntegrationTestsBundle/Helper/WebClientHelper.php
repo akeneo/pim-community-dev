@@ -48,8 +48,8 @@ class WebClientHelper
 
     public function assertResponse(Response $response, int $statusCode, string $expectedContent = ''): void
     {
-        Assert::assertEquals($statusCode, $response->getStatusCode(), 'Expected request status code is not the same as the actual.');
-        Assert::assertEquals($expectedContent, $response->getContent(), 'Expected request content is not the same as the actual.');
+        Assert::assertSame($statusCode, $response->getStatusCode(), 'Expected request status code is not the same as the actual.');
+        Assert::assertSame($expectedContent, $response->getContent(), 'Expected request content is not the same as the actual.');
     }
 
     public function assert403Forbidden(Response $response)
@@ -73,8 +73,8 @@ class WebClientHelper
 </html>
 
 HTML;
-        Assert::assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode(), 'Expected 403 Forbidden response');
-        Assert::assertEquals(
+        Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode(), 'Expected 403 Forbidden response');
+        Assert::assertSame(
             $expectedForbiddenContent,
             $response->getContent(),
             'The content of the 403 forbidden response is not the same'
@@ -83,6 +83,6 @@ HTML;
 
     public function assert404NotFound(Response $response): void
     {
-        Assert::assertEquals(404, $response->getStatusCode());
+        Assert::assertSame(404, $response->getStatusCode());
     }
 }

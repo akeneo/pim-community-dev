@@ -16,11 +16,11 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityCommand;
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -51,9 +51,9 @@ class CreateAction
         SecurityFacade $securityFacade
     ) {
         $this->createEnrichedEntityHandler = $createEnrichedEntityHandler;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->securityFacade = $securityFacade;
+        $this->normalizer                  = $normalizer;
+        $this->validator                   = $validator;
+        $this->securityFacade              = $securityFacade;
     }
 
     public function __invoke(Request $request): Response

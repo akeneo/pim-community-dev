@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -15,11 +16,11 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -61,7 +62,7 @@ class CreateAction
             return new RedirectResponse('/');
         }
 
-        if(!$this->securityFacade->isGranted('akeneo_enrichedentity_record_create')) {
+        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_record_create')) {
             throw new AccessDeniedException();
         }
 

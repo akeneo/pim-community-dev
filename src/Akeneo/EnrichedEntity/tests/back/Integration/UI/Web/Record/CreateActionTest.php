@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Record;
@@ -129,7 +130,9 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper->callRoute(
             $this->client,
             self::CREATE_RECORD_ROUTE,
-            [],
+            [
+                'enrichedEntityIdentifier' => 'michel',
+            ],
             'POST',
             [
                 'HTTP_X-Requested-With' => 'XMLHttpRequest',
@@ -145,6 +148,22 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
 
         $this->webClientHelper->assert403Forbidden($this->client->getResponse());
+    }
+
+    private function loadFixtures(): void
+    {
+        $user = new User();
+        $user->setUsername('julia');
+        $this->get('pim_user.repository.user')->save($user);
+
+        $securityFacadeStub = $this->get('oro_security.security_facade');
+        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_record_create', true);
+    }
+
+    private function revokeCreationRights(): void
+    {
+        $securityFacadeStub = $this->get('oro_security.security_facade');
+        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_record_create', false);
     }
 
     public function invalidIdentifiers()
@@ -206,18 +225,5 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 '"Enriched Entity Identifier provided in the route and the one given in the body of your request are different"',
             ],
         ];
-    }
-
-    private function loadFixtures(): void
-    {
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
-    }
-
-    private function revokeCreationRights(): void
-    {
-        $securityFacadeStub = $this->get('oro_security.security_facade');
-        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_record_create', false);
     }
 }
