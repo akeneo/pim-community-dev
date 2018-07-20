@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Adapter\DataProviderInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderInterface;
 
 /**
  * Registry for data providers
