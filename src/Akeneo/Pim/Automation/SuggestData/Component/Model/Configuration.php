@@ -52,6 +52,9 @@ final class Configuration
         return $this->values;
     }
 
+    /**
+     * @return null|string
+     */
     public function getToken(): ?string
     {
         if (array_key_exists('token', $this->values)) {
