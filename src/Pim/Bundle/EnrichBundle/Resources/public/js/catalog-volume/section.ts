@@ -59,7 +59,7 @@ class SectionView extends BaseView {
       code: '',
       title: '',
     },
-    title: ''
+    title: '',
   };
 
   public events(): Backbone.EventsHash {

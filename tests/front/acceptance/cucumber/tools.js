@@ -5,11 +5,12 @@ const answer = (methodToDelay, randomLatency = random, customMaxRandomLatency = 
   setTimeout(methodToDelay, (randomLatency ? Math.random() : 1) * parseInt(customMaxRandomLatency));
 };
 
-const answerJson = (request, response, randomLatency = random, customMaxRandomLatency = maxRandomLatency) => {
-  answer(() => request.respond(json(response)), randomLatency, parseInt(customMaxRandomLatency));
+const answerJson = (request, response, status = 200, randomLatency = random, customMaxRandomLatency = maxRandomLatency) => {
+  answer(() => request.respond(json(response, status)), randomLatency, parseInt(customMaxRandomLatency));
 };
 
-const json = body => ({
+const json = (body, status) => ({
+  status: status,
   contentType: 'application/json',
   body: typeof body === 'string' ? body : JSON.stringify(body)
 });
