@@ -1,5 +1,5 @@
 #!groovy
-@Library("k8s-utils@yaml")
+@Library("k8s-utils@v2.0.0")
 
 String[] editions = ["ce"]
 String[] features = ["features"]
