@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler;
 
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,7 +33,7 @@ class RegisterSerializerPassSpec extends ObjectBehavior
                 new \LogicException(
                     sprintf(
                         'Resolver "%s" is called on an incorrect serializer service id',
-                        'Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass'
+                        RegisterSerializerPass::class
                     )
                 )
             )

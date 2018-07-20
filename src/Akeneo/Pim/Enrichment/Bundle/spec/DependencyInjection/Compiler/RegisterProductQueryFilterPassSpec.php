@@ -1,9 +1,8 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
