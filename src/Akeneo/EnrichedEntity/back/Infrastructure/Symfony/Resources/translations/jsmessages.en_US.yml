@@ -28,6 +28,16 @@ pim_enriched_entity:
                 label: Label
                 code: Code
             confirm: confirm
+    record:
+        create:
+            header:
+                title: Create
+            subtitle: Records
+            title: Create a new record
+            input:
+                label: Label
+                code: Code
+            confirm: confirm
 
 pim_enrich:
     confirmation:

@@ -74,7 +74,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     if (currentTab === 'pim-enriched-entity-edit-form-records') {
       return (
         <button className="AknButton AknButton--apply" onClick={this.props.events.onRecordCreationStart}>
-          {__('pim_enriched_entity.button.create.record')}
+          {__('pim_enriched_entity.button.create')}
         </button>
       );
     }
