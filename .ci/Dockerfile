@@ -63,6 +63,7 @@ RUN composer install --no-ansi --optimize-autoloader --no-interaction --no-progr
     && bin/console pim:installer:dump-require-paths --env=prod \
     && yarn install \
     && yarn run webpack \
+    && printf "    installer_data: PimInstallerBundle:minimal\n" >> app/config/parameters.yml \
     && printf "    pim_job_product_batch_size: 50\n" >> app/config/parameters.yml \
     && cp app/config/parameters.yml app/config/parameters_test.yml \
     && chown -R www-data:www-data var web \
