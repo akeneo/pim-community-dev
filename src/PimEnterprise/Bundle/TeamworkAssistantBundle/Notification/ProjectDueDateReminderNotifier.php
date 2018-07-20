@@ -105,7 +105,7 @@ class ProjectDueDateReminderNotifier implements ProjectNotifierInterface
      */
     protected function checkDates(\DateTime $dueDate)
     {
-        $dateOfTheDay = new \DateTime();
+        $dateOfTheDay = new \DateTime('today');
 
         $days = $dateOfTheDay->diff($dueDate)->format('%a');
 
