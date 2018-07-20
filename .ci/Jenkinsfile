@@ -41,7 +41,9 @@ stage("Build") {
                 pod {
                     container('docker') {
                         checkout scm
-                         sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag} ."
+
+                        sh "cp .ci/Dockerfile Dockerfile"
+                        sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag} ."
                     }
                 }
             },
@@ -58,6 +60,7 @@ stage("Build") {
                                 checkout scm
                             }
 
+                            sh "cp .ci/Dockerfile Dockerfile"
                             sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee ."
                         }
                     }
