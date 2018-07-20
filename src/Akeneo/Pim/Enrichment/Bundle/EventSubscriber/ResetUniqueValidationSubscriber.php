@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber\Category;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\EventSubscriber;
