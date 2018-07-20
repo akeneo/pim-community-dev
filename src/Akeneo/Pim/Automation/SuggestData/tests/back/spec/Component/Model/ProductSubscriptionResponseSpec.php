@@ -7,11 +7,6 @@ use PhpSpec\ObjectBehavior;
 
 class ProductSubscriptionResponseSpec extends ObjectBehavior
 {
-    function let()
-    {
-        $subscriptionId = 'a-random-string';
-    }
-
     function it_is_a_product_subscription_response()
     {
         $this->beConstructedWith('subscription-id', []);
