@@ -15,6 +15,7 @@
 - test integration controller edit
 - add pqb filter, grid filter and peb filter for the enriched entity value
 - Add remaining ACLs
+- add keyboard shortcuts
 
 DONE:
 

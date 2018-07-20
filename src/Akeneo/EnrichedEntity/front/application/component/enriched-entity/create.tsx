@@ -36,10 +36,15 @@ interface DispatchProps {
 interface CreateProps extends StateProps, DispatchProps {}
 
 class Create extends React.Component<CreateProps> {
+  private labelInput: HTMLInputElement;
   public props: CreateProps;
 
   constructor(props: CreateProps) {
     super(props);
+  }
+
+  componentDidMount(){
+    this.labelInput.focus();
   }
 
   private onCodeUpdate = (event: any) => {
@@ -108,6 +113,7 @@ class Create extends React.Component<CreateProps> {
                       </div>
                       <div className="AknFieldContainer-inputContainer field-input">
                         <input type="text"
+                               ref={(input: HTMLInputElement) => { this.labelInput = input; }}
                                className="AknTextField"
                                id="pim_enriched_entity.enriched_entity.create.input.label"
                                name="label"

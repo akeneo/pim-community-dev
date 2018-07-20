@@ -36,10 +36,15 @@ interface DispatchProps {
 interface CreateProps extends StateProps, DispatchProps {}
 
 class Create extends React.Component<CreateProps> {
+  private labelInput: HTMLInputElement;
   public props: CreateProps;
 
   constructor(props: CreateProps) {
     super(props);
+  }
+
+  componentDidMount(){
+    this.labelInput.focus();
   }
 
   private onRecordCodeUpdate = (event: any) => {
@@ -102,7 +107,10 @@ class Create extends React.Component<CreateProps> {
                       htmlFor="pim_enriched_entity.record.create.input.label">{__('pim_enriched_entity.record.create.input.label')}</label>
                   </div>
                   <div className="AknFieldContainer-inputContainer field-input">
-                    <input type="text" className="AknTextField" id="pim_enriched_entity.record.create.input.label" name="label"
+                    <input ref={(input: HTMLInputElement) => { this.labelInput = input; }}
+                      type="text"
+                      className="AknTextField" id="pim_enriched_entity.record.create.input.label"
+                      name="label"
                       value={this.props.data.labels[this.props.context.locale]}
                       onChange={this.onLabelUpdate} />
                     <Flag locale={this.props.context.locale} displayLanguage={false}/>
