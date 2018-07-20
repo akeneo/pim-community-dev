@@ -20,6 +20,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class IdentifiersMapping implements \IteratorAggregate
 {
+    /** @var string[] */
     public const PIM_AI_IDENTIFIERS = [
         'brand',
         'mpn',
@@ -27,6 +28,7 @@ class IdentifiersMapping implements \IteratorAggregate
         'asin',
     ];
 
+    /** @var array */
     private $identifiers;
 
     /**
@@ -64,19 +66,12 @@ class IdentifiersMapping implements \IteratorAggregate
      */
     public function normalize(): array
     {
-        $result = [];
-        foreach (static::PIM_AI_IDENTIFIERS as $identifier) {
-            $value = null;
-            if (array_key_exists($identifier, $this->identifiers)) {
-                $value = $this->identifiers[$identifier] instanceof AttributeInterface
-                    ? $this->identifiers[$identifier]->getCode()
-                    : null;
-            }
-
-            $result[$identifier] = $value;
+        $normalizedData = [];
+        foreach ($this->identifiers as $identifier => $attribute) {
+            $normalizedData[$identifier] = $attribute instanceof AttributeInterface ? $attribute->getCode() : null;
         }
 
-        return $result;
+        return $normalizedData;
     }
 
     /**

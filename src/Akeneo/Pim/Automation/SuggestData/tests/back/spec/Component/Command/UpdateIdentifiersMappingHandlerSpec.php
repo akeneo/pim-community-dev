@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Command;
 
+use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidMappingException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMappingCommand;
@@ -34,22 +35,30 @@ class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(UpdateIdentifiersMappingHandler::class);
     }
 
-    function it_should_throw_an_exception_with_invalid_attributes(
+    function it_throws_an_exception_with_invalid_attributes(
         AttributeRepositoryInterface $attributeRepository,
-        UpdateIdentifiersMappingCommand $command
+        AttributeInterface $model,
+        $identifiersMappingRepository
     ) {
-        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn(null);
-        $command->getIdentifiersMapping()->willReturn([
-            'brand' => 'manufacturer',
+        $command = new UpdateIdentifiersMappingCommand([
             'mpn' => 'model',
-            'upc' => 'ean',
-            'asin' => 'id',
+            'upc' => null,
+            'asin' => null,
+            'brand' => 'attributeNotFound',
         ]);
 
-        $this->shouldThrow(new \InvalidArgumentException('Some attributes for the identifiers mapping don\'t exist'))->during('handle', [$command]);
+        $attributeRepository->findOneByIdentifier('model')->willReturn($model);
+        $attributeRepository->findOneByIdentifier('attributeNotFound')->willReturn(null);
+        $attributeRepository->findOneByIdentifier(null)->shouldNotBeCalled();
+
+        $identifiersMappingRepository->save(Argument::any())->shouldNotBeCalled();
+
+        $this->shouldThrow(
+            InvalidMappingException::attributeNotFound('attributeNotFound', UpdateIdentifiersMappingHandler::class)
+        )->during('handle', [$command]);
     }
 
-    function it_should_save_the_identifiers_mapping(
+    function it_saves_the_identifiers_mapping(
         AttributeRepositoryInterface $attributeRepository,
         IdentifiersMappingRepositoryInterface $identifiersMappingRepository,
         UpdateIdentifiersMappingCommand $command,

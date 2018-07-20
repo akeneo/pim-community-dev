@@ -54,3 +54,7 @@ akeneo_suggest_data:
                         upc_label: UPC
                 families.title: Families
                 attributes.title: Attributes
+            identifiers_mapping:
+                save.flash:
+                    success: Identifiers mapping has been successfully saved.
+                    fail: Identifiers mapping not saved due to an error.

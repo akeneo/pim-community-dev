@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Command;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Exception\DuplicateMappingAttributeException;
+use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidMappingException;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 
 /**
@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
  */
 class UpdateIdentifiersMappingCommand
 {
+    /** @var array */
     private $identifiersMapping;
 
     /**
@@ -30,7 +31,7 @@ class UpdateIdentifiersMappingCommand
     {
         $this->validateIdentifiers($identifiersMapping);
 
-        $this->identifiersMapping = array_map('trim', $identifiersMapping);
+        $this->identifiersMapping = $identifiersMapping;
     }
 
     /**
@@ -43,6 +44,8 @@ class UpdateIdentifiersMappingCommand
 
     /**
      * @param array $identifiersMapping
+     *
+     * @throws InvalidMappingException
      */
     private function validateIdentifiers(array $identifiersMapping): void
     {
@@ -50,13 +53,14 @@ class UpdateIdentifiersMappingCommand
 
         $mappingKeys = array_keys($identifiersMapping);
         sort($mappingKeys);
+        sort($expectedKeys);
 
         if ($expectedKeys !== $mappingKeys) {
-            throw new \InvalidArgumentException(sprintf(
-                'Some identifiers mapping keys are missing or invalid. Expected: %s, got %s',
-                var_export($expectedKeys, true),
-                var_export($mappingKeys, true)
-            ));
+            throw InvalidMappingException::missingOrInvalidIdentifiersInMapping(
+                $expectedKeys,
+                $mappingKeys,
+                static::class
+            );
         }
 
         $this->ensureAttributesAreMappedOnlyOneTime($identifiersMapping);
@@ -64,11 +68,19 @@ class UpdateIdentifiersMappingCommand
 
     /**
      * @param array $identifiersMapping
+     *
+     * @throws InvalidMappingException
      */
     private function ensureAttributesAreMappedOnlyOneTime(array $identifiersMapping): void
     {
-        if (count($identifiersMapping) > count(array_unique($identifiersMapping))) {
-            throw new DuplicateMappingAttributeException('An attribute cannot be used more than once');
+        $filteredMapping = array_filter($identifiersMapping, function ($attributeCode) {
+            return null !== $attributeCode;
+        });
+        $values = array_count_values($filteredMapping);
+        foreach ($values as $attributeCode => $frequency) {
+            if ($frequency > 1) {
+                throw InvalidMappingException::duplicateAttributeCode($frequency, $attributeCode, static::class);
+            }
         }
     }
 }

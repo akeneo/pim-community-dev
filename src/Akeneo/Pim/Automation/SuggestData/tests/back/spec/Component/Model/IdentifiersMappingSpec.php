@@ -66,12 +66,7 @@ class IdentifiersMappingSpec extends ObjectBehavior
     public function it_normalizes_empty_identifiers_mapping() {
         $this->beConstructedWith([]);
 
-        $this->normalize()->shouldReturn([
-            'brand' => null,
-            'mpn' => null,
-            'upc' => null,
-            'asin' => null,
-        ]);
+        $this->normalize()->shouldReturn([]);
     }
 
     public function it_normalizes_incomplete_identifiers_mapping($manufacturer, $ean) {

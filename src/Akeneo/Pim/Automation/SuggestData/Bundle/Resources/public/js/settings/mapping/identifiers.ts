@@ -1,20 +1,15 @@
 import * as _ from "underscore";
 import BaseView = require('pimenrich/js/view/base');
-import {getIdentifiersMapping} from 'akeneosuggestdata/js/settings/mapping/fetcher/mapping-fetcher';
-const simpleAttribute = require('akeneosuggestdata/js/settings/mapping/simple-attribute');
+const simpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
+const fetcherRegistry = require('pim/fetcher-registry');
 
 const __ = require('oro/translator');
 const template = require('pimee/template/settings/mapping/identifiers');
 
-interface EditIdentifiersMappingConfig {
-}
-
 /**
  * Maps pim.ai identifiers with akeneo attributes.
  *
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class EditIdentifiersMappingView extends BaseView {
   readonly template = _.template(template);
@@ -25,12 +20,12 @@ class EditIdentifiersMappingView extends BaseView {
     'suggestDataLabel': __('akeneo_suggest_data.settings.index.tab.identifiers.headers.suggest_data_label'),
   };
 
-  readonly config: EditIdentifiersMappingConfig = {};
+  readonly config: Object = {};
 
   /**
    * {@inheritdoc}
    */
-  constructor(options: { config: EditIdentifiersMappingConfig }) {
+  constructor(options: { config: Object }) {
     super(options);
 
     this.config = {...this.config, ...options.config};
@@ -41,7 +36,7 @@ class EditIdentifiersMappingView extends BaseView {
    */
   configure() {
     return $.when(
-      getIdentifiersMapping().then((identifiersMapping: any) => {
+      fetcherRegistry.getFetcher('identifiers-mapping').fetchAll().then((identifiersMapping: any) => {
         this.setData(identifiersMapping);
       })
     );
@@ -60,7 +55,7 @@ class EditIdentifiersMappingView extends BaseView {
 
     Object.keys(identifiersMapping).forEach((pimAiAttributeCode: string) => {
       const $dom = this.$el.find('.attribute-selector[data-identifier="' + pimAiAttributeCode + '"]');
-      const attributeSelector = new simpleAttribute({
+      const attributeSelector = new simpleSelectAttribute({
         config: {
           fieldName: pimAiAttributeCode,
           label: '',
