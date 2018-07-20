@@ -29,6 +29,7 @@ export default ({
       className={`AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder ${
         isLoading ? "AknLoadingPlaceHolder" : ""
       }`}
+      tabIndex={0}
       onClick={event => {
         event.preventDefault();
 

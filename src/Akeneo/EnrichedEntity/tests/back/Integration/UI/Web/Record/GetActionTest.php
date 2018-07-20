@@ -66,7 +66,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             ['enrichedEntityIdentifier' => 'wrong_enriched_entity', 'recordIdentifier' => 'starck'],
             'GET'
         );
-        $this->webClientHelper->assert404($this->client->getResponse());
+        $this->webClientHelper->assert404NotFound($this->client->getResponse());
     }
 
     /**
@@ -80,7 +80,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             ['enrichedEntityIdentifier' => 'designer', 'recordIdentifier' => 'wrong_record_identifier'],
             'GET'
         );
-        $this->webClientHelper->assert404($this->client->getResponse());
+        $this->webClientHelper->assert404NotFound($this->client->getResponse());
     }
 
     private function loadFixtures(): void

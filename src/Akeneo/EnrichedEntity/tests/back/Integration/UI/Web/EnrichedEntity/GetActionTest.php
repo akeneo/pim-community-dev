@@ -64,7 +64,7 @@ class GetActionTest extends ControllerIntegrationTestCase
             ['identifier' => 'unknown_enriched_entity'],
             'GET'
         );
-        $this->webClientHelper->assert404($this->client->getResponse());
+        $this->webClientHelper->assert404NotFound($this->client->getResponse());
     }
 
     private function loadFixtures(): void

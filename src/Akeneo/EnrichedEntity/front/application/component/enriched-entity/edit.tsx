@@ -66,7 +66,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
 
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
-
+    const label = null !== this.props.enrichedEntity ? this.props.enrichedEntity.getLabel(this.props.context.locale) : '';
     return (
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-thirdColumnContainer">
@@ -77,7 +77,10 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
             <header className="AknTitleContainer navigation">
               <div className="AknTitleContainer-line">
                 <div className="AknTitleContainer-imageContainer">
-                  <img className="AknTitleContainer-image" src={getImageShowUrl(null, 'thumbnail')} />
+                  <img className="AknTitleContainer-image"
+                    src={getImageShowUrl(null, 'thumbnail')}
+                    alt={__('pim_enriched_entity.enriched_entity.img', {'{{ label }}': label})}
+                  />
                 </div>
                 <div className="AknTitleContainer-mainContainer">
                   <div>
@@ -108,7 +111,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                     </div>
                     <div className="AknTitleContainer-line">
                       <div className="AknTitleContainer-title">
-                        {null !== this.props.enrichedEntity ? this.props.enrichedEntity.getLabel(this.props.context.locale) : ''}
+                        {label}
                       </div>
                       {editState}
                     </div>

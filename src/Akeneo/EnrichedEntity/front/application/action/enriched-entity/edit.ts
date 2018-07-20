@@ -3,21 +3,30 @@ import {postSave, failSave} from 'akeneoenrichedentity/application/event/form-st
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import enrichedEntitySaver from 'akeneoenrichedentity/infrastructure/saver/enriched-entity';
 import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
+import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
 
 export const saveEnrichedEntity = (enrichedEntity: EnrichedEntity) => async (dispatch: any): Promise<void> => {
   try {
-    await enrichedEntitySaver.save(enrichedEntity);
+    var errors = await enrichedEntitySaver.save(enrichedEntity);
 
-    dispatch(postSave());
+    if (errors) {
+      dispatch(failSave(errors.map((error: ValidationError) => createValidationError(error))));
 
-    const savedEnrichedEntity: EnrichedEntity = await enrichedEntityFetcher.fetch(
-      enrichedEntity.getIdentifier().stringValue()
-    );
-
-    dispatch(enrichedEntityReceived(savedEnrichedEntity));
+      return;
+    }
   } catch (error) {
     dispatch(failSave(error));
+
+    return;
   }
+
+  dispatch(postSave());
+
+  const savedEnrichedEntity: EnrichedEntity = await enrichedEntityFetcher.fetch(
+    enrichedEntity.getIdentifier().stringValue()
+  );
+
+  dispatch(enrichedEntityReceived(savedEnrichedEntity));
 };
 
 export const updateEnrichedEntity = (enrichedEntity: EnrichedEntity) => {

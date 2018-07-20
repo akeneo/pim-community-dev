@@ -143,8 +143,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'invalid-identifier',
                 'brand',
                 'brand',
-                '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may onlay contain letters, numbers and underscores.","root":{"identifier":"invalid-identifier","labels":[],"enrichedEntityIdentifier":"brand"},"propertyPath":"identifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-            ],
+                '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":"invalid-identifier","labels":[],"enrichedEntityIdentifier":"brand"},"propertyPath":"identifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
             'Record Identifier is 256 characters long' => [
                 $longIdentifier,
                 'brand',
@@ -167,7 +166,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'intel',
                 'invalid-identifier',
                 'brand',
-                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may onlay contain letters, numbers and underscores.","root":{"identifier":"intel","labels":[],"enrichedEntityIdentifier":"invalid-identifier"},"propertyPath":"enrichedEntityIdentifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":"intel","labels":[],"enrichedEntityIdentifier":"invalid-identifier"},"propertyPath":"enrichedEntityIdentifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
             'Enriched Entity Identifier is 256 characters long' => [
                 'intel',

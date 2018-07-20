@@ -83,9 +83,7 @@ module.exports = async function(cucumber) {
 
   Then('the user gets an enriched entity {string}', async function(identifier) {
     const grid = await await getElement(this.page, 'Grid');
-    const hasRow = await grid.hasRow(identifier);
-
-    assert.strictEqual(hasRow, true);
+    await grid.hasRow(identifier);
   });
 
   Then('there is no enriched entity', async function() {
