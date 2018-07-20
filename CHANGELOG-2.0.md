@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7409: Fix Group "All" added to all jobs by default at installation
+
 # 2.0.29 (2018-07-04)
 
 ## Bug fixes
