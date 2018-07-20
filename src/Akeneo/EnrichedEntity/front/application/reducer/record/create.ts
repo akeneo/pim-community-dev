@@ -4,7 +4,7 @@ import sanitize from "akeneoenrichedentity/tools/sanitize";
 export interface CreateRecordState {
     active: boolean;
     data: {
-        recordCode: string;
+        code: string;
         labels: {
             [localeCode: string]: string
         }
@@ -15,7 +15,7 @@ export interface CreateRecordState {
 const initCreateState = (): CreateRecordState => ({
     active: false,
     data: {
-        recordCode: '',
+        code: '',
         labels: {}
     },
     errors: []
@@ -28,7 +28,7 @@ export default (state: CreateRecordState = initCreateState(), action: { type: st
                 ...state,
                 active: true,
                 data: {
-                    recordCode: '',
+                    code: '',
                     labels: {}
                 },
                 errors: []
@@ -38,7 +38,7 @@ export default (state: CreateRecordState = initCreateState(), action: { type: st
         case 'RECORD_CREATION_RECORD_CODE_UPDATED':
             state = {
                 ...state,
-                data: {...state.data, recordCode: action.value}
+                data: {...state.data, code: action.value}
             };
 
             break;
@@ -46,11 +46,11 @@ export default (state: CreateRecordState = initCreateState(), action: { type: st
         case 'RECORD_CREATION_LABEL_UPDATED':
             const previousLabel = state.data.labels[action.locale] ;
             const expectedSanitizedCode = sanitize(undefined === previousLabel ? '' : previousLabel);
-            const code = (expectedSanitizedCode === state.data.recordCode) ? sanitize(action.value) : state.data.recordCode;
+            const code = (expectedSanitizedCode === state.data.code) ? sanitize(action.value) : state.data.code;
 
             state = {
                 ...state,
-                data: {...state.data, labels: {...state.data.labels, [action.locale]: action.value}, recordCode: code}
+                data: {...state.data, labels: {...state.data.labels, [action.locale]: action.value}, code: code}
             };
 
             break;

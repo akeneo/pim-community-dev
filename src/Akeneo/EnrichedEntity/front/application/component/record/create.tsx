@@ -16,8 +16,7 @@ interface StateProps {
         locale: string;
     };
     data: {
-        recordCode: string;
-        entityCode: string;
+        code: string;
         labels: {
             [localeCode: string]: string;
         };
@@ -30,7 +29,7 @@ interface DispatchProps {
         onRecordCodeUpdated: (value: string) => void;
         onLabelUpdated: (value: string, locale: string) => void;
         onCancel: () => void;
-        onSubmit: (recordCode: string, labels: { [localeCode: string]: string }) => void;
+        onSubmit: (code: string, labels: { [localeCode: string]: string }) => void;
     }
 }
 
@@ -56,7 +55,7 @@ class Create extends React.Component<CreateProps> {
     };
 
     private onSubmit = () => {
-        this.props.events.onSubmit(this.props.data.recordCode, this.props.data.labels);
+        this.props.events.onSubmit(this.props.data.code, this.props.data.labels);
     };
 
     private getCodeValidationErrorsMessages = () => {
@@ -121,7 +120,7 @@ class Create extends React.Component<CreateProps> {
                                         </div>
                                         <div className="AknFieldContainer-inputContainer field-input">
                                             <input type="text" className="AknTextField" id="creation_record_code" name="record_code"
-                                                   value={this.props.data.recordCode}
+                                                   value={this.props.data.code}
                                                    onChange={this.onRecordCodeUpdate} />
                                         </div>
                                         {errorContainer}
@@ -172,8 +171,8 @@ export default connect((state: State): StateProps => {
             onCancel: () => {
                 dispatch(recordCreationCancel());
             },
-            onSubmit: (recordCode: string, labels: { [localeCode: string]: string }) => {
-                dispatch(createRecord(recordCode, labels));
+            onSubmit: (code: string, labels: { [localeCode: string]: string }) => {
+                dispatch(createRecord(code, labels));
             }
         }
     } as DispatchProps
