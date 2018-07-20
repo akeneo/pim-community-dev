@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\SuggestData\Bundle\Controller\Rest;
+namespace Akeneo\Pim\Automation\SuggestData\Bundle\Controller;
 
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderFactory;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
