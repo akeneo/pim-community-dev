@@ -29,8 +29,7 @@ class EnrichedEntity
 
     private function __construct(
         EnrichedEntityIdentifier $identifier,
-        LabelCollection $labelCollection,
-
+        LabelCollection $labelCollection
     ) {
         $this->identifier      = $identifier;
         $this->labelCollection = $labelCollection;

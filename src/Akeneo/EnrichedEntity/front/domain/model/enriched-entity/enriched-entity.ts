@@ -8,13 +8,14 @@ import Image from 'akeneoenrichedentity/domain/model/image';
 export interface NormalizedEnrichedEntity {
   identifier: string;
   labels: RawLabelCollection;
-  image: Image
+  image: Image|null
 }
 
 export default interface EnrichedEntity {
   getIdentifier: () => Identifier;
   getLabel: (locale: string) => string;
   getLabelCollection: () => LabelCollection;
+  getImage: () => Image|null;
   equals: (enrichedEntity: EnrichedEntity) => boolean;
   normalize: () => NormalizedEnrichedEntity;
 }
@@ -40,7 +41,7 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     const identifier = createIdentifier(normalizedEnrichedEntity.identifier);
     const labelCollection = createLabelCollection(normalizedEnrichedEntity.labels);
 
-    return EnrichedEntityImplementation.create(identifier, labelCollection);
+    return EnrichedEntityImplementation.create(identifier, labelCollection, normalizedEnrichedEntity.image);
   }
 
   public getIdentifier(): Identifier {

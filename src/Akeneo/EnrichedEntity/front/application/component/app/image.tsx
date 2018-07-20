@@ -7,14 +7,15 @@ import loadImage from 'akeneoenrichedentity/tools/image-loader';
 class Image extends React.Component<{
   image: ImageModel|null,
   alt: string,
-  onImageChange: (image: ImageModel) => void
+  onImageChange: (image: ImageModel|null) => void
 }, {
   dropping: boolean,
   removing: boolean,
   loading: boolean,
+  focusing: boolean,
   ratio: number
 }> {
-  public state = {dropping: false, removing: false, loading: false, ratio: 0};
+  public state = {dropping: false, removing: false, focusing: false, loading: false, ratio: 0};
 
   stopEvent (event: any) {
     event.preventDefault();
@@ -31,6 +32,14 @@ class Image extends React.Component<{
 
   overStop() {
     this.setState({removing: false, dropping: false});
+  }
+
+  focusStart() {
+    this.setState({focusing: true});
+  }
+
+  focusStop() {
+    this.setState({focusing: false});
   }
 
   drop(event: any) {
@@ -81,6 +90,7 @@ class Image extends React.Component<{
     const className = `AknTitleContainer-imageContainer AknTitleContainer-imageContainer--editable
       ${this.state.dropping && !this.state.loading ? 'AknTitleContainer-imageContainer--dropping' : ''}
       ${this.state.removing && !this.state.loading ? 'AknTitleContainer-imageContainer--removing' : ''}
+      ${this.state.focusing ? 'AknTitleContainer-imageContainer--focusing' : ''}
     `;
     return (
       <div className={className}>
@@ -97,6 +107,8 @@ class Image extends React.Component<{
           onMouseEnter={this.overStart.bind(this)}
           onMouseLeave={this.overStop.bind(this)}
           onClick={this.click.bind(this)}
+          onFocus={this.focusStart.bind(this)}
+          onBlur={this.focusStop.bind(this)}
           type="file"
           value=""
         />

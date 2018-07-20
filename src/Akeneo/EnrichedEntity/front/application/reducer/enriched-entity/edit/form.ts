@@ -2,6 +2,7 @@ import {NormalizedEnrichedEntity} from 'akeneoenrichedentity/domain/model/enrich
 import formState, {FormState} from 'akeneoenrichedentity/application/reducer/state';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import {combineReducers} from 'redux';
+import Image from 'akeneoenrichedentity/domain/model/image';
 
 export interface EditionFormState {
   state: FormState;
@@ -12,15 +13,18 @@ export interface EditionFormState {
 const stateReducer = formState('enrichedEntity', 'ENRICHED_ENTITY_EDITION_UPDATED', 'ENRICHED_ENTITY_EDITION_RECEIVED');
 
 const dataReducer = (
-  state: NormalizedEnrichedEntity = {identifier: '', labels: {}},
-  action: {type: string; enrichedEntity: NormalizedEnrichedEntity; value: string; locale: string}
+  state: NormalizedEnrichedEntity = {identifier: '', labels: {}, image: null},
+  {type, enrichedEntity, value, locale, image}: {type: string; enrichedEntity: NormalizedEnrichedEntity; value: string; locale: string, image: Image|null}
 ) => {
-  switch (action.type) {
+  switch (type) {
     case 'ENRICHED_ENTITY_EDITION_RECEIVED':
-      state = action.enrichedEntity;
+      state = enrichedEntity;
       break;
     case 'ENRICHED_ENTITY_EDITION_LABEL_UPDATED':
-      state = {...state, labels: {...state.labels, [action.locale]: action.value}};
+      state = {...state, labels: {...state.labels, [locale]: value}};
+      break;
+    case 'ENRICHED_ENTITY_EDITION_IMAGE_UPDATED':
+      state = {...state, image};
       break;
     default:
       break;

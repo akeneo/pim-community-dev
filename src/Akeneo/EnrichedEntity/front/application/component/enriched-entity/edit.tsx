@@ -15,6 +15,7 @@ import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/crea
 import CreateRecordModal from 'akeneoenrichedentity/application/component/record/create';
 const securityContext = require('pim/security-context');
 import ImageModel from 'akeneoenrichedentity/domain/model/image';
+import {enrichedEntityImageUpdated} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 
 interface StateProps {
   sidebar: {
@@ -27,19 +28,20 @@ interface StateProps {
   context: {
     locale: string;
   };
-  enrichedEntity: EnrichedEntity|null;
   createRecord: {
     active: boolean;
   },
   acls: {
     create: boolean;
-  }
+  },
+  enrichedEntity: EnrichedEntity;
 }
 
 interface DispatchProps {
   events: {
-    onSaveEditForm: () => void
+    onSaveEditForm: () => void;
     onRecordCreationStart: () => void;
+    onImageUpdated: (image: ImageModel|null) => void;
   }
 }
 
@@ -69,11 +71,11 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     this.forceUpdate();
   }
 
+
   private saveEditForm = () => {
     this.props.events.onSaveEditForm();
   };
 
-<<<<<<< HEAD
   private getHeaderButton = (canCreate: boolean, currentTab: string): JSX.Element | JSX.Element[] => {
     if (currentTab === 'pim-enriched-entity-edit-form-records' && canCreate) {
       return (
@@ -90,13 +92,9 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     );
   };
 
-  private onImageChange = (image: ImageModel) => {
-    console.log(image);
-  }
-
   render(): JSX.Element | JSX.Element[] {
     const editState = this.props.form.isDirty ? <EditState /> : '';
-    const label = null !== this.props.enrichedEntity ? this.props.enrichedEntity.getLabel(this.props.context.locale) : '';
+    const label = this.props.enrichedEntity.getLabel(this.props.context.locale);
 
     return (
       <div className="AknDefault-contentWithColumn">
@@ -107,7 +105,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
           <div className="AknDefault-mainContent" data-tab={this.props.sidebar.currentTab}>
             <header className="AknTitleContainer navigation">
               <div className="AknTitleContainer-line">
-                <Image alt={__('pim_enriched_entity.enriched_entity.img', {'{{ label }}': label})} image={null} onImageChange={this.onImageChange}/>
+                <Image alt={__('pim_enriched_entity.enriched_entity.img', {'{{ label }}': label})} image={this.props.enrichedEntity.getImage()} onImageChange={this.props.events.onImageUpdated}/>
                 <div className="AknTitleContainer-mainContainer">
                   <div>
                     <div className="AknTitleContainer-line">
@@ -199,6 +197,9 @@ export default connect((state: State): StateProps => {
       },
       onRecordCreationStart: () => {
         dispatch(recordCreationStart());
+      },
+      onImageUpdated: (image: ImageModel|null) => {
+        dispatch(enrichedEntityImageUpdated(image));
       }
     }
   }
