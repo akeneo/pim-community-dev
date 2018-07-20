@@ -41,7 +41,7 @@ module.exports = async function(cucumber) {
   };
 
   const listEnrichedUpdated = async function (page, identifier, labels) {
-    page.once('request', request => {
+    page.on('request', request => {
       if ('http://pim.com/rest/enriched_entity' === request.url()) {
         answerJson(request, {
           items: [{
@@ -86,9 +86,9 @@ module.exports = async function(cucumber) {
     await header.clickOnCreateButton();
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.setCode(identifier);
+    await modal.fillField('pim_enriched_entity.enriched_entity.create.input.code', identifier);
     if (enrichedEntity.labels !== undefined && enrichedEntity.labels.en_US !== undefined) {
-      await modal.setLabel(enrichedEntity.labels.en_US);
+      await modal.fillField('pim_enriched_entity.enriched_entity.create.input.label', enrichedEntity.labels.en_US);
     }
   });
 
@@ -100,7 +100,7 @@ module.exports = async function(cucumber) {
   Then('there is an enriched entity {string} with:', async function (identifier, updates) {
     const enrichedEntity = convertItemTable(updates)[0];
 
-    await listEnrichedUpdated(this.page, identifier, enrichedEntity.labels);
+    listEnrichedUpdated(this.page, identifier, enrichedEntity.labels);
 
     const grid = await await getElement(this.page, 'Grid');
     await grid.hasRow(identifier);

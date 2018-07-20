@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -14,10 +15,12 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 
 use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordHandler;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -32,26 +35,35 @@ class CreateAction
     /** @var CreateRecordHandler */
     private $createRecordHandler;
 
+    /** @var NormalizerInterface */
+    private $normalizer;
+
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
+    /** @var SecurityFacade */
+    private $securityFacade;
 
     public function __construct(
         CreateRecordHandler $createRecordHandler,
         NormalizerInterface $normalizer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        SecurityFacade $securityFacade
     ) {
         $this->createRecordHandler = $createRecordHandler;
-        $this->validator = $validator;
-        $this->normalizer = $normalizer;
+        $this->validator           = $validator;
+        $this->normalizer          = $normalizer;
+        $this->securityFacade      = $securityFacade;
     }
 
     public function __invoke(Request $request, string $enrichedEntityIdentifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+
+        if (!$this->securityFacade->isGranted('akeneo_enrichedentity_record_create')) {
+            throw new AccessDeniedException();
         }
 
         $command = $this->getCreateCommand($request);

@@ -4,3 +4,5 @@ akeneo_enrichedentity:
     acl:
         enriched_entity:
             create: Create an entity
+        record:
+            create: Create a record

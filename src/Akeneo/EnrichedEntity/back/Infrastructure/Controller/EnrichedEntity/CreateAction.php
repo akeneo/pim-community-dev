@@ -51,9 +51,9 @@ class CreateAction
         SecurityFacade $securityFacade
     ) {
         $this->createEnrichedEntityHandler = $createEnrichedEntityHandler;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->securityFacade = $securityFacade;
+        $this->normalizer                  = $normalizer;
+        $this->validator                   = $validator;
+        $this->securityFacade              = $securityFacade;
     }
 
     public function __invoke(Request $request): Response
