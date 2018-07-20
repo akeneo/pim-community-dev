@@ -6,9 +6,7 @@ legacy:
             filters:
                 tags: "~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated"
             contexts:
-                - Behat\MinkExtension\Context\MinkContext
                 - Context\FeatureContext:
-                    - 'Context\FeatureContext'
                     -
                         base_url: 'http://127.0.0.1/'
                         timeout: 50000

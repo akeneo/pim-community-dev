@@ -76,6 +76,7 @@ RUN composer $COMPOSER_COMMAND --no-ansi --optimize-autoloader --no-interaction 
     && bin/console pim:installer:dump-require-paths --env=prod \
     && yarn install \
     && yarn run webpack \
+    && printf "    pim_job_product_batch_size: 50\n" >> app/config/parameters.yml \
     && cp app/config/parameters.yml app/config/parameters_test.yml \
     && chown -R www-data:www-data var web \
     && chmod 777 -R tests/legacy/features/Context/fixtures/ var web

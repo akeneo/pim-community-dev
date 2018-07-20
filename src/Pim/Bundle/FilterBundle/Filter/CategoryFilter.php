@@ -113,8 +113,7 @@ class CategoryFilter extends NumberFilter
     {
         $tree = $this->categoryRepo->find($data['treeId']);
         if ($tree) {
-            $categoryCodes = $this->getAllChildrenCodes($tree);
-            $this->util->applyFilter($ds, 'categories', 'NOT IN', $categoryCodes);
+            $this->util->applyFilter($ds, 'categories', 'NOT IN CHILDREN', [$tree->getCode()]);
 
             return true;
         }
@@ -140,12 +139,10 @@ class CategoryFilter extends NumberFilter
 
         if ($category) {
             if ($data['includeSub']) {
-                $categoryCodes = $this->getAllChildrenCodes($category);
+                $this->util->applyFilter($ds, 'categories', 'IN CHILDREN', [$category->getCode()]);
             } else {
-                $categoryCodes = [];
+                $this->util->applyFilter($ds, 'categories', 'IN', [$category->getCode()]);
             }
-            $categoryCodes[] = $category->getCode();
-            $this->util->applyFilter($ds, 'categories', 'IN', $categoryCodes);
 
             return true;
         }
@@ -157,8 +154,9 @@ class CategoryFilter extends NumberFilter
      * Get children category codes
      *
      * @param CategoryInterface $category
-     *
      * @return string[]
+     *
+     * @deprecated Not used anymore internally. If needed, use directly the categoryRepo service
      */
     protected function getAllChildrenCodes(CategoryInterface $category)
     {
