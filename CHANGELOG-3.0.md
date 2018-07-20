@@ -12,6 +12,22 @@
 
 ## BC breaks
 
+
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/Category/CheckChannelsOnDeletionSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/Category/CheckChannelsOnDeletionSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/AddBooleanValuesToNewProductSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/AddBooleanValuesToNewProductSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/ComputeCompletenessOnFamilyUpdateSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ComputeCompletenessOnFamilyUpdateSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/ComputeEntityRawValuesSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ComputeEntityRawValuesSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/ComputeProductModelDescendantsSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ComputeProductModelDescendantsSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/IndexProductModelCompleteDataSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/IndexProductModelCompleteDataSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/IndexProductModelsSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/IndexProductModelsSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/IndexProductsSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/IndexProductsSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/LoadEntityWithValuesSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/LoadEntityWithValuesSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/LocalizableSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/LocalizableSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/ResetUniqueValidationSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ResetUniqueValidationSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/ScopableSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ScopableSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/TimestampableSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/TimestampableSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber\CreateAttributeRequirementSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber`
+
 - Move `Pim\Bundle\CatalogBundle\Resolver\FQCNResolver` to `Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver`
 - Move `Pim\Bundle\CatalogBundle\Context\CatalogContext` to `Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext`
 

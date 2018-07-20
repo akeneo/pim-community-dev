@@ -6,6 +6,20 @@ Several classes and services have been moved or renamed. The following commands 
 
 ```bash
 
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/Category/CheckChannelsOnDeletionSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/Category/CheckChannelsOnDeletionSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/AddBooleanValuesToNewProductSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/AddBooleanValuesToNewProductSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/ComputeCompletenessOnFamilyUpdateSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ComputeCompletenessOnFamilyUpdateSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/ComputeEntityRawValuesSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ComputeEntityRawValuesSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/ComputeProductModelDescendantsSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ComputeProductModelDescendantsSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/IndexProductModelCompleteDataSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/IndexProductModelCompleteDataSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/IndexProductModelsSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/IndexProductModelsSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/IndexProductsSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/IndexProductsSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/LoadEntityWithValuesSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/LoadEntityWithValuesSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/LocalizableSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/LocalizableSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/ResetUniqueValidationSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ResetUniqueValidationSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/ScopableSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ScopableSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber/TimestampableSubscriber/Akeneo/Pim/Enrichment/Bundle/EventSubscriber/TimestampableSubscriber/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\EventSubscriber\\CreateAttributeRequirementSubscriber/Akeneo\\Pim\\Structure\\Bundle\\EventSubscriber\\CreateAttributeRequirementSubscriber/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Resolver\\FQCNResolver/Akeneo\\Pim\\Enrichment\\Bundle\\Resolver\\FQCNResolver/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Context\\CatalogContext/Akeneo\\Pim\\Enrichment\\Bundle\\Context\\CatalogContext/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Filter\\AbstractFilter/Akeneo\\Pim\\Enrichment\\Bundle\\Filter\\AbstractFilter/g'

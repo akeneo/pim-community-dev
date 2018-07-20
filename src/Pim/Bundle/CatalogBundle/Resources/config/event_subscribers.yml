@@ -1,19 +1,19 @@
 parameters:
     pim_catalog.event_subscriber.product_category.class:             Pim\Bundle\CatalogBundle\EventSubscriber\ProductCategorySubscriber
-    pim_catalog.event_subscriber.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventSubscriber\CreateAttributeRequirementSubscriber
-    pim_catalog.event_subscriber.localizable.class: Pim\Bundle\CatalogBundle\EventSubscriber\LocalizableSubscriber
-    pim_catalog.event_subscriber.scopable.class: Pim\Bundle\CatalogBundle\EventSubscriber\ScopableSubscriber
-    pim_catalog.event_subscriber.timestampable.class: Pim\Bundle\CatalogBundle\EventSubscriber\TimestampableSubscriber
-    pim_catalog.event_subscriber.category.check_channels.class: Pim\Bundle\CatalogBundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
-    pim_catalog.event_subscriber.reset_unique_validation.class: Pim\Bundle\CatalogBundle\EventSubscriber\ResetUniqueValidationSubscriber
-    pim_catalog.event_subscriber.compute_product_raw_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeEntityRawValuesSubscriber
-    pim_catalog.event_subscriber.load_product_values.class: Pim\Bundle\CatalogBundle\EventSubscriber\LoadEntityWithValuesSubscriber
-    pim_catalog.event_subscriber.index_products.class: Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductsSubscriber
-    pim_catalog.event_subscriber.index_product_models.class: Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelsSubscriber
-    pim_catalog.event_subscriber.compute_product_model_descendants.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductModelDescendantsSubscriber
-    pim_catalog.event_subscriber.index_product_model_complete.class: Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelCompleteDataSubscriber
-    pim_catalog.event_subscriber.compute_completeness_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber
-    pim_catalog.event_subscriber.add_boolean_values_to_new_product.class: Pim\Bundle\CatalogBundle\EventSubscriber\AddBooleanValuesToNewProductSubscriber
+    pim_catalog.event_subscriber.create_attribute_requirement.class: Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber
+    pim_catalog.event_subscriber.localizable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LocalizableSubscriber
+    pim_catalog.event_subscriber.scopable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ScopableSubscriber
+    pim_catalog.event_subscriber.timestampable.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\TimestampableSubscriber
+    pim_catalog.event_subscriber.category.check_channels.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
+    pim_catalog.event_subscriber.reset_unique_validation.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ResetUniqueValidationSubscriber
+    pim_catalog.event_subscriber.compute_product_raw_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeEntityRawValuesSubscriber
+    pim_catalog.event_subscriber.load_product_values.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\LoadEntityWithValuesSubscriber
+    pim_catalog.event_subscriber.index_products.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductsSubscriber
+    pim_catalog.event_subscriber.index_product_models.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelsSubscriber
+    pim_catalog.event_subscriber.compute_product_model_descendants.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeProductModelDescendantsSubscriber
+    pim_catalog.event_subscriber.index_product_model_complete.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\IndexProductModelCompleteDataSubscriber
+    pim_catalog.event_subscriber.compute_completeness_on_family_update.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber
+    pim_catalog.event_subscriber.add_boolean_values_to_new_product.class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AddBooleanValuesToNewProductSubscriber
 
 services:
     # Subscribers

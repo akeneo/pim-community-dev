@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
@@ -15,7 +15,7 @@ class ResetUniqueValidationSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\EventSubscriber\ResetUniqueValidationSubscriber');
+        $this->shouldHaveType('Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ResetUniqueValidationSubscriber');
     }
 
     function it_should_reset_unique_value_set($uniqueValueSet, $uniqueAxesCombinationSet)

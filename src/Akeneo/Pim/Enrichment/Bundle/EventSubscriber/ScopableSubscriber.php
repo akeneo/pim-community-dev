@@ -1,21 +1,20 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventSubscriber;
+namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 
 /**
- * Aims to inject selected locale into loaded product
+ * Aims to inject selected scope into loaded product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalizableSubscriber implements EventSubscriber
+class ScopableSubscriber implements EventSubscriber
 {
     /**
      * @var CatalogContext
@@ -49,12 +48,12 @@ class LocalizableSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if (!$object instanceof ProductInterface && !$object instanceof AttributeOptionInterface) {
+        if (!$object instanceof ProductInterface) {
             return;
         }
 
-        if ($this->context->hasLocaleCode()) {
-            $object->setLocale($this->context->getLocaleCode());
+        if ($this->context->hasScopeCode()) {
+            $object->setScope($this->context->getScopeCode());
         }
     }
 }
