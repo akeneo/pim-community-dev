@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\Model;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+
 /**
  * Represents a standard response from a subscription request
  * Holds a subscription id and optional suggested data
@@ -21,6 +23,9 @@ namespace Akeneo\Pim\Automation\SuggestData\Component\Model;
  */
 final class ProductSubscriptionResponse
 {
+    /** @var ProductInterface */
+    private $product;
+
     /** @var string */
     private $subscriptionId;
 
@@ -28,15 +33,25 @@ final class ProductSubscriptionResponse
     private $suggestedData;
 
     /**
+     * @param ProductInterface $product
      * @param string $subscriptionId
      * @param array $suggestedData
      */
-    public function __construct(string $subscriptionId, array $suggestedData)
+    public function __construct(ProductInterface $product, string $subscriptionId, array $suggestedData)
     {
         $this->validate($subscriptionId, $suggestedData);
 
+        $this->product = $product;
         $this->subscriptionId = $subscriptionId;
         $this->suggestedData = $suggestedData;
+    }
+
+    /**
+     * @return ProductInterface
+     */
+    public function getProduct(): ProductInterface
+    {
+        return $this->product;
     }
 
     /**
