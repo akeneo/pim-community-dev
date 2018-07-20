@@ -67,7 +67,7 @@ $rules = [
         'Pim\Bundle\EnrichBundle\Form\Type\EntityIdentifierType', // Related to the front end (symfony form type)
         'Pim\Bundle\UIBundle\Form\Type\DateType', // Related to the front end (symfony form type)
         'Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface', // Related to the front end (used to build form type)
-        'Pim\Bundle\CatalogBundle\Elasticsearch\Indexer\ProductIndexer',
+        'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer',
         'Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
     ])->in('Akeneo\Asset\Bundle'),

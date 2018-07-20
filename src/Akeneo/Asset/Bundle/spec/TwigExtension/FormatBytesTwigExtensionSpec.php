@@ -4,7 +4,7 @@ namespace spec\Akeneo\Asset\Bundle\TwigExtension;
 
 use Akeneo\Tool\Component\FileStorage\Formater\BytesFormater;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
+use Akeneo\Pim\Enrichment\Bundle\Model;
 
 class FormatBytesTwigExtensionSpec extends ObjectBehavior
 {

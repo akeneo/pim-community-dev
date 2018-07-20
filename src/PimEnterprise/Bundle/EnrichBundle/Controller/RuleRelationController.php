@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Resolver\FQCNResolver;
+use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

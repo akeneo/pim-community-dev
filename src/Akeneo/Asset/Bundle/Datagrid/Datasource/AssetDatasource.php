@@ -12,7 +12,7 @@
 namespace Akeneo\Asset\Bundle\Datagrid\Datasource;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Bundle\DataGridBundle\Datasource\Datasource;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 

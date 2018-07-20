@@ -16,7 +16,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRe
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository as BaseProductMassActionRepository;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductMassActionRepository as BaseProductMassActionRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

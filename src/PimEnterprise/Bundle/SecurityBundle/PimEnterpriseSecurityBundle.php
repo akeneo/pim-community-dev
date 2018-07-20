@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle;
 
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use PimEnterprise\Bundle\SecurityBundle\DependencyInjection\Compiler\AddPermissionFilterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
