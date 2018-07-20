@@ -19,7 +19,7 @@ interface EditConfig {
 }
 
 /**
- * Setups the connection to PIM.AI.
+ * Setups the connection to PIM.ai.
  *
  * @author    Damien Carcel <damien.carcel@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)

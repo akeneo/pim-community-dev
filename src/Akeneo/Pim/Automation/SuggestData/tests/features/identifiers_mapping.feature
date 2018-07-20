@@ -1,10 +1,10 @@
 @acceptance-back
-Feature: map the Pim identifiers with Pim.ai identifiers
+Feature: map the Pim identifiers with PIM.ai identifiers
   In order to automatically enrich my products
   As a system administrator
-  I want to map my Pim identifiers to the Pim.ai identifiers
+  I want to map my Pim identifiers to the PIM.ai identifiers
 
-  Scenario: successfully map pim.ai attributes to pim attributes for the first time
+  Scenario: successfully map PIM.ai attributes to pim attributes for the first time
     Given the following attribute:
       | code  | type                      |
       | brand | pim_catalog_text          |
@@ -24,7 +24,7 @@ Feature: map the Pim identifiers with Pim.ai identifiers
       | upc         | ean            |
       | asin        | asin           |
 
-  Scenario: fail to map pim.ai attributes to invalid pim attributes
+  Scenario: fail to map PIM.ai attributes to invalid pim attributes
     Given the following attribute:
       | code  | type             |
       | brand | pim_catalog_text |
