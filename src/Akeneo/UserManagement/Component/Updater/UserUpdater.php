@@ -198,7 +198,9 @@ class UserUpdater implements ObjectUpdaterInterface
                 foreach ($data as $code) {
                     $roles[] = $this->findRole($code);
                 }
-                $user->setRoles($roles);
+                if (count($roles) > 0) {
+                    $user->setRoles($roles);
+                }
                 break;
             case 'groups':
                 // TODO Check this on the UI

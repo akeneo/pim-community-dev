@@ -2,8 +2,9 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -27,14 +28,23 @@ class UiLocaleProvider implements LocaleProviderInterface
     /** @var string[] */
     protected $localeCodes;
 
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /**
-     * @param TranslatorInterface $translator
-     * @param float               $minPercentage
-     * @param string[]            $localeCodes
+     * @param TranslatorInterface       $translator
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param float                     $minPercentage
+     * @param string[]                  $localeCodes
      */
-    public function __construct(TranslatorInterface $translator, $minPercentage, array $localeCodes)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        LocaleRepositoryInterface $localeRepository,
+        $minPercentage,
+        array $localeCodes
+    ) {
         $this->translator = $translator;
+        $this->localeRepository = $localeRepository;
         $this->minPercentage = (float) $minPercentage;
         $this->localeCodes = $localeCodes;
     }
@@ -42,23 +52,21 @@ class UiLocaleProvider implements LocaleProviderInterface
     /**
      * Get the list of available locales for the PIM.
      *
-     * @return array
+     * @return LocaleInterface[]
      */
     public function getLocales()
     {
-        $locales = [];
-
         $fallbackLocales = $this->translator->getFallbackLocales();
-        $localeNames = Intl::getLocaleBundle()->getLocaleNames(self::MAIN_LOCALE);
         $mainProgress = $this->getProgress(self::MAIN_LOCALE);
+        $availableCodes = [];
 
         foreach ($this->localeCodes as $code) {
             if ($this->isAvailableLocale($fallbackLocales, $code, $mainProgress)) {
-                $locales[$code] = $localeNames[$code];
+                $availableCodes[] = $code;
             }
         }
 
-        return $locales;
+        return $this->localeRepository->findBy(['code' => $availableCodes]);
     }
 
     /**

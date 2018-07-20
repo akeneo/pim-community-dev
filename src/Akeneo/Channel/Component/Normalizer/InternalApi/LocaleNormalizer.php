@@ -60,7 +60,7 @@ class LocaleNormalizer implements NormalizerInterface
      */
     private function getLocaleLabel($code, $translateIn = null)
     {
-        $translateIn = $translateIn ?: $this->userContext->getUiLocaleCode();
+        $translateIn = $translateIn ?: $this->userContext->getUiLocale();
 
         return \Locale::getDisplayName($code, $translateIn);
     }

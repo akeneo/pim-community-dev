@@ -7,11 +7,13 @@
 
 define([
     'jquery',
+    'oro/translator',
     'pim/form/common/fields/select',
     'pim/fetcher-registry'
 ],
 function (
     $,
+    __,
     BaseSelect,
     FetcherRegistry
 ) {
@@ -53,6 +55,24 @@ function (
          */
         isVisible() {
             return this.config.choices.length > 0;
-        }
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        renderInput: function (templateContext) {
+            if (undefined === this.getModelValue() && _.has(this.config, 'defaultValue')) {
+                this.updateModel(this.config.defaultValue);
+            }
+
+            return this.template(_.extend(templateContext, {
+                value: this.getModelValue(),
+                choices: this.formatChoices(this.config.choices || []),
+                multiple: this.config.isMultiple,
+                labels: {
+                    defaultLabel: __('pim_datagrid.view_selector.default_view')
+                }
+            }));
+        },
     });
 });

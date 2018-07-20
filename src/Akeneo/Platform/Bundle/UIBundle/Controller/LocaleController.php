@@ -38,6 +38,11 @@ class LocaleController
      */
     public function indexAction()
     {
-        return new JsonResponse($this->normalizer->normalize($this->localeProvider->getLocales(), 'internal_api'));
+        $result = [];
+        foreach ($this->localeProvider->getLocales() as $locale) {
+            $result[] = $this->normalizer->normalize($locale, 'internal_api');
+        }
+
+        return new JsonResponse($result);
     }
 }

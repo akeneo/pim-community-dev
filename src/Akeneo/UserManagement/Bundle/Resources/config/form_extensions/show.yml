@@ -254,6 +254,7 @@ extensions:
         config:
             fieldName: default_product_grid_view
             label: pim_user_management.entity.user.properties.default_product_grid_view
+            isMultiple: false
             readOnly: true
 
     # Groups and Roles tab

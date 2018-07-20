@@ -23,17 +23,20 @@ function (
             return $.when(
                 BaseSelect.prototype.configure.apply(this, arguments),
                 FetcherRegistry.getFetcher('ui-locale').fetchAll()
-                    .then(function (scopes) {
-                        this.config.choices = scopes;
+                    .then(function (locales) {
+                        this.config.choices = locales;
                     }.bind(this))
             );
         },
 
         /**
-         * @param {Array} scopes
+         * @param {Array} locales
          */
-        formatChoices: function (scopes) {
-            return scopes;
+        formatChoices: function (locales) {
+            return locales.reduce((result, locale) => {
+                result[locale.code] = locale.label;
+                return result;
+            }, {});
         }
     });
 });
