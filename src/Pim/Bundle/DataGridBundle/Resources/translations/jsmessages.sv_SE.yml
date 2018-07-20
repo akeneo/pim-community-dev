@@ -48,6 +48,10 @@ pim_datagrid:
       empty: är tom
       not_empty: är inte tom
       in_list: i listan
+      contains: innehåller
+      does_not_contain: innehåller inte
+      equal: är lika med
+      start_with: börjar med
     price_filter:
       label: Valuta
     metric_filter:

@@ -8,11 +8,18 @@ pim_title:
 pim_user_management:
   entity:
     user:
-      page_title:
-        index: "] -Inf, 1] {{ count }} brugeren |] 1, Inf [{{ count }} brugere"
+      module:
+        create:
+          button: Opret bruger
+        delete:
+          confirm: Er du sikker på du vil slette denne bruger?
     role:
-      page_title:
-        index: "] -Inf, 1] {{ count }} rolle |] 1, Inf [{{ count }} roller"
+      module:
+        create:
+          button: Opret rolle
+        delete:
+          confirm: Er du sikker på du vil slette denne rolle?
     group:
-      page_title:
-        index: "] -Inf, 1] {{ count }} group |] 1, Inf [{{ count }} grupper"
+      module:
+        create:
+          button: Opret gruppe

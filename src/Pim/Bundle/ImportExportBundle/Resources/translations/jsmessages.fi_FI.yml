@@ -24,12 +24,20 @@ pim_import_export:
           success: Tehtävä poistaminen onnistui
     import_profile:
       uppercase_label: Tuontiprofiili
-      page_title:
-        index: "] -Inf, 1] {{ count }} tuontiprofiili|] 1, Inf [{{ count }} tuontiprofiilia"
+      flash:
+        create:
+          success: Tuontiprofiilin tallentaminen onnistui
+      module:
+        create:
+          button: Luo tuontiprofiili
     export_profile:
       uppercase_label: Vientiprofiili
-      page_title:
-        index: "] -Inf, 1] {{ count }} vientiprofiili|] 1, Inf [{{ count }} vientiprofiilia"
+      flash:
+        create:
+          success: Vientiprofiilin tallentaminen onnistui
+      module:
+        create:
+          button: Luo vientiprofiili
   form:
     job_execution:
       title.details: Suorittamisen yksityiskohdat

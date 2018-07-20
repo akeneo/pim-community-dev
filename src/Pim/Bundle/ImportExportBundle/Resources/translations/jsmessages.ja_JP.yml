@@ -24,12 +24,20 @@ pim_import_export:
           success: ジョブインスタンスを削除しました
     import_profile:
       uppercase_label: プロファイルをインポート
-      page_title:
-        index: "] - Inf ファイル、1] {{ count }} インポート プロファイル |] 1、Inf [{{ count }} プロファイルのインポート"
+      flash:
+        create:
+          success: インポートプロファイルを作成しました
+      module:
+        create:
+          button: インポート プロファイルを作成
     export_profile:
       uppercase_label: プロファイルをエクスポート
-      page_title:
-        index: "] - Inf ファイル、1] {{ count }} エクスポートプロファイル |] 1、Inf [{{ count }} プロファイルのエクスポート"
+      flash:
+        create:
+          success: エクスポートプロファイルを作成しました
+      module:
+        create:
+          button: エクスポート プロファイルを作成
   form:
     job_execution:
       title.details: 実行の詳細

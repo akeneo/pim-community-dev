@@ -24,8 +24,20 @@ pim_import_export:
           success: Jobbinstansen har tagits bort
     import_profile:
       uppercase_label: Importprofil
+      flash:
+        create:
+          success: Importprofilen har tagits bort
+      module:
+        create:
+          button: Skapa importprofil
     export_profile:
       uppercase_label: Exportprofil
+      flash:
+        create:
+          success: Exportprofilen har skapats
+      module:
+        create:
+          button: Skapa exportprofil
   form:
     job_execution:
       title.details: Utförandedetaljer

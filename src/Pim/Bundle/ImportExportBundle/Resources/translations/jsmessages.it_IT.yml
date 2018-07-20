@@ -24,12 +24,20 @@ pim_import_export:
           success: Istanza di lavoro rimossa correttamente
     import_profile:
       uppercase_label: Profilo di importazione
-      page_title:
-        index: "] -Inf, 1] {{ count }} profilo di importazione|] 1, Inf [{{ count }} profili di importazione"
+      flash:
+        create:
+          success: Profilo di importazione creato correttamente
+      module:
+        create:
+          button: Crea un profilo di importazione
     export_profile:
       uppercase_label: Profilo di esportazione
-      page_title:
-        index: "] -Inf, 1] {{ count }} profilo di esportazione|] 1, Inf [{{ count }} profili di esportazione"
+      flash:
+        create:
+          success: Profilo di esportazione creato correttamente
+      module:
+        create:
+          button: Crea un profilo di esportazione
   form:
     job_execution:
       title.details: Dettagli esecuzione
