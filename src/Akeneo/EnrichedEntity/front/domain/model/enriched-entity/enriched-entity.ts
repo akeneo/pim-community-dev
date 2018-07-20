@@ -1,7 +1,10 @@
-import Identifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection, {RawLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import LabelCollection, {
+  RawLabelCollection,
+  createLabelCollection,
+} from 'akeneoenrichedentity/domain/model/label-collection';
 
-interface NormalizedEnrichedEntity {
+export interface NormalizedEnrichedEntity {
   identifier: string;
   labels: RawLabelCollection;
 }
@@ -31,6 +34,13 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return new EnrichedEntityImplementation(identifier, labelCollection);
   }
 
+  public static createFormNormalized(normalizedEnrichedEntity: NormalizedEnrichedEntity): EnrichedEntity {
+    const identifier = createIdentifier(normalizedEnrichedEntity.identifier);
+    const labelCollection = createLabelCollection(normalizedEnrichedEntity.labels);
+
+    return EnrichedEntityImplementation.create(identifier, labelCollection);
+  }
+
   public getIdentifier(): Identifier {
     return this.identifier;
   }
@@ -58,3 +68,4 @@ class EnrichedEntityImplementation implements EnrichedEntity {
 }
 
 export const createEnrichedEntity = EnrichedEntityImplementation.create;
+export const denormalizeEnrichedEntity = EnrichedEntityImplementation.createFormNormalized;

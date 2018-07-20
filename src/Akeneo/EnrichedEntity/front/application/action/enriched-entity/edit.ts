@@ -1,13 +1,21 @@
-import {enrichedEntityUpdated, enrichedEntityReceived} from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
+import {
+  enrichedEntityEditionLabelUpdated,
+  enrichedEntityEditionReceived,
+  enrichedEntityEditionUpdated,
+} from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
 import {postSave, failSave} from 'akeneoenrichedentity/application/event/form-state';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import EnrichedEntity, {
+  denormalizeEnrichedEntity,
+} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import enrichedEntitySaver from 'akeneoenrichedentity/infrastructure/saver/enriched-entity';
 import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
 
-export const saveEnrichedEntity = (enrichedEntity: EnrichedEntity) => async (dispatch: any): Promise<void> => {
+export const saveEnrichedEntity = () => async (dispatch: any, getState: any): Promise<void> => {
+  const enrichedEntity = denormalizeEnrichedEntity(getState().form.data);
+
   try {
-    var errors = await enrichedEntitySaver.save(enrichedEntity);
+    const errors = await enrichedEntitySaver.save(enrichedEntity);
 
     if (errors) {
       dispatch(failSave(errors.map((error: ValidationError) => createValidationError(error))));
@@ -26,9 +34,10 @@ export const saveEnrichedEntity = (enrichedEntity: EnrichedEntity) => async (dis
     enrichedEntity.getIdentifier().stringValue()
   );
 
-  dispatch(enrichedEntityReceived(savedEnrichedEntity));
+  dispatch(enrichedEntityEditionReceived(savedEnrichedEntity));
 };
 
-export const updateEnrichedEntity = (enrichedEntity: EnrichedEntity) => {
-  return enrichedEntityUpdated(enrichedEntity);
+export const enrichedEntityLabelUpdated = (value: string, locale: string) => (dispatch: any, getState: any) => {
+  dispatch(enrichedEntityEditionLabelUpdated(value, locale));
+  dispatch(enrichedEntityEditionUpdated(getState().form.data));
 };

@@ -8,7 +8,7 @@ import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrum
 import {getImageShowUrl} from 'akeneoenrichedentity/tools/media-url-generator';
 import __ from 'akeneoenrichedentity/tools/translator';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import EnrichedEntity, {denormalizeEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {saveEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
 import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/create';
@@ -37,7 +37,7 @@ interface StateProps {
 
 interface DispatchProps {
   events: {
-    onSaveEditForm: (enrichedEntity: EnrichedEntity) => void;
+    onSaveEditForm: () => void
     onRecordCreationStart: () => void;
   }
 }
@@ -69,9 +69,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
   }
 
   private saveEditForm = () => {
-    if (null !== this.props.enrichedEntity) {
-      this.props.events.onSaveEditForm(this.props.enrichedEntity);
-    }
+    this.props.events.onSaveEditForm();
   };
 
   private getHeaderButton = (canCreate: boolean, currentTab: string): JSX.Element | JSX.Element[] => {
@@ -167,7 +165,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
 }
 
 export default connect((state: State): StateProps => {
-  const enrichedEntity = undefined === state.enrichedEntity ? null : state.enrichedEntity;
+  const enrichedEntity = denormalizeEnrichedEntity(state.form.data);
   const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
   const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
   const locale = undefined === state.user || undefined === state.user.uiLocale ? '' : state.user.uiLocale;
@@ -178,7 +176,7 @@ export default connect((state: State): StateProps => {
       currentTab,
     },
     form: {
-      isDirty: state.editForm.isDirty,
+      isDirty: state.form.state.isDirty,
     },
     context: {
       locale
@@ -194,8 +192,8 @@ export default connect((state: State): StateProps => {
 }, (dispatch: any): DispatchProps => {
   return {
     events: {
-      onSaveEditForm: (enrichedEntity: EnrichedEntity) => {
-        dispatch(saveEnrichedEntity(enrichedEntity));
+      onSaveEditForm: () => {
+        dispatch(saveEnrichedEntity());
       },
       onRecordCreationStart: () => {
         dispatch(recordCreationStart());

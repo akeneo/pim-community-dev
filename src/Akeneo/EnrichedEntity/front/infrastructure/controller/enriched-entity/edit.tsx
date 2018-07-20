@@ -9,7 +9,7 @@ import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/en
 import createStore from 'akeneoenrichedentity/infrastructure/store';
 import enrichedEntityReducer from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
-import { enrichedEntityReceived } from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
+import { enrichedEntityEditionReceived } from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
 import { catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged } from 'akeneoenrichedentity/domain/event/user';
 import { setUpSidebar } from 'akeneoenrichedentity/application/action/enriched-entity/sidebar';
 import { updateRecordResults } from 'akeneoenrichedentity/application/action/record/search';
@@ -25,7 +25,7 @@ class EnrichedEntityEditController extends BaseController {
     enrichedEntityFetcher.fetch(route.params.identifier)
       .then((enrichedEntity: EnrichedEntity) => {
         this.store = createStore(true)(enrichedEntityReducer);
-        this.store.dispatch(enrichedEntityReceived(enrichedEntity));
+        this.store.dispatch(enrichedEntityEditionReceived(enrichedEntity.normalize()));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
@@ -49,7 +49,7 @@ class EnrichedEntityEditController extends BaseController {
   beforeUnload = () => {
     const state = this.store.getState();
 
-    if (state.editForm.isDirty) {
+    if (state.form.state.isDirty) {
       return  __('pim_enrich.confirmation.discard_changes', {entity: 'enriched entity'});
     }
 
@@ -60,7 +60,7 @@ class EnrichedEntityEditController extends BaseController {
     const state = this.store.getState();
     const message = __('pim_enrich.confirmation.discard_changes', {entity: 'enriched entity'});
 
-    return (state.editForm.isDirty) ? confirm(message) : true;
+    return (state.form.state.isDirty) ? confirm(message) : true;
   }
 }
 

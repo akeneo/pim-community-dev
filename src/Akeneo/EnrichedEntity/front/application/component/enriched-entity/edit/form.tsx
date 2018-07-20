@@ -1,14 +1,14 @@
 import * as React from 'react';
 import __ from 'akeneoenrichedentity/tools/translator';
-import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection from 'akeneoenrichedentity/domain/model/label-collection';
+import {NormalizedEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import Flag from 'akeneoenrichedentity/tools/component/flag';
+import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 
 interface FormProps {
   locale: string;
-  enrichedEntity: EnrichedEntity|null;
-  updateEditForm: (enrichedEntity: EnrichedEntity) => void
+  data: NormalizedEnrichedEntity;
+  errors: ValidationError[];
+  onLabelUpdated: (value: string, locale: string) => void
 }
 
 export default class EditForm extends React.Component<FormProps> {
@@ -19,22 +19,10 @@ export default class EditForm extends React.Component<FormProps> {
   }
 
   updateLabel = (event: any) => {
-    if (null === this.props.enrichedEntity) {
-      return;
-    }
-
-    const identifier: Identifier = createIdentifier(this.props.enrichedEntity.getIdentifier().stringValue());
-    const labelCollection: LabelCollection = this.props.enrichedEntity.getLabelCollection().setLabel(this.props.locale, event.target.value);
-    const enrichedEntityUpdated: EnrichedEntity = createEnrichedEntity(identifier, labelCollection);
-
-    this.props.updateEditForm(enrichedEntityUpdated);
+    this.props.onLabelUpdated(event.target.value, this.props.locale);
   };
 
   render(): JSX.Element | JSX.Element[] | null {
-    if (null === this.props.enrichedEntity) {
-      return null;
-    }
-
     return (
       <div>
         <div className="AknComparableFields field-container">
@@ -54,7 +42,7 @@ export default class EditForm extends React.Component<FormProps> {
                 name="identifier"
                 id="pim_enriched_entity.enriched_entity.properties.identifier"
                 className="AknTextField AknTextField--withDashedBottomBorder AknTextField--disabled"
-                value={this.props.enrichedEntity.getIdentifier().stringValue()}
+                value={this.props.data.identifier}
                 readOnly
               />
             </div>
@@ -75,9 +63,10 @@ export default class EditForm extends React.Component<FormProps> {
                 name="label"
                 id="pim_enriched_entity.enriched_entity.properties.label"
                 className="AknTextField AknTextField--withBottomBorder"
-                value={this.props.enrichedEntity.getLabelCollection().hasLabel(this.props.locale) ?
-                  this.props.enrichedEntity.getLabelCollection().getLabel(this.props.locale) :
-                  ''
+                value={
+                  undefined === this.props.data.labels[this.props.locale] ?
+                  '' :
+                  this.props.data.labels[this.props.locale]
                 }
                 onChange={this.updateLabel}
               />

@@ -13,7 +13,7 @@ const stateToQuery = async (state: State): Promise<Query> => {
       {
         field: 'enriched_entity',
         operator: '=',
-        value: null !== state.enrichedEntity ? state.enrichedEntity.getIdentifier().stringValue() : '',
+        value: state.form.data.identifier,
         context: {},
       },
     ],
