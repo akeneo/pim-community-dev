@@ -10,6 +10,8 @@ use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\Suggest
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Subscription\SubscriptionApiInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject\ProductCode;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\ValueObject\ProductCodeCollection;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
@@ -48,14 +50,9 @@ class InMemory implements DataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function push(ProductInterface $product): SuggestedDataInterface
+    public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse
     {
-        $identifier = $product->getIdentifier(); // TODO get with mapping
-
-        $apiResponse = $this->subscriptionApi->subscribeProduct(new ProductCode('sku', $identifier));
-        $collection = $this->deserializer->deserialize($apiResponse->content());
-
-        return $collection->current();
+        return new ProductSubscriptionResponse($request->getProduct(), uniqid(), []);
     }
 
     /**

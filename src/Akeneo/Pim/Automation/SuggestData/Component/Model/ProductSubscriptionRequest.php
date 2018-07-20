@@ -34,6 +34,14 @@ final class ProductSubscriptionRequest
     }
 
     /**
+     * @return ProductInterface
+     */
+    public function getProduct(): ProductInterface
+    {
+        return $this->product;
+    }
+
+    /**
      * Returns the product values corresponding to the provided mapping
      *
      * @param IdentifiersMapping $mapping

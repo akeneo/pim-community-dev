@@ -5,6 +5,8 @@ namespace Akeneo\Pim\Automation\SuggestData\Component\DataProvider;
 
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
@@ -13,11 +15,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 interface DataProviderInterface
 {
     /**
-     * @param ProductInterface $product
+     * @param ProductSubscriptionRequest $request
      *
-     * @return SuggestedDataInterface
+     * @return ProductSubscriptionResponse
      */
-    public function push(ProductInterface $product): SuggestedDataInterface;
+    public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse;
 
     /**
      * @param ProductInterface[] $products
