@@ -27,8 +27,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * Foreach line of the file to import we will:
  * - fetch the corresponding family object
  * - fetch all the root product models of this family
- * - save this root product model and all its descendants (in order to do such things as recompute completeness for
- * instance)
+ * - save this root product model and all its descendants (in order to recompute completeness, for instance)
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -70,14 +69,18 @@ class ComputeDataRelatedToFamilyVariantsTasklet implements TaskletInterface, Ini
     private $objectDetacher;
 
     /**
+     * @todo merge master: remove this class and its service.
+     *       It has been replaced by the couple ComputeDataRelatedToFamilyRootProductModelsTasklet
+     *       and ComputeDataRelatedToFamilySubProductModelsTasklet
+     *
      * @param FamilyRepositoryInterface           $familyRepository
      * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
      * @param ItemReaderInterface                 $familyReader
      * @param KeepOnlyValuesForVariation          $keepOnlyValuesForVariation
      * @param ValidatorInterface                  $validator
-     * @param BulkSaverInterface                  $familyVariantSaver
      * @param BulkSaverInterface                  $productModelSaver
      * @param BulkSaverInterface                  $productSaver
+     * @param ObjectDetacherInterface             $objectDetacher
      * @param EntityManagerClearerInterface       $cacheClearer
      * @param JobRepositoryInterface              $jobRepository
      */

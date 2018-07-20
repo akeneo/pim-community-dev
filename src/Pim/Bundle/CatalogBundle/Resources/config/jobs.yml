@@ -34,6 +34,7 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.saver.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.doctrine.cache_clearer'
         public: false
 
     pim_catalog.step.compute_product_models_descendants:

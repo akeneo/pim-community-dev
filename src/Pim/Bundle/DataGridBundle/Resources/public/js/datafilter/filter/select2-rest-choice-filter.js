@@ -161,7 +161,7 @@ define(
                 var params  = {options: {identifiers: identifiers}};
 
                 $.ajax({
-                    url: Routing.generate(this.choiceUrl, this.choiceUrlParams) + '?' + $.param(params),
+                    url: Routing.generate(this.choiceUrl, $.extend({}, this.choiceUrlParams, params)),
                     success: function(data) {
                         results = ChoicesFormatter.format(data);
                     },

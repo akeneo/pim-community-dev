@@ -6,6 +6,7 @@ namespace Pim\Component\Catalog\Job;
 
 use Akeneo\Component\Batch\Job\UndefinedJobParameterException;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -42,22 +43,30 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     /** @var BulkSaverInterface */
     private $bulkProductSaver;
 
+    /** @var EntityManagerClearerInterface */
+    private $cacheClearer;
+
     /**
+     * @todo merge: Remove the object detacher on master, and remove nullable from the cache clearer.
+     *
      * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
-     * @param BulkObjectDetacherInterface           $bulkObjectDetacher
      * @param BulkSaverInterface                    $bulkProductSaver
+     * @param BulkObjectDetacherInterface           $bulkObjectDetacher
+     * @param EntityManagerClearerInterface|null    $cacheClearer
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         BulkSaverInterface $bulkProductSaver,
-        BulkObjectDetacherInterface $bulkObjectDetacher
+        BulkObjectDetacherInterface $bulkObjectDetacher,
+        EntityManagerClearerInterface $cacheClearer = null
     ) {
         $this->familyRepository = $familyRepository;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->bulkProductSaver = $bulkProductSaver;
         $this->bulkObjectDetacher = $bulkObjectDetacher;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -106,22 +115,30 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
      */
     private function computeCompletenesses(FamilyInterface $family): void
     {
-        $productToSave = $this->findProductsForFamily($family);
+        $productsToSave = $this->findProductsForFamily($family);
 
         $productBatch = [];
-        foreach ($productToSave as $product) {
+        foreach ($productsToSave as $product) {
             $productBatch[] = $product;
 
             if (self::BATCH_SIZE === count($productBatch)) {
                 $this->bulkProductSaver->saveAll($productBatch);
-                $this->bulkObjectDetacher->detachAll($productBatch);
+                if (null !== $this->cacheClearer) {
+                    $this->cacheClearer->clear();
+                } else {
+                    $this->bulkObjectDetacher->detachAll($productBatch);
+                }
 
                 $productBatch = [];
             }
         }
 
         $this->bulkProductSaver->saveAll($productBatch);
-        $this->bulkObjectDetacher->detachAll($productBatch);
+        if (null !== $this->cacheClearer) {
+            $this->cacheClearer->clear();
+        } else {
+            $this->bulkObjectDetacher->detachAll($productBatch);
+        }
     }
 
     /**
