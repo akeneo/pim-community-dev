@@ -63,12 +63,10 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null)
     {
         $qb = $this->createQueryBuilder('f')
-            ->select('f, c, l, r, a, cu')
+            ->select('f')
             ->join('f.requirements', 'r')
             ->join('r.attribute', 'a')
             ->join('r.channel', 'c')
-            ->join('c.locales', 'l')
-            ->join('c.currencies', 'cu')
             ->where('r.required = 1');
 
         if (null !== $channel) {
