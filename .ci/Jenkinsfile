@@ -594,7 +594,7 @@ spec:
       requests: {cpu: "100m", memory: "200Mi"}
   initContainers:
   - name: init-php
-    image: eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce
+    image: eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}
     command: ['sh', '-c','cp -Rp /pim /home/jenkins']
     volumeMounts:
       - name: workspace-volume
