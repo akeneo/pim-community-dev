@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;

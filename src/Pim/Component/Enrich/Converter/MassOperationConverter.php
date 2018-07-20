@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Enrich\Converter;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 

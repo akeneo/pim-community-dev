@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

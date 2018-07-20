@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

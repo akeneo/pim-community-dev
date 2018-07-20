@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp;
 
+use Akeneo\Pim\Enrichment\Bundle\Command\DumperInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Pim\Enrichment\Bundle\Command\DumperInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\Table;

@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller\Rest;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager;
 use Pim\Bundle\DataGridBundle\Repository\DatagridViewRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
