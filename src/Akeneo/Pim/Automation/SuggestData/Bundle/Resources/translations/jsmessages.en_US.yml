@@ -1,5 +1,5 @@
 pim_title:
-    akeneo_suggest_data_connection_index: 'PIM.AI connection'
+    akeneo_suggest_data_connection_index: 'PIM.ai connection'
 
 akeneo_suggest_data:
     product:
@@ -16,14 +16,14 @@ akeneo_suggest_data:
                 warning: The {{ itemsCount }} selected products will be send.
     pim_ai:
         title:
-            main_title: 'PIM.AI connection'
+            main_title: 'PIM.ai connection'
             sub_title: 'Welcome to the <span class="AknSubTitleContainer-subTitle--main">Product Information AI assistant!</span>'
             description:
                 first_step: 'The first step in the connection of the assistant is to configure the API token.'
                 second_step: 'The next step in the connection process is to match your <a href="#">catalog product identifiers</a> to the assistant&#8217;s identifiers.'
         token:
             label:
-                content: 'PIM.AI connector'
+                content: 'PIM.ai connector'
                 title: 'Label'
             field:
                 title: 'Activation code'

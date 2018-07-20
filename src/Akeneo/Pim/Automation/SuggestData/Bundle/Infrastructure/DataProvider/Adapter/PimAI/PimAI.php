@@ -10,7 +10,7 @@ use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Auth
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
- * Pim.ai implementation to connect to a data provider
+ * PIM.ai implementation to connect to a data provider
  *
  * @author Romain Monceau <romain@akeneo.com>
  */

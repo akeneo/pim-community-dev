@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Push data to pim.ai
+ * Push data to PIM.ai
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
