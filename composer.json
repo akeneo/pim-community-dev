@@ -29,7 +29,7 @@
         ]
     },
     "require": {
-        "akeneo/pim-community-dev": "2.2.x-dev@dev",
+        "akeneo/pim-community-dev": "dev-merge-2.0-into-2.2",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
@@ -58,7 +58,7 @@
     "repositories": {
         "pim-community-dev": {
             "type": "vcs",
-            "url": "https://github.com/akeneo/pim-community-dev.git",
+            "url": "https://github.com/damien-carcel/pim-community-dev.git",
             "branch": "master"
         }
     },

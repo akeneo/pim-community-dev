@@ -16,6 +16,7 @@ use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsSaver;
@@ -48,19 +49,25 @@ class ProductRuleApplier implements ApplierInterface
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
 
+    /** @var EntityManagerClearerInterface|null */
+    protected $cacheClearer;
+
     /** @var int */
     protected $pageSize;
 
     /**
-     * @TODO @merge: refactor on master: remove PaginatorFactoryInterface from the constructor
+     * TODO @merge: on master remove PaginatorFactoryInterface from the constructor
+     * TODO @merge: on master remove ObjectDetacherInterface from the constructor
+     * TODO @merge: on master remove "= null" on ObjectManager $documentManager from the constructor
      *
-     * @param PaginatorFactoryInterface $paginatorFactory
-     * @param ProductsUpdater           $productsUpdater
-     * @param ProductsValidator         $productsValidator
-     * @param ProductsSaver             $productsSaver
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param ObjectDetacherInterface   $objectDetacher
-     * @param int                       $pageSize
+     * @param PaginatorFactoryInterface          $paginatorFactory
+     * @param ProductsUpdater                    $productsUpdater
+     * @param ProductsValidator                  $productsValidator
+     * @param ProductsSaver                      $productsSaver
+     * @param EventDispatcherInterface           $eventDispatcher
+     * @param ObjectDetacherInterface            $objectDetacher
+     * @param EntityManagerClearerInterface|null $cacheClearer
+     * @param int                                $pageSize
      */
     public function __construct(
         PaginatorFactoryInterface $paginatorFactory,
@@ -69,6 +76,7 @@ class ProductRuleApplier implements ApplierInterface
         ProductsSaver $productsSaver,
         EventDispatcherInterface $eventDispatcher,
         ObjectDetacherInterface $objectDetacher,
+        EntityManagerClearerInterface $cacheClearer = null,
         $pageSize = 1000
     ) {
         $this->paginatorFactory = $paginatorFactory;
@@ -77,6 +85,7 @@ class ProductRuleApplier implements ApplierInterface
         $this->productsSaver = $productsSaver;
         $this->eventDispatcher = $eventDispatcher;
         $this->objectDetacher = $objectDetacher;
+        $this->cacheClearer = $cacheClearer;
         $this->pageSize = $pageSize;
     }
 
@@ -104,12 +113,18 @@ class ProductRuleApplier implements ApplierInterface
     }
 
     /**
+     * TODO @merge: on master rename and refactor method to only clear cache
+     *
      * @param array $productsPage
      */
-    protected function detachProducts(array $productsPage)
+    protected function detachProducts(array $productsPage = [])
     {
-        foreach ($productsPage as $product) {
-            $this->objectDetacher->detach($product);
+        if (null === $this->cacheClearer) {
+            foreach ($productsPage as $product) {
+                $this->objectDetacher->detach($product);
+            }
+        } else {
+            $this->cacheClearer->clear();
         }
     }
 
