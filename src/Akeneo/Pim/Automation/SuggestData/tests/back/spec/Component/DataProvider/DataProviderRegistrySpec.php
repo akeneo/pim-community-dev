@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace spec\Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider;
+namespace spec\Akeneo\Pim\Automation\SuggestData\Component\DataProvider;
 
 use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderInterface;
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderRegistry;
+use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderRegistry;
 use PhpSpec\ObjectBehavior;
 
 class DataProviderRegistrySpec extends ObjectBehavior

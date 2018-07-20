@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Component\DataProvider;
 
-use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderRegistry;
+use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderRegistry;
 
 /**
  * Data provider factory
