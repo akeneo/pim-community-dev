@@ -1,20 +1,11 @@
 const Modal = async (nodeElement, createElementDecorator, page) => {
-  const setCode = async value => {
-    const code = await nodeElement.$('.AknTextField[name="code"]');
-    await page.evaluate(properties => {
-      return (properties.querySelector('.AknTextField[name="code"]').value = '');
-    }, nodeElement);
+  const fillField = async (id, value) => {
+    const field = await nodeElement.$(`.AknTextField[id="${id}"]`);
+    await page.evaluate((properties, id) => {
+      return (properties.querySelector(`.AknTextField[id="${id}"]`).value = '');
+    }, nodeElement, id);
 
-    await code.type(value);
-  };
-
-  const setLabel = async value => {
-    const label = await nodeElement.$('.AknTextField[name="label"]');
-    await page.evaluate(properties => {
-      return (properties.querySelector('.AknTextField[name="label"]').value = '');
-    }, nodeElement);
-
-    await label.type(value);
+    await field.type(value);
   };
 
   const save = async () => {
@@ -32,14 +23,13 @@ const Modal = async (nodeElement, createElementDecorator, page) => {
 
   const getValidationMessageForCode = async () => {
     await page.waitForSelector('.error-message');
-
     const error = await nodeElement.$('.error-message');
     const property = await error.getProperty('textContent');
 
     return await property.jsonValue();
   };
 
-  return {setCode, setLabel, save, getValidationMessageForCode};
+  return {fillField, save, getValidationMessageForCode};
 };
 
 module.exports = Modal;

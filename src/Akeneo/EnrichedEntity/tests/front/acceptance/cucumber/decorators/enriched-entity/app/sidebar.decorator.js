@@ -32,7 +32,21 @@ const Sidebar = async (nodeElement, createElementDecorator, page) => {
     }, nodeElement);
   };
 
-  return {collapse, getTabsCode, getActiveTabCode, isCollapsed};
+  const clickOnTab = async (tabName) => {
+    page.waitForSelector(`.AknColumn-navigationLink[data-tab="${tabName}"]`);
+    // As the button doesn't have any size, we need to make it clickable by giving him a size
+    await page.evaluate((sidebar, tabName) => {
+      const button = sidebar.querySelector(`.AknColumn-navigationLink[data-tab="${tabName}"]`);
+
+      button.style.width = '100px';
+      button.style.height = '100px';
+    }, nodeElement, tabName);
+
+    const button = await nodeElement.$(`.AknColumn-navigationLink[data-tab="${tabName}"]`);
+    await button.click();
+  };
+
+  return {collapse, getTabsCode, getActiveTabCode, isCollapsed, clickOnTab};
 };
 
 module.exports = Sidebar;

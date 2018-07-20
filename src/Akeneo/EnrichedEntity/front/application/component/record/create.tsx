@@ -107,7 +107,7 @@ class Create extends React.Component<CreateProps> {
                                                    htmlFor="creation_label">{__('pim_enriched_entity.record.create.input.label')}</label>
                                         </div>
                                         <div className="AknFieldContainer-inputContainer field-input">
-                                            <input type="text" className="AknTextField" id="creation_label" name="label"
+                                            <input type="text" className="AknTextField" id="pim_enriched_entity.record.create.input.label" name="label"
                                                    value={this.props.data.labels[this.props.context.locale]}
                                                    onChange={this.onLabelUpdate} />
                                             <Flag locale={this.props.context.locale} displayLanguage={false}/>
@@ -119,7 +119,7 @@ class Create extends React.Component<CreateProps> {
                                                    htmlFor="creation_code">{__('pim_enriched_entity.record.create.input.record_code')}</label>
                                         </div>
                                         <div className="AknFieldContainer-inputContainer field-input">
-                                            <input type="text" className="AknTextField" id="creation_record_code" name="record_code"
+                                            <input type="text" className="AknTextField" id="pim_enriched_entity.record.create.input.record_code" name="code"
                                                    value={this.props.data.code}
                                                    onChange={this.onRecordCodeUpdate} />
                                         </div>

@@ -86,9 +86,9 @@ module.exports = async function(cucumber) {
     await header.clickOnCreateButton();
 
     const modal = await await getElement(this.page, 'Modal');
-    await modal.setCode(identifier);
+    await modal.fillField('pim_enriched_entity.enriched_entity.create.input.code', identifier);
     if (enrichedEntity.labels !== undefined && enrichedEntity.labels.en_US !== undefined) {
-      await modal.setLabel(enrichedEntity.labels.en_US);
+      await modal.fillField('pim_enriched_entity.enriched_entity.create.input.label', enrichedEntity.labels.en_US);
     }
   });
 
