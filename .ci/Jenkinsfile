@@ -69,7 +69,7 @@ stage("Test") {
             "back-php-coupling-detector": {testif(
                 condition: launchUnitTests.equals("yes"),
                 container: tag,
-                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
+                script: "cd /var/www/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src && vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/EnrichedEntity/.php_cd.php src/Akeneo/EnrichedEntity/back"
             )},
             "back-phpspec": {testif(
                 condition: launchUnitTests.equals("yes"),
