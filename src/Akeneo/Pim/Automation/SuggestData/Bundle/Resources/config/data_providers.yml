@@ -9,7 +9,7 @@ services:
         class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderRegistry'
 
     akeneo.pim.automation.suggest_data.data_provider.factory:
-        class: 'Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\DataProviderFactory'
+        class: 'Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderFactory'
         arguments:
             - '@akeneo.pim.automation.suggest_data.data_provider.registry'
             - '%akeneo.pim.automation.suggest_data.data_provider.alias%'
