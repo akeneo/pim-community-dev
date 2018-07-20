@@ -122,6 +122,31 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
     }
 
+    /** @test */
+    public function it_returns_an_error_when_the_user_do_not_have_the_rights()
+    {
+        $this->revokeCreationRights();
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_RECORD_ROUTE,
+            [],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            [
+                'identifier' => 'starck',
+                'labels'     => [
+                    'fr_FR' => 'Starck',
+                    'en_US' => 'Starck',
+                ],
+            ]
+        );
+
+        $this->webClientHelper->assert403Forbidden($this->client->getResponse());
+    }
+
     public function invalidIdentifiers()
     {
         $longIdentifier = str_repeat('a', 256);
@@ -188,5 +213,11 @@ class CreateActionTest extends ControllerIntegrationTestCase
         $user = new User();
         $user->setUsername('julia');
         $this->get('pim_user.repository.user')->save($user);
+    }
+
+    private function revokeCreationRights(): void
+    {
+        $securityFacadeStub = $this->get('oro_security.security_facade');
+        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_record_create', false);
     }
 }

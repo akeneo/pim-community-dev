@@ -13,6 +13,7 @@ import {saveEnrichedEntity} from 'akeneoenrichedentity/application/action/enrich
 import EditState from 'akeneoenrichedentity/application/component/app/edit-state';
 import {recordCreationStart} from 'akeneoenrichedentity/domain/event/record/create';
 import CreateRecordModal from 'akeneoenrichedentity/application/component/record/create';
+const securityContext = require('pim/security-context');
 
 interface StateProps {
   sidebar: {
@@ -28,6 +29,9 @@ interface StateProps {
   enrichedEntity: EnrichedEntity|null;
   createRecord: {
     active: boolean;
+  },
+  acls: {
+    create: boolean;
   }
 }
 
@@ -70,8 +74,8 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     }
   };
 
-  private getHeaderButton = (currentTab: string): JSX.Element | JSX.Element[] => {
-    if (currentTab === 'pim-enriched-entity-edit-form-records') {
+  private getHeaderButton = (canCreate: boolean, currentTab: string): JSX.Element | JSX.Element[] => {
+    if (currentTab === 'pim-enriched-entity-edit-form-records' && canCreate) {
       return (
         <button className="AknButton AknButton--apply" onClick={this.props.events.onRecordCreationStart}>
           {__('pim_enriched_entity.button.create')}
@@ -124,7 +128,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                         </div>
                         <div className="AknButtonList" >
                           <div className="AknTitleContainer-rightButton">
-                            {this.getHeaderButton(this.props.sidebar.currentTab)}
+                            {this.getHeaderButton(this.props.acls.create, this.props.sidebar.currentTab)}
                           </div>
                         </div>
                       </div>
@@ -182,6 +186,9 @@ export default connect((state: State): StateProps => {
     enrichedEntity,
     createRecord: {
       active: state.createRecord.active
+    },
+    acls: {
+      create: securityContext.isGranted('akeneo_enrichedentity_record_create')
     }
   }
 }, (dispatch: any): DispatchProps => {
