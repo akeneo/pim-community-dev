@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
-use Doctrine\ORM\EntityRepository;
 use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
