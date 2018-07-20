@@ -42,9 +42,18 @@ function (
                 choices: this.formatChoices(this.config.choices || []),
                 multiple: this.config.isMultiple,
                 labels: {
-                    defaultLabel: ''
+                    defaultLabel: this.getDefaultLabel()
                 }
             }));
+        },
+
+        /**
+         * Returns the default label for empty value
+         *
+         * @returns {string}
+         */
+        getDefaultLabel: function () {
+            return '';
         },
 
         /**

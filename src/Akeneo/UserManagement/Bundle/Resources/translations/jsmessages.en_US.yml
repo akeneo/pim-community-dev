@@ -4,11 +4,8 @@ pim_title:
     pim_user_group_index: User groups
     oro_config_configuration_system: Configuration
 
-    pim_user_view: 'User {{ username }} | View'
-    pim_user_update: 'User {{ username }} | Edit'
+    pim_user_edit: 'User {{ username }} | Edit'
     pim_user_create: 'Users | Create'
-
-    pim_user_profile_update: '{{ username }} | Edit'
 
     pim_user_role_update: 'Role {{ role }} | Edit'
     pim_user_role_create: 'Role | Create'
