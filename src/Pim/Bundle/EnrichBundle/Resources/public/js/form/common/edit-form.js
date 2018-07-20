@@ -49,7 +49,12 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.displayError.bind(this));
 
                 this.onExtensions('save-buttons:register-button', function (button) {
-                    this.getExtension('save-buttons').trigger('save-buttons:add-button', button);
+                    const saveButtonsExtension = this.getExtension('save-buttons');
+                    if (undefined === saveButtonsExtension) {
+                        throw Error('edit-form extension should declare save-buttons extension to be able to use ' +
+                            'save extension');
+                    }
+                    saveButtonsExtension.trigger('save-buttons:add-button', button);
                 }.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
