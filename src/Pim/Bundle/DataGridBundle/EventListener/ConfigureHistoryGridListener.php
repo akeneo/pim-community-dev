@@ -34,13 +34,13 @@ class ConfigureHistoryGridListener
     protected $requestParams;
 
     /**
-     * @var \Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver
+     * @var FQCNResolver
      */
     protected $FQCNResolver;
 
     /**
-     * @param RequestParameters                                   $requestParams
-     * @param \Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver $FQCNResolver
+     * @param RequestParameters $requestParams
+     * @param FQCNResolver      $FQCNResolver
      */
     public function __construct(RequestParameters $requestParams, FQCNResolver $FQCNResolver)
     {

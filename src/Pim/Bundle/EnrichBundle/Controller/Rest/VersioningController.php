@@ -20,7 +20,7 @@ class VersioningController
     /** @var VersionRepositoryInterface */
     protected $versionRepository;
 
-    /** @var \Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver */
+    /** @var FQCNResolver */
     protected $FQCNResolver;
 
     /** @var NormalizerInterface */
@@ -30,10 +30,10 @@ class VersioningController
     protected $userContext;
 
     /**
-     * @param VersionRepositoryInterface                          $versionRepository
-     * @param \Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver $FQCNResolver
-     * @param NormalizerInterface                                 $normalizer
-     * @param UserContext                                         $userContext
+     * @param VersionRepositoryInterface $versionRepository
+     * @param FQCNResolver               $FQCNResolver
+     * @param NormalizerInterface        $normalizer
+     * @param UserContext                $userContext
      */
     public function __construct(
         VersionRepositoryInterface $versionRepository,
