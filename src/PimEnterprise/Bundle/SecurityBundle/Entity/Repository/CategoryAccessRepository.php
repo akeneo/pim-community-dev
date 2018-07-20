@@ -254,7 +254,7 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
 
         $ids = $stmt->fetchAll(\PDO::FETCH_COLUMN, 'ca.id');
 
-        return $ids;
+        return array_map('intval', $ids);
     }
 
     /**
