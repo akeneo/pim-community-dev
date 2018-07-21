@@ -25,12 +25,24 @@ pim_import_export:
           success: La tâche a bien été supprimée
     import_profile:
       uppercase_label: Profil d'import
+      flash:
+        create:
+          success: Le profil d'export a bien été créé
       page_title:
-        index: "] -Inf, 1] {{ count }} profil d'import|] 1, Inf [{{ count }} profils d'import"
+        index: "]-Inf, 1]{{ count }} profil d'import|]1, Inf[{{ count }} profils d'import"
+      module:
+        create:
+          button: Créer un profil d'import
     export_profile:
       uppercase_label: Profil d'export
+      flash:
+        create:
+          success: Le profil d'exportation a bien été créé
       page_title:
-        index: "] -Inf, 1] {{ count }} profil d'export|] 1, Inf [{{ count }} profils d'export"
+        index: "]-Inf, 1]{{ count }} profil d'export|]1, Inf[{{ count }} profils d'export"
+      module:
+        create:
+          button: Créer un profil d'export
   form:
     job_execution:
       title.details: Détails d'exécution

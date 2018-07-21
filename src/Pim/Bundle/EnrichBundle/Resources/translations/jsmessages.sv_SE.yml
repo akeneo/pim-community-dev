@@ -15,6 +15,7 @@ pim_common:
   delete: Ta bort
   done: Slutförd
   edit: Redigera
+  entity_updated: Det finns ändringar som inte sparats.
   from: Från
   general_properties: Allmänna egenskaper
   history: Historik
@@ -32,7 +33,12 @@ pim_common:
   permissions: Behörigheter
   previous: Föregående
   properties: Egenskaper
+  required_label: (obligatorisk)
   save: Spara
+  select2:
+    search: Sök...
+    no_match: Inga träffar hittades
+    load_more: Laddar fler resultat...
   status: Status
   to: till
   type: Typ
@@ -51,26 +57,6 @@ pim_common:
     DOES NOT CONTAIN: Innehåller inte
     STARTS WITH: Börjar med
     ENDS WITH: Slutar med
-confirmation:
-  remove:
-    title: Ta bort {{ itemName }}
-    item: Är du säker på att du vill radera det här objektet?
-    association_type: Är du säker på att du vill radera den här assosiationstypen?
-    attribute: Är du säker på att du vill radera det här attributet?
-    attribute_from_product: Är det säkert att du vill ta bort detta attribut från produkten?
-    attribute_group: Är du säker på att du vill radera det här attributet?
-    family: Är du säker på att du vill radera den här familjen?
-    product: Är du säker på att du vill ta bort denna produkt?
-    channel: Är du säker på att du vill ta bort denna kanal?
-    group: Är du säker på att du vill ta bort denna grupp?
-    group_type: Är du säker på att du vill ta bort denna grupptyp?
-    user: Är du säker på att du vill ta bort denna användare?
-    role: Är du säker på att du vill ta bort denna roll?
-    api_connection: Är du säker du vill återkalla denna API-anslutning? Alla API-anrop som görs via denna anslutning kommer nu att kasta ett fel.
-  leave: Är det säkert att du vill lämna den här sidan?
-  discard_changes: Du kommer att förlora ändringar av {{ entity }} om du lämnar sidan.
-  cancel:
-    title: Avbryt ändringar
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -96,6 +82,8 @@ pim_datagrid:
     change_status: Ändra status
     toggle_status: Växla status
     other: Andra åtgärder
+  filters:
+    label: Filter
 error:
   exception: Oh snap! Ett {{ status_code }} fel uppstod...
 alert:
@@ -104,456 +92,418 @@ alert:
     save_before_edit_other: Vänligen registrera dina ändringar på andra rader innan du redigerar denna
   session_storage:
     not_available: Din webbläsare inte verkar kompatibel med 'sessionStorage'. Vänligen kontakta administratören
-pim_enrich:
-  entity:
-    fallback:
-      flash:
-        generic_error: Ett fel uppstod
-        update:
-          fail: Uppdateringen misslyckades
-          success: Uppdatering gick bra
-        delete:
-          fail: Kan inte ta bort detta objekt
-          success: Objektet har tagits bort
-    product:
-      label: produkt
-      uppercase_label: Produkt
-      plural_label: Products
-      flash:
-        update:
-          success: Produkten har uppdaterats.
-          fail: Produkten kunde inte uppdateras.
-          fields_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
-          already_in_upload: En fil är har redan laddats upp för det här attributet i språkvariant "{{ locale }}" och omfattning "{{ scope }}"
-          file_upload: Ett fel inträffade under filuppladdning
-        delete:
-          success: Produkten har raderats.
-          fail: Produkten kunde inte raderas.
-        create:
-          success: Produkten har skapts
-          fail: Inget attribut är konfigurerat som produktidentifierare eller så har du inte rättigheter att redigera det.
-      filters: Filter
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Ett fel uppstod
+    update:
+      fail: Uppdateringen misslyckades
+      success: Uppdatering gick bra
+    delete:
+      fail: Kan inte ta bort detta objekt
+      success: Objektet har tagits bort
+  module:
+    delete:
+      title: Ta bort {{ itemName }}
+      item: Är du säker på att du vill radera det här objektet?
+    edit:
+      leave: Är det säkert att du vill lämna den här sidan?
+      discard_changes: Du kommer att förlora ändringar av {{ entity }} om du lämnar sidan.
+pim_enrich.entity.product:
+  label: produkt
+  uppercase_label: Produkt
+  plural_label: Products
+  flash:
+    update:
+      success: Produkten har uppdaterats.
+      fail: Produkten kunde inte uppdateras.
+      fields_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
+      already_in_upload: En fil är har redan laddats upp för det här attributet i språkvariant "{{ locale }}" och omfattning "{{ scope }}"
+      file_upload: Ett fel inträffade under filuppladdning
+    delete:
+      success: Produkten har raderats.
+      fail: Produkten kunde inte raderas.
+    create:
+      success: Produkten har skapts
+      fail: Inget attribut är konfigurerat som produktidentifierare eller så har du inte rättigheter att redigera det.
+  module:
+    create:
+      choose_family: Välj en familj
+    variant_navigation:
       common: Vanlig
-      btn:
-        enabled: Aktiverad
-        disabled: Avaktiverad
-        download_pdf: PDF
-        compare_translate: Jämför / Översätta
-      history:
-        version: Version
-        author: Upphovsman
-        logged_at: Loggad den
-        from: Från
-        modified: Ändrad
-        old_value: Gammalt värde
-        new_value: Nytt värde
-      meta:
-        infos: Produkt information
-        updated: Senaste uppdatering
-        family_variant:
-          title: Variant
-        groups:
-          title: Grupper
-          modal:
-            title: Grupp {{ group }}
-            view_group: Visa grupp
-            more_products: '{{ count }} produkter till...'
-      copy:
-        select: Välj
-        all_visible: Alla synliga
-        copy: Kopiera
-      optional_attribute:
-        remove: Ta bort detta attributet
-      locale_specific_attribute:
-        unavailable: Detta lokaliserbara fältet är inte tillgängligt för detta språket
-      localizable:
-        channel_locale_unavailable: Detta lokaliserbara fält är inte tillgänglig för språket '{{ locale }}' och kanal '{{ channel }}'
-      media:
-        upload: Dra och släpp för att ladda upp eller klicka här
-      create_popin:
-        labels:
-          family: Välj en familj
-      completeness: Klart
-    association_type:
-      label: associationstyp
-      flash:
-        update:
-          success: Associationstypen har ändrats.
-          fail: Associationstypen kunde inte ändras.
-          fields_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
-        create:
-          success: Associationstyp har skapats
-        delete:
-          success: Associationstypen har tagits bort
-          fail: Kan inte ta bort denna associationstyp
-    group_type:
-      label: grupp typ
-      flash:
-        update:
-          success: Gruppen uppdaterades.
-          fail: Produkten kunde inte uppdateras.
-          fields_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
-        create:
-          success: Grupptyp skapades
-        delete:
-          success: Grupptypen har tagits bort
-          fail: Kan inte ta bort denna grupptyp
-    channel:
-      label: kanal
-      uppercase_label: Kanal
-      flash:
-        update:
-          success: Kanalen har ändrats.
-          fail: Kanalen kunde inte ändras.
-        create:
-          success: Kanalen har skapats.
-          fail: Kanalen kunde inte skapas.
-        delete:
-          success: Kanalen har tagits bort
-          fail: Kan inte ta bort denna kanal
-    family:
-      label: familj
-      uppercase_label: Familj
-      flash:
-        update:
-          success: Familjen har uppdaterats.
-          fail: Ett fel inträffade under ändring av familj.
-          cant_remove_attribute_as_label: Kan inte ta bort ett attribut som används som etikett
-          cant_remove_attribute_as_image: Kan inte ta bort attributet används som huvudbild
-        create:
-          success: Familjen har skapats
-        delete:
-          success: Familjen har tagits bort
-          fail: Kan inte ta bort denna familj
-    attribute_option:
-      flash:
-        create:
-          success: Attributalternativ har skapats
-          fail: Ett fel uppstod när du försökte skapa attributalternativet
-        update:
-          fail: Kan inte spara attributalternativ
-        delete:
-          fail: Ett fel uppstod vid borttagande av attributalternativ
-    group:
-      label: Grupp
-      flash:
-        update:
-          success: Gruppen ändrades.
-          fail: Gruppen kunde inte ändras.
-        create:
-          success: Gruppen har skapats
-        delete:
-          success: Gruppen har tagits bort
-          fail: Kan inte ta bort denna grupp
+    status:
+      enabled: Aktiverad
+      disabled: Avaktiverad
+    download_pdf:
+      label: PDF
+    copy:
+      label: Jämför / Översätta
+      select: Välj
+      all_visible: Alla synliga
+      copy: Kopiera
+    history:
+      version: Version
+      author: Upphovsman
+      logged_at: Loggad den
+      from: Från
+      modified: Ändrad
+      old_value: Gammalt värde
+      new_value: Nytt värde
+    meta:
+      updated: Senaste uppdatering
+      groups: Grupper
+    show_group:
+      title: Grupp {{ group }}
+      view_group: Visa grupp
+      more_products: '{{ count }} produkter till...'
     attribute:
-      label: attributet
-      plural_label: Attribut
-      flash:
-        delete:
-          success: Attributet har tagits bort
-          fail: Kan inte ta bort detta attribut
-      property:
-        allowed_extensions: Tillåtna tillägg
-        auto_option_sorting: Sortera automatiskt alternativ efter bokstavsordning
-        available_locales: Tillgängliga språk
-        date_max: Max datum
-        date_min: Min datum
-        decimals_allowed: Decimala värden tillåtna
-        default_metric_unit:
-          label: Metrisk standardenhet
-          choose: Välj en enhet
-        group:
-          label: Attributgrupp
-          choose: Välj attributgrupp
-        is_locale_specific: Specifik språk
-        max_characters: Max tecken
-        max_file_size: Max filstorlek (MB)
-        metric_family:
-          label: Metrisk familj
-          choose: Välj en familj
-        minimum_input_length: Minsta längd för autokomplettering
-        negative_allowed: Negativa värden som är tillåtna
-        number_max: Max antal
-        number_min: Min antal
-        reference_data_name:
-          label: Referens datatyp
-          choose: Välj referens datatyp
-        type:
-          choose: Välj attributtyp
-          pim_catalog_identifier: Identifierare
-          pim_catalog_text: Text
-          pim_catalog_textarea: Textruta
-          pim_catalog_number: Nummer
-          pim_catalog_price_collection: Pris
-          pim_catalog_multiselect: Välj Flera
-          pim_catalog_simpleselect: Enkel Välj
-          pim_catalog_file: Fil
-          pim_catalog_image: Bild
-          pim_catalog_boolean: "Ja/Nej"
-          pim_catalog_date: Datum
-          pim_catalog_metric: Metrisk
-          pim_reference_data_simpleselect: Referensdata enkel Välj
-          pim_reference_data_multiselect: Referens data multi Välj
-        unique: Unikt värde
-        useable_as_grid_filter: Användbara i rutnät
-        validation_regexp: Reguljära uttryck
-        validation_rule:
-          label: Verifieringsuttryck
-          email: E-mail
-          regexp: Reguljära uttryck
-          url: URL
-        wysiwyg_enabled: RTF-redigeraren aktiverad
-      tab:
-        properties:
-          section:
-            common: Allmänna parametrar
-            type_specific: Specifika parametrar
-            validation: Valideringsparametrar
-        choices:
-          title: Inställningar
-    attribute_group:
-      label: attributgrupp
-      plural_label: Attributgrupper
-      flash:
-        update:
-          success: Attributgruppen uppdaterades
-        delete:
-          success: Attributgruppen har tagits bort
-    api_connection:
-      flash:
-        delete:
-          success: API-anslutningen har återkallas
-    locale:
-      label: språk
-      uppercase_label: Språk
-      plural_label: Språk
-    category:
-      label: kategori
-      uppercase_label: Kategori
-      plural_label: Kategorier
-  info:
-    entity:
-      updated: Det finns ändringar som inte sparats.
-  form:
-    required: (obligatorisk)
-    product_model:
-      family_variant: Variant
-    product:
-      tab:
-        associations:
-          title: Associationer
-          info:
-            none_exist: Det finns inga associationstyper.
-            show_products: Displayprodukter
-        attributes:
-          info:
-            search_attributes: Sök...
-            no_available_attributes: Det finns inga fler attribut att lägga till
-            no_match: Inga träffar hittades
-            load_more: Laddar fler resultat...
-          attribute_group_selector: Attributgrupp
-      panel:
-        completeness:
-          title: Fullständighet
-          info:
-            no_family: Ingen familj har valts. Välj en familj för att beräkna fullständighet av denna produkt.
-            no_completeness: Du ändrade produktens familj. Spara det för att beräkna fullständighet för den nya familjen.
-      sequential_edit:
-        info:
-          previous: Hoppa tillbaka till {{ product }} utan att spara.
-          next: Hoppa till {{ product }} utan att spara.
-        btn:
-          save_and_next: Spara och nästa
-          save_and_finish: Spara och avsluta
-      change_family:
-        modal:
-          title: Välj produktfamilj
-          merge_attributes: Aktuella attribut slås samman med de i den nya familjen.
-          keep_attributes: Inga attribut kommer att tas bort.
-          change_family_to: Ändra familjen till
-          empty_selection: Välj en familj
-      mass_edit:
-        select_attributes: Välj attribut
-        select: Välj
-    channel:
-      tab:
-        properties:
-          general: Allmänna
-          currencies: Valutor
-          category_tree: Kategoriträd
-          label_conversion_units: Välj en konverteringsenhet för varje metriska attribut för att användas under produktexporten
-          conversion_unit:
-            do_not_convert: Konvertera inte
-    family:
-      tab:
-        properties:
-          general: Allmänna
-          attribute_as_label: Attribut används som etikett
-          attribute_as_image: Attribut används som huvudbilden
-          empty_attribute_as_image: Inte markerad
-        attributes:
-          toolbox:
-            select_attributes_by_groups: Lägg till efter grupper
-            attributes_groups_selected: '{{ itemsCount }} grupp(er) valda'
-          not_required_label: Ej obligatorisk
-          required_label: Obligatorisk
-        variant:
-          title: Varianter
-    family_variant:
-      tab:
-        labels:
-          title: Etikettsöversättningar
-    attribute_option:
-      add_option_modal:
-        title: Lägg till attributalternativ
+      remove_optional: Ta bort detta attributet
+      locale_specific_unavailable: Detta lokaliserbara fältet är inte tillgängligt för detta språket
+      locale_unavailable: Detta lokaliserbara fält är inte tillgänglig för språket '{{ locale }}' och kanal '{{ channel }}'
+      media_upload: Dra och släpp för att ladda upp eller klicka här
+      add_attribute_option: Lägg till attributalternativ
       add_option: Lägg till alternativ
-    attribute_group:
-      tab:
-        attribute:
-          table:
-            name: Namn
-            type: Typ
-            scopable: Omfattningbar
-            localizable: Lokaliserbar
-    common:
-      tab:
-        attributes:
-          info:
-            search_attributes: Sök...
-            no_available_attributes: Det finns inga fler attribut att lägga till
-    mass_edit:
-      family:
-        attributes:
-          toolbox:
-            select_attributes_by_groups: Lägg till efter grupper
-            attributes_groups_selected: '{{ itemsCount }} grupp(er) valda'
+    completeness:
+      title: Fullständighet
+      complete: Klart
+      no_family: Ingen familj har valts. Välj en familj för att beräkna fullständighet av denna produkt.
+      no_completeness: Du ändrade produktens familj. Spara det för att beräkna fullständighet för den nya familjen.
+    sequential_edit:
+      save_and_next: Spara och nästa
+      save_and_finish: Spara och avsluta
+    associations:
+      title: Associationer
+      none_exist: Det finns inga associationstyper.
+      show_products: Displayprodukter
+    change_family:
+      title: Välj produktfamilj
+      merge_attributes: Aktuella attribut slås samman med de i den nya familjen.
+      keep_attributes: Inga attribut kommer att tas bort.
+      change_family_to: Ändra familjen till
+      empty_selection: Välj en familj
     basket:
       title: Korg
       empty_basket: Korgen är tom
-  export:
-    product:
-      data:
-        title: Filtrera produkterna
-      structure:
-        title: Filtrera datan
-      filter:
-        channel:
-          help: Kanalen definierar tillämpningsområdet för produktvärden, de språk som används för att välja data och trädet används för att välja produkter.
-        locales:
-          help: "Språken väljer de lokaliserade produktvärdena att exportera. Ex: endast produktinformation på franska."
-        attributes:
-          help: "Välj vilken produktinformation som ska exporteras. Ex: endast tekniska attribut."
-          empty: Alla attribut kommer att exporteras
-          modal:
-            title: Valda attribut
-        attributes_selector:
-          attributes: "Sök i {{ itemsCount }} attribut"
-          selected: "Valda attribut"
-          clear: Rensa
-          all_group: Alla grupper
-          empty_selection: Alla attribut kommer att exporteras
-        family:
-          title: Familj
-          help: "Välj vilka produkter som exporteras beroende på familj. T. ex. exportera endast skor och klänningar."
-          operators:
-            IN: I listan
-            "NOT IN": Inte i listan
-            EMPTY: Produkter som inte har en familj
-            "NOT EMPTY": Produkter som har en familj
-          empty_selection: Inga villkor på familjer
-        updated:
-          title: Tidsvillkor
-          operators:
-            ALL: Inget datumvillkor
-            "SINCE LAST N DAYS": Ändrade produkter de senaste n dagarna (t.ex. 6)
-            ">": Ändrade produkter sedan detta datum
-            "SINCE LAST JOB": Ändrade produkter sedan senaste export
-        enabled:
-          title: Status
-          help: "Välj vilka produkter som exporteras beroende på status. T. ex. exportera produkter oavsett status."
-          value:
-            enabled: Aktiverad
-            disabled: Avaktiverad
-        completeness:
-          title: Fullständighet
-          help: Välj produkterna att exportera från deras fullständighet.
-          operators:
-            ALL: Inga villkor på fullständighet
-            ">=": Fullständig på minst ett valt språk
-            "GREATER OR EQUALS THAN ON ALL LOCALES": Fullständig på alla valda språk
-            LOWER THAN ON ALL LOCALES: Inte fullständig på alla valda språk
-          empty_selection: Välj en familj
-        category:
-          title: Kategori
-          help: Använd produktkategorierna i trädet (definierad av kanalen ovan) för att välja produkter att exportera
-        identifier:
-          title: Identifierare
-        string:
-          operators:
-            ALL: Alla
-        select:
-          operators:
-            IN: I listan
-        date:
-          operators:
-            BETWEEN: Mellan
-            NOT BETWEEN: Inte mellan
-      global_settings:
-        title: Globala inställningar
-  index:
-    association_type:
-      create_btn: Skapa en förbindelsetyp
-    import_profiles:
-      create_btn: Skapa importprofil
-      list: Välj ett jobb
-      message:
-        created: Importprofilen har tagits bort
+    delete:
+      confirm: Är du säker på att du vill ta bort denna produkt?
+pim_enrich.entity.product_model:
+  property:
+    family_variant: Variant
+pim_enrich.entity.channel:
+  label: kanal
+  uppercase_label: Kanal
+  flash:
+    update:
+      success: Kanalen har ändrats.
+      fail: Kanalen kunde inte ändras.
+    create:
+      success: Kanalen har skapats.
+      fail: Kanalen kunde inte skapas.
+    delete:
+      success: Kanalen har tagits bort
+      fail: Kan inte ta bort denna kanal
+  property:
+    category_tree: Kategoriträd
+    do_not_convert: Konvertera inte
+    label_conversion_units: Välj en konverteringsenhet för varje metriska attribut för att användas under produktexporten
+  module:
+    delete:
+      confirm: Är du säker på att du vill ta bort denna kanal?
+pim_enrich.entity.family:
+  label: familj
+  uppercase_label: Familj
+  flash:
+    update:
+      success: Familjen har uppdaterats.
+      fail: Ett fel inträffade under ändring av familj.
+      cant_remove_attribute_as_label: Kan inte ta bort ett attribut som används som etikett
+      cant_remove_attribute_as_image: Kan inte ta bort attributet används som huvudbild
+    create:
+      success: Familjen har skapats
+    delete:
+      success: Familjen har tagits bort
+      fail: Kan inte ta bort denna familj
+  property:
+    attribute_as_label: Attribut används som etikett
+    attribute_as_image: Attribut används som huvudbilden
+    empty_attribute_as_image: Inte markerad
+  module:
+    attributes:
+      not_required_label: Ej obligatorisk
+      required_label: Obligatorisk
+    create:
+      button: Skapa familj
+    delete:
+      confirm: Är du säker på att du vill radera den här familjen?
+pim_enrich.entity.family_variant:
+  short_plural_label: Varianter
+  short_label: Variant
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Inställningar
+  flash:
+    create:
+      success: Attributalternativ har skapats
+      fail: Ett fel uppstod när du försökte skapa attributalternativet
+    update:
+      fail: Kan inte spara attributalternativ
+    delete:
+      fail: Ett fel uppstod vid borttagande av attributalternativ
+  module:
+    edit:
+      cancel_title: Avbryt ändringar
+pim_enrich.entity.association_type:
+  label: associationstyp
+  flash:
+    update:
+      success: Associationstypen har ändrats.
+      fail: Associationstypen kunde inte ändras.
+      fields_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
+    create:
+      success: Associationstyp har skapats
+    delete:
+      success: Associationstypen har tagits bort
+      fail: Kan inte ta bort denna associationstyp
+  module:
+    create:
+      button: Skapa en förbindelsetyp
+    delete:
+      confirm: Är du säker på att du vill radera den här assosiationstypen?
+pim_enrich.entity.group_type:
+  label: grupp typ
+  flash:
+    update:
+      success: Gruppen uppdaterades.
+      fail: Produkten kunde inte uppdateras.
+      fields_not_ready: "Produkten kan inte sparas just nu. Följande fält inte är redo: {{ fields }}"
+    create:
+      success: Grupptyp skapades
+    delete:
+      success: Grupptypen har tagits bort
+      fail: Kan inte ta bort denna grupptyp
+  module:
+    create:
+      button: Skapa grupptyp
+    delete:
+      confirm: Är du säker på att du vill ta bort denna grupptyp?
+pim_enrich.entity.group:
+  label: Grupp
+  flash:
+    update:
+      success: Gruppen ändrades.
+      fail: Gruppen kunde inte ändras.
+    create:
+      success: Gruppen har skapats
+    delete:
+      success: Gruppen har tagits bort
+      fail: Kan inte ta bort denna grupp
+  module:
+    create:
+      button: Skapa grupp
+    delete:
+      confirm: Är du säker på att du vill ta bort denna grupp?
+pim_enrich.entity.attribute:
+  label: attributet
+  plural_label: Attribut
+  flash:
+    delete:
+      success: Attributet har tagits bort
+      fail: Kan inte ta bort detta attribut
+  property:
+    allowed_extensions: Tillåtna tillägg
+    auto_option_sorting: Sortera automatiskt alternativ efter bokstavsordning
+    available_locales: Tillgängliga språk
+    date_max: Max datum
+    date_min: Min datum
+    decimals_allowed: Decimala värden tillåtna
+    default_metric_unit:
+      label: Metrisk standardenhet
+      choose: Välj en enhet
     group:
-      create_btn: Skapa grupp
-    export_profiles:
-      create_btn: Skapa exportprofil
-      message:
-        created: Exportprofilen har skapats
+      label: Attributgrupp
+      choose: Välj attributgrupp
+    is_locale_specific: Specifik språk
+    max_characters: Max tecken
+    max_file_size: Max filstorlek (MB)
+    metric_family:
+      label: Metrisk familj
+      choose: Välj en familj
+    minimum_input_length: Minsta längd för autokomplettering
+    name: Namn
+    negative_allowed: Negativa värden som är tillåtna
+    number_max: Max antal
+    number_min: Min antal
+    reference_data_name:
+      label: Referens datatyp
+      choose: Välj referens datatyp
+    type:
+      choose: Välj attributtyp
+      pim_catalog_identifier: Identifierare
+      pim_catalog_text: Text
+      pim_catalog_textarea: Textruta
+      pim_catalog_number: Nummer
+      pim_catalog_price_collection: Pris
+      pim_catalog_multiselect: Välj Flera
+      pim_catalog_simpleselect: Enkel Välj
+      pim_catalog_file: Fil
+      pim_catalog_image: Bild
+      pim_catalog_boolean: "Ja/Nej"
+      pim_catalog_date: Datum
+      pim_catalog_metric: Metrisk
+      pim_reference_data_simpleselect: Referensdata enkel Välj
+      pim_reference_data_multiselect: Referens data multi Välj
+    unique: Unikt värde
+    useable_as_grid_filter: Användbara i rutnät
+    validation_regexp: Reguljära uttryck
+    validation_rule:
+      label: Verifieringsuttryck
+      email: E-mail
+      regexp: Reguljära uttryck
+      url: URL
+    wysiwyg_enabled: RTF-redigeraren aktiverad
+  module:
+    add_attribute:
+      no_available_attributes: Det finns inga fler attribut att lägga till
+    edit:
+      common: Allmänna parametrar
+      type_specific: Specifika parametrar
+      validation: Valideringsparametrar
+    delete:
+      confirm: Är du säker på att du vill radera det här attributet?
+      confirm_from_product: Är det säkert att du vill ta bort detta attribut från produkten?
+pim_enrich.entity.attribute_group:
+  label: attributgrupp
+  uppercase_label: Attributgrupp
+  plural_label: Attributgrupper
+  flash:
+    update:
+      success: Attributgruppen uppdaterades
+    delete:
+      success: Attributgruppen har tagits bort
+  module:
+    add_attribute_group:
+      label: Lägg till efter grupper
+      attributes_groups_selected: '{{ itemsCount }} grupp(er) valda'
+    delete:
+      confirm: Är du säker på att du vill radera det här attributet?
+pim_enrich.entity.api_connection:
+  flash:
+    delete:
+      success: API-anslutningen har återkallas
+pim_enrich.entity.locale:
+  label: språk
+  uppercase_label: Språk
+  plural_label: Språk
+pim_enrich.entity.category:
+  label: kategori
+  uppercase_label: Kategori
+  plural_label: Kategorier
+pim_enrich.entity.currency:
+  plural_label: Valutor
+pim_enrich.entity.job_execution:
+  module:
+    download:
+      archive: Ladda ner genererat arkiv
+      invalid_xlsx: Hämta ogiltig data
+      invalid_csv: Hämta ogiltig data
+pim_enrich.export.product:
+  data:
+    title: Filtrera produkterna
+  structure:
+    title: Filtrera datan
+  filter:
+    channel:
+      help: Kanalen definierar tillämpningsområdet för produktvärden, de språk som används för att välja data och trädet används för att välja produkter.
+    locales:
+      help: "Språken väljer de lokaliserade produktvärdena att exportera. Ex: endast produktinformation på franska."
+    attributes:
+      help: "Välj vilken produktinformation som ska exporteras. Ex: endast tekniska attribut."
+      empty: Alla attribut kommer att exporteras
+      modal:
+        title: Valda attribut
+    attributes_selector:
+      attributes: "Sök i {{ itemsCount }} attribut"
+      selected: "Valda attribut"
+      clear: Rensa
+      all_group: Alla grupper
+      empty_selection: Alla attribut kommer att exporteras
     family:
-      create_btn: Skapa familj
-    grouptype:
-      create_btn: Skapa grupptyp
-    user:
-      create_btn: Skapa användare
-    user_role:
-      create_btn: Skapa roll
-    user_group:
-      create_btn: Skapa grupp
-  mass_edit:
-    product:
-      step:
-        select:
-          label: Välj produkter
-        configure:
-          label: Konfigurera
-        confirm:
-          label: Bekräfta
-      operation:
-        change_status:
-          label: Ändra status
-          description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
-          field: Aktivera
-        change_family:
-          description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
-        add_to_group:
-          label: Lägg till i grupp
-          description: Markera de grupper som du vill lägga till valda produkter
-          field: Grupper
-        remove_from_category:
-          description: Produkterna kommer att tas bort från följande kategorier.
-    family:
-      step:
-        select:
-          label: Välj familjer
-        configure:
-          label: Konfigurera
-        confirm:
-          label: Bekräfta
+      title: Familj
+      help: "Välj vilka produkter som exporteras beroende på familj. T. ex. exportera endast skor och klänningar."
+      operators:
+        IN: I listan
+        "NOT IN": Inte i listan
+        EMPTY: Produkter som inte har en familj
+        "NOT EMPTY": Produkter som har en familj
+      empty_selection: Inga villkor på familjer
+    updated:
+      title: Tidsvillkor
+      operators:
+        ALL: Inget datumvillkor
+        "SINCE LAST N DAYS": Ändrade produkter de senaste n dagarna (t.ex. 6)
+        ">": Ändrade produkter sedan detta datum
+        "SINCE LAST JOB": Ändrade produkter sedan senaste export
+    enabled:
+      title: Status
+      help: "Välj vilka produkter som exporteras beroende på status. T. ex. exportera produkter oavsett status."
+      value:
+        enabled: Aktiverad
+        disabled: Avaktiverad
+    completeness:
+      title: Fullständighet
+      help: Välj produkterna att exportera från deras fullständighet.
+      operators:
+        ALL: Inga villkor på fullständighet
+        ">=": Fullständig på minst ett valt språk
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Fullständig på alla valda språk
+        LOWER THAN ON ALL LOCALES: Inte fullständig på alla valda språk
+      empty_selection: Välj en familj
+    category:
+      title: Kategori
+      help: Använd produktkategorierna i trädet (definierad av kanalen ovan) för att välja produkter att exportera
+    identifier:
+      title: Identifierare
+    string:
+      operators:
+        ALL: Alla
+    select:
+      operators:
+        IN: I listan
+    date:
+      operators:
+        BETWEEN: Mellan
+        NOT BETWEEN: Inte mellan
+  global_settings:
+    title: Globala inställningar
+pim_enrich.mass_edit.product:
+  step:
+    select:
+      label: Välj produkter
+    configure:
+      label: Konfigurera
+    confirm:
+      label: Bekräfta
+  operation:
+    common:
+      select_attributes: Välj attribut
+    change_status:
+      label: Ändra status
+      description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
+      field: Aktivera
+    change_family:
+      description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
+    add_to_group:
+      label: Lägg till i grupp
+      description: Markera de grupper som du vill lägga till valda produkter
+      field: Grupper
+    remove_from_category:
+      description: Produkterna kommer att tas bort från följande kategorier.
+pim_enrich.mass_edit.family:
+  step:
+    select:
+      label: Välj familjer
+    configure:
+      label: Konfigurera
+    confirm:
+      label: Bekräfta
 pim_title:
   oro_default: Instrumentpanel
   pim_enrich_attributegroup_index: Attributgrupper
@@ -580,11 +530,6 @@ pim_title:
   pim_enrich_api_connection_index: API-anslutning
   pim_enrich_mass_edit_action: Massredigera
   pim_analytics_system_info_index: Systeminformation
-job_tracker:
-  download_archive:
-    archive: Ladda ner genererat arkiv
-    invalid_xlsx: Hämta ogiltig data
-    invalid_csv: Hämta ogiltig data
 pim_menu:
   tab:
     activity: Aktivitet
@@ -617,6 +562,7 @@ pim_menu:
     api_connection: API-anslutning
   navigation:
     product: Produkt navigering
+    product_infos: Produkt information
   user:
     logout: Logga ut
     user_account: Mitt konto

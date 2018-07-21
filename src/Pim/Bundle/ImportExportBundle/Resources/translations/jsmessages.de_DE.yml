@@ -24,10 +24,20 @@ pim_import_export:
           success: Auftrag erfolgreich gelöscht
     import_profile:
       uppercase_label: Import-Profil
-      page_title:
-        index: "] -Inf, 1] {{ count }} Importprofil|] 1, Inf [{{ count }} Importprofile"
+      flash:
+        create:
+          success: Importprofil erfolgreich erstellt
+      module:
+        create:
+          button: Importprofil anlegen
     export_profile:
       uppercase_label: Export-Profil
+      flash:
+        create:
+          success: Exportprofil erfolgreich erstellt
+      module:
+        create:
+          button: Exportprofil anlegen
   form:
     job_execution:
       title.details: Ausführungsdetails

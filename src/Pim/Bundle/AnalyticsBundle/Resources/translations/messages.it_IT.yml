@@ -26,6 +26,12 @@ pim_analytics:
     nb_locales: Numero di localizzazioni
     nb_families: Numero di famiglie
     nb_users: Numero di utenti
+    nb_categories: Numero di categorie
+    nb_category_trees: Numero di alberi di categorie
+    max_category_in_one_category: Numero massimo di categorie in un'unica categoria
+    max_category_levels: Numero massimo di livelli di categoria
+    nb_product_values: Numero di valori di prodotto
+    avg_product_values_by_product: Numero medio di valori di prodotto per prodotto
     pim_storage_version: Versione del motore di storage
     os_version: Versione OS
     php_version: Versione di PHP

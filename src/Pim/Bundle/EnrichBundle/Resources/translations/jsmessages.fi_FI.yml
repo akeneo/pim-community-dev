@@ -15,6 +15,7 @@ pim_common:
   delete: Poista
   done: Valmis
   edit: Muokkaa
+  entity_updated: Tallentamattomia muutoksia löytyy.
   from: Lähettäjä
   general_properties: Yleiset ominaisuudet
   history: Historia
@@ -32,7 +33,12 @@ pim_common:
   permissions: Käyttöoikeudet
   previous: Edellinen
   properties: Ominaisuudet
+  required_label: (vaadittu)
   save: Tallenna
+  select2:
+    search: Hae...
+    no_match: Vastaavuuksia ei löydy
+    load_more: Ladataan lisää tuloksia...
   status: Status
   to: mihin
   type: Tyyppi
@@ -52,30 +58,6 @@ pim_common:
     DOES NOT CONTAIN: Ei sisällä
     STARTS WITH: Alkaa
     ENDS WITH: Päättyy
-confirmation:
-  remove:
-    title: Poista tämä {{ itemName }}
-    alternative_title: Vahvista poisto
-    item: Oletko varma että haluat poistaa tämän kohteen?
-    association_type: Oletko varma, että haluat poistaa tämän assosiaatiotyypin?
-    attribute: Oletko varma, että haluat poistaa tämän määritteen?
-    attribute_from_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
-    attribute_from_product: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
-    attribute_group: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
-    family: Oletko varma, että haluat poistaa tämän ryhmän?
-    product: Oletko varma, että haluat poistaa tämän tuotteen?
-    product_model: Oletko varma, että haluat poistaa tämän tuotemallin? Kaikki lapset, tuotemallit ja variantit poistetaan myös.
-    channel: Oletko varma, että haluat poistaa tämän kanavan?
-    group: Oletko varma että haluat poistaa tämän ryhmän?
-    group_type: Oletko varma, että haluat poistaa tämän ryhmätyypin?
-    user: Haluatko varmasti poistaa tämän käyttäjän?
-    role: Oletko varma, että haluat poistaa tämän roolin?
-    api_connection: Oletko varma, että haluat kumota tämän API -yhteyden? Kaikki rajapintakutsut tämän yhteyden kautta johtavat jatkossa virheeseen.
-    products_and_product_models: Oletko varma, että haluat poistaa valitut tuotteet ja tuotemallit? Kaikki tuotemallin variantit poistetaan myös.
-  leave: Oletko varma että haluat poistua sivulta?
-  discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
-  cancel:
-    title: Peruuta muokkaukset
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -111,6 +93,8 @@ pim_datagrid:
     associated_product:
       hint: Tuotteen assosiaatioita ei ole
       subHint: 'Klikkaa "Lisää assosiaatioita" lisätäksesi assosiaatioita tälle tuotteelle'
+  filters:
+    label: Suodattimet
 error:
   exception: Voi ei! {{ status_code }} virhe tapahtui...
   forbidden: Käyttö estetty. Et saa käyttää tätä sivua
@@ -120,631 +104,549 @@ alert:
     save_before_edit_other: Rekisteröi muiden rivien muokkauksesi ennen tämän muokkaamista
   session_storage:
     not_available: Web-selain ei ole yhteensopiva sessionStorage:n kanssa. Ota yhteyttä järjestelmänvalvojaan.
-pim_enrich:
-  entity:
-    fallback:
-      flash:
-        generic_error: Tapahtui virhe
-        update:
-          fail: Päivitys epäonnistui
-          success: Päivitys onnistui
-        delete:
-          fail: Kohdetta ei voi poistaa
-          success: Kohde poistettu
-    product:
-      label: tuote
-      uppercase_label: Tuote
-      plural_label: Tuotteet
-      flash:
-        update:
-          success: Tuote päivitetty.
-          fail: Tuotetta ei voitu päivittää.
-          fields_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
-          already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
-          file_upload: Virhe tiedoston lataamisessa
-        delete:
-          success: Tuote poistettiin.
-          fail: Tuotetta ei voi poistaa.
-        create:
-          success: Tuote luotu
-          fail: Yhtään attribuuttia ei ole määritetty tuotteen tunnisteeksi tai sinulla ei ole muokkausoikeuksia.
-      page_title:
-        index: "] -Inf, 1] {{ count }} tulos|] 1, Inf [{{ count }} tulosta"
-      subTitle: Luo tuote
-      modalTitle: Valitse toiminto
-      filters: Suodattimet
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Tapahtui virhe
+    update:
+      fail: Päivitys epäonnistui
+      success: Päivitys onnistui
+    delete:
+      fail: Kohdetta ei voi poistaa
+      success: Kohde poistettu
+  module:
+    delete:
+      title: Poista tämä {{ itemName }}
+      alternative_title: Vahvista poisto
+      item: Oletko varma että haluat poistaa tämän kohteen?
+    edit:
+      leave: Oletko varma että haluat poistua sivulta?
+      discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
+pim_enrich.entity.product:
+  label: tuote
+  uppercase_label: Tuote
+  plural_label: Tuotteet
+  flash:
+    update:
+      success: Tuote päivitetty.
+      fail: Tuotetta ei voitu päivittää.
+      fields_not_ready: "Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}"
+      already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
+      file_upload: Virhe tiedoston lataamisessa
+    delete:
+      success: Tuote poistettiin.
+      fail: Tuotetta ei voi poistaa.
+    create:
+      success: Tuote luotu
+      fail: Yhtään attribuuttia ei ole määritetty tuotteen tunnisteeksi tai sinulla ei ole muokkausoikeuksia.
+  module:
+    create:
+      subtitle: Luo tuote
+      title: Valitse toiminto
+      choose_family: Valitse perhe
+      choose_family_variant: Valitse varianttiperhe
+    variant_navigation:
       common: Yleinen
-      btn:
-        enabled: Käytössä
-        disabled: Poistettu käytöstä
-        download_pdf: PDF
-        compare_translate: Vertaa / Käännä
-      history:
-        version: Versio
-        author: Tekijä
-        logged_at: Kirjattu
-        from: Lähettäjä
-        modified: Muutettu
-        old_value: Vanha arvo
-        new_value: Uusi arvo
-      meta:
-        infos: Tuoteinformaatio
-        updated: Viimeisin päivitys
-        family_variant:
-          title: Tuotevariaatio
-        groups:
-          title: Ryhmät
-          modal:
-            title: Ryhmä {{ group }}
-            view_group: Näytä ryhmä
-            more_products: '{{ count }} lisää tuotteita...'
-      copy:
-        select: Valitse
-        all_visible: Kaikki näkyvillä olevat
-        copy: Kopioi
-      optional_attribute:
-        remove: Poista tämä attribuutti
-      locale_specific_attribute:
-        unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
-      localizable:
-        channel_locale_unavailable: Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
-      media:
-        upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
-      create_popin:
-        labels:
-          family: Valitse perhe
-          family_variant: Valitse varianttiperhe
-      completeness: Valmis
-      sequential_edit:
-        item_limit: Vain 1000 ensimmäistä näytetään peräkkäisessä muokkauksessa ({{ count }} valittuna)
-        empty: Valintasi on tyhjä, muuta hakuehtoja
-    product_model:
-      uppercase_label: Tuotemalli
-      plural_label: Tuotemallit
-      flash:
-        create:
-          success: Tuotemallin luominen onnistui
-        update:
-          success: Tuotemallin päivittäminen onnistui. Tuotevarianttien täyttöaste lasketaan uudelleen.
-          fail: Tuotemallia ei voitu päivittää.
-          fields_not_ready: "Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-        delete:
-          success: Tuotemallin poisto onnistui.
-      choose: Valitse tuotemalli
-      create_popin:
-        title: Luo tuotemalli
-        content: Tuotemalli kokoaa tuotevariantit ja helpottaa niille yhteisten ominaisuuksien rikastamista.
-      read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
-      read_only_parent_attribute_from_model: "Tätä attribuuttia voidaan muokata {{ axes }} attribuuteissa"
-      variant_axis: Varianttiulottuvuus
-      add_child:
-        create: Luo uusi
-        create_label: "Luo uusi {{ axes }}"
-        fields:
-          required_label: (varianttiulottuvuus)
-    association_type:
-      label: sidoksen tyyppi
-      flash:
-        update:
-          success: Assosiaatiotyyppi päivitetty.
-          fail: Assosiaatiotyyppiä ei voitu päivittää.
-          fields_not_ready: "Assosiaatiotyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-        create:
-          success: Sidostyyppi luotu onnistuneesti
-        delete:
-          success: Sidostyyppi poistettu onnistuneesti
-          fail: Assosiaatiotyyppiä ei voi poistaa
-      page_title:
-        index: "] -Inf, 1] {{ count }} assosiaatiotyyppi|] 1, Inf [{{ count }} assosiaatiotyyppiä"
-    group_type:
-      label: ryhmän tyyppi
-      flash:
-        update:
-          success: Ryhmätyypin päivittäminen onnistui.
-          fail: Ryhmätyyppiä ei voitu päivittää.
-          fields_not_ready: "Ryhmätyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-        create:
-          success: Ryhmätyyppi lisätty onnistuneesti
-        delete:
-          success: Ryhmätyyppi poistettu onnistuneesti
-          fail: Ryhmätyyppiä ei voi poistaa
-      page_title:
-        index: "] -Inf, 1] {{ count }} ryhmätyyppi|] 1, Inf [{{ count }} ryhmätyyppiä"
-    channel:
-      label: kanava
-      uppercase_label: Kanava
-      flash:
-        update:
-          success: Kanava päivitetty.
-          fail: Kanavaa ei voitu päivittää.
-        create:
-          success: Kanava luotu.
-          fail: Kanavaa ei voitu luoda.
-        delete:
-          success: Kanavan poistaminen onnistui
-          fail: Kanavaa ei voi poistaa
-      page_title:
-        index: "[] -Inf, 1] {{ count }} kanava|] 1, Inf [{{ count }} kanavaa"
-    family:
-      label: tuoteperhe
-      uppercase_label: Perhe
-      flash:
-        update:
-          success: Perheen päivittäminen onnistui.
-          fail: Tuoteperheen tallennuksessa tapahtui virhe.
-          cant_remove_attribute_as_label: Otsikkona käytettyä attribuuttia ei voida poistaa
-          cant_remove_attribute_as_image: Pääkuvana käytettyä attribuuttia ei voi poistaa
-          cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
-        create:
-          success: Tuoteperhe luotu
-        delete:
-          success: Tuoteperhe poistettu
-          fail: Ryhmää ei voi poistaa
-      page_title:
-        index: "[] -Inf, 1] {{ count }} perhe |] 1, Inf [{{ count }} perhettä"
-      variant:
-        common:
-          title: Yhteiset attribuutit
-          empty: Yhteisiä attribuutteja ei ole
-        axis.label: Varianttiulottuvuus
-        level_1.label: Variantin attribuutit tasolla 1
-        level_2.label: Variantin attribuutit tasolla 2
-        add_variant: Luo variantti
-        create_label: Luo uusi varianttiperhe
-        create_description: Varianttiperheelle voit määrittää tuoterakenteen varianteille. Valitse ylläpidettävien varianttitulottuvuuksien määrä, valitse varianttiulottuvuuksien eri tasoilla käytetyt määrittävät attribuutit ja valitse sitten miten attribuutit on jaettu eri tasoille.
-        update_description: Vedä ja pudota attribuutit valitulle tasolle, jotta niiden rikastaminen tapahtuu varianttien tasolla.
-        levels: Varianttitasot
-        axis_level: Varianttiulottuvuuden taso
-        required: vaadittu
-        confirm_attribute_removal:
-          title: Vahvista attribuuttien poisto
-          message: Poistamalla nämä attribuutit, siirrät ne takaisin varianttiperheen yhteisiin attribuutteihin ja poistat arvot varianteilta
-    family_variant:
-      flash:
-        update:
-          success: Varianttiperhe päivitetty onnistuneesti. Tuotteet ja variantit päivitetään tekemilläsi muutoksilla.
-        create:
-          success: Varianttiperhe onnistuneesti luotu
-    attribute_option:
-      flash:
-        create:
-          success: Määritteen asetuksen luominen onnistui
-          fail: Virhe yritettäessä luoda määritteen asetusta
-        update:
-          fail: Määriteasennusta ei voi tallentaa
-        delete:
-          fail: Määriteasetuksen poistossa virhe
-    group:
-      label: Ryhmä
-      flash:
-        update:
-          success: Ryhmä päivitetty.
-          fail: Ryhmää ei voitu päivittää.
-          fields_not_ready: "Ryhmää ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-        create:
-          success: Ryhmä luotu onnistuneesti
-        delete:
-          success: Ryhmän poistaminen onnistui
-          fail: Ryhmää ei voi poistaa
-      page_title:
-        index: "] -Inf, 1] {{ count }} ryhmä|] 1, Inf [{{ count }} ryhmää"
+    status:
+      enabled: Käytössä
+      disabled: Poistettu käytöstä
+    download_pdf:
+      label: PDF
+    copy:
+      label: Vertaa / Käännä
+      select: Valitse
+      all_visible: Kaikki näkyvillä olevat
+      copy: Kopioi
+    history:
+      version: Versio
+      author: Tekijä
+      logged_at: Kirjattu
+      from: Lähettäjä
+      modified: Muutettu
+      old_value: Vanha arvo
+      new_value: Uusi arvo
+    meta:
+      updated: Viimeisin päivitys
+      groups: Ryhmät
+    show_group:
+      title: Ryhmä {{ group }}
+      view_group: Näytä ryhmä
+      more_products: '{{ count }} lisää tuotteita...'
     attribute:
-      label: attribuutti
-      plural_label: Attribuutit
-      flash:
-        update:
-          success: Attribuutin päivittäminen onnistui.
-          fail: Attribuuttia ei voitu päivittää.
-          fields_not_ready: "Attribuuttia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
-        delete:
-          success: Attribuutin poistaminen onnistui
-          fail: Attribuuttia ei voi poistaa
-      page_title:
-        index: "] -Inf, 1] {{ count }} attribuutti|] 1, Inf [{{ count }} attribuuttia"
-      property:
-        allowed_extensions: Sallitut laajennukset
-        auto_option_sorting: Järjestä vaihtoehdot automaattisesti aakkosjärjestykseen
-        available_locales: Saatavilla olevat alueet
-        date_max: Max päivämäärä
-        date_min: Min päivämäärä
-        decimals_allowed: Desimaaliarvot sallittu
-        default_metric_unit:
-          label: Metrinen oletusyksikkö
-          choose: Valitse yksikkö
-        group:
-          label: Attribuuttiryhmä
-          choose: Valitse attribuuttiryhmä
-        is_locale_specific: Aluespesifi
-        localizable: Kielikohtainen arvo
-        max_characters: Maksimimerkkimäärä
-        max_file_size: Suurin tiedostokoko (Mt)
-        metric_family:
-          label: Metrinen perhe
-          choose: Valitse perhe
-        minimum_input_length: Automaattisen täydennyshaun minimimerkkimäärä
-        negative_allowed: Negatiiviset arvot ovat sallittuja
-        number_max: Max numero
-        number_min: Min numero
-        reference_data_name:
-          label: Referenssidatan tyyppi
-          choose: Valitse viite-datatyyppi
-        scopable: Kanavakohtainen arvo
-        type:
-          choose: Valitse attribuutin tyyppi
-          pim_catalog_identifier: Tunniste
-          pim_catalog_text: Teksti
-          pim_catalog_textarea: Tekstialue
-          pim_catalog_number: Numero
-          pim_catalog_price_collection: Hinta
-          pim_catalog_multiselect: Monivalinta
-          pim_catalog_simpleselect: Yksinkertainen valinta
-          pim_catalog_file: Tiedosto
-          pim_catalog_image: Kuva
-          pim_catalog_boolean: "Kyllä/ei"
-          pim_catalog_date: Päivämäärä
-          pim_catalog_metric: Metriikka
-          pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
-          pim_reference_data_multiselect: Viitetiedot monivalinta
-        unique: Yksilöllinen arvo
-        useable_as_grid_filter: Käytettävissä ruudukossa
-        validation_regexp: Tavallinen virke
-        validation_rule:
-          label: Kelpoisuussääntö
-          email: Sähköposti
-          regexp: Tavallinen virke
-          url: URL-osoite
-        wysiwyg_enabled: Tekstin muotoilu käytössä
-      tab:
-        properties:
-          section:
-            common: Yleiset parametrit
-            type_specific: Tyyppikohtaiset parametrit
-            validation: Validaatioparametrit
-        choices:
-          title: Vaihtoehdot
-      create:
-        create_btn: Luo attribuutti
-    attribute_group:
-      label: attribuuttiryhmä
-      plural_label: Attribuuttiryhmät
-      flash:
-        update:
-          success: Attribuuttiryhmän päivittäminen onnistui
-          fail: Attribuuttiyhmää ei voitu päivittää
-        delete:
-          success: Attribuuttiryhmän poisto onnistui
-    api_connection:
-      flash:
-        create:
-          success: API -yhteyden luominen onnistui
-        delete:
-          success: API -yhteys poistettu onnistuneesti
-      page_title:
-        index: "] -Inf, 1] {{ count }} API-yhteys|] 1, Inf [{{ count }} API-yhteyttä"
-    locale:
-      label: lokaatio
-      uppercase_label: Lokaatio
-      plural_label: Alueet
-      page_title:
-        index: "] -Inf, 1] {{ count }} lokaatio|] 1, Inf [{{ count }} lokaatiota"
-    category:
-      label: kategoria
-      uppercase_label: Kategoria
-      plural_label: Kategoriat
-    currency:
-      page_title:
-        index: "[] -Inf, 1] {{ count }} valuutta |] 1, Inf [{{ count }} valuuttaa"
-    job_execution:
-      page_title:
-        index: "] -Inf, 1] {{ count }} operaatio|] 1, Inf [{{ count }} operaatiota"
-  info:
-    entity:
-      updated: Tallentamattomia muutoksia löytyy.
-  form:
-    required: (vaadittu)
-    product_model:
-      complete_variant_product: varianttituote
-      complete_variant_products: varianttituotteet
-      family_variant: Tuotevariaatio
-      flash:
-        product_model_added: Varianttituote lisätty onnistuneesti tuotemalliin
-        variant_product_added: Varianttituote lisätty onnistuneesti tuotemalliin
-    product:
-      tab:
-        associations:
-          title: Assosiaatiot
-          info:
-            none_exist: Assosiaatiotyyppiä ei ole olemassa.
-            show_groups: Näytä ryhmät
-            number_of_associations: "{{ productCount }} tuotetta, {{ productModelCount }} tuotemallia ja {{ groupCount }} ryhmää"
-          association_type_selector: Assosiaatiotyyppi
-          target: Kohde
-          manage: Lisää {{ associationType }} assosiaatiot
-          manage_description: Valitse tuotteet, jotka haluat liittää nykyiseen tuotteeseen
-          add_associations: Lisää assosiaatiot
-        attributes:
-          info:
-            search_attributes: Hae...
-            no_available_attributes: Ei ole enää attribuutteja lisättäväksi
-            attributes_selected: "{{ itemsCount }} attribuutti(a) valittu"
-            no_match: Vastaavuuksia ei löydy
-            load_more: Ladataan lisää tuloksia...
-          attribute_group_selector: Attribuuttiryhmä
-          attribute_group.to_fill_count: "{1}1 vaadittu attribuutti puuttuu|]1, Inf [{{ count }} vaadittua attribuuttia puuttuu"
-          attribute_filter:
-            display: Näytä
-            all: Kaikki attribuutit
-            missing_required: Kaikki puuttuvat vaaditut attribuutit
-            at_this_level: Kaikki tämän tason attribuutit
-      panel:
-        completeness:
-          title: Valmistumisaste
-          info:
-            no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
-            no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
-          missing_values: "{1}1 puuttuva arvo|] 1, Inf [{{ count }} puuttuvaa arvoa"
-      sequential_edit:
-        info:
-          previous: Siirry takaisin {{ product }} tallentamatta.
-          next: Siirry {{ product }} tallentamatta.
-        btn:
-          save_and_next: Tallenna ja seuraava
-          save_and_finish: Tallenna ja lopeta
-      change_family:
-        modal:
-          title: Vaihda tuoteperhettä
-          merge_attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
-          keep_attributes: Mitään attribuutteja ei poisteta.
-          change_family_to: Vaihda perhe olemaan
-          empty_selection: Valitse perhe
-      mass_edit:
-        select_attributes: Valitse attribuutit
-        select: Valitse
-    channel:
-      tab:
-        properties:
-          general: Yleinen
-          currencies: Valuutat
-          category_tree: Kategoriahierarkia
-          label_conversion_units: Valitse muunnosyksikkö jokaisella metrimääritteelle jota käytetään tuotteen viennin yhteydessä
-          conversion_unit:
-            do_not_convert: Älä muunna
-    family:
-      tab:
-        properties:
-          general: Yleinen
-          attribute_as_label: Otsikkona käytettävä attribuutti
-          attribute_as_image: Pääkuvana käytettävä attribuutti
-          empty_attribute_as_image: Ei ole valittu
-        attributes:
-          toolbox:
-            select_attributes_by_groups: Lisää ryhmittäin
-            attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
-          not_required_label: Ei vaadittu
-          required_label: Vaadittu
-        variant:
-          title: Variantit
-    family_variant:
-      tab:
-        attributes:
-          title: Variantin attribuutit
-        labels:
-          title: Nimikkeiden käännökset
-    attribute_option:
-      add_option_modal:
-        title: Lisää määritteen vaihtoehto
+      remove_optional: Poista tämä attribuutti
+      locale_specific_unavailable: Tämä lokaatiospesifi-kenttä ei ole käytettävissä tässä maassa
+      locale_unavailable: Lokalisoitavaa kenttää ei voi käyttää lokaatiossa '{{ locale }}' ja kanavassa '{{ channel }}'
+      media_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
+      add_attribute_option: Lisää määritteen vaihtoehto
       add_option: Lisää vaihtoehto
-    attribute_group:
-      tab:
-        attribute:
-          table:
-            name: Nimi
-            type: Tyyppi
-            scopable: Kanavakohtainen
-            localizable: Lokalisoitavissa
-    common:
-      tab:
-        attributes:
-          info:
-            search_attributes: Hae...
-            no_available_attributes: Ei ole enää attribuutteja lisättäväksi
-    mass_edit:
-      family:
-        attributes:
-          toolbox:
-            select_attributes_by_groups: Lisää ryhmittäin
-            attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
+    completeness:
+      title: Valmistumisaste
+      complete: Valmis
+      no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
+      no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
+    sequential_edit:
+      item_limit: Vain 1000 ensimmäistä näytetään peräkkäisessä muokkauksessa ({{ count }} valittuna)
+      empty: Valintasi on tyhjä, muuta hakuehtoja
+      save_and_next: Tallenna ja seuraava
+      save_and_finish: Tallenna ja lopeta
+    associations:
+      title: Assosiaatiot
+      none_exist: Assosiaatiotyyppiä ei ole olemassa.
+      show_groups: Näytä ryhmät
+      number_of_associations: "{{ productCount }} tuotetta, {{ productModelCount }} tuotemallia ja {{ groupCount }} ryhmää"
+      association_type_selector: Assosiaatiotyyppi
+      target: Kohde
+      manage: Lisää {{ associationType }} assosiaatiot
+      manage_description: Valitse tuotteet, jotka haluat liittää nykyiseen tuotteeseen
+      add_associations: Lisää assosiaatiot
+    attribute_filter:
+      display: Näytä
+      all: Kaikki attribuutit
+      missing_required: Kaikki puuttuvat vaaditut attribuutit
+      at_this_level: Kaikki tämän tason attribuutit
+    change_family:
+      title: Vaihda tuoteperhettä
+      merge_attributes: Nykyiset attribuutit yhdistetään uuteen perheeseen.
+      keep_attributes: Mitään attribuutteja ei poisteta.
+      change_family_to: Vaihda perhe olemaan
+      empty_selection: Valitse perhe
     basket:
       title: Kori
       empty_basket: Kori on tyhjä
-  job:
-    upload: Pudota {{ type }}-tiedosto tähän tai klikkaa selataksesi tiedostoja
-  export:
-    product:
-      data:
-        title: Suodata tuotteet
-      structure:
-        title: Suodata arvot
-      filter:
-        channel:
-          help: Kanava määrittää tuotearvojen laajuuden, arvojen lokaation ja tuotepuun, jolla rajataan mukaan otettavat tuotteet.
-        locales:
-          help: "Lokaatiot määrittävät minkäkieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot."
-        attributes:
-          label: "{0}Kaikki attribuutit|{1}Yksi attribuutti valittu|]1,Inf[ {{ count }} attribuuttia valittu"
-          help: "Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit."
-          empty: Kaikki attribuutit viedään
-          modal:
-            title: Attribuuttivalinta
-        attributes_selector:
-          attributes: "Hae {{ attributeCount }} attribuutista"
-          selected: "Valitut attribuutit"
-          clear: Tyhjennä
-          all_group: Kaikki ryhmät
-          empty_selection: Kaikki attribuutit viedään
-          description: Valitse tuotetiedot vientiin
-        family:
-          title: Perhe
-          help: "Valitse vietävät tuotteet perheen mukaan. Esim: vie vain kengät ja hameet."
-          operators:
-            IN: Luettelossa
-            "NOT IN": Ei luettelossa
-            EMPTY: Perheettömät tuotteet
-            "NOT EMPTY": Perheelliset tuotteet
-          empty_selection: Ei perhe-ehtoja
-        updated:
-          title: Aikaehto
-          operators:
-            ALL: Ei aikaehtoa
-            "SINCE LAST N DAYS": Tuotteet päivitetty viimeisen n päivän aikana (esim. 6)
-            ">": Tämän päivän jälkeen päivitetyt tuotteet
-            "SINCE LAST JOB": Viime viennin jälkeen päivitetyt tuotteet
-        enabled:
-          title: Status
-          help: "Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta."
-          value:
-            enabled: Käytössä
-            disabled: Poistettu käytöstä
-        completeness:
-          title: Valmistumisaste
-          help: Valitse vietävät tuotteet valmiusasteen perusteella.
-          operators:
-            ALL: Ei valmiusaste-ehtoa
-            ">=": Valmis ainakin yhdessä valituista lokaatioista
-            "GREATER OR EQUALS THAN ON ALL LOCALES": Valmis kaikissa valituissa lokaatiossa
-            LOWER THAN ON ALL LOCALES: Ei valmis kaikissa lokaatioissa
-            AT LEAST COMPLETE: Vähintään yksi variantti valmis valitulla lokaatiolla
-            ALL COMPLETE: Kaikki variantit valmiita valitulla lokaatiolla
-          empty_selection: Valitse perhe
-        category:
-          title: Kategoria
-          help: Käytä puun tuotekategorioita (määritelty yllä olevan kanavan mukaan) valitaksesi vietävät tuotteet
-        identifier:
-          title: Tunniste
-          help: Vietävien tuotteiden tunnisteet eroteltuna pilkuilla, välilyönneillä tai rivinvaihdoilla
-        string:
-          operators:
-            ALL: Kaikki
-        select:
-          operators:
-            IN: Luettelossa
-        date:
-          operators:
-            BETWEEN: Välillä
-            NOT BETWEEN: Ei välillä
-      global_settings:
-        title: Yleiset asetukset
-  mass_edit_action:
-    edit_common_attributes:
-      description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla (<span class="highlight">{{ locale }}</span> / <span class="highlight">{{ channel }}</span>).
-  index:
-    association_type:
-      create_btn: Luo assosiaatiotyyppi
-    import_profiles:
-      create_btn: Luo tuontiprofiili
-      list: Valitse työ
-      message:
-        created: Tuontiprofiilin tallentaminen onnistui
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän tuotteen?
+pim_enrich.entity.product_model:
+  uppercase_label: Tuotemalli
+  plural_label: Tuotemallit
+  flash:
+    create:
+      success: Tuotemallin luominen onnistui
+      product_model_added: Varianttituote lisätty onnistuneesti tuotemalliin
+      variant_product_added: Varianttituote lisätty onnistuneesti tuotemalliin
+    update:
+      success: Tuotemallin päivittäminen onnistui. Tuotevarianttien täyttöaste lasketaan uudelleen.
+      fail: Tuotemallia ei voitu päivittää.
+      fields_not_ready: "Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+    delete:
+      success: Tuotemallin poisto onnistui.
+  choose: Valitse tuotemalli
+  property:
+    family_variant: Tuotevariaatio
+  module:
+    create:
+      title: Luo tuotemalli
+      content: Tuotemalli kokoaa tuotevariantit ja helpottaa niille yhteisten ominaisuuksien rikastamista.
+    attribute:
+      read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
+      read_only_parent_attribute_from_model: "Tätä attribuuttia voidaan muokata {{ axes }} attribuuteissa"
+    variant_axis:
+      create: Luo uusi
+      create_label: "Luo uusi {{ axes }}"
+      required_label: '(varianttiulottuvuus)'
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän tuotemallin? Kaikki lapset, tuotemallit ja variantit poistetaan myös.
+      confirm_for_products_and_product_models: Oletko varma, että haluat poistaa valitut tuotteet ja tuotemallit? Kaikki tuotemallin variantit poistetaan myös.
+pim_enrich.entity.channel:
+  label: kanava
+  uppercase_label: Kanava
+  flash:
+    update:
+      success: Kanava päivitetty.
+      fail: Kanavaa ei voitu päivittää.
+    create:
+      success: Kanava luotu.
+      fail: Kanavaa ei voitu luoda.
+    delete:
+      success: Kanavan poistaminen onnistui
+      fail: Kanavaa ei voi poistaa
+  property:
+    category_tree: Kategoriahierarkia
+    do_not_convert: Älä muunna
+    label_conversion_units: Valitse muunnosyksikkö jokaisella metrimääritteelle jota käytetään tuotteen viennin yhteydessä
+  module:
+    create:
+      button: Luo kanava
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän kanavan?
+pim_enrich.entity.family:
+  label: tuoteperhe
+  uppercase_label: Perhe
+  flash:
+    update:
+      success: Perheen päivittäminen onnistui.
+      fail: Tuoteperheen tallennuksessa tapahtui virhe.
+      cant_remove_attribute_as_label: Otsikkona käytettyä attribuuttia ei voida poistaa
+      cant_remove_attribute_as_image: Pääkuvana käytettyä attribuuttia ei voi poistaa
+      cant_remove_attribute_used_as_axis: Et voi poistaa tätä attribuuttia, koska sitä on käytössä varianttiperheessä
+    create:
+      success: Tuoteperhe luotu
+    delete:
+      success: Tuoteperhe poistettu
+      fail: Ryhmää ei voi poistaa
+  property:
+    attribute_as_label: Otsikkona käytettävä attribuutti
+    attribute_as_image: Pääkuvana käytettävä attribuutti
+    empty_attribute_as_image: Ei ole valittu
+  module:
+    attributes:
+      not_required_label: Ei vaadittu
+      required_label: Vaadittu
+    create:
+      button: Luo perhe
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän ryhmän?
+pim_enrich.entity.family_variant:
+  short_plural_label: Variantit
+  short_label: Tuotevariaatio
+  flash:
+    update:
+      success: Varianttiperhe päivitetty onnistuneesti. Tuotteet ja variantit päivitetään tekemilläsi muutoksilla.
+    create:
+      success: Varianttiperhe onnistuneesti luotu
+  module:
+    edit:
+      common_attributes: Yhteiset attribuutit
+      no_common_attributes: Yhteisiä attribuutteja ei ole
+      variant_axis_label: Varianttiulottuvuus
+      variant_attributes: Variantin attribuutit
+      level_1: Variantin attribuutit tasolla 1
+      level_2: Variantin attribuutit tasolla 2
+      description: Vedä ja pudota attribuutit valitulle tasolle, jotta niiden rikastaminen tapahtuu varianttien tasolla.
+      confirm_attribute_removal_title: Vahvista attribuuttien poisto
+      confirm_attribute_removal_message: Poistamalla nämä attribuutit, siirrät ne takaisin varianttiperheen yhteisiin attribuutteihin ja poistat arvot varianteilta
+    create:
+      label: Luo variantti
+      title: Luo uusi varianttiperhe
+      description: Varianttiperheelle voit määrittää tuoterakenteen varianteille. Valitse ylläpidettävien varianttitulottuvuuksien määrä, valitse varianttiulottuvuuksien eri tasoilla käytetyt määrittävät attribuutit ja valitse sitten miten attribuutit on jaettu eri tasoille.
+      variant_levels: Varianttitasot
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Vaihtoehdot
+  flash:
+    create:
+      success: Määritteen asetuksen luominen onnistui
+      fail: Virhe yritettäessä luoda määritteen asetusta
+    update:
+      fail: Määriteasennusta ei voi tallentaa
+    delete:
+      fail: Määriteasetuksen poistossa virhe
+  module:
+    edit:
+      cancel_title: Peruuta muokkaukset
+pim_enrich.entity.association_type:
+  label: sidoksen tyyppi
+  flash:
+    update:
+      success: Assosiaatiotyyppi päivitetty.
+      fail: Assosiaatiotyyppiä ei voitu päivittää.
+      fields_not_ready: "Assosiaatiotyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+    create:
+      success: Sidostyyppi luotu onnistuneesti
+    delete:
+      success: Sidostyyppi poistettu onnistuneesti
+      fail: Assosiaatiotyyppiä ei voi poistaa
+  module:
+    create:
+      button: Luo assosiaatiotyyppi
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän assosiaatiotyypin?
+pim_enrich.entity.group_type:
+  label: ryhmän tyyppi
+  flash:
+    update:
+      success: Ryhmätyypin päivittäminen onnistui.
+      fail: Ryhmätyyppiä ei voitu päivittää.
+      fields_not_ready: "Ryhmätyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+    create:
+      success: Ryhmätyyppi lisätty onnistuneesti
+    delete:
+      success: Ryhmätyyppi poistettu onnistuneesti
+      fail: Ryhmätyyppiä ei voi poistaa
+  module:
+    create:
+      button: Luo ryhmätyyppi
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän ryhmätyypin?
+pim_enrich.entity.group:
+  label: Ryhmä
+  flash:
+    update:
+      success: Ryhmä päivitetty.
+      fail: Ryhmää ei voitu päivittää.
+      fields_not_ready: "Ryhmää ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+    create:
+      success: Ryhmä luotu onnistuneesti
+    delete:
+      success: Ryhmän poistaminen onnistui
+      fail: Ryhmää ei voi poistaa
+  module:
+    create:
+      button: Luo ryhmä
+    delete:
+      confirm: Oletko varma että haluat poistaa tämän ryhmän?
+pim_enrich.entity.attribute:
+  label: attribuutti
+  plural_label: Attribuutit
+  flash:
+    update:
+      success: Attribuutin päivittäminen onnistui.
+      fail: Attribuuttia ei voitu päivittää.
+      fields_not_ready: "Attribuuttia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}"
+    delete:
+      success: Attribuutin poistaminen onnistui
+      fail: Attribuuttia ei voi poistaa
+  property:
+    allowed_extensions: Sallitut laajennukset
+    auto_option_sorting: Järjestä vaihtoehdot automaattisesti aakkosjärjestykseen
+    available_locales: Saatavilla olevat alueet
+    date_max: Max päivämäärä
+    date_min: Min päivämäärä
+    decimals_allowed: Desimaaliarvot sallittu
+    default_metric_unit:
+      label: Metrinen oletusyksikkö
+      choose: Valitse yksikkö
     group:
-      create_btn: Luo ryhmä
-    export_profiles:
-      create_btn: Luo vientiprofiili
-      message:
-        created: Vientiprofiilin tallentaminen onnistui
-    family:
-      create_btn: Luo perhe
-    grouptype:
-      create_btn: Luo ryhmätyyppi
-    user:
-      create_btn: Luo käyttäjä
-    user_role:
-      create_btn: Luo rooli
-    user_group:
-      create_btn: Luo ryhmä
+      label: Attribuuttiryhmä
+      choose: Valitse attribuuttiryhmä
+    is_locale_specific: Aluespesifi
+    localizable: Kielikohtainen arvo
+    max_characters: Maksimimerkkimäärä
+    max_file_size: Suurin tiedostokoko (Mt)
+    metric_family:
+      label: Metrinen perhe
+      choose: Valitse perhe
+    minimum_input_length: Automaattisen täydennyshaun minimimerkkimäärä
+    name: Nimi
+    negative_allowed: Negatiiviset arvot ovat sallittuja
+    number_max: Max numero
+    number_min: Min numero
+    reference_data_name:
+      label: Referenssidatan tyyppi
+      choose: Valitse viite-datatyyppi
+    scopable: Kanavakohtainen arvo
+    type:
+      choose: Valitse attribuutin tyyppi
+      pim_catalog_identifier: Tunniste
+      pim_catalog_text: Teksti
+      pim_catalog_textarea: Tekstialue
+      pim_catalog_number: Numero
+      pim_catalog_price_collection: Hinta
+      pim_catalog_multiselect: Monivalinta
+      pim_catalog_simpleselect: Yksinkertainen valinta
+      pim_catalog_file: Tiedosto
+      pim_catalog_image: Kuva
+      pim_catalog_boolean: "Kyllä/ei"
+      pim_catalog_date: Päivämäärä
+      pim_catalog_metric: Metriikka
+      pim_reference_data_simpleselect: Viitetiedot yksinkertainen valinta
+      pim_reference_data_multiselect: Viitetiedot monivalinta
+    unique: Yksilöllinen arvo
+    useable_as_grid_filter: Käytettävissä ruudukossa
+    validation_regexp: Tavallinen virke
+    validation_rule:
+      label: Kelpoisuussääntö
+      email: Sähköposti
+      regexp: Tavallinen virke
+      url: URL-osoite
+    wysiwyg_enabled: Tekstin muotoilu käytössä
+  module:
+    add_attribute:
+      no_available_attributes: Ei ole enää attribuutteja lisättäväksi
+      attributes_selected: "{{ itemsCount }} attribuutti(a) valittu"
+    create:
+      button: Luo attribuutti
+    edit:
+      common: Yleiset parametrit
+      type_specific: Tyyppikohtaiset parametrit
+      validation: Validaatioparametrit
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän määritteen?
+      confirm_from_group: Oletko varma, että haluat poistaa attribuutin {{ attribute }} tästä attribuuttiryhmästä?
+      confirm_from_product: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
+pim_enrich.entity.attribute_group:
+  label: attribuuttiryhmä
+  uppercase_label: Attribuuttiryhmä
+  plural_label: Attribuuttiryhmät
+  flash:
+    update:
+      success: Attribuuttiryhmän päivittäminen onnistui
+      fail: Attribuuttiyhmää ei voitu päivittää
+    delete:
+      success: Attribuuttiryhmän poisto onnistui
+  module:
+    add_attribute_group:
+      label: Lisää ryhmittäin
+      attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
+    delete:
+      confirm: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: API -yhteyden luominen onnistui
+    delete:
+      success: API -yhteys poistettu onnistuneesti
+pim_enrich.entity.locale:
+  label: lokaatio
+  uppercase_label: Lokaatio
+  plural_label: Alueet
+pim_enrich.entity.category:
+  label: kategoria
+  uppercase_label: Kategoria
+  plural_label: Kategoriat
+pim_enrich.entity.currency:
+  plural_label: Valuutat
+pim_enrich.entity.job_execution:
+  module:
+    create:
+      upload: Pudota {{ type }}-tiedosto tähän tai klikkaa selataksesi tiedostoja
+    download:
+      archive: Lataa viety tallenne
+      output: Lataa viedyt tiedostot
+      input: Lataa tuodut tiedostot
+      invalid_xlsx: Lataa virheelliset tiedot
+      invalid_csv: Lataa virheelliset tiedot
+pim_enrich.export.product:
+  data:
+    title: Suodata tuotteet
+  structure:
+    title: Suodata arvot
+  filter:
     channel:
-      create_btn: Luo kanava
-  mass_edit:
-    product:
-      title: Tuotteiden massamuokkaus
-      confirm: "{1}Olet päivittämässä tuotetta seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet päivittämässä tuotteita {{ itemsCount }} seuraavilla tiedoilla, ole hyvä ja vahvista."
-      step:
-        select:
-          label: Valitse tuotteet
-        choose:
-          title: Tuotteiden massamuokkaus
-          label_count: "] 0, Inf [Valitse toiminto"
-        configure:
-          label: Konfiguroi
-        confirm:
-          label: Vahvista
-        launch_error:
-          label: Massamuokkauksen käynnistämisen yhteydessä tapahtui virhe
-        launched:
-          label: Massamuokkaus "{{ operation }}" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
-      operation:
-        change_status:
-          label: Muuta tuotteen tila
-          label_count: "{1}Muuta <span class=\"AknFullPage-title--highlight\">1 tuotteen tila</span>|] 1, Inf [Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen tila</span>"
-          description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
-          field: Ottaa käyttöön
-        edit_common:
-          label: Muokkaa attribuuttien arvoja
-          label_count: "{1}Muokkaa <span class=\"AknFullPage-title--highlight\">1 tuotteen</span> attribuutteja|] 1, Inf [Muokkaa <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen</span> attribuutteja"
-          description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla ({{ locale }} / {{ scope }}).
-        add_attribute_value:
-          label: Lisää attribuutin arvoja
-          label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuotteelle</span> attribuutin arvoja|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteelle</span> attribuutin arvoja"
-          description: Vain moniarvoiset tuotteen perheeseen kuuluvat attribuutit muokataan seuraavilla arvoilla lokaatiolle {{ locale }} ja kanavalle {{ scope }}. Uudet attribuuttien arvot lisätään ja nykyiset arvot säilytetään.
-        change_family:
-          label: Muuta perhe
-          label_count: "{1}Muuta <span class=\"AknFullPage-title--highlight\">1 tuotteen perhe</span>|] 1, Inf [Muuta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen perhe</span>"
-          description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
-        add_to_group:
-          label: Lisää ryhmiin
-          label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> ryhmiin|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> ryhmiin"
-          description: Valitse ryhmät joihin valitut tuotteet lisätään
-          field: Ryhmät
-        add_to_category:
-          label: Lisää kategorioihin
-          label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> to categories|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioihin"
-          description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa oleva liitokset säilytetään.
-        move_to_category:
-          label: Siirrä kategorioihin
-          label_count: "{1}Siirrä <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioihin|] 1, Inf [Siirrä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioihin"
-          description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan.
-        remove_from_category:
-          label: Poista kategorioista
-          label_count: "{1}Poista <span class=\"AknFullPage-title--highlight\">1 tuote</span> kategorioista|] 1, Inf [Poista <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> kategorioista"
-          description: Tuotteet poistetaan seuraavista kategorioista.
-        add_to_existing_product_model:
-          label: Lisää olemassaolevaan tuotemalliin
-          label_count: "{1}Lisää <span class=\"AknFullPage-title--highlight\">1 tuote</span> olemassa olevaan tuotemalliin|] 1, Inf [Lisää <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> olemassa olevaan tuotemalliin"
-          description: Valittu tuotemalli kokoaa tuotteet ja mahdollistaa niiden yhteisten attribuuttien rikastamisen.
-        associate_to_product_and_product_model:
-          label: Luo assosiaatio tuotteisiin
-          label_count: "{1}Liitä <span class=\"AknFullPage-title--highlight\">1 tuote</span> tuotteisiin tai tuotemalleihin|] 1, Inf [Liitä <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span> tuotteisiin tai tuotemalleihin"
-          description: Tuoteruudukossa valittuihin tuotteisiin luodaan valitsemasi tyyppinen assosiaatio niiltä tuotteilta tai tuotemalleilta, jotka seuraavaksi valitset
-          validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
+      help: Kanava määrittää tuotearvojen laajuuden, arvojen lokaation ja tuotepuun, jolla rajataan mukaan otettavat tuotteet.
+    locales:
+      help: "Lokaatiot määrittävät minkäkieliset arvot otetaan mukaan vientiin. Esim: vain suomenkieliset tuotetiedot."
+    attributes:
+      label: "{0}Kaikki attribuutit|{1}Yksi attribuutti valittu|]1,Inf[ {{ count }} attribuuttia valittu"
+      help: "Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit."
+      empty: Kaikki attribuutit viedään
+      modal:
+        title: Attribuuttivalinta
+    attributes_selector:
+      attributes: "Hae {{ attributeCount }} attribuutista"
+      selected: "Valitut attribuutit"
+      clear: Tyhjennä
+      all_group: Kaikki ryhmät
+      empty_selection: Kaikki attribuutit viedään
+      description: Valitse tuotetiedot vientiin
     family:
+      title: Perhe
+      help: "Valitse vietävät tuotteet perheen mukaan. Esim: vie vain kengät ja hameet."
+      operators:
+        IN: Luettelossa
+        "NOT IN": Ei luettelossa
+        EMPTY: Perheettömät tuotteet
+        "NOT EMPTY": Perheelliset tuotteet
+      empty_selection: Ei perhe-ehtoja
+    updated:
+      title: Aikaehto
+      operators:
+        ALL: Ei aikaehtoa
+        "SINCE LAST N DAYS": Tuotteet päivitetty viimeisen n päivän aikana (esim. 6)
+        ">": Tämän päivän jälkeen päivitetyt tuotteet
+        "SINCE LAST JOB": Viime viennin jälkeen päivitetyt tuotteet
+    enabled:
+      title: Status
+      help: "Valitse vietävät tuotteet statuksen mukaan. Esim: Vie tuotteet statuksesta huolimatta."
+      value:
+        enabled: Käytössä
+        disabled: Poistettu käytöstä
+    completeness:
+      title: Valmistumisaste
+      help: Valitse vietävät tuotteet valmiusasteen perusteella.
+      operators:
+        ALL: Ei valmiusaste-ehtoa
+        ">=": Valmis ainakin yhdessä valituista lokaatioista
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Valmis kaikissa valituissa lokaatiossa
+        LOWER THAN ON ALL LOCALES: Ei valmis kaikissa lokaatioissa
+        AT LEAST COMPLETE: Vähintään yksi variantti valmis valitulla lokaatiolla
+        ALL COMPLETE: Kaikki variantit valmiita valitulla lokaatiolla
+      empty_selection: Valitse perhe
+    category:
+      title: Kategoria
+      help: Käytä puun tuotekategorioita (määritelty yllä olevan kanavan mukaan) valitaksesi vietävät tuotteet
+    identifier:
+      title: Tunniste
+      help: Vietävien tuotteiden tunnisteet eroteltuna pilkuilla, välilyönneillä tai rivinvaihdoilla
+    string:
+      operators:
+        ALL: Kaikki
+    select:
+      operators:
+        IN: Luettelossa
+    date:
+      operators:
+        BETWEEN: Välillä
+        NOT BETWEEN: Ei välillä
+  global_settings:
+    title: Yleiset asetukset
+pim_enrich.mass_edit.product:
+  title: Tuotteiden massamuokkaus
+  step:
+    select:
+      label: Valitse tuotteet
+    choose:
+      title: Tuotteiden massamuokkaus
+    configure:
+      label: Konfiguroi
+    confirm:
+      label: Vahvista
+    launch_error:
+      label: Massamuokkauksen käynnistämisen yhteydessä tapahtui virhe
+    launched:
+      label: Massamuokkaus "{{ operation }}" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+  operation:
+    common:
+      select_attributes: Valitse attribuutit
+    change_status:
+      label: Muuta tuotteen tila
+      description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
+      field: Ottaa käyttöön
+    edit_common:
+      label: Muokkaa attribuuttien arvoja
+      description: Vain attribuutit, jotka kuuluvat valittujen tuotteiden perheisiin muokataan seuraavilla tiedoilla ({{ locale }} / {{ scope }}).
+    add_attribute_value:
+      label: Lisää attribuutin arvoja
+      description: Vain moniarvoiset tuotteen perheeseen kuuluvat attribuutit muokataan seuraavilla arvoilla lokaatiolle {{ locale }} ja kanavalle {{ scope }}. Uudet attribuuttien arvot lisätään ja nykyiset arvot säilytetään.
+    change_family:
+      label: Muuta perhe
+      description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
+    add_to_group:
+      label: Lisää ryhmiin
+      description: Valitse ryhmät joihin valitut tuotteet lisätään
+      field: Ryhmät
+    add_to_category:
+      label: Lisää kategorioihin
+      description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa oleva liitokset säilytetään.
+    move_to_category:
+      label: Siirrä kategorioihin
+      description: Tuotteet liitetään seuraaviin kategorioihin. Olemassa olevat liitokset poistetaan.
+    remove_from_category:
+      label: Poista kategorioista
+      description: Tuotteet poistetaan seuraavista kategorioista.
+    add_to_existing_product_model:
+      label: Lisää olemassaolevaan tuotemalliin
+      description: Valittu tuotemalli kokoaa tuotteet ja mahdollistaa niiden yhteisten attribuuttien rikastamisen.
+    associate_to_product_and_product_model:
+      label: Liitä
+      description: Tuoteruudukossa valittuihin tuotteisiin luodaan valitsemasi tyyppinen assosiaatio niiltä tuotteilta tai tuotemalleilta, jotka seuraavaksi valitset
+      validate: Ole hyvä ja lisää assosiaatio ennen kuin siirryt seuraavaan vaiheeseen
+    change_parent_product_model:
+      label: Vaihda ylätason tuotemalli
+pim_enrich.mass_edit.family:
+  title: Perheiden massamuokkaus
+  step:
+    select:
+      label: Valitse tuoteperheet
+    choose:
       title: Perheiden massamuokkaus
-      confirm: "{1}Olet muokkaamassa perhettä seuraavilla tiedoilla, ole hyvä ja vahvista.|] 1, Inf [Olet muokkaamassa {{ itemsCount }} perhettä seuraavilla tiedoilla, ole hyvä ja vahvista."
-      step:
-        select:
-          label: Valitse tuoteperheet
-        choose:
-          title: Perheiden massamuokkaus
-          label_count: "] 0, Inf [Valitse toiminto"
-        configure:
-          label: Konfiguroi
-        confirm:
-          label: Vahvista
-        launched:
-          label: Massamuokkaus "{{ operation }}" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
-      operation:
-        set_requirements:
-          label: Aseta vaaditut attribuutit
-          description: Seuraavat vaaditut attribuutit lisätään valituille perheille
-          label_count: "{1}Aseta vaaditut attribuutit <span class=\"AknFullPage-title--highlight\">1 perheelle</span>|] 1, Inf [Aseta vaaditu attribuutit <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} perheelle</span>"
+    configure:
+      label: Konfiguroi
+    confirm:
+      label: Vahvista
+    launched:
+      label: Massamuokkaus "{{ operation }}" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+  operation:
+    set_requirements:
+      label: Aseta vaaditut attribuutit
+      description: Seuraavat vaaditut attribuutit lisätään valituille perheille
 pim_title:
   oro_default: Ohjauspaneeli
   pim_enrich_attributegroup_index: Attribuuttiryhmät
@@ -783,13 +685,6 @@ pim_title:
   pim_enrich_api_connection_create: API -yhteydet| Luo
   pim_enrich_mass_edit_action: Massamuokkaus
   pim_analytics_system_info_index: Järjestelmätiedot
-job_tracker:
-  download_archive:
-    archive: Lataa viety tallenne
-    output: Lataa viedyt tiedostot
-    input: Lataa tuodut tiedostot
-    invalid_xlsx: Lataa virheelliset tiedot
-    invalid_csv: Lataa virheelliset tiedot
 pim_menu:
   tab:
     activity: Tapahtumat
@@ -829,6 +724,7 @@ pim_menu:
     user: Käyttäjähallinnan navigaatio
     settings: Asetuksien navigaatio
     product: Tuotenavigaatio
+    product_infos: Tuoteinformaatio
   user:
     logout: Kirjaudu ulos
     user_account: Oma tili
