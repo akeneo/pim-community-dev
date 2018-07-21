@@ -19,7 +19,7 @@ pimee_workflow:
     proposal:
       modal.title: Laisser un commentaire (facultatif - 255 caractères max.)
   proposal:
-    overview: "] -Inf, 1] {{ count }} proposition|] 1, Inf [{{ count }} propositions"
+    overview: "]-Inf, 1]{{ count }} proposition|]1, Inf [{{ count }} propositions"
     selected: propositions sélectionnées
     mass_action_group:
       review:

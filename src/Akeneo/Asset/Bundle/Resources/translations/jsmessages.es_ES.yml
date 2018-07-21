@@ -5,7 +5,14 @@ pimee_product_asset:
         manage: Gestionar recursos
         manage_asset:
           title: Gestionar recursos
+          cancel: Cancelar
+          confirm: Confirmar
         title: Gestionar recursos
+        download: Descargar
+        remove: Quitar
+        upload: Cargar
+        yes: true
+        no: false
     asset:
       not_empty: Código requerido. No puede estar vacío.
   enrich_asset:
@@ -120,7 +127,6 @@ jstree:
     all: Todos los recursos
     unclassified: Recursos no clasificados
 asset_grid:
-  title: "] -Inf, 1] {{ count }} activo de producto|] 1, Inf [{{ count }} activos de producto"
   selected: activos seleccionados
   label: Recursos de productos
 create_asset:

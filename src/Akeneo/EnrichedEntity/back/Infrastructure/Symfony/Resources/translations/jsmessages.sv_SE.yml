@@ -1,0 +1,16 @@
+pim_enriched_entity:
+  button:
+    save: Spara
+  enriched_entity:
+    tab:
+      attributes: Attribut
+      properties: Egenskaper
+    properties:
+      identifier: Identifierare
+      label: Etikett
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Specifika parametrar

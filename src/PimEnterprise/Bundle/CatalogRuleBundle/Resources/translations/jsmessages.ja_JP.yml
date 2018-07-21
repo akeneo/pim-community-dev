@@ -1,5 +1,4 @@
 pimee_catalog_rule:
-  overview: "] - Inf ファイル、1] {{ count }} ルール |] 1、Inf [{{ count }} ルール"
   execution_button: ルールを実行
   selected: 'ルール選択済み'
   popin:

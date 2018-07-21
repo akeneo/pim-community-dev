@@ -5,8 +5,15 @@ pimee_product_asset:
         manage: アセット管理
         manage_asset:
           title: アセット管理
+          cancel: キャンセル
+          confirm: 確認
         title: アセット管理
         description: 製品に添付するアセットを選択
+        download: ダウンロード
+        remove: 削除
+        upload: アップロード
+        yes: true
+        no: false
     asset:
       not_empty: コードが必要です。それは空にできません。
   enrich_asset:
@@ -122,7 +129,6 @@ jstree:
     all: すべてのアセット
     unclassified: 未分類のアセット
 asset_grid:
-  title: "] - Inf ファイル、1] {{ count }} 製品アセット |] 1、Inf [{{ count }} 製品アセット"
   selected: 選択済みアセット
   label: 製品のアセット
 create_asset:

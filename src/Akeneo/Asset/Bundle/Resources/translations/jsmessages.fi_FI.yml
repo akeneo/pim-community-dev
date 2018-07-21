@@ -5,8 +5,15 @@ pimee_product_asset:
         manage: Hallinnoi resursseja
         manage_asset:
           title: Hallinnoi resursseja
+          cancel: Peruuta
+          confirm: Vahvista
         title: Hallinnoi resursseja
         description: Valitse assetit, jotka haluat liittää tuotteelle
+        download: Lataa
+        remove: Poista
+        upload: Tuo
+        yes: true
+        no: false
     asset:
       not_empty: Koodi vaaditaan. Se ei voi olla tyhjä.
       alpha_numeric_plus_underscore: Koodi voi sisältää vain alfanumeerisia merkkejä tai alaviivoja.
@@ -84,7 +91,6 @@ jstree:
     all: Kaikki assetit
     unclassified: Luokittelemattomat assetit
 asset_grid:
-  title: "] -Inf, 1] {{ count }} tuoteassetti|] 1, Inf [{{ count }} tuoteassettia"
   selected: valittua assettia
   label: Tuotteen assetit
 create_asset:

@@ -1,0 +1,16 @@
+pim_enriched_entity:
+  button:
+    save: Gem
+  enriched_entity:
+    tab:
+      attributes: Egenskaber
+      properties: Egenskaber
+    properties:
+      identifier: Id
+      label: Etiket
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Specifik type parametre

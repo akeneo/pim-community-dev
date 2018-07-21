@@ -1,200 +1,176 @@
-pimee_enrich.product_history.action.revert: Restaurar a esta versión
-permission-changes:
-  category:
-    grant: El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> en esta categoría
-    revoke: El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> en esta categoría
-  locale:
-    grant: El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> en este local
-    revoke: El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> en este local
-  attribute group:
-    grant: El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> de este grupo de atributos
-    revoke: El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> de este grupo de atributos
-  job profile:
-    grant: El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong>
-    revoke: El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong>
 pim_enrich:
   entity:
-    attribute_label:
-      pim_assets_collection: Colección de recursos
     attribute:
       property:
         is_read_only: Sólo lectura
-  form:
-    attribute:
-      tab:
-        properties:
-          label:
-            is_read_only: Sólo lectura
-pim:
-  grid:
-    mass_action:
+pim_datagrid:
+  mass_action:
+    mass_edit:
       asset_edit: Edición en masa los activos
-pimee_enrich:
-  form:
-    job_instance:
-      tab:
-        permission:
-          added: El grupo {{ group }} será autorizado a {{ permission }} el perfil de trabajo
-          execute.label: Autorizado a ejecutar el perfil de trabajo
-          edit.label: Autorizado a editar el perfil de trabajo
-          removed: El grupo {{ group }} no será autorizado a {{ permission }} el perfil de trabajo
-    channel:
-      tab:
-        asset-transformation:
-          title: Transformaciones de recursos
-    attribute_group:
-      tab:
-        permission:
-          title: Permisos
-          view.label: Autorizado a ver los atributos
-          edit.label: Autorizado a editar los atributos
-          removed: El grupo {{ group }} no será autorizado a {{ permission }} grupo de atributos
-          added: El grupo {{ group }} será autorizado a {{ permission }} grupo de atributos
-  entity:
-    product:
-      index_title: "] -Inf, 1] {{ count }} resultado|] 1, Inf [{{ count }} resultado"
-      navigation: Productos publicados
-      history:
-        published: Publicado
-        revert: Restaurar
-      smart_attribute:
-        come_from: "Este atributo puede ser actualizado por una regla:"
-      btn:
-        publish: Publicar
-        publish_this_version: Publicar esta versión
-        unpublish: Despublicar
-        save_draft: Guardar borrador
-      flash:
-        product_unpublished: Publicación del producto removida exitosamente
-        product_published: Producto publicado exitosamente
-        product_not_published: Error al publicar este producto
-        product_not_unpublished: Error al remover la publicación de este Producto
-        product_reverted: Producto restaurado con éxito
-      meta:
-        published: Versión publicada
-        owner_groups: Grupos de propietario
-        draft_status: Estado borrador
-        draft:
-          in_progress: En progreso
-          sent_for_approval: Esperando aprobacion
-          working_copy: Copia de trabajo
-      tab:
-        proposals:
-          title: Propuestas
-          messages:
-            approve:
-              success: La propuesta ha sido aplicada exitosamente.
-              error: "La propuesta no puede ser aplicada debido al siguiente error: {{ error }}"
-            reject:
-              success: La propuesta ha sido rechazada.
-            remove:
-              success: La propuesta ha sido eliminada.
-      confirmation:
-        revert:
-          title: Confirmar la restauración
-          content: '¿Está usted seguro que desea restaurar el producto a esta versión?'
-        publish:
-          title: Publicar este producto
-          content: '¿Está seguro que desea publicar este producto?'
-        unpublish:
-          title: Romover la publicación de este producto
-          content: '¿Está seguro que desea remover la publicación de este producto?'
-      info:
-        update_successful: La copia de trabajo del producto ha sido actualizada
-      copy:
-        source:
-          working_copy: Copia de trabajo
-          draft: Mi borrador
-          draft_of: "Borrador de {{ author }}"
-    product_draft:
-      info:
-        update_successful: El borrador del producto ha sido guardado con éxito
-        update_failed: El borrador del producto no puede ser actualizado
-        value_modified: Este valor es modificado por el borrador actual
-      flash:
-        sent_for_approval: El borrador del producto ha sido enviado a aprobación
-        draft_not_sendable: No puede enviar este borrador para aprobación
-      btn:
-        send_for_approval: Enviar a aprobar
-        sent_for_approval: Enviado a aprobar
-      modal:
-        accept_proposal: Aceptar propuesta
-        accept_selected_proposal: Aceptar propuesta(s) seleccionada(s)
-        reject_proposal: Rechazar propuesta
-        reject_selected_proposal: Rechazar propuesta(s) seleccionada(s)
-        remove_proposal: Suprimir propuesta
-        send_for_approval: Enviar a aprobar
-        confirm: Enviar
-        title: Comentar su propuesta (opcional - 255 caracteres máximo)
-        characters: caracteres.
-      confirmation:
-        discard_changes: Las modificaciones no guardadas serán perdidas. ¿Está seguro que desea enviar el borrador sin guardar los cambios?
-        discard_changes_title: '¿Está seguro que desea enviar este borrador?'
-  asset_transformation:
-    not_found: Ninguna transformación encontrada
-    title:
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> en esta categoría
+      revoke: El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> en esta categoría
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> en este local
+      revoke: El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> en este local
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: El grupo <strong>{{ group }}</strong> será <strong> {{ permission }}</strong> de este grupo de atributos
+      revoke: El grupo <strong>{{ group }}</strong> no será <strong> {{ permission }}</strong> de este grupo de atributos
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Transformaciones de recursos
+      not_found: Ninguna transformación encontrada
       transformation: Transformación
       options: Opciones
-    colorspace:
-      title: Espacio de color
-      options:
-        colorspace: 'Espacio de color %value%'
-    resize:
-      title: Redimensionar
-      options:
-        width: 'Px ancho %value%'
-        height: 'Alto px %value%'
-    resolution:
-      title: Resolución
-      options:
-        resolution: '%value%'
-        resolution-unit: '%value%'
-    scale:
-      title: Escala
-      options:
-        width: 'Px ancho %value%'
-        height: 'Alto px %value%'
-        ratio: 'Ratio %value%%'
-    thumbnail:
-      title: Miniatura
-      options:
-        width: 'Px ancho %value%'
-        height: 'Alto px %value%'
-  mass_edit:
-    cancel: Cancelar
-    product:
-      operation:
-        publish:
-          label: Publicar
-          label_count: "{1}Publicar <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
-          description: Los productos se publicarán
-          warning: Los {{ itemsCount }} seleccionados serán publicados.
-        unpublish:
-          label: Despublicar
-          description: Los productos serán despublicados
-          warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.
-    asset:
-      step:
-        select:
-          label: Elegir recurso
-        choose:
-          label_count: "] 0, Inf [Seleccione su acción"
-        configure:
-          label: Configurar
-        confirm:
-          label: Confirmar
-      operation:
-        add_tag:
-          label: Añadir etiquetas a los recursos
-          description: Las etiquetas serán agregadas a los activos
-          field: Etiquetas
-        add_to_category:
-          label: Clasificar los activos en categorías
-  category:
-    tab:
-      permission:
-        title: Permisos
+      colorspace:
+        title: Espacio de color
+        options:
+          colorspace: 'Espacio de color %value%'
+      resize:
+        title: Redimensionar
+        options:
+          width: 'Px ancho %value%'
+          height: 'Alto px %value%'
+      resolution:
+        title: Resolución
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Escala
+        options:
+          width: 'Px ancho %value%'
+          height: 'Alto px %value%'
+          ratio: 'Ratio %value%%'
+      thumbnail:
+        title: Miniatura
+        options:
+          width: 'Px ancho %value%'
+          height: 'Alto px %value%'
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: El grupo {{ group }} será autorizado a {{ permission }} grupo de atributos
+      view: Autorizado a ver los atributos
+      edit: Autorizado a editar los atributos
+      removed: El grupo {{ group }} no será autorizado a {{ permission }} grupo de atributos
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: El grupo {{ group }} será autorizado a {{ permission }} el perfil de trabajo
+      execute: Autorizado a ejecutar el perfil de trabajo
+      edit: Autorizado a editar el perfil de trabajo
+      removed: El grupo {{ group }} no será autorizado a {{ permission }} el perfil de trabajo
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Publicado
+      revert: Restaurar
+    meta:
+      published_version: Versión publicada
+      owner_groups: Grupos de propietario
+      draft_status: Estado borrador
+      draft:
+        in_progress: En progreso
+        sent_for_approval: Esperando aprobacion
+        working_copy: Copia de trabajo
+    revert:
+      title: Confirmar la restauración
+      content: '¿Está usted seguro que desea restaurar el producto a esta versión?'
+    publish:
+      title: Publicar este producto
+      content: '¿Está seguro que desea publicar este producto?'
+    unpublish:
+      title: Romover la publicación de este producto
+      content: '¿Está seguro que desea remover la publicación de este producto?'
+    copy:
+      working_copy: Copia de trabajo
+      draft: Mi borrador
+      draft_of: "Borrador de {{ author }}"
+    approval:
+      send: Enviar a aprobar
+      sent: Enviado a aprobar
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Producto publicado exitosamente
+      fail: Error al publicar este producto
+    unpublish:
+      success: Publicación del producto removida exitosamente
+      fail: Error al remover la publicación de este Producto
+    revert:
+      success: Producto restaurado con éxito
+  module:
+    publish:
+      label: Publicar
+      publish_this_version: Publicar esta versión
+    unpublish:
+      label: Despublicar
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: La propuesta ha sido aplicada exitosamente.
+      fail: "La propuesta no puede ser aplicada debido al siguiente error: {{ error }}"
+    reject:
+      success: La propuesta ha sido rechazada.
+    remove:
+      success: La propuesta ha sido eliminada.
+    update:
+      success: El borrador del producto ha sido guardado con éxito
+      fail: El borrador del producto no puede ser actualizado
+    create:
+      success: El borrador del producto ha sido enviado a aprobación
+      fail: No puede enviar este borrador para aprobación
+  module:
+    create:
+      label: Guardar borrador
+    proposal:
+      accept: Aceptar propuesta
+      accept_selected: Aceptar propuesta(s) seleccionada(s)
+      reject: Rechazar propuesta
+      reject_selected: Rechazar propuesta(s) seleccionada(s)
+      remove: Suprimir propuesta
+      comment_title: Comentar su propuesta (opcional - 255 caracteres máximo)
+      comment_chars: caracteres.
+      confirm: Enviar
+    edit:
+      discard_changes: Las modificaciones no guardadas serán perdidas. ¿Está seguro que desea enviar el borrador sin guardar los cambios?
+      discard_changes_title: '¿Está seguro que desea enviar este borrador?'
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Publicar
+      description: Los productos se publicarán
+      warning: Los {{ itemsCount }} seleccionados serán publicados.
+    unpublish:
+      label: Despublicar
+      description: Los productos serán despublicados
+      warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.
+pimee_enrich.mass_edit.asset:
+  step:
+    select:
+      label: Elegir recurso
+    configure:
+      label: Configurar
+    confirm:
+      label: Confirmar
+  operation:
+    add_tag:
+      label: Añadir etiquetas a los recursos
+      description: Las etiquetas serán agregadas a los activos
+      field: Etiquetas
+    add_to_category:
+      label: Clasificar los activos en categorías
 pim_menu:
+  navigation:
+    published_products: Productos publicados
   tab:
     asset: Recursos
   item:
@@ -240,7 +216,7 @@ batch_jobs:
     execute_rules.label: Ejecución de las reglas
   publish_product:
     perform.label: Productos publicados
-catalog_volume:
+pim_catalog_volumne:
   axis:
     count_assets: Recursos
     count_asset_categories: Categorías de recursos

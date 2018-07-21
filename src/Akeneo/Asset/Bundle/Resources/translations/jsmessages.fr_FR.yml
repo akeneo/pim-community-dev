@@ -5,8 +5,17 @@ pimee_product_asset:
         manage: Gérer les ressources
         manage_asset:
           title: Gérer les ressources
+          cancel: Annuler
+          confirm: Confirmer
         title: Gérer les ressources
         description: Choisissez les ressources que vous souhaitez attacher à votre produit
+        preview_title: Aperçu de la collection de ressources
+        download: Téléchargement
+        remove: Supprimer
+        upload: Télécharger
+        yes: true
+        no: false
+        assetRemoveConfirmationLabel: Êtes-vous sûr de vouloir supprimer cette ressource ?
     asset:
       not_empty: Code est requis. Le champ ne peut pas être vide.
       alpha_numeric_plus_underscore: Le code devrait être composé de caractères alphanumériques ou de tirets bas.
@@ -30,6 +39,7 @@ pimee_product_asset:
       imported: Fichiers importés pour le traitement des ressources
       canceled: Téléchargement annulé avec succès
       deleted: Le fichier téléchargé a été supprimé
+      need_refresh: <b>L'import des ressources a bien été lancé</b><br>Pour vous les ressources importées dans le formulaire produit, n'oubliez pas de rafraîchir votre page dès que vous recevez la notification.
     error:
       list: Impossible de lire les fichiers déjà téléchargés
       upload: Une erreur s'est produite lors du téléchargement
@@ -72,6 +82,9 @@ batch_jobs:
   apply_assets_mass_upload:
     label: Téléchargement massif de ressources
     perform.label: Téléchargement massif
+  apply_assets_mass_upload_into_asset_collection:
+    label: Envoi en masse de ressources et ajout au produit
+    perform.label: Envoi en masse de ressources et ajout au produit
   yml_asset_channel_configuration_import:
     label: Import des configurations de transformations de ressources en Yaml
     import_asset.label: Import des configurations de transformations de ressources en Yaml
@@ -128,7 +141,7 @@ jstree:
     all: Toutes les ressources
     unclassified: Ressources non classifiées
 asset_grid:
-  title: "] -Inf, 1] {{ count }} ressource|] 1, Inf [{{ count }} ressources"
+  title: "]-Inf, 1]{{ count }} ressource|]1, Inf[{{ count }} ressources"
   selected: ressources sélectionnées
   label: Ressources du produit
 create_asset:

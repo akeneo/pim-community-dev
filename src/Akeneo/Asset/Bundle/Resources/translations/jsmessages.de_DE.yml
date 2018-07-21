@@ -5,8 +5,15 @@ pimee_product_asset:
         manage: Assets verwalten
         manage_asset:
           title: Assets verwalten
+          cancel: Abbrechen
+          confirm: Bestätigen
         title: Assets verwalten
         description: Wählen Sie die Assets die dem Produkt zugeordnet werden sollen
+        download: Herunterladen
+        remove: Entfernen
+        upload: Hochladen
+        yes: true
+        no: false
     asset:
       not_empty: Code ist erforderlich. Feld darf nicht leer sein.
   enrich_asset:
@@ -121,7 +128,6 @@ jstree:
     all: Alle Daten
     unclassified: Unklassifizierte Daten
 asset_grid:
-  title: "] -Inf, 1] {{ count }} Produktasset|] 1, Inf [{{ count }} Produktassets"
   selected: Ausgewählte Assets
   label: Produktassets
 create_asset:

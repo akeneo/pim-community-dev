@@ -5,8 +5,15 @@ pimee_product_asset:
         manage: Administrer aktiver
         manage_asset:
           title: Administrer aktiver
+          cancel: Annuller
+          confirm: Bekræft
         title: Administrer aktiver
         description: Vælge de aktiver, du vil vedhæfte til dit produkt
+        download: Hent
+        remove: Fjern
+        upload: Upload
+        yes: true
+        no: false
     asset:
       not_empty: Koden er påkrævet. Det kan ikke være tom.
       alpha_numeric_plus_underscore: Koden skal kun være alfanumeriske eller understreg.
@@ -127,7 +134,6 @@ jstree:
     all: Alle aktiver
     unclassified: Ikke klassificerede aktiver
 asset_grid:
-  title: "[] -Inf, 1] {{ count }} produktet aktiv |] 1, Inf [{{ count }} produkt aktiver"
   selected: udvalgte aktiver
   label: Produkt aktiver
 create_asset:

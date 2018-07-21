@@ -6,6 +6,7 @@ pimee_product_asset:
       remove: Supprimer une ressource
       categories_view: Consulter les catégories d'une ressource
       mass_upload: Envoi en masse des ressources
+      remove_from_collection: Supprimer une ressource d'une collection
     category_asset_picker:
       list: Liste les catégories de ressources dans le sélecteur d'éléments
     category:
