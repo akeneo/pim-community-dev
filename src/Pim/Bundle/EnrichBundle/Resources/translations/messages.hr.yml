@@ -621,7 +621,6 @@ pim_title.product:
   edit: "Proizvodi %product.sku% | Uredi"
 pim_title.family:
   index: "Obitelji"
-  edit: "Obitelji %code% | Uredi"
 pim_title.channel:
   index: "Kanali"
   create: "Kanali | Kreiraj"
