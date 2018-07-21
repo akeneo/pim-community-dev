@@ -24,12 +24,20 @@ pim_import_export:
           success: Instancia de trabajo removida con éxito
     import_profile:
       uppercase_label: Perfil de importación
-      page_title:
-        index: "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} perfiles de importación"
+      flash:
+        create:
+          success: Perfil de importación creado con éxito
+      module:
+        create:
+          button: Crear perfil de importación
     export_profile:
       uppercase_label: Perfil de exportación
-      page_title:
-        index: "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} perfiles de exportación"
+      flash:
+        create:
+          success: Perfil de exportación creado con éxito
+      module:
+        create:
+          button: Crear perfil de exportación
   form:
     job_execution:
       title.details: Detalles de la ejecución

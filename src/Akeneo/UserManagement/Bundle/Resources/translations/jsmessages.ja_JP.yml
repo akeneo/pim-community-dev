@@ -8,11 +8,18 @@ pim_title:
 pim_user_management:
   entity:
     user:
-      page_title:
-        index: "] - Inf ファイル、1] {{ count }} ユーザ |] 1、Inf [{{ count }} ユーザ"
+      module:
+        create:
+          button: ユーザー作成
+        delete:
+          confirm: このユーザーを削除してもよろしいですか?
     role:
-      page_title:
-        index: "] - Inf ファイル、1] {{ count }} ロール |] 1、Inf [{{ count }} ロール"
+      module:
+        create:
+          button: 権限を作成
+        delete:
+          confirm: このロールを削除してもよろしいですか？
     group:
-      page_title:
-        index: "] - Inf ファイル、1] {{ count }} グループ |] 1、Inf [{{ count }} グループ"
+      module:
+        create:
+          button: グループを作成

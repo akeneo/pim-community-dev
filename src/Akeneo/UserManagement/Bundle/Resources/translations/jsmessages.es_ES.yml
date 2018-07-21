@@ -8,11 +8,18 @@ pim_title:
 pim_user_management:
   entity:
     user:
-      page_title:
-        index: "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} usuarios"
+      module:
+        create:
+          button: Crear usuario
+        delete:
+          confirm: '¿Seguro que desea eliminar este usuario?'
     role:
-      page_title:
-        index: "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
+      module:
+        create:
+          button: Crear rol
+        delete:
+          confirm: '¿Está seguro que desea eliminar este rol?'
     group:
-      page_title:
-        index: "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} grupos"
+      module:
+        create:
+          button: Crear grupo

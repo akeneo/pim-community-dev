@@ -20,10 +20,23 @@ pim_user_management:
   entity:
     user:
       page_title:
-        index: "] -Inf, 1] {{ count }} utilisateur|] 1, Inf [{{ count }} utilisateurs"
+        index: "]-Inf, 1]{{ count }} utilisateur|]1, Inf[{{ count }} utilisateurs"
+      module:
+        create:
+          button: Créer un utilisateur
+        delete:
+          confirm: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
     role:
       page_title:
-        index: "] -Inf, 1] {{ count }} rôle|] 1, Inf [{{ count }} rôles"
+        index: "]-Inf, 1]{{ count }} rôle|]1, Inf[{{ count }} rôles"
+      module:
+        create:
+          button: Créer un rôle
+        delete:
+          confirm: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
     group:
       page_title:
-        index: "] -Inf, 1] {{ count }} groupe|] 1, Inf [{{ count }} groupes"
+        index: "]-Inf, 1]{{ count }} groupe|]1, Inf[{{ count }} groupes"
+      module:
+        create:
+          button: Créer un groupe

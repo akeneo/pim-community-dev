@@ -24,12 +24,20 @@ pim_import_export:
           success: Jobbet fjernet
     import_profile:
       uppercase_label: Import profiler
-      page_title:
-        index: "] -Inf, 1] {{ count }} import profil |] 1, Inf [{{ count }} import profiler"
+      flash:
+        create:
+          success: Importer profil oprettet
+      module:
+        create:
+          button: opret import profil
     export_profile:
       uppercase_label: Eksport profiler
-      page_title:
-        index: "] -Inf, 1] {{ count }} eksportprofil |] 1, Inf [{{ count }} export profiler"
+      flash:
+        create:
+          success: Eksport profil oprettet
+      module:
+        create:
+          button: opret eksportprofil
   form:
     job_execution:
       title.details: udførelse detaljer

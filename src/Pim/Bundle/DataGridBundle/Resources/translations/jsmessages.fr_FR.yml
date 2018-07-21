@@ -69,6 +69,10 @@ pim_datagrid:
       empty: est vide
       not_empty: n'est pas vide
       in_list: dans la liste
+      contains: contient
+      does_not_contain: ne contient pas
+      equal: est égal à
+      start_with: commence par
       operator: Opérateur
     price_filter:
       label: Devise

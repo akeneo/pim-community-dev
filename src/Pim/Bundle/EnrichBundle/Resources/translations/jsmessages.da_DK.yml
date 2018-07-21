@@ -15,6 +15,7 @@ pim_common:
   delete: Slet
   done: Udført
   edit: Redigér
+  entity_updated: Der er ikke-gemte ændringer.
   from: Fra
   general_properties: Generelle egenskaber
   history: Historik
@@ -32,7 +33,12 @@ pim_common:
   permissions: Rettigheder
   previous: Forrige
   properties: Egenskaber
+  required_label: (Påkrævet)
   save: Gem
+  select2:
+    search: Søg...
+    no_match: Ingen fundet
+    load_more: Indlæser flere resultater...
   status: Status
   to: til
   type: Type
@@ -52,30 +58,6 @@ pim_common:
     DOES NOT CONTAIN: Indeholder ikke
     STARTS WITH: Starter med
     ENDS WITH: Ender med
-confirmation:
-  remove:
-    title: Slet denne {{ itemName }}
-    alternative_title: Bekræft fjernelse af
-    item: Er du sikker på at du vil slette dette emne?
-    association_type: Er du sikker på du vil slette denne associations type?
-    attribute: Er du sikker på du vil slette attributten?
-    attribute_from_group: Vil du fjerne attributten {{ attribute }} fra denne attributgruppe?
-    attribute_from_product: Er du sikker på du vil slette denne attribut fra produktet?
-    attribute_group: Er du sikker på du vil slette denne attributgruppe?
-    family: Er du sikker på at du vil slette denne familie?
-    product: Er du sikker på du vil slette dette produkt?
-    product_model: Er du sikker på du vil slette denne produktmodel? Alle underliggende produkter, produktmodeller og variant produkter, slettes også.
-    channel: Er du sikker på du vil slette denne kanal?
-    group: Er du sikker på du vil slette denne gruppe?
-    group_type: Er du sikker på du vil slette denne gruppe type?
-    user: Er du sikker på du vil slette denne bruger?
-    role: Er du sikker på du vil slette denne rolle?
-    api_connection: Er du sikker på, du vil tilbagekalde denne API tilslutning? Alle API forbindelser via denne forbindelse vil fremover fejle.
-    products_and_product_models: Er du sikker på du vil slette de valgte produkter og produktmodeller? Alle produktmodeller og undeliggende produkter bliver også slettet.
-  leave: Er du sikker på du vil forlade denne side?
-  discard_changes: Du vil miste ændringer til %entity%, hvis du forlader siden.
-  cancel:
-    title: Annullere ændringer
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -107,6 +89,8 @@ pim_datagrid:
     change_status: Skift status
     toggle_status: Skift status
     other: andre handlinger
+  filters:
+    label: Filtre
 error:
   exception: Oh snap! Der opstod en {{ status_code }}...
   forbidden: Du har ikke adgang til denne side
@@ -116,603 +100,524 @@ alert:
     save_before_edit_other: Registrer dine ændringer på andre rækker før du redigerer denne ene
   session_storage:
     not_available: Din webbrowser er ikke kompatibel med sessionStorage. Kontakt din administrator
-pim_enrich:
-  entity:
-    fallback:
-      flash:
-        generic_error: Der er opstået en fejl
-        update:
-          fail: Opdateringen fejlede
-          success: Opdatering lykkedes
-        delete:
-          fail: Kan ikke slette denne post
-          success: Vare fjernet succesfuldt
-    product:
-      label: produkt
-      uppercase_label: Produkt
-      plural_label: Produkter
-      flash:
-        update:
-          success: Produktet blev opdateret.
-          fail: Produktet kunne ikke opdateres.
-          fields_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
-          already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
-          file_upload: Der opstod en fejl under fil upload
-        delete:
-          success: Produkt slettet.
-          fail: Produktet kunne ikke slettes.
-        create:
-          success: Produktet blev oprettet
-          fail: Ingen attribut er konfigureret som et produkt-id, eller du har ikke rettigheder til at redigere den.
-      page_title:
-        index: "] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
-      subTitle: Opret produkt
-      modalTitle: Vælg en handling
-      filters: Filtre
+pim_enrich.entity.fallback:
+  flash:
+    generic_error: Der er opstået en fejl
+    update:
+      fail: Opdateringen fejlede
+      success: Opdatering lykkedes
+    delete:
+      fail: Kan ikke slette denne post
+      success: Vare fjernet succesfuldt
+  module:
+    delete:
+      title: Slet denne {{ itemName }}
+      alternative_title: Bekræft fjernelse af
+      item: Er du sikker på at du vil slette dette emne?
+    edit:
+      leave: Er du sikker på du vil forlade denne side?
+      discard_changes: Du vil miste ændringer til %entity%, hvis du forlader siden.
+pim_enrich.entity.product:
+  label: produkt
+  uppercase_label: Produkt
+  plural_label: Produkter
+  flash:
+    update:
+      success: Produktet blev opdateret.
+      fail: Produktet kunne ikke opdateres.
+      fields_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
+      already_in_upload: Der findes allerede en fil indlæst for denne attribut for denne landestandard "{{ locale }}" og "{{ scope }}"
+      file_upload: Der opstod en fejl under fil upload
+    delete:
+      success: Produkt slettet.
+      fail: Produktet kunne ikke slettes.
+    create:
+      success: Produktet blev oprettet
+      fail: Ingen attribut er konfigureret som et produkt-id, eller du har ikke rettigheder til at redigere den.
+  module:
+    create:
+      subtitle: Opret produkt
+      title: Vælg en handling
+      choose_family: Vælg familie
+      choose_family_variant: Vælg en familie variant
+    variant_navigation:
       common: Almindelig
-      btn:
-        enabled: Aktiveret
-        disabled: Deaktiveret
-        download_pdf: PDF
-        compare_translate: Sammenlign / oversætte
-      history:
-        version: Version
-        author: Forfatter
-        logged_at: Logget af
-        from: Fra
-        modified: Ændret
-        old_value: Gamle værdier
-        new_value: Ny værdi
-      meta:
-        infos: Produkt info
-        updated: Sidst opdateret
-        family_variant:
-          title: Variant
-        groups:
-          title: Grupper
-          modal:
-            title: Gruppe {{ group }}
-            view_group: Se gruppe
-            more_products: '{{ count }} flere produkter...'
-      copy:
-        select: Vælg
-        all_visible: Alle synlige
-        copy: Kopi
-      optional_attribute:
-        remove: Fjern denne attribut
-      locale_specific_attribute:
-        unavailable: Dette landestandard specifikke felt er ikke tilgængeligt i denne landestandard
-      localizable:
-        channel_locale_unavailable: Dette landespecifik felt er ikke tilgængeligt for locale '{{ locale }}' og '{{ channel }}'-kanal
-      media:
-        upload: Træk og slip for at uploade eller klik her
-      create_popin:
-        labels:
-          family: Vælg familie
-          family_variant: Vælg en familie variant
-      completeness: Fuldført
-      sequential_edit:
-        item_limit: Kun de første 1000 poster vist i dette sekventiel redigere ({{ count }} udvalgte)
-        empty: Dit valg er tom, skal du ændre dine søgekriterier
-    product_model:
-      uppercase_label: Produktmodel
-      plural_label: Produktmodeller
-      flash:
-        create:
-          success: Produktmodellen opdateret.
-        update:
-          success: Produktmodellen opdateret. Fuldstændigheden af dens variant produkter vil blive genberegnet.
-          fail: Produktmodellen kunne ikke opdateres.
-          fields_not_ready: "Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
-        delete:
-          success: Produktmodellen slettet.
-      choose: Vælg en produktmodel
-      create_popin:
-        title: Oprette en produktmodel
-        content: En produktmodel samler variant produkter og letter berigelse af deres fælles egenskaber.
-      variant_axis: Variant akse
-      add_child:
-        create: Tilføj ny
-        create_label: "Tilføje en ny {{ axes }}"
-        fields:
-          required_label: (variant akse)
-    association_type:
-      label: sammenhængstype
-      flash:
-        update:
-          success: Sammenhængstype opdateret
-          fail: Sammenhængs type kunne ikke opdateres.
-          fields_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
-        create:
-          success: Sammenhængstype oprettet
-        delete:
-          success: Sammenhængstypen blev slettet
-          fail: Kan ikke slette denne association type
-      page_title:
-        index: "] -Inf, 1] {{ count }} association type |] 1, Inf [{{ count }} association typer"
-    group_type:
-      label: gruppetype
-      flash:
-        update:
-          success: Gruppetypen opdateret
-          fail: Gruppetypen kunne ikke opdateres.
-          fields_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
-        create:
-          success: Gruppetypen oprettet
-        delete:
-          success: Gruppetypen fjernet
-          fail: Kan ikke slette denne gruppetype
-      page_title:
-        index: "] -Inf, 1] {{ count }} gruppetype |] 1, Inf [{{ count }} gruppe typer{{ count }}"
-    channel:
-      label: kanal
-      uppercase_label: Kanal
-      flash:
-        update:
-          success: Kanalen blev opdateret.
-          fail: Kanalen kunne ikke opdateres.
-        create:
-          success: Kanal oprettet.
-          fail: Kanalen kunne ikke opdateres.
-        delete:
-          success: Kanalen blev fjernet
-          fail: Kan ikke slette denne kanal
-      page_title:
-        index: "] -Inf, 1] {{ count }} kanal |] 1, Inf [{{ count }} kanaler"
-    family:
-      label: familie
-      uppercase_label: Familie
-      flash:
-        update:
-          success: Familien opdateret
-          fail: Der opstod en fejl under opdatering af familie.
-          cant_remove_attribute_as_label: Kan ikke fjerne en attribut der bruges som etiket
-          cant_remove_attribute_as_image: Kan ikke fjerne attributten anvendes som det primære billede
-          cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
-        create:
-          success: Familien blev oprettet
-        delete:
-          success: Familien fjernet
-          fail: Kan ikke slette denne familie
-      page_title:
-        index: "] -Inf, 1] {{ count }} familie |] 1, Inf [{{ count }} familier"
-      variant:
-        axis.label: Variant akse
-        level_1.label: Variant attributter niveau 1
-        level_2.label: Variant attributter niveau to
-        add_variant: Tilføje variant
-        create_label: Opret en ny familie variant
-        create_description: I en familie variant, kan du definere en struktur for produkter med varianter. Vælge antallet af administrerede variant niveauer, de attributter, der bruges som variant akser for hvert niveau, og derefter definere hvordan attributterne er fordelt.
-        levels: Variant niveauer
-        axis_level: Variant akse niveau
-        required: Påkrævet
-    family_variant:
-      flash:
-        create:
-          success: Familie variant blev oprettet
-    attribute_option:
-      flash:
-        create:
-          success: Attribut tilvalg oprettet
-          fail: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
-        update:
-          fail: Kan ikke gemme attribut indstilling
-        delete:
-          fail: Fejl under sletning af attribut indstillingen
-    group:
-      label: Gruppe
-      flash:
-        update:
-          success: Gruppe opdateret
-          fail: Gruppen kunne ikke opdateres.
-          fields_not_ready: "Gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
-        create:
-          success: Gruppe oprettet
-        delete:
-          success: Gruppen blev slettet
-          fail: Kan ikke slette denne gruppe
-      page_title:
-        index: "] -Inf, 1] {{ count }} group |] 1, Inf [{{ count }} grupper"
+    status:
+      enabled: Aktiveret
+      disabled: Deaktiveret
+    download_pdf:
+      label: PDF
+    copy:
+      label: Sammenlign / oversætte
+      select: Vælg
+      all_visible: Alle synlige
+      copy: Kopi
+    history:
+      version: Version
+      author: Forfatter
+      logged_at: Logget af
+      from: Fra
+      modified: Ændret
+      old_value: Gamle værdier
+      new_value: Ny værdi
+    meta:
+      updated: Sidst opdateret
+      groups: Grupper
+    show_group:
+      title: Gruppe {{ group }}
+      view_group: Se gruppe
+      more_products: '{{ count }} flere produkter...'
     attribute:
-      label: attribut
-      plural_label: Egenskaber
-      flash:
-        update:
-          success: Atributten blev opdateret.
-          fail: Atributten kunne ikke opdateres.
-          fields_not_ready: "Attributten kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
-        delete:
-          success: Attributten blev slettet
-          fail: Kan ikke slette denne attribut
-      page_title:
-        index: "] -Inf, 1] {{ count }} attribut |] 1, Inf [{{ count }} attributter"
-      property:
-        allowed_extensions: Tilladte filendelser
-        auto_option_sorting: Sorter automatisk indstillinger efter alfabetisk rækkefølge
-        available_locales: Tilgængelige landestandarder
-        date_max: Maks. dato
-        date_min: Min. dato
-        decimals_allowed: Decimal værdier tilladt
-        default_metric_unit:
-          label: Standard metriske enhed
-          choose: Vælg enhed
-        group:
-          label: Attributgruppe
-          choose: Vælg attributgruppe
-        is_locale_specific: Landestandard specifik
-        localizable: Værdi pr. landestandard
-        max_characters: Maks. tegn
-        max_file_size: Maks. filstørrelse (MB)
-        metric_family:
-          label: Metriske familie
-          choose: Vælg familie
-        minimum_input_length: Minimumlængde for autokomplettering
-        negative_allowed: Negative værdier tilladt
-        number_max: Maks. antal
-        number_min: Min. antal
-        reference_data_name:
-          label: Reference data type
-          choose: Vælg reference datatype
-        scopable: Værdi pr. kanal
-        type:
-          choose: Vælg attributtype
-          pim_catalog_identifier: Id
-          pim_catalog_text: Tekst
-          pim_catalog_textarea: Tekstområde
-          pim_catalog_number: Tal
-          pim_catalog_price_collection: Pris
-          pim_catalog_multiselect: Multi Select
-          pim_catalog_simpleselect: Simpel valg
-          pim_catalog_file: Fil
-          pim_catalog_image: Billede
-          pim_catalog_boolean: "Ja / Nej"
-          pim_catalog_date: Dato
-          pim_catalog_metric: Metrisk
-          pim_reference_data_simpleselect: Referencedata simpel Vælg
-          pim_reference_data_multiselect: Reference data multi Vælg
-        unique: Unik værdi
-        useable_as_grid_filter: Brugbare i gitter
-        validation_regexp: Regulære udtryk
-        validation_rule:
-          label: Valideringsregel
-          email: E-mail
-          regexp: Regulære udtryk
-          url: URL
-        wysiwyg_enabled: RTF-editoren aktiveret
-      tab:
-        properties:
-          section:
-            common: Generelle parametre
-            type_specific: Specifik type parametre
-            validation: Valideringsparametre
-        choices:
-          title: Muligheder
-      create:
-        create_btn: opret attribut
-    attribute_group:
-      label: attributgruppe
-      plural_label: Attributgrupper
-      flash:
-        update:
-          success: Attributgruppe opdateret
-          fail: Attributgruppe kunne ikke opdateres
-        delete:
-          success: Attributgruppe fjernet
-    api_connection:
-      flash:
-        create:
-          success: API forbindelse oprettet
-        delete:
-          success: API forbindelse tilbagekaldt
-      page_title:
-        index: "] -Inf, 1] {{ count }} API forbindelse |] 1, Inf [{{ count }} API forbindelser"
-    locale:
-      label: landestandard
-      uppercase_label: Landestandard
-      plural_label: Landestandarder
-      page_title:
-        index: "] -Inf, 1] {{ count }} locale |] 1, Inf [{{ count }} landestandarder"
-    category:
-      label: kategori
-      uppercase_label: Kategori
-      plural_label: Kategorier
-    currency:
-      page_title:
-        index: "] -Inf, 1] {{ count }} valuta |] 1, Inf [{{ count }} valutaer"
-    job_execution:
-      page_title:
-        index: "] -Inf, 1] {{ count }} operation |] 1, Inf [{{ count }} operationer"
-  info:
-    entity:
-      updated: Der er ikke-gemte ændringer.
-  form:
-    required: (Påkrævet)
-    product_model:
-      complete_variant_product: variant produkt
-      complete_variant_products: variant produkter
-      family_variant: Variant
-      flash:
-        product_model_added: Produktmodellen føjet til produktmodellen
-        variant_product_added: Variant produkt føjet til produktmodellen
-    product:
-      tab:
-        associations:
-          title: Tilknytninger
-          info:
-            none_exist: Der findes ingen sammenhængstype.
-            show_products: Display-produkter
-            show_groups: Visningsgrupper
-          association_type_selector: Sammenhængstyper
-          target: Mål
-        attributes:
-          info:
-            search_attributes: Søg...
-            no_available_attributes: Der er ikke flere attributter at tilføje
-            attributes_selected: "{{ itemsCount }} attribut(ter) valgt"
-            no_match: Ingen fundet
-            load_more: Indlæser flere resultater...
-          attribute_group_selector: Attributgruppe
-          attribute_filter:
-            display: Vis
-            all: Alle attributter
-            missing_required: Alle manglende krævede attributter
-            at_this_level: Alle niveau specifikke attributter
-      panel:
-        completeness:
-          title: Fuldstændighed
-          info:
-            no_family: Ingen familie defineret. Definér venligst en familie for at beregne fuldstændigheden af dette produkt.
-            no_completeness: Du har lige ændret familie af produktet. Gem det første for at beregne fuldstændighed for den nye familie.
-          missing_values: "{1} 1 mangler værdi |] 1, Inf [{{ count }} manglende værdier"
-      sequential_edit:
-        info:
-          previous: Springe tilbage til {{ product }} uden at gemme.
-          next: Spring til {{ product }} uden at gemme.
-        btn:
-          save_and_next: Gem og næste
-          save_and_finish: Gem og afslut
-      change_family:
-        modal:
-          title: Ændre produktfamilien
-          merge_attributes: Aktuelle attributter flettes med dem i den nye familie.
-          keep_attributes: Ingen attributter vil blive fjernet.
-          change_family_to: Ændre familien til
-          empty_selection: Vælg familie
-      mass_edit:
-        select_attributes: Vælg attributter
-        select: Vælg
-    channel:
-      tab:
-        properties:
-          general: Generelt
-          currencies: Valutaer
-          category_tree: Kategoritræstrukturen
-          label_conversion_units: Vælge en konvertering enhed for hver metriske attribut, der skal bruges under produkt eksport
-          conversion_unit:
-            do_not_convert: Konvertér ikke
-    family:
-      tab:
-        properties:
-          general: Generelt
-          attribute_as_label: Attributten anvendes som etiket
-          attribute_as_image: Attributten anvendes som det primære billede
-          empty_attribute_as_image: Ikke valgte
-        attributes:
-          toolbox:
-            select_attributes_by_groups: Tilføj efter gruppe
-            attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
-          not_required_label: Ikke påkrævet
-          required_label: Påkrævet
-        variant:
-          title: Varianter
-    family_variant:
-      tab:
-        attributes:
-          title: Variant attributter
-        labels:
-          title: Etiket oversættelser
-    attribute_option:
-      add_option_modal:
-        title: Tilføj attribut tilvalg
+      remove_optional: Fjern denne attribut
+      locale_specific_unavailable: Dette landestandard specifikke felt er ikke tilgængeligt i denne landestandard
+      locale_unavailable: Dette landespecifik felt er ikke tilgængeligt for locale '{{ locale }}' og '{{ channel }}'-kanal
+      media_upload: Træk og slip for at uploade eller klik her
+      add_attribute_option: Tilføj attribut tilvalg
       add_option: Tilføje en mulighed
-    attribute_group:
-      tab:
-        attribute:
-          table:
-            name: Navn
-            type: Type
-            scopable: Omfangbar
-            localizable: Oversættelige
-    common:
-      tab:
-        attributes:
-          info:
-            search_attributes: Søg...
-            no_available_attributes: Der er ikke flere attributter at tilføje
-    mass_edit:
-      family:
-        attributes:
-          toolbox:
-            select_attributes_by_groups: Tilføj efter gruppe
-            attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
+    completeness:
+      title: Fuldstændighed
+      complete: Fuldført
+      no_family: Ingen familie defineret. Definér venligst en familie for at beregne fuldstændigheden af dette produkt.
+      no_completeness: Du har lige ændret familie af produktet. Gem det første for at beregne fuldstændighed for den nye familie.
+    sequential_edit:
+      item_limit: Kun de første 1000 poster vist i dette sekventiel redigere ({{ count }} udvalgte)
+      empty: Dit valg er tom, skal du ændre dine søgekriterier
+      save_and_next: Gem og næste
+      save_and_finish: Gem og afslut
+    associations:
+      title: Tilknytninger
+      none_exist: Der findes ingen sammenhængstype.
+      show_products: Display-produkter
+      show_groups: Visningsgrupper
+      association_type_selector: Sammenhængstyper
+      target: Mål
+    attribute_filter:
+      display: Vis
+      all: Alle attributter
+      missing_required: Alle manglende krævede attributter
+      at_this_level: Alle niveau specifikke attributter
+    change_family:
+      title: Ændre produktfamilien
+      merge_attributes: Aktuelle attributter flettes med dem i den nye familie.
+      keep_attributes: Ingen attributter vil blive fjernet.
+      change_family_to: Ændre familien til
+      empty_selection: Vælg familie
     basket:
       title: Indkøbskurv
       empty_basket: Indkøbskurven er tom
-  job:
-    upload: Slip din {{ type }} fil her, eller klik for at gennemse disken
-  export:
-    product:
-      data:
-        title: Filtrer produkter
-      structure:
-        title: Filtrere data
-      filter:
-        channel:
-          help: Kanalen definerer mulighederne for produkt værdier, de landestandarder, der bruges til at vælge data og træet bruges til at vælge produkter.
-        locales:
-          help: "Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk."
-        attributes:
-          label: "{0} alle attributter |{1} én attribut valgt |] 1, Inf [{{ count }} attributter valgt"
-          help: "Vælg produktinformation til eksport. Ex: kun de tekniske egenskaber."
-          empty: Alle attributter vil blive eksporteret
-          modal:
-            title: Valg af batchattributter
-        attributes_selector:
-          attributes: "Søg i {{ itemsCount }} attributter"
-          selected: "Valgte attributter"
-          clear: Nustil
-          all_group: Alle grupper
-          empty_selection: Alle attributter vil blive eksporteret
-          description: Vælg fabrikat oplysningerne eksportere
-        family:
-          title: Familie
-          help: "Vælg produkterne, der eksporteres af deres familie. Ex: Eksport kun de sko og kjoler."
-          operators:
-            IN: I listen
-            "NOT IN": Ikke på listen
-            EMPTY: Produkter, der ikke har en familie
-            "NOT EMPTY": Produkter, der har en familie
-          empty_selection: Ingen betingelse på familier
-        updated:
-          title: Tid tilstand
-          operators:
-            ALL: Ingen dato tilstand
-            "SINCE LAST N DAYS": Opdaterede varer i løbet af de sidste n dage (f.eks. 6)
-            ">": Opdaterede produkter siden denne dato
-            "SINCE LAST JOB": Opdaterede produkter siden sidste eksport
-        enabled:
-          title: Status
-          help: "Vælg produkterne, der eksporteres af deres status. Ex: Eksportere produkter overhovedet deres status."
-          value:
-            enabled: Aktiveret
-            disabled: Deaktiveret
-        completeness:
-          title: Fuldstændighed
-          help: Vælg produkterne, der eksporteres af deres fuldstændighed.
-          operators:
-            ALL: Ingen betingelse på fuldstændighed
-            ">=": Komplet på mindst én valgte landestandard
-            "GREATER OR EQUALS THAN ON ALL LOCALES": Komplet på alle valgte landestandarder
-            LOWER THAN ON ALL LOCALES: Ikke komplet på alle valgte landestandarder
-            AT LEAST COMPLETE: Mindst ét underordnet produkt komplet på én valgte landestandard
-            ALL COMPLETE: Alle underliggende produkter komplet på alle valgte landestandarder
-          empty_selection: Vælg en familie
-        category:
-          title: Kategori
-          help: Brug produktkategorierne i træet (defineret af kanalen ovenfor) til at vælge produkter til eksport
-        identifier:
-          title: Id
-          help: Brug produkt-id'erne til at eksportere adskilt af kommaer, mellemrum eller linjeskift
-        string:
-          operators:
-            ALL: Alle
-        select:
-          operators:
-            IN: I listen
-        date:
-          operators:
-            BETWEEN: Mellem
-            NOT BETWEEN: ikke mellem
-      global_settings:
-        title: Globale indstillinger
-  mass_edit_action:
-    edit_common_attributes:
-      description: Kun de attributter, der tilhører familierne til de valgte produkter vil blive redigeret med følgende data for <span class="highlight">{{ locale }}</span> locale og <span class="highlight">{{ channel }}</span> kanal.
-  index:
-    association_type:
-      create_btn: opret sammenhængstype
-    import_profiles:
-      create_btn: opret import profil
-      list: Vælg et job
-      message:
-        created: Importer profil oprettet
+    delete:
+      confirm: Er du sikker på du vil slette dette produkt?
+pim_enrich.entity.product_model:
+  uppercase_label: Produktmodel
+  plural_label: Produktmodeller
+  flash:
+    create:
+      success: Produktmodellen opdateret.
+      product_model_added: Produktmodellen føjet til produktmodellen
+      variant_product_added: Variant produkt føjet til produktmodellen
+    update:
+      success: Produktmodellen opdateret. Fuldstændigheden af dens variant produkter vil blive genberegnet.
+      fail: Produktmodellen kunne ikke opdateres.
+      fields_not_ready: "Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
+    delete:
+      success: Produktmodellen slettet.
+  choose: Vælg en produktmodel
+  property:
+    family_variant: Variant
+  module:
+    create:
+      title: Oprette en produktmodel
+      content: En produktmodel samler variant produkter og letter berigelse af deres fælles egenskaber.
+    variant_axis:
+      create: Tilføj ny
+      create_label: "Tilføje en ny {{ axes }}"
+      required_label: '(variant akse)'
+    delete:
+      confirm: Er du sikker på du vil slette denne produktmodel? Alle underliggende produkter, produktmodeller og variant produkter, slettes også.
+      confirm_for_products_and_product_models: Er du sikker på du vil slette de valgte produkter og produktmodeller? Alle produktmodeller og undeliggende produkter bliver også slettet.
+pim_enrich.entity.channel:
+  label: kanal
+  uppercase_label: Kanal
+  flash:
+    update:
+      success: Kanalen blev opdateret.
+      fail: Kanalen kunne ikke opdateres.
+    create:
+      success: Kanal oprettet.
+      fail: Kanalen kunne ikke opdateres.
+    delete:
+      success: Kanalen blev fjernet
+      fail: Kan ikke slette denne kanal
+  property:
+    category_tree: Kategoritræstrukturen
+    do_not_convert: Konvertér ikke
+    label_conversion_units: Vælge en konvertering enhed for hver metriske attribut, der skal bruges under produkt eksport
+  module:
+    create:
+      button: opret kanal
+    delete:
+      confirm: Er du sikker på du vil slette denne kanal?
+pim_enrich.entity.family:
+  label: familie
+  uppercase_label: Familie
+  flash:
+    update:
+      success: Familien opdateret
+      fail: Der opstod en fejl under opdatering af familie.
+      cant_remove_attribute_as_label: Kan ikke fjerne en attribut der bruges som etiket
+      cant_remove_attribute_as_image: Kan ikke fjerne attributten anvendes som det primære billede
+      cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
+    create:
+      success: Familien blev oprettet
+    delete:
+      success: Familien fjernet
+      fail: Kan ikke slette denne familie
+  property:
+    attribute_as_label: Attributten anvendes som etiket
+    attribute_as_image: Attributten anvendes som det primære billede
+    empty_attribute_as_image: Ikke valgte
+  module:
+    attributes:
+      not_required_label: Ikke påkrævet
+      required_label: Påkrævet
+    create:
+      button: opret familie
+    delete:
+      confirm: Er du sikker på at du vil slette denne familie?
+pim_enrich.entity.family_variant:
+  short_plural_label: Varianter
+  short_label: Variant
+  flash:
+    create:
+      success: Familie variant blev oprettet
+  module:
+    edit:
+      variant_axis_label: Variant akse
+      variant_attributes: Variant attributter
+      level_1: Variant attributter niveau 1
+      level_2: Variant attributter niveau to
+    create:
+      label: Tilføje variant
+      title: Opret en ny familie variant
+      description: I en familie variant, kan du definere en struktur for produkter med varianter. Vælge antallet af administrerede variant niveauer, de attributter, der bruges som variant akser for hvert niveau, og derefter definere hvordan attributterne er fordelt.
+      variant_levels: Variant niveauer
+pim_enrich.entity.attribute_option:
+  short_uppercase_label: Muligheder
+  flash:
+    create:
+      success: Attribut tilvalg oprettet
+      fail: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
+    update:
+      fail: Kan ikke gemme attribut indstilling
+    delete:
+      fail: Fejl under sletning af attribut indstillingen
+  module:
+    edit:
+      cancel_title: Annullere ændringer
+pim_enrich.entity.association_type:
+  label: sammenhængstype
+  flash:
+    update:
+      success: Sammenhængstype opdateret
+      fail: Sammenhængs type kunne ikke opdateres.
+      fields_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
+    create:
+      success: Sammenhængstype oprettet
+    delete:
+      success: Sammenhængstypen blev slettet
+      fail: Kan ikke slette denne association type
+  module:
+    create:
+      button: opret sammenhængstype
+    delete:
+      confirm: Er du sikker på du vil slette denne associations type?
+pim_enrich.entity.group_type:
+  label: gruppetype
+  flash:
+    update:
+      success: Gruppetypen opdateret
+      fail: Gruppetypen kunne ikke opdateres.
+      fields_not_ready: "Produktet kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
+    create:
+      success: Gruppetypen oprettet
+    delete:
+      success: Gruppetypen fjernet
+      fail: Kan ikke slette denne gruppetype
+  module:
+    create:
+      button: opret gruppetype
+    delete:
+      confirm: Er du sikker på du vil slette denne gruppe type?
+pim_enrich.entity.group:
+  label: Gruppe
+  flash:
+    update:
+      success: Gruppe opdateret
+      fail: Gruppen kunne ikke opdateres.
+      fields_not_ready: "Gruppen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
+    create:
+      success: Gruppe oprettet
+    delete:
+      success: Gruppen blev slettet
+      fail: Kan ikke slette denne gruppe
+  module:
+    create:
+      button: Opret gruppe
+    delete:
+      confirm: Er du sikker på du vil slette denne gruppe?
+pim_enrich.entity.attribute:
+  label: attribut
+  plural_label: Egenskaber
+  flash:
+    update:
+      success: Atributten blev opdateret.
+      fail: Atributten kunne ikke opdateres.
+      fields_not_ready: "Attributten kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}"
+    delete:
+      success: Attributten blev slettet
+      fail: Kan ikke slette denne attribut
+  property:
+    allowed_extensions: Tilladte filendelser
+    auto_option_sorting: Sorter automatisk indstillinger efter alfabetisk rækkefølge
+    available_locales: Tilgængelige landestandarder
+    date_max: Maks. dato
+    date_min: Min. dato
+    decimals_allowed: Decimal værdier tilladt
+    default_metric_unit:
+      label: Standard metriske enhed
+      choose: Vælg enhed
     group:
-      create_btn: Opret gruppe
-    export_profiles:
-      create_btn: opret eksportprofil
-      message:
-        created: Eksport profil oprettet
-    family:
-      create_btn: opret familie
-    grouptype:
-      create_btn: opret gruppetype
-    user:
-      create_btn: Opret bruger
-    user_role:
-      create_btn: Opret rolle
-    user_group:
-      create_btn: Opret gruppe
+      label: Attributgruppe
+      choose: Vælg attributgruppe
+    is_locale_specific: Landestandard specifik
+    localizable: Værdi pr. landestandard
+    max_characters: Maks. tegn
+    max_file_size: Maks. filstørrelse (MB)
+    metric_family:
+      label: Metriske familie
+      choose: Vælg familie
+    minimum_input_length: Minimumlængde for autokomplettering
+    name: Navn
+    negative_allowed: Negative værdier tilladt
+    number_max: Maks. antal
+    number_min: Min. antal
+    reference_data_name:
+      label: Reference data type
+      choose: Vælg reference datatype
+    scopable: Værdi pr. kanal
+    type:
+      choose: Vælg attributtype
+      pim_catalog_identifier: Id
+      pim_catalog_text: Tekst
+      pim_catalog_textarea: Tekstområde
+      pim_catalog_number: Tal
+      pim_catalog_price_collection: Pris
+      pim_catalog_multiselect: Multi Select
+      pim_catalog_simpleselect: Simpel valg
+      pim_catalog_file: Fil
+      pim_catalog_image: Billede
+      pim_catalog_boolean: "Ja / Nej"
+      pim_catalog_date: Dato
+      pim_catalog_metric: Metrisk
+      pim_reference_data_simpleselect: Referencedata simpel Vælg
+      pim_reference_data_multiselect: Reference data multi Vælg
+    unique: Unik værdi
+    useable_as_grid_filter: Brugbare i gitter
+    validation_regexp: Regulære udtryk
+    validation_rule:
+      label: Valideringsregel
+      email: E-mail
+      regexp: Regulære udtryk
+      url: URL
+    wysiwyg_enabled: RTF-editoren aktiveret
+  module:
+    add_attribute:
+      no_available_attributes: Der er ikke flere attributter at tilføje
+      attributes_selected: "{{ itemsCount }} attribut(ter) valgt"
+    create:
+      button: opret attribut
+    edit:
+      common: Generelle parametre
+      type_specific: Specifik type parametre
+      validation: Valideringsparametre
+    delete:
+      confirm: Er du sikker på du vil slette attributten?
+      confirm_from_group: Vil du fjerne attributten {{ attribute }} fra denne attributgruppe?
+      confirm_from_product: Er du sikker på du vil slette denne attribut fra produktet?
+pim_enrich.entity.attribute_group:
+  label: attributgruppe
+  uppercase_label: Attributgruppe
+  plural_label: Attributgrupper
+  flash:
+    update:
+      success: Attributgruppe opdateret
+      fail: Attributgruppe kunne ikke opdateres
+    delete:
+      success: Attributgruppe fjernet
+  module:
+    add_attribute_group:
+      label: Tilføj efter gruppe
+      attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
+    delete:
+      confirm: Er du sikker på du vil slette denne attributgruppe?
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: API forbindelse oprettet
+    delete:
+      success: API forbindelse tilbagekaldt
+pim_enrich.entity.locale:
+  label: landestandard
+  uppercase_label: Landestandard
+  plural_label: Landestandarder
+pim_enrich.entity.category:
+  label: kategori
+  uppercase_label: Kategori
+  plural_label: Kategorier
+pim_enrich.entity.currency:
+  plural_label: Valutaer
+pim_enrich.entity.job_execution:
+  module:
+    create:
+      upload: Slip din {{ type }} fil her, eller klik for at gennemse disken
+    download:
+      archive: Download genereret Arkiv
+      output: Download genererede fil
+      input: Download læse filer
+      invalid_xlsx: download ugyldige data
+      invalid_csv: download ugyldige data
+pim_enrich.export.product:
+  data:
+    title: Filtrer produkter
+  structure:
+    title: Filtrere data
+  filter:
     channel:
-      create_btn: opret kanal
-  mass_edit:
-    product:
-      title: Produkter bulk handling
-      confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
-      step:
-        select:
-          label: Vælg produkter
-        choose:
-          title: Produkter bulk handling
-          label_count: "] 0, Inf [Vælg din handling"
-        configure:
-          label: Konfigurér
-        confirm:
-          label: Bekræft
-        launch_error:
-          label: Der opstod en fejl under opstart af handlingen masse Rediger
-        launched:
-          label: Bulk-handlingen "{{ operation }}" er blevet igangsat. Du får besked, når den er afsluttet.
-      operation:
-        change_status:
-          label: Skift status
-          label_count: "{1}Change <span class=\"AknFullPage-title--highlight\"> 1</span> produkt |] 1, Inf [Skift status af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
-          description: De valgte produkter vil blive aktiveret eller deaktiveret.
-          field: At aktivere
-        edit_common:
-          description: Kun de attributter, der tilhører familierne til de valgte produkter vil blive redigeret med følgende data for {{ locale }} locale og {{ scope }} kanal.
-        change_family:
-          label: Ændre familie
-          label_count: "{1}Change familie af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Skift familie af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
-          description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
-        add_to_group:
-          label: Tilføj til grupper
-          label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> grupper |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
-          description: Vælg de grupper hvor de udvalgte produkter skal tilføjes til
-          field: Grupper
-        add_to_category:
-          label: Tilføje til kategorier
-          label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> grupper |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
-        move_to_category:
-          label: Flyt mellem kategorier
-          label_count: "{1}Flyt <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> mellem kategorier |] 1, Inf [Flyt <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> mellem kategorier"
-        remove_from_category:
-          label: Fjern fra kategorier
-          label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
-          description: Produkterne vil blive fjernet fra følgende kategorier.
-        add_to_existing_product_model:
-          label: Føj til en eksisterende produktmodel
-          label_count: "{1}Add <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> til en eksisterende produktmodel |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til en eksisterende produktmodel"
-          description: Den valgte produktmodel vil samle produkterne og giver mulighed for berigelse af deres fælles egenskaber.
+      help: Kanalen definerer mulighederne for produkt værdier, de landestandarder, der bruges til at vælge data og træet bruges til at vælge produkter.
+    locales:
+      help: "Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk."
+    attributes:
+      label: "{0} alle attributter |{1} én attribut valgt |] 1, Inf [{{ count }} attributter valgt"
+      help: "Vælg produktinformation til eksport. Ex: kun de tekniske egenskaber."
+      empty: Alle attributter vil blive eksporteret
+      modal:
+        title: Valg af batchattributter
+    attributes_selector:
+      attributes: "Søg i {{ itemsCount }} attributter"
+      selected: "Valgte attributter"
+      clear: Nustil
+      all_group: Alle grupper
+      empty_selection: Alle attributter vil blive eksporteret
+      description: Vælg fabrikat oplysningerne eksportere
     family:
+      title: Familie
+      help: "Vælg produkterne, der eksporteres af deres familie. Ex: Eksport kun de sko og kjoler."
+      operators:
+        IN: I listen
+        "NOT IN": Ikke på listen
+        EMPTY: Produkter, der ikke har en familie
+        "NOT EMPTY": Produkter, der har en familie
+      empty_selection: Ingen betingelse på familier
+    updated:
+      title: Tid tilstand
+      operators:
+        ALL: Ingen dato tilstand
+        "SINCE LAST N DAYS": Opdaterede varer i løbet af de sidste n dage (f.eks. 6)
+        ">": Opdaterede produkter siden denne dato
+        "SINCE LAST JOB": Opdaterede produkter siden sidste eksport
+    enabled:
+      title: Status
+      help: "Vælg produkterne, der eksporteres af deres status. Ex: Eksportere produkter overhovedet deres status."
+      value:
+        enabled: Aktiveret
+        disabled: Deaktiveret
+    completeness:
+      title: Fuldstændighed
+      help: Vælg produkterne, der eksporteres af deres fuldstændighed.
+      operators:
+        ALL: Ingen betingelse på fuldstændighed
+        ">=": Komplet på mindst én valgte landestandard
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Komplet på alle valgte landestandarder
+        LOWER THAN ON ALL LOCALES: Ikke komplet på alle valgte landestandarder
+        AT LEAST COMPLETE: Mindst ét underordnet produkt komplet på én valgte landestandard
+        ALL COMPLETE: Alle underliggende produkter komplet på alle valgte landestandarder
+      empty_selection: Vælg en familie
+    category:
+      title: Kategori
+      help: Brug produktkategorierne i træet (defineret af kanalen ovenfor) til at vælge produkter til eksport
+    identifier:
+      title: Id
+      help: Brug produkt-id'erne til at eksportere adskilt af kommaer, mellemrum eller linjeskift
+    string:
+      operators:
+        ALL: Alle
+    select:
+      operators:
+        IN: I listen
+    date:
+      operators:
+        BETWEEN: Mellem
+        NOT BETWEEN: ikke mellem
+  global_settings:
+    title: Globale indstillinger
+pim_enrich.mass_edit.product:
+  title: Produkter bulk handling
+  step:
+    select:
+      label: Vælg produkter
+    choose:
+      title: Produkter bulk handling
+    configure:
+      label: Konfigurér
+    confirm:
+      label: Bekræft
+    launch_error:
+      label: Der opstod en fejl under opstart af handlingen masse Rediger
+    launched:
+      label: Bulk-handlingen "{{ operation }}" er blevet igangsat. Du får besked, når den er afsluttet.
+  operation:
+    common:
+      select_attributes: Vælg attributter
+    change_status:
+      label: Skift status
+      description: De valgte produkter vil blive aktiveret eller deaktiveret.
+      field: At aktivere
+    edit_common:
+      description: Kun de attributter, der tilhører familierne til de valgte produkter vil blive redigeret med følgende data for {{ locale }} locale og {{ scope }} kanal.
+    change_family:
+      label: Ændre familie
+      description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
+    add_to_group:
+      label: Tilføj til grupper
+      description: Vælg de grupper hvor de udvalgte produkter skal tilføjes til
+      field: Grupper
+    add_to_category:
+      label: Tilføje til kategorier
+    move_to_category:
+      label: Flyt mellem kategorier
+    remove_from_category:
+      label: Fjern fra kategorier
+      description: Produkterne vil blive fjernet fra følgende kategorier.
+    add_to_existing_product_model:
+      label: Føj til en eksisterende produktmodel
+      description: Den valgte produktmodel vil samle produkterne og giver mulighed for berigelse af deres fælles egenskaber.
+pim_enrich.mass_edit.family:
+  title: Familier massehandling
+  step:
+    select:
+      label: Vælg familier
+    choose:
       title: Familier massehandling
-      confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
-      step:
-        select:
-          label: Vælg familier
-        choose:
-          title: Familier massehandling
-          label_count: "] 0, Inf [Vælg din handling"
-        configure:
-          label: Konfigurér
-        confirm:
-          label: Bekræft
-        launched:
-          label: Bulk-handlingen "{{ operation }}" er blevet igangsat. Du får besked, når den er afsluttet.
-      operation:
-        set_requirements:
-          label: Indstil attribut krav
-          description: Følgende attribut krav vil blive anvendt til de valgte familier
-          label_count: "Sæt attribut kravene for  <span class=\"AknFullPage-title--highlight\">1 familie</span>|] 1, Inf [Sæt attribut kravene for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familier</span>"
+    configure:
+      label: Konfigurér
+    confirm:
+      label: Bekræft
+    launched:
+      label: Bulk-handlingen "{{ operation }}" er blevet igangsat. Du får besked, når den er afsluttet.
+  operation:
+    set_requirements:
+      label: Indstil attribut krav
+      description: Følgende attribut krav vil blive anvendt til de valgte familier
 pim_title:
   oro_default: Kontrolpanel
   pim_enrich_attributegroup_index: Attributgrupper
@@ -750,13 +655,6 @@ pim_title:
   pim_enrich_api_connection_create: API forbindelser | Oprette
   pim_enrich_mass_edit_action: Masse Rediger
   pim_analytics_system_info_index: Systemoplysninger
-job_tracker:
-  download_archive:
-    archive: Download genereret Arkiv
-    output: Download genererede fil
-    input: Download læse filer
-    invalid_xlsx: download ugyldige data
-    invalid_csv: download ugyldige data
 pim_menu:
   tab:
     activity: Aktivitet
@@ -795,6 +693,7 @@ pim_menu:
     user: Brugere håndtering navigation
     settings: Indstillinger for navigation
     product: Produkt navigation
+    product_infos: Produkt info
   user:
     logout: Log ud
     user_account: Min konto
