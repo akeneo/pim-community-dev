@@ -12,7 +12,6 @@ pimee_workflow:
     proposal:
       modal.title: Jätä kommentti (valinnainen - 255 merkkiä max.)
   proposal:
-    overview: "] -Inf, 1] {{ count }} ehdotus|] 1, Inf [{{ count }} ehdotusta"
     selected: ehdotusta valittu
     partial_accept:
       modal.title: Hyväksy osittaisia tietoja

@@ -1,5 +1,5 @@
 pimee_catalog_rule:
-  overview: "] -Inf, 1] {{ count }} règle|] 1, Inf [{{ count }} règles"
+  overview: "]-Inf, 1]{{ count }} règle|]1, Inf[{{ count }} règles"
   execution_button: Exécuter les règles
   selected: 'règles sélectionnées'
   popin:

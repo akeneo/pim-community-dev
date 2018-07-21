@@ -1,208 +1,192 @@
-pimee_enrich.product_history.action.revert: Restaurer cette version
-permission-changes:
-  category:
-    grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans cette catégorie
-    revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans cette catégorie
-  locale:
-    grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans cette locale
-    revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans cette locale
-  attribute group:
-    grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans ce groupe d'attributs
-    revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans ce groupe d'attributs
-  job profile:
-    grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong>
-    revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong>
 pim_enrich:
   entity:
-    attribute_label:
-      pim_assets_collection: Collection de ressources
     attribute:
       property:
         is_read_only: Lecture seule
-  form:
-    attribute:
-      tab:
-        properties:
-          label:
-            is_read_only: Lecture seule
-pim:
-  grid:
-    mass_action:
+pim_datagrid:
+  mass_action:
+    mass_edit:
       asset_edit: Edition de masse des ressources
-pimee_enrich:
-  form:
-    job_instance:
-      tab:
-        permission:
-          added: Le groupe {{ group }} sera autorisé à {{ permission }} le profil
-          execute.label: Autorisé à exécuter les profils
-          edit.label: Autorisé à éditer les profils
-          removed: Le groupe {{ group }} ne sera pas autorisé à {{ permission }} le profil
-    channel:
-      tab:
-        asset-transformation:
-          title: Transformations de la ressource
-    attribute_group:
-      tab:
-        permission:
-          title: Permissions
-          view.label: Autorisé à voir les attributs
-          edit.label: Autorisé à modifier les attributs
-          removed: Le groupe {{ group }} ne sera pas autorisé à {{ permission }} le groupe d'attributs
-          added: Le groupe {{ group }} sera autorisé à {{ permission }} le groupe d'attributs
-  entity:
-    product:
-      index_title: "] -Inf, 1] {{ count }} résultat|] 1, Inf [{{ count }} résultats"
-      navigation: Produits publiés
-      history:
-        published: Publié
-        revert: Restaurer
-      smart_attribute:
-        come_from: "Cet attribut peut être mis à jour par une règle :"
-      btn:
-        publish: Publier
-        publish_this_version: Publier cette version
-        unpublish: Dépublier
-        save_draft: Enregistrer le brouillon
-      flash:
-        product_unpublished: Produit dépublié avec succès
-        product_published: Produit publié avec succès
-        product_not_published: Échec lors de la publication du produit
-        product_not_unpublished: Échec lors de la dépublication du produit
-        product_reverted: La version précédente du produit a été restaurée
-      meta:
-        published: Version publiée
-        owner_groups: Groupes propriétaires
-        draft_status: État du brouillon
-        draft:
-          in_progress: En cours
-          sent_for_approval: En attente d’approbation
-          working_copy: Version de travail
-      tab:
-        proposals:
-          title: Propositions
-          messages:
-            approve:
-              success: La proposition a été soumise avec succès.
-              error: "La proposition ne peut être soumise en raison de l'erreur suivante: {{ error }}"
-            reject:
-              success: La proposition a été rejetée.
-            remove:
-              success: La proposition a été supprimée.
-      confirmation:
-        revert:
-          title: Confirmer la restauration d'une version antérieure
-          content: Êtes-vous sûr de vouloir restaurer le produit dans cette version ?
-        publish:
-          title: Publier ce produit
-          content: Êtes-vous sûr de vouloir publier ce produit ?
-        unpublish:
-          title: Dépublier ce produit
-          content: Êtes-vous sûr de vouloir dépublier ce produit ?
-      info:
-        update_successful: La copie de travail a bien été mise à jour
-      copy:
-        source:
-          working_copy: Version de travail
-          draft: Mon brouillon
-          draft_of: "Brouillon de {{ author }}"
-    product_draft:
-      info:
-        update_successful: Le brouillon a bien été enregistré
-        update_failed: Le brouillon du produit n'a pas pu être mis à jour
-        value_modified: Cette valeur est modifiée par le brouillon actuel
-      flash:
-        sent_for_approval: Le brouillon a été envoyé pour validation
-        draft_not_sendable: Vous ne pouvez pas envoyer ce brouillon pour validation
-      btn:
-        send_for_approval: Soumettre pour validation
-        sent_for_approval: Soumis à la validation
-      modal:
-        accept_proposal: Accepter la proposition
-        accept_selected_proposal: Accepter le(s) proposition(s) sélectionnée(s)
-        reject_proposal: Rejeter la proposition
-        reject_selected_proposal: Rejeter le(s) proposition(s) sélectionnée(s)
-        remove_proposal: Supprimer la proposition
-        send_for_approval: Soumettre pour validation
-        confirm: Envoyer
-        title: Commenter votre proposition (facultatif - 255 caractères max.)
-        characters: caractères.
-      confirmation:
-        discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour validation sans ces modifications ?
-        discard_changes_title: Êtes-vous sûr de vouloir envoyer ce brouillon ?
-  asset_transformation:
-    not_found: Aucune transformation trouvée
-    title:
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans cette catégorie
+      revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans cette catégorie
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans cette locale
+      revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans cette locale
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong> dans ce groupe d'attributs
+      revoke: Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong> dans ce groupe d'attributs
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Transformations de la ressource
+      not_found: Aucune transformation trouvée
       transformation: Transformation
       options: Options
-    colorspace:
-      title: Espace colorimétrique
-      options:
-        colorspace: 'espace colorimétrique %value%'
-    resize:
-      title: Redimensionner
-      options:
-        width: '%value%px de largeur'
-        height: '%value%px de hauteur'
-    resolution:
-      title: Résolution 
-      options:
-        resolution: '%value%'
-        resolution-unit: '%value%'
-    scale:
-      title: Mise à l'échelle
-      options:
-        width: '%value%px de largeur'
-        height: '%value%px de hauteur'
-        ratio: 'ratio %value%%'
-    thumbnail:
-      title: Miniature
-      options:
-        width: '%value%px de largeur'
-        height: '%value%px de hauteur'
-  mass_edit:
-    cancel: Annuler
-    product:
-      operation:
-        publish:
-          label: Publier
-          label_count: "{1}Publier <span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Publier <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
-          description: Les produits seront publiés
-          warning: Les {{ itemsCount }} produits sélectionnés vont être publiés.
-        unpublish:
-          label: Dépublier
-          label_count: "{1}Dépublier <span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Dépublier <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
-          description: Les produits seront dépubliés
-          warning: Les {{ itemsCount }} produits sélectionnés vont être dépubliés.
-    asset:
-      title: Action de masse sur les ressources
-      confirm: "{1}Vous êtes sur le point de mettre à jour une ressource avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} ressources avec les renseignements suivants, merci de confirmer."
-      step:
-        select:
-          label: Choisir les ressources
-        choose:
-          title: Actions de masse sur les ressources
-          label_count: "] 0, Inf [Sélectionnez votre action"
-        configure:
-          label: Configurer
-        confirm:
-          label: Confirmer
-      operation:
-        add_tag:
-          label: Ajouter des mots clés aux ressources
-          description: Les mots clés seront ajoutés aux ressources.
-          label_count: "{1}Ajouter des mots clés à <span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Ajouter des mots clés à <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
-          field: Mots clés
-          empty_selection: Choisissez des mots clés
-        add_to_category:
-          label: Classifier les ressources dans des catégories
-          description: Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera perdu.
-          label_count: "{1}Classer <span class=\"AknFullPage-title--highlight\">1 resources</span> dans des catégories|] 1, Inf [Classer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} ressources</span> dans des categories"
-  category:
-    tab:
-      permission:
-        title: Permissions
+      colorspace:
+        title: Espace colorimétrique
+        options:
+          colorspace: 'espace colorimétrique %value%'
+      resize:
+        title: Redimensionner
+        options:
+          width: '%value%px de largeur'
+          height: '%value%px de hauteur'
+      resolution:
+        title: Résolution 
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Mise à l'échelle
+        options:
+          width: '%value%px de largeur'
+          height: '%value%px de hauteur'
+          ratio: 'ratio %value%%'
+      thumbnail:
+        title: Miniature
+        options:
+          width: '%value%px de largeur'
+          height: '%value%px de hauteur'
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Le groupe {{ group }} sera autorisé à {{ permission }} le groupe d'attributs
+      view: Autorisé à voir les attributs
+      edit: Autorisé à modifier les attributs
+      removed: Le groupe {{ group }} ne sera pas autorisé à {{ permission }} le groupe d'attributs
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Le groupe {{ group }} sera autorisé à {{ permission }} le profil
+      execute: Autorisé à exécuter les profils
+      edit: Autorisé à éditer les profils
+      removed: Le groupe {{ group }} ne sera pas autorisé à {{ permission }} le profil
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Publié
+      revert: Restaurer
+    attribute:
+      can_be_updated_by_a_rule: "Cet attribut peut être mis à jour par une règle : {{ rule }}"
+      value_updated: Cette valeur est modifiée sur le brouillon actuel
+    meta:
+      published_version: Version publiée
+      owner_groups: Groupes propriétaires
+      draft_status: État du brouillon
+      draft:
+        in_progress: En cours
+        sent_for_approval: En attente d’approbation
+        working_copy: Version de travail
+    revert:
+      title: Confirmer la restauration d'une version antérieure
+      content: Êtes-vous sûr de vouloir restaurer le produit dans cette version ?
+    publish:
+      title: Publier ce produit
+      content: Êtes-vous sûr de vouloir publier ce produit ?
+    unpublish:
+      title: Dépublier ce produit
+      content: Êtes-vous sûr de vouloir dépublier ce produit ?
+    copy:
+      working_copy: Version de travail
+      draft: Mon brouillon
+      draft_of: "Brouillon de {{ author }}"
+    approval:
+      send: Soumettre pour validation
+      sent: Soumis à la validation
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Produit publié avec succès
+      fail: Échec lors de la publication du produit
+    unpublish:
+      success: Produit dépublié avec succès
+      fail: Échec lors de la dépublication du produit
+    revert:
+      success: La version précédente du produit a été restaurée
+  page_title:
+    index: "]-Inf, 1]{{ count }} produit publié|]1, Inf[{{ count }} produits publiés"
+  module:
+    publish:
+      label: Publier
+      publish_this_version: Publier cette version
+    unpublish:
+      label: Dépublier
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: La proposition a été soumise avec succès.
+      fail: "La proposition ne peut être soumise en raison de l'erreur suivante: {{ error }}"
+    reject:
+      success: La proposition a été rejetée.
+    remove:
+      success: La proposition a été supprimée.
+    update:
+      success: Le brouillon a bien été enregistré
+      fail: Le brouillon du produit n'a pas pu être mis à jour
+    create:
+      success: Le brouillon a été envoyé pour validation
+      fail: Vous ne pouvez pas envoyer ce brouillon pour validation
+  module:
+    create:
+      label: Enregistrer le brouillon
+    proposal:
+      accept: Accepter la proposition
+      accept_selected: Accepter le(s) proposition(s) sélectionnée(s)
+      reject: Rejeter la proposition
+      reject_selected: Rejeter le(s) proposition(s) sélectionnée(s)
+      remove: Supprimer la proposition
+      comment_title: Commenter votre proposition (facultatif - 255 caractères max.)
+      comment_chars: caractères.
+      confirm: Envoyer
+    edit:
+      discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour validation sans ces modifications ?
+      discard_changes_title: Êtes-vous sûr de vouloir envoyer ce brouillon ?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Publier
+      label_count: "{1}Publier <span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Publier <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+      description: Les produits seront publiés
+      warning: Les {{ itemsCount }} produits sélectionnés vont être publiés.
+    unpublish:
+      label: Dépublier
+      label_count: "{1}Dépublier <span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Dépublier <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+      description: Les produits seront dépubliés
+      warning: Les {{ itemsCount }} produits sélectionnés vont être dépubliés.
+pimee_enrich.mass_edit.asset:
+  title: Action de masse sur les ressources
+  confirm: "{1}Vous êtes sur le point de mettre à jour une ressource avec les renseignements suivants, merci de confirmer.|]1, Inf[Vous êtes sur le point de mettre à jour {{ itemsCount }} ressources avec les renseignements suivants, merci de confirmer."
+  step:
+    select:
+      label: Choisir les ressources
+    choose:
+      title: Actions de masse sur les ressources
+      label_count: "]0, Inf[Sélectionnez votre action"
+    configure:
+      label: Configurer
+    confirm:
+      label: Confirmer
+  operation:
+    add_tag:
+      label: Ajouter des mots clés aux ressources
+      description: Les mots clés seront ajoutés aux ressources.
+      label_count: "{1}Ajouter des mots clés à <span class=\"AknFullPage-title--highlight\">1 produit</span>|]1, Inf[Ajouter des mots clés à <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
+      field: Mots clés
+      empty_selection: Choisissez des mots clés
+    add_to_category:
+      label: Classifier les ressources dans des catégories
+      description: Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera perdu.
+      label_count: "{1}Classer <span class=\"AknFullPage-title--highlight\">1 resources</span> dans des catégories|]1, Inf[Classer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} ressources</span> dans des categories"
 pim_menu:
+  navigation:
+    published_products: Produits publiés
   tab:
     asset: Ressources
   item:
@@ -253,7 +237,7 @@ batch_jobs:
     execute_rules.label: Exécution des règles
   publish_product:
     perform.label: Publier les produits
-catalog_volume:
+pim_catalog_volumne:
   section:
     assets:
       title: Axes sur les ressources

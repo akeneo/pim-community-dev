@@ -17,7 +17,6 @@ pimee_workflow:
     proposal:
       modal.title: コメントを残す (255 文字まで)
   proposal:
-    overview: "] - Inf ファイル、1] {{ count }} 提案 |] 1、Inf [{{ count }} 提案"
     selected: 提案選択済み
     mass_action_group:
       review:
