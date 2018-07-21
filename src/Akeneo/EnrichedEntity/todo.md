@@ -17,9 +17,8 @@
 - Add remaining ACLs
 - add keyboard shortcuts
 - rework the record identifier to have one identifier
-- label switcher to be able to edit all locales
+- locale switcher to be able to edit all locales
 - enforce html event type
-- enforce getState type
 
 DONE:
 
@@ -32,3 +31,4 @@ DONE:
 - use decorator for acceptance tests front [DONE]
 - clean classes on form [DONE]
 - fix validation error display [DONE]
+- enforce getState type [DONE]

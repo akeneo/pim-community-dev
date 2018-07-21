@@ -40,6 +40,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       labels: {
         en_US: 'Designer',
       },
+      image: null,
     };
     const newState = reducer(state, {
       type: 'ENRICHED_ENTITY_EDITION_RECEIVED',
@@ -49,7 +50,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
     expect(newState).toEqual({
       errors: [],
       data: normalizedEnrichedEntity,
-      state: {isDirty: false, originalData: '{"identifier":"designer","labels":{"en_US":"Designer"}}'},
+      state: {isDirty: false, originalData: '{"identifier":"designer","labels":{"en_US":"Designer"},"image":null}'},
     });
   });
 
@@ -60,6 +61,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
         labels: {
           en_US: 'Designer',
         },
+        image: null,
       },
       errors: [],
       state: {
@@ -80,6 +82,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
         labels: {
           en_US: 'Famous Designer',
         },
+        image: null,
       },
       state: {isDirty: false, originalData: ''},
     });
@@ -92,6 +95,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
         labels: {
           en_US: 'Designer',
         },
+        image: null,
       },
       errors: [],
       state: {
@@ -113,6 +117,40 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
           en_US: 'Designer',
           fr_FR: 'Concepteur',
         },
+        image: null,
+      },
+      state: {isDirty: false, originalData: ''},
+    });
+  });
+
+  test('I can update the image of the enriched entity', () => {
+    const previousState = {
+      data: {
+        identifier: '',
+        labels: {
+          en_US: 'Designer',
+        },
+        image: null,
+      },
+      errors: [],
+      state: {
+        isDirty: false,
+        originalData: '',
+      },
+    };
+    const newState = reducer(previousState, {
+      type: 'ENRICHED_ENTITY_EDITION_IMAGE_UPDATED',
+      image: {my: 'image'},
+    });
+
+    expect(newState).toEqual({
+      errors: [],
+      data: {
+        identifier: '',
+        labels: {
+          en_US: 'Designer',
+        },
+        image: {my: 'image'},
       },
       state: {isDirty: false, originalData: ''},
     });
@@ -123,6 +161,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       data: {
         identifier: '',
         labels: {},
+        image: null,
       },
       errors: [
         {
@@ -143,6 +182,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       data: {
         identifier: '',
         labels: {},
+        image: null,
       },
       state: {isDirty: false, originalData: ''},
     });
@@ -153,6 +193,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       data: {
         identifier: '',
         labels: {},
+        image: null,
       },
       errors: [],
       state: {
@@ -178,6 +219,7 @@ describe('akeneo > enriched entity > application > reducer > enriched-entity ---
       data: {
         identifier: '',
         labels: {},
+        image: null,
       },
       state: {isDirty: false, originalData: ''},
     });

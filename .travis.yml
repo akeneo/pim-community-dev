@@ -33,7 +33,7 @@ before_install:
     - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
     - node tests/travis/check-changes.js $BRANCH src/Akeneo/EnrichedEntity/,.travis.yml,tests/travis/,tests/front,package.json,composer.json
     - phpenv config-rm xdebug.ini
-    - composer config -g github-oauth.github.com b67ee2fd847a2ba0f2275cbaab068bf543cdf9a2
+    - composer config -g github-oauth.github.com cb6d948ada430cba6f71257ce0a57026061df22c
     - printf "\n" | pecl install apcu
     - phpenv config-add tests/travis/travis.php.ini
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config

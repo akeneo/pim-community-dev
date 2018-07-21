@@ -15,9 +15,16 @@ interface FormProps {
 
 export default class EditForm extends React.Component<FormProps> {
   props: FormProps;
+  private labelInput: HTMLInputElement;
 
   constructor(props: FormProps) {
     super(props);
+  }
+
+  componentDidMount() {
+    if (this.labelInput) {
+      this.labelInput.focus();
+    }
   }
 
   updateLabel = (event: any) => {
@@ -36,8 +43,8 @@ export default class EditForm extends React.Component<FormProps> {
         <div className="AknFieldContainer" data-code="identifier">
           <div className="AknFieldContainer-header">
             <label title="{__('pim_enriched_entity.enriched_entity.properties.identifier')}"
-                   className="AknFieldContainer-label"
-                   htmlFor="pim_enriched_entity.enriched_entity.properties.identifier"
+              className="AknFieldContainer-label"
+              htmlFor="pim_enriched_entity.enriched_entity.properties.identifier"
             >
               {__('pim_enriched_entity.enriched_entity.properties.identifier')}
             </label>
@@ -57,8 +64,8 @@ export default class EditForm extends React.Component<FormProps> {
         <div className="AknFieldContainer" data-code="label">
           <div className="AknFieldContainer-header">
             <label title="{__('pim_enriched_entity.enriched_entity.properties.label')}"
-                   className="AknFieldContainer-label"
-                   htmlFor="pim_enriched_entity.enriched_entity.properties.label"
+              className="AknFieldContainer-label"
+              htmlFor="pim_enriched_entity.enriched_entity.properties.label"
             >
               {__('pim_enriched_entity.enriched_entity.create.input.label')}
             </label>
@@ -76,6 +83,7 @@ export default class EditForm extends React.Component<FormProps> {
               }
               onChange={this.updateLabel}
               onKeyDown={this.keyDown}
+              ref={(input: HTMLInputElement) => { this.labelInput = input; }}
             />
             <Flag locale={this.props.locale} displayLanguage={false} />
           </div>

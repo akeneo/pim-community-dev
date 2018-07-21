@@ -17,12 +17,12 @@ class Image extends React.Component<{
 }> {
   public state = {dropping: false, removing: false, focusing: false, loading: false, ratio: 0};
 
-  stopEvent (event: any) {
+  private stopEvent = (event: any) => {
     event.preventDefault();
     event.stopPropagation();
   }
 
-  overStart() {
+  private overStart = () => {
     if (null !== this.props.image) {
       this.setState({removing: true});
     } else {
@@ -30,33 +30,33 @@ class Image extends React.Component<{
     }
   }
 
-  overStop() {
+  private overStop = () => {
     this.setState({removing: false, dropping: false});
   }
 
-  focusStart() {
+  private focusStart = () => {
     this.setState({focusing: true});
   }
 
-  focusStop() {
+  private focusStop = () => {
     this.setState({focusing: false});
   }
 
-  drop(event: any) {
+  private drop = (event: any) => {
     this.stopEvent(event);
     this.dragStop();
     this.upload(event.dataTransfer.files[0]);
   }
 
-  dragStart() {
+  private dragStart = () => {
     this.setState({dropping: true});
   }
 
-  dragStop() {
+  private dragStop = () => {
     this.setState({dropping: false});
   }
 
-  click(event: any) {
+  private click = (event: any) => {
     if (null !== this.props.image) {
       this.stopEvent(event);
       this.setState({removing: false, dropping: true});
@@ -64,24 +64,26 @@ class Image extends React.Component<{
     }
   }
 
-  change(event: any) {
+  private change = (event: any) => {
     this.stopEvent(event);
     this.upload(event.target.files[0]);
   }
 
-  async upload(file: File): Promise<void> {
+  private upload = async (file: File): Promise<void> => {
     if (undefined === file) {
       return;
     }
     this.setState({loading: true, ratio: 0});
 
     try {
-      const image = await imageUploader.upload(file, (ratio) => {
+      const image = await imageUploader.upload(file, (ratio: number) => {
         this.setState({ratio});
       });
       await loadImage(getImageShowUrl(image, 'thumbnail'));
       this.props.onImageChange(image);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
 
     this.setState({loading: false, ratio: 0});
   }
@@ -92,6 +94,7 @@ class Image extends React.Component<{
       ${this.state.removing && !this.state.loading ? 'AknTitleContainer-imageContainer--removing' : ''}
       ${this.state.focusing ? 'AknTitleContainer-imageContainer--focusing' : ''}
     `;
+
     return (
       <div className={className}>
         <input

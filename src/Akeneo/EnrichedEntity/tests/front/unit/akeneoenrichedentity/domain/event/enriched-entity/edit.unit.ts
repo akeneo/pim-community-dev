@@ -5,6 +5,7 @@ import {
   enrichedEntityEditionSubmission,
   enrichedEntityEditionSucceeded,
   enrichedEntityEditionErrorOccured,
+  enrichedEntityEditionImageUpdated,
 } from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
 
 describe('akeneo > enriched entity > domain > event > enriched entity --- edit', () => {
@@ -52,6 +53,13 @@ describe('akeneo > enriched entity > domain > event > enriched entity --- edit',
       type: 'ENRICHED_ENTITY_EDITION_LABEL_UPDATED',
       value: 'Designer',
       locale: 'en_US',
+    });
+  });
+
+  test('I can create a enrichedEntityEditionImageUpdated event', () => {
+    expect(enrichedEntityEditionImageUpdated({my: 'image'})).toEqual({
+      type: 'ENRICHED_ENTITY_EDITION_IMAGE_UPDATED',
+      image: {my: 'image'},
     });
   });
 

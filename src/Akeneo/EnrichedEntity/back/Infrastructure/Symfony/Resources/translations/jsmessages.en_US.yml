@@ -26,7 +26,7 @@ pim_enriched_entity:
             title: Create a new entity
             input:
                 label: Label
-                code: Code
+                code: Code (required)
             confirm: confirm
         notification:
             save:
@@ -43,7 +43,7 @@ pim_enriched_entity:
             title: Create a new record
             input:
                 label: Label
-                code: Code
+                code: Code (required)
             confirm: confirm
         notification:
             save:

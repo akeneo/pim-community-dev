@@ -10,14 +10,14 @@ import {
   notifyEnrichedEntityWellCreated,
   notifyEnrichedEntityCreateFailed,
 } from 'akeneoenrichedentity/application/action/enriched-entity/notify';
-import {updateEnrichedEntityResults} from 'akeneoenrichedentity/application/action/enriched-entity/search';
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
 import {IndexState} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
+import {redirectToEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/router';
 
 export const createEnrichedEntity = () => async (dispatch: any, getState: () => IndexState): Promise<void> => {
+  const {code, labels} = getState().create.data;
+  const enrichedEntity = enrichedEntityFactory(Identifier.create(code), LabelCollection.create(labels));
   try {
-    const {code, labels} = getState().create.data;
-    const enrichedEntity = enrichedEntityFactory(Identifier.create(code), LabelCollection.create(labels));
     let errors = await enrichedEntitySaver.create(enrichedEntity);
 
     if (errors) {
@@ -35,7 +35,7 @@ export const createEnrichedEntity = () => async (dispatch: any, getState: () => 
 
   dispatch(enrichedEntityCreationSucceeded());
   dispatch(notifyEnrichedEntityWellCreated());
-  dispatch(updateEnrichedEntityResults());
+  dispatch(redirectToEnrichedEntity(enrichedEntity));
 
   return;
 };

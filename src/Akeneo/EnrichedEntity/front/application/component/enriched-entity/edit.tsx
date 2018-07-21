@@ -64,17 +64,12 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     }
   }
 
-  private async updateTabView(currentTab: string): Promise<void> {
+  private updateTabView = async (currentTab: string): Promise<void> => {
     const TabView = await editTabsProvider.getView(currentTab);
 
     this.tabView = (<TabView code={currentTab} />);
     this.forceUpdate();
   }
-
-
-  private saveEditForm = () => {
-    this.props.events.onSaveEditForm();
-  };
 
   private getHeaderButton = (canCreate: boolean, currentTab: string): JSX.Element | JSX.Element[] => {
     if (currentTab === 'pim-enriched-entity-edit-form-records' && canCreate) {
@@ -86,7 +81,10 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
     }
 
     return (
-      <button className="AknButton AknButton--apply save" onClick={this.saveEditForm}>
+      <button
+        className="AknButton AknButton--apply"
+        onClick={this.props.events.onSaveEditForm}
+      >
         {__('pim_enriched_entity.button.save')}
       </button>
     );
@@ -103,7 +101,7 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
         </div>
         <div className="AknDefault-contentWithBottom">
           <div className="AknDefault-mainContent" data-tab={this.props.sidebar.currentTab}>
-            <header className="AknTitleContainer navigation">
+            <header className="AknTitleContainer">
               <div className="AknTitleContainer-line">
                 <Image alt={__('pim_enriched_entity.enriched_entity.img', {'{{ label }}': label})} image={this.props.enrichedEntity.getImage()} onImageChange={this.props.events.onImageUpdated}/>
                 <div className="AknTitleContainer-mainContainer">
@@ -148,9 +146,6 @@ class EnrichedEntityEditView extends React.Component<EditProps> {
                   </div>
                 </div>
               </div>
-              <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-navigation"></div>
-              </div>
             </header>
             <div className="content">
               {this.tabView}
@@ -168,7 +163,7 @@ export default connect((state: State): StateProps => {
   const enrichedEntity = denormalizeEnrichedEntity(state.form.data);
   const tabs = undefined === state.sidebar.tabs ? [] : state.sidebar.tabs;
   const currentTab = undefined === state.sidebar.currentTab ? '' : state.sidebar.currentTab;
-  const locale = undefined === state.user || undefined === state.user.uiLocale ? '' : state.user.uiLocale;
+  const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
   return {
     sidebar: {

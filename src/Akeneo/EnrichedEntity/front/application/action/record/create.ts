@@ -7,10 +7,7 @@ import {recordCreationSucceeded, recordCreationErrorOccured} from 'akeneoenriche
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
 import {updateRecordResults} from 'akeneoenrichedentity/application/action/record/search';
 import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import {
-  notifyRecordWellCreated,
-  notifyRecordCreateFailed,
-} from 'akeneoenrichedentity/application/action/record/notify';
+import {notifyRecordWellCreated, notifyRecordCreateFailed} from 'akeneoenrichedentity/application/action/record/notify';
 
 export const createRecord = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   try {

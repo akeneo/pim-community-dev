@@ -45,7 +45,7 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return new EnrichedEntityImplementation(identifier, labelCollection, image);
   }
 
-  public static createFormNormalized(normalizedEnrichedEntity: NormalizedEnrichedEntity): EnrichedEntity {
+  public static createFromNormalized(normalizedEnrichedEntity: NormalizedEnrichedEntity): EnrichedEntity {
     const identifier = createIdentifier(normalizedEnrichedEntity.identifier);
     const labelCollection = createLabelCollection(normalizedEnrichedEntity.labels);
 
@@ -84,4 +84,4 @@ class EnrichedEntityImplementation implements EnrichedEntity {
 }
 
 export const createEnrichedEntity = EnrichedEntityImplementation.create;
-export const denormalizeEnrichedEntity = EnrichedEntityImplementation.createFormNormalized;
+export const denormalizeEnrichedEntity = EnrichedEntityImplementation.createFromNormalized;

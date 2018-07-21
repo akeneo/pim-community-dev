@@ -40,12 +40,10 @@ class Create extends React.Component<CreateProps> {
   private labelInput: HTMLInputElement;
   public props: CreateProps;
 
-  constructor(props: CreateProps) {
-    super(props);
-  }
-
-  componentDidMount(){
-    this.labelInput.focus();
+  componentDidMount() {
+    if (this.labelInput.focus()) {
+      this.labelInput.focus();
+    }
   }
 
   private onRecordCodeUpdate = (event: any) => {

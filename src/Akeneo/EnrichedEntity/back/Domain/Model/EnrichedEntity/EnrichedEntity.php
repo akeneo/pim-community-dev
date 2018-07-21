@@ -33,7 +33,6 @@ class EnrichedEntity
     ) {
         $this->identifier      = $identifier;
         $this->labelCollection = $labelCollection;
-        $this->image           = $image;
     }
 
     public static function create(EnrichedEntityIdentifier $identifier, array $rawLabelCollection): self

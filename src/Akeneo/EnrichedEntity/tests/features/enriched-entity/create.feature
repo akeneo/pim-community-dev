@@ -38,9 +38,6 @@ Feature: Create an enriched entity
       | {"en_US": "Stylist", "fr_FR": "Styliste"} |
     Then the enriched entity will be saved
     And the user saves the enriched entity
-    And there is an enriched entity "designer" with:
-      | identifier | labels                                    |
-      | designer   | {"en_US": "Stylist", "fr_FR": "Styliste"} |
 
   @acceptance-front
   Scenario: User do not have the right to create enriched entities

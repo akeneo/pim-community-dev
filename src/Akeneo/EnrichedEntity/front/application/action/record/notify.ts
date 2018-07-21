@@ -5,5 +5,5 @@ export const notifyRecordWellCreated = () => {
 };
 
 export const notifyRecordCreateFailed = () => {
-  return notify('success', 'pim_enriched_entity.record.notification.create.fail');
+  return notify('error', 'pim_enriched_entity.record.notification.create.fail');
 };

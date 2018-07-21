@@ -46,7 +46,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
 }
 
 export default connect((state: EditState): StateProps => {
-  const locale = undefined === state.user || undefined === state.user.uiLocale ? '' : state.user.uiLocale;
+  const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
   return {
     form: state.form,
