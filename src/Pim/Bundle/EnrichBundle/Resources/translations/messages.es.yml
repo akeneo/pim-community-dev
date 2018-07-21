@@ -621,7 +621,6 @@ pim_title.product:
   edit: "Productos %product.sku% | Editar"
 pim_title.family:
   index: "Familias"
-  edit: "Familias %code% | Editar"
 pim_title.channel:
   index: "Canales"
   create: "Canales | Crear"
