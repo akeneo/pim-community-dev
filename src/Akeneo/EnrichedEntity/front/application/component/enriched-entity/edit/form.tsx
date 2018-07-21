@@ -10,6 +10,7 @@ interface FormProps {
   data: NormalizedEnrichedEntity;
   errors: ValidationError[];
   onLabelUpdated: (value: string, locale: string) => void
+  onPressEnter: () => void
 }
 
 export default class EditForm extends React.Component<FormProps> {
@@ -21,6 +22,12 @@ export default class EditForm extends React.Component<FormProps> {
 
   updateLabel = (event: any) => {
     this.props.onLabelUpdated(event.target.value, this.props.locale);
+  };
+
+  keyDown = (event: any) => {
+    if ('Enter' === event.key) {
+      this.props.onPressEnter();
+    }
   };
 
   render(): JSX.Element | JSX.Element[] | null {
@@ -68,6 +75,7 @@ export default class EditForm extends React.Component<FormProps> {
                 this.props.data.labels[this.props.locale]
               }
               onChange={this.updateLabel}
+              onKeyDown={this.keyDown}
             />
             <Flag locale={this.props.locale} displayLanguage={false} />
           </div>

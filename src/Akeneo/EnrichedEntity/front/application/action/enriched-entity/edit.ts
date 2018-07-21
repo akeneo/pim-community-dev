@@ -6,6 +6,10 @@ import {
   enrichedEntityEditionErrorOccured,
   enrichedEntityEditionSucceeded,
 } from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
+import {
+  notifyEnrichedEntityWellSaved,
+  notifyEnrichedEntitySaveFailed,
+} from 'akeneoenrichedentity/application/action/enriched-entity/notify';
 import EnrichedEntity, {
   denormalizeEnrichedEntity,
 } from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
@@ -13,8 +17,9 @@ import enrichedEntitySaver from 'akeneoenrichedentity/infrastructure/saver/enric
 import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
 import ValidationError, {createValidationError} from 'akeneoenrichedentity/domain/model/validation-error';
 import Image from 'akeneoenrichedentity/domain/model/image';
+import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 
-export const saveEnrichedEntity = () => async (dispatch: any, getState: any): Promise<void> => {
+export const saveEnrichedEntity = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const enrichedEntity = denormalizeEnrichedEntity(getState().form.data);
 
   try {
@@ -23,16 +28,18 @@ export const saveEnrichedEntity = () => async (dispatch: any, getState: any): Pr
     if (errors) {
       const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
       dispatch(enrichedEntityEditionErrorOccured(validationErrors));
+      dispatch(notifyEnrichedEntitySaveFailed());
 
       return;
     }
   } catch (error) {
-    dispatch(enrichedEntityEditionErrorOccured(error));
+    dispatch(notifyEnrichedEntitySaveFailed());
 
     return;
   }
 
   dispatch(enrichedEntityEditionSucceeded());
+  dispatch(notifyEnrichedEntityWellSaved());
 
   const savedEnrichedEntity: EnrichedEntity = await enrichedEntityFetcher.fetch(
     enrichedEntity.getIdentifier().stringValue()
@@ -41,12 +48,15 @@ export const saveEnrichedEntity = () => async (dispatch: any, getState: any): Pr
   dispatch(enrichedEntityEditionReceived(savedEnrichedEntity.normalize()));
 };
 
-export const enrichedEntityLabelUpdated = (value: string, locale: string) => (dispatch: any, getState: any) => {
+export const enrichedEntityLabelUpdated = (value: string, locale: string) => (
+  dispatch: any,
+  getState: () => EditState
+) => {
   dispatch(enrichedEntityEditionLabelUpdated(value, locale));
   dispatch(enrichedEntityEditionUpdated(getState().form.data));
 };
 
-export const enrichedEntityImageUpdated = (image: Image | null) => (dispatch: any, getState: any) => {
+export const enrichedEntityImageUpdated = (image: Image | null) => (dispatch: any, getState: () => EditState) => {
   dispatch(enrichedEntityEditionImageUpdated(image));
   dispatch(enrichedEntityEditionUpdated(getState().form.data));
 };

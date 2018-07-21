@@ -18,6 +18,8 @@
 - add keyboard shortcuts
 - rework the record identifier to have one identifier
 - label switcher to be able to edit all locales
+- enforce html event type
+- enforce getState type
 
 DONE:
 

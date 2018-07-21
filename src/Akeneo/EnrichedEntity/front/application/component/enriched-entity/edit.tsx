@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
+import {EditState as State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import Sidebar from 'akeneoenrichedentity/application/component/app/sidebar';
 import {Tab} from 'akeneoenrichedentity/application/reducer/sidebar';
 import editTabsProvider from 'akeneoenrichedentity/application/configuration/edit-tabs';

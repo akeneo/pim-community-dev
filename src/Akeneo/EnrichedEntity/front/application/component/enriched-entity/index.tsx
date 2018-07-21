@@ -6,7 +6,7 @@ import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrum
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import {redirectToEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/router';
-import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
+import {IndexState} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
 import {enrichedEntityCreationStart} from 'akeneoenrichedentity/domain/event/enriched-entity/create';
 import CreateEnrichedEntityModal from 'akeneoenrichedentity/application/component/enriched-entity/create';
 const securityContext = require('pim/security-context');
@@ -117,7 +117,7 @@ const enrichedEntityListView = ({ grid, context, events, create, acls}: StatePro
   </div>
 );
 
-export default connect((state: State): StateProps => {
+export default connect((state: IndexState): StateProps => {
   const locale = undefined === state.user || undefined === state.user.uiLocale ? '' : state.user.uiLocale;
   const enrichedEntities = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
   const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;

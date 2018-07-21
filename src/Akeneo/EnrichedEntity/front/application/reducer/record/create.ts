@@ -1,7 +1,7 @@
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import sanitize from 'akeneoenrichedentity/tools/sanitize';
 
-export interface CreateRecordState {
+export interface CreateState {
   active: boolean;
   data: {
     code: string;
@@ -12,7 +12,7 @@ export interface CreateRecordState {
   errors: ValidationError[];
 }
 
-const initCreateState = (): CreateRecordState => ({
+const initCreateState = (): CreateState => ({
   active: false,
   data: {
     code: '',
@@ -22,7 +22,7 @@ const initCreateState = (): CreateRecordState => ({
 });
 
 export default (
-  state: CreateRecordState = initCreateState(),
+  state: CreateState = initCreateState(),
   action: {type: string; locale: string; value: string; errors: ValidationError[]}
 ) => {
   switch (action.type) {

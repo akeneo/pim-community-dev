@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
+import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import Form from 'akeneoenrichedentity/application/component/enriched-entity/edit/form';
-import {enrichedEntityLabelUpdated} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+import {enrichedEntityLabelUpdated, saveEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 import __ from 'akeneoenrichedentity/tools/translator';
 import {EditionFormState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit/form';
 
@@ -16,7 +16,8 @@ interface StateProps {
 interface DispatchProps {
   events: {
     form: {
-      onLabelUpdated: (value: string, locale: string) => void
+      onLabelUpdated: (value: string, locale: string) => void;
+      onPressEnter: () => void;
     }
   }
 }
@@ -33,6 +34,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
         <div className="AknFormContainer AknFormContainer--withPadding">
           <Form
             onLabelUpdated={this.props.events.form.onLabelUpdated}
+            onPressEnter={this.props.events.form.onPressEnter}
             locale={this.props.context.locale}
             data={this.props.form.data}
             errors={this.props.form.errors}
@@ -43,7 +45,7 @@ class Properties extends React.Component<StateProps & DispatchProps> {
   }
 }
 
-export default connect((state: State): StateProps => {
+export default connect((state: EditState): StateProps => {
   const locale = undefined === state.user || undefined === state.user.uiLocale ? '' : state.user.uiLocale;
 
   return {
@@ -58,6 +60,9 @@ export default connect((state: State): StateProps => {
       form: {
         onLabelUpdated: (value: string, locale: string) => {
           dispatch(enrichedEntityLabelUpdated(value, locale));
+        },
+        onPressEnter: () => {
+          dispatch(saveEnrichedEntity());
         }
       }
     }

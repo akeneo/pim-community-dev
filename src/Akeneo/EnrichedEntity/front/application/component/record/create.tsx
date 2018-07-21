@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
+import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import __ from 'akeneoenrichedentity/tools/translator';
 import ValidationError from 'akeneoenrichedentity/domain/model/validation-error';
 import Flag from 'akeneoenrichedentity/tools/component/flag';
@@ -30,7 +30,7 @@ interface DispatchProps {
     onRecordCodeUpdated: (value: string) => void;
     onLabelUpdated: (value: string, locale: string) => void;
     onCancel: () => void;
-    onSubmit: (code: string, labels: { [localeCode: string]: string }) => void;
+    onSubmit: () => void;
   }
 }
 
@@ -56,12 +56,10 @@ class Create extends React.Component<CreateProps> {
     this.props.events.onLabelUpdated(event.target.value, this.props.context.locale);
   };
 
-  private onCancel = () => {
-    this.props.events.onCancel();
-  };
-
-  private onSubmit = () => {
-    this.props.events.onSubmit(this.props.data.code, this.props.data.labels);
+  private onKeyPress = (event: any) => {
+    if ('Enter' === event.key) {
+      this.props.events.onSubmit();
+    }
   };
 
   render(): JSX.Element | JSX.Element[] | null {
@@ -91,7 +89,9 @@ class Create extends React.Component<CreateProps> {
                       className="AknTextField" id="pim_enriched_entity.record.create.input.label"
                       name="label"
                       value={this.props.data.labels[this.props.context.locale]}
-                      onChange={this.onLabelUpdate} />
+                      onChange={this.onLabelUpdate}
+                      onKeyPress={this.onKeyPress}
+                    />
                     <Flag locale={this.props.context.locale} displayLanguage={false}/>
                   </div>
                   {getErrorsView(this.props.errors, 'labels')}
@@ -110,7 +110,9 @@ class Create extends React.Component<CreateProps> {
                       id="pim_enriched_entity.record.create.input.code"
                       name="code"
                       value={this.props.data.code}
-                      onChange={this.onRecordCodeUpdate} />
+                      onChange={this.onRecordCodeUpdate}
+                      onKeyPress={this.onKeyPress}
+                    />
                   </div>
                   {getErrorsView(this.props.errors, 'identifier')}
                 </div>
@@ -121,13 +123,13 @@ class Create extends React.Component<CreateProps> {
         <div className="AknButtonList AknButtonList--right modal-footer">
           <span title="{__('pim_enriched_entity.record.create.cancel')}"
             className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
-            onClick={this.onCancel}
+            onClick={this.props.events.onCancel}
           >
             {__('pim_enriched_entity.record.create.cancel')}
           </span>
           <button
             className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
-            onClick={this.onSubmit}
+            onClick={this.props.events.onSubmit}
           >
             {__('pim_enriched_entity.record.create.confirm')}
           </button>
@@ -137,7 +139,7 @@ class Create extends React.Component<CreateProps> {
   };
 }
 
-export default connect((state: State): StateProps => {
+export default connect((state: EditState): StateProps => {
   const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
   return {
@@ -159,8 +161,8 @@ export default connect((state: State): StateProps => {
       onCancel: () => {
         dispatch(recordCreationCancel());
       },
-      onSubmit: (code: string, labels: { [localeCode: string]: string }) => {
-        dispatch(createRecord(code, labels));
+      onSubmit: () => {
+        dispatch(createRecord());
       }
     }
   }
