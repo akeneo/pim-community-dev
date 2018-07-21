@@ -7,6 +7,7 @@ const initialState = {
   data: {
     identifier: '',
     labels: {},
+    image: null,
   },
   errors: [],
   state: {

@@ -26,14 +26,14 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class LabelCollectionValidator extends ConstraintValidator
 {
     /**
-     * @param mixed      $value The value that should be validated
-     * @param Constraint $constraint The constraint for the validation
+     * @param mixed      $localeCodes The value that should be validated
+     * @param Constraint $constraint  The constraint for the validation
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($localeCodes, Constraint $constraint)
     {
         $validator = Validation::createValidator();
 
-        foreach ($value as $localeCode => $label) {
+        foreach ($localeCodes as $localeCode => $label) {
             $this->validateLocaleCode($validator, $localeCode);
             $this->validateLabelForLocale($validator, $localeCode, $label);
         }

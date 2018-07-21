@@ -8,21 +8,25 @@ import Image from 'akeneoenrichedentity/domain/model/image';
 export interface NormalizedEnrichedEntity {
   identifier: string;
   labels: RawLabelCollection;
-  image: Image|null
+  image: Image | null;
 }
 
 export default interface EnrichedEntity {
   getIdentifier: () => Identifier;
   getLabel: (locale: string) => string;
   getLabelCollection: () => LabelCollection;
-  getImage: () => Image|null;
+  getImage: () => Image | null;
   equals: (enrichedEntity: EnrichedEntity) => boolean;
   normalize: () => NormalizedEnrichedEntity;
 }
 class InvalidArgumentError extends Error {}
 
 class EnrichedEntityImplementation implements EnrichedEntity {
-  private constructor(private identifier: Identifier, private labelCollection: LabelCollection, private image: Image|null) {
+  private constructor(
+    private identifier: Identifier,
+    private labelCollection: LabelCollection,
+    private image: Image | null
+  ) {
     if (!(identifier instanceof Identifier)) {
       throw new InvalidArgumentError('EnrichedEntity expect an EnrichedEntityIdentifier as first argument');
     }
@@ -33,7 +37,11 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     Object.freeze(this);
   }
 
-  public static create(identifier: Identifier, labelCollection: LabelCollection, image: Image|null = null): EnrichedEntity {
+  public static create(
+    identifier: Identifier,
+    labelCollection: LabelCollection,
+    image: Image | null = null
+  ): EnrichedEntity {
     return new EnrichedEntityImplementation(identifier, labelCollection, image);
   }
 
@@ -58,7 +66,7 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return this.labelCollection;
   }
 
-  public getImage(): Image|null {
+  public getImage(): Image | null {
     return this.image;
   }
 
@@ -70,7 +78,7 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     return {
       identifier: this.getIdentifier().stringValue(),
       labels: this.getLabelCollection().getLabels(),
-      image: this.getImage()
+      image: this.getImage(),
     };
   }
 }

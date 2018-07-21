@@ -2,9 +2,10 @@ import {
   enrichedEntityEditionLabelUpdated,
   enrichedEntityEditionReceived,
   enrichedEntityEditionUpdated,
-  enrichedEntityEditionImageUpdated
+  enrichedEntityEditionImageUpdated,
+  enrichedEntityEditionErrorOccured,
+  enrichedEntityEditionSucceeded,
 } from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
-import {postSave, failSave} from 'akeneoenrichedentity/application/event/form-state';
 import EnrichedEntity, {
   denormalizeEnrichedEntity,
 } from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
@@ -20,17 +21,18 @@ export const saveEnrichedEntity = () => async (dispatch: any, getState: any): Pr
     const errors = await enrichedEntitySaver.save(enrichedEntity);
 
     if (errors) {
-      dispatch(failSave(errors.map((error: ValidationError) => createValidationError(error))));
+      const validationErrors = errors.map((error: ValidationError) => createValidationError(error));
+      dispatch(enrichedEntityEditionErrorOccured(validationErrors));
 
       return;
     }
   } catch (error) {
-    dispatch(failSave(error));
+    dispatch(enrichedEntityEditionErrorOccured(error));
 
     return;
   }
 
-  dispatch(postSave());
+  dispatch(enrichedEntityEditionSucceeded());
 
   const savedEnrichedEntity: EnrichedEntity = await enrichedEntityFetcher.fetch(
     enrichedEntity.getIdentifier().stringValue()
@@ -44,7 +46,7 @@ export const enrichedEntityLabelUpdated = (value: string, locale: string) => (di
   dispatch(enrichedEntityEditionUpdated(getState().form.data));
 };
 
-export const enrichedEntityImageUpdated = (image: Image|null) => (dispatch: any, getState: any) => {
+export const enrichedEntityImageUpdated = (image: Image | null) => (dispatch: any, getState: any) => {
   dispatch(enrichedEntityEditionImageUpdated(image));
   dispatch(enrichedEntityEditionUpdated(getState().form.data));
 };

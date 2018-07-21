@@ -14,7 +14,7 @@ export const enrichedEntityEditionLabelUpdated = (value: string, locale: string)
   return {type: 'ENRICHED_ENTITY_EDITION_LABEL_UPDATED', value, locale};
 };
 
-export const enrichedEntityEditionImageUpdated = (image: Image|null) => {
+export const enrichedEntityEditionImageUpdated = (image: Image | null) => {
   return {type: 'ENRICHED_ENTITY_EDITION_IMAGE_UPDATED', image};
 };
 

@@ -3,7 +3,7 @@ export default async (imagePath: string): Promise<void> => {
     const downloadingImage = new Image();
     downloadingImage.onload = () => {
       resolve();
-    }
+    };
     downloadingImage.src = imagePath;
   });
-}
+};

@@ -30,19 +30,13 @@ class Properties extends React.Component<StateProps & DispatchProps> {
         <header className="AknSubsection-title AknSubsection-title--blockDown">
             <span className="group-label">{__('pim_enriched_entity.enriched_entity.properties.title')}</span>
         </header>
-        <div className="tab-container tab-content">
-          <div className="tabbable object-attributes">
-            <div className="tab-content">
-              <div className="tab-pane active object-values">
-                <Form
-                  onLabelUpdated={this.props.events.form.onLabelUpdated}
-                  locale={this.props.context.locale}
-                  data={this.props.form.data}
-                  errors={this.props.form.errors}
-                />
-              </div>
-            </div>
-          </div>
+        <div className="AknFormContainer AknFormContainer--withPadding">
+          <Form
+            onLabelUpdated={this.props.events.form.onLabelUpdated}
+            locale={this.props.context.locale}
+            data={this.props.form.data}
+            errors={this.props.form.errors}
+          />
         </div>
       </div>
     );

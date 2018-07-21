@@ -14,7 +14,13 @@ const stateReducer = formState('enrichedEntity', 'ENRICHED_ENTITY_EDITION_UPDATE
 
 const dataReducer = (
   state: NormalizedEnrichedEntity = {identifier: '', labels: {}, image: null},
-  {type, enrichedEntity, value, locale, image}: {type: string; enrichedEntity: NormalizedEnrichedEntity; value: string; locale: string, image: Image|null}
+  {
+    type,
+    enrichedEntity,
+    value,
+    locale,
+    image,
+  }: {type: string; enrichedEntity: NormalizedEnrichedEntity; value: string; locale: string; image: Image | null}
 ) => {
   switch (type) {
     case 'ENRICHED_ENTITY_EDITION_RECEIVED':

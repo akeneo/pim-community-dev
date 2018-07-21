@@ -10,6 +10,7 @@ import {
   enrichedEntityCreationCancel
 } from 'akeneoenrichedentity/domain/event/enriched-entity/create';
 import {createEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/create';
+import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
 
 interface StateProps {
   context: {
@@ -63,32 +64,7 @@ class Create extends React.Component<CreateProps> {
     this.props.events.onSubmit(this.props.data.code, this.props.data.labels);
   };
 
-  private getCodeValidationErrorsMessages = () => {
-    const errors = this.props.errors.filter((error: ValidationError) => {
-      return 'identifier' === error.propertyPath;
-    });
-
-    let errorMessages = errors.map((error: ValidationError, key:number) => {
-      return <span className="error-message" key={key}>{__(error.messageTemplate, error.parameters)}</span>;
-    });
-
-    if (errorMessages.length > 0) {
-      return (
-          <div className="AknFieldContainer-footer AknFieldContainer-validationErrors validation-errors">
-            <span className="AknFieldContainer-validationError">
-              <i className="icon-warning-sign"></i>
-              {errorMessages}
-            </span>
-          </div>
-      );
-    }
-
-    return null;
-  };
-
   render(): JSX.Element | JSX.Element[] | null {
-    const errorContainer: JSX.Element | null = this.getCodeValidationErrorsMessages();
-
     return (
         <div className="modal in modal--fullPage" aria-hidden="false" style={{zIndex: 1041}}>
           <div>
@@ -101,44 +77,44 @@ class Create extends React.Component<CreateProps> {
                   <div
                       className="AknFullPage-subTitle">{__('pim_enriched_entity.enriched_entity.create.subtitle')}</div>
                   <div className="AknFullPage-title">{__('pim_enriched_entity.enriched_entity.create.title')}</div>
-                  <div data-drop-zone="fields">
+                  <div>
                     <div className="AknFieldContainer" data-code="label">
                       <div className="AknFieldContainer-header">
-                        <label title="{__('pim_enriched_entity.enriched_entity.create.input.label')}"
-                               className="AknFieldContainer-label control-label required truncate"
+                        <label
+                               className="AknFieldContainer-label"
                                htmlFor="pim_enriched_entity.enriched_entity.create.input.label"
                         >
                           {__('pim_enriched_entity.enriched_entity.create.input.label')}
                         </label>
                       </div>
-                      <div className="AknFieldContainer-inputContainer field-input">
+                      <div className="AknFieldContainer-inputContainer">
                         <input type="text"
-                               ref={(input: HTMLInputElement) => { this.labelInput = input; }}
-                               className="AknTextField"
-                               id="pim_enriched_entity.enriched_entity.create.input.label"
-                               name="label"
-                               value={this.props.data.labels[this.props.context.locale]}
-                               onChange={this.onLabelUpdate} />
+                          ref={(input: HTMLInputElement) => { this.labelInput = input; }}
+                          className="AknTextField"
+                          id="pim_enriched_entity.enriched_entity.create.input.label"
+                          name="label"
+                          value={this.props.data.labels[this.props.context.locale]}
+                          onChange={this.onLabelUpdate} />
                         <Flag locale={this.props.context.locale} displayLanguage={false}/>
                       </div>
+                      {getErrorsView(this.props.errors, 'labels')}
                     </div>
                     <div className="AknFieldContainer" data-code="code">
                       <div className="AknFieldContainer-header">
-                        <label title="{__('pim_enriched_entity.enriched_entity.create.input.code')}"
-                               className="AknFieldContainer-label control-label required truncate"
-                               htmlFor="pim_enriched_entity.enriched_entity.create.input.code"
+                        <label className="AknFieldContainer-label"
+                          htmlFor="pim_enriched_entity.enriched_entity.create.input.code"
                         >
                           {__('pim_enriched_entity.enriched_entity.create.input.code')}
                         </label>
                       </div>
                       <div className="AknFieldContainer-inputContainer field-input">
                         <input type="text" className="AknTextField"
-                               id="pim_enriched_entity.enriched_entity.create.input.code"
-                               name="code"
-                               value={this.props.data.code}
-                               onChange={this.onCodeUpdate} />
+                          id="pim_enriched_entity.enriched_entity.create.input.code"
+                          name="code"
+                          value={this.props.data.code}
+                          onChange={this.onCodeUpdate} />
+                        {getErrorsView(this.props.errors, 'identifier')}
                       </div>
-                      {errorContainer}
                     </div>
                   </div>
                 </div>
@@ -147,15 +123,15 @@ class Create extends React.Component<CreateProps> {
           </div>
           <div className="AknButtonList AknButtonList--right modal-footer">
             <span title="{__('pim_enriched_entity.enriched_entity.create.cancel')}"
-                  className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
-                  onClick={this.onCancel}
-                  tabIndex={0}
+              className="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text"
+              onClick={this.onCancel}
+              tabIndex={0}
             >
               {__('pim_enriched_entity.enriched_entity.create.cancel')}
             </span>
-            <button title="{__('pim_enriched_entity.enriched_entity.create.confirm')}"
-                    className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
-                    onClick={this.onSubmit}
+            <button
+              className="AknButtonList-item AknButton AknButton--apply ok icons-holder-text"
+              onClick={this.onSubmit}
             >
               {__('pim_enriched_entity.enriched_entity.create.confirm')}
             </button>
