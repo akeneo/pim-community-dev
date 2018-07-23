@@ -30,6 +30,16 @@ class RecordCodeSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 
+    public function it_cannot_be_constructed_with_an_empty_string()
+    {
+        $this->shouldThrow('\InvalidArgumentException')->during('fromString', ['']);
+    }
+
+    public function it_cannot_be_constructed_with_a_string_too_long()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('fromString', [str_repeat('a', 256)]);
+    }
+
     public function it_is_possible_to_compare_it()
     {
         $this->equals(RecordCode::fromString('an_identifier'))->shouldReturn(true);

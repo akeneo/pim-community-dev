@@ -33,7 +33,8 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         $this->records[$identifier->getEnrichedEntityIdentifier()][$identifier->getIdentifier()] = $record;
     }
 
-    public function getByIdentifier(RecordIdentifier $identifier): Record {
+    public function getByIdentifier(RecordIdentifier $identifier): Record
+    {
         $recordIdentifier = $identifier->getIdentifier();
         $enrichedEntityIdentifier = $identifier->getEnrichedEntityIdentifier();
         if (!isset($this->records[$enrichedEntityIdentifier][$recordIdentifier])) {

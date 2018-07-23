@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity;
 
+use Webmozart\Assert\Assert;
+
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -29,6 +31,8 @@ class EnrichedEntityIdentifier
 
     public static function fromString(string $identifier): self
     {
+        Assert::stringNotEmpty($identifier);
+        Assert::maxLength($identifier, 255);
         if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $identifier)) {
             throw new \InvalidArgumentException('Enriched Entity identifier may contain only letters, numbers and underscores');
         }

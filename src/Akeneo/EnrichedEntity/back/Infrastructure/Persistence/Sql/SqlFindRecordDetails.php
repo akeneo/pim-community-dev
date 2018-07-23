@@ -42,7 +42,8 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(RecordIdentifier $recordIdentifier): ?RecordDetails {
+    public function __invoke(RecordIdentifier $recordIdentifier): ?RecordDetails
+    {
         $result = $this->fetchResult($recordIdentifier);
 
         if (empty($result)) {
@@ -58,7 +59,8 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
         return $recordDetails;
     }
 
-    private function fetchResult(RecordIdentifier $recordIdentifier): array {
+    private function fetchResult(RecordIdentifier $recordIdentifier): array
+    {
         $query = <<<SQL
         SELECT identifier, enriched_entity_identifier, labels
         FROM akeneo_enriched_entity_record

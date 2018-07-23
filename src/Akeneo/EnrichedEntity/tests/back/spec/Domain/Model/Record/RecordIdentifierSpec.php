@@ -33,6 +33,18 @@ class RecordIdentifierSpec extends ObjectBehavior
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 
+    public function it_cannot_be_constructed_with_an_empty_string()
+    {
+        $this->shouldThrow('\InvalidArgumentException')->during('from', ['enriched_entity_identifier', '']);
+        $this->shouldThrow('\InvalidArgumentException')->during('from', ['', 'record_code']);
+    }
+
+    public function it_cannot_be_constructed_with_a_string_too_long()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('from', [str_repeat('a', 256), 'record_code']);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('from', ['enriched_entity_identifier', str_repeat('a', 256)]);
+    }
+
     public function it_is_possible_to_compare_it()
     {
         $sameIdentifier = RecordIdentifier::from(
@@ -45,5 +57,13 @@ class RecordIdentifierSpec extends ObjectBehavior
         );
         $this->equals($sameIdentifier)->shouldReturn(true);
         $this->equals($differentIdentifier)->shouldReturn(false);
+    }
+
+    public function it_normalize_itself()
+    {
+        $this->normalize()->shouldReturn([
+            'enriched_entity_identifier' => 'an_enriched_identifier',
+            'identifier' => 'a_record_identifier'
+        ]);
     }
 }

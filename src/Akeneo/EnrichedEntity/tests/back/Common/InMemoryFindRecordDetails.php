@@ -49,7 +49,8 @@ class InMemoryFindRecordDetails implements FindRecordDetailsInterface
         return $this->results[$key] ?? null;
     }
 
-    private function getKey(RecordIdentifier $recordIdentifier): string {
+    private function getKey(RecordIdentifier $recordIdentifier): string
+    {
         return sprintf('%s_%s', $recordIdentifier->getEnrichedEntityIdentifier(), $recordIdentifier->getIdentifier());
     }
 }

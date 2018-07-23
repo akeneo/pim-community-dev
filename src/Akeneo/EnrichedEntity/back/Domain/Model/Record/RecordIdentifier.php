@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
  */
 class RecordIdentifier
 {
-    public const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
-    public const IDENTIFIER= 'identifier';
+    private const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
+    private const IDENTIFIER= 'identifier';
 
     /** @var string */
     private $enrichedEntityIdentifier;
@@ -39,13 +39,15 @@ class RecordIdentifier
     public static function from(string $enrichedEntityIdentifier, string $identifier): self
     {
         Assert::stringNotEmpty($enrichedEntityIdentifier);
-        Assert::stringNotEmpty($identifier);
-
-        if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $identifier)) {
-            throw new \InvalidArgumentException('Record identifier may contain only letters, numbers and underscores');
-        }
+        Assert::maxLength($enrichedEntityIdentifier, 255);
         if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $enrichedEntityIdentifier)) {
             throw new \InvalidArgumentException('Enriched entity identifier may contain only letters, numbers and underscores');
+        }
+
+        Assert::stringNotEmpty($identifier);
+        Assert::maxLength($identifier, 255);
+        if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $identifier)) {
+            throw new \InvalidArgumentException('Record identifier may contain only letters, numbers and underscores');
         }
 
         return new self($enrichedEntityIdentifier, $identifier);
