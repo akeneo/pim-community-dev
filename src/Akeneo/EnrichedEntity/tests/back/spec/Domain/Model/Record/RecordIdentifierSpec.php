@@ -10,7 +10,7 @@ class RecordIdentifierSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedThrough('fromString', ['an_identifier']);
+        $this->beConstructedThrough('fromString', ['an_enriched_identifier', 'a_record_identifier']);
     }
 
     public function it_is_initializable()
@@ -18,20 +18,32 @@ class RecordIdentifierSpec extends ObjectBehavior
         $this->shouldHaveType(RecordIdentifier::class);
     }
 
-    public function it_can_be_transformed_into_a_string()
+    public function it_cannot_be_constructed_with_empty_strings()
     {
-        $this->__toString()->shouldReturn('an_identifier');
+        $this->beConstructedThrough('fromString', ['', '']);
+        $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 
     public function it_should_contain_only_letters_numbers_and_underscores()
     {
-        $this->beConstructedThrough('fromString', ['badId!']);
+        $this->beConstructedThrough('fromString', ['badId!', 'record_identifier']);
+        $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
+
+        $this->beConstructedThrough('fromString', ['valid_identifier', 'badId!']);
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 
     public function it_is_possible_to_compare_it()
     {
-        $this->equals(RecordIdentifier::fromString('an_identifier'))->shouldReturn(true);
-        $this->equals(RecordIdentifier::fromString('other_identifier'))->shouldReturn(false);
+        $sameIdentifier = RecordIdentifier::fromString(
+            'an_enriched_identifier',
+            'a_record_identifier'
+        );
+        $differentIdentifier = RecordIdentifier::fromString(
+            'an_other_enriched_entity_identifier',
+            'other_record_identifier'
+        );
+        $this->equals($sameIdentifier)->shouldReturn(true);
+        $this->equals($differentIdentifier)->shouldReturn(false);
     }
 }
