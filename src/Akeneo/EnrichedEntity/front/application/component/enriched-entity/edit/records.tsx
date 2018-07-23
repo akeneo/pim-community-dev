@@ -35,7 +35,7 @@ const records = ({context, grid, events}: StateProps & DispatchProps) => {
 }
 
 export default connect((state: State): StateProps => {
-  const locale = undefined === state.user || undefined === state.user.uiLocale ? '' : state.user.uiLocale;
+  const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
   const records = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
   const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;
 

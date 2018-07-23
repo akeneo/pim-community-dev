@@ -55,6 +55,20 @@ describe('akeneo > record > domain > model --- record', () => {
     ).toBe(false);
   });
 
+  test('I can get the collection of labels', () => {
+    expect(createRecord(didierIdentifier, sofaIdentifier, didierLabels).getLabelCollection()).toBe(didierLabels);
+  });
+
+  test('I can normalize an record', () => {
+    const michelRecord = createRecord(didierIdentifier, sofaIdentifier, didierLabels);
+
+    expect(michelRecord.normalize()).toEqual({
+      identifier: 'didier',
+      enrichedEntityIdentifier: 'sofa',
+      labels: {en_US: 'Didier'},
+    });
+  });
+
   test('I can get a label for the given locale', () => {
     expect(createRecord(michelIdentifier, designerIdentifier, michelLabels).getLabel('en_US')).toBe('Michel');
     expect(createRecord(michelIdentifier, designerIdentifier, michelLabels).getLabel('fr_FR')).toBe('[michel]');

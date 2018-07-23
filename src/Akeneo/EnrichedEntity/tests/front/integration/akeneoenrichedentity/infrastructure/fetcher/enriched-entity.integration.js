@@ -70,7 +70,8 @@ describe('Akeneoenrichedentity > infrastructure > fetcher > enriched-entity', ()
           en_US: 'Sofa',
           fr_FR: 'Canapé'
         }
-      }
+      },
+      image: null
     });
   });
 });

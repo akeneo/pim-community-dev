@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import {EditState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import Form from 'akeneoenrichedentity/application/component/enriched-entity/edit/form';
-import {updateEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
+import {enrichedEntityLabelUpdated, saveEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/edit';
 import __ from 'akeneoenrichedentity/tools/translator';
+import {EditionFormState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit/form';
 
 interface StateProps {
-  enrichedEntity: EnrichedEntity|null;
+  form: EditionFormState;
   context: {
     locale: string;
   };
@@ -15,20 +15,15 @@ interface StateProps {
 
 interface DispatchProps {
   events: {
-    onEnrichedEntityUpdated: (enrichedEntity: EnrichedEntity) => void
+    form: {
+      onLabelUpdated: (value: string, locale: string) => void;
+      onPressEnter: () => void;
+    }
   }
 }
 
-interface PropertiesProps extends StateProps, DispatchProps {
-  code: string;
-}
-
-class Properties extends React.Component<PropertiesProps> {
-  props: PropertiesProps;
-
-  updateEditForm = (enrichedEntity: EnrichedEntity) => {
-    this.props.events.onEnrichedEntityUpdated(enrichedEntity);
-  };
+class Properties extends React.Component<StateProps & DispatchProps> {
+  props: StateProps & DispatchProps;
 
   render() {
     return(
@@ -36,32 +31,25 @@ class Properties extends React.Component<PropertiesProps> {
         <header className="AknSubsection-title AknSubsection-title--blockDown">
             <span className="group-label">{__('pim_enriched_entity.enriched_entity.properties.title')}</span>
         </header>
-        <div>
-          <div className="tab-container tab-content">
-            <div className="tabbable object-attributes">
-              <div className="tab-content">
-                <div className="tab-pane active object-values">
-                  <Form
-                    updateEditForm={this.updateEditForm}
-                    locale={this.props.context.locale}
-                    enrichedEntity={this.props.enrichedEntity}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="AknFormContainer AknFormContainer--withPadding">
+          <Form
+            onLabelUpdated={this.props.events.form.onLabelUpdated}
+            onPressEnter={this.props.events.form.onPressEnter}
+            locale={this.props.context.locale}
+            data={this.props.form.data}
+            errors={this.props.form.errors}
+          />
         </div>
       </div>
     );
   }
 }
 
-export default connect((state: State): StateProps => {
-  const enrichedEntity = undefined === state.enrichedEntity ? null : state.enrichedEntity;
-  const locale = undefined === state.user || undefined === state.user.uiLocale ? '' : state.user.uiLocale;
+export default connect((state: EditState): StateProps => {
+  const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
 
   return {
-    enrichedEntity,
+    form: state.form,
     context: {
       locale
     },
@@ -69,8 +57,13 @@ export default connect((state: State): StateProps => {
 }, (dispatch: any): DispatchProps => {
   return {
     events: {
-      onEnrichedEntityUpdated: (enrichedEntity: EnrichedEntity) => {
-        dispatch(updateEnrichedEntity(enrichedEntity));
+      form: {
+        onLabelUpdated: (value: string, locale: string) => {
+          dispatch(enrichedEntityLabelUpdated(value, locale));
+        },
+        onPressEnter: () => {
+          dispatch(saveEnrichedEntity());
+        }
       }
     }
   }

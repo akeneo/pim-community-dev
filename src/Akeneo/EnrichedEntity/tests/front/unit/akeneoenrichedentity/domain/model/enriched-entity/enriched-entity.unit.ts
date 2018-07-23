@@ -1,4 +1,7 @@
-import {createEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import {
+  createEnrichedEntity,
+  denormalizeEnrichedEntity,
+} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 
@@ -52,6 +55,22 @@ describe('akeneo > enriched entity > domain > model --- enriched entity', () => 
     expect(michelEnrichedEntity.normalize()).toEqual({
       identifier: 'michel',
       labels: {en_US: 'Michel'},
+      image: null,
+    });
+  });
+
+  test('I can normalize an enriched entity', () => {
+    const michelEnrichedEntity = denormalizeEnrichedEntity({
+      identifier: 'michel',
+      labels: {
+        en_US: 'Michel',
+      },
+    });
+
+    expect(michelEnrichedEntity.normalize()).toEqual({
+      identifier: 'michel',
+      labels: {en_US: 'Michel'},
+      image: null,
     });
   });
 });
