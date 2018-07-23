@@ -20,7 +20,6 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
