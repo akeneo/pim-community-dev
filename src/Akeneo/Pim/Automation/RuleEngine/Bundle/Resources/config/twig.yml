@@ -1,0 +1,14 @@
+parameters:
+    pimee_catalog_rule.twig.rule_extension.class: Akeneo\Pim\Automation\RuleEngine\Bundle\Twig\RuleExtension
+
+services:
+    pimee_catalog_rule.twig.rule_extension:
+        class: '%pimee_catalog_rule.twig.rule_extension.class%'
+        public: false
+        arguments:
+            - '@pim_catalog.localization.presenter.registry'
+            - '@pim_enrich.resolver.locale'
+            - '@pim_catalog.repository.attribute'
+            - '@translator'
+        tags:
+            - { name: twig.extension }
