@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Filter;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use PimEnterprise\Component\Security\Attributes;
 
 /**

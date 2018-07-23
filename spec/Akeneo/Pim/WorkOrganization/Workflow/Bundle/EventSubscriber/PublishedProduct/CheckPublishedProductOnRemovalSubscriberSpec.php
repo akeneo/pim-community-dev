@@ -10,7 +10,7 @@ use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Structure\Component\Model\Family;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
-use Pim\Bundle\CatalogBundle\Event;
+use Akeneo\Pim\Enrichment\Bundle\Event;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;

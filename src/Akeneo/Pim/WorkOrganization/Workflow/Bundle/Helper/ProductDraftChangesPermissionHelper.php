@@ -11,8 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Helper;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
