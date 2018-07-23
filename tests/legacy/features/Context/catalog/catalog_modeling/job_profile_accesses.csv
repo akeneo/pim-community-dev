@@ -3,6 +3,7 @@ csv_catalog_modeling_family_import;All;All;
 xlsx_catalog_modeling_family_import;All;All;
 csv_catalog_modeling_family_variant_import;All;All;
 csv_catalog_modeling_family_variant_export;All;All;
+xlsx_summer_2016_models_export;All;All;
 add_product_value;All;
 update_product_value;All;
 remove_product_value;All;
