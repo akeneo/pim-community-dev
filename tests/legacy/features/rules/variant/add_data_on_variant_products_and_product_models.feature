@@ -61,9 +61,9 @@ Feature: Apply "add" action on variant product and product models
     When the product rule "add_style" is executed
     Then there should be the following product model:
       | code        | style                           |
-      | bag_1       | [with_zipper], [cheap], [urban] |
-      | bag_2_small | [with_zipper], [cheap], [urban] |
-      | bag_uni     | [with_zipper], [urban]          |
+      | bag_1       | [cheap], [urban], [with_zipper] |
+      | bag_2_small | [cheap], [urban], [with_zipper] |
+      | bag_uni     | [urban], [with_zipper]          |
     But the product model "bag_2" should not have the following values "style"
     And the variant product "bag_1_large_black" should not have the following value:
       | style | [with_zipper] |

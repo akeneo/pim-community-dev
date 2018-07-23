@@ -119,7 +119,7 @@ class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
     ) {
         $projectCompleteness->isComplete()->willReturn(false);
         $projectCompleteness->getRatioForDone()->willReturn(30);
-        $date = new \DateTime();
+        $date = new \DateTime('today');
         $date->add(new \DateInterval('P3D'));
         $project->getDueDate()->willReturn($date);
 

@@ -18,9 +18,7 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\ChainUserProvider;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@gmail.com>
@@ -37,6 +35,8 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     protected $notificationClass;
 
     /**
+     * TODO: @merge master: remove ChainUserProvider $chainUserProvider from the constructor
+     *
      * @param ChainUserProvider     $chainUserProvider
      * @param NotifierInterface     $notifier
      * @param string                $notificationClass
@@ -100,20 +100,16 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     /**
      * @param GenericEvent $event
      *
-     * @return null|UserInterface
+     * @return null|mixed
      */
-    protected function getUserFromEvent(GenericEvent $event): ?UserInterface
+    protected function getUserFromEvent(GenericEvent $event)
     {
         try {
-            $userToNotify = $event->getArgument('username');
+            $user = $event->getArgument('username');
         } catch (\InvalidArgumentException $e) {
             return null;
         }
 
-        try {
-            return $this->chainUserProvider->loadUserByUsername($userToNotify);
-        } catch (UsernameNotFoundException $e) {
-            return null;
-        }
+        return $user;
     }
 }

@@ -1,3 +1,6 @@
+parameters:
+    pim_connector.writer.database.job_instance.class: PimEnterprise\Component\Connector\Writer\Database\JobInstanceWriter
+
 services:
     pim_connector.writer.database.product:
         class: '%pim_connector.writer.database.product.class%'
@@ -5,3 +8,9 @@ services:
             - '@pim_versioning.manager.version'
             - '@pimee_workflow.saver.product_delegating'
             - '@pim_connector.doctrine.cache_clearer'
+
+    pim_connector.writer.database.job_instance:
+        class: '%pim_connector.writer.database.job_instance.class%'
+        arguments:
+            - '@akeneo_batch.saver.job_instance'
+            - '@akeneo_storage_utils.doctrine.object_detacher'

@@ -1,3 +1,9 @@
+# 2.2.11 (2018-07-04)
+
+## Bug fixes
+
+- PIM-7455: Fix product model indexation issue during a product model import
+
 # 2.2.10 (2018-06-22)
 
 # 2.2.9 (2018-06-14)

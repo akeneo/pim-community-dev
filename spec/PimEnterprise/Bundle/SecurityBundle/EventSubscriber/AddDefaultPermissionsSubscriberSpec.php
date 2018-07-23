@@ -101,6 +101,8 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
         $event->hasArgument('is_new')->willReturn(true);
         $event->getArgument('is_new')->willReturn(true);
 
+        $event->hasArgument('is_installation')->willReturn(false);
+
         $event->getSubject()->willReturn($category);
         $category->isRoot()->willReturn(true);
 
@@ -125,6 +127,8 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
         $event->hasArgument('is_new')->willReturn(true);
         $event->getArgument('is_new')->willReturn(true);
 
+        $event->hasArgument('is_installation')->willReturn(false);
+
         $event->getSubject()->willReturn($category);
         $category->isRoot()->willReturn(false);
 
@@ -147,6 +151,8 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
     ) {
         $event->hasArgument('is_new')->willReturn(true);
         $event->getArgument('is_new')->willReturn(true);
+
+        $event->hasArgument('is_installation')->willReturn(false);
 
         $event->getSubject()->willReturn($category);
         $category->isRoot()->willReturn(false);

@@ -10,7 +10,6 @@ services:
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.locale'
 
     pimee_product_asset.upload_importer:
         class: '%pimee_product_asset.upload_importer.class%'

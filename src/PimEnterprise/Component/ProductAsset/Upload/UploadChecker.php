@@ -31,6 +31,8 @@ class UploadChecker implements UploadCheckerInterface
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    protected $locales;
+
     /**
      * @param AssetRepositoryInterface  $assetRepository
      * @param LocaleRepositoryInterface $localeRepository
@@ -50,9 +52,9 @@ class UploadChecker implements UploadCheckerInterface
      */
     public function getParsedFilename($filename)
     {
-        $locales = $this->localeRepository->findAll();
+        $this->locales = $this->locales ?: $this->localeRepository->findAll();
 
-        return new ParsedFilename($locales, $filename);
+        return new ParsedFilename($this->locales, $filename);
     }
 
     /**
@@ -64,9 +66,9 @@ class UploadChecker implements UploadCheckerInterface
             throw new InvalidCodeException();
         }
 
-        $locales = $this->localeRepository->findAll();
+        $this->locales = $this->locales ?: $this->localeRepository->findAll();
         if (null !== $parsedFilename->getLocaleCode() &&
-            !$this->isLocaleActivated($locales, $parsedFilename->getLocaleCode())
+            !$this->isLocaleActivated($this->locales, $parsedFilename->getLocaleCode())
         ) {
             throw new InvalidLocaleException();
         }

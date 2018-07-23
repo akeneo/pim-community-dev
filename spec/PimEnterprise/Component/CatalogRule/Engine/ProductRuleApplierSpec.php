@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Component\CatalogRule\Engine;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -24,7 +25,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductsValidator $productsValidator,
         ProductsSaver $productsSaver,
         EventDispatcherInterface $eventDispatcher,
-        ObjectDetacherInterface $objectDetacher
+        ObjectDetacherInterface $objectDetacher,
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $this->beConstructedWith(
             $paginatorFactory,
@@ -33,6 +35,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
             $productsSaver,
             $eventDispatcher,
             $objectDetacher,
+            $cacheClearer,
             10
         );
     }
@@ -53,6 +56,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsValidator,
         $productsSaver,
         $objectDetacher,
+        $cacheClearer,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         CursorInterface $cursor
@@ -68,6 +72,9 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsSaver->save(Argument::any(), Argument::any())->shouldNotBeCalled();
         $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
 
+        $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
+        $cacheClearer->clear()->shouldNotBeCalled();
+
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
         $this->apply($rule, $subjectSet);
     }
@@ -78,6 +85,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsValidator,
         $productsSaver,
         $objectDetacher,
+        $cacheClearer,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductInterface $selectedProduct,
@@ -109,7 +117,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsUpdater->update($rule, Argument::any())->shouldBeCalled();
         $productsValidator->validate($rule, Argument::any())->willReturn([$validProduct1, $validProduct2]);
         $productsSaver->save($rule, [$validProduct1, $validProduct2])->shouldBeCalled();
-        $objectDetacher->detach(Argument::any())->shouldBeCalled();
+        $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
@@ -121,6 +130,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsValidator,
         $productsSaver,
         $objectDetacher,
+        $cacheClearer,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductInterface $selectedProduct,
@@ -148,7 +158,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsUpdater->update($rule, Argument::type('array'))->shouldBeCalledTimes(5);
         $productsValidator->validate($rule, Argument::type('array'))->shouldBeCalledTimes(5)->willReturnArgument(1);
         $productsSaver->save($rule, Argument::type('array'))->shouldBeCalledTimes(5);
-        $objectDetacher->detach(Argument::type(ProductInterface::class))->shouldBeCalledTimes(42);
+        $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
+        $cacheClearer->clear()->shouldBeCalledTimes(5);
 
         $this->apply($rule, $subjectSet);
     }

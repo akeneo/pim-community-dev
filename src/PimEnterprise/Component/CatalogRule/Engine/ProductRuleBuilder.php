@@ -41,6 +41,8 @@ class ProductRuleBuilder implements BuilderInterface
     protected $ruleClass;
 
     /**
+     * TODO: @merge master: Remove Validator from constructor
+     *
      * @param DenormalizerInterface    $chainedDenormalizer
      * @param EventDispatcherInterface $eventDispatcher
      * @param ValidatorInterface       $validator
@@ -82,24 +84,14 @@ class ProductRuleBuilder implements BuilderInterface
         $rule->setConditions($content['conditions']);
         $rule->setActions($content['actions']);
 
-        $violations = $this->validator->validate($rule);
-
-        if (count($violations) > 0) {
-            throw new BuilderException(
-                sprintf(
-                    'Impossible to build the rule "%s" as it does not appear to be valid (%s).',
-                    $definition->getCode(),
-                    $this->violationsToMessage($violations)
-                )
-            );
-        }
-
         $this->eventDispatcher->dispatch(RuleEvents::POST_BUILD, new RuleEvent($definition));
 
         return $rule;
     }
 
     /**
+     * TODO: @merge master: Remove this method
+     *
      * @param ConstraintViolationListInterface $violations
      *
      * @return string
