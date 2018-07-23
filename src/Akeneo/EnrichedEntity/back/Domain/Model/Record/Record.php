@@ -26,30 +26,36 @@ class Record
     /** @var RecordIdentifier */
     private $identifier;
 
-    /** @var LabelCollection */
-    private $labelCollection;
+    /** @var RecordCode */
+    private $code;
 
     /** @var EnrichedEntity */
     private $enrichedEntityIdentifier;
 
+    /** @var LabelCollection */
+    private $labelCollection;
+
     private function __construct(
         RecordIdentifier $identifier,
+        RecordCode $code,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         LabelCollection $labelCollection
     ) {
         $this->identifier = $identifier;
         $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $this->labelCollection = $labelCollection;
+        $this->code = $code;
     }
 
     public static function create(
         RecordIdentifier $identifier,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        RecordCode $code,
         array $rawLabelCollection
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
-        return new self($identifier, $enrichedEntityIdentifier, $labelCollection);
+        return new self($identifier, $code, $enrichedEntityIdentifier, $labelCollection);
     }
 
     public function getIdentifier(): RecordIdentifier
