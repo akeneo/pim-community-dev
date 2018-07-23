@@ -58,13 +58,7 @@ class EditAction
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
-            $errors = [];
-            foreach ($violations as $violation) {
-                // TODO: format the error the way we want for the front
-                $errors[] = $violation->getPropertyPath() . ' ' . $violation->getMessage();
-            }
-
-            return new JsonResponse(['errors' => json_encode($errors)], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($this->serializer->normalize($violations, 'internal_api'), Response::HTTP_BAD_REQUEST);
         }
 
         ($this->editEnrichedEntityHandler)($command);

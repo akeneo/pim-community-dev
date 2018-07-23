@@ -1,5 +1,4 @@
 pimee_catalog_rule:
-  overview: "[] -Inf, 1] {{ count }} regel |] 1, Inf [{{ count }} regler"
   execution_button: Kør regler
   selected: 'udvalgte regler'
   popin:

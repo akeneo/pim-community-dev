@@ -7,9 +7,13 @@ const UserContext = require('pim/user-context');
 const template = _.template(require('pim/template/form/common/fields/select'));
 
 const extendTemplateContext = (templateContext: any, records: Record[]) => {
-  templateContext.choices = records.reduce((choices: {[key: string]: string}, record: Record) => (
-    {...choices, [record.getIdentifier().stringValue()]: record.getLabel(UserContext.get('catalogLocale'))}
-  ), {});
+  templateContext.choices = records.reduce(
+    (choices: {[key: string]: string}, record: Record) => ({
+      ...choices,
+      [record.getIdentifier().stringValue()]: record.getLabel(UserContext.get('catalogLocale')),
+    }),
+    {}
+  );
   templateContext.multiple = true;
   templateContext.readOnly = false;
   templateContext.fieldName = templateContext.attribute.reference_data_name;
@@ -25,7 +29,7 @@ const extendTemplateContext = (templateContext: any, records: Record[]) => {
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityField extends (Field as { new(config: any): any; }) {
+class EnrichedEntityField extends (Field as {new (config: any): any}) {
   constructor(config: any) {
     super(config);
 
@@ -34,32 +38,38 @@ class EnrichedEntityField extends (Field as { new(config: any): any; }) {
       'change select': (event: any) => {
         this.errors = [];
         this.setCurrentValue(this.getFieldValue(event.target));
-      }
-    }
+      },
+    };
   }
 
   getTemplateContext() {
-    return super.getTemplateContext()
-      .then(function (templateContext: any) {
-        const promise = $.Deferred();
+    return super.getTemplateContext().then(function(templateContext: any) {
+      const promise = $.Deferred();
 
-        recordFetcher.search({locale: templateContext.locale, limit: 25, page: 0, filters: [{
-          value: templateContext.attribute.reference_data_name,
-          field: 'enriched_entity',
-          operator: '=',
-          context: {}
-        }]}).then(({items}: {items: Record[]}) => {
+      recordFetcher
+        .search({
+          locale: templateContext.locale,
+          limit: 25,
+          page: 0,
+          filters: [
+            {
+              value: templateContext.attribute.reference_data_name,
+              field: 'enriched_entity',
+              operator: '=',
+              context: {},
+            },
+          ],
+        })
+        .then(({items}: {items: Record[]}) => {
           promise.resolve(extendTemplateContext(templateContext, items));
         });
 
-        return promise.promise();
-      });
+      return promise.promise();
+    });
   }
 
-
-
   renderInput(templateContext: any) {
-      return template({...templateContext});
+    return template({...templateContext});
   }
 
   /**

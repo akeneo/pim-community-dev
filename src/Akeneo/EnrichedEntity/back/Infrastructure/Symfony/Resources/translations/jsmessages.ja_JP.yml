@@ -1,0 +1,16 @@
+pim_enriched_entity:
+  button:
+    save: 保存
+  enriched_entity:
+    tab:
+      attributes: 属性
+      properties: プロパティ
+    properties:
+      identifier: 識別子
+      label: ラベル
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: タイプ固有のパラメーター

@@ -5,3 +5,4 @@ pim_api.acl_group.asset_category:
 pim_api.acl_group.asset:
     order: 30
     permission_group: api
+

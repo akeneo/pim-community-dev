@@ -6,7 +6,10 @@ import Breadcrumb from 'akeneoenrichedentity/application/component/app/breadcrum
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import PimView from 'akeneoenrichedentity/infrastructure/component/pim-view';
 import {redirectToEnrichedEntity} from 'akeneoenrichedentity/application/action/enriched-entity/router';
-import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/index'
+import {State} from 'akeneoenrichedentity/application/reducer/enriched-entity/index';
+import {enrichedEntityCreationStart} from 'akeneoenrichedentity/domain/event/enriched-entity/create';
+import CreateEnrichedEntityModal from 'akeneoenrichedentity/application/component/enriched-entity/create';
+const securityContext = require('pim/security-context');
 
 interface StateProps {
   context: {
@@ -18,15 +21,24 @@ interface StateProps {
     total: number;
     isLoading: boolean;
   };
+
+  create: {
+    active: boolean;
+  };
+
+  acls: {
+    create: boolean;
+  };
 };
 
 interface DispatchProps {
   events: {
     onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void
+    onCreationStart: () => void
   }
 }
 
-const enrichedEntityListView = ({ grid, context, events }: StateProps & DispatchProps) => (
+const enrichedEntityListView = ({ grid, context, events, create, acls}: StateProps & DispatchProps) => (
   <div className="AknDefault-contentWithColumn">
     <div className="AknDefault-thirdColumnContainer">
       <div className="AknDefault-thirdColumn"></div>
@@ -49,9 +61,19 @@ const enrichedEntityListView = ({ grid, context, events }: StateProps & Dispatch
                   ]}/>
                 </div>
                 <div className="AknTitleContainer-buttonsContainer">
-                  <div className="AknTitleContainer-userMenu">
-                    <PimView className="AknTitleContainer-userMenu" viewName="pim-enriched-entity-index-user-navigation"/>
-                  </div>
+                  <PimView className="AknTitleContainer-userMenu" viewName="pim-enriched-entity-index-user-navigation"/>
+                  {
+                    acls.create ?
+                      <div className="AknButtonList">
+                        <button type="button"
+                          className="AknButton AknButton--apply AknButtonList-item"
+                          onClick={events.onCreationStart}
+                        >
+                          {__('pim_enriched_entity.button.create')}
+                        </button>
+                      </div> :
+                      null
+                  }
                 </div>
               </div>
               <div className="AknTitleContainer-line">
@@ -91,6 +113,7 @@ const enrichedEntityListView = ({ grid, context, events }: StateProps & Dispatch
         </div>
       </div>
     </div>
+    {create.active ? <CreateEnrichedEntityModal /> : null}
   </div>
 );
 
@@ -107,6 +130,12 @@ export default connect((state: State): StateProps => {
       enrichedEntities,
       total,
       isLoading: state.grid.isFetching && state.grid.items.length === 0
+    },
+    create: {
+      active: state.create.active
+    },
+    acls: {
+      create: securityContext.isGranted('akeneo_enrichedentity_enriched_entity_create')
     }
   }
 }, (dispatch: any): DispatchProps => {
@@ -114,6 +143,9 @@ export default connect((state: State): StateProps => {
     events: {
       onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => {
         dispatch(redirectToEnrichedEntity(enrichedEntity));
+      },
+      onCreationStart: () => {
+        dispatch(enrichedEntityCreationStart())
       }
     }
   }

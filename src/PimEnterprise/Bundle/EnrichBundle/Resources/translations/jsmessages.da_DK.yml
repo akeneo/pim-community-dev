@@ -1,208 +1,181 @@
-pimee_enrich.product_history.action.revert: Vend tilbage til version
-permission-changes:
-  category:
-    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> i denne kategori
-    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> i denne kategori
-  locale:
-    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> i denne landestandard
-    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> i denne landestandard
-  attribute group:
-    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> af denne attribut gruppe
-    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> af denne attribut gruppe
-  job profile:
-    grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong>
-    revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong>
 pim_enrich:
   entity:
-    attribute_label:
-      pim_assets_collection: Aktiver samling
     attribute:
       property:
         is_read_only: Skrivebeskyttet
-  form:
-    attribute:
-      tab:
-        properties:
-          label:
-            is_read_only: Skrivebeskyttet
-pim:
-  grid:
-    mass_action:
+pim_datagrid:
+  mass_action:
+    mass_edit:
       asset_edit: Masse Rediger aktiver
-pimee_enrich:
-  form:
-    job_instance:
-      tab:
-        permission:
-          added: Gruppe {{ group }} vil være tilladelse til at {{ permission }} jobprofil
-          execute.label: Tilladt at udføre jobprofil
-          edit.label: Tilladt at redigere jobprofil
-          removed: Gruppe {{ group }} vil  have tilladelse til at {{ permission }} jobprofil
-    channel:
-      tab:
-        asset-transformation:
-          title: Aktiv transformationer
-    attribute_group:
-      tab:
-        permission:
-          title: Rettigheder
-          view.label: Rettighed til at se attributter
-          edit.label: Rettighed til at redigere attributter
-          removed: Gruppe {{ group }} vil ikke blive tilladt at {{ permission }} attributgruppe
-          added: Gruppe {{ group }} vil være tilladt at {{ permission }} attributgruppe
-  entity:
-    product:
-      index_title: "] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
-      navigation: Offentliggjorte produkter
-      history:
-        published: Publiceret
-        revert: Gendan
-      smart_attribute:
-        come_from: "Denne attribut kan opdateres af en regel:"
-      btn:
-        publish: Publicér
-        publish_this_version: Offentliggøre denne version
-        unpublish: Afpublisér
-        save_draft: Gem kladde
-      flash:
-        product_unpublished: Produkt blev afpubliseret
-        product_published: Produkt blev publiseret
-        product_not_published: Fejl ved publisering af dette produkt
-        product_not_unpublished: Fejl ved publisering af dette produkt
-        product_reverted: Produkt blev gendannet
-      meta:
-        published: Publiceret version
-        owner_groups: Ejer grupper
-        draft_status: Kladdestatus
-        draft:
-          in_progress: Igangværende
-          sent_for_approval: Venter på godkendelse
-          working_copy: Arbejds kopi
-      tab:
-        proposals:
-          title: Forslag
-          messages:
-            approve:
-              success: Forslaget er blevet anvendt.
-              error: "Dette forslag kan ikke anvendes på grund af følgende fejl. {{ error }}"
-            reject:
-              success: Forslaget er blevet afvist.
-            remove:
-              success: Forslaget er blevet fjernet.
-      confirmation:
-        revert:
-          title: Gendanne bekræftelse
-          content: Er du sikker på at du vil gendanne produktet til denne version?
-        publish:
-          title: Offentliggøre dette produkt
-          content: Er du sikker på du vil offentliggøre dette produkt?
-        unpublish:
-          title: Afpublicer produktet
-          content: Er du sikker på du vil afpublicere dette produkt ?
-      info:
-        update_successful: Produktets arbejdskopi er blevet opdateret
-      copy:
-        source:
-          working_copy: Arbejds kopi
-          draft: Mit udkast
-          draft_of: "{{ author }}'s udkast til"
-    product_draft:
-      info:
-        update_successful: Produkt udkast er blevet gemt
-        update_failed: Produkt kladde kunne ikke opdateres
-        value_modified: Denne værdi er ændret af det nuværende udkast
-      flash:
-        sent_for_approval: Produkt udkast sendes til godkendelse
-        draft_not_sendable: Du kan ikke sende dette udkast til godkendelse
-      btn:
-        send_for_approval: Send til godkendelse
-        sent_for_approval: Sendt til godkendelse
-      modal:
-        accept_proposal: Acceptere forslag
-        accept_selected_proposal: Acceptere valgte forslag(ene)
-        reject_proposal: Afvis forslag
-        reject_selected_proposal: Afvis valgte forslag(ene)
-        remove_proposal: Fjern forslag
-        send_for_approval: Send til godkendelse
-        confirm: Afsend
-        title: Kommentere dine forslag (valgfri - maks. 255 tegn)
-        characters: tegn.
-      confirmation:
-        discard_changes: Ikke-gemte ændringer vil gå tabt. Er du sikker på du vil sende din udkast til godkendelse uden at gemme dine ændringer?
-        discard_changes_title: Er du sikker på du vil sende dette udkast?
-  asset_transformation:
-    not_found: Ingen transformation fundet
-    title:
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> i denne kategori
+      revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> i denne kategori
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> i denne landestandard
+      revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> i denne landestandard
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Gruppen <strong>{{ group }}</strong> vil <strong>blive {{ permission }}</strong> af denne attribut gruppe
+      revoke: Gruppen <strong>{{ group }}</strong> vil <strong>ikke blive {{ permission }}</strong> af denne attribut gruppe
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Aktiv transformationer
+      not_found: Ingen transformation fundet
       transformation: Transformation
       options: Muligheder
-    colorspace:
-      title: Farverum
-      options:
-        colorspace: '%value% farverum'
-    resize:
-      title: Skalér
-      options:
-        width: '%value%px bredde'
-        height: '%value%px højde'
-    resolution:
-      title: Opløsning
-      options:
-        resolution: '%value%'
-        resolution-unit: '%value%'
-    scale:
-      title: Skaler
-      options:
-        width: '%value%px bredde'
-        height: '%value%px højde'
-        ratio: '%value%% forhold'
-    thumbnail:
-      title: Miniature
-      options:
-        width: '%value%px bredde'
-        height: '%value%px højde'
-  mass_edit:
-    cancel: Annuller
-    product:
-      operation:
-        publish:
-          label: Publicér
-          label_count: "{1}Udgiv <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Udgiv <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
-          description: Produkterne vil blive offentliggjort
-          warning: '{{ itemsCount }} udvalgte produkter vil blive offentliggjort.'
-        unpublish:
-          label: Afpublisér
-          label_count: "{1}Afpubliser <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Afpubliser <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
-          description: Produkterne vil blive afpubliseret
-          warning: '{{ itemsCount }} udvalgte produkter vil blive afpubliseret.'
-    asset:
-      title: Aktiver bulk handling
-      confirm: "{1} Du er ved at opdatere et aktiv med følgende oplysninger, bekræft venligst. .|] 1, Inf [Du er ved at opdatere {{ itemsCount }} aktiver med følgende oplysninger, bekræft venligst."
-      step:
-        select:
-          label: Vælg Aktiver
-        choose:
-          title: Aktiver bulk handlinger
-          label_count: "] 0, Inf [Vælg din handling"
-        configure:
-          label: Konfigurér
-        confirm:
-          label: Bekræft
-      operation:
-        add_tag:
-          label: Tilføje tags til aktiver
-          description: Tags vil blive tilføjet til aktiverne.
-          label_count: "{1}Tilføj mærkater til <span class=\"AknFullPage-title--highlight\"> 1 aktiv</span> |] 1, Inf [Tilføj mærkater til <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} aktiver</span>"
-          field: Etiketter
-          empty_selection: Vælg venligst mærkat
-        add_to_category:
-          label: Klassificere produkter i kategorier
-          description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
-          label_count: "{1}Klassificer <span class=\"AknFullPage-title--highlight\"> 1 aktiv</span> på kategorier |] 1, Inf [klassificere <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} aktiver</span> på kategorier"
-  category:
-    tab:
-      permission:
-        title: Rettigheder
+      colorspace:
+        title: Farverum
+        options:
+          colorspace: '%value% farverum'
+      resize:
+        title: Skalér
+        options:
+          width: '%value%px bredde'
+          height: '%value%px højde'
+      resolution:
+        title: Opløsning
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Skaler
+        options:
+          width: '%value%px bredde'
+          height: '%value%px højde'
+          ratio: '%value%% forhold'
+      thumbnail:
+        title: Miniature
+        options:
+          width: '%value%px bredde'
+          height: '%value%px højde'
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Gruppe {{ group }} vil være tilladt at {{ permission }} attributgruppe
+      view: Rettighed til at se attributter
+      edit: Rettighed til at redigere attributter
+      removed: Gruppe {{ group }} vil ikke blive tilladt at {{ permission }} attributgruppe
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Gruppe {{ group }} vil være tilladelse til at {{ permission }} jobprofil
+      execute: Tilladt at udføre jobprofil
+      edit: Tilladt at redigere jobprofil
+      removed: Gruppe {{ group }} vil  have tilladelse til at {{ permission }} jobprofil
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Publiceret
+      revert: Gendan
+    meta:
+      published_version: Publiceret version
+      owner_groups: Ejer grupper
+      draft_status: Kladdestatus
+      draft:
+        in_progress: Igangværende
+        sent_for_approval: Venter på godkendelse
+        working_copy: Arbejds kopi
+    revert:
+      title: Gendanne bekræftelse
+      content: Er du sikker på at du vil gendanne produktet til denne version?
+    publish:
+      title: Offentliggøre dette produkt
+      content: Er du sikker på du vil offentliggøre dette produkt?
+    unpublish:
+      title: Afpublicer produktet
+      content: Er du sikker på du vil afpublicere dette produkt ?
+    copy:
+      working_copy: Arbejds kopi
+      draft: Mit udkast
+      draft_of: "{{ author }}'s udkast til"
+    approval:
+      send: Send til godkendelse
+      sent: Sendt til godkendelse
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Produkt blev publiseret
+      fail: Fejl ved publisering af dette produkt
+    unpublish:
+      success: Produkt blev afpubliseret
+      fail: Fejl ved publisering af dette produkt
+    revert:
+      success: Produkt blev gendannet
+  module:
+    publish:
+      label: Publicér
+      publish_this_version: Offentliggøre denne version
+    unpublish:
+      label: Afpublisér
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Forslaget er blevet anvendt.
+      fail: "Dette forslag kan ikke anvendes på grund af følgende fejl. {{ error }}"
+    reject:
+      success: Forslaget er blevet afvist.
+    remove:
+      success: Forslaget er blevet fjernet.
+    update:
+      success: Produkt udkast er blevet gemt
+      fail: Produkt kladde kunne ikke opdateres
+    create:
+      success: Produkt udkast sendes til godkendelse
+      fail: Du kan ikke sende dette udkast til godkendelse
+  module:
+    create:
+      label: Gem kladde
+    proposal:
+      accept: Acceptere forslag
+      accept_selected: Acceptere valgte forslag(ene)
+      reject: Afvis forslag
+      reject_selected: Afvis valgte forslag(ene)
+      remove: Fjern forslag
+      comment_title: Kommentere dine forslag (valgfri - maks. 255 tegn)
+      comment_chars: tegn.
+      confirm: Afsend
+    edit:
+      discard_changes: Ikke-gemte ændringer vil gå tabt. Er du sikker på du vil sende din udkast til godkendelse uden at gemme dine ændringer?
+      discard_changes_title: Er du sikker på du vil sende dette udkast?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Publicér
+      description: Produkterne vil blive offentliggjort
+      warning: '{{ itemsCount }} udvalgte produkter vil blive offentliggjort.'
+    unpublish:
+      label: Afpublisér
+      description: Produkterne vil blive afpubliseret
+      warning: '{{ itemsCount }} udvalgte produkter vil blive afpubliseret.'
+pimee_enrich.mass_edit.asset:
+  title: Aktiver bulk handling
+  step:
+    select:
+      label: Vælg Aktiver
+    choose:
+      title: Aktiver bulk handlinger
+    configure:
+      label: Konfigurér
+    confirm:
+      label: Bekræft
+  operation:
+    add_tag:
+      label: Tilføje tags til aktiver
+      description: Tags vil blive tilføjet til aktiverne.
+      field: Etiketter
+      empty_selection: Vælg venligst mærkat
+    add_to_category:
+      label: Klassificere produkter i kategorier
+      description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
 pim_menu:
+  navigation:
+    published_products: Offentliggjorte produkter
   tab:
     asset: Aktiver
   item:
@@ -252,7 +225,7 @@ batch_jobs:
     execute_rules.label: Regler udførelse
   publish_product:
     perform.label: Udgiv produkter
-catalog_volume:
+pim_catalog_volumne:
   axis:
     count_assets: Aktiver
     count_asset_categories: Aktiver kategorier

@@ -89,7 +89,6 @@
 - Move namespace `PimEnterprise\Bundle\CatalogRuleBundle` to `Akeneo\Pim\Automation\RuleEngine\Bundle`
 - Move namespace `PimEnterprise\Component\CatalogRule` to `Akeneo\Pim\Automation\RuleEngine\Component`
 
-
 ## Security
 
 - Move `PimEnterprise\Bundle\ApiBundle\Security\AccessDeniedHandler` to `Akeneo\Pim\Permission\Bundle\Api\AccessDeniedHandler`

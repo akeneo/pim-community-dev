@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Record;
@@ -122,6 +123,49 @@ class CreateActionTest extends ControllerIntegrationTestCase
         );
     }
 
+    /** @test */
+    public function it_returns_an_error_when_the_user_do_not_have_the_rights()
+    {
+        $this->revokeCreationRights();
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::CREATE_RECORD_ROUTE,
+            [
+                'enrichedEntityIdentifier' => 'michel',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            [
+                'identifier' => 'starck',
+                'labels'     => [
+                    'fr_FR' => 'Starck',
+                    'en_US' => 'Starck',
+                ],
+            ]
+        );
+
+        $this->webClientHelper->assert403Forbidden($this->client->getResponse());
+    }
+
+    private function loadFixtures(): void
+    {
+        $user = new User();
+        $user->setUsername('julia');
+        $this->get('pim_user.repository.user')->save($user);
+
+        $securityFacadeStub = $this->get('oro_security.security_facade');
+        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_record_create', true);
+    }
+
+    private function revokeCreationRights(): void
+    {
+        $securityFacadeStub = $this->get('oro_security.security_facade');
+        $securityFacadeStub->setIsGranted('akeneo_enrichedentity_record_create', false);
+    }
+
     public function invalidIdentifiers()
     {
         $longIdentifier = str_repeat('a', 256);
@@ -143,8 +187,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'invalid-identifier',
                 'brand',
                 'brand',
-                '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may onlay contain letters, numbers and underscores.","root":{"identifier":"invalid-identifier","labels":[],"enrichedEntityIdentifier":"brand"},"propertyPath":"identifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-            ],
+                '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":"invalid-identifier","labels":[],"enrichedEntityIdentifier":"brand"},"propertyPath":"identifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'            ],
             'Record Identifier is 256 characters long' => [
                 $longIdentifier,
                 'brand',
@@ -167,7 +210,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'intel',
                 'invalid-identifier',
                 'brand',
-                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may onlay contain letters, numbers and underscores.","root":{"identifier":"intel","labels":[],"enrichedEntityIdentifier":"invalid-identifier"},"propertyPath":"enrichedEntityIdentifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":"intel","labels":[],"enrichedEntityIdentifier":"invalid-identifier"},"propertyPath":"enrichedEntityIdentifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
             ],
             'Enriched Entity Identifier is 256 characters long' => [
                 'intel',
@@ -182,12 +225,5 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 '"Enriched Entity Identifier provided in the route and the one given in the body of your request are different"',
             ],
         ];
-    }
-
-    private function loadFixtures(): void
-    {
-        $user = new User();
-        $user->setUsername('julia');
-        $this->get('pim_user.repository.user')->save($user);
     }
 }

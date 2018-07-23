@@ -40,7 +40,9 @@ export default class EditForm extends React.Component<FormProps> {
         <div className="AknComparableFields field-container">
           <div className="akeneo-text-field AknComparableFields-item AknFieldContainer original-field edit">
             <div className="AknFieldContainer-header">
-              <label className="AknFieldContainer-label AknFieldContainer-label--grey">
+              <label className="AknFieldContainer-label AknFieldContainer-label--grey"
+                htmlFor="pim_enriched_entity.enriched_entity.properties.identifier"
+              >
                 <span className="badge-elements-container"></span>
                 {__('pim_enriched_entity.enriched_entity.properties.identifier')}
                 <span className="label-elements-container"></span>
@@ -50,6 +52,7 @@ export default class EditForm extends React.Component<FormProps> {
               <input
                 type="text"
                 name="identifier"
+                id="pim_enriched_entity.enriched_entity.properties.identifier"
                 className="AknTextField AknTextField--withDashedBottomBorder AknTextField--disabled"
                 value={this.props.enrichedEntity.getIdentifier().stringValue()}
                 readOnly
@@ -60,7 +63,9 @@ export default class EditForm extends React.Component<FormProps> {
         <div className="AknComparableFields field-container">
           <div className="akeneo-text-field AknComparableFields-item AknFieldContainer original-field edit">
             <div className="AknFieldContainer-header">
-              <label className="AknFieldContainer-label AknFieldContainer-label--grey">
+              <label className="AknFieldContainer-label AknFieldContainer-label--grey"
+                htmlFor="pim_enriched_entity.enriched_entity.properties.label"
+              >
                 {__('pim_enriched_entity.enriched_entity.properties.label')}
               </label>
             </div>
@@ -68,6 +73,7 @@ export default class EditForm extends React.Component<FormProps> {
               <input
                 type="text"
                 name="label"
+                id="pim_enriched_entity.enriched_entity.properties.label"
                 className="AknTextField AknTextField--withBottomBorder"
                 value={this.props.enrichedEntity.getLabelCollection().hasLabel(this.props.locale) ?
                   this.props.enrichedEntity.getLabelCollection().getLabel(this.props.locale) :

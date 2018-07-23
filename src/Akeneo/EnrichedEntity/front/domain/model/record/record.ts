@@ -1,13 +1,22 @@
 import Identifier from 'akeneoenrichedentity/domain/model/record/identifier';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection from 'akeneoenrichedentity/domain/model/label-collection';
+import LabelCollection, {RawLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+
+interface NormalizedRecord {
+  identifier: string;
+  enrichedEntityIdentifier: string;
+  labels: RawLabelCollection;
+}
 
 export default interface Record {
   getIdentifier: () => Identifier;
-  getEnrichedEntityIdentifier(): EnrichedEntityIdentifier;
+  getEnrichedEntityIdentifier: () => EnrichedEntityIdentifier;
   getLabel: (locale: string) => string;
+  getLabelCollection: () => LabelCollection;
   equals: (record: Record) => boolean;
+  normalize: () => NormalizedRecord;
 }
+
 class InvalidArgumentError extends Error {}
 
 class RecordImplementation implements Record {
@@ -51,11 +60,23 @@ class RecordImplementation implements Record {
       : `[${this.getIdentifier().stringValue()}]`;
   }
 
+  public getLabelCollection(): LabelCollection {
+    return this.labelCollection;
+  }
+
   public equals(record: Record): boolean {
     return (
       record.getIdentifier().equals(this.identifier) &&
       record.getEnrichedEntityIdentifier().equals(this.enrichedEntityIdentifier)
     );
+  }
+
+  public normalize(): NormalizedRecord {
+    return {
+      identifier: this.getIdentifier().stringValue(),
+      enrichedEntityIdentifier: this.getEnrichedEntityIdentifier().stringValue(),
+      labels: this.getLabelCollection().getLabels(),
+    };
   }
 }
 
