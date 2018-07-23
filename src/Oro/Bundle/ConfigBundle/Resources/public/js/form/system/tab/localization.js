@@ -49,7 +49,10 @@ define(
 
                 FetcherRegistry.getFetcher('ui-locale').fetchAll().then(function (locales) {
                     this.$el.html(this.template({
-                        locales: locales,
+                        locales: locales.reduce((result, locale) => {
+                            result[locale.code] = locale.label;
+                            return result;
+                        }, {}),
                         selected: this.getFormData()['pim_ui___language'].value
                     }));
 

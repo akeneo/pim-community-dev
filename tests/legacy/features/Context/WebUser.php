@@ -761,6 +761,7 @@ class WebUser extends PimContext
      *
      * @throws \LogicException
      * @throws ExpectationException
+     * @throws TimeoutException
      *
      * TODO: should be moved to a page context and theProductFieldValueShouldBe() method should be merged with this one
      */
@@ -798,7 +799,7 @@ class WebUser extends PimContext
 
                 $actual = [];
                 foreach ($options as $option) {
-                    $actual[] = $option->getHtml();
+                    $actual[] = trim($option->getHtml());
                 }
                 $expected = $this->listToArray($expected);
                 sort($actual);
