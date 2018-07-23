@@ -70,8 +70,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $repository = $this->getRecordRepository();
         $recordItem = $repository->getByIdentifier(
-            RecordIdentifier::fromString($postContent['enrichedEntityIdentifier'], $postContent['identifier']),
-            EnrichedEntityIdentifier::fromString($postContent['enrichedEntityIdentifier'])
+            RecordIdentifier::from($postContent['enrichedEntityIdentifier'], $postContent['identifier'])
         );
 
         Assert::assertEquals(array_keys($postContent['labels']), $recordItem->getLabelCodes());
@@ -141,7 +140,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $repository = $this->getRecordRepository();
 
         $entityItem = Record::create(
-            RecordIdentifier::fromString('singer', 'celine_dion'), EnrichedEntityIdentifier::fromString('singer'),
+            RecordIdentifier::from('singer', 'celine_dion'), EnrichedEntityIdentifier::fromString('singer'),
             RecordCode::fromString('celine_dion'), [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Celine Dion',

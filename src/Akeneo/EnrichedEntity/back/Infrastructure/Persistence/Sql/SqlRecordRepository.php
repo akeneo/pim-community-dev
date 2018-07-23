@@ -17,7 +17,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
@@ -66,8 +66,8 @@ SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
             [
-                'identifier' => (string) $record->getIdentifier(),
-                'enriched_entity_identifier' => (string) $record->getEnrichedEntityIdentifier(),
+                'identifier' => $record->getIdentifier()->getIdentifier(),
+                'enriched_entity_identifier' => $record->getIdentifier()->getEnrichedEntityIdentifier(),
                 'labels' => $serializedLabels,
                 'data' => '{}'
             ]
@@ -79,8 +79,7 @@ SQL;
     }
 
     public function getByIdentifier(
-        RecordIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier
+        RecordIdentifier $identifier
     ): Record {
         $fetch = <<<SQL
         SELECT identifier, enriched_entity_identifier, labels
@@ -91,16 +90,18 @@ SQL;
         $statement = $this->sqlConnection->executeQuery(
             $fetch,
             [
-                'identifier' => (string) $identifier,
-                'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
+                'identifier' => $identifier->getIdentifier(),
+                'enriched_entity_identifier' => $identifier->getEnrichedEntityIdentifier(),
             ]
         );
         $result = $statement->fetch();
         $statement->closeCursor();
 
         if (!$result) {
-            // TODO: Here we only give the Record identifier, it's not enough to identify it
-            throw EntityNotFoundException::withIdentifier(Record::class, (string) $identifier);
+            throw RecordNotFoundException::withIdentifier(
+                $identifier->getEnrichedEntityIdentifier(),
+                $identifier->getIdentifier()
+            );
         }
 
         return $this->hydrateRecord($result['identifier'], $result['enriched_entity_identifier'], $result['labels']);
@@ -120,8 +121,9 @@ SQL;
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
 
         $record = Record::create(
-            RecordIdentifier::fromString($enrichedEntityIdentifier, $identifier),
-            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier), RecordCode::fromString($identifier),
+            RecordIdentifier::from($enrichedEntityIdentifier, $identifier),
+            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            RecordCode::fromString($identifier),
             $labels
         );
 

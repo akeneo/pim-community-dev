@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Domain\Repository;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 
@@ -21,8 +20,8 @@ interface RecordRepositoryInterface
 {
     public function save(Record $record): void;
 
-    public function getByIdentifier(
-        RecordIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier
-    ): Record;
+    /**
+     * @throws RecordNotFoundException
+     */
+    public function getByIdentifier(RecordIdentifier $identifier): Record;
 }

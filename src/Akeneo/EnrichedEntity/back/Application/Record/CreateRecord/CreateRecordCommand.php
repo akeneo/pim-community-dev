@@ -23,9 +23,9 @@ class CreateRecordCommand
     /** @var string */
     public $identifier;
 
-    /** @var array */
-    public $labels;
-
     /** @var string */
     public $enrichedEntityIdentifier;
+
+    /** @var array */
+    public $labels;
 }

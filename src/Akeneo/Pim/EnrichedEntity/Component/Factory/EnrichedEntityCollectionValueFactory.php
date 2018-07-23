@@ -116,10 +116,10 @@ class EnrichedEntityCollectionValueFactory implements ValueFactoryInterface
         foreach ($recordCodes as $recordCode) {
             $enrichedEntityCode = $attribute->getReferenceDataName();
             $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityCode);
-            $recordIdentifier = RecordIdentifier::fromString($enrichedEntityCode, $recordCode);
+            $recordIdentifier = RecordIdentifier::from($enrichedEntityCode, $recordCode);
 
             // TODO change to the proper search
-            $record = $this->recordRepository->getByIdentifier($recordIdentifier, $enrichedEntityIdentifier);
+            $record = $this->recordRepository->getByIdentifier($recordIdentifier);
 
             if (null === $record) {
                 throw InvalidPropertyException::validEntityCodeExpected(

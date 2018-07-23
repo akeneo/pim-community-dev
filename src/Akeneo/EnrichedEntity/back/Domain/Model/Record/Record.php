@@ -16,6 +16,7 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Record;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -54,6 +55,24 @@ class Record
         array $rawLabelCollection
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
+        if ($identifier->getIdentifier() !== (string) $code) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The identifier and code should be the same, "%s" and "%s" given.',
+                    $identifier->getIdentifier(),
+                    (string) $code
+                )
+            );
+        }
+        if ($identifier->getEnrichedEntityIdentifier() !== (string) $enrichedEntityIdentifier) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The identifier and enriched entity identifier should be related, "%s" and "%s" given.',
+                    $identifier->getEnrichedEntityIdentifier(),
+                    (string) $enrichedEntityIdentifier
+                )
+            );
+        }
 
         return new self($identifier, $code, $enrichedEntityIdentifier, $labelCollection);
     }

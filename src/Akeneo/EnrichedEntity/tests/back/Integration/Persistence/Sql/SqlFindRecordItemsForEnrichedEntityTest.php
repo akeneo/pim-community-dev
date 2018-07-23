@@ -44,12 +44,12 @@ class SqlFindRecordItemsForEnrichedEntityTest extends SqlIntegrationTestCase
         $recordItems = ($this->findRecordsForEnrichedEntity)(EnrichedEntityIdentifier::fromString('designer'));
 
         $starck = new RecordItem();
-        $starck->identifier = RecordIdentifier::fromString('designer', 'starck');
+        $starck->identifier = RecordIdentifier::from('designer', 'starck');
         $starck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $starck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
 
         $coco = new RecordItem();
-        $coco->identifier = RecordIdentifier::fromString('designer', 'coco');
+        $coco->identifier = RecordIdentifier::from('designer', 'coco');
         $coco->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $coco->labels = LabelCollection::fromArray(['fr_FR' => 'Coco Chanel']);
 
@@ -82,13 +82,13 @@ SQL;
         $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
         $recordRepository->save(
             Record::create(
-                RecordIdentifier::fromString('designer', 'starck'), EnrichedEntityIdentifier::fromString('designer'),
+                RecordIdentifier::from('designer', 'starck'), EnrichedEntityIdentifier::fromString('designer'),
                 RecordCode::fromString('starck'), ['fr_Fr' => 'Philippe Starck']
             )
         );
         $recordRepository->save(
             Record::create(
-                RecordIdentifier::fromString('designer', 'coco'), EnrichedEntityIdentifier::fromString('designer'),
+                RecordIdentifier::from('designer', 'coco'), EnrichedEntityIdentifier::fromString('designer'),
                 RecordCode::fromString('coco'), ['fr_Fr' => 'Coco Chanel']
             )
         );

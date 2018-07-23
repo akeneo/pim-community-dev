@@ -34,11 +34,11 @@ class EditRecordHandler
 
     public function __invoke(EditRecordCommand $editRecordCommand): void
     {
-        $identifier = RecordIdentifier::fromString($editRecordCommand->enrichedEntityIdentifier, $editRecordCommand->identifier);
+        $identifier = RecordIdentifier::from($editRecordCommand->enrichedEntityIdentifier, $editRecordCommand->identifier);
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($editRecordCommand->enrichedEntityIdentifier);
         $labelCollection = LabelCollection::fromArray($editRecordCommand->labels);
 
-        $record = $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
+        $record = $this->recordRepository->getByIdentifier($identifier);
         $record->updateLabels($labelCollection);
         $this->recordRepository->save($record);
     }

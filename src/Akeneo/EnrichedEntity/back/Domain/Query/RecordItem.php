@@ -27,8 +27,8 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 class RecordItem
 {
     public const IDENTIFIER = 'identifier';
-    public const CODE = 'code';
     public const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
+    public const CODE = 'code';
     public const LABELS = 'labels';
 
     /** @var RecordIdentifier */

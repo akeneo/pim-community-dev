@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Common;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 
 /**
@@ -26,37 +24,23 @@ use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
  */
 class InMemoryRecordRepository implements RecordRepositoryInterface
 {
-    /** @var Record[] */
+    /** @var array */
     protected $records = [];
 
     public function save(Record $record): void
     {
-        $recordIdentifier = $record->getIdentifier();
-        $recordIdentifier = sprintf(
-            '%s_%s',
-            $recordIdentifier->getRecordIdentifier(),
-            $recordIdentifier->getEnrichedEntityIdentifier()
-        );
-        $enrichedEntityIdentifier = (string) $record->getEnrichedEntityIdentifier();
-
-        $this->records[$enrichedEntityIdentifier][$recordIdentifier] = $record;
+        $identifier = $record->getIdentifier();
+        $this->records[$identifier->getEnrichedEntityIdentifier()][$identifier->getIdentifier()] = $record;
     }
 
-    public function getByIdentifier(
-        RecordIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier
-    ): Record {
-        if (!isset($this->records[(string) $enrichedEntityIdentifier])) {
-            throw EntityNotFoundException::withIdentifier(EnrichedEntity::class, (string) $enrichedEntityIdentifier);
+    public function getByIdentifier(RecordIdentifier $identifier): Record {
+        $recordIdentifier = $identifier->getIdentifier();
+        $enrichedEntityIdentifier = $identifier->getEnrichedEntityIdentifier();
+        if (!isset($this->records[$enrichedEntityIdentifier][$recordIdentifier])) {
+            throw RecordNotFoundException::withIdentifier($enrichedEntityIdentifier, $recordIdentifier);
         }
 
-        $records = $this->records[(string) $enrichedEntityIdentifier];
-
-        if (!isset($records[(string) $identifier])) {
-            throw EntityNotFoundException::withIdentifier(Record::class, (string) $identifier);
-        }
-
-        return $records[(string) $identifier];
+        return $this->records[$enrichedEntityIdentifier][$recordIdentifier];
     }
 
     public function count(): int

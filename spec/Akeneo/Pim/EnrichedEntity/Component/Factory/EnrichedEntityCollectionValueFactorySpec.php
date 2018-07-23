@@ -101,9 +101,9 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->getReferenceDataName()->willReturn('designer');
 
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $starckIdentifier = RecordIdentifier::fromString('designer', 'starck');
+        $starckIdentifier = RecordIdentifier::from('designer', 'starck');
         $recordRepository->getByIdentifier($starckIdentifier, $enrichedEntityIdentifier)->willReturn($starck);
-        $dysonIdentifier = RecordIdentifier::fromString('designer', 'dyson');
+        $dysonIdentifier = RecordIdentifier::from('designer', 'dyson');
         $recordRepository->getByIdentifier($dysonIdentifier, $enrichedEntityIdentifier)->willReturn($dyson);
 
         $productValue = $this->create(
@@ -135,9 +135,9 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->getReferenceDataName()->willReturn('designer');
 
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $starckIdentifier = RecordIdentifier::fromString('starck', '');
+        $starckIdentifier = RecordIdentifier::from('starck', '');
         $recordRepository->getByIdentifier($starckIdentifier, $enrichedEntityIdentifier)->willReturn($starck);
-        $dysonIdentifier = RecordIdentifier::fromString('dyson', '');
+        $dysonIdentifier = RecordIdentifier::from('dyson', '');
         $recordRepository->getByIdentifier($dysonIdentifier, $enrichedEntityIdentifier)->willReturn($dyson);
 
         $productValue = $this->create(

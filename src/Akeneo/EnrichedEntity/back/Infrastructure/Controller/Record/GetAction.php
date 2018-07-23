@@ -63,7 +63,7 @@ class GetAction
     private function getRecordIdentifierOr404(string $enrichedEntityIdentifier, string $recordIdentifier): RecordIdentifier
     {
         try {
-            return RecordIdentifier::fromString($enrichedEntityIdentifier, $recordIdentifier);
+            return RecordIdentifier::from($enrichedEntityIdentifier, $recordIdentifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }

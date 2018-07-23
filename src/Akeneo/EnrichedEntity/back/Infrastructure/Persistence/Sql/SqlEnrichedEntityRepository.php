@@ -15,8 +15,9 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -79,7 +80,7 @@ SQL;
         $statement->closeCursor();
 
         if (!$result) {
-            throw EntityNotFoundException::withIdentifier(EnrichedEntity::class, (string) $identifier);
+            throw EnrichedEntityNotFoundException::withIdentifier((string) $identifier);
         }
 
         return $this->hydrateEnrichedEntity($result['identifier'], $result['labels']);

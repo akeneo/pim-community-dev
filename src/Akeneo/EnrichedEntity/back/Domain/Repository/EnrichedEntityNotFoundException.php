@@ -17,13 +17,12 @@ namespace Akeneo\EnrichedEntity\Domain\Repository;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EntityNotFoundException extends \RuntimeException
+class EnrichedEntityNotFoundException extends \RuntimeException
 {
-    public static function withIdentifier(string $type, string $identifier): self
+    public static function withIdentifier(string $identifier): self
     {
         $message = sprintf(
-            'Could not find entity of type "%s" with identifier "%s"',
-            $type,
+            'Could not find enriched entity with identifier "%s"',
             $identifier
         );
 

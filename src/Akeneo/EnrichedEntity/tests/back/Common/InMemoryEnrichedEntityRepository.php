@@ -15,8 +15,8 @@ namespace Akeneo\EnrichedEntity\tests\back\Common;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
@@ -39,7 +39,7 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
     {
         $enrichedEntity = $this->enrichedEntities[(string) $identifier] ?? null;
         if (null === $enrichedEntity) {
-            throw EntityNotFoundException::withIdentifier(EnrichedEntity::class, (string) $identifier);
+            throw EnrichedEntityNotFoundException::withIdentifier((string) $identifier);
         }
 
         return $enrichedEntity;

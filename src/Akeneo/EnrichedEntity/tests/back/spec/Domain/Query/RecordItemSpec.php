@@ -18,7 +18,7 @@ class RecordItemSpec extends ObjectBehavior
 
     function it_normalizes_a_read_model()
     {
-        $this->identifier = RecordIdentifier::fromString('designer', 'starck');
+        $this->identifier = RecordIdentifier::from('designer', 'starck');
         $this->code = RecordCode::fromString('starck');
         $this->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $this->labels = LabelCollection::fromArray([

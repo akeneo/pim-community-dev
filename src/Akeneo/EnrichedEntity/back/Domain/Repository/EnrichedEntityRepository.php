@@ -21,7 +21,7 @@ interface EnrichedEntityRepository
     public function save(EnrichedEntity $enrichedEntity): void;
 
     /**
-     * @throws EntityNotFoundException
+     * @throws EnrichedEntityNotFoundException
      */
     public function getByIdentifier(EnrichedEntityIdentifier $identifier): EnrichedEntity;
 }

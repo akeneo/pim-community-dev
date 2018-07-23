@@ -36,7 +36,7 @@ class RecordIdentifier
         $this->identifier = $identifier;
     }
 
-    public static function fromString(string $enrichedEntityIdentifier, string $identifier): self
+    public static function from(string $enrichedEntityIdentifier, string $identifier): self
     {
         Assert::stringNotEmpty($enrichedEntityIdentifier);
         Assert::stringNotEmpty($identifier);
@@ -63,5 +63,15 @@ class RecordIdentifier
             self::ENRICHED_ENTITY_IDENTIFIER => $this->enrichedEntityIdentifier,
             self::IDENTIFIER                 => $this->identifier
         ];
+    }
+
+    public function getEnrichedEntityIdentifier(): string
+    {
+        return $this->enrichedEntityIdentifier;
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
     }
 }

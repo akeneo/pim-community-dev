@@ -13,7 +13,7 @@ class RecordSpec extends ObjectBehavior
 {
     public function let()
     {
-        $identifier = RecordIdentifier::fromString('designer', 'starck');
+        $identifier = RecordIdentifier::from('designer', 'starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $recordCode = RecordCode::fromString('starck');
         $labelCollection = [
@@ -31,7 +31,7 @@ class RecordSpec extends ObjectBehavior
 
     public function it_returns_its_identifier()
     {
-        $identifier = RecordIdentifier::fromString('designer', 'starck');
+        $identifier = RecordIdentifier::from('designer', 'starck');
 
         $this->getIdentifier()->shouldBeLike($identifier);
     }
@@ -43,21 +43,46 @@ class RecordSpec extends ObjectBehavior
         $this->getEnrichedEntityIdentifier()->shouldBeLike($enrichedEntityIdentifier);
     }
 
+    public function it_checks_the_identifier_and_code_are_in_sync()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('create', [
+                RecordIdentifier::from('designer', 'strack'),
+                EnrichedEntityIdentifier::fromString('designer'),
+                RecordCode::fromString('wrong_code'),
+                []
+            ]);
+    }
+
+    public function it_checks_the_identifier_and_enriched_entity_identifier_are_in_sync()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('create', [
+                RecordIdentifier::from('designer', 'strack'),
+                EnrichedEntityIdentifier::fromString('wrong_identifier'),
+                RecordCode::fromString('starck'),
+                []
+            ]);
+    }
+
     public function it_is_comparable()
     {
-        $sameIdentifier = RecordIdentifier::fromString('designer', 'starck');
-        $sameEnrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $sameRecordCode = RecordCode::fromString('starck');
-        $sameRecord = Record::create($sameIdentifier, $sameEnrichedEntityIdentifier, $sameRecordCode, []);
-
+        $sameIdentifier = RecordIdentifier::from('designer', 'starck');
+        $sameRecord = Record::create(
+            $sameIdentifier,
+            EnrichedEntityIdentifier::fromString('designer'),
+            RecordCode::fromString('starck'),
+            []
+        );
         $this->equals($sameRecord)->shouldReturn(true);
 
-        $anotherIdentifier = RecordIdentifier::fromString('designer', 'jony_ive');
-        $anotherRecord = Record::create($anotherIdentifier, $sameEnrichedEntityIdentifier, $sameRecordCode, []);
-        $this->equals($anotherRecord)->shouldReturn(false);
-
-        $anotherEnrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('sofa');
-        $anotherRecord = Record::create($sameIdentifier, $anotherEnrichedEntityIdentifier, $sameRecordCode, []);
+        $anotherIdentifier = RecordIdentifier::from('designer', 'jony_ive');
+        $anotherRecord = Record::create(
+            $anotherIdentifier,
+            EnrichedEntityIdentifier::fromString('designer'),
+            RecordCode::fromString('jony_ive'),
+            []
+        );
         $this->equals($anotherRecord)->shouldReturn(false);
     }
 }

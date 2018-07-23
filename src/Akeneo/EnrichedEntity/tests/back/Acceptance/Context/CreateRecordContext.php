@@ -65,14 +65,13 @@ final class CreateRecordContext implements Context
     public function thereIsARecordWith(TableNode $enrichedEntityTable)
     {
         $expectedInformation = current($enrichedEntityTable->getHash());
-        $expectedIdentifier = RecordIdentifier::fromString(
+        $expectedIdentifier = RecordIdentifier::from(
             $expectedInformation['entity_identifier'],
             $expectedInformation['identifier']
 
         );
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($expectedInformation['entity_identifier']);
-        $actualEnrichedEntity = $this->recordRepository->getByIdentifier($expectedIdentifier,
-            $enrichedEntityIdentifier);
+        $actualEnrichedEntity = $this->recordRepository->getByIdentifier($expectedIdentifier);
         $this->assertSameLabels(
             json_decode($expectedInformation['labels'], true),
             $actualEnrichedEntity

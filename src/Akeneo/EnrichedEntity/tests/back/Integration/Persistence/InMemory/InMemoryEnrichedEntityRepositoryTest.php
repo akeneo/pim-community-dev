@@ -15,8 +15,8 @@ namespace Akeneo\EnrichedEntity\tests\back\Acceptance;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
 use Akeneo\EnrichedEntity\tests\back\Common\InMemoryEnrichedEntityRepository;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
@@ -50,7 +50,7 @@ class InMemoryEnrichedEntityRepositoryTest extends TestCase
      */
     public function it_throws_if_the_identifier_is_not_found()
     {
-        $this->expectException(EntityNotFoundException::class);
+        $this->expectException(EnrichedEntityNotFoundException::class);
         $this->enrichedEntityRepository->getByIdentifier(
             EnrichedEntityIdentifier::fromString('unknown_identifier')
         );
