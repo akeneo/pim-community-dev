@@ -43,6 +43,8 @@ Feature: Export products
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job
     And I wait for the "ecommerce_product_export" job to finish
+    Then I should see the text "Read 2"
+    And I should see the text "Written 2"
     Then exported file of "ecommerce_product_export" should contain:
     """
     sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit

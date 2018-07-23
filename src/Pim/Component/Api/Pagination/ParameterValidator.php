@@ -87,7 +87,7 @@ class ParameterValidator implements ParameterValidatorInterface
         }
 
         $limitMax = $this->configuration['pagination']['limit_max'];
-        if ($limitMax < $limit) {
+        if ($limit > $limitMax) {
             throw new PaginationParametersException(sprintf('You cannot request more than %d items.', $limitMax));
         }
     }

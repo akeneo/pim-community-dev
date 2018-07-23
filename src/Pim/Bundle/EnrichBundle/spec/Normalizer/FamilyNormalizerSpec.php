@@ -10,6 +10,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class FamilyNormalizerSpec extends ObjectBehavior
@@ -20,7 +21,8 @@ class FamilyNormalizerSpec extends ObjectBehavior
         CollectionFilterInterface $collectionFilter,
         AttributeRepositoryInterface $attributeRepository,
         VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer
+        NormalizerInterface $versionNormalizer,
+        NormalizerInterface $translationNormalizer
     ) {
         $this->beConstructedWith(
             $familyNormalizer,
@@ -28,7 +30,8 @@ class FamilyNormalizerSpec extends ObjectBehavior
             $collectionFilter,
             $attributeRepository,
             $versionManager,
-            $versionNormalizer
+            $versionNormalizer,
+            $translationNormalizer
         );
     }
 
@@ -47,6 +50,18 @@ class FamilyNormalizerSpec extends ObjectBehavior
             ->shouldReturn(false);
         $this->supportsNormalization($family, 'standard')
             ->shouldReturn(false);
+    }
+
+    function it_normalizes_an_unextended_family($translationNormalizer, FamilyInterface $family)
+    {
+        $family->getCode()->willReturn('camcorders');
+        $translationNormalizer->normalize($family, Argument::cetera())->willReturn([
+            'fr_FR' => 'Caméscopes'
+        ]);
+        $this->normalize($family, null, ['expanded' => false])->shouldReturn([
+            'code' => 'camcorders',
+            'labels' => ['fr_FR' => 'Caméscopes']
+        ]);
     }
 
     function it_normalizes_family_without_attributes_used_as_axis(

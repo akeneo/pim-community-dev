@@ -56,9 +56,6 @@ class FilteredProductModelReaderSpec extends ObjectBehavior
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2,
         ProductModelInterface $productModel3,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3,
         JobParameters $jobParameters
     ) {
         $filters = [

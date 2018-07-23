@@ -155,7 +155,7 @@
 
 {% block content_data %}
     <script type="text/javascript">
-        require('pim/page-title').set({'user': '{{ form.vars.value.name }}'});
+        require('pim/page-title').set({'username': '{{ fullname }}'});
 
         window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
     </script>

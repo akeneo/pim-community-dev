@@ -101,28 +101,30 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
         $family->getAttributeRequirements()->willReturn([$skuMobileRqrmt, $skuPrintRqrmt]);
         $family->getAttributes()->willReturn([$skuAttribute, $nameAttribute, $descAttribute, $pictureAttribute]);
-        $family->removeAttribute($nameAttribute)->shouldBeCalled();
-        $family->removeAttribute($pictureAttribute)->shouldBeCalled();
-        $family->removeAttribute($descAttribute)->shouldBeCalled();
         $family->getId()->willReturn(42);
 
+        $skuAttribute->getCode()->willReturn('sku');
+        $skuAttribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
         $skuAttribute->getId()->willReturn(1);
+
+        $nameAttribute->getCode()->willReturn('name');
+        $nameAttribute->getType()->willReturn(AttributeTypes::TEXT);
         $nameAttribute->getId()->willReturn(2);
+
+        $descAttribute->getCode()->willReturn('description');
+        $descAttribute->getType()->willReturn(AttributeTypes::TEXTAREA);
         $descAttribute->getId()->willReturn(3);
+
+        $pictureAttribute->getCode()->willReturn('picture');
+        $pictureAttribute->getType()->willReturn(AttributeTypes::IMAGE);
         $pictureAttribute->getId()->willReturn(4);
 
         $skuMobileRqrmt->getAttribute()->willReturn($skuAttribute);
         $skuMobileRqrmt->getChannelCode()->willReturn('mobile');
         $skuMobileRqrmt->isRequired()->willReturn(true);
 
-        $skuAttribute->getCode()->willReturn('sku');
-        $skuAttribute->getType()->willReturn(AttributeTypes::IDENTIFIER);
-
         $skuPrintRqrmt->getAttribute()->willReturn($skuAttribute);
         $skuPrintRqrmt->getChannelCode()->willReturn('print');
-
-        $family->removeAttributeRequirement($skuMobileRqrmt)->shouldNotBeCalled();
-        $family->removeAttributeRequirement($skuPrintRqrmt)->shouldNotBeCalled();
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
         $attributeRepository->findOneByIdentifier('description')->willReturn($descAttribute);
@@ -154,31 +156,86 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $family->addAttributeRequirement($nameMobileRqrmt)->shouldBeCalled();
         $family->addAttributeRequirement($descPrintRqrmt)->shouldBeCalled();
         $family->addAttributeRequirement($namePrintRqrmt)->shouldBeCalled();
+        $family->removeAttributeRequirement($skuPrintRqrmt)->shouldNotBeCalled();
 
         $attributeRepository->findOneByIdentifier('sku')->willReturn($skuAttribute);
         $attributeRepository->findOneByIdentifier('picture')->willReturn($pictureAttribute);
 
-        $nameAttribute->getType()->willReturn(AttributeTypes::TEXT);
-        $descAttribute->getType()->willReturn(AttributeTypes::TEXTAREA);
-        $pictureAttribute->getType()->willReturn(AttributeTypes::IMAGE);
-
         $family->setCode('mycode')->shouldBeCalled();
-
-        $family->addAttribute($skuAttribute)->shouldBeCalled();
-        $family->addAttribute($nameAttribute)->shouldBeCalled();
-        $family->addAttribute($skuAttribute)->shouldBeCalled();
-        $family->addAttribute($skuAttribute)->shouldBeCalled();
-
 
         $translatableUpdater->update($family, ['fr_FR' => 'Moniteurs', 'en_US' => 'PC Monitors'])->shouldBeCalled();
 
-        $family->addAttribute($skuAttribute)->shouldBeCalled();
-        $family->addAttribute($nameAttribute)->shouldBeCalled();
-        $family->addAttribute($descAttribute)->shouldBeCalled();
-        $family->addAttribute($pictureAttribute)->shouldBeCalled();
-
         $family->setAttributeAsLabel($nameAttribute)->shouldBeCalled();
         $family->setAttributeAsImage($pictureAttribute)->shouldBeCalled();
+
+        $this->update($family, $values, []);
+    }
+
+    function it_updates_a_family_without_changing_attributes_when_they_are_the_same(
+        FamilyInterface $family,
+        AttributeInterface $skuAttribute,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descAttribute
+    ) {
+        $values = [
+            'attributes' => ['sku', 'name', 'description']
+        ];
+
+        $family->getAttributes()->willReturn([$skuAttribute, $nameAttribute, $descAttribute]);
+
+        $skuAttribute->getCode()->willReturn('sku');
+        $nameAttribute->getCode()->willReturn('name');
+        $descAttribute->getCode()->willReturn('description');
+
+        $family->removeAttribute(Argument::any())->shouldNotBeCalled();
+        $family->addAttribute(Argument::any())->shouldNotBeCalled();
+
+        $this->update($family, $values, []);
+    }
+
+    function it_updates_a_family_by_removing_an_attribute(
+        FamilyInterface $family,
+        AttributeInterface $skuAttribute,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descAttribute
+    ) {
+        $values = [
+            'attributes' => ['sku', 'name']
+        ];
+
+        $family->getAttributes()->willReturn([$skuAttribute, $nameAttribute, $descAttribute]);
+
+        $skuAttribute->getCode()->willReturn('sku');
+        $nameAttribute->getCode()->willReturn('name');
+        $descAttribute->getCode()->willReturn('description');
+        $descAttribute->getType()->willReturn(AttributeTypes::TEXTAREA);
+
+        $family->removeAttribute($descAttribute)->shouldBeCalled();
+        $family->addAttribute(Argument::any())->shouldNotBeCalled();
+
+        $this->update($family, $values, []);
+    }
+
+    function it_updates_a_family_by_adding_an_attribute(
+        FamilyInterface $family,
+        AttributeInterface $skuAttribute,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descAttribute,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        $values = [
+            'attributes' => ['sku', 'name', 'description']
+        ];
+
+        $family->getAttributes()->willReturn([$skuAttribute, $nameAttribute]);
+
+        $skuAttribute->getCode()->willReturn('sku');
+        $nameAttribute->getCode()->willReturn('name');
+
+        $family->removeAttribute(Argument::any())->shouldNotBeCalled();
+        $family->addAttribute($descAttribute)->shouldBeCalled();
+
+        $attributeRepository->findOneByIdentifier('description')->willReturn($descAttribute);
 
         $this->update($family, $values, []);
     }

@@ -925,6 +925,8 @@ batch_jobs:
             label: Clean files for attributes
         cleaner:
             label: Clean files for attributes
+    compute_completeness_of_products_family:
+        compute_completeness_of_products_family.label: Compute completeness
     add_to_category:
         label: Add to category
         perform:

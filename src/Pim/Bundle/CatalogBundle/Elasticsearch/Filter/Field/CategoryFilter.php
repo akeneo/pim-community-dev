@@ -46,7 +46,9 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
         }
 
         if ($operator !== Operators::UNCLASSIFIED) {
-            $this->checkValue($field, $value);
+            if (!isset($options['type_checking']) || $options['type_checking']) {
+                $this->checkValue($field, $value);
+            }
         }
 
         switch ($operator) {
