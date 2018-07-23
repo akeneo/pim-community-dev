@@ -12,10 +12,6 @@ Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnri
         labels:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\LabelCollection: ~
 
-Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand:
-    properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
 
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
@@ -25,9 +21,16 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
 
 Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand:
     properties:
-        identifier:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Identifier: ~
+        code:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Code: ~
         enrichedEntityIdentifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
         labels:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\LabelCollection: ~
+
+Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand:
+    properties:
+        code:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Code: ~
+        enrichedEntityIdentifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~

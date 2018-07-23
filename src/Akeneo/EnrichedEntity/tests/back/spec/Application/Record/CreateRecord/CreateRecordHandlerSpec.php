@@ -26,7 +26,7 @@ class CreateRecordHandlerSpec extends ObjectBehavior
         RecordRepositoryInterface $recordRepository,
         CreateRecordCommand $createRecordCommand
     ) {
-        $createRecordCommand->identifier = 'intel';
+        $createRecordCommand->code = 'intel';
         $createRecordCommand->enrichedEntityIdentifier = 'brand';
         $createRecordCommand->labels = [
             'en_US' => 'Intel',

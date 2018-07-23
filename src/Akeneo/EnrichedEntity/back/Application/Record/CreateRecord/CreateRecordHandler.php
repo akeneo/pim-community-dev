@@ -34,8 +34,8 @@ class CreateRecordHandler
 
     public function __invoke(CreateRecordCommand $createRecordCommand): void
     {
-        $identifier = RecordIdentifier::from($createRecordCommand->enrichedEntityIdentifier, $createRecordCommand->identifier);
-        $code = RecordCode::fromString($createRecordCommand->identifier);
+        $identifier = RecordIdentifier::from($createRecordCommand->enrichedEntityIdentifier, $createRecordCommand->code);
+        $code = RecordCode::fromString($createRecordCommand->code);
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($createRecordCommand->enrichedEntityIdentifier);
 
         $record = Record::create($identifier, $enrichedEntityIdentifier, $code, $createRecordCommand->labels);

@@ -21,11 +21,11 @@ namespace Akeneo\EnrichedEntity\Application\Record\EditRecord;
 class EditRecordCommand
 {
     /** @var string */
-    public $identifier;
+    public $enrichedEntityIdentifier;
+
+    /** @var string */
+    public $code;
 
     /** @var array */
     public $labels;
-
-    /** @var string */
-    public $enrichedEntityIdentifier;
 }

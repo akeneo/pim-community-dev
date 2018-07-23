@@ -18,6 +18,6 @@ use Symfony\Component\Validator\Constraint;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class Identifier extends Constraint
+class Code extends Constraint
 {
 }

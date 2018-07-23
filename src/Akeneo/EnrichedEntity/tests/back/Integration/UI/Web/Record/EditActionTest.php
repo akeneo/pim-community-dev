@@ -43,7 +43,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_edits_a_record_details(): void
     {
         $postContent = [
-            'identifier' => 'celine_dion',
+            'code' => 'celine_dion',
             'enrichedEntityIdentifier' => 'singer',
             'labels'     => [
                 'en_US' => 'Celine Dion',
@@ -70,7 +70,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $repository = $this->getRecordRepository();
         $recordItem = $repository->getByIdentifier(
-            RecordIdentifier::from($postContent['enrichedEntityIdentifier'], $postContent['identifier'])
+            RecordIdentifier::from($postContent['enrichedEntityIdentifier'], $postContent['code'])
         );
 
         Assert::assertEquals(array_keys($postContent['labels']), $recordItem->getLabelCodes());
@@ -103,7 +103,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_returns_errors_if_we_sent_a_bad_request()
     {
         $postContent = [
-            'identifier' => 'ah!',
+            'code' => 'ah!',
             'enrichedEntityIdentifier' => 'singer',
             'labels'     => [
                 'en_US' => 'Celine Dion',

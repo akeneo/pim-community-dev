@@ -34,8 +34,7 @@ class EditRecordHandler
 
     public function __invoke(EditRecordCommand $editRecordCommand): void
     {
-        $identifier = RecordIdentifier::from($editRecordCommand->enrichedEntityIdentifier, $editRecordCommand->identifier);
-        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($editRecordCommand->enrichedEntityIdentifier);
+        $identifier = RecordIdentifier::from($editRecordCommand->enrichedEntityIdentifier, $editRecordCommand->code);
         $labelCollection = LabelCollection::fromArray($editRecordCommand->labels);
 
         $record = $this->recordRepository->getByIdentifier($identifier);

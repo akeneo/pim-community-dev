@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Validation;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class IdentifierValidator extends ConstraintValidator
+class CodeValidator extends ConstraintValidator
 {
     private const MAX_IDENTIFIER_LENGTH = 255;
 

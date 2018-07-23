@@ -93,24 +93,10 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         $command = new CreateRecordCommand();
-        $command->identifier = $normalizedCommand['identifier'] ?? null;
         $command->enrichedEntityIdentifier = $normalizedCommand['enrichedEntityIdentifier'] ?? null;
+        $command->code = $normalizedCommand['code'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? [];
 
         return $command;
-    }
-
-    private function validateCommand(CreateRecordCommand $command): array
-    {
-        $errors = [];
-        $violations = $this->validator->validate($command);
-
-        if ($violations->count() > 0) {
-            foreach ($violations as $violation) {
-                $errors[$violation->getPropertyPath()] = $this->normalizer->normalize($violation, 'internal_api');
-            }
-        }
-
-        return $errors;
     }
 }
