@@ -3,7 +3,7 @@ assetic:
         - OroAsseticBundle
         - PimUserBundle
         - PimUIBundle
-        - PimCatalogBundle
+        - AkeneoPimEnrichmentBundle
         - PimEnrichBundle
         - PimNotificationBundle
     filters:

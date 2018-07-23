@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle;
 
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Akeneo\Tool\Bundle\ApiBundle\DependencyInjection\Compiler\ContentTypeNegotiatorPass;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

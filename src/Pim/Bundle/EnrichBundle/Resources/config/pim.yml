@@ -41,7 +41,7 @@ services:
 pim_enrich:
     max_products_category_removal: '%max_products_category_removal%'
 
-pim_catalog:
+akeneo_pim_enrichment:
     localization:
         decimal_separators:
             - { value: '.', label: 'dot (.)' }

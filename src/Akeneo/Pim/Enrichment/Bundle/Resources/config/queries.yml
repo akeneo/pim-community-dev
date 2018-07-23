@@ -1,0 +1,36 @@
+parameters:
+    pim_catalog.doctrine.query.find_variant_product_completeness.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\VariantProductRatio'
+    pim_catalog.doctrine.query.complete_filter.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter'
+    pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis'
+    pim_catalog.doctrine.query.count_entity_with_family_variant.class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant'
+
+services:
+    pim_catalog.doctrine.query.find_variant_product_completeness:
+        class: '%pim_catalog.doctrine.query.find_variant_product_completeness.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.complete_filter:
+        class: '%pim_catalog.doctrine.query.complete_filter.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.attribute_is_an_family_variant_axis:
+        class: '%pim_catalog.doctrine.query.attribute_is_an_family_variant_axis.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.count_entity_with_family_variant:
+        class: '%pim_catalog.doctrine.query.count_entity_with_family_variant.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.count_products_with_family:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountProductsWithFamily'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.find_family_variants_identifiers_by_attribute_axes:
+        class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Query\FamilyVariantsByAttributeAxes'
+        arguments:
+            - '@doctrine.orm.entity_manager'

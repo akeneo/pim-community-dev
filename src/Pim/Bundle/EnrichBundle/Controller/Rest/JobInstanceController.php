@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
@@ -14,8 +16,6 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\EnrichBundle\Event\JobInstanceEvents;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

@@ -1,4 +1,0 @@
-Pim\Component\Catalog\Model\ProductValue:
-    constraints:
-        - Pim\Component\Catalog\Validator\Constraints\ScopableValue: ~
-        - Pim\Component\Catalog\Validator\Constraints\LocalizableValue: ~

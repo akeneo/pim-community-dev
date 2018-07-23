@@ -33,7 +33,7 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
     /**
      * @param ObjectManager                  $objectManager
      * @param CompletenessManager            $completenessManager (@deprecated will be removed in 2.1
-     *                                                            {@see \Pim\Bundle\CatalogBundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber})
+     *                                                            {@see \Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber})
      * @param EventDispatcherInterface       $eventDispatcher
      */
     public function __construct(

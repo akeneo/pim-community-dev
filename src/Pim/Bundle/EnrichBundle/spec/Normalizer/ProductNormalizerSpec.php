@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;

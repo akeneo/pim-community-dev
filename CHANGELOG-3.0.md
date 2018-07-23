@@ -12,6 +12,97 @@
 
 ## BC breaks
 
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterLocalizersPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\Localization\RegisterPresentersPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterComparatorsPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterComparatorsPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterCompleteCheckerPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterCompleteCheckerPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterFilterPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterFilterPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductUpdaterPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductUpdaterPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass`
+- Move `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass` to `Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
+
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/Category/CheckChannelsOnDeletionSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/Category/CheckChannelsOnDeletionSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/AddBooleanValuesToNewProductSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/AddBooleanValuesToNewProductSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/ComputeCompletenessOnFamilyUpdateSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ComputeCompletenessOnFamilyUpdateSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/ComputeEntityRawValuesSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ComputeEntityRawValuesSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/ComputeProductModelDescendantsSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ComputeProductModelDescendantsSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/IndexProductModelCompleteDataSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/IndexProductModelCompleteDataSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/IndexProductModelsSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/IndexProductModelsSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/IndexProductsSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/IndexProductsSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/LoadEntityWithValuesSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/LoadEntityWithValuesSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/LocalizableSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/LocalizableSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/ResetUniqueValidationSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ResetUniqueValidationSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/ScopableSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/ScopableSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber/TimestampableSubscriber` to `Akeneo/Pim/Enrichment/Bundle/EventSubscriber/TimestampableSubscriber`
+- Move `Pim\Bundle\CatalogBundle\EventSubscriber\CreateAttributeRequirementSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\CreateAttributeRequirementSubscriber`
+
+- Move `Pim\Bundle\CatalogBundle\Resolver\FQCNResolver` to `Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver`
+- Move `Pim\Bundle\CatalogBundle\Context\CatalogContext` to `Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext`
+
+- Move `Pim\Bundle\CatalogBundle\Filter\AbstractFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\AbstractFilter`
+- Move `Pim\Bundle\CatalogBundle\Filter\ChainedFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\ChainedFilter`
+- Move `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface` to `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface`
+- Move `Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface` to `Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface`
+- Move `Pim\Bundle\CatalogBundle\Filter\ProductValueChannelFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\ProductValueChannelFilter`
+- Move `Pim\Bundle\CatalogBundle\Filter\ProductValueLocaleFilter` to `Akeneo\Pim\Enrichment\Bundle\Filter\ProductValueLocaleFilter`
+
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\AttributeIsAFamilyVariantAxis`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CompleteFilter` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CompleteFilter`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountEntityWithFamilyVariant`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CountProductsWithFamily` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\CountProductsWithFamily`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\VariantProductRatio` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\VariantProductRatio`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\AssociationRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CompletenessRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\CompletenessRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\GroupRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductCategoryRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductCategoryRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductMassActionRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelCategoryRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelCategoryRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductUniqueDataRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductUniqueDataRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\VariantProductRepository` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\VariantProductRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRemover` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\CompletenessRemover`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\QueryBuilderUtility`
+
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectCodeResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectCodeResolver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectIdResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Filter\ObjectIdResolverInterface` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Filter\ObjectIdResolverInterface`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\GroupSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSaver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\GroupSavingOptionsResolver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\GroupSavingOptionsResolver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\ProductModelDescendantsSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductModelDescendantsSaver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\ProductSaver` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductSaver`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\Saver\ProductUniqueDataSynchronizer` to `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`
+
+- Move namespace `Pim\Bundle\CatalogBundle\Elasticsearch` to `Akeneo\Pim\Enrichment\Bundle\Elasticsearch`
+
+- Move `Pim\Bundle\CatalogBundle\Command\Cleaner\WrongBooleanValuesOnVariantProductCleaner` to `Akeneo\Pim\Enrichment\Bundle\Command\Cleaner\WrongBooleanValuesOnVariantProductCleaner`
+- Move `Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\AttributeFilterDumper` to `Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\AttributeFilterDumper`
+- Move `Pim\Bundle\CatalogBundle\Command\ProductQueryHelp\FieldFilterDumper` to `Akeneo\Pim\Enrichment\Bundle\Command\ProductQueryHelp\FieldFilterDumper`
+- Move `Pim\Bundle\CatalogBundle\Command\CalculateCompletenessCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\CalculateCompletenessCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\CreateProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\CreateProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\DumperInterface` to `Akeneo\Pim\Enrichment\Bundle\Command\DumperInterface`
+- Move `Pim\Bundle\CatalogBundle\Command\GetProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\GetProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\IndexProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\IndexProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\IndexProductModelCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\IndexProductModelCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\PurgeCompletenessCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\PurgeCompletenessCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\PurgeProductsCompletenessCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\PurgeProductsCompletenessCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\QueryHelpProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\QueryHelpProductModelCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\QueryHelpProductModelCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\QueryProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\QueryProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\RefreshProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\RefreshProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\RemoveCompletenessForChannelAndLocaleCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\RemoveCompletenessForChannelAndLocaleCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\RemoveProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\RemoveProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\RemoveWrongBooleanValuesOnVariantProductsBatchCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\RemoveWrongBooleanValuesOnVariantProductsBatchCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\RemoveWrongBooleanValuesOnVariantProductsCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\RemoveWrongBooleanValuesOnVariantProductsCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\UpdateProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\UpdateProductCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\ValidateObjectsCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\ValidateObjectsCommand`
+- Move `Pim\Bundle\CatalogBundle\Command\ValidateProductCommand` to `Akeneo\Pim\Enrichment\Bundle\Command\ValidateProductCommand`
+
 - Move `Pim\Bundle\CatalogBundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber`
 - Move `Pim\Bundle\CatalogBundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber`
 - Move `Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber` to `Akeneo\Pim\Structure\Bundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber`

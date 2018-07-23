@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Pager\Orm;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\QueryBuilderUtility;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\DataGridBundle\ORM\Query\QueryCountCalculator;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
 
 /**

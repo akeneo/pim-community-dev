@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\ProductQueryBuilder;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;

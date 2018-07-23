@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
