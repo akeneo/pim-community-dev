@@ -42,10 +42,10 @@ class RecordIdentifier
         Assert::stringNotEmpty($identifier);
 
         if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $identifier)) {
-            throw new \InvalidArgumentException('Enriched entity identifier may contain only letters, numbers and underscores');
+            throw new \InvalidArgumentException('Record identifier may contain only letters, numbers and underscores');
         }
         if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $enrichedEntityIdentifier)) {
-            throw new \InvalidArgumentException('Record identifier may contain only letters, numbers and underscores');
+            throw new \InvalidArgumentException('Enriched entity identifier may contain only letters, numbers and underscores');
         }
 
         return new self($enrichedEntityIdentifier, $identifier);

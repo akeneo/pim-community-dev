@@ -44,7 +44,7 @@ final class CreateEnrichedEntityContext implements Context
      */
     public function theUserCreatesAnEnrichedEntityWith($identifier, TableNode $updateTable)
     {
-        $updates = $updateTable->getHash();
+        $updates = current($updateTable->getHash());
         $command = new CreateEnrichedEntityCommand();
         $command->identifier = $identifier;
         $command->labels = json_decode($updates['labels'], true);

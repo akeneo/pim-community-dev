@@ -47,7 +47,7 @@ final class CreateRecordContext implements Context
         string $enrichedEntityIdentifier,
         TableNode $updateTable
     ) {
-        $updates = $updateTable->getRowsHash();
+        $updates = current($updateTable->getHash());
         $command = new CreateRecordCommand();
         $command->identifier = $recordIdentifier;
         $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
