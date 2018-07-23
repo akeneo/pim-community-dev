@@ -6,3 +6,4 @@ docker-compose exec fpm bin/console --env=prod pim:install --force --symlink --c
 docker-compose exec fpm bin/console --env=behat pim:installer:db
 
 docker-compose run --rm node yarn run webpack-dev
+docker-compose run --rm node yarn run webpack-test
