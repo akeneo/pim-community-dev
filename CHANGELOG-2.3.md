@@ -18,6 +18,7 @@
 - PIM-7517: fix the product models export filter on identifier
 - PIM-7476: fix family select2 to have the right limit
 - PIM-7516: fix metric default value on product edit form
+- PIM-7509: Fix completeness calculation on Product Models bulk events
 
 ## Migration
 

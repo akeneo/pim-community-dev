@@ -179,3 +179,13 @@ services:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.bulk_compute_product_model_descendants:
+        class: 'Pim\Bundle\CatalogBundle\EventSubscriber\Bulk\BulkComputeProductModelDescendantsSubscriber'
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '%pim_catalog.compute_product_models_descendants.job_name%'
+        tags:
+            - { name: kernel.event_subscriber }
