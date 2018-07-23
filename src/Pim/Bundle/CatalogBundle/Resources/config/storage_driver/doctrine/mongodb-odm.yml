@@ -78,6 +78,8 @@ parameters:
 
     pim_catalog.saver.product.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver\ProductSaver
 
+    pim_catalog.query.get_associated_product_codes_by_product.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Query\GetAssociatedProductCodesByProductFromDB
+
 services:
     pim_catalog.object_manager.product:
         alias: doctrine.odm.mongodb.document_manager
@@ -487,3 +489,9 @@ services:
         class: '%pim_catalog.doctrine.query.sorter.attribute_option.class%'
         tags:
             - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+
+    pim_catalog.query.get_associated_product_codes_by_product:
+        class: '%pim_catalog.query.get_associated_product_codes_by_product.class%'
+        arguments:
+            - '@service_container'
+            - '%pim_catalog.entity.product.class%'
