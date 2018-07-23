@@ -12,7 +12,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
       if (
         'http://pim.com/rest/enriched_entity/designer/record' === interceptedRequest.url() &&
         'POST' === interceptedRequest.method() &&
-        'stark' === JSON.parse(interceptedRequest.postData()).identifier
+        'starck' === JSON.parse(interceptedRequest.postData()).identifier.identifier
       ) {
         interceptedRequest.respond({
           status: 204
@@ -22,6 +22,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
 
     const response = await page.evaluate(async () => {
       const createRecord = require('akeneoenrichedentity/domain/model/record/record').createRecord;
+      const createRecordCode = require('akeneoenrichedentity/domain/model/record/code').createCode;
       const createIdentifier = require('akeneoenrichedentity/domain/model/record/identifier').createIdentifier;
       const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier')
         .createIdentifier;
@@ -30,8 +31,9 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
       const saver = require('akeneoenrichedentity/infrastructure/saver/record').default;
 
       const recordCreated = createRecord(
-        createIdentifier('stark'),
+        createIdentifier('designer', 'starck'),
         createEnrichedEntityIdentifier('designer'),
+        createRecordCode('starck'),
         createLabelCollection({en_US: 'Stylist', fr_FR: 'Styliste'})
       );
 
@@ -72,7 +74,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
       if (
           'http://pim.com/rest/enriched_entity/designer/record' === interceptedRequest.url() &&
           'POST' === interceptedRequest.method() &&
-          'invalid/identifier' === JSON.parse(interceptedRequest.postData()).identifier
+          'invalid/identifier' === JSON.parse(interceptedRequest.postData()).identifier.identifier
       ) {
         interceptedRequest.respond({
           status: 400,
@@ -84,6 +86,7 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
 
     const response = await page.evaluate(async () => {
       const createRecord = require('akeneoenrichedentity/domain/model/record/record').createRecord;
+      const createRecordCode = require('akeneoenrichedentity/domain/model/record/code').createCode;
       const createIdentifier = require('akeneoenrichedentity/domain/model/record/identifier').createIdentifier;
       const createEnrichedEntityIdentifier = require('akeneoenrichedentity/domain/model/enriched-entity/identifier')
         .createIdentifier;
@@ -92,8 +95,9 @@ describe('Akeneoenrichedentity > infrastructure > saver > record', () => {
       const saver = require('akeneoenrichedentity/infrastructure/saver/record').default;
 
       const recordCreated = createRecord(
-        createIdentifier('invalid/identifier'),
+        createIdentifier('designer', 'invalid/identifier'),
         createEnrichedEntityIdentifier('designer'),
+        createRecordCode('invalid/identifier'),
         createLabelCollection({en_US: 'Stylist', fr_FR: 'Styliste'})
       );
 
