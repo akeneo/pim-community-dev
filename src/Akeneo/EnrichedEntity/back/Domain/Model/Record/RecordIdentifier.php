@@ -21,41 +21,47 @@ use Webmozart\Assert\Assert;
  */
 class RecordIdentifier
 {
+    public const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
+    public const IDENTIFIER= 'identifier';
+
     /** @var string */
     private $enrichedEntityIdentifier;
 
     /** @var string */
-    private $recordIdentifier;
+    private $identifier;
 
-    private function __construct(string $enrichedEntityIdentifier, string $recordIdentifier)
+    private function __construct(string $enrichedEntityIdentifier, string $identifier)
     {
         $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-        $this->recordIdentifier = $recordIdentifier;
+        $this->identifier = $identifier;
     }
 
-    public static function fromString(string $enrichedEntityIdentifier, string $recordIdentifier): self
+    public static function fromString(string $enrichedEntityIdentifier, string $identifier): self
     {
         Assert::stringNotEmpty($enrichedEntityIdentifier);
-        Assert::stringNotEmpty($recordIdentifier);
+        Assert::stringNotEmpty($identifier);
 
-        if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $recordIdentifier)) {
+        if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $identifier)) {
             throw new \InvalidArgumentException('Enriched entity identifier may contain only letters, numbers and underscores');
         }
         if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $enrichedEntityIdentifier)) {
             throw new \InvalidArgumentException('Record identifier may contain only letters, numbers and underscores');
         }
 
-        return new self($enrichedEntityIdentifier, $recordIdentifier);
+        return new self($enrichedEntityIdentifier, $identifier);
     }
 
     public function equals(RecordIdentifier $identifier): bool
     {
         return $this->enrichedEntityIdentifier === $identifier->enrichedEntityIdentifier &&
-            $this->recordIdentifier === $identifier->recordIdentifier;
+            $this->identifier === $identifier->identifier;
     }
 
-    public function __toString()
+    public function normalize(): array
     {
-        return sprintf('%s_%s', $this->enrichedEntityIdentifier, $this->recordIdentifier);
+        return [
+            self::ENRICHED_ENTITY_IDENTIFIER => $this->enrichedEntityIdentifier,
+            self::IDENTIFIER                 => $this->identifier
+        ];
     }
 }

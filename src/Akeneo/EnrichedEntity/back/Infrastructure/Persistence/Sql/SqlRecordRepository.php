@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
@@ -119,8 +120,8 @@ SQL;
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
 
         $record = Record::create(
-            RecordIdentifier::fromString($identifier),
-            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
+            RecordIdentifier::fromString($enrichedEntityIdentifier, $identifier),
+            EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier), RecordCode::fromString($identifier),
             $labels
         );
 

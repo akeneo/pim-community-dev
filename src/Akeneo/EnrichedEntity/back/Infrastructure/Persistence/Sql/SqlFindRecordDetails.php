@@ -92,7 +92,7 @@ SQL;
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
 
         $recordDetails = new RecordDetails();
-        $recordDetails->identifier = RecordIdentifier::fromString($identifier);
+        $recordDetails->identifier = RecordIdentifier::fromString($enrichedEntityIdentifier, $identifier);
         $recordDetails->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
         $recordDetails->labels = LabelCollection::fromArray($labels);
 

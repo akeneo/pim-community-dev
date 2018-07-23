@@ -31,7 +31,12 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
 
     public function save(Record $record): void
     {
-        $recordIdentifier = (string) $record->getIdentifier();
+        $recordIdentifier = $record->getIdentifier();
+        $recordIdentifier = sprintf(
+            '%s_%s',
+            $recordIdentifier->getRecordIdentifier(),
+            $recordIdentifier->getEnrichedEntityIdentifier()
+        );
         $enrichedEntityIdentifier = (string) $record->getEnrichedEntityIdentifier();
 
         $this->records[$enrichedEntityIdentifier][$recordIdentifier] = $record;

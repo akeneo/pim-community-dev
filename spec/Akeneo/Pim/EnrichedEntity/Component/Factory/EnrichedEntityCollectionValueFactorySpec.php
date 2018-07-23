@@ -9,7 +9,6 @@ use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Pim\EnrichedEntity\Component\Factory\EnrichedEntityCollectionValueFactory;
 use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -102,9 +101,9 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->getReferenceDataName()->willReturn('designer');
 
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $starckIdentifier = RecordIdentifier::fromString('starck');
+        $starckIdentifier = RecordIdentifier::fromString('designer', 'starck');
         $recordRepository->getByIdentifier($starckIdentifier, $enrichedEntityIdentifier)->willReturn($starck);
-        $dysonIdentifier = RecordIdentifier::fromString('dyson');
+        $dysonIdentifier = RecordIdentifier::fromString('designer', 'dyson');
         $recordRepository->getByIdentifier($dysonIdentifier, $enrichedEntityIdentifier)->willReturn($dyson);
 
         $productValue = $this->create(
@@ -136,9 +135,9 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->getReferenceDataName()->willReturn('designer');
 
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
-        $starckIdentifier = RecordIdentifier::fromString('starck');
+        $starckIdentifier = RecordIdentifier::fromString('starck', '');
         $recordRepository->getByIdentifier($starckIdentifier, $enrichedEntityIdentifier)->willReturn($starck);
-        $dysonIdentifier = RecordIdentifier::fromString('dyson');
+        $dysonIdentifier = RecordIdentifier::fromString('dyson', '');
         $recordRepository->getByIdentifier($dysonIdentifier, $enrichedEntityIdentifier)->willReturn($dyson);
 
         $productValue = $this->create(

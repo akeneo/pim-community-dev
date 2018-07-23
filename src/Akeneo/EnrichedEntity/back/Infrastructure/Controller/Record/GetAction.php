@@ -38,8 +38,8 @@ class GetAction
 
     public function __invoke(string $enrichedEntityIdentifier, string $recordIdentifier): JsonResponse
     {
+        $recordIdentifier = $this->getRecordIdentifierOr404($enrichedEntityIdentifier, $recordIdentifier);
         $enrichedEntityIdentifier = $this->getEnrichedEntityIdentifierOr404($enrichedEntityIdentifier);
-        $recordIdentifier = $this->getRecordIdentifierOr404($recordIdentifier);
         $recordDetails = $this->findRecordDetailsOr404($recordIdentifier, $enrichedEntityIdentifier);
 
         return new JsonResponse($recordDetails->normalize());
@@ -60,10 +60,10 @@ class GetAction
     /**
      * @throws NotFoundHttpException
      */
-    private function getRecordIdentifierOr404(string $identifier): RecordIdentifier
+    private function getRecordIdentifierOr404(string $enrichedEntityIdentifier, string $recordIdentifier): RecordIdentifier
     {
         try {
-            return RecordIdentifier::fromString($identifier);
+            return RecordIdentifier::fromString($enrichedEntityIdentifier, $recordIdentifier);
         } catch (\Exception $e) {
             throw new NotFoundHttpException($e->getMessage());
         }

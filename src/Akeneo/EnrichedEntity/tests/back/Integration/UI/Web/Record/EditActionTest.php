@@ -6,6 +6,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\Record;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
@@ -69,7 +70,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $repository = $this->getRecordRepository();
         $recordItem = $repository->getByIdentifier(
-            RecordIdentifier::fromString($postContent['identifier']),
+            RecordIdentifier::fromString($postContent['enrichedEntityIdentifier'], $postContent['identifier']),
             EnrichedEntityIdentifier::fromString($postContent['enrichedEntityIdentifier'])
         );
 
@@ -140,9 +141,8 @@ class EditActionTest extends ControllerIntegrationTestCase
         $repository = $this->getRecordRepository();
 
         $entityItem = Record::create(
-            RecordIdentifier::fromString('celine_dion'),
-            EnrichedEntityIdentifier::fromString('singer'),
-            [
+            RecordIdentifier::fromString('singer', 'celine_dion'), EnrichedEntityIdentifier::fromString('singer'),
+            RecordCode::fromString('celine_dion'), [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Celine Dion',
             ]

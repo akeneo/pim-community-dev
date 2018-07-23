@@ -14,6 +14,7 @@ namespace Akeneo\EnrichedEntity\Application\Record\CreateRecord;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 
@@ -33,14 +34,11 @@ class CreateRecordHandler
 
     public function __invoke(CreateRecordCommand $createRecordCommand): void
     {
-        $identifier = RecordIdentifier::fromString($createRecordCommand->identifier);
+        $identifier = RecordIdentifier::fromString($createRecordCommand->enrichedEntityIdentifier, $createRecordCommand->identifier);
+        $code = RecordCode::fromString($createRecordCommand->identifier);
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($createRecordCommand->enrichedEntityIdentifier);
 
-        $record = Record::create(
-            $identifier,
-            $enrichedEntityIdentifier,
-            $createRecordCommand->labels
-        );
+        $record = Record::create($identifier, $enrichedEntityIdentifier, $code, $createRecordCommand->labels);
 
         $this->recordRepository->save($record);
     }
