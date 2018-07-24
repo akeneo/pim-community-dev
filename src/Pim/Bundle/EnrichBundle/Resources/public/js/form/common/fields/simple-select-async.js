@@ -128,7 +128,10 @@ define(
              * @returns {Object}
              */
             select2Results(response) {
-                const more = this.resultsPerPage === Object.keys(response).length;
+                const nbResults = (response.results) ?
+                    Object.keys(response.results).length :
+                    Object.keys(response).length;
+                const more = this.resultsPerPage === nbResults;
 
                 // The result is already formatted for select2
                 if (response.results) {
