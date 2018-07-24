@@ -2,11 +2,11 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Command;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Persistence\ObjectManager;
 use Monolog\Handler\StreamHandler;
-use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;

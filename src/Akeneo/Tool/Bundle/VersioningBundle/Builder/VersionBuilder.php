@@ -2,9 +2,9 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Builder;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

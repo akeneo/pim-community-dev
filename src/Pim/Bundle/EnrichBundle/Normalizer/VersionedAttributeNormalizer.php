@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

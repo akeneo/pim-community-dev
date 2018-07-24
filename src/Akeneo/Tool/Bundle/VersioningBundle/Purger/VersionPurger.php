@@ -2,13 +2,13 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\PreAdvisementVersionEvent;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\PrePurgeVersionEvent;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\PurgeVersionEvents;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;

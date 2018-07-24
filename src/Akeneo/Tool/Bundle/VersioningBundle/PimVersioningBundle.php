@@ -4,9 +4,9 @@ namespace Akeneo\Tool\Bundle\VersioningBundle;
 
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Akeneo\Tool\Bundle\VersioningBundle\DependencyInjection\Compiler\RegisterUpdateGuessersPass;
 use Akeneo\Tool\Bundle\VersioningBundle\DependencyInjection\Compiler\RegisterVersionPurgerAdvisorPass;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

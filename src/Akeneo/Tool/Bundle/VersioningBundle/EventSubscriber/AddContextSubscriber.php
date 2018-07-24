@@ -2,10 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

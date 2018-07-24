@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Purger;
 
-use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
+use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 
 /**
  * Prevents last version of an entity from being purged
