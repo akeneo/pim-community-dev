@@ -74,5 +74,7 @@ akeneo_elasticsearch:
             configuration_files: "%elasticsearch_index_configuration_files%"
 
 framework:
-    validation:
-        cache: apc
+    cache:
+        pools:
+            name:
+                adapter: cache.adapter.apcu
