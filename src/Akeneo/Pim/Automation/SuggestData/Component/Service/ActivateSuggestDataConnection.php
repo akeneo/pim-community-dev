@@ -38,6 +38,8 @@ class ActivateSuggestDataConnection
      *
      * @param string $code
      * @param array  $configuration
+     *
+     * @throws \InvalidArgumentException
      */
     public function activate(string $code, array $configuration): void
     {
