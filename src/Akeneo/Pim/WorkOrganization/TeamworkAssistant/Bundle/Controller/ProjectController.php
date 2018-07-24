@@ -328,7 +328,7 @@ class ProjectController
      * @param string $identifier
      * @param string $status
      *
-     * @Template("PimEnterpriseTeamworkAssistantBundle:Project:filter-grid.html.twig")
+     * @Template("AkeneoPimTeamworkAssistantBundle:Project:filter-grid.html.twig")
      *
      * @return array|RedirectResponse|JsonResponse
      */
