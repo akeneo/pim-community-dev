@@ -29,13 +29,13 @@ interface StateProps {
   acls: {
     create: boolean;
   };
-};
+}
 
 interface DispatchProps {
   events: {
-    onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void
-    onCreationStart: () => void
-  }
+    onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => void;
+    onCreationStart: () => void;
+  };
 }
 class EnrichedEntityListView extends React.Component<StateProps & DispatchProps> {
   private createButton: HTMLButtonElement;
@@ -52,7 +52,7 @@ class EnrichedEntityListView extends React.Component<StateProps & DispatchProps>
     return (
       <div className="AknDefault-contentWithColumn">
         <div className="AknDefault-thirdColumnContainer">
-          <div className="AknDefault-thirdColumn"></div>
+          <div className="AknDefault-thirdColumn" />
         </div>
         <div className="AknDefault-contentWithBottom">
           <div className="AknDefault-mainContent">
@@ -61,56 +61,64 @@ class EnrichedEntityListView extends React.Component<StateProps & DispatchProps>
                 <div className="AknTitleContainer-mainContainer">
                   <div className="AknTitleContainer-line">
                     <div className="AknTitleContainer-breadcrumbs">
-                      <Breadcrumb items={[
-                        {
-                          action: {
-                            type: 'redirect',
-                            route: 'akeneo_enriched_entities_enriched_entity_edit'
+                      <Breadcrumb
+                        items={[
+                          {
+                            action: {
+                              type: 'redirect',
+                              route: 'akeneo_enriched_entities_enriched_entity_edit',
+                            },
+                            label: __('pim_enriched_entity.enriched_entity.title'),
                           },
-                          label: __('pim_enriched_entity.enriched_entity.title')
-                        }
-                      ]}/>
+                        ]}
+                      />
                     </div>
                     <div className="AknTitleContainer-buttonsContainer">
-                      <PimView className="AknTitleContainer-userMenu" viewName="pim-enriched-entity-index-user-navigation"/>
-                      {
-                        acls.create ?
-                          <div className="AknButtonList">
-                            <button type="button"
-                              ref={(button: HTMLButtonElement) => { this.createButton = button; }}
-                              className="AknButton AknButton--apply AknButtonList-item"
-                              onClick={events.onCreationStart}
-                            >
-                              {__('pim_enriched_entity.button.create')}
-                            </button>
-                          </div> :
-                          null
-                      }
+                      <PimView
+                        className="AknTitleContainer-userMenu"
+                        viewName="pim-enriched-entity-index-user-navigation"
+                      />
+                      {acls.create ? (
+                        <div className="AknButtonList">
+                          <button
+                            type="button"
+                            ref={(button: HTMLButtonElement) => {
+                              this.createButton = button;
+                            }}
+                            className="AknButton AknButton--apply AknButtonList-item"
+                            onClick={events.onCreationStart}
+                          >
+                            {__('pim_enriched_entity.enriched_entity.button.create')}
+                          </button>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                   <div className="AknTitleContainer-line">
                     <div className="AknTitleContainer-title">
                       <span className={grid.isLoading ? 'AknLoadingPlaceHolder' : ''}>
-                        {__('pim_enriched_entity.enriched_entity.index.grid.count', {count: grid.enrichedEntities.length})}
+                        {__('pim_enriched_entity.enriched_entity.index.grid.count', {
+                          count: grid.enrichedEntities.length,
+                        })}
                       </span>
                     </div>
-                    <div className="AknTitleContainer-state"></div>
+                    <div className="AknTitleContainer-state" />
                   </div>
                 </div>
                 <div>
                   <div className="AknTitleContainer-line">
-                    <div className="AknTitleContainer-context AknButtonList"></div>
+                    <div className="AknTitleContainer-context AknButtonList" />
                   </div>
                   <div className="AknTitleContainer-line">
-                    <div className="AknTitleContainer-meta AknButtonList"></div>
+                    <div className="AknTitleContainer-meta AknButtonList" />
                   </div>
                 </div>
               </div>
               <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-navigation"></div>
+                <div className="AknTitleContainer-navigation" />
               </div>
               <div className="AknTitleContainer-line">
-                <div className="AknTitleContainer-search"></div>
+                <div className="AknTitleContainer-search" />
               </div>
             </header>
             <div className="AknGrid--gallery">
@@ -131,36 +139,39 @@ class EnrichedEntityListView extends React.Component<StateProps & DispatchProps>
   }
 }
 
-export default connect((state: IndexState): StateProps => {
-  const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
-  const enrichedEntities = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
-  const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;
+export default connect(
+  (state: IndexState): StateProps => {
+    const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+    const enrichedEntities = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
+    const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;
 
-  return {
-    context: {
-      locale
-    },
-    grid: {
-      enrichedEntities,
-      total,
-      isLoading: state.grid.isFetching && state.grid.items.length === 0
-    },
-    create: {
-      active: state.create.active
-    },
-    acls: {
-      create: securityContext.isGranted('akeneo_enrichedentity_enriched_entity_create')
-    }
-  }
-}, (dispatch: any): DispatchProps => {
-  return {
-    events: {
-      onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => {
-        dispatch(redirectToEnrichedEntity(enrichedEntity));
+    return {
+      context: {
+        locale,
       },
-      onCreationStart: () => {
-        dispatch(enrichedEntityCreationStart())
-      }
-    }
+      grid: {
+        enrichedEntities,
+        total,
+        isLoading: state.grid.isFetching && state.grid.items.length === 0,
+      },
+      create: {
+        active: state.create.active,
+      },
+      acls: {
+        create: securityContext.isGranted('akeneo_enrichedentity_enriched_entity_create'),
+      },
+    };
+  },
+  (dispatch: any): DispatchProps => {
+    return {
+      events: {
+        onRedirectToEnrichedEntity: (enrichedEntity: EnrichedEntity) => {
+          dispatch(redirectToEnrichedEntity(enrichedEntity));
+        },
+        onCreationStart: () => {
+          dispatch(enrichedEntityCreationStart());
+        },
+      },
+    };
   }
-})(EnrichedEntityListView);
+)(EnrichedEntityListView);

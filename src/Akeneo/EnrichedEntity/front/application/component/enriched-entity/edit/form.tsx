@@ -9,8 +9,8 @@ interface FormProps {
   locale: string;
   data: NormalizedEnrichedEntity;
   errors: ValidationError[];
-  onLabelUpdated: (value: string, locale: string) => void
-  onPressEnter: () => void
+  onLabelUpdated: (value: string, locale: string) => void;
+  onPressEnter: () => void;
 }
 
 export default class EditForm extends React.Component<FormProps> {
@@ -42,7 +42,8 @@ export default class EditForm extends React.Component<FormProps> {
       <div>
         <div className="AknFieldContainer" data-code="identifier">
           <div className="AknFieldContainer-header">
-            <label title="{__('pim_enriched_entity.enriched_entity.properties.identifier')}"
+            <label
+              title="{__('pim_enriched_entity.enriched_entity.properties.identifier')}"
               className="AknFieldContainer-label"
               htmlFor="pim_enriched_entity.enriched_entity.properties.identifier"
             >
@@ -63,7 +64,8 @@ export default class EditForm extends React.Component<FormProps> {
         </div>
         <div className="AknFieldContainer" data-code="label">
           <div className="AknFieldContainer-header">
-            <label title="{__('pim_enriched_entity.enriched_entity.properties.label')}"
+            <label
+              title="{__('pim_enriched_entity.enriched_entity.properties.label')}"
               className="AknFieldContainer-label"
               htmlFor="pim_enriched_entity.enriched_entity.properties.label"
             >
@@ -77,13 +79,13 @@ export default class EditForm extends React.Component<FormProps> {
               id="pim_enriched_entity.enriched_entity.properties.label"
               className="AknTextField AknTextField--withBottomBorder"
               value={
-                undefined === this.props.data.labels[this.props.locale] ?
-                '' :
-                this.props.data.labels[this.props.locale]
+                undefined === this.props.data.labels[this.props.locale] ? '' : this.props.data.labels[this.props.locale]
               }
               onChange={this.updateLabel}
               onKeyDown={this.keyDown}
-              ref={(input: HTMLInputElement) => { this.labelInput = input; }}
+              ref={(input: HTMLInputElement) => {
+                this.labelInput = input;
+              }}
             />
             <Flag locale={this.props.locale} displayLanguage={false} />
           </div>

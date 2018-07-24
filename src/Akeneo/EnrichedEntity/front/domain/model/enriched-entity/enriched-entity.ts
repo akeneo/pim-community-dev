@@ -1,13 +1,13 @@
 import Identifier, {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import LabelCollection, {
-  RawLabelCollection,
+  NormalizedLabelCollection,
   createLabelCollection,
 } from 'akeneoenrichedentity/domain/model/label-collection';
 import Image from 'akeneoenrichedentity/domain/model/image';
 
 export interface NormalizedEnrichedEntity {
   identifier: string;
-  labels: RawLabelCollection;
+  labels: NormalizedLabelCollection;
   image: Image | null;
 }
 
@@ -37,11 +37,7 @@ class EnrichedEntityImplementation implements EnrichedEntity {
     Object.freeze(this);
   }
 
-  public static create(
-    identifier: Identifier,
-    labelCollection: LabelCollection,
-    image: Image | null = null
-  ): EnrichedEntity {
+  public static create(identifier: Identifier, labelCollection: LabelCollection, image: Image | null): EnrichedEntity {
     return new EnrichedEntityImplementation(identifier, labelCollection, image);
   }
 
@@ -77,7 +73,7 @@ class EnrichedEntityImplementation implements EnrichedEntity {
   public normalize(): NormalizedEnrichedEntity {
     return {
       identifier: this.getIdentifier().stringValue(),
-      labels: this.getLabelCollection().getLabels(),
+      labels: this.getLabelCollection().normalize(),
       image: this.getImage(),
     };
   }

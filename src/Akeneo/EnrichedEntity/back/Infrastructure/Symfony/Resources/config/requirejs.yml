@@ -12,9 +12,9 @@ config:
                 pim-enriched-entity-edit-form-records:
                     label: pim_enriched_entity.enriched_entity.tab.records
                     view: akeneoenrichedentity/application/component/enriched-entity/edit/records
-                pim-enriched-entity-edit-form-attributes:
-                    label: pim_enriched_entity.enriched_entity.tab.attributes
-                    view: akeneoenrichedentity/application/component/enriched-entity/edit/attributes
+                pim-enriched-entity-edit-form-attribute:
+                    label: pim_enriched_entity.enriched_entity.tab.attribute
+                    view: akeneoenrichedentity/application/component/enriched-entity/edit/attribute
                 pim-enriched-entity-edit-form-properties:
                     label: pim_enriched_entity.enriched_entity.tab.properties
                     view: akeneoenrichedentity/application/component/enriched-entity/edit/properties

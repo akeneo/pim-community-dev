@@ -1,6 +1,6 @@
 import {createEnrichedEntity as enrichedEntityFactory} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
-import Identifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection from 'akeneoenrichedentity/domain/model/label-collection';
+import {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
+import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import enrichedEntitySaver from 'akeneoenrichedentity/infrastructure/saver/enriched-entity';
 import {
   enrichedEntityCreationSucceeded,
@@ -16,7 +16,7 @@ import {redirectToEnrichedEntity} from 'akeneoenrichedentity/application/action/
 
 export const createEnrichedEntity = () => async (dispatch: any, getState: () => IndexState): Promise<void> => {
   const {code, labels} = getState().create.data;
-  const enrichedEntity = enrichedEntityFactory(Identifier.create(code), LabelCollection.create(labels));
+  const enrichedEntity = enrichedEntityFactory(createIdentifier(code), createLabelCollection(labels), null);
   try {
     let errors = await enrichedEntitySaver.create(enrichedEntity);
 

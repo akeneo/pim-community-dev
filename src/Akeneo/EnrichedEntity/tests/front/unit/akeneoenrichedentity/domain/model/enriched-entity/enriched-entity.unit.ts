@@ -53,7 +53,7 @@ describe('akeneo > enriched entity > domain > model --- enriched entity', () => 
   });
 
   test('I can normalize an enriched entity', () => {
-    const michelEnrichedEntity = createEnrichedEntity(michelIdentifier, michelLabels);
+    const michelEnrichedEntity = createEnrichedEntity(michelIdentifier, michelLabels, null);
 
     expect(michelEnrichedEntity.normalize()).toEqual({
       identifier: 'michel',
@@ -68,6 +68,7 @@ describe('akeneo > enriched entity > domain > model --- enriched entity', () => 
       labels: {
         en_US: 'Michel',
       },
+      image: null,
     });
 
     expect(michelEnrichedEntity.normalize()).toEqual({

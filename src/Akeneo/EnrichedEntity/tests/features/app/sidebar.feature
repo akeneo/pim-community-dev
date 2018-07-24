@@ -10,7 +10,7 @@ Feature: Display the sidebar
     And the following configured tabs:
       | code                                     |
       | pim-enriched-entity-edit-form-records    |
-      | pim-enriched-entity-edit-form-attributes |
+      | pim-enriched-entity-edit-form-attribute |
       | pim-enriched-entity-edit-form-properties |
 
   @acceptance-front

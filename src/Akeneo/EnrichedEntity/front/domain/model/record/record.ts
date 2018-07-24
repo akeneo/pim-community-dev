@@ -3,14 +3,14 @@ import Identifier, {
   createIdentifier,
 } from 'akeneoenrichedentity/domain/model/record/identifier';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
-import LabelCollection, {RawLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import LabelCollection, {NormalizedLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
 
 interface NormalizedRecord {
   identifier: NormalizedRecordIdentifier;
   enrichedEntityIdentifier: string;
   code: string;
-  labels: RawLabelCollection;
+  labels: NormalizedLabelCollection;
 }
 
 export default interface Record {
@@ -93,7 +93,7 @@ class RecordImplementation implements Record {
       identifier: this.getIdentifier().normalize(),
       enrichedEntityIdentifier: this.getEnrichedEntityIdentifier().stringValue(),
       code: this.code.stringValue(),
-      labels: this.getLabelCollection().getLabels(),
+      labels: this.getLabelCollection().normalize(),
     };
   }
 }

@@ -27,15 +27,7 @@ export default (
 ) => {
   switch (action.type) {
     case 'RECORD_CREATION_START':
-      state = {
-        ...state,
-        active: true,
-        data: {
-          code: '',
-          labels: {},
-        },
-        errors: [],
-      };
+      state = {...initCreateState(), active: true};
       break;
 
     case 'RECORD_CREATION_RECORD_CODE_UPDATED':
@@ -59,6 +51,7 @@ export default (
       break;
 
     case 'RECORD_CREATION_CANCEL':
+    case 'DISMISS':
       state = {
         ...state,
         active: false,

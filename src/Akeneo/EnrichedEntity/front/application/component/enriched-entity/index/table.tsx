@@ -4,7 +4,6 @@ import EnrichedEntity, {createEnrichedEntity} from 'akeneoenrichedentity/domain/
 import {createIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
 
-
 interface TableState {
   locale: string;
   enrichedEntities: EnrichedEntity[];
@@ -37,7 +36,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     if (0 === enrichedEntities.length && isLoading) {
       const enrichedEntityIdentifier = createIdentifier('');
       const labelCollection = createLabelCollection({});
-      const enrichedEntity = createEnrichedEntity(enrichedEntityIdentifier, labelCollection);
+      const enrichedEntity = createEnrichedEntity(enrichedEntityIdentifier, labelCollection, null);
 
       return (
         <ItemView
@@ -63,16 +62,11 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
           position={itemPosition > 0 ? itemPosition : 0}
         />
       );
-    })
+    });
   }
 
   render(): JSX.Element | JSX.Element[] {
-    const {
-      enrichedEntities,
-      locale,
-      onRedirectToEnrichedEntity,
-      isLoading
-    } = this.props;
+    const {enrichedEntities, locale, onRedirectToEnrichedEntity, isLoading} = this.props;
 
     return (
       <div className="AknGrid">

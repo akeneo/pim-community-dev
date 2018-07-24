@@ -4,12 +4,16 @@ import grid, {GridState} from 'akeneoenrichedentity/application/reducer/grid';
 import createRecord, {CreateState as CreateRecordState} from 'akeneoenrichedentity/application/reducer/record/create';
 import form, {EditionFormState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit/form';
 import Record from 'akeneoenrichedentity/domain/model/record/record';
+import createAttribute, {
+  CreateState as CreateAttributeState,
+} from 'akeneoenrichedentity/application/reducer/attribute/create';
 
 export interface EditState {
   user: UserState;
   sidebar: SidebarState;
   grid: GridState<Record>;
   createRecord: CreateRecordState;
+  createAttribute: CreateAttributeState;
   form: EditionFormState;
 }
 
@@ -18,5 +22,6 @@ export default {
   sidebar,
   grid,
   createRecord,
+  createAttribute,
   form,
 };
