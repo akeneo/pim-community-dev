@@ -54,7 +54,6 @@ class AssetsCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Akeneo PIM assets</info>');
 
-        $this->getEventDispatcher()->dispatch(InstallerEvents::PRE_ASSETS_DUMP);
 
         $webDir = $this->getWebDir();
 
@@ -68,6 +67,14 @@ class AssetsCommand extends ContainerAwareCommand
                 return $e->getCode();
             }
         }
+
+        $event = new GenericEvent();
+        $event->setArguments([
+            'clean'   => $input->getOption('clean'),
+            'symlink' => $input->getOption('symlink')
+        ]);
+
+        $this->getEventDispatcher()->dispatch(InstallerEvents::PRE_ASSETS_DUMP, $event);
 
         $this->commandExecutor
             ->runCommand('fos:js-routing:dump', ['--target' => $webDir.'js/routes.js'])
