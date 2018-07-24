@@ -9,10 +9,12 @@
  */
 define(
     [
-        'pim/form/common/fields/simple-select-async'
+        'pim/form/common/fields/simple-select-async',
+        'pim/fetcher-registry',
     ],
     function (
-        BaseSelect
+        BaseSelect,
+        FetcherRegistry
     ) {
         return BaseSelect.extend({
             events: {
@@ -20,7 +22,7 @@ define(
                     FetcherRegistry.getFetcher('suggest_data_family_mapping')
                         .fetch('camcorders')
                         .then((family) => {
-
+                            this.setData(family);
                             this.getRoot().render();
                         });
                 }

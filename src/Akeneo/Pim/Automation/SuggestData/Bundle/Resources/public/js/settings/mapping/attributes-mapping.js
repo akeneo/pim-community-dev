@@ -8,12 +8,14 @@
 define([
     'underscore',
     'pim/form',
-    'pim/fetcher-registry',
+    'pim/user-context',
+    'pim/i18n',
     'pimee/template/settings/mapping/attributes-mapping',
 ], function (
         _,
         BaseForm,
-        FetcherRegistry,
+        UserContext,
+        i18n,
         template
     ) {
         return BaseForm.extend({
@@ -23,13 +25,24 @@ define([
              * {@inheritdoc}
              */
             render() {
-                FetcherRegistry.getFetcher('suggest_data_family_mapping')
-                    .fetch('camcorders')
-                    .then((family) => {
-                        console.log(family)
-                    });
+                this.$el.html('');
 
-                this.$el.html(this.template({}));
+                const familyMapping = this.getFormData();
+                if (familyMapping.hasOwnProperty('mapping')) {
+                    const mapping = familyMapping.mapping;
+                    const locale = UserContext.get('uiLocale');
+                    const statuses = {
+                        0: 'pending', // TODO To translate
+                        1: 'active',
+                        2: 'inactive'
+                    };
+                    this.$el.html(this.template({
+                        mapping,
+                        locale,
+                        statuses,
+                        i18n
+                    }));
+                }
 
                 return this;
             }
