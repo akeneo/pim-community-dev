@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\DependencyInjection\AkeneoPimTeamworkAssistantExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class PimEnterpriseTeamworkAssistantExtensionSpec extends ObjectBehavior
+class AkeneoPimTeamworkAssistantExtensionSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {

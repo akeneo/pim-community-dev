@@ -11,7 +11,7 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssist
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class PimEnterpriseTeamworkAssistantBundleSpec extends ObjectBehavior
+class AkeneoPimTeamworkAssistantBundleSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
