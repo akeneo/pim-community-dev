@@ -1,0 +1,12 @@
+services:
+    pim_catalog.values_filter.attribute_filter:
+        class: 'Pim\Component\Catalog\ValuesFilter\ExistingAttributeFilter'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: pim_catalog.values_filter.entity_with_values_filters }
+
+    pim_catalog.values_filter.entity_with_values_filters:
+        class: 'Pim\Component\Catalog\ValuesFilter\ChainedFilters'
+        arguments:
+            - !tagged pim_catalog.values_filter.entity_with_values_filters

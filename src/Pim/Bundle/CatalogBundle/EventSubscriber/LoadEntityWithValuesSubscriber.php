@@ -2,11 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\ValuesFilter\ExistingAttributeFilter;
+use Pim\Component\Catalog\ValuesFilter\StorageFormatFilter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -29,6 +32,9 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
     /** @var ValueCollectionFactoryInterface */
     protected $valueCollectionFactory;
 
+    /** @var StorageFormatFilter */
+    protected $rawValuesFilters;
+
     /**
      * TODO: The container is injected here to avoid a circular reference
      * TODO: I didn't find any other way to do it :(
@@ -38,10 +44,12 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
      * TODO: in a Symfony subscriber.
      *
      * @param ContainerInterface $container
+     * @param StorageFormatFilter $rawValueFilters
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, StorageFormatFilter $rawValueFilters)
     {
         $this->container = $container;
+        $this->rawValuesFilters = $rawValueFilters;
     }
 
     /**
@@ -70,8 +78,9 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
         }
 
         $rawValues = $entity->getRawValues();
+        $filteredRawValues = $this->rawValuesFilters->filterSingle($rawValues);
 
-        $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($rawValues);
+        $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($filteredRawValues);
         $entity->setValues($values);
     }
 

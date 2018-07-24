@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Exception\InvalidOptionsException;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Psr\Log\LoggerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Create a product value collection.
@@ -63,72 +64,64 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
 
         foreach ($rawValues as $attributeCode => $channelRawValue) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            Assert::notNull($attribute);
 
-            if (null !== $attribute) {
-                foreach ($channelRawValue as $channelCode => $localeRawValue) {
-                    if ('<all_channels>' === $channelCode) {
-                        $channelCode = null;
+            foreach ($channelRawValue as $channelCode => $localeRawValue) {
+                if ('<all_channels>' === $channelCode) {
+                    $channelCode = null;
+                }
+
+                foreach ($localeRawValue as $localeCode => $data) {
+                    if ('<all_locales>' === $localeCode) {
+                        $localeCode = null;
                     }
 
-                    foreach ($localeRawValue as $localeCode => $data) {
-                        if ('<all_locales>' === $localeCode) {
-                            $localeCode = null;
+                    try {
+                        $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
+                    } catch (InvalidOptionException $e) {
+                        $this->logger->warning(
+                            sprintf(
+                                'Tried to load a product value with the option "%s" that does not exist.',
+                                $e->getPropertyValue()
+                            )
+                        );
+                    } catch (InvalidOptionsException $e) {
+                        $this->logger->warning(
+                            sprintf(
+                                'Tried to load a product value with the options "%s" that do not exist.',
+                                $e->toString()
+                            )
+                        );
+                        $goodOptions = array_diff($data, $e->toArray());
+                        if (!empty($goodOptions)) {
+                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $goodOptions);
                         }
-
-                        try {
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $data);
-                        } catch (InvalidOptionException $e) {
-                            $this->logger->warning(
-                                sprintf(
-                                    'Tried to load a product value with the option "%s" that does not exist.',
-                                    $e->getPropertyValue()
-                                )
-                            );
-                        } catch (InvalidOptionsException $e) {
-                            $this->logger->warning(
-                                sprintf(
-                                    'Tried to load a product value with the options "%s" that do not exist.',
-                                    $e->toString()
-                                )
-                            );
-                            $goodOptions = array_diff($data, $e->toArray());
-                            if (!empty($goodOptions)) {
-                                $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, $goodOptions);
-                            }
-                        } catch (InvalidAttributeException $e) {
-                            $this->logger->warning(
-                                sprintf(
-                                    'Tried to load a product value with an invalid attribute "%s". %s',
-                                    $attributeCode,
-                                    $e->getMessage()
-                                )
-                            );
-                        } catch (InvalidPropertyException $e) {
-                            $this->logger->warning(
-                                sprintf(
-                                    'Tried to load a product value with the property "%s" that does not exist.',
-                                    $e->getPropertyValue()
-                                )
-                            );
-                        } catch (InvalidPropertyTypeException $e) {
-                            $this->logger->warning(
-                                sprintf(
-                                    'Tried to load a product value for attribute "%s" that does not have the ' .
-                                    'good type in database.',
-                                    $attribute->getCode()
-                                )
-                            );
-                            $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, null);
-                        }
+                    } catch (InvalidAttributeException $e) {
+                        $this->logger->warning(
+                            sprintf(
+                                'Tried to load a product value with an invalid attribute "%s". %s',
+                                $attributeCode,
+                                $e->getMessage()
+                            )
+                        );
+                    } catch (InvalidPropertyException $e) {
+                        $this->logger->warning(
+                            sprintf(
+                                'Tried to load a product value with the property "%s" that does not exist.',
+                                $e->getPropertyValue()
+                            )
+                        );
+                    } catch (InvalidPropertyTypeException $e) {
+                        $this->logger->warning(
+                            sprintf(
+                                'Tried to load a product value for attribute "%s" that does not have the ' .
+                                'good type in database.',
+                                $attribute->getCode()
+                            )
+                        );
+                        $values[] = $this->valueFactory->create($attribute, $channelCode, $localeCode, null);
                     }
                 }
-            } else {
-                $this->logger->warning(
-                    sprintf(
-                        'Tried to load a product value with the attribute "%s" that does not exist.',
-                        $attributeCode
-                    )
-                );
             }
         }
 
