@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-7540: Fix translations of boolean attributes
+
 # 1.7.27 (2018-07-24)
 
 ## Bug fixes
