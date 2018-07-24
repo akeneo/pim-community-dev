@@ -44,7 +44,6 @@ extensions:
         config:
             label: akeneo_suggest_data.settings.index.tab.identifiers.title
 
-    # TODO Rename this
     pimee-suggest-data-settings-edit-mapping-identifier:
         module: pimee/settings/mapping/identifiers
         parent: pimee-suggest-data-settings-index-identifier-tab

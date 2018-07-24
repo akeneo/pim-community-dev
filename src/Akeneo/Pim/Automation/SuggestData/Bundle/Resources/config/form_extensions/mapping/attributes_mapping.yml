@@ -1,9 +1,64 @@
 extensions:
-    # TODO !
+    pim-suggest-data-settings-attributes-mapping-index:
+        module: pim/form/common/edit-form
+
+    pim-suggest-data-settings-attributes-mapping-index-breadcrumb:
+        module: pim/common/breadcrumbs
+        parent: pim-suggest-data-settings-attributes-mapping-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pimee-suggest-data-menu-settings-mapping
+
+    pim-suggest-data-settings-attributes-mapping-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-suggest-data-settings-attributes-mapping-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-suggest-data-settings-attributes-mapping-index-title:
+        module: pim/common/title-with-subtitle
+        parent: pim-suggest-data-settings-attributes-mapping-index
+        targetZone: title
+        config:
+            main_title: akeneo_suggest_data.settings.index.title
+            sub_title: akeneo_suggest_data.settings.index.sub_title
+            illustration: bundles/pimui/images/illustrations/Helpcenter-settings.svg
+            description:
+                - akeneo_suggest_data.settings.index.description.first_step
+                - akeneo_suggest_data.settings.index.description.second_step
+
+    pim-suggest-data-settings-attributes-mapping-index-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-suggest-data-settings-attributes-mapping-index
+        targetZone: buttons
+        position: 120
+
+    pim-suggest-data-settings-attributes-mapping-index-save:
+        module: pimee/settings/mapping/save-form
+        parent: pim-suggest-data-settings-attributes-mapping-index
+        targetZone: buttons
+        position: 0
+
+    pim-suggest-data-settings-attributes-mapping-index-tabs:
+        module: pimee/settings/mapping/tabs
+        parent: pim-suggest-data-settings-attributes-mapping-index
+        targetZone: content
+        position: 90
+        config:
+            tabs:
+                - { label: akeneo_suggest_data.settings.index.tab.identifiers.title, route: akeneo_suggest_data_settings_index }
+                - { label: akeneo_suggest_data.settings.index.tab.families.title, route: '' }
+                - { label: akeneo_suggest_data.settings.index.tab.attributes.title, route: akeneo_suggest_data_settings_attributes_index }
+            selected: 2
+
     pim-suggest-data-settings-identifiers-mapping-attribute-family-selector:
         module: pimee/settings/mapping/family-selector
-        #parent: pim-suggest-data-settings-identifiers-mapping-attribute-tab
+        parent: pim-suggest-data-settings-attributes-mapping-index-tabs
         position: 10
+        targetZone: content
         config:
             fieldName: family
             label: pim_enrich.entity.family.uppercase_label
@@ -11,5 +66,6 @@ extensions:
 
     pim-suggest-data-settings-identifiers-mapping-attribute-attributes-mapping:
         module: pimee/settings/mapping/attributes-mapping
-        #parent: pim-suggest-data-settings-identifiers-mapping-attribute-tab
+        parent: pim-suggest-data-settings-attributes-mapping-index-tabs
         position: 20
+        targetZone: content

@@ -15,8 +15,12 @@ config:
                         entity: suggest-data-settings-identifiers-mapping
                         connectionCode: pim-ai
                         inactiveForm: pimee-suggest-data-settings-index-inactive-connection
+                akeneo_suggest_data_settings_attributes_index:
+                    module: pim/controller/common/index
+                    aclResourceId: akeneo_suggest_data_settings_mapping
+                    config:
+                        entity: suggest-data-settings-attributes-mapping
 
-        # Savers
         pimee/saver/pim-ai-connection:
             url: akeneo_suggest_data_connection_post
 

@@ -51,7 +51,7 @@ extensions:
             tabs:
                 - { label: akeneo_suggest_data.settings.index.tab.identifiers.title, route: akeneo_suggest_data_settings_index }
                 - { label: akeneo_suggest_data.settings.index.tab.families.title, route: '' }
-                - { label: akeneo_suggest_data.settings.index.tab.attributes.title, route: '' }
+                - { label: akeneo_suggest_data.settings.index.tab.attributes.title, route: akeneo_suggest_data_settings_attributes_index }
             selected: 0
 
     pim-suggest-data-settings-identifiers-mapping-index-edit-mapping-identifier:
