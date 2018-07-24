@@ -71,15 +71,16 @@ class BulkComputeProductModelDescendantsSubscriber implements EventSubscriberInt
     {
         $productModels = $event->getSubject();
 
-        if (count($productModels) === 0){
-            return;
-        }
         $productModelsCodes = [];
         foreach ($productModels as $productModel){
             if (!$productModel instanceof ProductModelInterface) {
                 return;
             }
             $productModelsCodes[] = $productModel->getCode();
+        }
+
+        if (count($productModelsCodes) === 0){
+            return;
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
