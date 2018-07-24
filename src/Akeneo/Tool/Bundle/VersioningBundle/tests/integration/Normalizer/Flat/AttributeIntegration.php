@@ -1,8 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\VersioningBundle\Normalizer\Flat;
-
-use Akeneo\Tool\Bundle\VersioningBundle\tests\integration\Normalizer\Flat\AbstractFlatNormalizerTestCase;
+namespace Akeneo\Tool\Bundle\VersioningBundle\tests\integration\Normalizer\Flat;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
