@@ -2,12 +2,12 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 
+use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Tool\Bundle\VersionningBundle\Factory\VersionFactory;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
