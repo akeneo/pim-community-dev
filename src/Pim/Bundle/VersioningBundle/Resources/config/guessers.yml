@@ -1,11 +1,11 @@
 parameters:
-    pim_versioning.update_guesser.attribute_group.class:   Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeGroupUpdateGuesser
-    pim_versioning.update_guesser.attribute_option.class:  Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeOptionUpdateGuesser
-    pim_versioning.update_guesser.chained.class:           Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser
-    pim_versioning.update_guesser.contains_products.class: Pim\Bundle\VersioningBundle\UpdateGuesser\ContainsProductsUpdateGuesser
-    pim_versioning.update_guesser.translations.class:      Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser
-    pim_versioning.update_guesser.versionable.class:       Pim\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser
-    pim_versioning.update_guesser.associations.class:      Pim\Bundle\VersioningBundle\UpdateGuesser\AssociationsUpdateGuesser
+    pim_versioning.update_guesser.attribute_group.class:   Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\AttributeGroupUpdateGuesser
+    pim_versioning.update_guesser.attribute_option.class:  Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\AttributeOptionUpdateGuesser
+    pim_versioning.update_guesser.chained.class:           Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\ChainedUpdateGuesser
+    pim_versioning.update_guesser.contains_products.class: Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\ContainsProductsUpdateGuesser
+    pim_versioning.update_guesser.translations.class:      Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\TranslationsUpdateGuesser
+    pim_versioning.update_guesser.versionable.class:       Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\VersionableUpdateGuesser
+    pim_versioning.update_guesser.associations.class:      Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\AssociationsUpdateGuesser
 
 services:
     pim_versioning.update_guesser.attribute_group:

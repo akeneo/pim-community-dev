@@ -11,7 +11,7 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Akeneo\Tool\Bundle\VersionningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;

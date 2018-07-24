@@ -4,10 +4,10 @@ namespace spec\Akeneo\Channel\Component\Normalizer\InternalApi;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Akeneo\Tool\Bundle\VersionningBundle\Manager\VersionManager;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
-use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
+use Akeneo\Tool\Bundle\VersionningBundle\Repository\VersionRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

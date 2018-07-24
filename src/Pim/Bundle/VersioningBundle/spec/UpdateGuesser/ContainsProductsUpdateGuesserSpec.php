@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+use Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
