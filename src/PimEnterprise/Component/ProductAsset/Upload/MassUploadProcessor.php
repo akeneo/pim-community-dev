@@ -24,6 +24,7 @@ use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
@@ -216,6 +217,10 @@ class MassUploadProcessor
         $items = $event->getProcessedList();
 
         foreach ($items->getItemsInState(ProcessedItem::STATE_ERROR) as $item) {
+            if (!$this->canVariationBeGeneratedForMimeType($item->getItem())) {
+                continue;
+            }
+
             $parameters = ['%channel%' => $item->getItem()->getChannel()->getCode()];
             switch (true) {
                 case $item->getException() instanceof InvalidOptionsTransformationException:
@@ -246,5 +251,23 @@ class MassUploadProcessor
         }
 
         return $errors;
+    }
+
+    /**
+     * @param mixed $item
+     *
+     * @return bool
+     */
+    protected function canVariationBeGeneratedForMimeType($item)
+    {
+        $supportedMimeTypes = [
+            'image/jpeg',
+            'image/tiff',
+            'image/png',
+        ];
+
+        return $item instanceof VariationInterface
+            && null !== $item->getReference()->getFileInfo()
+            && in_array($item->getReference()->getFileInfo()->getMimeType(), $supportedMimeTypes);
     }
 }

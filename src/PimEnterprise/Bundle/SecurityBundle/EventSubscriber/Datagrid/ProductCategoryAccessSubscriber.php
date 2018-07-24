@@ -32,6 +32,9 @@ class ProductCategoryAccessSubscriber implements EventSubscriberInterface
     /** @var CategoryAccessRepository */
     protected $accessRepository;
 
+    /** @var array */
+    protected $grantedCategoryIdsPerUser;
+
     /**
      * @param TokenStorageInterface    $tokenStorage
      * @param CategoryAccessRepository $accessRepository
@@ -42,6 +45,7 @@ class ProductCategoryAccessSubscriber implements EventSubscriberInterface
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->accessRepository = $accessRepository;
+        $this->grantedCategoryCodesPerUser = [];
     }
 
     /**
@@ -71,15 +75,22 @@ class ProductCategoryAccessSubscriber implements EventSubscriberInterface
             ));
         }
 
-        $grantedCategories = $this->accessRepository->getGrantedCategoryCodes(
-            $this->tokenStorage->getToken()->getUser(),
-            Attributes::VIEW_ITEMS
-        );
+        $userId = $this->tokenStorage->getToken()->getUser()->getId();
+
+        if (!isset($this->grantedCategoryCodesPerUser[$userId])) {
+            $this->grantedCategoryCodesPerUser[$userId] =  $this->accessRepository->getGrantedCategoryCodes(
+                $this->tokenStorage->getToken()->getUser(),
+                Attributes::VIEW_ITEMS
+            );
+        }
+
+        $grantedCategories = $this->grantedCategoryCodesPerUser[$userId];
 
         $dataSource->getProductQueryBuilder()->addFilter(
             'categories',
             Operators::IN_LIST_OR_UNCLASSIFIED,
-            $grantedCategories
+            $grantedCategories,
+            ['type_checking' => false]
         );
     }
 }
