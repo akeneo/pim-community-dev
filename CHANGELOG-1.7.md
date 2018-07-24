@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- GITHUB-8521: Update reference data configuration following the PIM-7456
+
 # 1.7.26 (2018-07-23)
 
 ## Bug fixes
@@ -7,6 +13,17 @@
 - PIM-7473: Enables cache to avoid reloading validation mapping files
 - PIM-7459: Fix completeness performances issues with high number of locales on MongoDB
 - PIM-7525: Add loading mask to avoid multiple import launches
+- PIM-7456: Security vulnerabilities in dependencies.
+
+## BC breaks:
+
+### AppKernel 
+
+- Remove `Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle` and `APY\JsFormValidationBundle\APYJsFormValidationBundle`
+
+### Routing
+
+- Remove routing from `APYJsFormValidationBundle` 
 
 # 1.7.25 (2018-07-06)
 
@@ -31,7 +48,6 @@
 ## Bug fixes
 
 - PIM-7400: Fix 'ensure-indexes' timeout command
-- PIM-7456: Security vulnerabilities in dependencies
 
 # 1.7.22 (2018-06-05)
 
