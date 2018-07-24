@@ -17,10 +17,10 @@ export default ({
   onRedirectToRecord: (record: Record) => void;
 }) => {
   const path =
-    '' !== record.getIdentifier().stringValue()
+    '' !== record.getIdentifier().identifier
       ? `#${router.generate('akeneo_enriched_entities_record_edit', {
           enrichedEntityIdentifier: record.getEnrichedEntityIdentifier().stringValue(),
-          identifier: record.getIdentifier().stringValue()
+          identifier: record.getIdentifier().identifier
         })}`
       : '';
 
@@ -45,7 +45,7 @@ export default ({
         <a
           href={path}
           title={record.getLabel(locale)}
-          data-identifier={record.getIdentifier().stringValue()}
+          data-identifier={record.getIdentifier().identifier}
           onClick={event => {
             event.preventDefault();
 
@@ -61,7 +61,7 @@ export default ({
         <a
           href={path}
           title={record.getLabel(locale)}
-          data-identifier={record.getIdentifier().stringValue()}
+          data-identifier={record.getIdentifier().identifier}
           onClick={event => {
             event.preventDefault();
 
@@ -70,7 +70,7 @@ export default ({
             return false;
           }}
         >
-          {record.getIdentifier().stringValue()}
+          {record.getIdentifier().identifier}
         </a>
       </td>
       <td className="AknGrid-bodyCell AknGrid-bodyCell--actions action-cell">

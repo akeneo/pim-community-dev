@@ -28,6 +28,9 @@ describe('akeneo > enriched entity > domain > model --- enriched entity', () => 
     expect(() => {
       createEnrichedEntity(michelIdentifier, 52);
     }).toThrow('EnrichedEntity expect a LabelCollection as second argument');
+    expect(() => {
+      createEnrichedEntity(michelIdentifier, 52, {filePath: 'my_path.png', originalFilename: 'path.png'});
+    }).toThrow('EnrichedEntity expect a LabelCollection as second argument');
   });
 
   test('I can compare two enriched entities', () => {

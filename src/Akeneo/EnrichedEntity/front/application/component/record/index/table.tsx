@@ -4,7 +4,7 @@ import Record, {createRecord} from 'akeneoenrichedentity/domain/model/record/rec
 import {createIdentifier} from 'akeneoenrichedentity/domain/model/record/identifier';
 import {createIdentifier as createEnrichedEntityIdentifier} from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import {createLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
-
+import {createCode} from 'akeneoenrichedentity/domain/model/record/code';
 
 interface TableState {
   locale: string;
@@ -36,10 +36,11 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
     onRedirectToRecord: (record: Record) => void
   ): JSX.Element | JSX.Element[] {
     if (0 === records.length && isLoading) {
-      const recordIdentifier = createIdentifier('');
+      const recordIdentifier = createIdentifier('', '');
       const enrichedEntityIdentifier = createEnrichedEntityIdentifier('');
+      const code = createCode('');
       const labelCollection = createLabelCollection({});
-      const record = createRecord(recordIdentifier, enrichedEntityIdentifier, labelCollection);
+      const record = createRecord(recordIdentifier, enrichedEntityIdentifier, code, labelCollection);
 
       return (
         <ItemView
@@ -58,7 +59,7 @@ export default class Table extends React.Component<TableProps, {nextItemToAddPos
 
       return (
         <ItemView
-          key={record.getIdentifier().stringValue()}
+          key={record.getIdentifier().identifier}
           record={record}
           locale={locale}
           onRedirectToRecord={onRedirectToRecord}

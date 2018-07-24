@@ -45,13 +45,14 @@ module.exports = async function(cucumber) {
     })
   };
 
-  const listEnrichedUpdated = async function (page, enrichedEntityIdentifier, identifier, labels) {
+  const listRecordUpdated = async function (page, enrichedEntityIdentifier, identifier, labels) {
     page.on('request', request => {
       if ('http://pim.com/rest/enriched_entity/designer/record' === request.url() && 'GET' === request.method()) {
         answerJson(request, {
           items: [{
-            identifier: identifier,
+            identifier: {identifier, enriched_entity_identifier: enrichedEntityIdentifier},
             enriched_entity_identifier: enrichedEntityIdentifier,
+            code: identifier,
             labels: labels
           }], total: 1000
         });
@@ -102,7 +103,7 @@ module.exports = async function(cucumber) {
   Then('there is a record of {string} with:', async function (identifier, updates) {
     const record = convertItemTable(updates)[0];
 
-    await listEnrichedUpdated(this.page, identifier, record.identifier, record.labels);
+    await listRecordUpdated(this.page, identifier, record.identifier, record.labels);
 
     const grid = await await getElement(this.page, 'Grid');
     await grid.hasRow(record.identifier);

@@ -1,15 +1,21 @@
-import Identifier from 'akeneoenrichedentity/domain/model/record/identifier';
+import Identifier, {
+  NormalizedRecordIdentifier,
+  createIdentifier,
+} from 'akeneoenrichedentity/domain/model/record/identifier';
 import EnrichedEntityIdentifier from 'akeneoenrichedentity/domain/model/enriched-entity/identifier';
 import LabelCollection, {RawLabelCollection} from 'akeneoenrichedentity/domain/model/label-collection';
+import RecordCode from 'akeneoenrichedentity/domain/model/record/code';
 
 interface NormalizedRecord {
-  identifier: string;
+  identifier: NormalizedRecordIdentifier;
   enrichedEntityIdentifier: string;
+  code: string;
   labels: RawLabelCollection;
 }
 
 export default interface Record {
   getIdentifier: () => Identifier;
+  getCode: () => RecordCode;
   getEnrichedEntityIdentifier: () => EnrichedEntityIdentifier;
   getLabel: (locale: string) => string;
   getLabelCollection: () => LabelCollection;
@@ -23,6 +29,7 @@ class RecordImplementation implements Record {
   private constructor(
     private identifier: Identifier,
     private enrichedEntityIdentifier: EnrichedEntityIdentifier,
+    private code: RecordCode,
     private labelCollection: LabelCollection
   ) {
     if (!(identifier instanceof Identifier)) {
@@ -31,8 +38,16 @@ class RecordImplementation implements Record {
     if (!(enrichedEntityIdentifier instanceof EnrichedEntityIdentifier)) {
       throw new InvalidArgumentError('Record expect an EnrichedEntityIdentifier as second argument');
     }
+    if (!(code instanceof RecordCode)) {
+      throw new InvalidArgumentError('Record expect a RecordCode as third argument');
+    }
     if (!(labelCollection instanceof LabelCollection)) {
-      throw new InvalidArgumentError('Record expect a LabelCollection as third argument');
+      throw new InvalidArgumentError('Record expect a LabelCollection as fourth argument');
+    }
+    if (!createIdentifier(enrichedEntityIdentifier.stringValue(), code.stringValue()).equals(identifier)) {
+      throw new InvalidArgumentError(
+        'Record expect an identifier complient to the given enrichedEntityIdentifier and code'
+      );
     }
 
     Object.freeze(this);
@@ -41,9 +56,10 @@ class RecordImplementation implements Record {
   public static create(
     identifier: Identifier,
     enrichedEntityIdentifier: EnrichedEntityIdentifier,
+    recordCode: RecordCode,
     labelCollection: LabelCollection
   ): Record {
-    return new RecordImplementation(identifier, enrichedEntityIdentifier, labelCollection);
+    return new RecordImplementation(identifier, enrichedEntityIdentifier, recordCode, labelCollection);
   }
 
   public getIdentifier(): Identifier {
@@ -54,10 +70,14 @@ class RecordImplementation implements Record {
     return this.enrichedEntityIdentifier;
   }
 
+  public getCode(): RecordCode {
+    return this.code;
+  }
+
   public getLabel(locale: string) {
     return this.labelCollection.hasLabel(locale)
       ? this.labelCollection.getLabel(locale)
-      : `[${this.getIdentifier().stringValue()}]`;
+      : `[${this.getCode().stringValue()}]`;
   }
 
   public getLabelCollection(): LabelCollection {
@@ -65,16 +85,14 @@ class RecordImplementation implements Record {
   }
 
   public equals(record: Record): boolean {
-    return (
-      record.getIdentifier().equals(this.identifier) &&
-      record.getEnrichedEntityIdentifier().equals(this.enrichedEntityIdentifier)
-    );
+    return record.getIdentifier().equals(this.identifier);
   }
 
   public normalize(): NormalizedRecord {
     return {
-      identifier: this.getIdentifier().stringValue(),
+      identifier: this.getIdentifier().normalize(),
       enrichedEntityIdentifier: this.getEnrichedEntityIdentifier().stringValue(),
+      code: this.code.stringValue(),
       labels: this.getLabelCollection().getLabels(),
     };
   }
