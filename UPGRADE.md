@@ -353,3 +353,4 @@ find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Form
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Form\\Type\\AttributeOptionType/Akeneo\\Pim\\Structure\\Bundle\\Form\\Type\\AttributeOptionType/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Form\\Type\\FamilyType/Akeneo\\Pim\\Structure\\Bundle\\Form\\Type\\FamilyType/g'
 find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\EnrichBundle\\Form\\Type\\AttributeOptionValueType/Akeneo\\Pim\\Structure\\Bundle\\Form\\Type\\AttributeOptionValueType/g'
+find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\VersioningBundle/Akeneo\\Tool\\Bundle\\VersioningBundle/g'
