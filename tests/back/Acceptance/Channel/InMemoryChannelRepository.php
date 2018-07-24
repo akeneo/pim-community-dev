@@ -121,7 +121,7 @@ final class InMemoryChannelRepository implements ChannelRepositoryInterface, Sav
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return $this->channels->toArray();
     }
 
     /**
