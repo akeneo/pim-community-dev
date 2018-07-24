@@ -44,5 +44,5 @@ akeneo_suggest_data_identifiers_mapping_get:
 
 akeneo_sugggest_data_family_mapping_index:
     path: /suggest-data/family-mapping
-    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.family_mapping:index }
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.family_mapping:indexAction }
     methods: [GET]

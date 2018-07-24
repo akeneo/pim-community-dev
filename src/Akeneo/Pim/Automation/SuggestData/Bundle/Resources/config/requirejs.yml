@@ -52,6 +52,7 @@ config:
         pimee/settings/mapping/identifiers: akeneosuggestdata/js/settings/mapping/identifiers.ts
         pimee/settings/mapping/simple-select-attribute: akeneosuggestdata/js/settings/mapping/simple-select-attribute
         pimee/settings/mapping/save-form: akeneosuggestdata/js/settings/mapping/save
+        pimee/settings/mapping/family-selector: akeneosuggestdata/js/settings/mapping/family-selector
 
         # Templates
         pimee/template/product/suggest-data-push:  akeneosuggestdata/templates/product/edit/suggest-data-push.html
