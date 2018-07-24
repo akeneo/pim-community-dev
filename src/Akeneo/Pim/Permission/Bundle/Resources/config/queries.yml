@@ -1,0 +1,15 @@
+parameters:
+    pimee_security.query.product_category_access.class: Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery
+
+services:
+    pimee_security.query.product_category_access:
+        class: '%pimee_security.query.product_category_access.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.product.class%'
+
+    pimee_security.query.product_model_category_access:
+        class: '%pimee_security.query.product_category_access.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.product_model.class%'

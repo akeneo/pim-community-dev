@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\Rest;
 
+use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\DraftAuthors;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle;
 
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
+use Akeneo\Pim\Permission\Bundle\DependencyInjection\Compiler\AddPermissionFilterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -18,5 +20,7 @@ class AkeneoPimPermissionBundle extends Bundle
      */
     public function build(ContainerBuilder $container): void
     {
+        $container->addCompilerPass(new AddPermissionFilterPass());
+        $container->addCompilerPass(new RegisterSerializerPass('pimee_authorization_serializer'));
     }
 }

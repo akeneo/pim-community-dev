@@ -3,19 +3,19 @@
 {% else %}
     {% for code, changes in value %}
         {% set isAttributeLocalizable = is_attribute_localizable(code) %}
-        {% set canView = is_attribute_granted(constant('PimEnterprise\\Component\\Security\\Attributes::VIEW_ATTRIBUTES'), code) %}
+        {% set canView = is_attribute_granted(constant('Akeneo\\Pim\\Permission\\Component\\Attributes::VIEW_ATTRIBUTES'), code) %}
         {% for change in changes %}
             {% set product_draft_change = present_product_draft_change(record.getValue('proposal'), change, code) %}
             {% if
                 canView and
-                (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Component\\Security\\Attributes::VIEW_ITEMS'), change.locale)) and
+                (not isAttributeLocalizable or is_locale_granted(constant('Akeneo\\Pim\\Permission\\Component\\Attributes::VIEW_ITEMS'), change.locale)) and
                 product_draft_change|length > 0
             %}
                 {%
                     set canReview = (
-                        is_attribute_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT_ATTRIBUTES'), code) and
-                        is_granted(constant('PimEnterprise\\Component\\Security\\Attributes::OWN'), record.getValue('product')) and
-                        (not isAttributeLocalizable or is_locale_granted(constant('PimEnterprise\\Component\\Security\\Attributes::EDIT_ITEMS'), change.locale))
+                        is_attribute_granted(constant('Akeneo\\Pim\\Permission\\Component\\Attributes::EDIT_ATTRIBUTES'), code) and
+                        is_granted(constant('Akeneo\\Pim\\Permission\\Component\\Attributes::OWN'), record.getValue('product')) and
+                        (not isAttributeLocalizable or is_locale_granted(constant('Akeneo\\Pim\\Permission\\Component\\Attributes::EDIT_ITEMS'), change.locale))
                     )
                 %}
                 <table

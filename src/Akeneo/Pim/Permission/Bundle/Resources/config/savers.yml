@@ -1,0 +1,58 @@
+parameters:
+    pimee_catalog.security.saver.filtered_entity.class: Akeneo\Pim\Permission\Bundle\Persistence\ORM\FilteredEntitySaver
+
+services:
+    pimee_security.saver.attribute_group_access:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_security.entity.attribute_group_access.class%'
+
+    pimee_security.saver.product_category_access:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_security.entity.product_category_access.class%'
+
+    pimee_security.saver.asset_category_access:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_security.entity.asset_category_access.class%'
+
+    pimee_security.saver.job_profile_access:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_security.entity.job_profile_access.class%'
+
+    pimee_security.saver.locale_access:
+        class: '%akeneo_storage_utils.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pimee_security.entity.locale_access.class%'
+
+    pimee_security.saver.product:
+        class: '%pimee_catalog.security.saver.filtered_entity.class%'
+        decorates: pim_catalog.saver.product
+        decoration_inner_name: pim_catalog.saver.product_without_permission
+        arguments:
+            - '@pim_catalog.saver.product_without_permission'
+            - '@pim_catalog.saver.product_without_permission'
+            - '@pimee_catalog.security.merger.merge_data_on_product'
+            - '@pim_catalog.repository.product_without_permission'
+
+    pimee_security.saver.product_model:
+        class: '%pimee_catalog.security.saver.filtered_entity.class%'
+        decorates: pim_catalog.saver.product_model
+        decoration_inner_name: pim_catalog.saver.product_model_without_permission
+        arguments:
+            - '@pim_catalog.saver.product_model_without_permission'
+            - '@pim_catalog.saver.product_model_without_permission'
+            - '@pimee_catalog.security.merger.merge_data_on_product_model'
+            - '@pim_catalog.repository.product_model_without_permission'

@@ -41,15 +41,15 @@ $rules = [
         'Oro\Bundle\FilterBundle',
         'Pim\Bundle\FilterBundle',
         // TODO: we should rework permission to avoid this kind coupling (permissions are a sub part of PIM BC)
-        'PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository',
-        'PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager',
-        'PimEnterprise\Bundle\SecurityBundle\User\UserContext',
-        'PimEnterprise\Component\Security\Attributes',
+        'Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository',
+        'Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager',
+        'Akeneo\Pim\Permission\Bundle\User\UserContext',
+        'Akeneo\Pim\Permission\Component\Attributes',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
-        'PimEnterprise\Bundle\SecurityBundle\Form\Type\CategoryPermissionsType',
-        'PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType',
-        'PimEnterprise\Bundle\SecurityBundle\Form\EventListener\CategoryPermissionsSubscriber',
-        'PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException',
+        'Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType',
+        'Akeneo\Pim\Permission\Bundle\Form\Type\GroupsType',
+        'Akeneo\Pim\Permission\Bundle\Form\EventListener\CategoryPermissionsSubscriber',
+        'Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException',
         // TODO: we must not depend on PIM BC
         'Pim\Bundle\UIBundle\Controller\AjaxOptionController',
         'Pim\Component\Catalog\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
@@ -87,7 +87,7 @@ $rules = [
         'Pim\Component\Connector', // TODO: Generic classes/interfaces like be moved to Akeneo/Tool
         'Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface', // TODO: AssetCollectionCompleteChecker should extract from this context
         'Doctrine\ORM\QueryBuilder', // TODO: some repository return QueryBuidler object.
-        'PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager', // TODO: security
+        'Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager', // TODO: security
         // TODO: we should not use public constant
         'Akeneo\Asset\Bundle\Event\AssetEvent',
         'Akeneo\Asset\Bundle\AttributeType\AttributeTypes',

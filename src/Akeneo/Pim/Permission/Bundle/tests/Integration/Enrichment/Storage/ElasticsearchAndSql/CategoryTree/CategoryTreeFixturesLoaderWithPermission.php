@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\tests\Integration\Enrichment\Storage\ElasticsearchAndSql\CategoryTree;
 
+use Akeneo\Pim\Permission\Component\Attributes;
 use PHPUnit\Framework\Assert;
-use PimEnterprise\Component\Security\Attributes;
 use Psr\Container\ContainerInterface;
 
 class CategoryTreeFixturesLoaderWithPermission

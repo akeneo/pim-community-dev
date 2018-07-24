@@ -91,7 +91,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
+     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
      * @expectedExceptionMessage Attribute "a_number_float" belongs to the attribute group "attributeGroupB" on which you only have view permission.
      */
     public function testUpdateAProductDraftWithAttributeGroupOnlyViewableWithChange()
@@ -133,7 +133,7 @@ class ValuesIntegration extends AbstractSecurityTestCase
     }
 
     /**
-     * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
+     * @expectedException \Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException
      * @expectedExceptionMessage You only have a view permission on the locale "fr_FR"
      */
     public function testUpdateAProductDraftWithLocaleOnlyViewableWithChange()

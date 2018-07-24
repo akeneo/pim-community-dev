@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\Api\Normalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\Api\Normalizer\ProductModelNormalizer;
-use PimEnterprise\Component\Security\Attributes;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -59,8 +59,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_product_model_for_an_user_who_has_only_view_permission(
-        ProductModelInterface $productModel, 
-        $productModelNormalizer, 
+        ProductModelInterface $productModel,
+        $productModelNormalizer,
         $authorizationChecker
     ) {
         $authorizationChecker->isGranted(Attributes::OWN, $productModel)->willReturn(false);

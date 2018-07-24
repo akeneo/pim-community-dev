@@ -11,10 +11,10 @@
 
 ## BC breaks
 - Move namespace `PimEnterprise\Component\Catalog\Security` to `PimEnterprise\Component\Security`
-- Change constructor of `PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter`. Add arguments `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface`, `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
-- Change constructor of `PimEnterprise\Component\Catalog\Security\Merger\NotGrantedAssociatedProductMerger`. Add arguments `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
-- Change constructor of `PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter`. Add arguments `PimEnterprise\Bundle\SecurityBundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
-- Move namespace `PimEnterprise\Bundle\VersioningBundle\UpdateGuesser` to `PimEnterprise\Bundle\SecurityBundle\UpdateGuesser`
+- Change constructor of `PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter`. Add arguments `Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface`, `Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
+- Change constructor of `PimEnterprise\Component\Catalog\Security\Merger\NotGrantedAssociatedProductMerger`. Add arguments `Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
+- Change constructor of `PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter`. Add arguments `Akeneo\Pim\Permission\Bundle\Entity\Query\ItemCategoryAccessQuery` two times and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`.
+- Move namespace `PimEnterprise\Bundle\VersioningBundle\UpdateGuesser` to `Akeneo\Pim\Permission\Bundle\UpdateGuesser`
 - Move `PimEnterprise\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber` to `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber`
 - Move namespace `PimEnterprise\Bundle\VersioningBundle\Purger` to `PimEnterprise\Bundle\WorkflowBundle\Purger`
 - Move all classes from `PimEnterprise\Bundle\ApiBundle\Normalizer` to `PimEnterprise\Component\ProductAsset\Normalizer\ExternalApi`
@@ -68,7 +68,7 @@
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer` to `PimEnterprise\Bundle\WorkflowBundle\Versioning\VersionNormalizer`
 - Remove `PimEnterprise\Bundle\ApiBundle\DependencyInjection\Configuration`
 - Remove `PimEnterprise\Bundle\ApiBundle\DependencyInjection\PimEnterpriseApiExtension`
-- Change the constructor of `PimEnterprise\Bundle\SecurityBundle\User\UserContext` to remove `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
+- Change the constructor of `Akeneo\Pim\Permission\Bundle\User\UserContext` to remove `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
 - Move namespace `Akeneo\Bundle\FileMetadataBundle` to `Akeneo\Tool\Bundle\FileMetadataBundle`
 - Move namespace `Akeneo\Bundle\FileTransformerBundle` to `Akeneo\Tool\Bundle\FileTransformerBundle`
 - Move namespace `Akeneo\Bundle\RuleEngineBundle` to `Akeneo\Bundle\Tool\RuleEngineBundle`
@@ -91,59 +91,61 @@
 
 ## Security
 
-- Move `PimEnterprise\Bundle\ApiBundle\Security\AccessDeniedHandler` to `PimEnterprise\Bundle\SecurityBundle\Api\AccessDeniedHandler`
-- Move `PimEnterprise\Bundle\ApiBundle\Checker\QueryParametersChecker` to `PimEnterprise\Bundle\SecurityBundle\Api\QueryParametersChecker`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AbstractAuthorizationFilter\DatagridViewFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\AbstractAuthorizationFilter\DatagridViewFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager\ProductController` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager\ProductController`
-- Move `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager\ProductModelController` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager\ProductModelController`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeViewRightFilter\AttributeRepository` to `PimEnterprise\Bundle\SecurityBundle\Filter\AttributeViewRightFilter\AttributeRepository`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\JobInstanceEditRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\JobInstanceEditRightFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AbstractAuthorizationFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\AbstractAuthorizationFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeEditRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\AttributeEditRightFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeGroupViewRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\AttributeGroupViewRightFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeViewRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\AttributeViewRightFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\LocaleEditRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\LocaleEditRightFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\LocaleViewRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\LocaleViewRightFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductAndProductModelDeleteRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\ProductAndProductModelDeleteRightFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightEditFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\ProductRightEditFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightViewFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\ProductRightViewFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueAttributeGroupRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\ProductValueAttributeGroupRightFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueLocaleRightFilter` to `PimEnterprise\Bundle\SecurityBundle\Filter\ProductValueLocaleRightFilter`
-- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Attribute\AttributeRepository`
-- Move `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager`
-- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductMassActionRepository`
-- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductModelRepository`
-- Move `PimEnterprise\Bundle\CatalogBundle\Security\Elasticsearch\ProductQueryBuilderFactory` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductQueryBuilderFactory`
-- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\EntityWithValue\ProductRepository`
-- Move `PimEnterprise\Bundle\CatalogBundle\Security\Doctrine\Common\Saver\FilteredEntitySaver` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\FilteredEntitySaver`
-- Move `PimEnterprise\Bundle\DataGridBundle\Filter\DatagridViewFilter` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\DatagridViewFilter`
-- Move `PimEnterprise\Bundle\DataGridBundle\Manager\DatagridViewManager` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\DatagridViewManager`
-- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\AddPermissionsToGridListener` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\AddPermissionsToGridListener`
-- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ConfigureProductGridListener`
-- Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\MassAction\ProductFieldsBuilder`
-- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\RowActionsConfigurator`
+- Move `PimEnterprise\Bundle\ApiBundle\Security\AccessDeniedHandler` to `Akeneo\Pim\Permission\Bundle\Api\AccessDeniedHandler`
+- Move `PimEnterprise\Bundle\ApiBundle\Checker\QueryParametersChecker` to `Akeneo\Pim\Permission\Bundle\Api\QueryParametersChecker`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AbstractAuthorizationFilter\DatagridViewFilter` to `Akeneo\Pim\Permission\Bundle\Filter\AbstractAuthorizationFilter\DatagridViewFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager\ProductController` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager\ProductController`
+- Move `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager\ProductModelController` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager\ProductModelController`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeViewRightFilter\AttributeRepository` to `Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter\AttributeRepository`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\JobInstanceEditRightFilter` to `Akeneo\Pim\Permission\Bundle\Filter\JobInstanceEditRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AbstractAuthorizationFilter` to `Akeneo\Pim\Permission\Bundle\Filter\AbstractAuthorizationFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeEditRightFilter` to `Akeneo\Pim\Permission\Bundle\Filter\AttributeEditRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeGroupViewRightFilter` to `Akeneo\Pim\Permission\Bundle\Filter\AttributeGroupViewRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\AttributeViewRightFilter` to `Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\LocaleEditRightFilter` to `Akeneo\Pim\Permission\Bundle\Filter\LocaleEditRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\LocaleViewRightFilter` to `Akeneo\Pim\Permission\Bundle\Filter\LocaleViewRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductAndProductModelDeleteRightFilter` to `Akeneo\Pim\Permission\Bundle\Filter\ProductAndProductModelDeleteRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightEditFilter` to `Akeneo\Pim\Permission\Bundle\Filter\ProductRightEditFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightViewFilter` to `Akeneo\Pim\Permission\Bundle\Filter\ProductRightViewFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueAttributeGroupRightFilter` to `Akeneo\Pim\Permission\Bundle\Filter\ProductValueAttributeGroupRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueLocaleRightFilter` to `Akeneo\Pim\Permission\Bundle\Filter\ProductValueLocaleRightFilter`
+- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\Attribute\AttributeRepository`
+- Move `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager`
+- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductMassActionRepository`
+- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductModelRepository`
+- Move `PimEnterprise\Bundle\CatalogBundle\Security\Elasticsearch\ProductQueryBuilderFactory` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductQueryBuilderFactory`
+- Move `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\EntityWithValue\ProductRepository`
+- Move `PimEnterprise\Bundle\CatalogBundle\Security\Doctrine\Common\Saver\FilteredEntitySaver` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\FilteredEntitySaver`
+- Move `PimEnterprise\Bundle\DataGridBundle\Filter\DatagridViewFilter` to `Akeneo\Pim\Permission\Bundle\Datagrid\DatagridViewFilter`
+- Move `PimEnterprise\Bundle\DataGridBundle\Manager\DatagridViewManager` to `Akeneo\Pim\Permission\Bundle\Datagrid\DatagridViewManager`
+- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\AddPermissionsToGridListener` to `Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\AddPermissionsToGridListener`
+- Move `PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener` to `Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\ConfigureProductGridListener`
+- Move `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder` to `Akeneo\Pim\Permission\Bundle\Datagrid\MassAction\ProductFieldsBuilder`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator` to `Akeneo\Pim\Permission\Bundle\Datagrid\Product\RowActionsConfigurator`
 - Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryItemsCounter` to `Akeneo\Asset\Bundle\Doctrine\ORM\Query\GrantedCategoryItemsCounter`
-- Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryProductsCounter` to `PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter`
-- Move `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\ProductCategoryAccessSubscriber` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\EventListener\ProductCategoryAccessSubscriber`
-- Move `PimEnterprise\Bundle\EnrichBundle\EventSubscriber\SavePermissionsSubscriber` to `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\SavePermissionsSubscriber`
-- Move namespace `PimEnterprise\Bundle\EnrichBundle\Filter` to `PimEnterprise\Bundle\SecurityBundle\Filter`
-- Move namespace `PimEnterprise\Bundle\EnrichBundle\Form\Subscriber` to `PimEnterprise\Bundle\SecurityBundle\Form\EventListener`
-- Move namespace `PimEnterprise\Bundle\EnrichBundle\Provider\Form` to `PimEnterprise\Bundle\SecurityBundle\Form\Provider`
-- Move namespace `PimEnterprise\Bundle\EnrichBundle\Form\Type` to `PimEnterprise\Bundle\SecurityBundle\Form\Type`
-- Move namespace `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product` to `PimEnterprise\Bundle\SecurityBundle\MassEdit\Processor`
-- Move `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter` to `PimEnterprise\Bundle\SecurityBundle\MassEdit\Writer\ProductAndProductModelWriter`
-- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer` to `PimEnterprise\Bundle\SecurityBundle\Normalizer\InternalApi\IncompleteValuesNormalizer`
-- Move `PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter` to `PimEnterprise\Bundle\SecurityBundle\Datagrid\Filter\PermissionFilter`
-- Move `PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber\JobProfilePermissionsSubscriber` to `PimEnterprise\Bundle\SecurityBundle\Form\EventListener\JobProfilePermissionsSubscriber`
-- Move `PimEnterprise\Bundle\ImportExportBundle\Form\Type\JobProfilePermissionsType` to `PimEnterprise\Bundle\SecurityBundle\Form\Type\JobProfilePermissionsType`
-- Move `PimEnterprise\Bundle\ImportExportBundle\Manager\JobExecutionManager` to `PimEnterprise\Bundle\SecurityBundle\Manager\JobExecutionManager`
+- Move `PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter\GrantedCategoryProductsCounter` to `Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter`
+- Move `PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Datagrid\ProductCategoryAccessSubscriber` to `Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\ProductCategoryAccessSubscriber`
+- Move `PimEnterprise\Bundle\EnrichBundle\EventSubscriber\SavePermissionsSubscriber` to `Akeneo\Pim\Permission\Bundle\EventSubscriber\SavePermissionsSubscriber`
+- Move namespace `PimEnterprise\Bundle\EnrichBundle\Filter` to `Akeneo\Pim\Permission\Bundle\Filter`
+- Move namespace `PimEnterprise\Bundle\EnrichBundle\Form\Subscriber` to `Akeneo\Pim\Permission\Bundle\Form\EventListener`
+- Move namespace `PimEnterprise\Bundle\EnrichBundle\Provider\Form` to `Akeneo\Pim\Permission\Bundle\Form\Provider`
+- Move namespace `PimEnterprise\Bundle\EnrichBundle\Form\Type` to `Akeneo\Pim\Permission\Bundle\Form\Type`
+- Move namespace `PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product` to `Akeneo\Pim\Permission\Bundle\MassEdit\Processor`
+- Move `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductAndProductModelWriter` to `Akeneo\Pim\Permission\Bundle\MassEdit\Writer\ProductAndProductModelWriter`
+- Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\IncompleteValuesNormalizer` to `Akeneo\Pim\Permission\Bundle\Normalizer\InternalApi\IncompleteValuesNormalizer`
+- Move `PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter` to `Akeneo\Pim\Permission\Bundle\Datagrid\Filter\PermissionFilter`
+- Move `PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber\JobProfilePermissionsSubscriber` to `Akeneo\Pim\Permission\Bundle\Form\EventListener\JobProfilePermissionsSubscriber`
+- Move `PimEnterprise\Bundle\ImportExportBundle\Form\Type\JobProfilePermissionsType` to `Akeneo\Pim\Permission\Bundle\Form\Type\JobProfilePermissionsType`
+- Move `PimEnterprise\Bundle\ImportExportBundle\Manager\JobExecutionManager` to `Akeneo\Pim\Permission\Bundle\Manager\JobExecutionManager`
 - Move `PimEnterprise\Bundle\FilterBundle\Filter\Product\ProjectCompletenessFilter` to `PimEnterprise\Bundle\TeamworkAssistantBundle\Datagrid\Filter\ProjectCompletenessFilter`
 - Move `PimEnterprise\Bundle\UIBundle\Controller\AjaxOptionController` to `Akeneo\Asset\Bundle\Controller\Rest\AjaxOptionController`
 - Move `PimEnterprise\Bundle\PdfGeneratorBundle\Twig\ImageExtension` to `Akeneo\Asset\Bundle\TwigExtension\ImageExtension`
-- Move `PimEnterprise\Bundle\SecurityBundle\Controller\PermissionRestController` to `PimEnterprise\Bundle\SecurityBundle\Controller\InternalApi\PermissionRestController`
-- Move `PimEnterprise\Bundle\PdfGeneratorBundle\Controller\ProductController` to `PimEnterprise\Bundle\SecurityBundle\Controller\ProductController`
-- Move `PimEnterprise\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer` to `PimEnterprise\Bundle\SecurityBundle\Pdf\ProductPdfRenderer`
+- Move `PimEnterprise\Bundle\SecurityBundle\Controller\PermissionRestController` to `Akeneo\Pim\Permission\Bundle\Controller\InternalApi\PermissionRestController`
+- Move `PimEnterprise\Bundle\PdfGeneratorBundle\Controller\ProductController` to `Akeneo\Pim\Permission\Bundle\Controller\ProductController`
+- Move `PimEnterprise\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer` to `Akeneo\Pim\Permission\Bundle\Pdf\ProductPdfRenderer`
 - Move `PimEnterprise\Bundle\EnrichBundle\Normalizer\PublishedProductNormalizer` to `PimEnterprise\Component\Workflow\Normalizer\InternalApi\PublishedProductNormalizer`
+- Move namespace `PimEnterprise\Bundle\SecurityBundle` to `Akeneo\Pim\Permission\Bundle`
+- Move namespace `PimEnterprise\Component\Security` to `Akeneo\Pim\Automation\RuleEngine\Component`
 
 ## Removed classes
 

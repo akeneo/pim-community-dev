@@ -1,0 +1,103 @@
+parameters:
+    pimee_security.datagrid.configuration.product.filters_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator
+    pimee_security.datagrid.configuration.product.row_actions_configurator.class: Akeneo\Pim\Permission\Bundle\Datagrid\Product\RowActionsConfigurator
+    pim_datagrid.event_listener.configure_product_grid_listener.class: Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\ConfigureProductGridListener
+    pimee_security.datagrid.event_listener.add_permissions_to_grid.class: Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\AddPermissionsToGridListener
+    pimee_security.datagrid.event_listener.configure_job_profile_grid_listener.class: Akeneo\Pim\Permission\Bundle\Datagrid\EventListener\ConfigureJobProfileGridListener
+    pimee_security.datagrid.filter.datagrid_view.class: Akeneo\Pim\Permission\Bundle\Datagrid\DatagridViewFilter
+    pimee_security.datagrid.manager.datagrid_view.class: Akeneo\Pim\Permission\Bundle\Datagrid\DatagridViewManager
+    pimee_security.datagrid.product_permission_filter.class: Akeneo\Pim\Permission\Bundle\Datagrid\Filter\PermissionFilter
+    pim_datagrid.datagrid.configuration.product.context_configurator.class:       Akeneo\Pim\Permission\Bundle\Datagrid\Product\ContextConfigurator
+
+services:
+    # Configuration
+    pim_datagrid.datagrid.configuration.product.context_configurator:
+        class: '%pim_datagrid.datagrid.configuration.product.context_configurator.class%'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_user.context.user'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.repository.group'
+            - '@request_stack'
+            - '@pimee_security.repository.attribute_group_access'
+
+    pim_datagrid.datagrid.configuration.product_model.context_configurator:
+        class: '%pim_datagrid.datagrid.configuration.product.context_configurator.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.attribute'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_user.context.user'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.repository.group'
+            - '@request_stack'
+            - '@pimee_security.repository.attribute_group_access'
+
+    pimee_security.datagrid.configuration.product.filters_configurator:
+        class: '%pimee_security.datagrid.configuration.product.filters_configurator.class%'
+        decorates: pim_datagrid.datagrid.configuration.product.filters_configurator
+        decoration_inner_name: pim_datagrid.datagrid.configuration.product.filters_configurator.ce
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator.ce'
+            - '@request_stack'
+            - '@pimee_teamwork_assistant.repository.project'
+            - '@security.token_storage'
+
+    pimee_security.datagrid.configuration.product.row_actions_configurator:
+        class: '%pimee_security.datagrid.configuration.product.row_actions_configurator.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.configuration_registry'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.product_model'
+
+    # EventListener
+    pimee_security.datagrid.event_listener.inject_job_profile_access:
+        class: '%pimee_security.datagrid.event_listener.add_permissions_to_grid.class%'
+        arguments:
+            - '@pimee_security.repository.job_profile_access'
+            - '@security.token_storage'
+            - 'EXECUTE_JOB_PROFILE'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.export-profile-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.import-profile-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.export-execution-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.import-execution-grid, method: onBuildAfter }
+
+    pimee_security.datagrid.event_listener.configure_job_profile_grid:
+        class: '%pimee_security.datagrid.event_listener.configure_job_profile_grid_listener.class%'
+        arguments:
+            - '@security.authorization_checker'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.export-profile-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.import-profile-grid, method: onBuildBefore }
+
+    pimee_security.datagrid.filter.datagrid_view:
+        class: '%pimee_security.datagrid.filter.datagrid_view.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.datagrid_view.view }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.datagrid_view.view }
+
+    pimee_security.datagrid.manager.datagrid_view:
+        class: '%pimee_security.datagrid.manager.datagrid_view.class%'
+        arguments:
+            - '@pim_datagrid.repository.datagrid_view'
+            - '@oro_datagrid.datagrid.manager'
+            - '@pim_datagrid.saver.datagrid_view'
+            - '@pim_datagrid.remover.datagrid_view'
+            - '@security.authorization_checker'
+
+    # Filter
+    pimee_security.datagrid.product_permission_filter:
+        class: '%pimee_security.datagrid.product_permission_filter.class%'
+        arguments:
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+            - '@security.token_storage'
+            - '@pimee_security.repository.category_access'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_permission }
