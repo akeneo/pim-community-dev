@@ -11,7 +11,8 @@ Feature: Create a record
   @acceptance-back
   Scenario: Creating a record
     When the user creates a record "stark" for entity "designer" with:
-      | labels | {"en_US": "Tony Stark", "fr_FR": "Thierry Stark"} |
+      | labels                                            |
+      | {"en_US": "Tony Stark", "fr_FR": "Thierry Stark"} |
     Then there is a record with:
       | identifier | entity_identifier | labels                                            |
       | stark      | designer          | {"en_US": "Tony Stark", "fr_FR": "Thierry Stark"} |
@@ -19,7 +20,8 @@ Feature: Create a record
   @acceptance-back
   Scenario: Creating a record with no labels
     When the user creates a record "stark" for entity "designer" with:
-      | labels | {} |
+      | labels |
+      | {}     |
     Then there is a record with:
       | identifier | entity_identifier | labels |
       | stark      | designer          | {}     |
@@ -27,9 +29,10 @@ Feature: Create a record
   @acceptance-back
   Scenario: Cannot create a record with invalid identifier
     When the user creates a record "invalid/identifier" for entity "designer" with:
-      | labels | {} |
-    Then an exception is thrown with message "Record identifier may contain only letters, numbers and underscores"
-    And there should be no enriched entity
+      | labels |
+      | {}     |
+    Then an exception is thrown with message "Record identifier may contain only letters, numbers and underscores. "invalid/identifier" given"
+    And there should be no record
 
   @acceptance-front
   Scenario: Creating a record

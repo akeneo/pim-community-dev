@@ -15,7 +15,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
 class Identifier extends Constraint

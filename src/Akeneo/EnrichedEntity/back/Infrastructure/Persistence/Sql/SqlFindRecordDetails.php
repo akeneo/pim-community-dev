@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\FindRecordDetailsInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordDetails;
@@ -41,11 +42,9 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(
-        RecordIdentifier $recordIdentifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier
-    ): ?RecordDetails {
-        $result = $this->fetchResult($enrichedEntityIdentifier, $recordIdentifier);
+    public function __invoke(RecordIdentifier $recordIdentifier): ?RecordDetails
+    {
+        $result = $this->fetchResult($recordIdentifier);
 
         if (empty($result)) {
             return null;
@@ -60,18 +59,16 @@ class SqlFindRecordDetails implements FindRecordDetailsInterface
         return $recordDetails;
     }
 
-    private function fetchResult(
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
-        RecordIdentifier $recordIdentifier
-    ): array {
+    private function fetchResult(RecordIdentifier $recordIdentifier): array
+    {
         $query = <<<SQL
         SELECT identifier, enriched_entity_identifier, labels
         FROM akeneo_enriched_entity_record
         WHERE enriched_entity_identifier = :enriched_entity_identifier AND identifier = :record_identifier;
 SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
-            'enriched_entity_identifier' => (string) $enrichedEntityIdentifier,
-            'record_identifier'          => (string) $recordIdentifier
+            'enriched_entity_identifier' => $recordIdentifier->getEnrichedEntityIdentifier(),
+            'record_identifier'          => $recordIdentifier->getIdentifier()
         ]);
         $result = $statement->fetch();
         $statement->closeCursor();
@@ -92,8 +89,9 @@ SQL;
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
 
         $recordDetails = new RecordDetails();
-        $recordDetails->identifier = RecordIdentifier::fromString($identifier);
+        $recordDetails->identifier = RecordIdentifier::create($enrichedEntityIdentifier, $identifier);
         $recordDetails->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+        $recordDetails->code = RecordCode::fromString($identifier);
         $recordDetails->labels = LabelCollection::fromArray($labels);
 
         return $recordDetails;

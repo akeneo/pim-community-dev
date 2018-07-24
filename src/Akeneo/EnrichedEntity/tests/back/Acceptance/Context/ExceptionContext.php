@@ -19,7 +19,7 @@ final class ExceptionContext implements Context
     private $exceptionThrown = null;
 
     /**
-     * @Then /^an exception is thrown with message "([^"]+)"$/
+     * @Then /^an exception is thrown with message "(.*)"$/
      */
     public function anExceptionIsThrownWithMessage(string $errorMessage)
     {

@@ -61,9 +61,14 @@ class CreateAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-
         if (!$this->securityFacade->isGranted('akeneo_enrichedentity_record_create')) {
             throw new AccessDeniedException();
+        }
+        if ($this->hasDesynchronizedIdentifier($request)) {
+            return new JsonResponse(
+                'Enriched Entity Identifier provided in the route and the one given in the body of your request are different',
+                Response::HTTP_BAD_REQUEST
+            );
         }
 
         $command = $this->getCreateCommand($request);
@@ -76,16 +81,19 @@ class CreateAction
             );
         }
 
-        if ($command->enrichedEntityIdentifier !== $enrichedEntityIdentifier) {
-            return new JsonResponse(
-                'Enriched Entity Identifier provided in the route and the one given in the body of your request are different',
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-
         ($this->createRecordHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Checks whether the identifier given in the url parameter and in the body are the same or not.
+     */
+    private function hasDesynchronizedIdentifier(Request $request): bool
+    {
+        $normalizedCommand = json_decode($request->getContent(), true);
+
+        return $normalizedCommand['identifier']['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier');
     }
 
     private function getCreateCommand(Request $request): CreateRecordCommand
@@ -93,24 +101,14 @@ class CreateAction
         $normalizedCommand = json_decode($request->getContent(), true);
 
         $command = new CreateRecordCommand();
-        $command->identifier = $normalizedCommand['identifier'] ?? null;
-        $command->enrichedEntityIdentifier = $normalizedCommand['enrichedEntityIdentifier'] ?? null;
+        $command->identifier = [
+            'identifier'                 => $normalizedCommand['identifier']['identifier'] ?? null,
+            'enriched_entity_identifier' => $normalizedCommand['identifier']['enriched_entity_identifier'] ?? null,
+        ];
+        $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
+        $command->code = $normalizedCommand['code'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? [];
 
         return $command;
-    }
-
-    private function validateCommand(CreateRecordCommand $command): array
-    {
-        $errors = [];
-        $violations = $this->validator->validate($command);
-
-        if ($violations->count() > 0) {
-            foreach ($violations as $violation) {
-                $errors[$violation->getPropertyPath()] = $this->normalizer->normalize($violation, 'internal_api');
-            }
-        }
-
-        return $errors;
     }
 }

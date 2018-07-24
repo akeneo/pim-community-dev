@@ -10,25 +10,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Application\Record\CreateRecord;
+namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
+
+use Symfony\Component\Validator\Constraint;
 
 /**
- * It represents the intent to create a new record
- *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class CreateRecordCommand
+class Code extends Constraint
 {
-    /** @var array */
-    public $identifier;
-
-    /** @var string */
-    public $enrichedEntityIdentifier;
-
-    /** @var string */
-    public $code;
-
-    /** @var array */
-    public $labels;
 }

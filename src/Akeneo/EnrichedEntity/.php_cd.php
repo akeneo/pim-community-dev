@@ -10,6 +10,7 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only([
         'Akeneo\EnrichedEntity',
+        'Webmozart\Assert\Assert'
     ])->in('Akeneo\EnrichedEntity\Domain'),
     $builder->only([
         'Akeneo\EnrichedEntity\Domain',

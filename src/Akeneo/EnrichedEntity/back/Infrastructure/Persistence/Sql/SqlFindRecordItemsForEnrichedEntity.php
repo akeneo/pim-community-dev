@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\FindRecordItemsForEnrichedEntityInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
@@ -79,8 +80,9 @@ SQL;
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
 
         $recordItem = new RecordItem();
-        $recordItem->identifier = RecordIdentifier::fromString($identifier);
+        $recordItem->identifier = RecordIdentifier::create($enrichedEntityIdentifier, $identifier);
         $recordItem->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
+        $recordItem->code = RecordCode::fromString($identifier);
         $recordItem->labels = LabelCollection::fromArray($labels);
 
         return $recordItem;

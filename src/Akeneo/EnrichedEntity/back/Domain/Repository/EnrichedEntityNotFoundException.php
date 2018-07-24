@@ -11,19 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Domain\Query;
+namespace Akeneo\EnrichedEntity\Domain\Repository;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 
 /**
- * Find a record by its composite identifier (made of its Enriched Entity identifier
- * and its own Record identifier)
- *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-interface FindRecordDetailsInterface
+class EnrichedEntityNotFoundException extends \RuntimeException
 {
-    public function __invoke(RecordIdentifier $recordIdentifier): ?RecordDetails;
+    public static function withIdentifier(EnrichedEntityIdentifier $identifier): self
+    {
+        $message = sprintf(
+            'Could not find enriched entity with identifier "%s"',
+            (string) $identifier
+        );
+
+        return new self($message);
+    }
 }

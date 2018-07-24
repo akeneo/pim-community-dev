@@ -19,6 +19,7 @@
 - rework the record identifier to have one identifier
 - locale switcher to be able to edit all locales
 - enforce html event type
+- Change read models to enforce properties are coherent
 
 DONE:
 

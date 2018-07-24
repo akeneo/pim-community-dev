@@ -15,6 +15,7 @@ namespace Akeneo\EnrichedEntity\Domain\Query;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 
 /**
@@ -26,9 +27,8 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 class RecordDetails
 {
     public const IDENTIFIER = 'identifier';
-
     public const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
-
+    public const CODE = 'code';
     public const LABELS = 'labels';
 
     /** @var RecordIdentifier */
@@ -37,14 +37,18 @@ class RecordDetails
     /** @var EnrichedEntityIdentifier */
     public $enrichedEntityIdentifier;
 
+    /** @var RecordCode */
+    public $code;
+
     /** @var LabelCollection */
     public $labels;
 
     public function normalize(): array
     {
         return [
-            self::IDENTIFIER                 => (string) $this->identifier,
+            self::IDENTIFIER                 => $this->identifier->normalize(),
             self::ENRICHED_ENTITY_IDENTIFIER => (string) $this->enrichedEntityIdentifier,
+            self::CODE                       => (string) $this->code,
             self::LABELS                     => $this->normalizeLabels($this->labels)
         ];
     }

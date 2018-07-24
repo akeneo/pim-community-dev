@@ -6,7 +6,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\AuthenticatedClientFactory;
@@ -73,6 +73,32 @@ class EditActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
+    public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_body()
+    {
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::ENRICHED_ENTITIY_EDIT_ROUTE,
+            ['identifier' => 'brand'],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            [
+                'identifier' => 'wrong_identifier',
+                'labels'     => [
+                    'en_US' => 'foo',
+                    'fr_FR' => 'bar',
+                ],
+            ]
+        );
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, '"Enriched entity identifier provided in the route and the one given in the body of your request are different"');
+    }
+
+    /**
+     * @test
+     */
     public function it_redirects_if_not_xmlhttp_request(): void
     {
         $this->client->followRedirects(false);
@@ -86,20 +112,20 @@ class EditActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
-    private function getEnrichEntityRepository(): EnrichedEntityRepository
+    private function getEnrichEntityRepository(): EnrichedEntityRepositoryInterface
     {
         return $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
     }
 
     private function loadFixtures(): void
     {
-        $queryHandler = $this->getEnrichEntityRepository();
+        $enrichedEntityRepository = $this->getEnrichEntityRepository();
 
         $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',
         ]);
-        $queryHandler->save($entityItem);
+        $enrichedEntityRepository->create($entityItem);
 
         $user = new User();
         $user->setUsername('julia');
