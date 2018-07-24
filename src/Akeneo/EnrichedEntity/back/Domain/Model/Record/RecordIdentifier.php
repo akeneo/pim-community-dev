@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 class RecordIdentifier
 {
     private const ENRICHED_ENTITY_IDENTIFIER = 'enriched_entity_identifier';
-    private const IDENTIFIER= 'identifier';
+    private const IDENTIFIER = 'identifier';
 
     /** @var string */
     private $enrichedEntityIdentifier;
@@ -32,23 +32,47 @@ class RecordIdentifier
 
     private function __construct(string $enrichedEntityIdentifier, string $identifier)
     {
-        Assert::stringNotEmpty($enrichedEntityIdentifier);
-        Assert::maxLength($enrichedEntityIdentifier, 255);
-        if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $enrichedEntityIdentifier)) {
-            throw new \InvalidArgumentException('Enriched entity identifier may contain only letters, numbers and underscores');
-        }
+        Assert::stringNotEmpty($enrichedEntityIdentifier, 'Enriched entity identifier cannot be empty');
+        Assert::maxLength(
+            $enrichedEntityIdentifier,
+            255,
+            sprintf(
+                'Enriched entity identifier cannot be longer than 255 characters, %d string long given',
+                strlen($enrichedEntityIdentifier)
+            )
+        );
+        Assert::regex(
+            $enrichedEntityIdentifier,
+            '/^[a-zA-Z0-9_]+$/',
+            sprintf(
+                'Enriched entity identifier may contain only letters, numbers and underscores, "%s" given',
+                $enrichedEntityIdentifier
+            )
+        );
 
-        Assert::stringNotEmpty($identifier);
-        Assert::maxLength($identifier, 255);
-        if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $identifier)) {
-            throw new \InvalidArgumentException('Record identifier may contain only letters, numbers and underscores');
-        }
+        Assert::stringNotEmpty($identifier, 'Record identifier cannot be empty');
+        Assert::maxLength(
+            $identifier,
+            255,
+            sprintf(
+                'Record identifier cannot be longer than 255 characters, %d string long given',
+                strlen($identifier)
+            )
+        );
+        Assert::regex(
+            $identifier,
+            '/^[a-zA-Z0-9_]+$/',
+            sprintf(
+                'Record identifier may contain only letters, numbers and underscores, "%s" given',
+                $identifier
+            )
+        );
 
         $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $this->identifier = $identifier;
     }
 
-    public static function from(string $enrichedEntityIdentifier, string $identifier): self
+    public static function create(string $enrichedEntityIdentifier, string $identifier): self
     {
         return new self($enrichedEntityIdentifier, $identifier);
     }

@@ -42,24 +42,18 @@ class Record
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         LabelCollection $labelCollection
     ) {
-        if ($identifier->getIdentifier() !== (string) $code) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'The identifier and code should be the same, "%s" and "%s" given.',
-                    $identifier->getIdentifier(),
-                    (string) $code
-                )
-            );
-        }
-        if ($identifier->getEnrichedEntityIdentifier() !== (string) $enrichedEntityIdentifier) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'The identifier and enriched entity identifier should be related, "%s" and "%s" given.',
-                    $identifier->getEnrichedEntityIdentifier(),
-                    (string) $enrichedEntityIdentifier
-                )
-            );
-        }
+        Assert::eq($identifier->getIdentifier(), (string) $code, sprintf(
+                'The identifier and code should be the same, "%s" and "%s" given.',
+                $identifier->getIdentifier(),
+                (string) $code
+            )
+        );
+        Assert::eq($identifier->getEnrichedEntityIdentifier(), (string) $enrichedEntityIdentifier, sprintf(
+                'The identifier and enriched entity identifier should be related, "%s" and "%s" given.',
+                $identifier->getEnrichedEntityIdentifier(),
+                (string) $enrichedEntityIdentifier
+            )
+        );
 
         $this->identifier = $identifier;
         $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;

@@ -29,7 +29,7 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_creates_a_record_and_returns_it()
     {
-        $identifier = RecordIdentifier::from('enriched_entity_identifier', 'record_identifier');
+        $identifier = RecordIdentifier::create('enriched_entity_identifier', 'record_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
 
@@ -44,7 +44,7 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_throws_when_creating_an_existing_record_with_same_identifier()
     {
-        $identifier = RecordIdentifier::from('enriched_entity_identifier', 'record_identifier');
+        $identifier = RecordIdentifier::create('enriched_entity_identifier', 'record_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
         $this->recordRepository->create($record);
@@ -58,7 +58,7 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_updates_a_record_and_returns_it()
     {
-        $identifier = RecordIdentifier::from('enriched_entity_identifier', 'record_identifier');
+        $identifier = RecordIdentifier::create('enriched_entity_identifier', 'record_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
         $this->recordRepository->create($record);
@@ -75,7 +75,7 @@ class InMemoryRecordRepositoryTest extends TestCase
      */
     public function it_throws_when_updating_a_non_existing_record()
     {
-        $identifier = RecordIdentifier::from('enriched_entity_identifier', 'record_identifier');
+        $identifier = RecordIdentifier::create('enriched_entity_identifier', 'record_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
 
@@ -90,7 +90,7 @@ class InMemoryRecordRepositoryTest extends TestCase
     {
         $this->assertEquals(0, $this->recordRepository->count());
 
-        $identifier = RecordIdentifier::from('enriched_entity_identifier', 'record_identifier');
+        $identifier = RecordIdentifier::create('enriched_entity_identifier', 'record_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
 
@@ -98,7 +98,7 @@ class InMemoryRecordRepositoryTest extends TestCase
 
         $this->assertEquals(1, $this->recordRepository->count());
 
-        $identifier = RecordIdentifier::from('enriched_entity_identifier', 'record_identifier2');
+        $identifier = RecordIdentifier::create('enriched_entity_identifier', 'record_identifier2');
         $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier2'), []);
 
         $this->recordRepository->create($record);
@@ -112,7 +112,7 @@ class InMemoryRecordRepositoryTest extends TestCase
     public function it_throws_if_the_identifier_is_not_found()
     {
         $this->expectException(RecordNotFoundException::class);
-        $identifier = RecordIdentifier::from('enriched_entity_identifier', 'unknown_identifier');
+        $identifier = RecordIdentifier::create('enriched_entity_identifier', 'unknown_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
 
         $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
@@ -124,7 +124,7 @@ class InMemoryRecordRepositoryTest extends TestCase
     public function it_throws_if_the_enriched_entity_identifier_is_not_found()
     {
         $this->expectException(RecordNotFoundException::class);
-        $identifier = RecordIdentifier::from('unknown_enriched_entity_identifier', 'record_identifier');
+        $identifier = RecordIdentifier::create('unknown_enriched_entity_identifier', 'record_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('unknown_enriched_entity_identifier');
 
         $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);

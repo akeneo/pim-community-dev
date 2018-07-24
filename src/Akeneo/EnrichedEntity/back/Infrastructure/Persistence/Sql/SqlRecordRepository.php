@@ -138,7 +138,7 @@ SQL;
             ->convertToPHPValue($enrichedEntityIdentifier, $platform);
 
         $record = Record::create(
-            RecordIdentifier::from($enrichedEntityIdentifier, $identifier),
+            RecordIdentifier::create($enrichedEntityIdentifier, $identifier),
             EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier),
             RecordCode::fromString($identifier),
             $labels

@@ -20,6 +20,9 @@ namespace Akeneo\EnrichedEntity\Application\Record\CreateRecord;
  */
 class CreateRecordCommand
 {
+    /** @var array */
+    public $identifier;
+
     /** @var string */
     public $enrichedEntityIdentifier;
 

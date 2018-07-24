@@ -91,7 +91,7 @@ class GetActionTest extends ControllerIntegrationTestCase
     private function loadFixtures(): void
     {
         $starck = new RecordDetails();
-        $starck->identifier = RecordIdentifier::from('designer', 'starck');
+        $starck->identifier = RecordIdentifier::create('designer', 'starck');
         $starck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $starck->code = RecordCode::fromString('starck');
         $starck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);

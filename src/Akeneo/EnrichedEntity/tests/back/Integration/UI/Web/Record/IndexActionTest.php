@@ -97,7 +97,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
         array $labels
     ): RecordItem {
         $recordItem = new RecordItem();
-        $recordItem->identifier = RecordIdentifier::from($enrichedEntityIdentifier, $recordIdentifier);
+        $recordItem->identifier = RecordIdentifier::create($enrichedEntityIdentifier, $recordIdentifier);
         $recordItem->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString($enrichedEntityIdentifier);
         $recordItem->code = RecordCode::fromString($recordIdentifier);
         $recordItem->labels = LabelCollection::fromArray($labels);

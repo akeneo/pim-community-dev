@@ -34,7 +34,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_creates_a_record_and_returns_it()
     {
-        $identifier = RecordIdentifier::from('designer', 'starck');
+        $identifier = RecordIdentifier::create('designer', 'starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $record = Record::create(
             $identifier, $enrichedEntityIdentifier, RecordCode::fromString('starck'),
@@ -52,7 +52,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_when_creating_a_record_with_the_same_identifier()
     {
-        $identifier = RecordIdentifier::from('designer', 'starck');
+        $identifier = RecordIdentifier::create('designer', 'starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $record = Record::create(
             $identifier, $enrichedEntityIdentifier, RecordCode::fromString('starck'),
@@ -70,7 +70,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_updates_a_record_and_returns_it()
     {
-        $identifier = RecordIdentifier::from('designer', 'starck');
+        $identifier = RecordIdentifier::create('designer', 'starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $record = Record::create(
             $identifier, $enrichedEntityIdentifier, RecordCode::fromString('starck'),
@@ -90,7 +90,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_when_updating_a_non_existing_record()
     {
-        $identifier = RecordIdentifier::from('designer', 'starck');
+        $identifier = RecordIdentifier::create('designer', 'starck');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $record = Record::create(
             $identifier, $enrichedEntityIdentifier, RecordCode::fromString('starck'),
@@ -110,7 +110,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
 
-        $identifier = RecordIdentifier::from('designer', 'record_identifier');
+        $identifier = RecordIdentifier::create('designer', 'record_identifier');
         $record = Record::create(
             $identifier,
             $enrichedEntityIdentifier,
@@ -122,7 +122,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->assertEquals(1, $this->repository->count());
 
-        $identifier = RecordIdentifier::from('designer', 'record_identifier2');
+        $identifier = RecordIdentifier::create('designer', 'record_identifier2');
         $record = Record::create(
             $identifier,
             $enrichedEntityIdentifier,
@@ -142,7 +142,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
     {
         $this->expectException(RecordNotFoundException::class);
 
-        $identifier = RecordIdentifier::from('designer', 'unknown_identifier');
+        $identifier = RecordIdentifier::create('designer', 'unknown_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
 
         $this->repository->getByIdentifier($identifier);

@@ -20,6 +20,9 @@ namespace Akeneo\EnrichedEntity\Application\Record\EditRecord;
  */
 class EditRecordCommand
 {
+    /** @var array */
+    public $identifier;
+
     /** @var string */
     public $enrichedEntityIdentifier;
 

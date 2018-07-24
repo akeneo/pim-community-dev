@@ -30,6 +30,10 @@ class EditRecordHandlerSpec extends ObjectBehavior
         EditRecordCommand $editRecordCommand,
         Record $record
     ) {
+        $editRecordCommand->identifier = [
+            'identifier' => 'sony',
+            'enrichedEntityIdentifier' => 'brand'
+        ];
         $editRecordCommand->code = 'sony';
         $editRecordCommand->enrichedEntityIdentifier = 'brand';
         $editRecordCommand->labels = [

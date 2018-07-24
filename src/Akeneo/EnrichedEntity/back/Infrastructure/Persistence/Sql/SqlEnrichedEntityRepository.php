@@ -103,7 +103,7 @@ SQL;
         $statement->closeCursor();
 
         if (!$result) {
-            throw EnrichedEntityNotFoundException::withIdentifier((string) $identifier);
+            throw EnrichedEntityNotFoundException::withIdentifier($identifier);
         }
 
         return $this->hydrateEnrichedEntity($result['identifier'], $result['labels']);

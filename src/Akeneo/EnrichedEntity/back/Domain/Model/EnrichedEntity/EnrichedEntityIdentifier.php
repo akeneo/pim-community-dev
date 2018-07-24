@@ -26,11 +26,23 @@ class EnrichedEntityIdentifier
 
     private function __construct(string $identifier)
     {
-        Assert::stringNotEmpty($identifier);
-        Assert::maxLength($identifier, 255);
-        if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $identifier)) {
-            throw new \InvalidArgumentException('Enriched Entity identifier may contain only letters, numbers and underscores');
-        }
+        Assert::stringNotEmpty($identifier, 'Enriched entity identifier cannot be empty');
+        Assert::maxLength(
+            $identifier,
+            255,
+            sprintf(
+                'Enriched entity identifier cannot be longer than 255 characters, %d string long given',
+                strlen($identifier)
+            )
+        );
+        Assert::regex(
+            $identifier,
+            '/^[a-zA-Z0-9_]+$/',
+            sprintf(
+                'Enriched entity identifier may contain only letters, numbers and underscores, "%s" given',
+                $identifier
+            )
+        );
 
         $this->identifier = $identifier;
     }

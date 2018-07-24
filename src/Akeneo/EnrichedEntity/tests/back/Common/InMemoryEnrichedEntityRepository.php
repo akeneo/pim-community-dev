@@ -50,7 +50,7 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepositoryInterf
     {
         $enrichedEntity = $this->enrichedEntities[(string) $identifier] ?? null;
         if (null === $enrichedEntity) {
-            throw EnrichedEntityNotFoundException::withIdentifier((string) $identifier);
+            throw EnrichedEntityNotFoundException::withIdentifier($identifier);
         }
 
         return $enrichedEntity;

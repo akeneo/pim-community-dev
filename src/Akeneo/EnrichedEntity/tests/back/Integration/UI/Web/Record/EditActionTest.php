@@ -43,6 +43,10 @@ class EditActionTest extends ControllerIntegrationTestCase
     public function it_edits_a_record_details(): void
     {
         $postContent = [
+            'identifier' => [
+                'identifier' => 'celine_dion',
+                'enrichedEntityIdentifier' => 'singer',
+            ],
             'code' => 'celine_dion',
             'enrichedEntityIdentifier' => 'singer',
             'labels'     => [
@@ -70,7 +74,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $repository = $this->getRecordRepository();
         $recordItem = $repository->getByIdentifier(
-            RecordIdentifier::from($postContent['enrichedEntityIdentifier'], $postContent['code'])
+            RecordIdentifier::create($postContent['enrichedEntityIdentifier'], $postContent['code'])
         );
 
         Assert::assertEquals(array_keys($postContent['labels']), $recordItem->getLabelCodes());
@@ -100,9 +104,13 @@ class EditActionTest extends ControllerIntegrationTestCase
     /**
      * @test
      */
-    public function it_returns_errors_if_we_sent_a_bad_request()
+    public function it_returns_errors_if_we_send_a_bad_request()
     {
         $postContent = [
+            'identifier' => [
+                'identifier' => 'ah!',
+                'enrichedEntityIdentifier' => 'singer'
+            ],
             'code' => 'ah!',
             'enrichedEntityIdentifier' => 'singer',
             'labels'     => [
@@ -130,6 +138,76 @@ class EditActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
+    /**
+     * @test
+     */
+    public function it_returns_an_error_if_the_identifier_provided_in_the_route_is_different_from_the_body()
+    {
+        $postContent = [
+            'identifier' => [
+                'enrichedEntityIdentifier' => 'singer',
+                'identifier' => 'celine_dion',
+            ],
+            'code' => 'celine_dion',
+            'enrichedEntityIdentifier' => 'singer',
+            'labels'     => [
+                'en_US' => 'Celine Dion',
+                'fr_FR' => 'Madame Celine Dion',
+            ],
+        ];
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::RECORD_EDIT_ROUTE,
+            [
+                'recordIdentifier' => 'starck',
+                'enrichedEntityIdentifier' => 'singer',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            $postContent
+        );
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, '"The identifier provided in the route and the one given in the body of the request are different"');
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_error_if_the_enriched_entity_identifier_provided_in_the_route_is_different_from_the_body()
+    {
+        $postContent = [
+            'identifier' => [
+                'identifier' => 'designer',
+                'enrichedEntityIdentifier' => 'starck',
+            ],
+            'code' => 'celine_dion',
+            'enrichedEntityIdentifier' => 'singer',
+            'labels'     => [
+                'en_US' => 'Celine Dion',
+                'fr_FR' => 'Madame Celine Dion',
+            ],
+        ];
+        $this->webClientHelper->callRoute(
+            $this->client,
+            self::RECORD_EDIT_ROUTE,
+            [
+                'recordIdentifier' => 'designer',
+                'enrichedEntityIdentifier' => 'coco',
+            ],
+            'POST',
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE'          => 'application/json',
+            ],
+            $postContent
+        );
+
+        $this->webClientHelper->assertResponse($this->client->getResponse(), Response::HTTP_BAD_REQUEST, '"The identifier provided in the route and the one given in the body of the request are different"');
+    }
+
     private function getRecordRepository(): RecordRepositoryInterface
     {
         return $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
@@ -140,7 +218,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $repository = $this->getRecordRepository();
 
         $entityItem = Record::create(
-            RecordIdentifier::from('singer', 'celine_dion'), EnrichedEntityIdentifier::fromString('singer'),
+            RecordIdentifier::create('singer', 'celine_dion'), EnrichedEntityIdentifier::fromString('singer'),
             RecordCode::fromString('celine_dion'), [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Celine Dion',

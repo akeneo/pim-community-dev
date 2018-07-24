@@ -34,7 +34,7 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     public function it_returns_null_when_there_is_no_records()
     {
         $this->assertNull(($this->findRecordDetailsQuery)(
-                RecordIdentifier::from('unknown_enriched_entity', 'unknown_record_identifier'),
+                RecordIdentifier::create('unknown_enriched_entity', 'unknown_record_identifier'),
                 EnrichedEntityIdentifier::fromString('unknown_enriched_entity')
             )
         );
@@ -46,12 +46,12 @@ class SqlFindRecordDetailsTest extends SqlIntegrationTestCase
     public function it_returns_the_record_details()
     {
         $actualStarck = ($this->findRecordDetailsQuery)(
-            RecordIdentifier::from('designer', 'starck'),
+            RecordIdentifier::create('designer', 'starck'),
             EnrichedEntityIdentifier::fromString('designer')
         );
 
         $expectedStarck = new RecordDetails();
-        $expectedStarck->identifier = RecordIdentifier::from('designer', 'starck');
+        $expectedStarck->identifier = RecordIdentifier::create('designer', 'starck');
         $expectedStarck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $expectedStarck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
 
@@ -83,7 +83,7 @@ SQL;
         $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
         $recordRepository->create(
             Record::create(
-                RecordIdentifier::from('designer', 'starck'),
+                RecordIdentifier::create('designer', 'starck'),
                 EnrichedEntityIdentifier::fromString('designer'),
                 RecordCode::fromString('starck'),
                 ['fr_Fr' => 'Philippe Starck']
@@ -91,7 +91,7 @@ SQL;
         );
         $recordRepository->create(
             Record::create(
-                RecordIdentifier::from('designer', 'coco'),
+                RecordIdentifier::create('designer', 'coco'),
                 EnrichedEntityIdentifier::fromString('designer'),
                 RecordCode::fromString('coco'),
                 ['fr_Fr' => 'Coco Chanel']

@@ -21,10 +21,12 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
 
 Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordCommand:
     properties:
-        code:
-            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Code: ~
+        identifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Identifier: ~
         enrichedEntityIdentifier:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+        code:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\Code: ~
         labels:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\LabelCollection: ~
 

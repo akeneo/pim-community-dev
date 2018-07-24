@@ -48,8 +48,12 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE' => 'application/json',
             ],
             [
-                'code' => 'intel',
+                'identifier' => [
+                    'identifier' => 'intel',
+                    'enrichedEntityIdentifier' => 'brand'
+                ],
                 'enrichedEntityIdentifier' => 'brand',
+                'code' => 'intel',
                 'labels' => [
                     'fr_FR' => 'Intel',
                     'en_US' => 'Intel',
@@ -77,6 +81,10 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE' => 'application/json',
             ],
             [
+                'identifier' => [
+                    'identifier' => 'intel',
+                    'enrichedEntityIdentifier' => 'brand'
+                ],
                 'code' => 'intel',
                 'enrichedEntityIdentifier' => 'brand',
             ]
@@ -89,12 +97,12 @@ class CreateActionTest extends ControllerIntegrationTestCase
      * @test
      * @dataProvider invalidIdentifiers
      *
-     * @param mixed $recordIdentifier
+     * @param mixed $recordCode
      * @param mixed $enrichedEntityIdentifier
      * @param mixed $enrichedEntityIdentifierURL
      */
     public function it_returns_an_error_when_the_record_identifier_is_not_valid(
-        $recordIdentifier,
+        $recordCode,
         $enrichedEntityIdentifier,
         $enrichedEntityIdentifierURL,
         string $expectedResponse
@@ -111,8 +119,12 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 'CONTENT_TYPE' => 'application/json',
             ],
             [
+                'identifier' => [
+                    'identifier' => $recordCode,
+                    'enrichedEntityIdentifier' => $enrichedEntityIdentifier
+                ],
                 'enrichedEntityIdentifier' => $enrichedEntityIdentifier,
-                'code' => $recordIdentifier,
+                'code' => $recordCode,
                 'labels' => []
             ]
         );
@@ -176,51 +188,42 @@ class CreateActionTest extends ControllerIntegrationTestCase
                 null,
                 'brand',
                 'brand',
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"identifier":{"identifier":null,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":null,"labels":[]},"propertyPath":"code","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Record Identifier is an integer'                                                            => [
                 1234123,
                 'brand',
                 'brand',
-                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"enrichedEntityIdentifier":"brand","code":1234123,"labels":[]},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"identifier":{"identifier":1234123,"enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":1234123,"labels":[]},"propertyPath":"code","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Record Identifier has a dash character'                                                     => [
                 'invalid-identifier',
                 'brand',
                 'brand',
-                '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"enrichedEntityIdentifier":"brand","code":"invalid-identifier","labels":[]},"propertyPath":"code","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                '[{"messageTemplate":"pim_enriched_entity.record.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":{"identifier":"invalid-identifier","enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":"invalid-identifier","labels":[]},"propertyPath":"code","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Record Identifier is 256 characters long'                                                   => [
                 $longIdentifier,
                 'brand',
                 'brand',
-                sprintf('[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"enrichedEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-                    $longIdentifier, $longIdentifier, $longIdentifier),
-            ],
-            'Enriched Entity Identifier is null'                                                         => [
-                'intel',
-                null,
-                'brand',
-                '[{"messageTemplate":"This value should not be blank.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be blank.","root":{"enrichedEntityIdentifier":null,"code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null},{"messageTemplate":"This value should not be null.","parameters":{"{{ value }}":"null"},"plural":null,"message":"This value should not be null.","root":{"enrichedEntityIdentifier":null,"code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":null,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-            ],
-            'Enriched Entity Identifier is an integer'                                                   => [
-                'intel',
-                1234123,
-                'brand',
-                '[{"messageTemplate":"This value should be of type string.","parameters":{"{{ value }}":"1234123","{{ type }}":"string"},"plural":null,"message":"This value should be of type string.","root":{"enrichedEntityIdentifier":1234123,"code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":1234123,"constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                sprintf(
+                    '[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"identifier":{"identifier":"%s","enriched_entity_identifier":"brand"},"enrichedEntityIdentifier":"brand","code":"%s","labels":[]},"propertyPath":"code","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                    $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier
+                ),
             ],
             'Enriched Entity Identifier has a dash character'                                            => [
                 'intel',
                 'invalid-identifier',
-                'brand',
-                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"enrichedEntityIdentifier":"invalid-identifier","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]'
+                'invalid-identifier',
+                '[{"messageTemplate":"pim_enriched_entity.enriched_entity.validation.identifier.pattern","parameters":{"{{ value }}":"\u0022invalid-identifier\u0022"},"plural":null,"message":"This field may only contain letters, numbers and underscores.","root":{"identifier":{"identifier":"intel","enriched_entity_identifier":"invalid-identifier"},"enrichedEntityIdentifier":"invalid-identifier","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"invalid-identifier","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
             ],
             'Enriched Entity Identifier is 256 characters long'                                          => [
                 'intel',
                 $longIdentifier,
-                'brand',
-                sprintf('[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"enrichedEntityIdentifier":"%s","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
-                    $longIdentifier, $longIdentifier, $longIdentifier),
+                $longIdentifier,
+                sprintf('[{"messageTemplate":"This value is too long. It should have 255 characters or less.","parameters":{"{{ value }}":"\u0022%s\u0022","{{ limit }}":255},"plural":null,"message":"This value is too long. It should have 255 characters or less.","root":{"identifier":{"identifier":"intel","enriched_entity_identifier":"%s"},"enrichedEntityIdentifier":"%s","code":"intel","labels":[]},"propertyPath":"enrichedEntityIdentifier","invalidValue":"%s","constraint":{"defaultOption":null,"requiredOptions":[],"targets":"property","payload":null},"cause":null,"code":null}]',
+                    $longIdentifier, $longIdentifier, $longIdentifier, $longIdentifier
+                ),
             ],
             'Enriched Entity Identifier in the URL is different from the one in the body of the Request' => [
                 'intel',
