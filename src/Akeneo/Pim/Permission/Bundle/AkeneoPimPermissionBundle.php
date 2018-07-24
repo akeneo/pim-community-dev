@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle;
 
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Akeneo\Pim\Permission\Bundle\DependencyInjection\Compiler\AddPermissionFilterPass;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
