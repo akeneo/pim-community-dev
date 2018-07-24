@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Akeneo\Tool\Bundle\VersionningBundle\Normalizer\Flat\TranslationNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer;
 use Prophecy\Argument;

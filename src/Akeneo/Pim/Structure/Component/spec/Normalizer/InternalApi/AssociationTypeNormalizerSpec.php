@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Akeneo\Tool\Bundle\VersionningBundle\Manager\VersionManager;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

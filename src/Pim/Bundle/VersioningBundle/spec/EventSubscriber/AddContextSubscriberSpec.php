@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Akeneo\Tool\Bundle\VersionningBundle\Manager\VersionContext;
 use Prophecy\Argument;
 
 class AddContextSubscriberSpec extends ObjectBehavior

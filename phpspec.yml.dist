@@ -26,7 +26,7 @@ suites:
         psr4_prefix: Akeneo\Pim\Structure\Bundle
         spec_path: src/Akeneo/Pim/Structure/Bundle
         src_path: src/Akeneo/Pim/Structure/Bundle
-    
+
     ## Enrichment context
     Enrichment:
         namespace: Akeneo\Pim\Enrichment\Component
@@ -259,8 +259,8 @@ suites:
         spec_path: src/Akeneo/UserManagement/Bundle
         src_path: src/Akeneo/UserManagement/Bundle
     VersioningBundle:
-        namespace: Pim\Bundle\VersioningBundle
-        psr4_prefix: Pim\Bundle\VersioningBundle
+        namespace: Akeneo\Tool\Bundle\VersionningBundle
+        psr4_prefix: Akeneo\Tool\Bundle\VersionningBundle
         spec_path: src/Pim/Bundle/VersioningBundle
         src_path: src/Pim/Bundle/VersioningBundle
     CatalogVolumeMonitoringBundle:

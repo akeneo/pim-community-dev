@@ -7,7 +7,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Normalizer\Standard;
 use Akeneo\Channel\Component\Normalizer\Versioning\ChannelNormalizer;
-use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
+use Akeneo\Tool\Bundle\VersionningBundle\Normalizer\Flat\TranslationNormalizer;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

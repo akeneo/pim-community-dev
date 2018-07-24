@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Purger;
 
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
+use Akeneo\Tool\Bundle\VersionningBundle\Repository\VersionRepositoryInterface;
 
 class SkipLastVersionPurgerAdvisorSpec extends ObjectBehavior
 {
