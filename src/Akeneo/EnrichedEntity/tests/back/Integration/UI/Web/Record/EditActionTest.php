@@ -45,7 +45,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $postContent = [
             'identifier' => [
                 'identifier' => 'celine_dion',
-                'enrichedEntityIdentifier' => 'singer',
+                'enriched_entity_identifier' => 'singer',
             ],
             'code' => 'celine_dion',
             'enrichedEntityIdentifier' => 'singer',
@@ -109,7 +109,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $postContent = [
             'identifier' => [
                 'identifier' => 'ah!',
-                'enrichedEntityIdentifier' => 'singer'
+                'enriched_entity_identifier' => 'singer'
             ],
             'code' => 'ah!',
             'enrichedEntityIdentifier' => 'singer',
@@ -145,7 +145,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     {
         $postContent = [
             'identifier' => [
-                'enrichedEntityIdentifier' => 'singer',
+                'enriched_entity_identifier' => 'singer',
                 'identifier' => 'celine_dion',
             ],
             'code' => 'celine_dion',
@@ -181,7 +181,7 @@ class EditActionTest extends ControllerIntegrationTestCase
         $postContent = [
             'identifier' => [
                 'identifier' => 'designer',
-                'enrichedEntityIdentifier' => 'starck',
+                'enriched_entity_identifier' => 'starck',
             ],
             'code' => 'celine_dion',
             'enrichedEntityIdentifier' => 'singer',

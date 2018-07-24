@@ -39,7 +39,7 @@ class EnrichedEntityIdentifier
             $identifier,
             '/^[a-zA-Z0-9_]+$/',
             sprintf(
-                'Enriched entity identifier may contain only letters, numbers and underscores, "%s" given',
+                'Enriched entity identifier may contain only letters, numbers and underscores. "%s" given',
                 $identifier
             )
         );

@@ -93,7 +93,7 @@ class CreateAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        return $normalizedCommand['identifier']['enrichedEntityIdentifier'] !== $request->get('enrichedEntityIdentifier');
+        return $normalizedCommand['identifier']['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier');
     }
 
     private function getCreateCommand(Request $request): CreateRecordCommand
@@ -103,7 +103,7 @@ class CreateAction
         $command = new CreateRecordCommand();
         $command->identifier = [
             'identifier'                 => $normalizedCommand['identifier']['identifier'] ?? null,
-            'enriched_entity_identifier' => $normalizedCommand['identifier']['enrichedEntityIdentifier'] ?? null,
+            'enriched_entity_identifier' => $normalizedCommand['identifier']['enriched_entity_identifier'] ?? null,
         ];
         $command->enrichedEntityIdentifier = $normalizedCommand['enrichedEntityIdentifier'] ?? null;
         $command->code = $normalizedCommand['code'] ?? null;

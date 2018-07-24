@@ -45,7 +45,7 @@ class RecordIdentifier
             $enrichedEntityIdentifier,
             '/^[a-zA-Z0-9_]+$/',
             sprintf(
-                'Enriched entity identifier may contain only letters, numbers and underscores, "%s" given',
+                'Enriched entity identifier may contain only letters, numbers and underscores. "%s" given',
                 $enrichedEntityIdentifier
             )
         );
@@ -63,7 +63,7 @@ class RecordIdentifier
             $identifier,
             '/^[a-zA-Z0-9_]+$/',
             sprintf(
-                'Record identifier may contain only letters, numbers and underscores, "%s" given',
+                'Record identifier may contain only letters, numbers and underscores. "%s" given',
                 $identifier
             )
         );

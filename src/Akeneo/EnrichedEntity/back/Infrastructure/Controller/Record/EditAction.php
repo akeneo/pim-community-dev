@@ -86,7 +86,7 @@ class EditAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        return $normalizedCommand['identifier']['enrichedEntityIdentifier'] !== $request->get('enrichedEntityIdentifier') ||
+        return $normalizedCommand['identifier']['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier') ||
             $normalizedCommand['identifier']['identifier'] !== $request->get('recordIdentifier');
     }
 }

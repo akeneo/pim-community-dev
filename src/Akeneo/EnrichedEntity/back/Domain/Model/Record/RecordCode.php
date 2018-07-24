@@ -35,7 +35,7 @@ class RecordCode
         Assert::regex(
             $identifier,
             '/^[a-zA-Z0-9_]+$/',
-            sprintf('Record code may contain only letters, numbers and underscores, "%s" given', $identifier)
+            sprintf('Record code may contain only letters, numbers and underscores. "%s" given', $identifier)
         );
 
         $this->code = $identifier;

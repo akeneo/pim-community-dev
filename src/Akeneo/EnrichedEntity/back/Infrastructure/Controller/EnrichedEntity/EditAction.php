@@ -81,5 +81,4 @@ class EditAction
 
         return $normalizedCommand['identifier'] !== $request->get('identifier');
     }
-
 }

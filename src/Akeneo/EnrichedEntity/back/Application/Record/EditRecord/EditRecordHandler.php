@@ -35,7 +35,7 @@ class EditRecordHandler
     public function __invoke(EditRecordCommand $editRecordCommand): void
     {
         $identifier = RecordIdentifier::create(
-            $editRecordCommand->identifier['enrichedEntityIdentifier'],
+            $editRecordCommand->identifier['enriched_entity_identifier'],
             $editRecordCommand->identifier['identifier']
         );
         $labelCollection = LabelCollection::fromArray($editRecordCommand->labels);

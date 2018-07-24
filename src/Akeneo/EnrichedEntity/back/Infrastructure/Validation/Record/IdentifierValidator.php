@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
 
+use Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier as EnrichedEntityIdentifier;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validation;
-use Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier as EnrichedEntityIdentifier;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

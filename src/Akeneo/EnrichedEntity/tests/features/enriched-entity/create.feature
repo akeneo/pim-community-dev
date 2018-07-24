@@ -26,7 +26,7 @@ Feature: Create an enriched entity
     When the user creates an enriched entity "invalid/identifier" with:
       | labels |
       | {}     |
-    Then an exception is thrown with message "Enriched Entity identifier may contain only letters, numbers and underscores"
+    Then an exception is thrown with message "Enriched entity identifier may contain only letters, numbers and underscores. "invalid/identifier" given"
     And there should be no enriched entity
 
   @acceptance-front

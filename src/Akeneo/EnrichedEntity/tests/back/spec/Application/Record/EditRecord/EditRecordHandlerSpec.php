@@ -32,7 +32,7 @@ class EditRecordHandlerSpec extends ObjectBehavior
     ) {
         $editRecordCommand->identifier = [
             'identifier' => 'sony',
-            'enrichedEntityIdentifier' => 'brand'
+            'enriched_entity_identifier' => 'brand'
         ];
         $editRecordCommand->code = 'sony';
         $editRecordCommand->enrichedEntityIdentifier = 'brand';

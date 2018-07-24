@@ -31,7 +31,7 @@ Feature: Create a record
     When the user creates a record "invalid/identifier" for entity "designer" with:
       | labels |
       | {}     |
-    Then an exception is thrown with message "Record identifier may contain only letters, numbers and underscores"
+    Then an exception is thrown with message "Record identifier may contain only letters, numbers and underscores. "invalid/identifier" given"
     And there should be no record
 
   @acceptance-front

@@ -28,7 +28,7 @@ class CreateRecordHandlerSpec extends ObjectBehavior
     ) {
         $createRecordCommand->identifier = [
             'identifier' => 'intel',
-            'enrichedEntityIdentifier' => 'brand'
+            'enriched_entity_identifier' => 'brand'
         ];
         $createRecordCommand->code = 'intel';
         $createRecordCommand->enrichedEntityIdentifier = 'brand';

@@ -49,6 +49,10 @@ final class CreateRecordContext implements Context
     ) {
         $updates = current($updateTable->getHash());
         $command = new CreateRecordCommand();
+        $command->identifier = [
+            'identifier'                  => $recordIdentifier,
+            'enriched_entity_identifier' => $enrichedEntityIdentifier,
+        ];
         $command->code = $recordIdentifier;
         $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $command->labels = json_decode($updates['labels'], true);
