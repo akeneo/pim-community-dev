@@ -1,5 +1,5 @@
 parameters:
-    pim_versioning.builder.version.class: Akeneo\Tool\Bundle\VersionningBundle\Builder\VersionBuilder
+    pim_versioning.builder.version.class: Akeneo\Tool\Bundle\VersioningBundle\Builder\VersionBuilder
 
 services:
     pim_versioning.builder.version:

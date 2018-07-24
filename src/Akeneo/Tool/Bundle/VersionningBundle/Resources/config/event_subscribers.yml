@@ -1,10 +1,10 @@
 parameters:
-    pim_versioning.event_subscriber.addversion.class:                  Akeneo\Tool\Bundle\VersionningBundle\EventSubscriber\AddVersionSubscriber
-    pim_versioning.event_subscriber.adduser.class:                     Akeneo\Tool\Bundle\VersionningBundle\EventSubscriber\AddUserSubscriber
-    pim_versioning.event_subscriber.addcontext.class:                  Akeneo\Tool\Bundle\VersionningBundle\EventSubscriber\AddContextSubscriber
-    pim_versioning.event_subscriber.add_remove_version.class:          Akeneo\Tool\Bundle\VersionningBundle\EventSubscriber\AddRemoveVersionSubscriber
-    pim_versioning.event_subscriber.timestampable.class:               Akeneo\Tool\Bundle\VersionningBundle\EventSubscriber\TimestampableSubscriber
-    pim_versioning.event_subscriber.purge_progress_bar_advancer.class: Akeneo\Tool\Bundle\VersionningBundle\EventSubscriber\PurgeProgressBarAdvancerSubscriber
+    pim_versioning.event_subscriber.addversion.class:                  Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber
+    pim_versioning.event_subscriber.adduser.class:                     Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber
+    pim_versioning.event_subscriber.addcontext.class:                  Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddContextSubscriber
+    pim_versioning.event_subscriber.add_remove_version.class:          Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddRemoveVersionSubscriber
+    pim_versioning.event_subscriber.timestampable.class:               Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\TimestampableSubscriber
+    pim_versioning.event_subscriber.purge_progress_bar_advancer.class: Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\PurgeProgressBarAdvancerSubscriber
 
 services:
     pim_versioning.event_subscriber.addversion:

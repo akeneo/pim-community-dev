@@ -5,7 +5,7 @@ namespace Akeneo\Channel\Component\Normalizer\InternalApi;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Tool\Bundle\VersionningBundle\Repository\VersionRepositoryInterface;
+use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

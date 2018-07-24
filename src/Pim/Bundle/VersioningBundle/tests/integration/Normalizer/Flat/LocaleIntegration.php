@@ -2,7 +2,7 @@
 
 namespace tests\integration\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Akeneo\Tool\Bundle\VersionningBundle\tests\integration\Normalizer\Flat\AbstractFlatNormalizerTestCase;
+use Akeneo\Tool\Bundle\VersioningBundle\tests\integration\Normalizer\Flat\AbstractFlatNormalizerTestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>

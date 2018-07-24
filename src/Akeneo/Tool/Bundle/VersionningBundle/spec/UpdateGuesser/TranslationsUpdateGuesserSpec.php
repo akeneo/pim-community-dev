@@ -7,8 +7,8 @@ use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
-use Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\TranslationsUpdateGuesser;
-use Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\UpdateGuesserInterface;
+use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser;
+use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 
 class TranslationsUpdateGuesserSpec extends ObjectBehavior
