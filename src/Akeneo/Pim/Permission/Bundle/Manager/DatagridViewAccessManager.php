@@ -105,7 +105,6 @@ class DatagridViewAccessManager
      */
     protected function isAttributeGranted(UserInterface $user, $code)
     {
-        /** @var \Pim\Bundle\CatalogBundle\Entity\Attribute $attribute */
         if (null === $attribute = $this->attributeRepository->findOneBy(['code' => $code])) {
             return true;
         }

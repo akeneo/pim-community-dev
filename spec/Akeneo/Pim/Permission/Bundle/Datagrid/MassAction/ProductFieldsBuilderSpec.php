@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\Permission\Bundle\Datagrid\MassAction;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;

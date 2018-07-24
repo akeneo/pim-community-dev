@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;

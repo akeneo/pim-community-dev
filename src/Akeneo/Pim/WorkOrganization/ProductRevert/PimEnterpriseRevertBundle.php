@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\ProductRevert;
 
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterSerializerPass;
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

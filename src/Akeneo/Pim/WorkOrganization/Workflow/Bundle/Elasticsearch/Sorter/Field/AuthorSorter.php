@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Sorter\Field;
 
-use Pim\Bundle\CatalogBundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Sorter\Field\BaseFieldSorter;
 use Pim\Component\Catalog\Exception\InvalidDirectionException;
 use Pim\Component\Catalog\Query\Sorter\Directions;
 

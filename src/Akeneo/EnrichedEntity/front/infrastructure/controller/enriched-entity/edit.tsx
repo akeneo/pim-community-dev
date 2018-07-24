@@ -1,19 +1,18 @@
 import * as $ from 'jquery';
 import * as ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
 import * as React from 'react';
-import { Store } from 'redux';
+import {Store} from 'redux';
 import __ from 'akeneoenrichedentity/tools/translator';
 import EnrichedEntityView from 'akeneoenrichedentity/application/component/enriched-entity/edit';
 import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 import createStore from 'akeneoenrichedentity/infrastructure/store';
 import enrichedEntityReducer from 'akeneoenrichedentity/application/reducer/enriched-entity/edit';
 import enrichedEntityFetcher from 'akeneoenrichedentity/infrastructure/fetcher/enriched-entity';
-import { enrichedEntityReceived } from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
-import { catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged } from 'akeneoenrichedentity/domain/event/user';
-import { setUpSidebar } from 'akeneoenrichedentity/application/action/enriched-entity/sidebar';
-import { updateRecordResults } from 'akeneoenrichedentity/application/action/record/search';
-
+import {enrichedEntityEditionReceived} from 'akeneoenrichedentity/domain/event/enriched-entity/edit';
+import {catalogLocaleChanged, catalogChannelChanged, uiLocaleChanged} from 'akeneoenrichedentity/domain/event/user';
+import {setUpSidebar} from 'akeneoenrichedentity/application/action/enriched-entity/sidebar';
+import {updateRecordResults} from 'akeneoenrichedentity/application/action/record/search';
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
@@ -25,7 +24,7 @@ class EnrichedEntityEditController extends BaseController {
     enrichedEntityFetcher.fetch(route.params.identifier)
       .then((enrichedEntity: EnrichedEntity) => {
         this.store = createStore(true)(enrichedEntityReducer);
-        this.store.dispatch(enrichedEntityReceived(enrichedEntity));
+        this.store.dispatch(enrichedEntityEditionReceived(enrichedEntity.normalize()));
         this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
         this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')));
         this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
@@ -49,7 +48,7 @@ class EnrichedEntityEditController extends BaseController {
   beforeUnload = () => {
     const state = this.store.getState();
 
-    if (state.editForm.isDirty) {
+    if (state.form.state.isDirty) {
       return  __('pim_enrich.confirmation.discard_changes', {entity: 'enriched entity'});
     }
 
@@ -60,7 +59,7 @@ class EnrichedEntityEditController extends BaseController {
     const state = this.store.getState();
     const message = __('pim_enrich.confirmation.discard_changes', {entity: 'enriched entity'});
 
-    return (state.editForm.isDirty) ? confirm(message) : true;
+    return (state.form.state.isDirty) ? confirm(message) : true;
   }
 }
 

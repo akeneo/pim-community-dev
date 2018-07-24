@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Filter;
 
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 
 /**
  * Filter used to remove non standard properties from data sent by the UI.

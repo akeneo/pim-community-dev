@@ -11,10 +11,10 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Filter;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 
 /**
  * Attribute filter

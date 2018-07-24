@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Field;
 
-use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterHelper;
 use Pim\Component\Catalog\Query\Filter\Operators;

@@ -12,9 +12,9 @@
 namespace Akeneo\Pim\Permission\Bundle\Filter;
 
 use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 
 /**
  * Job instance filter for edition

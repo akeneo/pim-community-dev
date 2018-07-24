@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Filter;
 
-use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
-use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\AbstractFilter;
+use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 

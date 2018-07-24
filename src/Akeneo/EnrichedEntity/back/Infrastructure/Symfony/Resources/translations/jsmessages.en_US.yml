@@ -26,8 +26,15 @@ pim_enriched_entity:
             title: Create a new entity
             input:
                 label: Label
-                code: Code
+                code: Code (required)
             confirm: confirm
+        notification:
+            save:
+                success: Enriched entity successfully updated.
+                fail: An error occured during the save of the enriched entity
+            create:
+                success: Enriched entity successfully created.
+                fail: An error occured during the creation of the enriched entity
     record:
         create:
             header:
@@ -36,8 +43,15 @@ pim_enriched_entity:
             title: Create a new record
             input:
                 label: Label
-                code: Code
+                code: Code (required)
             confirm: confirm
+        notification:
+            save:
+                success: Record successfully updated.
+                fail: An error occured during the save of the record
+            create:
+                success: Record successfully created.
+                fail: An error occured during the creation of the record
 
 pim_enrich:
     confirmation:

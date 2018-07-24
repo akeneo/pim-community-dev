@@ -4,7 +4,7 @@ namespace spec\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\
 
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
