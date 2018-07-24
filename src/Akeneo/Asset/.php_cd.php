@@ -25,6 +25,7 @@ $rules = [
         'Pim\Component\Connector', // TODO: Generic classes/interfaces should be moved to Akeneo/Tool
         'Pim\Component\CatalogVolumeMonitoring', // TODO: we should define where it should go and if CatalogVolumeMonitoring is a context
         'Akeneo\UserManagement\Bundle\Context\UserContext', // TODO: We should not dependend on this context
+        'Gedmo\Exception\UnexpectedValueException', // TODO Remove it
         // TODO: We should use id instead of reference
         'Akeneo\Channel\Component\Model\LocaleInterface',
         'Akeneo\Channel\Component\Model\ChannelInterface',
@@ -50,6 +51,7 @@ $rules = [
         'PimEnterprise\Bundle\SecurityBundle\Form\EventListener\CategoryPermissionsSubscriber',
         'PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException',
         // TODO: we must not depend on PIM BC
+        'Pim\Bundle\UIBundle\Controller\AjaxOptionController',
         'Pim\Component\Catalog\Query\Filter\Operators', // Should we move them in Akeneo\Tool?
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface', // We should not use public constant
         'Pim\Bundle\EnrichBundle\Controller\FileController', // We should not use public constant
@@ -79,6 +81,9 @@ $rules = [
         // Asset are reference data
         'Pim\Component\ReferenceData\Model\ReferenceDataInterface',
         'Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface',
+        // Todo: Remove pim dependencies
+        'Pim\Component\Catalog\Comparator\ComparatorInterface',
+        'Pim\Component\Catalog\Completeness\CompletenessRemoverInterface',
         'Pim\Component\Connector', // TODO: Generic classes/interfaces like be moved to Akeneo/Tool
         'Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface', // TODO: AssetCollectionCompleteChecker should extract from this context
         'Doctrine\ORM\QueryBuilder', // TODO: some repository return QueryBuidler object.
