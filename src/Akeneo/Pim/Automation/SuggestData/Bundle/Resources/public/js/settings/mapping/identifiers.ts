@@ -22,6 +22,20 @@ class EditIdentifiersMappingView extends BaseView {
 
   private identifiersStatuses: {[key: string]: string} = {};
 
+  readonly config: Object = {};
+
+  /**
+   * {@inheritdoc}
+   */
+  constructor(options: { config: Object }) {
+    super({...options, ...{
+        className: 'AknGrid AknGrid--unclickable',
+        tagName: 'table'
+      }});
+
+    this.config = {...this.config, ...options.config};
+  };
+
   /**
    * {@inheritdoc}
    */

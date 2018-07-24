@@ -12,7 +12,7 @@ config:
                     module: pimee/settings/mapping/controller
                     aclResourceId: akeneo_suggest_data_settings_mapping
                     config:
-                        entity: suggest-data-settings
+                        entity: suggest-data-settings-identifiers-mapping
                         connectionCode: pim-ai
                         inactiveForm: pimee-suggest-data-settings-index-inactive-connection
 
@@ -53,6 +53,7 @@ config:
         pimee/settings/mapping/identifiers: akeneosuggestdata/js/settings/mapping/identifiers.ts
         pimee/settings/mapping/simple-select-attribute: akeneosuggestdata/js/settings/mapping/simple-select-attribute
         pimee/settings/mapping/save-form: akeneosuggestdata/js/settings/mapping/save
+        pimee/settings/mapping/tabs: akeneosuggestdata/js/settings/mapping/tabs
         pimee/settings/mapping/family-selector: akeneosuggestdata/js/settings/mapping/family-selector
         pimee/settings/mapping/attributes-mapping: akeneosuggestdata/js/settings/mapping/attributes-mapping
 
@@ -63,3 +64,4 @@ config:
         pimee/template/settings/mapping/identifiers: akeneosuggestdata/templates/settings/mapping/identifiers.html
         pimee/template/settings/mapping/simple-select-attribute: akeneosuggestdata/templates/settings/mapping/simple-select-attribute.html
         pimee/template/settings/mapping/attributes-mapping: akeneosuggestdata/templates/settings/mapping/attributes-mapping.html
+        pimee/template/settings/mapping/tabs: akeneosuggestdata/templates/settings/mapping/tabs.html

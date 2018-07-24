@@ -1,20 +1,18 @@
-<table class="AknGrid AknGrid--unclickable">
-    <tr>
-        <th class="AknGrid-headerCell"><%- headers.identifiersLabel %></th>
-        <th class="AknGrid-headerCell"><%- headers.attributeLabel %></th>
-        <th class="AknGrid-headerCell"><%- headers.suggestDataLabel %></th>
-    </tr>
-    <% for (pimAiAttributeCode in identifiers) { %>
-    <tr class="AknGrid-bodyRow">
-        <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight">
-            <%- __(`akeneo_suggest_data.settings.index.tab.identifiers.headers.${pimAiAttributeCode}_label`) %>
-        </td>
-        <td class="AknGrid-bodyCell">
-            <div class="AknFormContainer attribute-selector" data-identifier="<%- pimAiAttributeCode %>"></div>
-        </td>
-        <td class="AknGrid-bodyCell">
-            <%- __(`akeneo_suggest_data.settings.index.identifiers_mapping.${identifiersStatuses[pimAiAttributeCode]}`) %>
-        </td>
-    </tr>
-    <% } %>
-</table>
+<tr>
+    <th class="AknGrid-headerCell"><%- headers.identifiersLabel %></th>
+    <th class="AknGrid-headerCell"><%- headers.attributeLabel %></th>
+    <th class="AknGrid-headerCell"><%- headers.suggestDataLabel %></th>
+</tr>
+<% for (pimAiAttributeCode in identifiers) { %>
+<tr class="AknGrid-bodyRow">
+    <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight">
+        <%- __(`akeneo_suggest_data.settings.index.tab.identifiers.headers.${pimAiAttributeCode}_label`) %>
+    </td>
+    <td class="AknGrid-bodyCell">
+        <div class="AknFormContainer attribute-selector" data-identifier="<%- pimAiAttributeCode %>"></div>
+    </td>
+    <td class="AknGrid-bodyCell">
+        <%- __(`akeneo_suggest_data.settings.index.identifiers_mapping.${identifiersStatuses[pimAiAttributeCode]}`) %>
+    </td>
+</tr>
+<% } %>

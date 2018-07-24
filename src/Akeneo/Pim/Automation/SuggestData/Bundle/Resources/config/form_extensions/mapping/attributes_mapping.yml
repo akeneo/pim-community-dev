@@ -1,0 +1,15 @@
+extensions:
+    # TODO !
+    pim-suggest-data-settings-identifiers-mapping-attribute-family-selector:
+        module: pimee/settings/mapping/family-selector
+        #parent: pim-suggest-data-settings-identifiers-mapping-attribute-tab
+        position: 10
+        config:
+            fieldName: family
+            label: pim_enrich.entity.family.uppercase_label
+            choiceRoute: akeneo_sugggest_data_family_mapping_index
+
+    pim-suggest-data-settings-identifiers-mapping-attribute-attributes-mapping:
+        module: pimee/settings/mapping/attributes-mapping
+        #parent: pim-suggest-data-settings-identifiers-mapping-attribute-tab
+        position: 20
