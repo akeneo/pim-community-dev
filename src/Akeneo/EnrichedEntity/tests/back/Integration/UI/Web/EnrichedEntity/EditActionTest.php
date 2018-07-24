@@ -99,7 +99,7 @@ class EditActionTest extends ControllerIntegrationTestCase
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',
         ]);
-        $queryHandler->save($entityItem);
+        $queryHandler->update($entityItem);
 
         $user = new User();
         $user->setUsername('julia');

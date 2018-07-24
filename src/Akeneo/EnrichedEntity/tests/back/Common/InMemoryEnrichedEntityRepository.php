@@ -27,8 +27,19 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
     /** @var EnrichedEntity[] */
     private $enrichedEntities = [];
 
-    public function save(EnrichedEntity $enrichedEntity): void
+    public function create(EnrichedEntity $enrichedEntity): void
     {
+        if (isset($this->enrichedEntities[(string) $enrichedEntity->getIdentifier()])) {
+            throw new \RuntimeException('Enriched entity already exists');
+        }
+        $this->enrichedEntities[(string) $enrichedEntity->getIdentifier()] = $enrichedEntity;
+    }
+
+    public function update(EnrichedEntity $enrichedEntity): void
+    {
+        if (!isset($this->enrichedEntities[(string) $enrichedEntity->getIdentifier()])) {
+            throw new \RuntimeException('Expected to save one enriched entity, but none was saved');
+        }
         $this->enrichedEntities[(string) $enrichedEntity->getIdentifier()] = $enrichedEntity;
     }
 

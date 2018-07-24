@@ -37,6 +37,6 @@ class EditEnrichedEntityHandler
 
         $enrichedEntity = $this->enrichedEntityRepository->getByIdentifier($identifier);
         $enrichedEntity->updateLabels($labelCollection);
-        $this->enrichedEntityRepository->save($enrichedEntity);
+        $this->enrichedEntityRepository->update($enrichedEntity);
     }
 }

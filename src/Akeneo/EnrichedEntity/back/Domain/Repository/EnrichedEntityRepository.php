@@ -18,7 +18,9 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
 interface EnrichedEntityRepository
 {
-    public function save(EnrichedEntity $enrichedEntity): void;
+    public function create(EnrichedEntity $enrichedEntity): void;
+
+    public function update(EnrichedEntity $enrichedEntity): void;
 
     /**
      * @throws EnrichedEntityNotFoundException

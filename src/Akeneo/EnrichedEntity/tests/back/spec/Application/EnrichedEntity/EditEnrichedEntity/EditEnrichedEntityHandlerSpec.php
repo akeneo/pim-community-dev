@@ -37,7 +37,7 @@ class EditEnrichedEntityHandlerSpec extends ObjectBehavior
         $enrichedEntity->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 
-        $repository->save($enrichedEntity)->shouldBeCalled();
+        $repository->update($enrichedEntity)->shouldBeCalled();
 
         $this->__invoke($editEnrichedEntityCommand);
     }

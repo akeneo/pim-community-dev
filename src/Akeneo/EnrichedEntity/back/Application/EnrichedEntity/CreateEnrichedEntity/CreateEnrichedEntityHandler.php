@@ -38,6 +38,6 @@ class CreateEnrichedEntityHandler
             $createEnrichedEntityCommand->labels
         );
 
-        $this->enrichedEntityRepository->save($enrichedEntity);
+        $this->enrichedEntityRepository->create($enrichedEntity);
     }
 }

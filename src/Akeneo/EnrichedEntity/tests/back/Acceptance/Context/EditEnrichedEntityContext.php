@@ -43,7 +43,7 @@ final class EditEnrichedEntityContext implements Context
     public function theFollowingEnrichedEntity(TableNode $enrichedEntitieTable)
     {
         foreach ($enrichedEntitieTable->getHash() as $enrichedEntity) {
-            $this->enrichedEntityRepository->save(
+            $this->enrichedEntityRepository->update(
                 EnrichedEntity::create(
                     EnrichedEntityIdentifier::fromString($enrichedEntity['identifier']),
                     json_decode($enrichedEntity['labels'], true)

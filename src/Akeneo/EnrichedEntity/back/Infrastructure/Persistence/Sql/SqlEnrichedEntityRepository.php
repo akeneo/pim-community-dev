@@ -17,7 +17,6 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -38,19 +37,11 @@ class SqlEnrichedEntityRepository implements EnrichedEntityRepository
         $this->sqlConnection = $sqlConnection;
     }
 
-    /**
-     * Depending on the database table state, the sql query "REPLACE INTO ... " might affect one row (the insert use
-     * case) or two rows (the update use case)
-     * @see https://dev.mysql.com/doc/refman/8.0/en/mysql-affected-rows.html
-     *
-     * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    public function save(EnrichedEntity $enrichedEntity): void
+    public function create(EnrichedEntity $enrichedEntity): void
     {
         $serializedLabels = $this->getSerializedLabels($enrichedEntity);
         $insert = <<<SQL
-        REPLACE INTO akeneo_enriched_entity_enriched_entity (identifier, labels) VALUES (:identifier, :labels);
+        INSERT INTO akeneo_enriched_entity_enriched_entity (identifier, labels) VALUES (:identifier, :labels);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -59,9 +50,37 @@ SQL;
                 'labels' => $serializedLabels
             ]
         );
+        if ($affectedRows !== 1) {
+            throw new \RuntimeException('Expected to create one enriched entity, but none was created');
+        }
+    }
 
-        if ($affectedRows === 0) {
-            throw new \RuntimeException('Expected to save one enriched entity, but none was saved');
+    /**
+     * Depending on the database table state, the sql query "REPLACE INTO ... " might affect one row (the insert use
+     * case) or two rows (the update use case)
+     * @see https://dev.mysql.com/doc/refman/8.0/en/mysql-affected-rows.html
+     *
+     * @throws \RuntimeException
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function update(EnrichedEntity $enrichedEntity): void
+    {
+        $serializedLabels = $this->getSerializedLabels($enrichedEntity);
+        $update = <<<SQL
+        UPDATE akeneo_enriched_entity_enriched_entity
+        SET labels = :labels
+        WHERE identifier = :identifier;
+SQL;
+        $affectedRows = $this->sqlConnection->executeUpdate(
+            $update,
+            [
+                'identifier' => (string) $enrichedEntity->getIdentifier(),
+                'labels' => $serializedLabels
+            ]
+        );
+
+        if ($affectedRows !== 1) {
+            throw new \RuntimeException('Expected to update one enriched entity, but none was updated');
         }
     }
 
