@@ -11,9 +11,9 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Filter;
 
-use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
 /**
