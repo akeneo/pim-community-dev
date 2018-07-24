@@ -81,7 +81,7 @@ SQL;
             ]
         );
 
-        if ($affectedRows !== 1) {
+        if ($affectedRows > 1) {
             throw new \RuntimeException(
                 sprintf('Expected to update one enriched entity, but %d rows were affected.', $affectedRows)
             );

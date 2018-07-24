@@ -52,7 +52,6 @@ services:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\EditAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.edit_record_handler'
-            - '@serializer'
             - '@validator'
 
     akeneo_enrichedentity.infrastructure.action.record.create:

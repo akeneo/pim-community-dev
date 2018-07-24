@@ -48,7 +48,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'singer',
             ],
             'code' => 'celine_dion',
-            'enrichedEntityIdentifier' => 'singer',
+            'enriched_entity_identifier' => 'singer',
             'labels'     => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
@@ -74,7 +74,7 @@ class EditActionTest extends ControllerIntegrationTestCase
 
         $repository = $this->getRecordRepository();
         $recordItem = $repository->getByIdentifier(
-            RecordIdentifier::create($postContent['enrichedEntityIdentifier'], $postContent['code'])
+            RecordIdentifier::create($postContent['enriched_entity_identifier'], $postContent['code'])
         );
 
         Assert::assertEquals(array_keys($postContent['labels']), $recordItem->getLabelCodes());
@@ -112,7 +112,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'singer'
             ],
             'code' => 'ah!',
-            'enrichedEntityIdentifier' => 'singer',
+            'enriched_entity_identifier' => 'singer',
             'labels'     => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
@@ -149,7 +149,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'identifier' => 'celine_dion',
             ],
             'code' => 'celine_dion',
-            'enrichedEntityIdentifier' => 'singer',
+            'enriched_entity_identifier' => 'singer',
             'labels'     => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',
@@ -184,7 +184,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'enriched_entity_identifier' => 'starck',
             ],
             'code' => 'celine_dion',
-            'enrichedEntityIdentifier' => 'singer',
+            'enriched_entity_identifier' => 'singer',
             'labels'     => [
                 'en_US' => 'Celine Dion',
                 'fr_FR' => 'Madame Celine Dion',

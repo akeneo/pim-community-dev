@@ -32,19 +32,14 @@ class EditAction
     /** @var EditRecordHandler */
     private $editRecordHandler;
 
-    /** @var Serializer */
-    private $serializer;
-
     /** @var ValidatorInterface */
     private $validator;
 
     public function __construct(
         EditRecordHandler $editRecordHandler,
-        Serializer $serializer,
         ValidatorInterface $validator
     ) {
         $this->editRecordHandler = $editRecordHandler;
-        $this->serializer = $serializer;
         $this->validator = $validator;
     }
 
@@ -60,7 +55,7 @@ class EditAction
             );
         }
 
-        $command = $this->serializer->deserialize($request->getContent(), EditRecordCommand::class, 'json');
+        $command = $this->getEditCommand($request);
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
@@ -88,5 +83,21 @@ class EditAction
 
         return $normalizedCommand['identifier']['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier') ||
             $normalizedCommand['identifier']['identifier'] !== $request->get('recordIdentifier');
+    }
+
+    private function getEditCommand(Request $request): EditRecordCommand
+    {
+        $normalizedCommand = json_decode($request->getContent(), true);
+
+        $command = new EditRecordCommand();
+        $command->identifier = [
+            'identifier'                 => $normalizedCommand['identifier']['identifier'] ?? null,
+            'enriched_entity_identifier' => $normalizedCommand['identifier']['enriched_entity_identifier'] ?? null,
+        ];
+        $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
+        $command->code = $normalizedCommand['code'] ?? null;
+        $command->labels = $normalizedCommand['labels'] ?? [];
+
+        return $command;
     }
 }

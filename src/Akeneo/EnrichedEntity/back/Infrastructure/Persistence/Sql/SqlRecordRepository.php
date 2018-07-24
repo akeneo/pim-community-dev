@@ -64,7 +64,7 @@ SQL;
                 'data' => '{}'
             ]
         );
-        if ($affectedRows !== 1) {
+        if ($affectedRows > 1) {
             throw new \RuntimeException(
                 sprintf('Expected to create one enriched entity, but %d rows were affected', $affectedRows)
             );

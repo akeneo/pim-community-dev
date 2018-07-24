@@ -71,19 +71,6 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_when_udpating_a_non_existing_enriched_entity()
-    {
-        $identifier = EnrichedEntityIdentifier::fromString('identifier');
-        $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
-        $enrichedEntity->updateLabels(LabelCollection::fromArray(['en_US' => 'Stylist', 'fr_FR' => 'Styliste']));
-
-        $this->expectException(\RuntimeException::class);
-        $this->repository->update($enrichedEntity);
-    }
-
-    /**
-     * @test
-     */
     public function it_throws_if_the_identifier_is_not_found()
     {
         $this->expectException(EnrichedEntityNotFoundException::class);

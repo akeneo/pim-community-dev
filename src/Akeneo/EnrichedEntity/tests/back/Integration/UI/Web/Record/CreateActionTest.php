@@ -52,7 +52,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                     'identifier' => 'intel',
                     'enriched_entity_identifier' => 'brand'
                 ],
-                'enrichedEntityIdentifier' => 'brand',
+                'enriched_entity_identifier' => 'brand',
                 'code' => 'intel',
                 'labels' => [
                     'fr_FR' => 'Intel',
@@ -86,7 +86,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                     'enriched_entity_identifier' => 'brand'
                 ],
                 'code' => 'intel',
-                'enrichedEntityIdentifier' => 'brand',
+                'enriched_entity_identifier' => 'brand',
             ]
         );
 
@@ -123,7 +123,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                     'identifier' => $recordCode,
                     'enriched_entity_identifier' => $enrichedEntityIdentifier
                 ],
-                'enrichedEntityIdentifier' => $enrichedEntityIdentifier,
+                'enriched_entity_identifier' => $enrichedEntityIdentifier,
                 'code' => $recordCode,
                 'labels' => []
             ]
@@ -156,6 +156,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
                     'identifier' => 'sardoux',
                     'enriched_entity_identifier' => 'michel'
                 ],
+                'enriched_entity_identifier' => 'michel',
                 'labels'     => [
                     'fr_FR' => 'Starck',
                     'en_US' => 'Starck',

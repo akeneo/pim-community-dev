@@ -105,7 +105,7 @@ class CreateAction
             'identifier'                 => $normalizedCommand['identifier']['identifier'] ?? null,
             'enriched_entity_identifier' => $normalizedCommand['identifier']['enriched_entity_identifier'] ?? null,
         ];
-        $command->enrichedEntityIdentifier = $normalizedCommand['enrichedEntityIdentifier'] ?? null;
+        $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
         $command->code = $normalizedCommand['code'] ?? null;
         $command->labels = $normalizedCommand['labels'] ?? [];
 
