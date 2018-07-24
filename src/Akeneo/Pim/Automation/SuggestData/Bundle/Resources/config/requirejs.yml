@@ -19,6 +19,7 @@ config:
         # Savers
         pimee/saver/pim-ai-connection:
             url: akeneo_suggest_data_connection_post
+
         pimee/saver/identifier-mapping:
             url: akeneo_suggest_data_identifiers_mapping_save
 
@@ -30,6 +31,11 @@ config:
                     options:
                         urls:
                             list: akeneo_suggest_data_identifiers_mapping_get
+                suggest_data_family_mapping:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: akeneo_sugggest_data_family_mapping_index
 
     paths:
         # Controller
