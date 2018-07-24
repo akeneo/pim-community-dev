@@ -46,3 +46,10 @@ akeneo_sugggest_data_family_mapping_index:
     path: /suggest-data/family-mapping
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.family_mapping:indexAction }
     methods: [GET]
+
+akeneo_sugggest_data_family_mapping_get:
+    path: /suggest-data/family-mapping/{identifier}
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.family_mapping:getAction }
+    requirements:
+        identifier: '[\w._-]+'
+    methods: [GET]

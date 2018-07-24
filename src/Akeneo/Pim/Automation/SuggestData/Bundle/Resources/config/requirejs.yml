@@ -36,6 +36,7 @@ config:
                     options:
                         urls:
                             list: akeneo_sugggest_data_family_mapping_index
+                            get: akeneo_sugggest_data_family_mapping_get
 
     paths:
         # Controller
@@ -53,6 +54,7 @@ config:
         pimee/settings/mapping/simple-select-attribute: akeneosuggestdata/js/settings/mapping/simple-select-attribute
         pimee/settings/mapping/save-form: akeneosuggestdata/js/settings/mapping/save
         pimee/settings/mapping/family-selector: akeneosuggestdata/js/settings/mapping/family-selector
+        pimee/settings/mapping/attributes-mapping: akeneosuggestdata/js/settings/mapping/attributes-mapping
 
         # Templates
         pimee/template/product/suggest-data-push:  akeneosuggestdata/templates/product/edit/suggest-data-push.html
@@ -60,3 +62,4 @@ config:
         pimee/template/pim-ai-connection/edit: akeneosuggestdata/templates/pim-ai/form/edit.html
         pimee/template/settings/mapping/identifiers: akeneosuggestdata/templates/settings/mapping/identifiers.html
         pimee/template/settings/mapping/simple-select-attribute: akeneosuggestdata/templates/settings/mapping/simple-select-attribute.html
+        pimee/template/settings/mapping/attributes-mapping: akeneosuggestdata/templates/settings/mapping/attributes-mapping.html

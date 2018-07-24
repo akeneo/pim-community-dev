@@ -17,10 +17,12 @@ define(
         return BaseSelect.extend({
             events: {
                 'change input': function (event) {
-                    console.log('Change family');
-                    this.updateModel(this.getFieldValue(event.target));
-                    this.getRoot().render();
-                    console.log(this.getFormData());
+                    FetcherRegistry.getFetcher('suggest_data_family_mapping')
+                        .fetch('camcorders')
+                        .then((family) => {
+
+                            this.getRoot().render();
+                        });
                 }
             },
         })
