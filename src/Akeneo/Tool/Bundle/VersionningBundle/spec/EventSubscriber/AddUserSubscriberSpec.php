@@ -3,8 +3,8 @@
 namespace spec\Akeneo\Tool\Bundle\VersionningBundle\EventSubscriber;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Bundle\VersionningBundle\Event\BuildVersionEvent;
-use Akeneo\Tool\Bundle\VersionningBundle\Event\BuildVersionEvents;
+use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvent;
+use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Akeneo\UserManagement\Component\Model\User;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

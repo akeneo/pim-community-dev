@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Akeneo\Tool\Bundle\VersionningBundle\Manager\VersionManager;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

@@ -4,7 +4,7 @@ namespace spec\Akeneo\Tool\Bundle\VersionningBundle\Normalizer\Flat;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Bundle\VersionningBundle\Normalizer\Flat\TranslationNormalizer;
+use Akeneo\Tool\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 use Pim\Component\Catalog\Normalizer\Standard\CategoryNormalizer;
 
 use Prophecy\Argument;

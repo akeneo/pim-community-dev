@@ -135,8 +135,8 @@ suites:
         spec_path: src/Akeneo/Tool/Bundle/MeasureBundle
         src_path: src/Akeneo/Tool/Bundle/MeasureBundle
     VersioningBundle:
-        namespace: Akeneo\Tool\Bundle\VersionningBundle
-        psr4_prefix: Akeneo\Tool\Bundle\VersionningBundle
+        namespace: Akeneo\Tool\Bundle\VersioningBundle
+        psr4_prefix: Akeneo\Tool\Bundle\VersioningBundle
         spec_path: src/Akeneo/Tool/Bundle/VersioningBundle
         src_path: src/Akeneo/Tool/Bundle/VersioningBundle
     ## Pim Components

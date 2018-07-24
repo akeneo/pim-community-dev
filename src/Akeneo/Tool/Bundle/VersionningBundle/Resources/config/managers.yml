@@ -1,6 +1,6 @@
 parameters:
-    pim_versioning.manager.version.class: Akeneo\Tool\Bundle\VersionningBundle\Manager\VersionManager
-    pim_versioning.context.version.class: Akeneo\Tool\Bundle\VersionningBundle\Manager\VersionContext
+    pim_versioning.manager.version.class: Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager
+    pim_versioning.context.version.class: Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext
 
 services:
     pim_versioning.manager.version:

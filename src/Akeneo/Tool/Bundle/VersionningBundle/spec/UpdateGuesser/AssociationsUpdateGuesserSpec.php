@@ -6,8 +6,8 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\AssociationsUpdateGuesser;
-use Akeneo\Tool\Bundle\VersionningBundle\UpdateGuesser\UpdateGuesserInterface;
+use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\AssociationsUpdateGuesser;
+use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 
 class AssociationsUpdateGuesserSpec extends ObjectBehavior

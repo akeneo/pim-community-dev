@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
-use Akeneo\Tool\Bundle\VersionningBundle\Manager\VersionManager;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Association\MissingAssociationAdder;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;

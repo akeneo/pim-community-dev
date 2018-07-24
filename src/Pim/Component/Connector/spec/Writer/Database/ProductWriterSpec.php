@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Bundle\VersionningBundle\Manager\VersionManager;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class ProductWriterSpec extends ObjectBehavior

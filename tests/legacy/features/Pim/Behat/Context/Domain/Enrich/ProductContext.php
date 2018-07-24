@@ -13,7 +13,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
-use Akeneo\Tool\Bundle\VersionningBundle\Repository\VersionRepositoryInterface;
+use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Webmozart\Assert\Assert;
 

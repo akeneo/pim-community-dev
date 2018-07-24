@@ -1,7 +1,7 @@
 Akeneo\Tool\Component\Versioning\Model\Version:
     type: entity
     table: pim_versioning_version
-    repositoryClass: Akeneo\Tool\Bundle\VersionningBundle\Doctrine\ORM\VersionRepository
+    repositoryClass: Akeneo\Tool\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
     indexes:
         resource_name_resource_id_idx:
             columns:

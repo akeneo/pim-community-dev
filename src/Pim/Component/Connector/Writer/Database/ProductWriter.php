@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Tool\Bundle\VersionningBundle\Manager\VersionManager;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
  * Product writer
