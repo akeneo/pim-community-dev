@@ -28,6 +28,10 @@ akeneo_suggest_data_is_connection_activated:
         code: '[\w._-]+'
     methods: [GET]
 
+akeneo_suggest_data_settings_index:
+    path: /suggest-data/mapping
+    methods: [GET]
+
 akeneo_suggest_data_identifiers_mapping_save:
     path: /suggest-data/identifiers-mapping
     defaults: { _controller: akeneo.pim.automation.suggest_data.controller.identifiers_mapping:updateIdentifiersMappingAction}

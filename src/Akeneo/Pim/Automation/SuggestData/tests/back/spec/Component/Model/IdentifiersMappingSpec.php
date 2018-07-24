@@ -49,7 +49,7 @@ class IdentifiersMappingSpec extends ObjectBehavior
         $this->getIdentifier('burger')->shouldReturn(null);
     }
 
-    public function it_normalizes_identifiers($manufacturer, $model, $ean, $sku) {
+    public function it_normalizes_identifiers_mapping($manufacturer, $model, $ean, $sku) {
         $manufacturer->getCode()->willReturn('brand');
         $model->getCode()->willReturn('mpn');
         $ean->getCode()->willReturn('ean');
@@ -60,6 +60,24 @@ class IdentifiersMappingSpec extends ObjectBehavior
             'mpn' => 'mpn',
             'upc' => 'ean',
             'asin' => 'sku',
+        ]);
+    }
+
+    public function it_normalizes_empty_identifiers_mapping() {
+        $this->beConstructedWith([]);
+
+        $this->normalize()->shouldReturn([]);
+    }
+
+    public function it_normalizes_incomplete_identifiers_mapping($manufacturer, $ean) {
+        $manufacturer->getCode()->willReturn('brand');
+        $ean->getCode()->willReturn('ean');
+
+        $this->normalize()->shouldReturn([
+            'brand' => 'brand',
+            'mpn' => null,
+            'upc' => 'ean',
+            'asin' => null,
         ]);
     }
 

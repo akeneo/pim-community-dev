@@ -1,5 +1,6 @@
 config:
     config:
+        # Controllers
         pim/controller-registry:
             controllers:
                 akeneo_suggest_data_connection_index:
@@ -7,18 +8,40 @@ config:
                     aclResourceId: akeneo_suggest_data_connection
                     config:
                         entity: pim-ai-connection
+                akeneo_suggest_data_settings_index:
+                    module: pim/controller/common/index
+                    aclResourceId: akeneo_suggest_data_settings_mapping
+                    config:
+                        entity: suggest-data-settings
+        # Savers
         pimee/saver/pim_ai_connection:
             url: akeneo_suggest_data_connection_post
+        pimee/saver/identifier-mapping:
+            url: akeneo_suggest_data_identifiers_mapping_save
+        # Fetchers
+        pim/fetcher-registry:
+            fetchers:
+                identifiers-mapping:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: akeneo_suggest_data_identifiers_mapping_get
 
     paths:
         pimee/saver/pim_ai_connection: pimenrich/js/saver/base-saver
+        pimee/saver/identifier-mapping: akeneosuggestdata/js/settings/mapping/identifier-mapping-saver
 
         # Forms
         pimee/product-edit-form/suggest-data-push: akeneosuggestdata/js/product/edit/suggest-data-push
         pimee/mass-edit-form/product/suggest-data: akeneosuggestdata/js/product/mass-edit/suggest-data-operation
         pimee/pim-ai-connection/edit: akeneosuggestdata/js/pim-ai/form/edit.ts
+        pimee/settings/mapping/identifiers: akeneosuggestdata/js/settings/mapping/identifiers.ts
+        pimee/settings/mapping/simple-select-attribute: akeneosuggestdata/js/settings/mapping/simple-select-attribute
+        pimee/settings/mapping/save-form: akeneosuggestdata/js/settings/mapping/save
 
         # Templates
         pimee/template/product/suggest-data-push:  akeneosuggestdata/templates/product/edit/suggest-data-push.html
         pimee/template/product/mass-edit/suggest-data: akeneosuggestdata/templates/product/mass-edit/suggest-data.html
         pimee/template/pim-ai-connection/edit: akeneosuggestdata/templates/pim-ai/form/edit.html
+        pimee/template/settings/mapping/identifiers: akeneosuggestdata/templates/settings/mapping/identifiers.html
+        pimee/template/settings/mapping/simple-select-attribute: akeneosuggestdata/templates/settings/mapping/simple-select-attribute.html

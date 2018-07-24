@@ -20,15 +20,20 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class IdentifierMapping
 {
+    /** @var int|null */
     private $id;
+
+    /** @var string */
     private $pimAiCode;
+
+    /** @var AttributeInterface|null */
     private $attribute;
 
     /**
      * @param string $pimAiCode
-     * @param AttributeInterface $attribute
+     * @param ?AttributeInterface $attribute
      */
-    public function __construct(string $pimAiCode, AttributeInterface $attribute)
+    public function __construct(string $pimAiCode, ?AttributeInterface $attribute)
     {
         $this->pimAiCode = $pimAiCode;
         $this->attribute = $attribute;
@@ -45,7 +50,7 @@ class IdentifierMapping
     /**
      * @return mixed
      */
-    public function getAttribute(): AttributeInterface
+    public function getAttribute(): ?AttributeInterface
     {
         return $this->attribute;
     }

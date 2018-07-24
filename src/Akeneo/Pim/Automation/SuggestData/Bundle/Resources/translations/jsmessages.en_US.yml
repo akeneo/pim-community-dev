@@ -1,5 +1,6 @@
 pim_title:
     akeneo_suggest_data_connection_index: 'PIM.ai connection'
+    akeneo_suggest_data_settings_index: 'PIM.ai settings'
 
 akeneo_suggest_data:
     product:
@@ -31,3 +32,29 @@ akeneo_suggest_data:
             save:
                 activated: 'Activated'
                 to_activate: 'Activate'
+
+    settings:
+        menu.item: PIM.ai
+        index:
+            title: PIM.ai settings
+            sub_title: Welcome to the Product Information AI settings
+            description:
+                first_step: Please select the attributes in your catalog that correspond to the product identifiers of the product information AI assistant.
+                second_step: Once the mappings are saved, the assistant will be able to collect and suggest product information in your catalog.
+            tab:
+                identifiers:
+                    title: Identifiers
+                    headers:
+                        identifiers_label: Identifiers Label
+                        attribute_label: Catalog Attribute
+                        suggest_data_label: Suggest Data
+                        brand_label: Brand
+                        asin_label: ASIN
+                        mpn_label: MPN
+                        upc_label: UPC
+                families.title: Families
+                attributes.title: Attributes
+            identifiers_mapping:
+                save.flash:
+                    success: Identifiers mapping has been successfully saved.
+                    fail: Identifiers mapping not saved due to an error.
