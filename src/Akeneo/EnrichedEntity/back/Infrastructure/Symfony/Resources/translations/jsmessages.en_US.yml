@@ -4,7 +4,7 @@ pim_title:
 pim_enriched_entity:
     button:
         save: Save
-        create: Create
+        create: Add new
     enriched_entity:
         title: Entities
         img: The main image of the enriched entity named "{{ label }}"
@@ -40,7 +40,7 @@ pim_enriched_entity:
             header:
                 title: Create
             subtitle: Records
-            title: Create a new record
+            title: Create a new {{ entityLabel }}
             input:
                 label: Label
                 code: Code (required)

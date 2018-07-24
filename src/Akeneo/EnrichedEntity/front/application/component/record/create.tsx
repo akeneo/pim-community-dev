@@ -11,6 +11,7 @@ import {
 } from 'akeneoenrichedentity/domain/event/record/create';
 import {createRecord} from 'akeneoenrichedentity/application/action/record/create';
 import {getErrorsView} from 'akeneoenrichedentity/application/component/app/validation-error';
+import EnrichedEntity, {denormalizeEnrichedEntity} from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
 
 interface StateProps {
   context: {
@@ -23,6 +24,7 @@ interface StateProps {
     };
   };
   errors: ValidationError[];
+  enrichedEntity: EnrichedEntity;
 }
 
 interface DispatchProps {
@@ -67,13 +69,20 @@ class Create extends React.Component<CreateProps> {
           <div className="AknFullPage AknFullPage--modal">
             <div className="AknFullPage-content">
               <div className="AknFullPage-left">
-                <img src="bundles/pimui/images/illustrations/Product.svg" className="AknFullPage-image"/>
+                <img src="bundles/pimui/images/illustrations/Family.svg" className="AknFullPage-image"/>
               </div>
               <div className="AknFullPage-right">
                 <div className="AknFullPage-subTitle">
                   {__('pim_enriched_entity.record.create.subtitle')}
                 </div>
-                <div className="AknFullPage-title">{__('pim_enriched_entity.record.create.title')}</div>
+                <div
+                  className="AknFullPage-title"
+                >
+                  {__(
+                    'pim_enriched_entity.record.create.title',
+                    {entityLabel: this.props.enrichedEntity.getLabel(this.props.context.locale).toLowerCase()}
+                  )}
+                </div>
                 <div className="AknFieldContainer" data-code="label">
                   <div className="AknFieldContainer-header">
                     <label className="AknFieldContainer-label"
@@ -139,13 +148,15 @@ class Create extends React.Component<CreateProps> {
 
 export default connect((state: EditState): StateProps => {
   const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
+  const enrichedEntity = denormalizeEnrichedEntity(state.form.data);
 
   return {
     data: state.createRecord.data,
     errors: state.createRecord.errors,
     context: {
       locale: locale
-    }
+    },
+    enrichedEntity
   };
 }, (dispatch: any): DispatchProps => {
   return {
