@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\VersioningBundle\Normalizer\Flat;
+namespace Akeneo\Tool\Bundle\VersioningBundle\tests\integration\Normalizer\Flat;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
