@@ -39,6 +39,6 @@ class EditRecordHandler
 
         $record = $this->recordRepository->getByIdentifier($identifier);
         $record->updateLabels($labelCollection);
-        $this->recordRepository->save($record);
+        $this->recordRepository->update($record);
     }
 }

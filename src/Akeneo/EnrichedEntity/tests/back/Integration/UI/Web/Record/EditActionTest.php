@@ -146,7 +146,7 @@ class EditActionTest extends ControllerIntegrationTestCase
                 'fr_FR' => 'Celine Dion',
             ]
         );
-        $repository->save($entityItem);
+        $repository->create($entityItem);
 
         $user = new User();
         $user->setUsername('julia');

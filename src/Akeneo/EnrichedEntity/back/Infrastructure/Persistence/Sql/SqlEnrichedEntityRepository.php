@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 
@@ -24,7 +24,7 @@ use Doctrine\DBAL\Types\Type;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlEnrichedEntityRepository implements EnrichedEntityRepository
+class SqlEnrichedEntityRepository implements EnrichedEntityRepositoryInterface
 {
     /** @var Connection */
     private $sqlConnection;
@@ -37,6 +37,10 @@ class SqlEnrichedEntityRepository implements EnrichedEntityRepository
         $this->sqlConnection = $sqlConnection;
     }
 
+    /**
+     * @throws \RuntimeException
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function create(EnrichedEntity $enrichedEntity): void
     {
         $serializedLabels = $this->getSerializedLabels($enrichedEntity);
@@ -51,15 +55,13 @@ SQL;
             ]
         );
         if ($affectedRows !== 1) {
-            throw new \RuntimeException('Expected to create one enriched entity, but none was created');
+            throw new \RuntimeException(
+                sprintf('Expected to create one enriched entity, but %d were affected', $affectedRows)
+            );
         }
     }
 
     /**
-     * Depending on the database table state, the sql query "REPLACE INTO ... " might affect one row (the insert use
-     * case) or two rows (the update use case)
-     * @see https://dev.mysql.com/doc/refman/8.0/en/mysql-affected-rows.html
-     *
      * @throws \RuntimeException
      * @throws \Doctrine\DBAL\DBALException
      */
@@ -80,7 +82,9 @@ SQL;
         );
 
         if ($affectedRows !== 1) {
-            throw new \RuntimeException('Expected to update one enriched entity, but none was updated');
+            throw new \RuntimeException(
+                sprintf('Expected to update one enriched entity, but %d rows were affected.', $affectedRows)
+            );
         }
     }
 

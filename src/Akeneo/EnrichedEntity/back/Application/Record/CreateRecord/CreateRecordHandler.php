@@ -40,6 +40,6 @@ class CreateRecordHandler
 
         $record = Record::create($identifier, $enrichedEntityIdentifier, $code, $createRecordCommand->labels);
 
-        $this->recordRepository->save($record);
+        $this->recordRepository->create($record);
     }
 }

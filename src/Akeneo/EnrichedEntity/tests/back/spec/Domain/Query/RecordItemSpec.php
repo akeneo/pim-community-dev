@@ -29,8 +29,8 @@ class RecordItemSpec extends ObjectBehavior
         $this->normalize()->shouldReturn(
             [
                 'identifier'                 => [
-                    RecordIdentifier::ENRICHED_ENTITY_IDENTIFIER => 'designer',
-                    RecordIdentifier::IDENTIFIER                 => 'starck',
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier' => 'starck',
                 ],
                 'enriched_entity_identifier' => 'designer',
                 'code' => 'starck',

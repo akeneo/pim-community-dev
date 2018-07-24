@@ -7,13 +7,13 @@ use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnri
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class EditEnrichedEntityHandlerSpec extends ObjectBehavior
 {
-    public function let(EnrichedEntityRepository $repository)
+    public function let(EnrichedEntityRepositoryInterface $repository)
     {
         $this->beConstructedWith($repository);
     }
@@ -24,7 +24,7 @@ class EditEnrichedEntityHandlerSpec extends ObjectBehavior
     }
 
     function it_edits_an_enriched_entity(
-        EnrichedEntityRepository $repository,
+        EnrichedEntityRepositoryInterface $repository,
         EnrichedEntity $enrichedEntity,
         EditEnrichedEntityCommand $editEnrichedEntityCommand
     ) {

@@ -55,7 +55,7 @@ class EnrichedEntityCollectionValue extends AbstractValue implements EnrichedEnt
     public function __toString(): string
     {
         return null !== $this->records ? implode(array_map(function (Record $record) {
-            return (string) $record->getIdentifier();
+            return $record->getIdentifier()->getIdentifier();
         }, $this->records), ', ') : '';
     }
 }

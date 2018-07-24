@@ -8,13 +8,13 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\SqlIntegrationTestCase;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\DBAL\DBALException;
 
 class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
 {
-    /** @var EnrichedEntityRepository */
+    /** @var EnrichedEntityRepositoryInterface */
     private $repository;
 
     public function setUp()
@@ -48,7 +48,7 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
         $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
         $this->repository->create($enrichedEntity);
 
-        $this->expectException(UniqueConstraintViolationException::class);
+        $this->expectException(DBALException::class);
         $this->repository->create($enrichedEntity);
     }
 
@@ -73,11 +73,11 @@ class SqlEnrichedEntityRepositoryTest extends SqlIntegrationTestCase
      */
     public function it_throws_when_udpating_a_non_existing_enriched_entity()
     {
-        $this->expectException(\RuntimeException::class);
         $identifier = EnrichedEntityIdentifier::fromString('identifier');
         $enrichedEntity = EnrichedEntity::create($identifier, ['en_US' => 'Designer', 'fr_FR' => 'Concepteur']);
         $enrichedEntity->updateLabels(LabelCollection::fromArray(['en_US' => 'Stylist', 'fr_FR' => 'Styliste']));
 
+        $this->expectException(\RuntimeException::class);
         $this->repository->update($enrichedEntity);
     }
 

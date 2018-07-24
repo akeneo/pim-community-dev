@@ -16,13 +16,13 @@ namespace Akeneo\EnrichedEntity\tests\back\Common;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
+class InMemoryEnrichedEntityRepository implements EnrichedEntityRepositoryInterface
 {
     /** @var EnrichedEntity[] */
     private $enrichedEntities = [];

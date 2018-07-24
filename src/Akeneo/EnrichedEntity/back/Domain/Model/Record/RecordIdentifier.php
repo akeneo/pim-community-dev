@@ -32,12 +32,6 @@ class RecordIdentifier
 
     private function __construct(string $enrichedEntityIdentifier, string $identifier)
     {
-        $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-        $this->identifier = $identifier;
-    }
-
-    public static function from(string $enrichedEntityIdentifier, string $identifier): self
-    {
         Assert::stringNotEmpty($enrichedEntityIdentifier);
         Assert::maxLength($enrichedEntityIdentifier, 255);
         if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $enrichedEntityIdentifier)) {
@@ -50,6 +44,12 @@ class RecordIdentifier
             throw new \InvalidArgumentException('Record identifier may contain only letters, numbers and underscores');
         }
 
+        $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
+        $this->identifier = $identifier;
+    }
+
+    public static function from(string $enrichedEntityIdentifier, string $identifier): self
+    {
         return new self($enrichedEntityIdentifier, $identifier);
     }
 

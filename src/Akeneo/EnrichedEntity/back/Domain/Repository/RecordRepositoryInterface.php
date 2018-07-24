@@ -18,10 +18,14 @@ use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 
 interface RecordRepositoryInterface
 {
-    public function save(Record $record): void;
+    public function create(Record $record): void;
+
+    public function update(Record $record): void;
 
     /**
      * @throws RecordNotFoundException
      */
     public function getByIdentifier(RecordIdentifier $identifier): Record;
+
+    public function count(): int;
 }

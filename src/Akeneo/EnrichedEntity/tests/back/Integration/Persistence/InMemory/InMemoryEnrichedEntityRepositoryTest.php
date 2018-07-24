@@ -17,14 +17,14 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Common\InMemoryEnrichedEntityRepository;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
 class InMemoryEnrichedEntityRepositoryTest extends TestCase
 {
-    /** @var EnrichedEntityRepository */
+    /** @var EnrichedEntityRepositoryInterface */
     private $enrichedEntityRepository;
 
     public function setup()

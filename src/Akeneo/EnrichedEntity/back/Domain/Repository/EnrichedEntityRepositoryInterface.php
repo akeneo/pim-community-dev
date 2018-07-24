@@ -16,7 +16,7 @@ namespace Akeneo\EnrichedEntity\Domain\Repository;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 
-interface EnrichedEntityRepository
+interface EnrichedEntityRepositoryInterface
 {
     public function create(EnrichedEntity $enrichedEntity): void;
 

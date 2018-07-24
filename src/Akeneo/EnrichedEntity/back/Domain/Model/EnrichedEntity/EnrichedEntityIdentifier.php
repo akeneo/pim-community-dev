@@ -26,17 +26,17 @@ class EnrichedEntityIdentifier
 
     private function __construct(string $identifier)
     {
-        $this->identifier = $identifier;
-    }
-
-    public static function fromString(string $identifier): self
-    {
         Assert::stringNotEmpty($identifier);
         Assert::maxLength($identifier, 255);
         if (1 !== preg_match('/^[a-zA-Z0-9_]+$/', $identifier)) {
             throw new \InvalidArgumentException('Enriched Entity identifier may contain only letters, numbers and underscores');
         }
 
+        $this->identifier = $identifier;
+    }
+
+    public static function fromString(string $identifier): self
+    {
         return new self($identifier);
     }
 

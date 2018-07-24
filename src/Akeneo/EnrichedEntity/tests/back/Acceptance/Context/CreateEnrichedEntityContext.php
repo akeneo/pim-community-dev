@@ -8,7 +8,7 @@ use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\Create
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Common\InMemoryEnrichedEntityRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -30,7 +30,7 @@ final class CreateEnrichedEntityContext implements Context
     private $exceptionContext;
 
     public function __construct(
-        EnrichedEntityRepository $enrichedEntityRepository,
+        EnrichedEntityRepositoryInterface $enrichedEntityRepository,
         CreateEnrichedEntityHandler $createEnrichedEntityHandler,
         ExceptionContext $exceptionContext
     ) {

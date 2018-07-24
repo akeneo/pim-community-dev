@@ -27,21 +27,32 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
     /** @var array */
     protected $records = [];
 
-    public function save(Record $record): void
+    public function create(Record $record): void
     {
-        $identifier = $record->getIdentifier();
-        $this->records[$identifier->getEnrichedEntityIdentifier()][$identifier->getIdentifier()] = $record;
+        $key = $this->getKey($record->getIdentifier());
+        if (isset($this->records[$key])) {
+            throw new \RuntimeException('Record already exists');
+        }
+        $this->records[$key] = $record;
+    }
+
+    public function update(Record $record): void
+    {
+        $key = $this->getKey($record->getIdentifier());
+        if (!isset($this->records[$key])) {
+            throw new \RuntimeException('Expected to update one record, but none was saved');
+        }
+        $this->records[$key] = $record;
     }
 
     public function getByIdentifier(RecordIdentifier $identifier): Record
     {
-        $recordIdentifier = $identifier->getIdentifier();
-        $enrichedEntityIdentifier = $identifier->getEnrichedEntityIdentifier();
-        if (!isset($this->records[$enrichedEntityIdentifier][$recordIdentifier])) {
-            throw RecordNotFoundException::withIdentifier($enrichedEntityIdentifier, $recordIdentifier);
+        $key = $this->getKey($identifier);
+        if (!isset($this->records[$key])) {
+            throw RecordNotFoundException::withIdentifier($identifier);
         }
 
-        return $this->records[$enrichedEntityIdentifier][$recordIdentifier];
+        return $this->records[$key];
     }
 
     public function count(): int
@@ -53,5 +64,10 @@ class InMemoryRecordRepository implements RecordRepositoryInterface
         }
 
         return $recordCount;
+    }
+
+    private function getKey(RecordIdentifier $recordIdentifier): string
+    {
+        return sprintf('%s_%s', $recordIdentifier->getEnrichedEntityIdentifier(), $recordIdentifier->getIdentifier());
     }
 }

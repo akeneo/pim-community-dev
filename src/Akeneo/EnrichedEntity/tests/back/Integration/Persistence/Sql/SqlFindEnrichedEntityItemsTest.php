@@ -77,10 +77,10 @@ SQL;
                 'en_US' => 'Designer',
             ]
         );
-        $enrichedEntityRepository->save($enrichedEntity);
+        $enrichedEntityRepository->create($enrichedEntity);
 
         $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
-        $recordRepository->save(
+        $recordRepository->create(
             Record::create(
                 RecordIdentifier::from('designer', 'starck'),
                 EnrichedEntityIdentifier::fromString('designer'),
@@ -88,7 +88,7 @@ SQL;
                 ['fr_Fr' => 'Philippe Starck']
             )
         );
-        $recordRepository->save(
+        $recordRepository->create(
             Record::create(
                 RecordIdentifier::from('designer', 'coco'),
                 EnrichedEntityIdentifier::fromString('designer'),

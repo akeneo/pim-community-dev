@@ -37,12 +37,10 @@ class EditRecordHandlerSpec extends ObjectBehavior
             'en_US' => 'Sony',
         ];
 
-        $recordRepository->getByIdentifier(
-            Argument::type(RecordIdentifier::class)
-        )->willReturn($record);
+        $recordRepository->getByIdentifier(Argument::type(RecordIdentifier::class))->willReturn($record);
 
         $record->updateLabels(Argument::type(LabelCollection::class))->shouldBeCalled();
-        $recordRepository->save($record)->shouldBeCalled();
+        $recordRepository->update($record)->shouldBeCalled();
 
         $this->__invoke($editRecordCommand);
     }

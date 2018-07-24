@@ -6,7 +6,7 @@ namespace Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\UserManagement\Component\Model\User;
 use AkeneoEnterprise\Test\IntegrationTestsBundle\Helper\AuthenticatedClientFactory;
@@ -86,20 +86,20 @@ class EditActionTest extends ControllerIntegrationTestCase
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
     }
 
-    private function getEnrichEntityRepository(): EnrichedEntityRepository
+    private function getEnrichEntityRepository(): EnrichedEntityRepositoryInterface
     {
         return $this->get('akeneo_enrichedentity.infrastructure.persistence.enriched_entity');
     }
 
     private function loadFixtures(): void
     {
-        $queryHandler = $this->getEnrichEntityRepository();
+        $enrichedEntityRepository = $this->getEnrichEntityRepository();
 
         $entityItem = EnrichedEntity::create(EnrichedEntityIdentifier::fromString('designer'), [
             'en_US' => 'Designer',
             'fr_FR' => 'Concepteur',
         ]);
-        $queryHandler->update($entityItem);
+        $enrichedEntityRepository->create($entityItem);
 
         $user = new User();
         $user->setUsername('julia');

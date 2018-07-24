@@ -14,7 +14,7 @@ namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -22,10 +22,10 @@ use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
  */
 class EditEnrichedEntityHandler
 {
-    /** @var EnrichedEntityRepository */
+    /** @var EnrichedEntityRepositoryInterface */
     private $enrichedEntityRepository;
 
-    public function __construct(EnrichedEntityRepository $enrichedEntityRepository)
+    public function __construct(EnrichedEntityRepositoryInterface $enrichedEntityRepository)
     {
         $this->enrichedEntityRepository = $enrichedEntityRepository;
     }

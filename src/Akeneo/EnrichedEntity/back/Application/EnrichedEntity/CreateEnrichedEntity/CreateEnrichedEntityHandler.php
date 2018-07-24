@@ -15,7 +15,7 @@ namespace Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -23,10 +23,10 @@ use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
  */
 class CreateEnrichedEntityHandler
 {
-    /** @var EnrichedEntityRepository */
+    /** @var EnrichedEntityRepositoryInterface */
     private $enrichedEntityRepository;
 
-    public function __construct(EnrichedEntityRepository $enrichedEntityRepository)
+    public function __construct(EnrichedEntityRepositoryInterface $enrichedEntityRepository)
     {
         $this->enrichedEntityRepository = $enrichedEntityRepository;
     }

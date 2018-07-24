@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\tests\back\Acceptance;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
+use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
@@ -26,16 +27,60 @@ class InMemoryRecordRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_save_a_record_and_returns_it()
+    public function it_creates_a_record_and_returns_it()
     {
         $identifier = RecordIdentifier::from('enriched_entity_identifier', 'record_identifier');
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
 
-        $this->recordRepository->save($record);
+        $this->recordRepository->create($record);
 
         $recordFound = $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
         $this->assertTrue($record->equals($recordFound));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_creating_an_existing_record_with_same_identifier()
+    {
+        $identifier = RecordIdentifier::from('enriched_entity_identifier', 'record_identifier');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
+        $this->recordRepository->create($record);
+
+        $this->expectException(\RuntimeException::class);
+        $this->recordRepository->create($record);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_a_record_and_returns_it()
+    {
+        $identifier = RecordIdentifier::from('enriched_entity_identifier', 'record_identifier');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
+        $this->recordRepository->create($record);
+        $record->updateLabels(LabelCollection::fromArray(['fr_FR' => 'stylist']));
+
+        $this->recordRepository->update($record);
+        $recordFound = $this->recordRepository->getByIdentifier($identifier, $enrichedEntityIdentifier);
+
+        $this->assertTrue($record->equals($recordFound));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_updating_a_non_existing_record()
+    {
+        $identifier = RecordIdentifier::from('enriched_entity_identifier', 'record_identifier');
+        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
+        $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
+
+        $this->expectException(\RuntimeException::class);
+        $this->recordRepository->update($record);
     }
 
     /**
@@ -49,14 +94,14 @@ class InMemoryRecordRepositoryTest extends TestCase
         $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('enriched_entity_identifier');
         $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier'), []);
 
-        $this->recordRepository->save($record);
+        $this->recordRepository->create($record);
 
         $this->assertEquals(1, $this->recordRepository->count());
 
         $identifier = RecordIdentifier::from('enriched_entity_identifier', 'record_identifier2');
         $record = Record::create($identifier, $enrichedEntityIdentifier, RecordCode::fromString('record_identifier2'), []);
 
-        $this->recordRepository->save($record);
+        $this->recordRepository->create($record);
 
         $this->assertEquals(2, $this->recordRepository->count());
     }

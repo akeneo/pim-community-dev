@@ -42,19 +42,6 @@ class Record
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         LabelCollection $labelCollection
     ) {
-        $this->identifier = $identifier;
-        $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-        $this->labelCollection = $labelCollection;
-        $this->code = $code;
-    }
-
-    public static function create(
-        RecordIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier,
-        RecordCode $code,
-        array $rawLabelCollection
-    ): self {
-        $labelCollection = LabelCollection::fromArray($rawLabelCollection);
         if ($identifier->getIdentifier() !== (string) $code) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -73,6 +60,20 @@ class Record
                 )
             );
         }
+
+        $this->identifier = $identifier;
+        $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
+        $this->labelCollection = $labelCollection;
+        $this->code = $code;
+    }
+
+    public static function create(
+        RecordIdentifier $identifier,
+        EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        RecordCode $code,
+        array $rawLabelCollection
+    ): self {
+        $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
         return new self($identifier, $code, $enrichedEntityIdentifier, $labelCollection);
     }

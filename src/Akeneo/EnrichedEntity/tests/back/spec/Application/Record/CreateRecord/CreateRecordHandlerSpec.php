@@ -33,7 +33,7 @@ class CreateRecordHandlerSpec extends ObjectBehavior
             'fr_FR' => 'Intel',
         ];
 
-        $recordRepository->save(Argument::type(Record::class))->shouldBeCalled();
+        $recordRepository->create(Argument::type(Record::class))->shouldBeCalled();
 
         $this->__invoke($createRecordCommand);
     }

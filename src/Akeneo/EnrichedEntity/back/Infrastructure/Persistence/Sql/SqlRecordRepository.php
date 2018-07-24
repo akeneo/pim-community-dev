@@ -48,19 +48,11 @@ class SqlRecordRepository implements RecordRepositoryInterface
         return $count;
     }
 
-    /**
-     * Depending on the database table state, the sql query "REPLACE INTO ... " might affect one row (the insert use
-     * case) or two rows (the update use case)
-     * @see https://dev.mysql.com/doc/refman/8.0/en/mysql-affected-rows.html
-     *
-     * @throws \RuntimeException
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    public function save(Record $record): void
+    public function create(Record $record): void
     {
         $serializedLabels = $this->getSerializedLabels($record);
         $insert = <<<SQL
-        REPLACE INTO akeneo_enriched_entity_record (identifier, enriched_entity_identifier, labels, data)
+        INSERT INTO akeneo_enriched_entity_record (identifier, enriched_entity_identifier, labels, data)
         VALUES (:identifier, :enriched_entity_identifier, :labels, :data);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
@@ -72,9 +64,37 @@ SQL;
                 'data' => '{}'
             ]
         );
+        if ($affectedRows !== 1) {
+            throw new \RuntimeException(
+                sprintf('Expected to create one enriched entity, but %d rows were affected', $affectedRows)
+            );
+        }
+    }
 
-        if ($affectedRows === 0) {
-            throw new \RuntimeException('Expected to save one enriched entity, but none was saved');
+    /**
+     */
+    public function update(Record $record): void
+    {
+        $serializedLabels = $this->getSerializedLabels($record);
+        $insert = <<<SQL
+        UPDATE akeneo_enriched_entity_record
+        SET labels = :labels, data = :data
+        WHERE identifier = :identifier AND enriched_entity_identifier = :enriched_entity_identifier;
+SQL;
+        $affectedRows = $this->sqlConnection->executeUpdate(
+            $insert,
+            [
+                'identifier' => $record->getIdentifier()->getIdentifier(),
+                'enriched_entity_identifier' => $record->getIdentifier()->getEnrichedEntityIdentifier(),
+                'labels' => $serializedLabels,
+                'data' => '{}'
+            ]
+        );
+
+        if ($affectedRows !== 1) {
+            throw new \RuntimeException(
+                sprintf('Expected to save one enriched entity, but %d rows were affected', $affectedRows)
+            );
         }
     }
 
@@ -98,10 +118,7 @@ SQL;
         $statement->closeCursor();
 
         if (!$result) {
-            throw RecordNotFoundException::withIdentifier(
-                $identifier->getEnrichedEntityIdentifier(),
-                $identifier->getIdentifier()
-            );
+            throw RecordNotFoundException::withIdentifier($identifier);
         }
 
         return $this->hydrateRecord($result['identifier'], $result['enriched_entity_identifier'], $result['labels']);
