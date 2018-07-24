@@ -2,10 +2,10 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Command;
 
-use InvalidArgumentException;
-use Monolog\Handler\StreamHandler;
 use Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\PurgeProgressBarAdvancerSubscriber;
 use Akeneo\Tool\Bundle\VersioningBundle\Purger\VersionPurgerInterface;
+use InvalidArgumentException;
+use Monolog\Handler\StreamHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
