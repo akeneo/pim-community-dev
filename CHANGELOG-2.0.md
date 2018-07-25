@@ -1,7 +1,8 @@
-# 2.0.x
+# 2.0.30 (2018-07-25)
 
 ## Bug fixes
 
+- PIM-7502: Add variant navigation module when variant product is only viewable
 - PIM-7409: Fix Group "All" added to all jobs by default at installation
 
 # 2.0.29 (2018-07-04)

@@ -1,8 +1,28 @@
+# 1.7.27 (2018-07-24)
+
+# 1.7.26 (2018-07-23)
+
+## Bug fixes
+
+- PIM-7526: Prevent warnings about the generation of asset variation from being shown after uploading a non-image file.
+
+## BC breaks:
+
+### AppKernel 
+
+- Remove `Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle` and `APY\JsFormValidationBundle\APYJsFormValidationBundle`
+
+### Routing
+
+- Remove routing from `APYJsFormValidationBundle` 
+
 # 1.7.24 (2018-07-05)
 
 ## Bug fixes
 
 - PIM-7464: Fix memory leak during rule execution.
+
+# 1.7.23 (2018-06-25)
 
 # 1.7.22 (2018-06-05)
 
