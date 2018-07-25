@@ -38,8 +38,8 @@ class Record
 
     private function __construct(
         RecordIdentifier $identifier,
-        RecordCode $code,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        RecordCode $code,
         LabelCollection $labelCollection
     ) {
         Assert::eq($identifier->getIdentifier(), (string) $code, sprintf(
@@ -69,7 +69,7 @@ class Record
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
-        return new self($identifier, $code, $enrichedEntityIdentifier, $labelCollection);
+        return new self($identifier, $enrichedEntityIdentifier, $code, $labelCollection);
     }
 
     public function getIdentifier(): RecordIdentifier
