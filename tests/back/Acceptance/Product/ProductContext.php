@@ -43,8 +43,7 @@ class ProductContext implements Context
      */
     public function theFollowingProduct(TableNode $table)
     {
-        foreach ($table->getHash() as $productRow)
-        {
+        foreach ($table->getHash() as $productRow) {
             $product = $this->productBuilder->createProduct($productRow['identifier'], $productRow['family']);
             unset($productRow['identifier'], $productRow['family']);
 
