@@ -16,9 +16,9 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
+use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 

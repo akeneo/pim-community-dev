@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\Permission\Bundle\UpdateGuesser;
 
 use Akeneo\Pim\Permission\Component\Model\LocaleAccessInterface;
+use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
 /**
  * Locale access update guesser
