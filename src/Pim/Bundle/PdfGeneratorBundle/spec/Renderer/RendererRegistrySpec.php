@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\PdfGeneratorBundle\Renderer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererInterface;
+use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class RendererRegistrySpec extends ObjectBehavior

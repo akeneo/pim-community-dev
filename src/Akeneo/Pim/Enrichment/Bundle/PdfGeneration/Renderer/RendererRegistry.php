@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
+namespace Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer;
 
 use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
 
