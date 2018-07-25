@@ -12,15 +12,6 @@ services:
         tags:
             - { name: 'pim_catalog.updater.adder' }
 
-    pim_catalog.updater.attribute:
-        class: 'Akeneo\Pim\Structure\Component\Updater\AttributeUpdater'
-        arguments:
-            - '@pim_catalog.repository.attribute_group'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.registry.attribute_type'
-            - '@pim_localization.updater.translatable'
-            - ['auto_option_sorting', 'is_read_only']
-
     pim_catalog.updater.group:
         class: '%pim_catalog.updater.group.class%'
         arguments:
