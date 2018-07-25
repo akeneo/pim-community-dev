@@ -95,7 +95,6 @@ class AppKernel extends Kernel
             new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\LocalizationBundle\PimLocalizationBundle(),
             new Pim\Bundle\NotificationBundle\PimNotificationBundle(),
-            new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
             new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Akeneo\Tool\Bundle\VersioningBundle\AkeneoVersioningBundle(),
