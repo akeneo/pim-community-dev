@@ -13,7 +13,11 @@ config:
                     options:
                         urls:
                             product_index: pimee_workflow_rest_product_index
-
+        pim/controller-registry:
+            controllers:
+                pimee_workflow_published_product_mass_edit_action:
+                    module: pim/controller/mass-edit
+                    aclResourceId: pimee_workflow_published_product_index
     paths:
         pimee/published-product-manager:         akeneopimworkflow/js/manager/published-product-manager
         pimee/product-draft-fetcher:             akeneopimworkflow/js/fetcher/product-draft-fetcher

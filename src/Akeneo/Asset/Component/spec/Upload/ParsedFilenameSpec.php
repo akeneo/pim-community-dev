@@ -3,8 +3,7 @@
 namespace spec\Akeneo\Asset\Component\Upload;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Prophecy\Argument;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 class ParsedFilenameSpec extends ObjectBehavior
 {
@@ -20,13 +19,13 @@ class ParsedFilenameSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Asset\Component\Upload\ParsedFilenameInterface');
     }
 
-    function it_do_not_parse_invalid_format(LocaleInterface $locale)
+    function it_cleans_filename_with_invalid_characters(LocaleInterface $locale)
     {
         $this->beConstructedWith([$locale], 'f+oo-bar.jpg');
 
-        $this->getAssetCode()->shouldReturn(null);
+        $this->getAssetCode()->shouldReturn('f_oo_bar');
         $this->getLocaleCode()->shouldReturn(null);
-        $this->getCleanFilename()->shouldReturn(null);
+        $this->getCleanFilename()->shouldReturn('f_oo_bar.jpg');
     }
 
     function it_parses_a_simple_non_localizable_filename()

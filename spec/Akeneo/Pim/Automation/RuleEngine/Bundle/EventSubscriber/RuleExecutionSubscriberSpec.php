@@ -5,10 +5,8 @@ namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\ChainUserProvider;
 
 class RuleExecutionSubscriberSpec extends ObjectBehavior
@@ -20,7 +18,7 @@ class RuleExecutionSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RuleExecutionSubscriber');
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleExecutionSubscriber');
     }
 
     function it_is_a_subscriber()
@@ -35,60 +33,39 @@ class RuleExecutionSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_notifies_a_user_if_the_rules_are_executed_with_its_user_name(
-        $chainUserProvider,
-        $notifier,
-        GenericEvent $event,
-        Rule $rule1,
-        Rule $rule2,
-        UserInterface $user
-    ) {
-        $event->getSubject()->willReturn([$rule1, $rule2]);
-        $event->getArgument('username')->willReturn(Argument::cetera());
-        $chainUserProvider->loadUserByUsername(Argument::cetera())->willReturn($user);
-
-        $notifier->notify(Argument::cetera(), [$user])->shouldBeCalled();
-
-        $this->afterJobExecution($event);
-    }
-
-    function it_does_not_notify_a_user_if_the_rules_are_executed_anonimously(
+    function it_notifies_an_user_if_the_rules_are_executed_with_its_user_name(
         $notifier,
         GenericEvent $event,
         Rule $rule1,
         Rule $rule2
     ) {
         $event->getSubject()->willReturn([$rule1, $rule2]);
-        $event->getArgument('username')->willThrow(\InvalidArgumentException::class);
-
-        $notifier->notify()->shouldNotBeCalled();
+        $event->getArgument('username')->willReturn('Morty');
+        $notifier->notify(Argument::any(), ['Morty'])->shouldBeCalled();
 
         $this->afterJobExecution($event);
     }
 
-    function it_does_not_notify_a_user_if_the_user_does_not_exist(
+    function it_does_not_notify_an_user_if_the_rules_are_executed_anonimously(
         $notifier,
-        $chainUserProvider,
         GenericEvent $event,
         Rule $rule1,
         Rule $rule2
     ) {
         $event->getSubject()->willReturn([$rule1, $rule2]);
-        $event->getArgument('username')->willReturn(Argument::any());
-
-        $chainUserProvider->loadUserByUsername(Argument::any())->willThrow(UsernameNotFoundException::class);
+        $event->getArgument('username')->willReturn(null);
 
         $notifier->notify()->shouldNotBeCalled();
 
         $this->afterJobExecution($event);
     }
 
-    function it_does_not_notify_a_user_if_there_is_no_rules_to_execute(
+    function it_does_not_notify_an_user_if_there_is_no_rules_to_execute(
         $notifier,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn([]);
-        $event->getArgument('username')->willReturn(Argument::any());
+        $event->getArgument('username')->willReturn('Morty');
 
         $notifier->notify()->shouldNotBeCalled();
 

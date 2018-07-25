@@ -11,7 +11,7 @@
 
 namespace Akeneo\Asset\Component\Upload;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 /**
  * @see FilenameParserInterface
@@ -43,7 +43,7 @@ class ParsedFilename implements ParsedFilenameInterface
      */
     public function __construct(array $availableLocales, $rawFilename)
     {
-        $this->rawFilename = $rawFilename;
+        $this->rawFilename = $this->sanitizeFileName($rawFilename);
         $this->availableLocales = $availableLocales;
 
         $this->parseRawFilename($this->rawFilename);
@@ -134,5 +134,13 @@ class ParsedFilename implements ParsedFilenameInterface
     protected function sanitizeAssetCode($code)
     {
         return str_replace('-', '_', trim($code));
+    }
+
+    private function sanitizeFileName(string $filename): string
+    {
+        $filename = basename(trim($filename));
+        $filename = mb_ereg_replace('[^A-Za-z0-9.-]', '_', $filename);
+
+        return $filename;
     }
 }

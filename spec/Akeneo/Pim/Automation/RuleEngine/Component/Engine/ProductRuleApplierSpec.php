@@ -2,18 +2,18 @@
 
 namespace spec\Akeneo\Pim\Automation\RuleEngine\Component\Engine;
 
-use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
-use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsSaver;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsUpdater;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsValidator;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -25,7 +25,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductsValidator $productsValidator,
         ProductsSaver $productsSaver,
         EventDispatcherInterface $eventDispatcher,
-        ObjectDetacherInterface $objectDetacher
+        ObjectDetacherInterface $objectDetacher,
+        EntityManagerClearerInterface $cacheClearer
     ) {
         $this->beConstructedWith(
             $paginatorFactory,
@@ -33,18 +34,20 @@ class ProductRuleApplierSpec extends ObjectBehavior
             $productsValidator,
             $productsSaver,
             $eventDispatcher,
-            $objectDetacher
+            $objectDetacher,
+            $cacheClearer,
+            10
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier');
+        $this->shouldHaveType('PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier');
     }
 
     function it_is_a_rule_applier()
     {
-        $this->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Engine\ApplierInterface');
+        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface');
     }
 
     function it_applies_a_rule_which_does_not_select_products(
@@ -52,24 +55,25 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsUpdater,
         $productsValidator,
         $productsSaver,
+        $objectDetacher,
+        $cacheClearer,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
-        CursorInterface $cursor,
-        PaginatorFactoryInterface $paginatorFactory,
-        PaginatorInterface $paginator
+        CursorInterface $cursor
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
-        $rule->getActions()->willReturn([]);
-
-        $paginator->valid()->shouldBeCalled()->willReturn(false);
-        $paginator->rewind()->shouldBeCalled()->willReturn(null);
-        $paginatorFactory->createPaginator($cursor)->shouldBeCalled()->willReturn($paginator);
-        $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
+        $cursor->rewind()->shouldBeCalled();
+        $cursor->valid()->willReturn(false);
+        $subjectSet->getSubjectsCursor()->willReturn($cursor);
 
         $productsUpdater->update(Argument::any(), Argument::any())->shouldNotBeCalled();
         $productsValidator->validate(Argument::any(), Argument::any())->shouldNotBeCalled();
         $productsSaver->save(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
+
+        $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
+        $cacheClearer->clear()->shouldNotBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
         $this->apply($rule, $subjectSet);
@@ -81,46 +85,82 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsValidator,
         $productsSaver,
         $objectDetacher,
+        $cacheClearer,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductInterface $selectedProduct,
-        PaginatorFactoryInterface $paginatorFactory,
-        PaginatorInterface $paginator,
         CursorInterface $cursor,
         ProductInterface $validProduct1,
         ProductInterface $validProduct2
     ) {
+        $indexPage = 0;
+
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
-        // paginator mocking
-        $productArray = [];
-        for ($i = 0; $i < 13; $i++) {
-            $productArray[] = $selectedProduct;
-        }
-        $indexPage = 0;
-        $paginator->current()->willReturn(array_slice($productArray, $indexPage * 10, 10));
-        $paginator->next()->shouldBeCalled()->will(function () use ($paginator, &$productArray, &$indexPage) {
-            $paginator->current()->willReturn(array_slice($productArray, $indexPage * 10, 10));
-            $indexPage++;
-        });
-        $paginator->rewind()->shouldBeCalled()->will(function () use (&$indexPage) {
-            $indexPage = 0;
-        });
-        $paginator->valid()->shouldBeCalled()->will(function () use (&$indexPage) {
-            return $indexPage < 3;
-        });
-
-        $paginatorFactory->createPaginator($cursor)->shouldBeCalled()->willReturn($paginator);
-        $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
-
+        $cursor->rewind()->will(
+            function () use (&$indexPage) {
+                $indexPage = 0;
+            }
+        );
+        $cursor->current()->willReturn($selectedProduct);
+        $cursor->next()->will(
+            function () use (&$indexPage) {
+                $indexPage++;
+            }
+        );
+        $cursor->valid()->will(
+            function () use (&$indexPage) {
+                return $indexPage < 13;
+            }
+        );
+        $subjectSet->getSubjectsCursor()->willReturn($cursor);
         $productsUpdater->update($rule, Argument::any())->shouldBeCalled();
         $productsValidator->validate($rule, Argument::any())->willReturn([$validProduct1, $validProduct2]);
         $productsSaver->save($rule, [$validProduct1, $validProduct2])->shouldBeCalled();
+        $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
         $this->apply($rule, $subjectSet);
+    }
 
-        $objectDetacher->detach($selectedProduct)->shouldBeCalled();
+    function it_applies_a_rule_on_every_product_in_the_subject_set(
+        $productsUpdater,
+        $productsValidator,
+        $productsSaver,
+        $objectDetacher,
+        $cacheClearer,
+        RuleInterface $rule,
+        RuleSubjectSetInterface $subjectSet,
+        ProductInterface $selectedProduct,
+        CursorInterface $cursor
+    ) {
+        $indexPage = 0;
+        $cursor->rewind()->will(
+            function () use (&$indexPage) {
+                $indexPage = 0;
+            }
+        );
+        $cursor->current()->willReturn($selectedProduct);
+        $cursor->next()->will(
+            function () use (&$indexPage) {
+                $indexPage++;
+            }
+        );
+        $cursor->valid()->will(
+            function () use (&$indexPage) {
+                return $indexPage < 42;
+            }
+        );
+        $subjectSet->getSubjectsCursor()->willReturn($cursor);
+
+        $productsUpdater->update($rule, Argument::type('array'))->shouldBeCalledTimes(5);
+        $productsValidator->validate($rule, Argument::type('array'))->shouldBeCalledTimes(5)->willReturnArgument(1);
+        $productsSaver->save($rule, Argument::type('array'))->shouldBeCalledTimes(5);
+        $objectDetacher->detach(Argument::any())->shouldNotBeCalled();
+        $cacheClearer->clear()->shouldBeCalledTimes(5);
+
+        $this->apply($rule, $subjectSet);
     }
 }

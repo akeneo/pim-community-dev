@@ -15,8 +15,7 @@ use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Asset\Component\Upload\Exception\DuplicateFileException;
 use Akeneo\Asset\Component\Upload\Exception\InvalidCodeException;
 use Akeneo\Asset\Component\Upload\Exception\InvalidLocaleException;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 
 /**
  * Check uploaded files
@@ -30,6 +29,8 @@ class UploadChecker implements UploadCheckerInterface
 
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
+
+    protected $locales;
 
     /**
      * @param AssetRepositoryInterface  $assetRepository
@@ -50,9 +51,9 @@ class UploadChecker implements UploadCheckerInterface
      */
     public function getParsedFilename($filename)
     {
-        $locales = $this->localeRepository->findAll();
+        $this->locales = $this->locales ?: $this->localeRepository->findAll();
 
-        return new ParsedFilename($locales, $filename);
+        return new ParsedFilename($this->locales, $filename);
     }
 
     /**
@@ -64,9 +65,9 @@ class UploadChecker implements UploadCheckerInterface
             throw new InvalidCodeException();
         }
 
-        $locales = $this->localeRepository->findAll();
+        $this->locales = $this->locales ?: $this->localeRepository->findAll();
         if (null !== $parsedFilename->getLocaleCode() &&
-            !$this->isLocaleActivated($locales, $parsedFilename->getLocaleCode())
+            !$this->isLocaleActivated($this->locales, $parsedFilename->getLocaleCode())
         ) {
             throw new InvalidLocaleException();
         }

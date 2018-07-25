@@ -19,6 +19,7 @@ Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductUniqueData:
     manyToOne:
         product:
             targetEntity: Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface
+            inversedBy: uniqueData
             joinColumns:
                 product_id:
                     referencedColumnName: id

@@ -16,8 +16,8 @@ use Akeneo\Asset\Component\Upload\Exception\UploadException;
 use Akeneo\Asset\Component\Upload\ImporterInterface;
 use Akeneo\Asset\Component\Upload\UploadCheckerInterface;
 use Akeneo\Asset\Component\Upload\UploadContext;
-use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -134,6 +134,7 @@ class MassUploadController
         if ($files->count() > 0) {
             $file = $files->getIterator()->current();
             $originalFilename = $file->getClientOriginalName();
+            $originalFilename = basename(trim($originalFilename));
             $parsedFilename = $this->uploadChecker->getParsedFilename($originalFilename);
             $targetDir = $this->getUploadContext()->getTemporaryUploadDirectory();
             $uploaded = $file->move($targetDir, $parsedFilename->getRawFilename());
@@ -299,6 +300,8 @@ class MassUploadController
      */
     protected function cleanFilename($filename)
     {
+        $filename = urldecode($filename);
+
         return basename(trim($filename));
     }
 }

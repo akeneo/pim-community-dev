@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\Twig;
 
-use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
-use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Prophecy\Argument;
@@ -144,12 +144,16 @@ class RuleExtensionSpec extends ObjectBehavior
     {
         $this->appendLocaleAndScopeContext('value', 'en_US', 'mobile')
             ->shouldReturn('value [ <i class="flag flag-us"></i> en | mobile ]');
+        $this->appendLocaleAndScopeContext('value', 'az_cyrl_AZ', 'mobile')
+            ->shouldReturn('value [ <i class="flag flag-az"></i> az | mobile ]');
     }
 
     function it_appends_locale_and_scope_without_scope()
     {
         $this->appendLocaleAndScopeContext('value', 'en_US')
             ->shouldReturn('value [ <i class="flag flag-us"></i> en ]');
+        $this->appendLocaleAndScopeContext('value', 'az_cyrl_AZ')
+            ->shouldReturn('value [ <i class="flag flag-az"></i> az ]');
     }
 
     function it_appends_locale_and_scope_without_locale()

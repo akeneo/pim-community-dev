@@ -2,19 +2,18 @@
 
 namespace spec\Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Akeneo\UserManagement\Component\Model\Group;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
-use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
-use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
-use Akeneo\Asset\Component\Model\CategoryInterface as ProductAssetCategoryInterface;
-use Akeneo\Pim\Permission\Component\Attributes;
+use Oro\Bundle\UserBundle\Entity\Group;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
+use Pim\Component\Catalog\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface as ProductAssetCategoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -101,6 +100,8 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
         $event->hasArgument('is_new')->willReturn(true);
         $event->getArgument('is_new')->willReturn(true);
 
+        $event->hasArgument('is_installation')->willReturn(false);
+
         $event->getSubject()->willReturn($category);
         $category->isRoot()->willReturn(true);
 
@@ -125,6 +126,8 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
         $event->hasArgument('is_new')->willReturn(true);
         $event->getArgument('is_new')->willReturn(true);
 
+        $event->hasArgument('is_installation')->willReturn(false);
+
         $event->getSubject()->willReturn($category);
         $category->isRoot()->willReturn(false);
 
@@ -147,6 +150,8 @@ class AddDefaultPermissionsSubscriberSpec extends ObjectBehavior
     ) {
         $event->hasArgument('is_new')->willReturn(true);
         $event->getArgument('is_new')->willReturn(true);
+
+        $event->hasArgument('is_installation')->willReturn(false);
 
         $event->getSubject()->willReturn($category);
         $category->isRoot()->willReturn(false);

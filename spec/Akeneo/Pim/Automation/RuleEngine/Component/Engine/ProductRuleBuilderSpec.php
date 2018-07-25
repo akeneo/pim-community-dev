@@ -9,35 +9,31 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductRuleBuilderSpec extends ObjectBehavior
 {
     function let(
         DenormalizerInterface $ruleContentDenormalizer,
-        EventDispatcherInterface $eventDispatcher,
-        ValidatorInterface $validator
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
             $ruleContentDenormalizer,
             $eventDispatcher,
-            $validator,
-            'Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule'
+            'Akeneo\Bundle\RuleEngineBundle\Model\Rule'
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder');
+        $this->shouldHaveType('PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder');
     }
 
     function it_is_a_rule_builder()
     {
-        $this->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface');
+        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface');
     }
 
-    function it_builds_a_rule($eventDispatcher, $validator, $ruleContentDenormalizer, RuleDefinitionInterface $definition)
+    function it_builds_a_rule($eventDispatcher, $ruleContentDenormalizer, RuleDefinitionInterface $definition)
     {
         $content = $this->buildRuleContent();
 
@@ -46,9 +42,8 @@ class ProductRuleBuilderSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(RuleEvents::PRE_BUILD, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_BUILD, Argument::any())->shouldBeCalled();
-        $validator->validate(Argument::any())->shouldBeCalled()->willReturn([]);
 
-        $this->build($definition)->shouldHaveType('Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface');
+        $this->build($definition)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface');
     }
 
     function it_does_not_build_a_rule_with_bad_content(
@@ -68,38 +63,12 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         ;
     }
 
-    function it_does_not_build_a_rule_with_a_content_that_is_not_valid(
-        $eventDispatcher,
-        $validator,
-        $ruleContentDenormalizer,
-        RuleDefinitionInterface $definition,
-        ConstraintViolationListInterface $violations
-    ) {
-        $content = $this->buildRuleContent();
-
-        $definition->getCode()->willReturn('rule1');
-        $definition->getContent()->shouldBeCalled()->willReturn([]);
-        $ruleContentDenormalizer->denormalize(Argument::cetera())->shouldBeCalled()->willReturn($content);
-
-        $eventDispatcher->dispatch(RuleEvents::PRE_BUILD, Argument::any())->shouldBeCalled();
-
-        $violations->count()->willReturn(2);
-        $violations->rewind()->willReturn(null);
-        $violations->valid()->shouldBeCalled();
-        $validator->validate(Argument::any())->willReturn($violations);
-
-        $this
-            ->shouldThrow('Akeneo\Tool\Bundle\RuleEngineBundle\Exception\BuilderException')
-            ->during('build', [$definition])
-        ;
-    }
-
     /**
      * Do not delete it, this method is used to easily build the rule content that is
      * used in those specs.
      * In case we need to modify the specs, it will be useful.
      *
-     * @return string
+     * @return array
      */
     private function buildRuleContent()
     {

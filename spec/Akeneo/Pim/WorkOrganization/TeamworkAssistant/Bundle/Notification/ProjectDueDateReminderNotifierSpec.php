@@ -2,17 +2,17 @@
 
 namespace spec\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification;
 
-use Akeneo\Tool\Component\Localization\Presenter\DatePresenter;
+use Akeneo\Component\Localization\Presenter\DatePresenter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectDueDateReminderNotifier;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectNotificationFactory;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 
 class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
 {
@@ -119,7 +119,7 @@ class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
     ) {
         $projectCompleteness->isComplete()->willReturn(false);
         $projectCompleteness->getRatioForDone()->willReturn(30);
-        $date = new \DateTime();
+        $date = new \DateTime('today');
         $date->add(new \DateInterval('P3D'));
         $project->getDueDate()->willReturn($date);
 
