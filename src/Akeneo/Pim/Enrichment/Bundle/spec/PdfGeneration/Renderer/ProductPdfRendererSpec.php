@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\PdfGeneratorBundle\Renderer;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer;
 
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\PdfGeneratorBundle\Renderer;
+namespace spec\Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererInterface;
