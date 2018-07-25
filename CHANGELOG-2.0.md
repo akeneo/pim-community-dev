@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-7522: Fix association changes not save on the product history.
+
 # 2.0.30 (2018-07-25)
 
 ## Technical improvements
