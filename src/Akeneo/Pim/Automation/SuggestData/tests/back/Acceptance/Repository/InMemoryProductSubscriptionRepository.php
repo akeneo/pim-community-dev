@@ -54,18 +54,4 @@ class InMemoryProductSubscriptionRepository implements ProductSubscriptionReposi
         $subscriptionId = $subscription->getSubscriptionId();
         $this->subscriptions[$productId][$subscriptionId] = $subscription;
     }
-
-    /**
-     * @param $productId
-     *
-     * @return bool
-     */
-    public function existsForProductId($productId): bool
-    {
-        if (!isset($this->subscriptions[$productId])) {
-            return false;
-        }
-
-        return count($this->subscriptions[$productId]) > 0;
-    }
 }

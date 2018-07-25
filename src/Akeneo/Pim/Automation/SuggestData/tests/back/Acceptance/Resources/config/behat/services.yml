@@ -17,8 +17,3 @@ services:
             - '@__symfony__.pim_catalog.repository.attribute'
         tags:
             - { name: 'fob.context_service' }
-
-    akeneo_acceptance.context.suggest_data.product_subscription:
-        class: 'Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Context\ProductSubscriptionContext'
-        tags:
-            - { name: 'fob.context_service' }

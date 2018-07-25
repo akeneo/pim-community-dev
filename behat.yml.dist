@@ -202,7 +202,6 @@ acceptance:
             contexts_services:
                 - 'akeneo_acceptance.context.suggest_data.pim_ai'
                 - 'akeneo_acceptance.context.suggest_data.identifiers_mapping'
-                - 'akeneo_acceptance.context.suggest_data.product_subscription'
                 - 'test.attribute.context'
             filters:
                 tags: '@acceptance-back'
