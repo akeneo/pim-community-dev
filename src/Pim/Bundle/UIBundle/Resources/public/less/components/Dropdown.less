@@ -80,7 +80,7 @@
     text-align: left;
     font-size: @AknDefaultFontSize;
     width: 100%;
-    line-height: 1px;
+    line-height: 26px;
     transition: line-height @animationDuration @transitionTimingFunction;
   }
 
@@ -99,9 +99,20 @@
       color: darken(@AknSlateGrey, 30%);
     }
 
+    &--withImage {
+      display: flex;
+      align-items: center;
+    }
+
     &--hidden {
       display: none;
     }
+  }
+
+  &-menuLinkImage {
+    width: 25px;
+    height: 25px;
+    margin: 0 10px 10px 0;
   }
 
   &--left {

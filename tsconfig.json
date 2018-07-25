@@ -9,10 +9,7 @@
     "rootDir": "web/bundles",
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "*",
-        "web/bundles/*"
-      ]
+      "*": ["*", "web/bundles/*"]
     },
     "jsx": "react",
     "skipLibCheck": true,
@@ -26,15 +23,6 @@
     "noUnusedParameters": true,
     "removeComments": true
   },
-  "exclude": [
-    "node_modules",
-    "vendor",
-    "src",
-    "tests",
-    "packages"
-  ],
-  "types": [
-    "typePatches",
-    "node"
-  ]
+  "exclude": ["node_modules", "vendor", "src", "tests", "packages"],
+  "types": ["typePatches", "node"]
 }
