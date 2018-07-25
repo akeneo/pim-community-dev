@@ -14,7 +14,7 @@ namespace Akeneo\Pim\Permission\Bundle\Controller;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\PdfGeneratorBundle\Controller\ProductController as BaseController;
+use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController as BaseController;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererRegistry;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  *
  * @author Charles Pourcel <charles.pourcel@akeneo.com>
  */
-class ProductController extends BaseController
+class ProductController extends \Akeneo\Pim\Enrichment\Bundle\Controller\Ui\BaseController
 {
     /** @var ProductRepositoryInterface */
     protected $productRepository;
