@@ -61,6 +61,6 @@ class RendererRegistrySpec extends ObjectBehavior
         $renderer->supports($blender, 'pdf')->willReturn(false);
         $betterRenderer->supports($blender, 'pdf')->willReturn(false);
 
-        $this->shouldThrow('Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException')->during('render', [$blender, 'pdf', []]);
+        $this->shouldThrow('Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception\RendererRequiredException')->during('render', [$blender, 'pdf', []]);
     }
 }

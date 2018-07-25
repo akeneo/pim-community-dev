@@ -51,7 +51,7 @@ class ProductControllerSpec extends ObjectBehavior
 
         $rendererRegistry
             ->render($blender, 'pdf', Argument::type('array'))
-            ->willThrow('Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException');
+            ->willThrow('Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception\RendererRequiredException');
 
         $this
             ->shouldThrow('Symfony\Component\HttpKernel\Exception\HttpException')

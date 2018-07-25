@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer;
 
-use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
+use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception\RendererRequiredException;
 
 /**
  * Registry used to render an item using registered renderers
