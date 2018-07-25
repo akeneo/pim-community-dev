@@ -8,20 +8,17 @@
 define(
     [
         'jquery',
-        'underscore',
         'oro/translator',
         'pim/form/common/save',
         'oro/messenger',
         'pimee/saver/identifier-mapping'
-    ],
-    function (
+    ], (
         $,
-        _,
         __,
         BaseSave,
         messenger,
         MappingSaver
-    ) {
+    ) => {
         return BaseSave.extend({
             updateSuccessMessage: __('akeneo_suggest_data.settings.index.identifiers_mapping.save.flash.success'),
             updateFailureMessage: __('akeneo_suggest_data.settings.index.identifiers_mapping.save.flash.fail'),
@@ -51,11 +48,13 @@ define(
              * This function put null instead of empty string in mapping values.
              */
             cleanMapping: function (identifiersMapping) {
-                return _.each(identifiersMapping, function(attributeCode, index) {
-                    if ('' === attributeCode) {
+                Object.keys(identifiersMapping).map(index => {
+                    if ('' === identifiersMapping[index]) {
                         identifiersMapping[index] = null;
                     }
                 });
+
+                return identifiersMapping;
             }
         });
     }

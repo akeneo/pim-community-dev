@@ -15,11 +15,13 @@ config:
                         entity: suggest-data-settings
                         connectionCode: pim-ai
                         inactiveForm: pimee-suggest-data-settings-index-inactive-connection
+
         # Savers
         pimee/saver/pim_ai_connection:
             url: akeneo_suggest_data_connection_post
         pimee/saver/identifier-mapping:
             url: akeneo_suggest_data_identifiers_mapping_save
+
         # Fetchers
         pim/fetcher-registry:
             fetchers:
@@ -30,8 +32,6 @@ config:
                             list: akeneo_suggest_data_identifiers_mapping_get
 
     paths:
-        pimee/fetcher/pim-ai-connection: akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher.ts
-
         # Controller
         pimee/settings/mapping/controller: akeneosuggestdata/js/settings/mapping/mapping-controller
 

@@ -20,17 +20,6 @@ class EditIdentifiersMappingView extends BaseView {
     'suggestDataLabel': __('akeneo_suggest_data.settings.index.tab.identifiers.headers.suggest_data_label'),
   };
 
-  readonly config: Object = {};
-
-  /**
-   * {@inheritdoc}
-   */
-  constructor(options: { config: Object }) {
-    super(options);
-
-    this.config = {...this.config, ...options.config};
-  };
-
   /**
    * {@inheritdoc}
    */
@@ -54,7 +43,6 @@ class EditIdentifiersMappingView extends BaseView {
     }));
 
     Object.keys(identifiersMapping).forEach((pimAiAttributeCode: string) => {
-      const $dom = this.$el.find('.attribute-selector[data-identifier="' + pimAiAttributeCode + '"]');
       const attributeSelector = new simpleSelectAttribute({
         config: {
           fieldName: pimAiAttributeCode,
@@ -63,6 +51,8 @@ class EditIdentifiersMappingView extends BaseView {
         }
       });
       attributeSelector.setParent(this);
+
+      const $dom = this.$el.find('.attribute-selector[data-identifier="' + pimAiAttributeCode + '"]');
       $dom.html(attributeSelector.render().$el);
     });
 
