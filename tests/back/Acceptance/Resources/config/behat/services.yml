@@ -98,6 +98,15 @@ services:
         tags:
             - { name: fob.context_service }
 
+    test.product.context:
+        class: 'Akeneo\Test\Acceptance\Product\ProductContext'
+        arguments:
+            - '@__symfony__.pim_catalog.repository.product'
+            - '@__symfony__.pim_catalog.builder.product'
+            - '@__symfony__.pim_catalog.factory.value_collection'
+        tags:
+            - { name: 'fob.context_service' }
+
     test.catalog.product_creation.context:
         class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductCreation'
         arguments:
