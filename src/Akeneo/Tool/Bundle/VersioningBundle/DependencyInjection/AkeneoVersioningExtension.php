@@ -13,7 +13,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class PimVersioningExtension extends Extension
+class AkeneoVersioningExtension extends Extension
 {
     /**
      * {@inheritdoc}
