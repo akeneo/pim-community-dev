@@ -68,3 +68,9 @@ services:
             - '@pim_catalog.repository.product'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.applier.product_draft'
+
+    pim_catalog.query.get_associated_product_codes_by_published_product:
+        class: '%pim_catalog.query.get_associated_product_codes_by_product.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pimee_workflow.entity.published_product_association.class%'
