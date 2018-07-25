@@ -11,3 +11,26 @@ services:
             - '@pimee_workflow.builder.draft'
             - '@pimee_workflow.applier.product_draft'
             - '@pimee_workflow.repository.product_draft'
+
+    pimee_workflow.connector.processor.quick_export.published_product:
+        class: '%pim_enrich.connector.processor.quick_export.product.class%'
+        arguments:
+            - '@pimee_workflow.normalizer.standard.published_product'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.builder.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_user.provider.user'
+            - '@security.token_storage'
+            - '@pim_connector.processor.bulk_media_fetcher'
+
+    pimee_workflow.processor.normalization.published_product:
+        class: '%pim_connector.processor.normalization.product.class%'
+        arguments:
+            - '@pimee_workflow.normalizer.standard.published_product'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.builder.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.processor.bulk_media_fetcher'
+            - '@pim_connector.detacher.stored_product_detacher'
