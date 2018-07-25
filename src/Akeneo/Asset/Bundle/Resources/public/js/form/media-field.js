@@ -29,6 +29,10 @@ define(
                 let saveBtn    = $('<button type="button" class="btn btn-primary">Save</button>');
                 let oldSaveBtn = dialog.find('.btn-primary');
 
+                dialog.off('keypress');
+                fileInput.off('change');
+                codeInput.off('focusout');
+
                 if (oldSaveBtn) {
                     oldSaveBtn.remove();
                 }
