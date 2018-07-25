@@ -130,3 +130,12 @@ services:
             - '@pim_catalog.elasticsearch.product_model_proposal_indexer'
         tags:
             - { name: kernel.event_subscriber }
+
+    # CE override
+    pim_catalog.event_subscriber.index_products:
+        class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\IndexProductsSubscriber'
+        arguments:
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.published_product_indexer'
+        tags:
+            - { name: kernel.event_subscriber }
