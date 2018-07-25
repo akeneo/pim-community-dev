@@ -26,7 +26,7 @@ suites:
         psr4_prefix: Akeneo\Pim\Structure\Bundle
         spec_path: src/Akeneo/Pim/Structure/Bundle
         src_path: src/Akeneo/Pim/Structure/Bundle
-    
+
     ## Enrichment context
     Enrichment:
         namespace: Akeneo\Pim\Enrichment\Component
@@ -134,7 +134,11 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\MeasureBundle
         spec_path: src/Akeneo/Tool/Bundle/MeasureBundle
         src_path: src/Akeneo/Tool/Bundle/MeasureBundle
-
+    VersioningBundle:
+        namespace: Akeneo\Tool\Bundle\VersioningBundle
+        psr4_prefix: Akeneo\Tool\Bundle\VersioningBundle
+        spec_path: src/Akeneo/Tool/Bundle/VersioningBundle
+        src_path: src/Akeneo/Tool/Bundle/VersioningBundle
     ## Pim Components
     Api:
         namespace: Akeneo\Tool\Component\Api
@@ -258,11 +262,6 @@ suites:
         psr4_prefix: Akeneo\UserManagement\Bundle
         spec_path: src/Akeneo/UserManagement/Bundle
         src_path: src/Akeneo/UserManagement/Bundle
-    VersioningBundle:
-        namespace: Pim\Bundle\VersioningBundle
-        psr4_prefix: Pim\Bundle\VersioningBundle
-        spec_path: src/Pim/Bundle/VersioningBundle
-        src_path: src/Pim/Bundle/VersioningBundle
     CatalogVolumeMonitoringBundle:
         namespace: Pim\Bundle\CatalogVolumeMonitoringBundle
         psr4_prefix: Pim\Bundle\CatalogVolumeMonitoringBundle

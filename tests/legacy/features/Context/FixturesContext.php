@@ -2521,7 +2521,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \Pim\Bundle\VersioningBundle\Manager\VersionManager
+     * @return \Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager
      */
     protected function getVersionManager()
     {

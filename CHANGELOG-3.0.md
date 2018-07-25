@@ -365,3 +365,4 @@
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxes` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxes`
 - Move `Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator` to `Akeneo\Pim\Structure\Component\Validator\Constraints\ImmutableVariantAxesValidator`
 - Remove `Pim\Component\Catalog\Model\AttributeTypeTranslationInterface`
+- Move namespace `Pim\Bundle\VersioningBundle` to `Akeneo\Tool\Bundle\VersioningBundle`
