@@ -81,7 +81,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_workflow.connector.reader.mass_edit.published_product'
-            - '@pim_enrich.connector.processor.quick_export.product'
+            - '@pimee_workflow.connector.processor.quick_export.published_product'
             - '@pim_connector.writer.file.csv_product_quick_export'
             - '%pim_job_product_batch_size%'
 
@@ -93,7 +93,7 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pimee_workflow.connector.reader.mass_edit.published_product'
-            - '@pim_enrich.connector.processor.quick_export.product'
+            - '@pimee_workflow.connector.processor.quick_export.published_product'
             - '@pim_connector.writer.file.xlsx_product_quick_export'
             - '%pim_job_product_batch_size%'
 
