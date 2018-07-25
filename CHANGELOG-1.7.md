@@ -1,9 +1,12 @@
-# 1.7.x
+# 1.7.26 (2018-07-23)
 
 ## Bug fixes
 
 - PIM-7429: Fix category tab in product edit form
 - PIM-7523: Fix accessibility for boolean switches
+- PIM-7473: Enables cache to avoid reloading validation mapping files
+- PIM-7459: Fix completeness performances issues with high number of locales on MongoDB
+- PIM-7525: Add loading mask to avoid multiple import launches
 
 # 1.7.25 (2018-07-06)
 
@@ -28,6 +31,7 @@
 ## Bug fixes
 
 - PIM-7400: Fix 'ensure-indexes' timeout command
+- PIM-7456: Security vulnerabilities in dependencies
 
 # 1.7.22 (2018-06-05)
 
