@@ -85,39 +85,59 @@ class FamilyMappingController
         return new JsonResponse($RESPONSE);
     }
 
-    public function getAction(): JsonResponse
+    /**
+     * @param string   $identifier
+     * @param Response $response
+     *
+     * @return JsonResponse
+     */
+    public function getAction($identifier, Request $request): JsonResponse
     {
-        return new JsonResponse([
-            'family' => 'camcorders',
-            'enabled' => true,
-            'mapping' => [
-                [
-                    'pim_ai_attribute' => [
-                        'label' => 'the pim.ai attribute label 1'
-                    ],
-                    'attribute' => [ // TODO Use the standard attribute normalizer for this.
-                        'code' => 'weight',
-                        'labels' => [
-                            'en_US' => 'Weight',
-                            'fr_FR' => 'Hauteur',
-                            'de_DE' => 'Auf wiedersehen'
-                        ]
-                    ],
-                    'status' => self::ACTIVE
-                ], [
-                    'pim_ai_attribute' => [
-                        'label' => 'the pim.ai attribute label 2'
-                    ],
-                    'attribute' => null,
-                    'status' => self::PENDING
-                ], [
-                    'pim_ai_attribute' => [
-                        'label' => 'the pim.ai attribute label 2'
-                    ],
-                    'attribute' => null,
-                    'status' => self::INACTIVE
+        if ($identifier === 'camcorders') {
+            return new JsonResponse([
+                'family' => 'camcorders',
+                'enabled' => true,
+                'mapping' => [
+                    [
+                        'pim_ai_attribute' => [
+                            'label' => 'the pim.ai attribute label 1'
+                        ],
+                        'attribute' => [ // TODO Use the standard attribute normalizer for this.
+                            'code' => 'weight',
+                            'labels' => [
+                                'en_US' => 'Weight',
+                                'fr_FR' => 'Hauteur',
+                                'de_DE' => 'Auf wiedersehen'
+                            ]
+                        ],
+                        'status' => self::ACTIVE
+                    ], [
+                        'pim_ai_attribute' => [
+                            'label' => 'the pim.ai attribute label 2'
+                        ],
+                        'attribute' => null,
+                        'status' => self::PENDING
+                    ], [
+                        'pim_ai_attribute' => [
+                            'label' => 'the pim.ai attribute label 2'
+                        ],
+                        'attribute' => null,
+                        'status' => self::INACTIVE
+                    ]
                 ]
-            ]
-        ]);
+            ]);
+        } else if ($identifier === 'clothing') {
+            return new JsonResponse([
+                'family' => 'clothing',
+                'enabled' => true,
+                'mapping' => []
+            ]);
+        } else {
+            return new JsonResponse([
+                'family' => 'accessories',
+                'enabled' => false,
+                'mapping' => []
+            ]);
+        }
     }
 }

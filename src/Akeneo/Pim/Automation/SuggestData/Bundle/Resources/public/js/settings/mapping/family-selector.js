@@ -20,7 +20,7 @@ define(
             events: {
                 'change input': function (event) {
                     FetcherRegistry.getFetcher('suggest_data_family_mapping')
-                        .fetch('camcorders')
+                        .fetch(this.getFieldValue(event.target), {cached: false})
                         .then((family) => {
                             this.setData(family);
                             this.getRoot().render();

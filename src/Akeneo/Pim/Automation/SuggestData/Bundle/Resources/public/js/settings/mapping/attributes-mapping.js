@@ -28,7 +28,7 @@ define([
                 this.$el.html('');
 
                 const familyMapping = this.getFormData();
-                if (familyMapping.hasOwnProperty('mapping')) {
+                if (familyMapping.hasOwnProperty('mapping') && familyMapping.mapping.length) {
                     const mapping = familyMapping.mapping;
                     const locale = UserContext.get('uiLocale');
                     const statuses = {

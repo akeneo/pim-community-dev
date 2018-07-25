@@ -54,18 +54,30 @@ extensions:
                 - { label: akeneo_suggest_data.settings.index.tab.attributes.title, route: akeneo_suggest_data_settings_attributes_index }
             selected: 2
 
-    pim-suggest-data-settings-identifiers-mapping-attribute-family-selector:
-        module: pimee/settings/mapping/family-selector
+    pim-suggest-data-settings-attributes-mapping-index-tab-content:
+        module: pim/common/simple-view
         parent: pim-suggest-data-settings-attributes-mapping-index-tabs
+        config:
+            template: pimee/template/settings/mapping/family-mapping
+
+    pim-suggest-data-settings-identifiers-mapping-index-attribute-family-selector:
+        module: pimee/settings/mapping/family-selector
+        parent: pim-suggest-data-settings-attributes-mapping-index-tab-content
         position: 10
-        targetZone: content
+        targetZone: family-selector
         config:
             fieldName: family
             label: pim_enrich.entity.family.uppercase_label
             choiceRoute: akeneo_sugggest_data_family_mapping_index
 
-    pim-suggest-data-settings-identifiers-mapping-attribute-attributes-mapping:
-        module: pimee/settings/mapping/attributes-mapping
-        parent: pim-suggest-data-settings-attributes-mapping-index-tabs
+    pim-sugget-data-settings-identifiers-mapping-index-subscribe:
+        module: pimee/settings/mapping/subscribe
+        parent: pim-suggest-data-settings-attributes-mapping-index-tab-content
         position: 20
-        targetZone: content
+        targetZone: subscribe
+
+    pim-suggest-data-settings-identifiers-mapping-index-attribute-attributes-mapping:
+        module: pimee/settings/mapping/attributes-mapping
+        parent: pim-suggest-data-settings-attributes-mapping-index-tab-content
+        position: 30
+        targetZone: mapping
