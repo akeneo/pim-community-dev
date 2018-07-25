@@ -29,7 +29,7 @@ akeneo_suggest_data_is_connection_activated:
     methods: [GET]
 
 akeneo_suggest_data_settings_index:
-    path: /suggest-data/mapping
+    path: /suggest-data/mapping/identifiers
     methods: [GET]
 
 akeneo_suggest_data_identifiers_mapping_save:
@@ -43,7 +43,7 @@ akeneo_suggest_data_identifiers_mapping_get:
     methods: [GET]
 
 akeneo_suggest_data_settings_attributes_index:
-    path: /suggest-data/to-be-defined # TODO
+    path: /suggest-data/mapping/family
     methods: [GET]
 
 akeneo_sugggest_data_family_mapping_index:

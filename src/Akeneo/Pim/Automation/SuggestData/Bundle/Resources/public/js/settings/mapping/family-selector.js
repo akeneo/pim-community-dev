@@ -1,6 +1,9 @@
 'use strict';
 
 /**
+ * This module allow user to select a catalog family for suggest data updating.
+ * When he selects a new family, it updates the main root model with it.
+ *
  * TODO
  * - Add badge for enabled families
  * - Automatically select the first one

@@ -2,7 +2,7 @@ extensions:
     pim-suggest-data-settings-attributes-mapping-index:
         module: pim/form/common/edit-form
 
-    pim-suggest-data-settings-attributes-mapping-index-breadcrumb:
+    pimee-suggest-data-settings-attributes-mapping-index-breadcrumb:
         module: pim/common/breadcrumbs
         parent: pim-suggest-data-settings-attributes-mapping-index
         targetZone: breadcrumbs
@@ -10,7 +10,7 @@ extensions:
             tab: pim-menu-settings
             item: pimee-suggest-data-menu-settings-mapping
 
-    pim-suggest-data-settings-attributes-mapping-index-user-navigation:
+    pimee-suggest-data-settings-attributes-mapping-index-user-navigation:
         module: pim/menu/user-navigation
         parent: pim-suggest-data-settings-attributes-mapping-index
         targetZone: user-menu
@@ -18,7 +18,7 @@ extensions:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
-    pim-suggest-data-settings-attributes-mapping-index-title:
+    pimee-suggest-data-settings-attributes-mapping-index-title:
         module: pim/common/title-with-subtitle
         parent: pim-suggest-data-settings-attributes-mapping-index
         targetZone: title
@@ -30,19 +30,19 @@ extensions:
                 - akeneo_suggest_data.settings.index.description.first_step
                 - akeneo_suggest_data.settings.index.description.second_step
 
-    pim-suggest-data-settings-attributes-mapping-index-save-buttons:
+    pimee-suggest-data-settings-attributes-mapping-index-save-buttons:
         module: pim/form/common/save-buttons
         parent: pim-suggest-data-settings-attributes-mapping-index
         targetZone: buttons
         position: 120
 
-    pim-suggest-data-settings-attributes-mapping-index-save:
+    pimee-suggest-data-settings-attributes-mapping-index-save:
         module: pimee/settings/mapping/save-form
         parent: pim-suggest-data-settings-attributes-mapping-index
         targetZone: buttons
         position: 0
 
-    pim-suggest-data-settings-attributes-mapping-index-tabs:
+    pimee-suggest-data-settings-attributes-mapping-index-tabs:
         module: pimee/settings/mapping/tabs
         parent: pim-suggest-data-settings-attributes-mapping-index
         targetZone: content
@@ -54,15 +54,15 @@ extensions:
                 - { label: akeneo_suggest_data.settings.index.tab.attributes.title, route: akeneo_suggest_data_settings_attributes_index }
             selected: 2
 
-    pim-suggest-data-settings-attributes-mapping-index-tab-content:
+    pimee-suggest-data-settings-attributes-mapping-index-tab-content:
         module: pim/common/simple-view
-        parent: pim-suggest-data-settings-attributes-mapping-index-tabs
+        parent: pimee-suggest-data-settings-attributes-mapping-index-tabs
         config:
             template: pimee/template/settings/mapping/family-mapping
 
     pim-suggest-data-settings-identifiers-mapping-index-attribute-family-selector:
         module: pimee/settings/mapping/family-selector
-        parent: pim-suggest-data-settings-attributes-mapping-index-tab-content
+        parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
         position: 10
         targetZone: family-selector
         config:
@@ -72,12 +72,24 @@ extensions:
 
     pim-sugget-data-settings-identifiers-mapping-index-subscribe:
         module: pimee/settings/mapping/subscribe
-        parent: pim-suggest-data-settings-attributes-mapping-index-tab-content
+        parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
         position: 20
         targetZone: subscribe
+        config:
+            labels:
+                subscribe: akeneo_suggest_data.settings.subscribe.subscribe
+                subscribed: akeneo_suggest_data.settings.subscribe.subscribed
 
     pim-suggest-data-settings-identifiers-mapping-index-attribute-attributes-mapping:
         module: pimee/settings/mapping/attributes-mapping
-        parent: pim-suggest-data-settings-attributes-mapping-index-tab-content
+        parent: pimee-suggest-data-settings-attributes-mapping-index-tab-content
         position: 30
         targetZone: mapping
+        config:
+            labels:
+                pending: akeneo_suggest_data.settings.status.pending
+                active: akeneo_suggest_data.settings.status.active
+                inactive: akeneo_suggest_data.settings.status.inactive
+                pim_ai_attribute: akeneo_suggest_data.settings.index.tab.identifiers.headers.pim_ai_attribute_label
+                catalog_attribute: akeneo_suggest_data.settings.index.tab.identifiers.headers.attribute_label
+                suggest_data: akeneo_suggest_data.settings.index.tab.identifiers.headers.suggest_data_label

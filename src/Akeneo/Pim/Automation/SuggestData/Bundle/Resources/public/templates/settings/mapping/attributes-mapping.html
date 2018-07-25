@@ -1,8 +1,8 @@
 <table class="AknGrid AknGrid--unclickable">
     <tr class="AknGrid-header">
-        <th class="AknGrid-headerCell">PIM.ai attribute</th>
-        <th class="AknGrid-headerCell">Catalog attribute</th>
-        <th class="AknGrid-headerCell">Suggest data</th>
+        <th class="AknGrid-headerCell"><%- pim_ai_attribute %></th>
+        <th class="AknGrid-headerCell"><%- catalog_attribute %></th>
+        <th class="AknGrid-headerCell"><%- suggest_data %></th>
     </tr>
     <% mapping.forEach((row) => { %>
         <tr class="AknGrid-bodyRow">
@@ -20,7 +20,7 @@
                 <% } %>
             </td>
             <td class="AknGrid-bodyCell">
-                <%- statuses[row.status] %><!-- TODO to translate -->
+                <%- statuses[row.status] %>
             </td>
         </tr>
     <% }) %>

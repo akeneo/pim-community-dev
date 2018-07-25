@@ -50,7 +50,8 @@ akeneo_suggest_data:
                     headers:
                         identifiers_label: Identifiers Label
                         attribute_label: Catalog Attribute
-                        suggest_data_label: Suggest Data
+                        pim_ai_attribute_label: PIM.ai attribute
+                        suggest_data_label: Suggest data
                         brand_label: Brand
                         asin_label: ASIN
                         mpn_label: MPN
@@ -63,3 +64,10 @@ akeneo_suggest_data:
                 save.flash:
                     success: Identifiers mapping has been successfully saved.
                     fail: Identifiers mapping not saved due to an error.
+        status:
+            pending: Pending
+            active: Active
+            inactive: Inactive
+        subscribe:
+            subscribe: Subscribe family to PIM.ai
+            subscribed: Subscribed to PIM.ai
