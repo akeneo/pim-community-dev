@@ -18,3 +18,8 @@ services:
         arguments:
             - '@pim_catalog.resolver.attribute_values'
             - '@pim_catalog.factory.value'
+
+    pim_pdf_generator.builder.dompdf:
+        class: 'Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\DompdfBuilder'
+        arguments:
+            - '%kernel.root_dir%'
