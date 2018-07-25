@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  *
  * @author Charles Pourcel <charles.pourcel@akeneo.com>
  */
-class ProductController extends \Akeneo\Pim\Enrichment\Bundle\Controller\Ui\BaseController
+class ProductController extends BaseController
 {
     /** @var ProductRepositoryInterface */
     protected $productRepository;
