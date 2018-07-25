@@ -174,6 +174,23 @@ class CountImpactedProductsIntegration extends TestCase
     }
 
     /**
+     * @link jira https://akeneo.atlassian.net/browse/PIM-7442
+     */
+    public function testUserSelectedAllEntitiesWithAdditionnalFilterOnParent()
+    {
+        $pqbFilters = [
+            [
+                'field'    => 'parent',
+                'operator' => 'IN',
+                'value'    => ['venus'],
+                'context'  => ['locale' => 'en_US', 'scope' => 'ecommerce', 'limit' => 25, 'from' => 0],
+                'type'     => 'field',
+            ],
+        ];
+        $this->assertProductsCountInSelection($pqbFilters, 3);
+    }
+
+    /**
      * @return Configuration
      */
     protected function getConfiguration()

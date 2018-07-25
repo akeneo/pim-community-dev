@@ -337,7 +337,9 @@ services:
             - ['categories', 'enabled', 'family', 'parent', 'groups']
 
     pim_connector.writer.file.product_model.column_sorter:
-        class: '%pim_connector.writer.file.default.column_sorter.class%'
+        class: '%pim_connector.writer.file.product.column_sorter.class%'
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.association_type'
             - ['code', 'family_variant', 'parent', 'categories']

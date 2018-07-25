@@ -36,7 +36,7 @@ Feature: Edit common attributes of many products at once
     And I select rows black_jacket and white_jacket
     And I press the "Bulk actions" button
     And I choose the "Edit attributes values" operation
-    Then I should see the text "Only the attributes belonging to the families of the selected products will be edited with the following data for the Deutsch (Deutschland) locale and the Ecommerce channel."
+    Then I should see the text "Only the attributes belonging to the families of the selected products will be edited with the following data for the German (Germany) locale and the Ecommerce channel."
     When I display the Name attribute
     And I change the "Name" to "Une veste"
     And I confirm mass edit

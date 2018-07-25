@@ -60,8 +60,7 @@ class VersioningController
         return new JsonResponse(
             $this->normalizer->normalize(
                 $this->versionRepository->getLogEntries($this->FQCNResolver->getFQCN($entityType), $entityId),
-                'internal_api',
-                ['timezone' => $this->userContext->getUserTimezone()]
+                'internal_api'
             )
         );
     }

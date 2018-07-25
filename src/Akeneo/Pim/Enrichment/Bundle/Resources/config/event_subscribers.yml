@@ -124,5 +124,6 @@ services:
             - '@akeneo_batch.job.job_instance_repository'
             - '@pim_catalog.repository.attribute_requirement'
             - '%pim_catalog.compute_completeness_of_products_family.job_name%'
+            - '@pim_catalog.doctrine.query.find_attributes_for_family'
         tags:
             - { name: kernel.event_subscriber }

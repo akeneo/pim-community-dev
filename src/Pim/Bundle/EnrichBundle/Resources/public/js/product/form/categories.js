@@ -100,8 +100,10 @@ define(
                 this.loadTrees().done(function (trees) {
                     this.trees = trees;
 
-                    this.state.set('currentTree', _.first(this.trees).code);
-                    this.state.set('currentTreeId', _.first(this.trees).id);
+                    if (undefined === this.state.toJSON().currentTree) {
+                        this.state.set('currentTree', _.first(this.trees).code);
+                        this.state.set('currentTreeId', _.first(this.trees).id);
+                    }
 
                     this.$el.html(
                         this.template({

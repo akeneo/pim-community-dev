@@ -30,13 +30,4 @@ class CompletenessManagerSpec extends ObjectBehavior
             $valueCompleteChecker
         );
     }
-
-    function it_generates_missing_completenesses_for_products(
-        ChannelInterface $channel,
-        $generator
-    ) {
-        $generator->generateMissingForProducts($channel, [])->shouldBeCalled();
-
-        $this->generateMissingForProducts($channel, []);
-    }
 }

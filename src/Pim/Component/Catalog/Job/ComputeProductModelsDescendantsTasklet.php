@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\Job;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
@@ -30,16 +30,24 @@ class ComputeProductModelsDescendantsTasklet implements TaskletInterface
     /** @var SaverInterface */
     private $productModelDescendantsSaver;
 
+    /** @var EntityManagerClearerInterface */
+    private $cacheClearer;
+
     /**
      * @param ProductModelRepositoryInterface $productModelRepository
      * @param SaverInterface                  $productModelDescendantsSaver
+     * @param EntityManagerClearerInterface   $cacheClearer
+     *
+     * @TODO: Remove null for cache clearer
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
-        SaverInterface $productModelDescendantsSaver
+        SaverInterface $productModelDescendantsSaver,
+        EntityManagerClearerInterface $cacheClearer = null
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->productModelDescendantsSaver = $productModelDescendantsSaver;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -52,15 +60,23 @@ class ComputeProductModelsDescendantsTasklet implements TaskletInterface
 
     /**
      * {@inheritdoc}
+     *
+     * As we used cache clearer on product model descendants saver,
+     * We should hydrate models one per one and we don't need to detach entities anymore
+     *
+     * @TODO: Remove null test on cache clearer
      */
     public function execute(): void
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $productModelCodes = $jobParameters->get('product_model_codes');
-        $productModels = $this->productModelRepository->findByIdentifiers($productModelCodes);
 
-        foreach ($productModels as $productModel) {
+        foreach ($productModelCodes as $productModelCode) {
+            $productModel = $this->productModelRepository->findOneByIdentifier($productModelCode);
             $this->productModelDescendantsSaver->save($productModel);
+            if (null !== $this->cacheClearer) {
+                $this->cacheClearer->clear();
+            }
         }
     }
 }

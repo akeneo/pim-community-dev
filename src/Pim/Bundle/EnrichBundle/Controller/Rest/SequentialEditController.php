@@ -57,9 +57,10 @@ class SequentialEditController
         $filters = $this->filterAdapter->adapt($parameters);
 
         $products = [];
+
         $cursor = $this->getProductsCursor($filters, [
             'locale' => $parameters['dataLocale'],
-            'scope'  => $parameters['dataScope'],
+            'scope'  => $parameters['dataScope']['value'],
             'sort'   => $parameters['sort']
         ]);
 

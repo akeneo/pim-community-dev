@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\Indexer\IndexerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,18 +25,20 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         ProductModelRepositoryInterface $productModelRepository,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         CompletenessManager $completenessManager,
-        BulkIndexerInterface $productIndexer,
+        BulkIndexerInterface $bulkProductIndexer,
         BulkIndexerInterface $bulkProductModelIndexer,
-        IndexerInterface $productModelIndexer
+        IndexerInterface $productModelIndexer,
+        BulkObjectDetacherInterface $bulkObjectDetacher
     ) {
         $this->beConstructedWith(
             $objectManager,
             $productModelRepository,
             $pqbFactory,
             $completenessManager,
-            $productIndexer,
+            $bulkProductIndexer,
             $bulkProductModelIndexer,
-            $productModelIndexer
+            $productModelIndexer,
+            $bulkObjectDetacher
         );
     }
 
@@ -49,7 +52,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $pqbFactory,
         $completenessManager,
         $objectManager,
-        $productIndexer,
+        $bulkProductIndexer,
         $bulkProductModelIndexer,
         $productModelIndexer,
         ProductQueryBuilderInterface $pqb,
@@ -83,7 +86,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
 
         $objectManager->flush()->shouldBeCalled();
 
-        $productIndexer->indexAll([$variantProduct1, $variantProduct2])->shouldBeCalled();
+        $bulkProductIndexer->indexAll([$variantProduct1, $variantProduct2])->shouldBeCalled();
 
         $productModelRepository->findChildrenProductModels($productModel)->willReturn([$productModelsChildren]);
         $bulkProductModelIndexer->indexAll([$productModelsChildren]);
@@ -98,7 +101,7 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $pqbFactory,
         $completenessManager,
         $objectManager,
-        $productIndexer,
+        $bulkProductIndexer,
         $bulkProductModelIndexer,
         $productModelIndexer,
         ProductQueryBuilderInterface $pqb,
@@ -113,15 +116,13 @@ class ProductModelDescendantsSaverSpec extends ObjectBehavior
         $pqb->addFilter('identifier', Operators::IN_LIST, [])->shouldBeCalled();
         $pqb->execute()->willReturn($cursor);
 
-        $cursor->count()->willReturn(0);
-
         $completenessManager->schedule(Argument::cetera())->shouldNotBeCalled();
         $completenessManager->generateMissingForProduct(Argument::cetera())->shouldNotBeCalled();
 
         $objectManager->persist(Argument::cetera())->shouldNotBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
 
-        $productIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();
+        $bulkProductIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();
 
         $productModelRepository->findChildrenProductModels($productModel)->willReturn([]);
         $bulkProductModelIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();
