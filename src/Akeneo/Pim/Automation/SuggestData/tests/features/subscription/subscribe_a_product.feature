@@ -18,6 +18,7 @@ Feature: Subscribe a product to PIM.ai
       | identifier | family | mpn | brand | asin |
       | my_tshirt  | tshirt | 156 | Foo   | 7854 |
 
+
   #Scenario: Successfully subscribe a product to PIM.ai that does not exist on PIM.ai
 
   #Scenario: Fail to subscribe a product that is already subscribed to PIM.ai
