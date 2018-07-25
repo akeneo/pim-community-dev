@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
+use Akeneo\Pim\Structure\Component\Model\Family;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
 class FamilyAttributeRequirementUpdateGuesserSpec extends ObjectBehavior
 {

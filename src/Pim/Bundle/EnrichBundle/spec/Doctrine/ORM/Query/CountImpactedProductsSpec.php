@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
-use Prophecy\Argument;
 
 class CountImpactedProductsSpec extends ObjectBehavior
 {
@@ -156,7 +155,7 @@ class CountImpactedProductsSpec extends ObjectBehavior
         ];
 
         $productAndProductModelQueryBuilderFactory->create(['filters' => [
-            ['field' => 'entity_type', 'operator' => "=", 'value' => "Pim\Component\Catalog\Model\ProductInterface"]
+            ['field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class]
         ]])->willReturn($pqbForAllProducts);
         $pqbForAllProducts->execute()->willReturn($cursorForAllProducts);
 
@@ -202,7 +201,7 @@ class CountImpactedProductsSpec extends ObjectBehavior
         ];
 
         $productAndProductModelQueryBuilderFactory->create(['filters' => [
-            ['field' => 'entity_type', 'operator' => "=", 'value' => "Pim\Component\Catalog\Model\ProductInterface"]
+            ['field' => 'entity_type', 'operator' => "=", 'value' => ProductInterface::class]
         ]])->willReturn($pqbForAllProducts);
         $pqbForAllProducts->execute()->willReturn($cursorForAllProducts);
 

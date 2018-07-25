@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
+use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
+use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 
 /**
  * Guess update on family attribute requirements.

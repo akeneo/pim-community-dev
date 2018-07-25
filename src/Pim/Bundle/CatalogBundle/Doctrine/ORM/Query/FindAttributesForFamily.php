@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
  * Checks if an attribute is part of the family attributes.
