@@ -7,3 +7,7 @@ export const notifyAttributeWellCreated = () => {
 export const notifyAttributeCreateFailed = () => {
   return notify('error', 'pim_enriched_entity.attribute.notification.create.fail');
 };
+
+export const notifyAttributeListUpdateFailed = () => {
+  return notify('error', 'pim_enriched_entity.attribute.notification.list.fail');
+};

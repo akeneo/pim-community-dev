@@ -14,12 +14,7 @@ interface FormProps {
 }
 
 export default class EditForm extends React.Component<FormProps> {
-  props: FormProps;
   private labelInput: HTMLInputElement;
-
-  constructor(props: FormProps) {
-    super(props);
-  }
 
   componentDidMount() {
     if (this.labelInput) {
@@ -37,7 +32,7 @@ export default class EditForm extends React.Component<FormProps> {
     }
   };
 
-  render(): JSX.Element | JSX.Element[] | null {
+  render() {
     return (
       <div>
         <div className="AknFieldContainer" data-code="identifier">

@@ -18,7 +18,7 @@ config:
                 pim-enriched-entity-edit-form-properties:
                     label: pim_enriched_entity.enriched_entity.tab.properties
                     view: akeneoenrichedentity/application/component/enriched-entity/edit/properties
-            default_tab: pim-enriched-entity-edit-form-properties
+            default_tab: pim-enriched-entity-edit-form-attribute
 
         pim/attribute-edit-form/type-specific-form-registry:
             formNames:

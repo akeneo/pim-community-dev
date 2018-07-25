@@ -5,7 +5,7 @@ export const attributeCreationStart = () => {
 };
 
 export const attributeCreationCodeUpdated = (value: string) => {
-  return {type: 'ATTRIBUTE_CREATION_RECORD_CODE_UPDATED', value};
+  return {type: 'ATTRIBUTE_CREATION_CODE_UPDATED', value};
 };
 
 export const attributeCreationLabelUpdated = (value: string, locale: string) => {

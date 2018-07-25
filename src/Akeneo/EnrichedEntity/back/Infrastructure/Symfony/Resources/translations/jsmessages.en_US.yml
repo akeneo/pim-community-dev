@@ -42,6 +42,9 @@ pim_enriched_entity:
             identifier:
                 pattern: 'This field may only contain letters, numbers and underscores.'
                 should_be_unique: 'This code already exists for this entity.'
+        no_data:
+            title: There are no record for {{ entityLabel }}
+            subtitle:   Click on the button "Add new" to create the first record
         button:
             save: Save
             create: Add new
@@ -65,6 +68,7 @@ pim_enriched_entity:
         type:
             text: Text
             image: Image
+        required: required for completeness
         button:
             add: Add an attribute
         create:

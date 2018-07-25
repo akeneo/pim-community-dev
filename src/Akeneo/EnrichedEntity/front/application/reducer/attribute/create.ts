@@ -45,12 +45,11 @@ export default (
       state = {...initCreateState(), active: true};
       break;
 
-    case 'ATTRIBUTE_CREATION_RECORD_CODE_UPDATED':
+    case 'ATTRIBUTE_CREATION_CODE_UPDATED':
       state = {
         ...state,
         data: {...state.data, code: action.value},
       };
-
       break;
 
     case 'ATTRIBUTE_CREATION_TYPE_UPDATED':
@@ -58,7 +57,6 @@ export default (
         ...state,
         data: {...state.data, type: action.attributeType},
       };
-
       break;
 
     case 'ATTRIBUTE_CREATION_VALUE_PER_LOCALE_UPDATED':
@@ -66,7 +64,6 @@ export default (
         ...state,
         data: {...state.data, valuePerLocale: action.valuePerLocale},
       };
-
       break;
 
     case 'ATTRIBUTE_CREATION_VALUE_PER_CHANNEL_UPDATED':
@@ -74,7 +71,6 @@ export default (
         ...state,
         data: {...state.data, valuePerChannel: action.valuePerChannel},
       };
-
       break;
 
     case 'ATTRIBUTE_CREATION_LABEL_UPDATED':
@@ -86,7 +82,6 @@ export default (
         ...state,
         data: {...state.data, labels: {...state.data.labels, [action.locale]: action.value}, code: code},
       };
-
       break;
 
     case 'ATTRIBUTE_CREATION_CANCEL':

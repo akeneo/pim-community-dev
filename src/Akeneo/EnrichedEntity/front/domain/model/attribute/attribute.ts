@@ -127,7 +127,7 @@ class CommonConcreteAttribute implements CommonAttribute {
       enrichedEntityIdentifier: this.enrichedEntityIdentifier.stringValue(),
       code: this.code.stringValue(),
       labels: this.labelCollection.normalize(),
-      type: AttributeType[this.type as any],
+      type: AttributeType[(this.type.charAt(0).toUpperCase() + this.type.slice(1)) as any],
       order: this.order,
       valuePerLocale: this.valuePerLocale,
       valuePerChannel: this.valuePerChannel,

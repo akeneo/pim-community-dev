@@ -7,6 +7,7 @@ import Record from 'akeneoenrichedentity/domain/model/record/record';
 import createAttribute, {
   CreateState as CreateAttributeState,
 } from 'akeneoenrichedentity/application/reducer/attribute/create';
+import attributes, {ListState} from 'akeneoenrichedentity/application/reducer/attribute/list';
 
 export interface EditState {
   user: UserState;
@@ -14,6 +15,7 @@ export interface EditState {
   grid: GridState<Record>;
   createRecord: CreateRecordState;
   createAttribute: CreateAttributeState;
+  attributes: ListState;
   form: EditionFormState;
 }
 
@@ -23,5 +25,6 @@ export default {
   grid,
   createRecord,
   createAttribute,
+  attributes,
   form,
 };

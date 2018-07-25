@@ -11,6 +11,7 @@ import {
   notifyAttributeWellCreated,
   notifyAttributeCreateFailed,
 } from 'akeneoenrichedentity/application/action/attribute/notify';
+import {updateAttributeList} from 'akeneoenrichedentity/application/action/attribute/list';
 
 export const createAttribute = () => async (dispatch: any, getState: () => EditState): Promise<void> => {
   const enrichedEntity = getState().form.data;
@@ -42,7 +43,7 @@ export const createAttribute = () => async (dispatch: any, getState: () => EditS
 
   dispatch(attributeCreationSucceeded());
   dispatch(notifyAttributeWellCreated());
-  // dispatch(updateAttributeResults());
+  dispatch(updateAttributeList());
 
   return;
 };
