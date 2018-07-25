@@ -18,7 +18,9 @@ use Akeneo\Pim\Automation\SuggestData\Component\Command\UpdateIdentifiersMapping
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
 
 /**
- * Service to manage identifiers mapping
+ * Service to manage identifiers mapping.
+ *
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class ManageIdentifiersMapping
 {

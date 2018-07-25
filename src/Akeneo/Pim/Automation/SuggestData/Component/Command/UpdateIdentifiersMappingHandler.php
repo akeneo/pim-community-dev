@@ -20,9 +20,10 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 
 /**
- * Handles the UpdateIdentifiersMapping command
+ * Handles the UpdateIdentifiersMapping command.
+ * Validates that all attributes exist and creates an IdentifiersMapping entity to save it.
  *
- * Validates that all attributes exist and creates an IdentifiersMapping entity to save it
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class UpdateIdentifiersMappingHandler
 {
@@ -36,8 +37,10 @@ class UpdateIdentifiersMappingHandler
      * @param AttributeRepositoryInterface $attributeRepository
      * @param IdentifiersMappingRepositoryInterface $identifiersMappingRepository
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository, IdentifiersMappingRepositoryInterface $identifiersMappingRepository)
-    {
+    public function __construct(
+        AttributeRepositoryInterface $attributeRepository,
+        IdentifiersMappingRepositoryInterface $identifiersMappingRepository
+    ) {
         $this->attributeRepository = $attributeRepository;
         $this->identifiersMappingRepository = $identifiersMappingRepository;
     }

@@ -18,6 +18,9 @@ use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidMappingExceptio
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ */
 class UpdateIdentifiersMappingCommandSpec extends ObjectBehavior
 {
     function it_is_an_update_identifiers_mapping_command()

@@ -18,6 +18,9 @@ use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 
+/**
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ */
 class IdentifiersMappingRepositoryIntegration extends TestCase
 {
     /**
@@ -82,7 +85,12 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         );
     }
 
-    private function updateMapping(array $newMapping)
+    /**
+     * @param array $newMapping
+     *
+     * @return array
+     */
+    private function updateMapping(array $newMapping): array
     {
         $identifiersMapping = new IdentifiersMapping($newMapping);
 
@@ -96,7 +104,10 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         return $statement->fetchAll();
     }
 
-    private function createAttribute(string $code)
+    /**
+     * @param string $code
+     */
+    private function createAttribute(string $code): void
     {
         $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build([
             'code' => $code,
@@ -107,6 +118,11 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return AttributeInterface
+     */
     private function getAttribute(string $name): AttributeInterface
     {
         return $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($name);

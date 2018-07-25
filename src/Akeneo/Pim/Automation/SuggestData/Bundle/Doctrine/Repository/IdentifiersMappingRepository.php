@@ -20,11 +20,16 @@ use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Doctrine implementation of the identifiers mapping repository
+ * Doctrine implementation of the identifiers mapping repository.
+ *
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterface
 {
+    /** @var EntityManagerInterface */
     private $em;
+
+    /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
     /**
@@ -43,7 +48,10 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     public function save(IdentifiersMapping $identifiersMapping): void
     {
         foreach ($identifiersMapping as $pimAiCode => $attribute) {
-            $identifierMapping = $this->em->getRepository(IdentifierMapping::class)->findOneBy(['pimAiCode' => $pimAiCode]);
+            $identifierMapping = $this->em
+                ->getRepository(IdentifierMapping::class)
+                ->findOneBy(['pimAiCode' => $pimAiCode]);
+
             if (! $identifierMapping instanceof IdentifierMapping) {
                 $identifierMapping = new IdentifierMapping($pimAiCode, $attribute);
             }
