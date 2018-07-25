@@ -20,7 +20,7 @@ export const getFlag = (locale: string, displayLanguage: boolean = true): string
   let country = info[1];
 
   if (3 === info.length) {
-      country = info[2];
+    country = info[2];
   }
 
   return flagTemplate(country.toLowerCase(), language, displayLanguage);
