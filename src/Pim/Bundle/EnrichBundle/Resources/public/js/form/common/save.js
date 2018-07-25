@@ -34,6 +34,13 @@ define(
             initialize: function (config) {
                 this.config = config.config;
 
+                if (this.config.hasOwnProperty('updateSuccessMessage')) {
+                    this.updateSuccessMessage = __(this.config.updateSuccessMessage);
+                }
+                if (this.config.hasOwnProperty('updateFailureMessage')) {
+                    this.updateFailureMessage = __(this.config.updateFailureMessage);
+                }
+
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
