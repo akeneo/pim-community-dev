@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
+namespace Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

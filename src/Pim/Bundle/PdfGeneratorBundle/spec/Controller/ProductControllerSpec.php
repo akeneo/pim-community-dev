@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\PdfGeneratorBundle\Controller;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
+use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererRegistry;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;

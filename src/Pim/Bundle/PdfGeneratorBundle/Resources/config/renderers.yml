@@ -1,6 +1,6 @@
 parameters:
-    pim_pdf_generator.renderer.product_pdf.class: Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer
-    pim_pdf_generator.renderer.registry.class:    Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry
+    pim_pdf_generator.renderer.product_pdf.class: Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer
+    pim_pdf_generator.renderer.registry.class:    Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererRegistry
 
 services:
     pim_pdf_generator.renderer.product_pdf:

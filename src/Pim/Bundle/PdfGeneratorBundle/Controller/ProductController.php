@@ -4,8 +4,8 @@ namespace Pim\Bundle\PdfGeneratorBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\PdfGeneratorBundle\Exception\RendererRequiredException;
-use Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer;
-use Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry;
+use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer;
+use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererRegistry;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
