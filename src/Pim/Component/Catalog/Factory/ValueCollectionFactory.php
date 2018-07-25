@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Exception\InvalidOptionsException;
 use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
 
 /**

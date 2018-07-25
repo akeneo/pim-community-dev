@@ -20,11 +20,13 @@ class ExistingAttributeFilter implements StorageFormatFilter, BatchStorageFormat
     private $logger;
 
     /**
-     * @param Connection $connection
+     * @param Connection      $connection
+     * @param LoggerInterface $logger
      */
-    public function __construct(Connection $connection)
+    public function __construct(Connection $connection, LoggerInterface $logger)
     {
         $this->connection = $connection;
+        $this->logger = $logger;
     }
 
     /**
@@ -34,7 +36,6 @@ class ExistingAttributeFilter implements StorageFormatFilter, BatchStorageFormat
     {
         $attributeCodes = $this->getAttributeCodes($rawValuesList);
         $existingAttributeCodes = $this->getExistingAttributeCodes($attributeCodes);
-
 
         $filteredListOfRawValues = [];
         foreach ($rawValuesList as $rawValues) {
