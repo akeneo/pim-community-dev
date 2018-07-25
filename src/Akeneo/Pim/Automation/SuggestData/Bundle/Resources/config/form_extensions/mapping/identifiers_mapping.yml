@@ -37,7 +37,7 @@ extensions:
         position: 120
 
     pimee-suggest-data-settings-identifiers-mapping-index-save:
-        module: pimee/settings/mapping/save-form
+        module: pimee/settings/mapping/save
         parent: pim-suggest-data-settings-identifiers-mapping-index
         targetZone: buttons
         position: 0

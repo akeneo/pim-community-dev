@@ -57,3 +57,10 @@ akeneo_sugggest_data_family_mapping_get:
     requirements:
         identifier: '[\w._-]+'
     methods: [GET]
+
+akeneo_sugggest_data_family_mapping_update:
+    path: /suggest-data/family-mapping/{identifier}
+    defaults: { _controller: akeneo.pim.automation.suggest_data.controller.family_mapping:updateAction }
+    requirements:
+        identifier: '[\w._-]+'
+    methods: [POST]

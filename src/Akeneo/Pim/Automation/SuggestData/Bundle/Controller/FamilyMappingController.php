@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -95,7 +96,7 @@ class FamilyMappingController
     {
         if ($identifier === 'camcorders') {
             return new JsonResponse([
-                'family' => 'camcorders',
+                'code' => 'camcorders',
                 'enabled' => true,
                 'mapping' => [
                     [
@@ -128,16 +129,53 @@ class FamilyMappingController
             ]);
         } else if ($identifier === 'clothing') {
             return new JsonResponse([
-                'family' => 'clothing',
+                'code' => 'clothing',
                 'enabled' => true,
                 'mapping' => []
             ]);
         } else {
             return new JsonResponse([
-                'family' => 'accessories',
+                'code' => 'accessories',
                 'enabled' => false,
                 'mapping' => []
             ]);
         }
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function updateAction(Request $request): Response
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $data = json_decode($request->getContent(), true);
+        /*
+        $familyMapping = $this->getOrCreateFamilyMapping($data['code'])
+        $this->updater->update($familyMapping, $data);
+
+        $violations = $this->validator->validate($familyMapping);
+        if (0 < $violations->count()) {
+            $normalizedViolations = [];
+            foreach ($violations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api'
+                );
+            }
+
+            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
+        }
+        $this->saver->save($familyMapping);
+
+        return new JsonResponse($this->normalizer->normalize($familyMapping, 'internal_api'));
+        */
+
+        // TODO Temporary return, always valid.
+        return new JsonResponse($data);
     }
 }
