@@ -75,7 +75,7 @@ stage("Build") {
                             }
 
                             sh "cp .ci/Dockerfile Dockerfile"
-                            sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee ."
+                            sh "gcloud container builds submit --config .ci/builder.yaml --substitutions _IMAGE_TAG=${tag}-ee,_COMPOSER_COMMAND=${composer_command} ."
                         }
                     }
                 } else {
