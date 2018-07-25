@@ -1,5 +1,5 @@
 parameters:
-    pim_pdf_generator.builder.dompdf.class: Pim\Bundle\PdfGeneratorBundle\Builder\DompdfBuilder
+    pim_pdf_generator.builder.dompdf.class: Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\DompdfBuilder
 
 services:
     pim_pdf_generator.builder.dompdf:

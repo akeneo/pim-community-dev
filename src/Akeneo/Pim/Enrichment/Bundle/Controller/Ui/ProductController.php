@@ -1,11 +1,12 @@
 <?php
 
-namespace Pim\Bundle\PdfGeneratorBundle\Controller;
+namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception\RendererRequiredException;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer;
 use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\RendererRegistry;
+use Pim\Bundle\PdfGeneratorBundle\Controller\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

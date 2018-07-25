@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\PdfGeneratorBundle\Builder;
+namespace Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder;
 
 /**
  * Interface for PDF builder
