@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\PdfGeneratorBundle\Exception;
+namespace Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Exception;
 
 /**
  * At least one renderer is required for the object to be rendered
