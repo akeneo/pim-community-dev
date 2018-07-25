@@ -1,4 +1,4 @@
-# 2.0.x
+# 2.0.30 (2018-07-25)
 
 ## Technical improvements
 
@@ -7,6 +7,7 @@
 ## Bug fixes
 
 - PIM-7452: Fix a memory leak when computing the completeness of all the products of a family.
+- PIM-7519 : Fix infinite scroll to see all reference data options when creating a new variant product.
 
 ## BC Breaks
 
