@@ -5,7 +5,7 @@
 
         <div class="AknWidget-content row-fluid">
             {% if variationModel.fileInfo %}
-                {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_core.html.twig' %}
+                {% embed 'AkeneoAssetBundle:ProductAsset:_variation_core.html.twig' %}
                     {% block variation_buttons %}
                         <button class="AknButtonList-item AknButton AknButton--important AknButton--small delete"
                                 data-href="{{ path('pimee_product_asset_variation_delete', {'id': variationModel.id}) }}">

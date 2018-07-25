@@ -86,18 +86,16 @@ class AppKernel extends Kernel
             new Akeneo\EnrichedEntity\Infrastructure\Symfony\AkeneoEnrichedEntityBundle(),
             new Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle(),
             new PimEnterprise\Bundle\CatalogBundle\PimEnterpriseCatalogBundle(),
-            new PimEnterprise\Bundle\ConnectorBundle\PimEnterpriseConnectorBundle(),
             new PimEnterprise\Bundle\DashboardBundle\PimEnterpriseDashboardBundle(),
             new PimEnterprise\Bundle\DataGridBundle\PimEnterpriseDataGridBundle(),
             new PimEnterprise\Bundle\EnrichBundle\PimEnterpriseEnrichBundle(),
             new PimEnterprise\Bundle\InstallerBundle\PimEnterpriseInstallerBundle(),
-            new Akeneo\Asset\Bundle\PimEnterpriseProductAssetBundle(),
-            new Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\PimEnterpriseTeamworkAssistantBundle(),
+            new Akeneo\Asset\Bundle\AkeneoAssetBundle(),
+            new Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\AkeneoPimTeamworkAssistantBundle(),
             new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
-            new Akeneo\Pim\WorkOrganization\ProductRevert\PimEnterpriseRevertBundle(),
-            new Akeneo\Pim\WorkOrganization\Workflow\Bundle\PimEnterpriseWorkflowBundle(),
-            new PimEnterprise\Bundle\ApiBundle\PimEnterpriseApiBundle(),
+            new Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle(),
+            new Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle(),
         ];
     }
 
@@ -139,8 +137,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
-            new Akeneo\Pim\Automation\RuleEngine\Bundle\PimEnterpriseCatalogRuleBundle(),
-            new PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle(),
+            new Akeneo\Pim\Automation\RuleEngine\Bundle\AkeneoPimRuleEngineBundle(),
         ];
     }
 

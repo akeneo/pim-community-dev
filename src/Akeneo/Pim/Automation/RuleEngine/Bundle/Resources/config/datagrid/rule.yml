@@ -14,19 +14,19 @@ datagrid:
             conditions:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.conditions
                 type: twig
-                template: PimEnterpriseCatalogRuleBundle:Rule:_conditions.html.twig
+                template: AkeneoPimRuleEngineBundle:Rule:_conditions.html.twig
                 frontend_type: html
                 data_name: content
             actions:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.actions
                 type: twig
-                template: PimEnterpriseCatalogRuleBundle:Rule:_actions.html.twig
+                template: AkeneoPimRuleEngineBundle:Rule:_actions.html.twig
                 frontend_type: html
                 data_name: content
             impactedSubjectCount:
                 label: pimee_catalog_rule.datagrid.rule-grid.column.impacted_product_count.label
                 type: twig
-                template: PimEnterpriseCatalogRuleBundle:Rule:_impacted_product_count.html.twig
+                template: AkeneoPimRuleEngineBundle:Rule:_impacted_product_count.html.twig
                 frontend_type: html
         properties:
             id: ~

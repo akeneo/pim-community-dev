@@ -12,7 +12,7 @@ datagrid:
             product:
                 label: pimee_workflow.product_draft.product.label
                 type: twig
-                template: PimEnterpriseWorkflowBundle:Datagrid/Property:product_link.html.twig
+                template: AkeneoPimWorkflowBundle:Datagrid/Property:product_link.html.twig
                 frontend_type: html
             author:
                 label: pimee_workflow.product_draft.author
@@ -21,7 +21,7 @@ datagrid:
             changes:
                 label: pimee_workflow.product_draft.changes
                 type: twig
-                template: PimEnterpriseWorkflowBundle:Datagrid:Property/changes.html.twig
+                template: AkeneoPimWorkflowBundle:Datagrid:Property/changes.html.twig
                 frontend_type: html
             createdAt:
                 label: pimee_workflow.product_draft.created
@@ -29,7 +29,7 @@ datagrid:
             status:
                 label: pimee_workflow.product_draft.status.label
                 type: twig
-                template: PimEnterpriseWorkflowBundle:Datagrid:Property/product_draft_status.html.twig
+                template: AkeneoPimWorkflowBundle:Datagrid:Property/product_draft_status.html.twig
                 frontend_type: html
         properties:
             id: ~

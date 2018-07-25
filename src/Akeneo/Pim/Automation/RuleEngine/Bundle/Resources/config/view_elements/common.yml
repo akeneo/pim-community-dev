@@ -1,6 +1,6 @@
 parameters:
-    pimee_catalog_rule.view_element.common.from_smart.template: 'PimEnterpriseCatalogRuleBundle:Common:from-smart.js.twig'
-    pimee_catalog_attribute.view_element.common.from_modified.template: 'PimEnterpriseCatalogRuleBundle:Common:from-modified.js.twig'
+    pimee_catalog_rule.view_element.common.from_smart.template: 'AkeneoPimRuleEngineBundle:Common:from-smart.js.twig'
+    pimee_catalog_attribute.view_element.common.from_modified.template: 'AkeneoPimRuleEngineBundle:Common:from-modified.js.twig'
 
 services:
     pimee_catalog_rule.view_element.common.product_attribute_from_smart:

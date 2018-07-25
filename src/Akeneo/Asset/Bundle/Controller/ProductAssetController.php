@@ -513,7 +513,7 @@ class ProductAssetController extends Controller
      *
      * @AclAncestor("pimee_product_asset_categories_view")
      *
-     * @Template("PimEnterpriseProductAssetBundle:ProductAsset:list-categories.json.twig")
+     * @Template("AkeneoAssetBundle:ProductAsset:list-categories.json.twig")
      *
      * @param Request $request    The request object
      * @param int     $id         Asset id
@@ -621,7 +621,7 @@ class ProductAssetController extends Controller
      */
     public function massUploadAction()
     {
-        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:mass-upload.html.twig');
+        return $this->render('AkeneoAssetBundle:ProductAsset:mass-upload.html.twig');
     }
 
     /**
@@ -713,7 +713,7 @@ class ProductAssetController extends Controller
 
         $trees = $this->assetCategoryRepo->getItemCountByGrantedTree($productAsset, $this->userContext->getUser());
 
-        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', [
+        return $this->render('AkeneoAssetBundle:ProductAsset:edit.html.twig', [
             'asset'         => $productAsset,
             'form'          => $assetForm->createView(),
             'metadata'      => $this->getAssetMetadata($productAsset),
@@ -746,7 +746,7 @@ class ProductAssetController extends Controller
             $attachments[$refKey]['reference'] = $reference;
         }
 
-        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', [
+        return $this->render('AkeneoAssetBundle:ProductAsset:view.html.twig', [
             'asset'       => $productAsset,
             'attachments' => $attachments,
             'metadata'    => $this->getAssetMetadata($productAsset)
