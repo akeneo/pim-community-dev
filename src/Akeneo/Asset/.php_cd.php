@@ -17,7 +17,7 @@ $rules = [
         'Akeneo\Tool',
         'Akeneo\Asset',
         'Pim\Component\ReferenceData\ConfigurationRegistryInterface', // Asset are reference data
-        'Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface', // Asset need to be versioned
+        'Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface', // Asset need to be versioned
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\UserManagement\Bundle\Repository\UserRepositoryInterface',
