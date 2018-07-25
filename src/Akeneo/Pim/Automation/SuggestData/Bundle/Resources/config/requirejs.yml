@@ -9,10 +9,12 @@ config:
                     config:
                         entity: pim-ai-connection
                 akeneo_suggest_data_settings_index:
-                    module: pim/controller/common/index
+                    module: pimee/settings/mapping/controller
                     aclResourceId: akeneo_suggest_data_settings_mapping
                     config:
                         entity: suggest-data-settings
+                        connectionCode: pim-ai
+                        inactiveForm: pimee-suggest-data-settings-index-inactive-connection
         # Savers
         pimee/saver/pim_ai_connection:
             url: akeneo_suggest_data_connection_post
@@ -28,6 +30,12 @@ config:
                             list: akeneo_suggest_data_identifiers_mapping_get
 
     paths:
+        pimee/fetcher/pim-ai-connection: akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher.ts
+
+        # Controller
+        pimee/settings/mapping/controller: akeneosuggestdata/js/settings/mapping/mapping-controller
+
+        # Savers
         pimee/saver/pim_ai_connection: pimenrich/js/saver/base-saver
         pimee/saver/identifier-mapping: akeneosuggestdata/js/settings/mapping/identifier-mapping-saver
 

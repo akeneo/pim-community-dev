@@ -36,6 +36,9 @@ akeneo_suggest_data:
     settings:
         menu.item: PIM.ai
         index:
+            inactive_connection:
+                title: Sorry, nothing to show here yet
+                sub_title: Please activate your account on System > PIM.ai connection an comme back.
             title: PIM.ai settings
             sub_title: Welcome to the Product Information AI settings
             description:
