@@ -1,3 +1,9 @@
+# 2.3.x
+
+## Bug fixes
+
+- PIM-7529: Fix error when a tree is removed
+
 # 2.3.2 (2018-07-24)
 
 ## Bug fixes
