@@ -23,12 +23,12 @@ extensions:
         parent: pim-suggest-data-settings-attributes-mapping-index
         targetZone: title
         config:
-            main_title: akeneo_suggest_data.settings.index.title
-            sub_title: akeneo_suggest_data.settings.index.sub_title
+            main_title: akeneo_suggest_data.settings.page_title
+            sub_title: akeneo_suggest_data.settings.module.title.sub_title
             illustration: bundles/pimui/images/illustrations/Helpcenter-settings.svg
             description:
-                - akeneo_suggest_data.settings.index.description.first_step
-                - akeneo_suggest_data.settings.index.description.second_step
+                - akeneo_suggest_data.settings.module.title.description.first_step
+                - akeneo_suggest_data.settings.module.title.description.second_step
 
     pimee-suggest-data-settings-attributes-mapping-index-save-buttons:
         module: pim/form/common/save-buttons
@@ -51,9 +51,9 @@ extensions:
         position: 90
         config:
             tabs:
-                - { label: akeneo_suggest_data.settings.index.tab.identifiers.title, route: akeneo_suggest_data_settings_index }
-                - { label: akeneo_suggest_data.settings.index.tab.families.title, route: '' }
-                - { label: akeneo_suggest_data.settings.index.tab.attributes.title, route: akeneo_suggest_data_settings_attributes_index }
+                - { label: akeneo_suggest_data.entity.identifier_mapping.plural_label, route: akeneo_suggest_data_settings_index }
+                - { label: pim_enrich.entity.family.plural_label, route: '' }
+                - { label: pim_enrich.entity.attribute.plural_label, route: akeneo_suggest_data_settings_attributes_index }
             selected: 2
 
     pimee-suggest-data-settings-attributes-mapping-index-tab-content:
@@ -79,8 +79,8 @@ extensions:
         targetZone: subscribe
         config:
             labels:
-                subscribe: akeneo_suggest_data.settings.subscribe.subscribe
-                subscribed: akeneo_suggest_data.settings.subscribe.subscribed
+                subscribe: akeneo_suggest_data.entity.family_mapping.module.subscribe.subscribe
+                subscribed: akeneo_suggest_data.entity.family_mapping.module.subscribe.subscribed
 
     pim-suggest-data-settings-identifiers-mapping-index-attribute-attributes-mapping:
         module: pimee/settings/mapping/attributes-mapping
@@ -89,9 +89,9 @@ extensions:
         targetZone: mapping
         config:
             labels:
-                pending: akeneo_suggest_data.settings.status.pending
-                active: akeneo_suggest_data.settings.status.active
-                inactive: akeneo_suggest_data.settings.status.inactive
-                pim_ai_attribute: akeneo_suggest_data.settings.index.tab.identifiers.headers.pim_ai_attribute_label
-                catalog_attribute: akeneo_suggest_data.settings.index.tab.identifiers.headers.attribute_label
-                suggest_data: akeneo_suggest_data.settings.index.tab.identifiers.headers.suggest_data_label
+                pending: akeneo_suggest_data.entity.family_mapping.fields.suggest_data.pending
+                active: akeneo_suggest_data.entity.family_mapping.fields.suggest_data.active
+                inactive: akeneo_suggest_data.entity.family_mapping.fields.suggest_data.inactive
+                pim_ai_attribute: akeneo_suggest_data.entity.family_mapping.fields.pim_ai_attribute
+                catalog_attribute: akeneo_suggest_data.entity.identifier_mapping.fields.catalog_attribute
+                suggest_data: akeneo_suggest_data.entity.identifier_mapping.fields.suggest_data

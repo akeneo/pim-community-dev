@@ -24,12 +24,12 @@ extensions:
         parent: pim-pim-ai-connection-index
         targetZone: title
         config:
-            main_title: akeneo_suggest_data.pim_ai.title.main_title
-            sub_title: akeneo_suggest_data.pim_ai.title.sub_title
+            main_title: akeneo_suggest_data.pim_ai.page_title
+            sub_title: akeneo_suggest_data.pim_ai.module.title.sub_title
             illustration: bundles/pimui/images/illustrations/Helpcenter-settings.svg
             description:
-                - akeneo_suggest_data.pim_ai.title.description.first_step
-                - akeneo_suggest_data.pim_ai.title.description.second_step
+                - akeneo_suggest_data.pim_ai.module.title.description.first_step
+                - akeneo_suggest_data.pim_ai.module.title.description.second_step
 
     pimee-pim-ai-connection-index-breadcrumbs:
         module: pim/common/breadcrumbs
@@ -46,10 +46,10 @@ extensions:
         targetZone: content
         position: 10
         config:
-            token_label_title: akeneo_suggest_data.pim_ai.token.label.title
-            token_label_content: akeneo_suggest_data.pim_ai.token.label.content
-            token_field_title: akeneo_suggest_data.pim_ai.token.field.title
-            token_field_placeholder: akeneo_suggest_data.pim_ai.token.field.placeholder
-            token_save_pre_activation_title: akeneo_suggest_data.pim_ai.token.save.to_activate
-            token_save_post_activation_title:  akeneo_suggest_data.pim_ai.token.save.activated
+            token_label_title: pim_common.label
+            token_label_content: akeneo_suggest_data.pim_ai.module.activation.label
+            token_field_title: akeneo_suggest_data.pim_ai.module.activation.activation_code
+            token_field_placeholder: akeneo_suggest_data.pim_ai.module.activation.paste_activation_code
+            token_save_pre_activation_title: akeneo_suggest_data.pim_ai.module.activation.activate
+            token_save_post_activation_title:  akeneo_suggest_data.pim_ai.module.activation.activated
             code: pim-ai
