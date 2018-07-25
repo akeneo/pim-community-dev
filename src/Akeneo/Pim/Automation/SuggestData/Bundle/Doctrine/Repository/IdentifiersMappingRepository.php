@@ -33,7 +33,7 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     private $attributeRepository;
 
     /**
-     * @param EntityManagerInterface $em
+     * @param EntityManagerInterface       $em
      * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(EntityManagerInterface $em, AttributeRepositoryInterface $attributeRepository)
@@ -52,13 +52,14 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
                 ->getRepository(IdentifierMapping::class)
                 ->findOneBy(['pimAiCode' => $pimAiCode]);
 
-            if (! $identifierMapping instanceof IdentifierMapping) {
+            if (!$identifierMapping instanceof IdentifierMapping) {
                 $identifierMapping = new IdentifierMapping($pimAiCode, $attribute);
             }
             $identifierMapping->setAttribute($attribute);
 
             $this->em->persist($identifierMapping);
         }
+
         $this->em->flush();
     }
 

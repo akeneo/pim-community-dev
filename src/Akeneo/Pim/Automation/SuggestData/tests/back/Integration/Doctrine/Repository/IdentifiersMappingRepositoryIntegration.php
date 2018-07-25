@@ -86,6 +86,14 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration(): TestConfiguration
+    {
+        return $this->catalog->useMinimalCatalog();
+    }
+
+    /**
      * @param array $newMapping
      *
      * @return array
@@ -97,6 +105,8 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->save($identifiersMapping);
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager->clear();
+
         $statement = $entityManager->getConnection()->query(
             'SELECT pim_ai_code, attribute_id from pim_suggest_data_pimai_identifier_mapping;'
         );
@@ -126,13 +136,5 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
     private function getAttribute(string $name): AttributeInterface
     {
         return $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration(): TestConfiguration
-    {
-        return $this->catalog->useMinimalCatalog();
     }
 }
