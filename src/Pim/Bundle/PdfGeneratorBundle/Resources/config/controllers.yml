@@ -1,5 +1,5 @@
 parameters:
-    pim_pdf_generator.controller.product.class: Pim\Bundle\PdfGeneratorBundle\Controller\ProductController
+    pim_pdf_generator.controller.product.class: Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController
 
 services:
     pim_pdf_generator.controller.product:
