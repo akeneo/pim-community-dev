@@ -12,8 +12,8 @@
 namespace Akeneo\Asset\Bundle\Versioning\UpdateGuesser;
 
 use Akeneo\Asset\Component\Model\VariationInterface;
-use Doctrine\ORM\EntityManager;
 use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Variation update guesser

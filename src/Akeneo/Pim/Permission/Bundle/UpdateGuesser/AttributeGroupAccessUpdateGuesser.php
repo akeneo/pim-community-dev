@@ -12,8 +12,8 @@
 namespace Akeneo\Pim\Permission\Bundle\UpdateGuesser;
 
 use Akeneo\Pim\Permission\Component\Model\AttributeGroupAccessInterface;
-use Doctrine\ORM\EntityManager;
 use Akeneo\Tool\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+use Doctrine\ORM\EntityManager;
 
 /**
  * AttributeGroup access update guesser
