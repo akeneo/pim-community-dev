@@ -1,5 +1,5 @@
 parameters:
-    pim_comment.controller.comment.class: Pim\Bundle\CommentBundle\Controller\CommentController
+    pim_comment.controller.comment.class: Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CommentController
 
 services:
     pim_comment.controller.comment:

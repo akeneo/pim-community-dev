@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CommentBundle\Form\Type;
+namespace Akeneo\Pim\Enrichment\Bundle\Form\Type;
 
 use Akeneo\Pim\Enrichment\Component\Comment\Repository\CommentRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType;
