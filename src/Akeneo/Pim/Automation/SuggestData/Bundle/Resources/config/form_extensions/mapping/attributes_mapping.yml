@@ -44,6 +44,14 @@ extensions:
         config:
             url: akeneo_sugggest_data_family_mapping_update
 
+    pimee-suggest-data-settings-attributes-mapping-index-state:
+        module: pim/form/common/state
+        parent: pim-suggest-data-settings-attributes-mapping-index
+        targetZone: state
+        position: 900
+        config:
+            entity: akeneo_suggest_data.entity.family_mapping.label
+
     pimee-suggest-data-settings-attributes-mapping-index-tabs:
         module: pimee/settings/mapping/tabs
         parent: pim-suggest-data-settings-attributes-mapping-index

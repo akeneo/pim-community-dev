@@ -120,7 +120,7 @@ class FamilyMappingController
                         'status' => self::PENDING
                     ], [
                         'pim_ai_attribute' => [
-                            'label' => 'the pim.ai attribute label 2'
+                            'label' => 'the pim.ai attribute label 3'
                         ],
                         'attribute' => null,
                         'status' => self::INACTIVE

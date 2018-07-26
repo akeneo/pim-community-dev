@@ -12,6 +12,7 @@ define([
     'pim/form',
     'pim/user-context',
     'pim/i18n',
+    'pimee/settings/mapping/simple-select-attribute',
     'pimee/template/settings/mapping/attributes-mapping',
 ], function (
         _,
@@ -19,6 +20,7 @@ define([
         BaseForm,
         UserContext,
         i18n,
+        SimpleSelectAttribute,
         template
     ) {
         return BaseForm.extend({
@@ -57,6 +59,21 @@ define([
                         catalog_attribute: __(this.config.labels.catalog_attribute),
                         suggest_data: __(this.config.labels.suggest_data)
                     }));
+
+                    mapping.forEach((row) => {
+                        // TODO Should be better to use unique code from PIM.ai here.
+                        const $dom = this.$el.find('.attribute-selector[data-pim-ai-attribute="' + row.pim_ai_attribute.label + '"]');
+                        const attributeSelector = new SimpleSelectAttribute({
+                            config: {
+                                fieldName: '', // TODO
+                                label: '',
+                                choiceRoute: 'pim_enrich_attribute_rest_index'
+                            }
+                        });
+                        attributeSelector.configure();
+                        attributeSelector.setParent(this);
+                        $dom.html(attributeSelector.render().$el);
+                    });
                 }
 
                 return this;

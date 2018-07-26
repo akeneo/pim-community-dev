@@ -27,6 +27,7 @@ akeneo_suggest_data:
                 suggest_data: Suggest data
 
         family_mapping:
+            label: Family mapping
             fields:
                 pim_ai_attribute: 'PIM.ai attribute'
                 suggest_data:
