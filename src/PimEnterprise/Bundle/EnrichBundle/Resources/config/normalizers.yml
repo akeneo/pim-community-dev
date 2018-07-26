@@ -1,6 +1,6 @@
 parameters:
     pimee_enrich.serializer.normalizer.rule_relation.class: PimEnterprise\Bundle\EnrichBundle\Normalizer\RuleRelationNormalizer
-    pimee_enrich.normalizer.product.class:                  PimEnterprise\Bundle\WorkflowBundle\Normalizer\ProductNormalizer
+    pimee_enrich.normalizer.product.class:                  Akeneo\Pim\WorkOrganization\Workflow\Bundle\Normalizer\ProductNormalizer
     pimee_enrich.normalizer.product_model.class:            PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer
     pimee_enrich.normalizer.image.class:                    PimEnterprise\Bundle\EnrichBundle\Normalizer\ImageNormalizer
 

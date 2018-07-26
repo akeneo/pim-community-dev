@@ -1,0 +1,43 @@
+services:
+    pimee_security.factory.locale_access:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pimee_security.entity.locale_access.class%'
+
+    pimee_security.factory.asset_category_access:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pimee_security.entity.asset_category_access.class%'
+
+    pimee_security.factory.product_category_access:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pimee_security.entity.product_category_access.class%'
+
+    pimee_security.factory.attribute_group_access:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pimee_security.entity.attribute_group_access.class%'
+
+    pimee_security.factory.job_profile_access:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pimee_security.entity.job_profile_access.class%'
+
+    pimee_catalog.security.factory.filtered_product:
+        class: 'Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory'
+        arguments:
+            -
+              - '@pimee_catalog.security.filter.not_granted_parent'
+              - '@pimee_catalog.security.filter.not_granted_associated_product'
+              - '@pimee_catalog.security.filter.not_granted_category'
+              - '@pimee_catalog.security.filter.not_granted_values'
+
+    pimee_catalog.security.factory.filtered_product_model:
+        class: 'Akeneo\Pim\Permission\Component\Factory\FilteredEntityFactory'
+        arguments:
+            -
+              - '@pimee_catalog.security.filter.not_granted_parent'
+              - '@pimee_catalog.security.filter.not_granted_associated_product'
+              - '@pimee_catalog.security.filter.not_granted_category'
+              - '@pimee_catalog.security.filter.not_granted_values'

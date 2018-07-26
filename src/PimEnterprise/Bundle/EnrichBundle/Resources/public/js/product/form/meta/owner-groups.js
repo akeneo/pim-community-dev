@@ -20,7 +20,7 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        label: __('pimee_enrich.entity.product.meta.owner_groups'),
+                        label: __('pimee_enrich.entity.product.module.meta.owner_groups'),
                         groups: this.getOwnerGroups(this.getFormData())
                     })
                 );

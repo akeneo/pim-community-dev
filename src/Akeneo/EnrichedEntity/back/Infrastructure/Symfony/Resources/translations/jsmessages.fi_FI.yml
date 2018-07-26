@@ -1,0 +1,16 @@
+pim_enriched_entity:
+  button:
+    save: Tallenna
+  enriched_entity:
+    tab:
+      attributes: Attribuutit
+      properties: Ominaisuudet
+    properties:
+      identifier: Tunniste
+      label: Nimike
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Tyyppikohtaiset parametrit

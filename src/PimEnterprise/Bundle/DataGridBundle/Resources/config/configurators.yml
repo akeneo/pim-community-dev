@@ -1,5 +1,5 @@
 parameters:
-    pim_datagrid.datagrid.configuration.product.context_configurator.class:       PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\ContextConfigurator
+    pim_datagrid.datagrid.configuration.product.context_configurator.class:       Akeneo\Pim\Permission\Bundle\Datagrid\Product\ContextConfigurator
 
 services:
     pim_datagrid.datagrid.configuration.product.context_configurator:

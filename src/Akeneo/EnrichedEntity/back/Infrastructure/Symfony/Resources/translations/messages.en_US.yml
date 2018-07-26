@@ -1,0 +1,8 @@
+akeneo_enrichedentity:
+    acl_group:
+        enriched_entity: Enriched entities
+    acl:
+        enriched_entity:
+            create: Create an entity
+        record:
+            create: Create a record

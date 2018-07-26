@@ -15,20 +15,31 @@ namespace Akeneo\EnrichedEntity\tests\back\Common;
 
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
-use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 
 /**
  * @author    Christophe Chausseray <christophe.chausseray@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
+class InMemoryEnrichedEntityRepository implements EnrichedEntityRepositoryInterface
 {
     /** @var EnrichedEntity[] */
     private $enrichedEntities = [];
 
-    public function save(EnrichedEntity $enrichedEntity): void
+    public function create(EnrichedEntity $enrichedEntity): void
     {
+        if (isset($this->enrichedEntities[(string) $enrichedEntity->getIdentifier()])) {
+            throw new \RuntimeException('Enriched entity already exists');
+        }
+        $this->enrichedEntities[(string) $enrichedEntity->getIdentifier()] = $enrichedEntity;
+    }
+
+    public function update(EnrichedEntity $enrichedEntity): void
+    {
+        if (!isset($this->enrichedEntities[(string) $enrichedEntity->getIdentifier()])) {
+            throw new \RuntimeException('Expected to save one enriched entity, but none was saved');
+        }
         $this->enrichedEntities[(string) $enrichedEntity->getIdentifier()] = $enrichedEntity;
     }
 
@@ -39,7 +50,7 @@ class InMemoryEnrichedEntityRepository implements EnrichedEntityRepository
     {
         $enrichedEntity = $this->enrichedEntities[(string) $identifier] ?? null;
         if (null === $enrichedEntity) {
-            throw EntityNotFoundException::withIdentifier(EnrichedEntity::class, (string) $identifier);
+            throw EnrichedEntityNotFoundException::withIdentifier($identifier);
         }
 
         return $enrichedEntity;

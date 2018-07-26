@@ -1,0 +1,189 @@
+parameters:
+    pimee_security.filter.granted_product_attribute_filter.class: PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter
+    pimee_security.filter.granted_product_model_attribute_filter.class: PimEnterprise\Component\Catalog\ProductModel\Filter\GrantedProductAttributeFilter
+    pimee_catalog.filter.attribute_view_right.class: Akeneo\Pim\Permission\Bundle\Filter\AttributeViewRightFilter
+    pimee_catalog.filter.attribute_edit_right.class: Akeneo\Pim\Permission\Bundle\Filter\AttributeEditRightFilter
+    pimee_catalog.filter.attribute_group_view_right.class: Akeneo\Pim\Permission\Bundle\Filter\AttributeGroupViewRightFilter
+    pimee_catalog.filter.product_value_attribute_group_right.class: Akeneo\Pim\Permission\Bundle\Filter\ProductValueAttributeGroupRightFilter
+    pimee_catalog.filter.product_value_locale_right.class: Akeneo\Pim\Permission\Bundle\Filter\ProductValueLocaleRightFilter
+    pimee_catalog.filter.product_right_view.class: Akeneo\Pim\Permission\Bundle\Filter\ProductRightViewFilter
+    pimee_catalog.filter.product_right_edit.class: Akeneo\Pim\Permission\Bundle\Filter\ProductRightEditFilter
+    pimee_catalog.filter.locale_view_right.class: Akeneo\Pim\Permission\Bundle\Filter\LocaleViewRightFilter
+    pimee_catalog.filter.locale_edit_right.class: Akeneo\Pim\Permission\Bundle\Filter\LocaleEditRightFilter
+    pimee_catalog.filter.category.class: Akeneo\Pim\Permission\Bundle\Filter\CategoryRightFilter
+    pimee_catalog.filter.abstract_authorization.class: Akeneo\Pim\Permission\Bundle\Filter\AbstractAuthorizationFilter
+    pimee_catalog.filter.product_and_product_model_delete_right.class: Akeneo\Pim\Permission\Bundle\Filter\ProductAndProductModelDeleteRightFilter
+    pimee_security.filter.product_edit_data.class: Akeneo\Pim\Permission\Bundle\Filter\ProductEditDataFilter
+    pimee_security.filter.product_values_edit_data.class: Akeneo\Pim\Permission\Bundle\Filter\ProductValuesEditDataFilter
+    pimee_security.filter.job_instance_execute_right.class: Akeneo\Pim\Permission\Bundle\Filter\JobInstanceExecuteRightFilter
+    pimee_security.filter.job_instance_edit_right.class: Akeneo\Pim\Permission\Bundle\Filter\JobInstanceEditRightFilter
+    pimee_security.filter.attribute_group_edit.class: Akeneo\Pim\Permission\Bundle\Filter\EntityWithPermissionsEditFilter
+    pimee_security.filter.job_instance_edit.class: Akeneo\Pim\Permission\Bundle\Filter\EntityWithPermissionsEditFilter
+
+services:
+    pimee_security.filter.granted_product_attribute_filter:
+        class: '%pimee_security.filter.granted_product_attribute_filter.class%'
+        arguments:
+            - '@pim_api.filter.product_attribute_filter'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
+            - '@security.authorization_checker'
+
+    pimee_security.filter.granted_product_model_attribute_filter:
+        class: '%pimee_security.filter.granted_product_model_attribute_filter.class%'
+        arguments:
+            - '@pim_api.filter.product_model_attribute_filter'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
+            - '@security.authorization_checker'
+
+    pimee_catalog.filter.abstract_authorization:
+        class: '%pimee_catalog.filter.abstract_authorization.class%'
+        abstract: true
+        public: false
+        arguments:
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+
+    pimee_catalog.filter.attribute_view_right:
+        class: '%pimee_catalog.filter.attribute_view_right.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute.view }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.attribute.view }
+
+    pimee_catalog.filter.attribute_edit_right:
+        class: '%pimee_catalog.filter.attribute_edit_right.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute.edit }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.attribute.edit }
+
+    pimee_catalog.filter.attribute_group_view_right:
+        class: '%pimee_catalog.filter.attribute_group_view_right.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute_group.view }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.attribute_group.view }
+
+    pimee_catalog.filter.product_value_attribute_group_right:
+        class: '%pimee_catalog.filter.product_value_attribute_group_right.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
+            - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
+            - { name: pim_catalog.filter.collection, type: pim.transform.product_value.structured.quick_export }
+
+    pimee_catalog.filter.product_value_locale_right:
+        class: '%pimee_catalog.filter.product_value_locale_right.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        arguments:
+            - '@pim_catalog.repository.locale'
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
+            - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
+            - { name: pim_catalog.filter.collection, type: pim.transform.product_value.structured.quick_export }
+
+    pimee_catalog.filter.product_right_view:
+        class: '%pimee_catalog.filter.product_right_view.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.internal_api.product.view }
+
+    pimee_catalog.filter.product_right_edit:
+        class: '%pimee_catalog.filter.product_right_edit.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.internal_api.product.edit }
+
+    pimee_catalog.filter.locale_view_right:
+        class: '%pimee_catalog.filter.locale_view_right.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.locale.view }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.locale.view }
+
+    pimee_catalog.filter.locale_edit_right:
+        class: '%pimee_catalog.filter.locale_edit_right.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.internal_api.locale.edit }
+
+    pimee_catalog.filter.product_and_product_model_delete_right:
+        class: '%pimee_catalog.filter.product_and_product_model_delete_right.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.enrich.product.delete }
+
+    pimee_catalog.filter.category:
+        class: '%pimee_catalog.filter.category.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        arguments:
+            - '@pimee_security.repository.category_access'
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.product_category.view }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.product_category.view }
+
+    pimee_security.filter.product_edit_data:
+        class: '%pimee_security.filter.product_edit_data.class%'
+        parent: pim_enrich.filter.product_edit_data
+
+    pimee_security.filter.product_values_edit_data:
+        class: '%pimee_security.filter.product_values_edit_data.class%'
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.internal_api.attribute.edit }
+
+    pimee_security.filter.job_instance_execute_right:
+        class: '%pimee_security.filter.job_instance_execute_right.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        arguments:
+            - '@oro_security.security_facade'
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.internal_api.job_instance.execute }
+
+    pimee_security.filter.job_instance_edit_right:
+        class: '%pimee_security.filter.job_instance_edit_right.class%'
+        parent: pimee_catalog.filter.abstract_authorization
+        arguments:
+            - '@oro_security.security_facade'
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.internal_api.job_instance.edit }
+
+    pimee_security.filter.attribute_group_edit:
+        class: '%pimee_security.filter.attribute_group_edit.class%'
+        arguments:
+            - ['permissions']
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute_group.edit }
+
+    pimee_security.filter.job_instance_edit:
+        class: '%pimee_security.filter.job_instance_edit.class%'
+        arguments:
+            - ['permissions']
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.job_instance.edit }
+
+    pimee_catalog.security.filter.not_granted_category:
+        class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedCategoryFilter'
+        arguments:
+            - '@security.authorization_checker'
+
+    pimee_catalog.security.filter.not_granted_associated_product:
+        class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedAssociatedProductFilter'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pimee_security.query.product_category_access'
+            - '@pimee_security.query.product_model_category_access'
+            - '@security.token_storage'
+
+    pimee_catalog.security.filter.not_granted_values:
+        class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedValuesFilter'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_locale'
+
+    pimee_catalog.security.filter.not_granted_parent:
+        class: 'Akeneo\Pim\Permission\Component\Filter\NotGrantedParentFilter'
+        arguments:
+            - '@pimee_catalog.security.factory.filtered_product_model'
+        lazy: true

@@ -1,0 +1,16 @@
+pim_enriched_entity:
+  button:
+    save: Salva
+  enriched_entity:
+    tab:
+      attributes: Attributi
+      properties: Proprietà
+    properties:
+      identifier: Identificatore
+      label: Etichetta
+pim_enrich:
+  entity:
+    attribute:
+      property:
+        section:
+          type_specific: Digita parametri specifici

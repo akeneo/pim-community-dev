@@ -27,9 +27,11 @@ class EnrichedEntity
     /** @var LabelCollection */
     private $labelCollection;
 
-    private function __construct(EnrichedEntityIdentifier $identifier, LabelCollection $labelCollection)
-    {
-        $this->identifier = $identifier;
+    private function __construct(
+        EnrichedEntityIdentifier $identifier,
+        LabelCollection $labelCollection
+    ) {
+        $this->identifier      = $identifier;
         $this->labelCollection = $labelCollection;
     }
 

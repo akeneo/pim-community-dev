@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
@@ -20,7 +21,6 @@ use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductControlle
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
-use PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**

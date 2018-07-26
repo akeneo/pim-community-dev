@@ -5,7 +5,7 @@ namespace spec\Akeneo\Asset\Bundle\Event;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Datagrid\Product\ContextConfigurator;
+use Akeneo\Pim\Permission\Bundle\Datagrid\Product\ContextConfigurator;
 
 class ConfigureAssetGridListenerSpec extends ObjectBehavior
 {

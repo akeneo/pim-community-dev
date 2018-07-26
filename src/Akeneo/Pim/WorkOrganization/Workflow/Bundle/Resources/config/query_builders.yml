@@ -1,0 +1,302 @@
+parameters:
+  pimee_workflow.query.elasticsearch.filter.author.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Field\AuthorFilter
+  pimee_workflow.query.elasticsearch.filter.label_or_identifier.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
+  pimee_workflow.query.elasticsearch.sorter.author.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Sorter\Field\AuthorSorter
+
+  # attribute filters
+  pimee_workflow.query.elasticsearch.filter.text.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\TextFilter
+  pimee_workflow.query.elasticsearch.filter.text_area.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\TextAreaFilter
+  pimee_workflow.query.elasticsearch.filter.price.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\PriceFilter
+  pimee_workflow.query.elasticsearch.filter.option.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\OptionFilter
+  pimee_workflow.query.elasticsearch.filter.number.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\NumberFilter
+  pimee_workflow.query.elasticsearch.filter.metric.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\MetricFilter
+  pimee_workflow.query.elasticsearch.filter.media.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\MediaFilter
+  pimee_workflow.query.elasticsearch.filter.date.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\DateFilter
+  pimee_workflow.query.elasticsearch.filter.boolean.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\BooleanFilter
+  pimee_workflow.query.elasticsearch.filter.reference_data.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\ReferenceDataFilter
+
+  pimee_workflow.query.elasticsearch.attribute_path_resolver.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Filter\Attribute\ProposalAttributePathResolver
+
+services:
+    pimee_workflow.query.elasticsearch.attribute_path_resolver:
+        class: '%pimee_workflow.query.elasticsearch.attribute_path_resolver.class%'
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+
+    pimee_workflow.doctrine.query.published_product_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pimee_workflow.factory.published_product_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pimee_workflow.factory.published_product_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pimee_workflow.factory.published_product_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+
+    pimee_workflow.doctrine.query.published_product_query_builder_factory_with_permissions:
+        class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        decorates: pimee_workflow.doctrine.query.published_product_query_builder_factory
+        decoration_inner_name: pimee_workflow.doctrine.query.published_product_query_builder_factory.without_permission
+        arguments:
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_factory.without_permission'
+            - '@security.token_storage'
+            - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'
+
+    pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory_with_permissions:
+        class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        decorates: pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory
+        decoration_inner_name: pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory.without_permission
+        arguments:
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory.without_permission'
+            - '@security.token_storage'
+            - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'
+
+    pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory_with_permissions:
+        class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        decorates: pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory
+        decoration_inner_name: pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory.without_permission
+        arguments:
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory.without_permission'
+            - '@security.token_storage'
+            - '@pimee_security.repository.category_access'
+            - 'VIEW_ITEMS'
+
+    pimee_workflow.query.product_proposal_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pimee_workflow.query.filter.product_proposal_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pimee_workflow.factory.product_proposal_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory:
+        public: false
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pimee_workflow.query.filter.product_proposal_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pimee_workflow.factory.product_and_product_model_proposal_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory_with_permissions:
+        public: false
+        class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        decorates: pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory
+        decoration_inner_name: pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory.without_permission
+        arguments:
+            - '@pimee_workflow.doctrine.query.proposal_product_and_product_model_query_builder_from_size_factory.without_permission'
+            - '@security.token_storage'
+            - '@pimee_security.repository.category_access'
+            - 'OWN_PRODUCTS'
+    #Filters
+    pimee_workflow.query.filter.product_proposal_registry:
+        class: '%pim_catalog.query.filter.registry.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+
+    pimee_workflow.query.elasticsearch.filter.category:
+        class: '%pim_catalog.query.elasticsearch.filter.category.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - ['categories']
+            - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.author:
+        class: '%pimee_workflow.query.elasticsearch.filter.author.class%'
+        arguments:
+            - ['author']
+            - ['CONTAINS']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.family:
+        class: '%pim_catalog.query.elasticsearch.filter.family.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - ['family']
+            - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.datetime:
+        class: '%pim_catalog.query.elasticsearch.filter.datetime.class%'
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@akeneo_batch.job_repository'
+            - ['created']
+            -
+                - '='
+                - '<'
+                - '>'
+                - 'BETWEEN'
+                - 'NOT BETWEEN'
+                - 'EMPTY'
+                - 'NOT EMPTY'
+                - '!='
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.attribute.identifier_attribute:
+        class: '%pim_catalog.query.elasticsearch.filter.identifier_attribute.class%'
+        arguments:
+            - ['pim_catalog_identifier']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.field.identifier_field:
+        class: '%pim_catalog.query.elasticsearch.filter.identifier_field.class%'
+        arguments:
+            - ['entity_with_values_identifier']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'IN', 'NOT IN']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.label_or_identifier:
+        class: '%pimee_workflow.query.elasticsearch.filter.label_or_identifier.class%'
+        arguments:
+            - ['label_or_identifier']
+            - ['CONTAINS']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.text:
+        class: '%pimee_workflow.query.elasticsearch.filter.text.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - ['pim_catalog_text']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.text_area:
+        class: '%pimee_workflow.query.elasticsearch.filter.text_area.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - ['pim_catalog_textarea']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.option:
+        class: '%pimee_workflow.query.elasticsearch.filter.option.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - '@pim_catalog.repository.attribute_option'
+            - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.id:
+        class: '%pim_catalog.query.elasticsearch.filter.id.class%'
+        arguments:
+            - ['id']
+            - ['IN', 'NOT IN', '=', '!=']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.price:
+        class: '%pimee_workflow.query.elasticsearch.filter.price.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - '@pim_catalog.repository.currency'
+            - ['pim_catalog_price_collection']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.boolean:
+        class: '%pimee_workflow.query.elasticsearch.filter.boolean.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - ['pim_catalog_boolean']
+            - ['=', '!=', 'NOT EMPTY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.number:
+        class: '%pimee_workflow.query.elasticsearch.filter.number.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - ['pim_catalog_number']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.doctrine.query.filter.date:
+        class: '%pimee_workflow.query.elasticsearch.filter.date.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - ['pim_catalog_date']
+            - ['=', '<', '>', 'BETWEEN', 'NOT BETWEEN', 'EMPTY', 'NOT EMPTY', '!=']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.metric:
+        class: '%pimee_workflow.query.elasticsearch.filter.metric.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - '@akeneo_measure.manager'
+            - '@akeneo_measure.measure_converter'
+            - ['pim_catalog_metric']
+            - ['<', '<=', '=', '!=', '>=', '>', 'EMPTY', 'EMPTY FOR CURRENCY', 'EMPTY ON ALL CURRENCIES', 'NOT EMPTY', 'NOT EMPTY ON AT LEAST ONE CURRENCY', 'NOT EMPTY FOR CURRENCY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.media:
+        class: '%pimee_workflow.query.elasticsearch.filter.media.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - ['STARTS WITH', 'CONTAINS', 'DOES NOT CONTAIN', '=', '!=', 'EMPTY', 'NOT EMPTY']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    pimee_workflow.query.elasticsearch.filter.reference_data:
+        class: '%pimee_workflow.query.elasticsearch.filter.reference_data.class%'
+        arguments:
+            - '@pimee_workflow.query.elasticsearch.attribute_path_resolver'
+            - '@pim_reference_data.repository_resolver'
+            - '@pim_reference_data.registry'
+            - ['pim_reference_data_simpleselect', 'pim_reference_data_multiselect']
+            - ['IN', 'EMPTY', 'NOT EMPTY', 'NOT IN']
+        tags:
+            - { name: 'pimee_workflow.elasticsearch.query.product_proposal_filter', priority: 30 }
+
+    #Sorters
+    pimee_workflow.query.elasticsearch.sorter.author:
+        class: '%pimee_workflow.query.elasticsearch.sorter.author.class%'
+        arguments:
+            - ['author']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.sorter', priority: 30 }

@@ -1,0 +1,10 @@
+parameters:
+    pimee_workflow.applier.draft.class: Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplier
+
+services:
+    pimee_workflow.applier.draft:
+        class: '%pimee_workflow.applier.draft.class%'
+        arguments:
+            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
+            - '@event_dispatcher'
+            - '@pim_catalog.repository.attribute'

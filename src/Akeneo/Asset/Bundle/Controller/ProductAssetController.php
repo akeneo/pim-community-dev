@@ -31,6 +31,9 @@ use Akeneo\Asset\Component\VariationFileGeneratorInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\CategoryManager;
+use Akeneo\Pim\Permission\Bundle\User\UserContext;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
@@ -44,9 +47,6 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Controller\FileController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
-use PimEnterprise\Bundle\SecurityBundle\Persistence\ORM\Category\CategoryManager;
-use PimEnterprise\Bundle\SecurityBundle\User\UserContext;
-use PimEnterprise\Component\Security\Attributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -513,7 +513,7 @@ class ProductAssetController extends Controller
      *
      * @AclAncestor("pimee_product_asset_categories_view")
      *
-     * @Template("PimEnterpriseProductAssetBundle:ProductAsset:list-categories.json.twig")
+     * @Template("AkeneoAssetBundle:ProductAsset:list-categories.json.twig")
      *
      * @param Request $request    The request object
      * @param int     $id         Asset id
@@ -621,7 +621,7 @@ class ProductAssetController extends Controller
      */
     public function massUploadAction()
     {
-        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:mass-upload.html.twig');
+        return $this->render('AkeneoAssetBundle:ProductAsset:mass-upload.html.twig');
     }
 
     /**
@@ -713,7 +713,7 @@ class ProductAssetController extends Controller
 
         $trees = $this->assetCategoryRepo->getItemCountByGrantedTree($productAsset, $this->userContext->getUser());
 
-        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', [
+        return $this->render('AkeneoAssetBundle:ProductAsset:edit.html.twig', [
             'asset'         => $productAsset,
             'form'          => $assetForm->createView(),
             'metadata'      => $this->getAssetMetadata($productAsset),
@@ -746,7 +746,7 @@ class ProductAssetController extends Controller
             $attachments[$refKey]['reference'] = $reference;
         }
 
-        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', [
+        return $this->render('AkeneoAssetBundle:ProductAsset:view.html.twig', [
             'asset'       => $productAsset,
             'attachments' => $attachments,
             'metadata'    => $this->getAssetMetadata($productAsset)

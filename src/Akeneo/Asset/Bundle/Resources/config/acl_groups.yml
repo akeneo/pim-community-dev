@@ -3,3 +3,11 @@ pimee_product_asset.acl_group.asset:
 
 pimee_product_asset.acl_group.category:
     order: 125
+
+pim_api.acl_group.asset_category:
+    order: 20
+    permission_group: api
+
+pim_api.acl_group.asset:
+    order: 30
+    permission_group: api

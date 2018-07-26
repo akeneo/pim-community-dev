@@ -8,7 +8,7 @@ use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnri
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\EditEnrichedEntity\EditEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
@@ -19,18 +19,18 @@ use Webmozart\Assert\Assert;
  */
 final class EditEnrichedEntityContext implements Context
 {
-    /** @var EnrichedEntityRepository */
+    /** @var EnrichedEntityRepositoryInterface */
     private $enrichedEntityRepository;
 
     /** @var EditEnrichedEntityHandler */
     private $editEnrichedEntityHandler;
 
     /**
-     * @param EnrichedEntityRepository  $enrichedEntityRepository
-     * @param EditEnrichedEntityHandler $editEnrichedEntityHandler
+     * @param EnrichedEntityRepositoryInterface $enrichedEntityRepository
+     * @param EditEnrichedEntityHandler         $editEnrichedEntityHandler
      */
     public function __construct(
-        EnrichedEntityRepository $enrichedEntityRepository,
+        EnrichedEntityRepositoryInterface $enrichedEntityRepository,
         EditEnrichedEntityHandler $editEnrichedEntityHandler
     ) {
         $this->enrichedEntityRepository = $enrichedEntityRepository;
@@ -43,7 +43,7 @@ final class EditEnrichedEntityContext implements Context
     public function theFollowingEnrichedEntity(TableNode $enrichedEntitieTable)
     {
         foreach ($enrichedEntitieTable->getHash() as $enrichedEntity) {
-            $this->enrichedEntityRepository->save(
+            $this->enrichedEntityRepository->create(
                 EnrichedEntity::create(
                     EnrichedEntityIdentifier::fromString($enrichedEntity['identifier']),
                     json_decode($enrichedEntity['labels'], true)

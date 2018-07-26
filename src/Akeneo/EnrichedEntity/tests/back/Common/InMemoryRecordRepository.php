@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Common;
 
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
-use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EntityNotFoundException;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordNotFoundException;
 use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 
 /**
@@ -26,31 +24,50 @@ use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
  */
 class InMemoryRecordRepository implements RecordRepositoryInterface
 {
-    /** @var Record[] */
+    /** @var array */
     protected $records = [];
 
-    public function save(Record $record): void
+    public function create(Record $record): void
     {
-        $recordIdentifier = (string) $record->getIdentifier();
-        $enrichedEntityIdentifier = (string) $record->getEnrichedEntityIdentifier();
-
-        $this->records[$enrichedEntityIdentifier][$recordIdentifier] = $record;
+        $key = $this->getKey($record->getIdentifier());
+        if (isset($this->records[$key])) {
+            throw new \RuntimeException('Record already exists');
+        }
+        $this->records[$key] = $record;
     }
 
-    public function getByIdentifier(
-        RecordIdentifier $identifier,
-        EnrichedEntityIdentifier $enrichedEntityIdentifier
-    ): Record {
-        if (!isset($this->records[(string) $enrichedEntityIdentifier])) {
-            throw EntityNotFoundException::withIdentifier(EnrichedEntity::class, (string) $enrichedEntityIdentifier);
+    public function update(Record $record): void
+    {
+        $key = $this->getKey($record->getIdentifier());
+        if (!isset($this->records[$key])) {
+            throw new \RuntimeException('Expected to update one record, but none was saved');
+        }
+        $this->records[$key] = $record;
+    }
+
+    public function getByIdentifier(RecordIdentifier $identifier): Record
+    {
+        $key = $this->getKey($identifier);
+        if (!isset($this->records[$key])) {
+            throw RecordNotFoundException::withIdentifier($identifier);
         }
 
-        $records = $this->records[(string) $enrichedEntityIdentifier];
+        return $this->records[$key];
+    }
 
-        if (!isset($records[(string) $identifier])) {
-            throw EntityNotFoundException::withIdentifier(Record::class, (string) $identifier);
+    public function count(): int
+    {
+        $recordCount = 0;
+
+        foreach ($this->records as $enrichedEntity) {
+            $recordCount += count($enrichedEntity);
         }
 
-        return $records[(string) $identifier];
+        return $recordCount;
+    }
+
+    private function getKey(RecordIdentifier $recordIdentifier): string
+    {
+        return sprintf('%s_%s', $recordIdentifier->getEnrichedEntityIdentifier(), $recordIdentifier->getIdentifier());
     }
 }

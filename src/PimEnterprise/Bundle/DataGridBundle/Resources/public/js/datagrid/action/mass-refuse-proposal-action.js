@@ -39,8 +39,8 @@ define(
              */
             execute: function () {
                 var modalParameters = {
-                    title: __('pimee_enrich.entity.product_draft.modal.reject_selected_proposal'),
-                    okText: __('pimee_enrich.entity.product_draft.modal.confirm'),
+                    title: __('pimee_enrich.entity.product_draft.module.proposal.reject_selected'),
+                    okText: __('pimee_enrich.entity.product.module.approval.send'),
                     cancelText: __('pim_common.cancel')
                 };
 

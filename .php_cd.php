@@ -70,7 +70,7 @@ $cPimEERules = [
         RuleInterface::TYPE_ONLY
     ),
     new Rule(
-        'PimEnterprise\Component\TeamworkAssistant',
+        'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component',
         $cDeps,
         RuleInterface::TYPE_ONLY
     ),

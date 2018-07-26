@@ -6,6 +6,15 @@ suites:
     PimEnterprise:
         namespace: PimEnterprise
 
+    EnrichedEntity:
+        namespace: Akeneo\EnrichedEntity
+        psr4_prefix: Akeneo\EnrichedEntity
+        spec_path: src/Akeneo/EnrichedEntity/tests/back
+        src_path: src/Akeneo/EnrichedEntity/back
+
+    Akeneo:
+        namespace: Akeneo
+
     ## Asset
     AssetBundle:
         namespace: Akeneo\Asset\Bundle
@@ -49,11 +58,6 @@ suites:
         psr4_prefix: Akeneo\Tool\Bundle\RuleEngineBundle
         spec_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
         src_path: src/Akeneo/Tool/Bundle/RuleEngineBundle
-    EnrichedEntity:
-        namespace: Akeneo\EnrichedEntity
-        psr4_prefix: Akeneo\EnrichedEntity
-        spec_path: src/Akeneo/EnrichedEntity/tests/back
-        src_path: src/Akeneo/EnrichedEntity/back
     SuggestData:
         namespace: Akeneo\Pim\Automation\SuggestData
         psr4_prefix: Akeneo\Pim\Automation\SuggestData

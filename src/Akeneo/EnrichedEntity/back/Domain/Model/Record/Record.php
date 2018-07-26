@@ -16,6 +16,7 @@ namespace Akeneo\EnrichedEntity\Domain\Model\Record;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -26,30 +27,49 @@ class Record
     /** @var RecordIdentifier */
     private $identifier;
 
-    /** @var LabelCollection */
-    private $labelCollection;
+    /** @var RecordCode */
+    private $code;
 
     /** @var EnrichedEntity */
     private $enrichedEntityIdentifier;
 
+    /** @var LabelCollection */
+    private $labelCollection;
+
     private function __construct(
         RecordIdentifier $identifier,
+        RecordCode $code,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         LabelCollection $labelCollection
     ) {
+        Assert::eq($identifier->getIdentifier(), (string) $code, sprintf(
+                'The identifier and code should be the same, "%s" and "%s" given.',
+                $identifier->getIdentifier(),
+                (string) $code
+            )
+        );
+        Assert::eq($identifier->getEnrichedEntityIdentifier(), (string) $enrichedEntityIdentifier, sprintf(
+                'The identifier and enriched entity identifier should be related, "%s" and "%s" given.',
+                $identifier->getEnrichedEntityIdentifier(),
+                (string) $enrichedEntityIdentifier
+            )
+        );
+
         $this->identifier = $identifier;
         $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
         $this->labelCollection = $labelCollection;
+        $this->code = $code;
     }
 
     public static function create(
         RecordIdentifier $identifier,
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
+        RecordCode $code,
         array $rawLabelCollection
     ): self {
         $labelCollection = LabelCollection::fromArray($rawLabelCollection);
 
-        return new self($identifier, $enrichedEntityIdentifier, $labelCollection);
+        return new self($identifier, $code, $enrichedEntityIdentifier, $labelCollection);
     }
 
     public function getIdentifier(): RecordIdentifier

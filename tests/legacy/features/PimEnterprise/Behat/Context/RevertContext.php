@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace PimEnterprise\Behat\Context;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\WorkOrganization\ProductRevert\Reverter\ProductReverter;
+use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Behat\Behat\Context\Context;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
-use PimEnterprise\Bundle\RevertBundle\Reverter\ProductReverter;
 
 /**
  * @author Damien Carcel <damien.carcel@akeneo.com>

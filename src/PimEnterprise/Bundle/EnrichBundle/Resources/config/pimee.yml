@@ -1,21 +1,21 @@
 imports:
     - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
     - { resource: '@PimEnterpriseEnrichBundle/Resources/config/bundles/oneup_flysystem.yml' }
-    - { resource: '@PimEnterpriseProductAssetBundle/Resources/config/external_api/config.yml' }
+    - { resource: '@AkeneoAssetBundle/Resources/config/external_api/config.yml' }
 
 assetic:
     bundles:
         - PimEnterpriseEnrichBundle
 
 twig:
-    form_theme: ['PimEnterpriseUIBundle:Form:pimee-fields.html.twig', 'PimEnterpriseProductAssetBundle:Form:pimee-fields.html.twig']
+    form_theme: ['PimEnterpriseUIBundle:Form:pimee-fields.html.twig', 'AkeneoAssetBundle:Form:pimee-fields.html.twig']
 
 fos_rest:
     exception:
         codes:
-            PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException: 422
+            Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException: 422
         messages:
-            PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException: true
+            Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException: true
 
 doctrine_migrations:
     dir_name: '%doctrine_migrations_dir%'

@@ -8,7 +8,7 @@ use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\Create
 use Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityHandler;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\EnrichedEntityRepositoryInterface;
 use Akeneo\EnrichedEntity\tests\back\Common\InMemoryEnrichedEntityRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -26,15 +26,17 @@ final class CreateEnrichedEntityContext implements Context
     /** @var CreateEnrichedEntityHandler */
     private $createEnrichedEntityHandler;
 
-    /** @var \Exception */
-    private $exceptionThrown;
+    /** @var ExceptionContext */
+    private $exceptionContext;
 
     public function __construct(
-        EnrichedEntityRepository $enrichedEntityRepository,
-        CreateEnrichedEntityHandler $createEnrichedEntityHandler
+        EnrichedEntityRepositoryInterface $enrichedEntityRepository,
+        CreateEnrichedEntityHandler $createEnrichedEntityHandler,
+        ExceptionContext $exceptionContext
     ) {
         $this->enrichedEntityRepository = $enrichedEntityRepository;
         $this->createEnrichedEntityHandler = $createEnrichedEntityHandler;
+        $this->exceptionContext = $exceptionContext;
     }
 
     /**
@@ -42,14 +44,14 @@ final class CreateEnrichedEntityContext implements Context
      */
     public function theUserCreatesAnEnrichedEntityWith($identifier, TableNode $updateTable)
     {
-        $updates = $updateTable->getRowsHash();
+        $updates = current($updateTable->getHash());
         $command = new CreateEnrichedEntityCommand();
         $command->identifier = $identifier;
         $command->labels = json_decode($updates['labels'], true);
         try {
             ($this->createEnrichedEntityHandler)($command);
         } catch (\Exception $e) {
-            $this->exceptionThrown = $e;
+            $this->exceptionContext->setException($e);
         }
     }
 
@@ -83,14 +85,6 @@ final class CreateEnrichedEntityContext implements Context
             $differences,
             sprintf('Expected labels "%s", but found %s', json_encode($expectedLabels), json_encode($actualLabels))
         );
-    }
-
-    /**
-     * @Then /^an exception is thrown with message "([^"]+)"$/
-     */
-    public function anExceptionIsThrownWithMessage(string $errorMessage)
-    {
-        Assert::eq($errorMessage, $this->exceptionThrown->getMessage());
     }
 
     /**

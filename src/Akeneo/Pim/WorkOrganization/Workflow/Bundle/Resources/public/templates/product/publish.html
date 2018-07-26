@@ -1,0 +1,8 @@
+<% if (product.meta.published) { %>
+    <% if (product.meta.published.version !== product.meta.updated.version) { %>
+        <span class="AknDropdown-menuLink publish-product "><%- _.__('pimee_enrich.entity.published_product.module.publish.publish_this_version') %></span>
+    <% } %>
+    <span class="AknDropdown-menuLink unpublish-product"><%- _.__('pimee_enrich.entity.published_product.module.unpublish.label') %></span>
+<% } else { %>
+    <span class="AknDropdown-menuLink publish-product"><%- _.__('pimee_enrich.entity.published_product.module.publish.label') %></span>
+<% } %>

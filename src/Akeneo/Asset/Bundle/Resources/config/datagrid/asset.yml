@@ -23,7 +23,7 @@ datagrid:
                 type:          asset_thumbnail
                 frontend_type: html
                 label:         pimee_product_asset.thumbnail.label
-                template:      PimEnterpriseProductAssetBundle:Property:thumbnail.html.twig
+                template:      AkeneoAssetBundle:Property:thumbnail.html.twig
                 selector:      asset_thumbnail
             code:
                 type:          field
@@ -121,7 +121,7 @@ datagrid:
         mass_actions:
             asset_edit:
                 type: edit
-                label: pim.grid.mass_action.asset_edit
+                label: pim_datagrid.mass_action.mass_edit.asset_edit
                 acl_resource: pimee_product_asset_index
                 route: pim_enrich_mass_edit_action
                 route_parameters:

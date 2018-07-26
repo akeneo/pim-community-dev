@@ -1,0 +1,132 @@
+parameters:
+    pim_versioning.event_subscriber.addversion.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\SkipVersionSubscriber
+    pimee_workflow.event_subscriber.published_product.check_removal.class:              Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\CheckPublishedProductOnRemovalSubscriber
+    pimee_workflow.event_subscriber.published_product.detach_product.class:             Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\PublishedProduct\DetachProductPostPublishSubscriber
+    pimee_workflow.event_subscriber.product_draft.replace_flash_message.class:          Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ReplaceProductUpdatedFlashMessageSubscriber
+    pimee_workflow.event_subscriber.product_draft.send_for_approval.class:              Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\SendForApprovalSubscriber
+    pimee_workflow.event_subscriber.import.new_proposals.class:                         Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\Import\ImportProposalsSubscriber
+    pimee_workflow.event_subscriber.product_draft.approve_notification.class:           Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ApproveNotificationSubscriber
+    pimee_workflow.event_subscriber.product_draft.refuse_notification.class:            Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\RefuseNotificationSubscriber
+    pimee_workflow.event_subscriber.product_draft.remove_notification.class:            Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\RemoveNotificationSubscriber
+    pimee_workflow.event_subscriber.product_draft.ensure_global_status.class:           Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\EnsureProductDraftGlobalStatusSubscriber
+    pimee_workflow.subscriber.product_draft.exclude_deleted_attribute.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\ORM\ExcludeDeletedAttributeSubscriber
+    pimee_workflow.event_subscriber.index_product_proposals.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductProposal\IndexProductProposalsSubscriber
+    pimee_workflow.event_subscriber.index_product_model_proposals.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductModelProposal\IndexProductModelProposalsSubscriber
+
+services:
+    ##
+    # Published product events
+    ##
+    pimee_workflow.event_subscriber.published_product.check_removal:
+        class: '%pimee_workflow.event_subscriber.published_product.check_removal.class%'
+        arguments:
+            - '@pimee_workflow.repository.published_product'
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_factory'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+        tags:
+            - { name: kernel.event_subscriber, priority: 255 }
+
+    pimee_workflow.event_subscriber.published_product.detach_product:
+        class: '%pimee_workflow.event_subscriber.published_product.detach_product.class%'
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ##
+    # Import event subscribers
+    ##
+    pimee_workflow.event_subscriber.import.new_proposals:
+        class: '%pimee_workflow.event_subscriber.import.new_proposals.class%'
+        arguments:
+            - '@pim_notification.notifier'
+            - '@pim_user.repository.user'
+            - '@pimee_workflow.provider.owner_groups'
+            - '@pimee_workflow.provider.users_to_notify'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@pim_notification.factory.notification'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ##
+    # Product drafts event subscribers
+    ##
+    pimee_workflow.event_subscriber.product_draft.replace_flash_message:
+        class: '%pimee_workflow.event_subscriber.product_draft.replace_flash_message.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.approve_notification:
+        class: '%pimee_workflow.event_subscriber.product_draft.approve_notification.class%'
+        arguments:
+            - '@pim_notification.notifier'
+            - '@pim_user.context.user'
+            - '@pim_user.repository.user'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_notification.factory.notification'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.refuse_notification:
+        class: '%pimee_workflow.event_subscriber.product_draft.refuse_notification.class%'
+        arguments:
+            - '@pim_notification.notifier'
+            - '@pim_user.context.user'
+            - '@pim_user.repository.user'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_notification.factory.notification'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.remove_notification:
+        class: '%pimee_workflow.event_subscriber.product_draft.remove_notification.class%'
+        arguments:
+            - '@pim_notification.notifier'
+            - '@pim_user.context.user'
+            - '@pim_user.repository.user'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_notification.factory.notification'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.send_for_approval:
+        class: '%pimee_workflow.event_subscriber.product_draft.send_for_approval.class%'
+        arguments:
+            - '@pim_notification.notifier'
+            - '@pim_user.repository.user'
+            - '@pimee_workflow.provider.owner_groups'
+            - '@pimee_workflow.provider.users_to_notify'
+            - '@pim_notification.factory.notification'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.ensure_global_status:
+        class: '%pimee_workflow.event_subscriber.product_draft.ensure_global_status.class%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.subscriber.product_draft.exclude_deleted_attribute:
+        class: '%pimee_workflow.subscriber.product_draft.exclude_deleted_attribute.class%'
+        arguments:
+            - '%pim_catalog.entity.attribute.class%'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pimee_workflow.event_subscriber.index_product_proposals:
+        class: '%pimee_workflow.event_subscriber.index_product_proposals.class%'
+        arguments:
+            - '@pim_catalog.elasticsearch.product_proposal_indexer'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.index_product_model_proposals:
+        class: '%pimee_workflow.event_subscriber.index_product_model_proposals.class%'
+        arguments:
+            - '@pim_catalog.elasticsearch.product_model_proposal_indexer'
+        tags:
+            - { name: kernel.event_subscriber }

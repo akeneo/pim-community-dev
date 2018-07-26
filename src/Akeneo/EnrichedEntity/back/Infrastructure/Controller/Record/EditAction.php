@@ -32,19 +32,14 @@ class EditAction
     /** @var EditRecordHandler */
     private $editRecordHandler;
 
-    /** @var Serializer */
-    private $serializer;
-
     /** @var ValidatorInterface */
     private $validator;
 
     public function __construct(
         EditRecordHandler $editRecordHandler,
-        Serializer $serializer,
         ValidatorInterface $validator
     ) {
         $this->editRecordHandler = $editRecordHandler;
-        $this->serializer = $serializer;
         $this->validator = $validator;
     }
 
@@ -53,8 +48,14 @@ class EditAction
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
+        if ($this->hasDesynchronizedIdentifiers($request)) {
+            return new JsonResponse(
+                'The identifier provided in the route and the one given in the body of the request are different',
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
-        $command = $this->serializer->deserialize($request->getContent(), EditRecordCommand::class, 'json');
+        $command = $this->getEditCommand($request);
         $violations = $this->validator->validate($command);
 
         if ($violations->count() > 0) {
@@ -71,5 +72,32 @@ class EditAction
         ($this->editRecordHandler)($command);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Checks whether the identifier given in the url parameter and in the body are the same or not.
+     */
+    private function hasDesynchronizedIdentifiers(Request $request): bool
+    {
+        $normalizedCommand = json_decode($request->getContent(), true);
+
+        return $normalizedCommand['identifier']['enriched_entity_identifier'] !== $request->get('enrichedEntityIdentifier') ||
+            $normalizedCommand['identifier']['identifier'] !== $request->get('recordIdentifier');
+    }
+
+    private function getEditCommand(Request $request): EditRecordCommand
+    {
+        $normalizedCommand = json_decode($request->getContent(), true);
+
+        $command = new EditRecordCommand();
+        $command->identifier = [
+            'identifier'                 => $normalizedCommand['identifier']['identifier'] ?? null,
+            'enriched_entity_identifier' => $normalizedCommand['identifier']['enriched_entity_identifier'] ?? null,
+        ];
+        $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'] ?? null;
+        $command->code = $normalizedCommand['code'] ?? null;
+        $command->labels = $normalizedCommand['labels'] ?? [];
+
+        return $command;
     }
 }
