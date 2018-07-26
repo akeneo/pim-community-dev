@@ -2,7 +2,9 @@
 
 namespace spec\Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification;
 
-use Akeneo\Component\Localization\Presenter\DatePresenter;
+use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
@@ -11,8 +13,6 @@ use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Notification\ProjectNot
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectCompleteness;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Model\ProjectInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component\Notification\ProjectNotifierInterface;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 
 class ProjectDueDateReminderNotifierSpec extends ObjectBehavior
 {

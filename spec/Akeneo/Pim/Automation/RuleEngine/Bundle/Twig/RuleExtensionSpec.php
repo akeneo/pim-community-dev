@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\Twig;
 
-use Akeneo\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
+use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Localization\Presenter\PresenterRegistryInterface;
 use Prophecy\Argument;

@@ -18,7 +18,6 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Damien Carcel <damien.carcel@gmail.com>
@@ -92,9 +91,9 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     /**
      * @param GenericEvent $event
      *
-     * @return null|UserInterface
+     * @return null|string
      */
-    protected function getUserFromEvent(GenericEvent $event): ?UserInterface
+    protected function getUserFromEvent(GenericEvent $event): ?string
     {
         try {
             $user = $event->getArgument('username');

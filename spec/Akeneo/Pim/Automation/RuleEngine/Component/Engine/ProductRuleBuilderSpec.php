@@ -2,9 +2,13 @@
 
 namespace spec\Akeneo\Pim\Automation\RuleEngine\Component\Engine;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Exception\BuilderException;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -19,18 +23,18 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $this->beConstructedWith(
             $ruleContentDenormalizer,
             $eventDispatcher,
-            'Akeneo\Bundle\RuleEngineBundle\Model\Rule'
+            Rule::class
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\CatalogRule\Engine\ProductRuleBuilder');
+        $this->shouldHaveType(ProductRuleBuilder::class);
     }
 
     function it_is_a_rule_builder()
     {
-        $this->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface');
+        $this->shouldHaveType(BuilderInterface::class);
     }
 
     function it_builds_a_rule($eventDispatcher, $ruleContentDenormalizer, RuleDefinitionInterface $definition)
@@ -43,7 +47,7 @@ class ProductRuleBuilderSpec extends ObjectBehavior
         $eventDispatcher->dispatch(RuleEvents::PRE_BUILD, Argument::any())->shouldBeCalled();
         $eventDispatcher->dispatch(RuleEvents::POST_BUILD, Argument::any())->shouldBeCalled();
 
-        $this->build($definition)->shouldHaveType('Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface');
+        $this->build($definition)->shouldHaveType(RuleInterface::class);
     }
 
     function it_does_not_build_a_rule_with_bad_content(

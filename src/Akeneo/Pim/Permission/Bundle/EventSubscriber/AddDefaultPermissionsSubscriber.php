@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
 use Akeneo\Asset\Component\Model\CategoryInterface as ProductAssetCategoryInterface;
-use Akeneo\Asset\Component\Model\CategoryInterface;
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
-use Oro\Bundle\UserBundle\Entity\Repository\GroupRepository;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

@@ -2,28 +2,30 @@
 
 namespace spec\Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber;
 
+use Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RuleExecutionSubscriber;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\Rule;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\NotificationBundle\Entity\Notification;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\User\ChainUserProvider;
 
 class RuleExecutionSubscriberSpec extends ObjectBehavior
 {
-    function let(ChainUserProvider $chainUserProvider, NotifierInterface $notifier)
+    function let(NotifierInterface $notifier)
     {
-        $this->beConstructedWith($chainUserProvider, $notifier, 'Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->beConstructedWith($notifier, Notification::class);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleExecutionSubscriber');
+        $this->shouldHaveType(RuleExecutionSubscriber::class);
     }
 
     function it_is_a_subscriber()
     {
-        $this->shouldImplement('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $this->shouldImplement(EventSubscriberInterface::class);
     }
 
     function it_subscribes_to_POST_EXECUTE_ALL_rule_event ()

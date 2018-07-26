@@ -2,8 +2,8 @@
 
 namespace spec\Akeneo\Asset\Component\Upload;
 
+use Akeneo\Channel\Component\Model\LocaleInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\LocaleInterface;
 
 class ParsedFilenameSpec extends ObjectBehavior
 {

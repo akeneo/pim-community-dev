@@ -11,7 +11,7 @@
 
 namespace Akeneo\Asset\Component\Upload;
 
-use Pim\Component\Catalog\Model\LocaleInterface;
+use Akeneo\Channel\Component\Model\LocaleInterface;
 
 /**
  * @see FilenameParserInterface

@@ -15,7 +15,7 @@ use Akeneo\Asset\Component\Repository\AssetRepositoryInterface;
 use Akeneo\Asset\Component\Upload\Exception\DuplicateFileException;
 use Akeneo\Asset\Component\Upload\Exception\InvalidCodeException;
 use Akeneo\Asset\Component\Upload\Exception\InvalidLocaleException;
-use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 
 /**
  * Check uploaded files

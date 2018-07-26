@@ -11,7 +11,6 @@
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Engine;
 
-use Akeneo\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsSaver;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsUpdater;
 use Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier\ProductsValidator;
@@ -20,6 +19,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

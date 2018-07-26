@@ -2,18 +2,19 @@
 
 namespace spec\Akeneo\Pim\Permission\Bundle\EventSubscriber;
 
-use Akeneo\Component\Batch\Model\JobInstance;
-use Akeneo\Component\StorageUtils\StorageEvents;
+use Akeneo\Asset\Component\Model\CategoryInterface as ProductAssetCategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
-use Oro\Bundle\UserBundle\Entity\Group;
+use Akeneo\Pim\Permission\Component\Attributes;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Akeneo\UserManagement\Component\Model\Group;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
-use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\CategoryInterface as ProductAssetCategoryInterface;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
