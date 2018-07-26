@@ -1,7 +1,0 @@
-services:
-    pim_comment.form.attribute_group:
-        class: 'Symfony\Component\Form\Form'
-        factory: 'form.factory:createNamed'
-        arguments:
-            - 'pim_comment_comment_form'
-            - '%pim_comment.form.type.comment.class%'

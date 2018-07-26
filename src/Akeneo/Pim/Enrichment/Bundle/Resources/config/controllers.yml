@@ -7,3 +7,11 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_pdf_generator.renderer.registry'
+
+    pim_comment.controller.comment:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CommentController'
+        arguments:
+            - '@security.token_storage'
+            - '@doctrine.orm.default_entity_manager'
+            - '@pim_comment.remover.comment'
+            - '%pim_comment.entity.comment.class%'
