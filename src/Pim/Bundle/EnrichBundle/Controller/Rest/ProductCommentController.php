@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder;
-use Pim\Bundle\CommentBundle\Form\Type\CommentType;
+use Akeneo\Pim\Enrichment\Bundle\Form\Type\CommentType;
 use Akeneo\Pim\Enrichment\Component\Comment\Repository\CommentRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;

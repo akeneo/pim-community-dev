@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CommentBundle\Controller;
+namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;

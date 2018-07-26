@@ -1,5 +1,5 @@
 parameters:
-    pim_comment.form.type.comment.class: Pim\Bundle\CommentBundle\Form\Type\CommentType
+    pim_comment.form.type.comment.class: Akeneo\Pim\Enrichment\Bundle\Form\Type\CommentType
 
 services:
     pim_comment.form.type.comment:
