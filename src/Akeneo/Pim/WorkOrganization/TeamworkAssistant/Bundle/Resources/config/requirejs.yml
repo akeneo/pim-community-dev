@@ -1,0 +1,69 @@
+config:
+    config:
+        teamwork-assistant/saver/project:
+            url: teamwork_assistant_project_create
+        teamwork-assistant/remover/project:
+            url: teamwork_assistant_project_remove
+        pim/fetcher-registry:
+            fetchers:
+                project:
+                    module: teamwork-assistant/project/fetcher
+                    options:
+                        urls:
+                            list: teamwork_assistant_project_search
+                            get: teamwork_assistant_project_get
+                            completeness: teamwork_assistant_project_completeness_show
+                contributor:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: teamwork_assistant_project_contributors_search
+
+    map:
+        '*':
+            pim/grid/view-selector/selector: akeneopimteamworkassistant/js/grid/view-selector
+            pim/grid/view-selector/line: akeneopimteamworkassistant/js/grid/view-selector-line
+            pim/grid/view-selector/current: akeneopimteamworkassistant/js/grid/view-selector-current
+
+    paths:
+        # Forms
+        teamwork-assistant/project/create-form: akeneopimteamworkassistant/js/project/create-form
+        teamwork-assistant/project/fetcher: akeneopimteamworkassistant/js/fetcher/project-fetcher
+        teamwork-assistant/widget/project-widget: akeneopimteamworkassistant/js/widget/project-widget
+        teamwork-assistant/widget/project-selector: akeneopimteamworkassistant/js/widget/project-selector
+        teamwork-assistant/widget/contributor-selector: akeneopimteamworkassistant/js/widget/contributor-selector
+        teamwork-assistant/widget/project-due-date: akeneopimteamworkassistant/js/widget/project-due-date
+        teamwork-assistant/widget/project-completeness-data: akeneopimteamworkassistant/js/widget/project-completeness-data
+        teamwork-assistant/widget/project-description: akeneopimteamworkassistant/js/widget/project-description
+        teamwork-assistant/grid/view-selector/selector: akeneopimteamworkassistant/js/grid/view-selector
+        teamwork-assistant/grid/view-selector/line: akeneopimteamworkassistant/js/grid/view-selector-line
+        teamwork-assistant/grid/view-selector/current: akeneopimteamworkassistant/js/grid/view-selector-current
+        teamwork-assistant/grid/view-selector/create-project: akeneopimteamworkassistant/js/grid/view-selector-create-project
+        teamwork-assistant/grid/view-selector/edit-project: akeneopimteamworkassistant/js/grid/view-selector-edit-project
+        teamwork-assistant/grid/view-selector/remove-project: akeneopimteamworkassistant/js/grid/view-selector-remove-project
+        teamwork-assistant/grid/view-selector/project-status: akeneopimteamworkassistant/js/grid/view-selector-project-status
+
+        # Savers
+        teamwork-assistant/saver/project: akeneopimteamworkassistant/js/saver/project-saver
+
+        # Removers
+        teamwork-assistant/remover/project: akeneopimteamworkassistant/js/remover/project-remover
+
+        # Templates
+        teamwork-assistant/templates/grid/create-project-modal-content: akeneopimteamworkassistant/templates/grid/create-project-modal-content.html
+        teamwork-assistant/templates/field-error: akeneopimteamworkassistant/templates/field-error.html
+        teamwork-assistant/templates/grid/view-selector/line-project: akeneopimteamworkassistant/templates/grid/view-selector-line-project.html
+        teamwork-assistant/templates/grid/view-selector/create-project: akeneopimteamworkassistant/templates/grid/view-selector-create-project.html
+        teamwork-assistant/templates/grid/view-selector/edit-project: akeneopimteamworkassistant/templates/grid/view-selector-edit-project.html
+        teamwork-assistant/templates/grid/view-selector/remove-project: akeneopimteamworkassistant/templates/grid/view-selector-remove-project.html
+        teamwork-assistant/templates/grid/view-selector/project-status: akeneopimteamworkassistant/templates/grid/view-selector-project-status.html
+        teamwork-assistant/templates/grid/view-selector/current: akeneopimteamworkassistant/templates/grid/view-selector-current.html
+        teamwork-assistant/templates/widget/project-widget: akeneopimteamworkassistant/templates/widget/project-widget.html
+        teamwork-assistant/templates/widget/project-widget-empty: akeneopimteamworkassistant/templates/widget/project-widget-empty.html
+        teamwork-assistant/templates/widget/project-selector: akeneopimteamworkassistant/templates/widget/project-selector.html
+        teamwork-assistant/templates/widget/project-selector-line: akeneopimteamworkassistant/templates/widget/project-selector-line.html
+        teamwork-assistant/templates/widget/contributor-selector: akeneopimteamworkassistant/templates/widget/contributor-selector.html
+        teamwork-assistant/templates/widget/contributor-selector-line: akeneopimteamworkassistant/templates/widget/contributor-selector-line.html
+        teamwork-assistant/templates/widget/project-due-date: akeneopimteamworkassistant/templates/widget/project-due-date.html
+        teamwork-assistant/templates/widget/project-completeness-data: akeneopimteamworkassistant/templates/widget/project-completeness-data.html
+        teamwork-assistant/templates/widget/project-description: akeneopimteamworkassistant/templates/widget/project-description.html

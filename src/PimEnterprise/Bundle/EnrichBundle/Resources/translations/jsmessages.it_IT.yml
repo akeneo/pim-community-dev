@@ -1,200 +1,181 @@
-pimee_enrich.product_history.action.revert: Ritorna a questa versione
-permission-changes:
-  category:
-    grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa categoria
-    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa categoria
-  locale:
-    grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa impostazione locale
-    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa impostazione locale
-  attribute group:
-    grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> di questo attributo di gruppo
-    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> per questo attributo di gruppo
-  job profile:
-    grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong>
-    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong>
 pim_enrich:
   entity:
-    attribute_label:
-      pim_assets_collection: Raccolta asset
     attribute:
       property:
         is_read_only: Sola lettura
-  form:
-    attribute:
-      tab:
-        properties:
-          label:
-            is_read_only: Sola lettura
-pim:
-  grid:
-    mass_action:
+pim_datagrid:
+  mass_action:
+    mass_edit:
       asset_edit: Modifica di massa per gli asset
-pimee_enrich:
-  form:
-    job_instance:
-      tab:
-        permission:
-          added: Al gruppo {{ group }} sarà concesso il permesso {{ permission }} per il profilo del job
-          execute.label: Permetti l'esecuzione del profilo del job
-          edit.label: Consentito modificare il profilo del job
-          removed: Al gruppo {{ group }} non sarà concesso il permesso {{ permission }} per il profilo del job
-    channel:
-      tab:
-        asset-transformation:
-          title: Trasformazioni di asset
-    attribute_group:
-      tab:
-        permission:
-          title: Autorizzazioni
-          view.label: Consentita la visualizzazione degli attributi
-          edit.label: Consentita la modifica degli attributi
-          removed: Al gruppo {{ group }} non sarà concesso il permesso {{ permission }} sul gruppo attributi
-          added: Al gruppo {{ group }} sarà concesso il permesso {{ permission }} sul gruppo attributi
-  entity:
-    product:
-      navigation: Prodotti pubblicati
-      history:
-        published: Pubblicato
-        revert: Ripristina
-      smart_attribute:
-        come_from: "Questo attributo può essere aggiornato da una regola:"
-      btn:
-        publish: Pubblica
-        publish_this_version: Pubblica questa versione
-        unpublish: Ritira
-        save_draft: Salva bozza
-      flash:
-        product_unpublished: Prodotto ritirato con successo
-        product_published: Prodotto pubblicato correttamente
-        product_not_published: Impossibile pubblicare questo prodotto
-        product_not_unpublished: Impossibile ritirare questo prodotto
-        product_reverted: Prodotto ripristinato correttamente
-      meta:
-        published: Versione pubblicata
-        owner_groups: Gruppi del proprietario
-        draft_status: Stato bozza
-        draft:
-          in_progress: In corso
-          sent_for_approval: In attesa di approvazione
-          working_copy: Copia di lavoro
-      tab:
-        proposals:
-          title: Proposte
-          messages:
-            approve:
-              success: La proposta è stata applicata con successo.
-              error: "La proposta non può essere applicata a causa del seguente errore: {{ error }}"
-            reject:
-              success: La proposta non è stata accettata.
-            remove:
-              success: La proposta è stata rimossa.
-      confirmation:
-        revert:
-          title: Conferma ripristino
-          content: Sei sicuro di voler ripristinare il prodotto a questa versione?
-        publish:
-          title: Pubblica questo prodotto
-          content: Sei sicuro di voler pubblicare questo prodotto?
-        unpublish:
-          title: Annulla la pubblicazione di questo prodotto
-          content: Sei sicuro di voler ritirare questo prodotto?
-      info:
-        update_successful: La copia di lavoro del prodotto è stata aggiornata
-      copy:
-        source:
-          working_copy: Copia di lavoro
-          draft: La mia bozza
-          draft_of: "Bozza di {{ author }}"
-    product_draft:
-      info:
-        update_successful: La bozza del prodotto è stata salvata con successo
-        update_failed: La bozza di prodotto non può essere aggiornata
-        value_modified: Questo valore viene modificato dalla bozza corrente
-      flash:
-        sent_for_approval: Bozza di prodotto inviata per approvazione
-        draft_not_sendable: Non è possibile inviare questa bozza per l'approvazione
-      btn:
-        send_for_approval: Invia per approvazione
-        sent_for_approval: Inviato per approvazione
-      modal:
-        accept_proposal: Accetta la proposta
-        accept_selected_proposal: Accetta la(e) proposta(e) selezionata(e)
-        reject_proposal: Rifiuta la proposta
-        reject_selected_proposal: Rifiuta la(e) proposta(e) selezionata(e)
-        remove_proposal: Rimuovi la proposta
-        send_for_approval: Invia per approvazione
-        confirm: Invia
-        title: Commenta la tua proposta (opzionale - 255 caratteri max.)
-        characters: caratteri.
-      confirmation:
-        discard_changes: Le modifiche non salvate andranno perse. Sei sicuro di voler inviare la bozza per l'approvazione senza che vengano salvate le modifiche?
-        discard_changes_title: Sei sicuro di voler inviare questa bozza?
-  asset_transformation:
-    not_found: Nessuna trasformazione trovata
-    title:
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa categoria
+      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa categoria
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa impostazione locale
+      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa impostazione locale
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> di questo attributo di gruppo
+      revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> per questo attributo di gruppo
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Trasformazioni di asset
+      not_found: Nessuna trasformazione trovata
       transformation: Trasformazione
       options: Opzioni
-    colorspace:
-      title: Spazio colori
-      options:
-        colorspace: '%value% spazio colore'
-    resize:
-      title: Ridimensiona
-      options:
-        width: '%value%px di larghezza'
-        height: '% value%px di altezza'
-    resolution:
-      title: Risoluzione
-      options:
-        resolution: '%value%'
-        resolution-unit: '%value%'
-    scale:
-      title: Scala
-      options:
-        width: '%value%px di larghezza'
-        height: '% value%px di altezza'
-        ratio: '%value% % di rapporto'
-    thumbnail:
-      title: Thumbnail
-      options:
-        width: '%value%px di larghezza'
-        height: '% value%px di altezza'
-  mass_edit:
-    cancel: Annulla
-    product:
-      operation:
-        publish:
-          label: Pubblica
-          label_count: "{1}Pubblica <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Pubblica <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
-          description: I prodotti saranno pubblicati
-          warning: I {{ itemsCount }} prodotti selezionati saranno pubblicati.
-        unpublish:
-          label: Ritira
-          description: I prodotti saranno ritirati
-          warning: I {{ itemsCount }} prodotti selezionati saranno ritirati.
-    asset:
-      step:
-        select:
-          label: Scegli gli asset
-        choose:
-          title: Azioni in massa per gli asset
-          label_count: "] 0, Inf [Seleziona azione"
-        configure:
-          label: Configura
-        confirm:
-          label: Conferma
-      operation:
-        add_tag:
-          label: Aggiungi tag agli asset
-          description: I tag saranno aggiunti all'asset.
-          field: Tag
-        add_to_category:
-          label: Classificare gli asset in categorie
-  category:
-    tab:
-      permission:
-        title: Autorizzazioni
+      colorspace:
+        title: Spazio colori
+        options:
+          colorspace: '%value% spazio colore'
+      resize:
+        title: Ridimensiona
+        options:
+          width: '%value%px di larghezza'
+          height: '% value%px di altezza'
+      resolution:
+        title: Risoluzione
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Scala
+        options:
+          width: '%value%px di larghezza'
+          height: '% value%px di altezza'
+          ratio: '%value% % di rapporto'
+      thumbnail:
+        title: Thumbnail
+        options:
+          width: '%value%px di larghezza'
+          height: '% value%px di altezza'
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Al gruppo {{ group }} sarà concesso il permesso {{ permission }} sul gruppo attributi
+      view: Consentita la visualizzazione degli attributi
+      edit: Consentita la modifica degli attributi
+      removed: Al gruppo {{ group }} non sarà concesso il permesso {{ permission }} sul gruppo attributi
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: Al gruppo {{ group }} sarà concesso il permesso {{ permission }} per il profilo del job
+      execute: Permetti l'esecuzione del profilo del job
+      edit: Consentito modificare il profilo del job
+      removed: Al gruppo {{ group }} non sarà concesso il permesso {{ permission }} per il profilo del job
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Pubblicato
+      revert: Ripristina
+    meta:
+      published_version: Versione pubblicata
+      owner_groups: Gruppi del proprietario
+      draft_status: Stato bozza
+      draft:
+        in_progress: In corso
+        sent_for_approval: In attesa di approvazione
+        working_copy: Copia di lavoro
+    revert:
+      title: Conferma ripristino
+      content: Sei sicuro di voler ripristinare il prodotto a questa versione?
+    publish:
+      title: Pubblica questo prodotto
+      content: Sei sicuro di voler pubblicare questo prodotto?
+    unpublish:
+      title: Annulla la pubblicazione di questo prodotto
+      content: Sei sicuro di voler ritirare questo prodotto?
+    copy:
+      working_copy: Copia di lavoro
+      draft: La mia bozza
+      draft_of: "Bozza di {{ author }}"
+    approval:
+      send: Invia per approvazione
+      sent: Inviato per approvazione
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Prodotto pubblicato correttamente
+      fail: Impossibile pubblicare questo prodotto
+    unpublish:
+      success: Prodotto ritirato con successo
+      fail: Impossibile ritirare questo prodotto
+    revert:
+      success: Prodotto ripristinato correttamente
+  module:
+    publish:
+      label: Pubblica
+      publish_this_version: Pubblica questa versione
+    unpublish:
+      label: Ritira
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: La proposta è stata applicata con successo.
+      fail: "La proposta non può essere applicata a causa del seguente errore: {{ error }}"
+    reject:
+      success: La proposta non è stata accettata.
+    remove:
+      success: La proposta è stata rimossa.
+    update:
+      success: La bozza del prodotto è stata salvata con successo
+      fail: La bozza di prodotto non può essere aggiornata
+    create:
+      success: Bozza di prodotto inviata per approvazione
+      fail: Non è possibile inviare questa bozza per l'approvazione
+  module:
+    create:
+      label: Salva bozza
+    proposal:
+      accept: Accetta la proposta
+      accept_selected: Accetta la(e) proposta(e) selezionata(e)
+      reject: Rifiuta la proposta
+      reject_selected: Rifiuta la(e) proposta(e) selezionata(e)
+      remove: Rimuovi la proposta
+      comment_title: Commenta la tua proposta (opzionale - 255 caratteri max.)
+      comment_chars: caratteri.
+      confirm: Invia
+    edit:
+      discard_changes: Le modifiche non salvate andranno perse. Sei sicuro di voler inviare la bozza per l'approvazione senza che vengano salvate le modifiche?
+      discard_changes_title: Sei sicuro di voler inviare questa bozza?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Pubblica
+      description: I prodotti saranno pubblicati
+      warning: I {{ itemsCount }} prodotti selezionati saranno pubblicati.
+    unpublish:
+      label: Ritira
+      description: I prodotti saranno ritirati
+      warning: I {{ itemsCount }} prodotti selezionati saranno ritirati.
+pimee_enrich.mass_edit.asset:
+  title: Azione in massa per gli asset
+  step:
+    select:
+      label: Scegli gli asset
+    choose:
+      title: Azioni in massa per gli asset
+    configure:
+      label: Configura
+    confirm:
+      label: Conferma
+  operation:
+    add_tag:
+      label: Aggiungi tag agli asset
+      description: I tag saranno aggiunti all'asset.
+      field: Tag
+      empty_selection: Scegli i tag
+    add_to_category:
+      label: Classificare gli asset in categorie
+      description: Gli asset saranno posizionati all'interno delle categorie seguenti, il posizionamento esistente andrà perso.
 pim_menu:
+  navigation:
+    published_products: Prodotti pubblicati
   tab:
     asset: Asset
   item:
@@ -225,6 +206,7 @@ batch_jobs:
     label: Rimuovi il valore del prodotto con controllo dell'autorizzazione & delle regole applicazione
     perform.label: Rimuovi un valore di prodotto
   edit_common_attributes_with_permission_and_rules:
+    label: Modifica gli attributi con controllo dei permessi e con l'applicazione delle regole
     perform.label: Modificare gli attributi
     cleaner.label: Elimina file temporanei
   csv_published_product_quick_export:
@@ -243,7 +225,12 @@ batch_jobs:
     execute_rules.label: Esecuzione regole
   publish_product:
     perform.label: Pubblica i prodotti
-catalog_volume:
+pim_catalog_volumne:
+  section:
+    assets:
+      title: Assi su asset
+      hint: Puoi seguire qui il volume relativamente agli asset
   axis:
     count_assets: Asset
     count_asset_categories: Categorie degli asset
+    count_asset_category_trees: Alberi di categoria degli assi

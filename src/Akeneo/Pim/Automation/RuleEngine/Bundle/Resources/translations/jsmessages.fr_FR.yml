@@ -1,0 +1,94 @@
+pimee_catalog_rule:
+  overview: "]-Inf, 1]{{ count }} règle|]1, Inf[{{ count }} règles"
+  execution_button: Exécuter les règles
+  selected: 'règles sélectionnées'
+  popin:
+    execute_rules:
+      confirm_title: Confirmer l’exécution
+      confirm_content: Êtes-vous certain de vouloir exécuter toutes les règles ? (cela peut prendre un certain temps)
+  notification:
+    fail: L'action ne peut pas être executée
+    launched: L'exécution des règles est en cours, vous serez notifié(e) lorsque cela sera terminé.
+  attribute:
+    list:
+      code.label: Code
+      condition.label: Condition
+      action.label: Action
+      no_rule_yet.label: Il n'y a aucune règle pour l'instant
+  rule:
+    condition:
+      if.label: Si
+    action:
+      then.label: Alors
+      set_value.label: est modifié dans
+      copy_value.label: est copié dans
+      set.label: est modifié dans
+      copy.label: est copié dans
+      add.label: est ajouté dans
+      remove.label: est retirée de
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Confirmer l’exécution
+          confirm_content: Êtes-vous sûr de vouloir exécuter la règle ?
+      mass_edit_action:
+        confirm_title: Confirmer le calcul
+        confirm_content: Êtes-vous sûr de vouloir calculer le nombre de produits affecté par les règles ?
+      mass_action:
+        execute:
+          confirm_title: Confirmer l’exécution
+          confirm_content: Êtes-vous sûr de vouloir exécuter les règles sélectionnées ?
+          success: L'exécution des règles choisies est en cours, vous serez notifié(e) lorsque cela sera terminé
+          error: Une erreur s'est produite lors de l'exécution des règles.
+          empty_selection: Aucune règle n'a été sélectionnée.
+        delete:
+          confirm_title: Confirmer l’exécution
+          confirm_content: Êtes-vous sûr de vouloir supprimer la (les) règle(s) sélectionnée(s) ?
+          success: Les règles ont bien été supprimées.
+          error: Une erreur s'est produite lors de la suppression des règles.
+          empty_selection: Aucune règle n'a été sélectionnée.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Règles
+confirmation:
+  remove:
+    rule: Êtes-vous sûr de vouloir supprimer cette règle ? Il est impossible d'annuler cette action
+pim_datagrid:
+  entity:
+    rule:
+      flash:
+        delete:
+          success: Règle supprimée avec succès
+flash:
+  rule:
+    impacted_product_count: Le calcul du nombre de produits affectés par les règles est en cours, vous serez notifié(e) lorsque cela sera terminé.
+    executed: L'exécution des règles est en cours, vous serez notifié(e) lorsque la modification sera terminée.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Paramètres des règles
+batch_jobs:
+  default_steps:
+    execute_rules: Exécution des règles
+  yml_rule_import:
+    label: Import des règles en YAML
+    import.label: Import des règles
+  yml_rule_export:
+    label: Export des règles en YAML
+    export.label: Export des règles
+  rule_impacted_product_count:
+    label: Produits affectés par les règles
+    perform.label: Calcul du nombre de produits affectés
+  csv_product_import_with_rules:
+    label: Import de produits en CSV avec exécution des règles
+    import.label: Import des produits
+  csv_product_model_import_with_rules:
+    label: Import de modèles de produits en CSV avec exécution des règles
+  xlsx_product_import_with_rules:
+    label: Import de produits en XLSX avec exécution des règles
+    import.label: Import des produits
+  xlsx_product_model_import_with_rules:
+    label: Import de modèles de produits en XLSX avec exécution des règles
+pim_notification:
+  types:
+    rule: Paramètres des règles

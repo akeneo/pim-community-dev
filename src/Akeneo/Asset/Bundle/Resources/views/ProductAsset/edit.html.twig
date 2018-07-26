@@ -1,8 +1,8 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-{% import '@PimEnterpriseProductAsset/ProductAsset/macros.html.twig' as pamMacros %}
+{% import '@AkeneoAsset/ProductAsset/macros.html.twig' as pamMacros %}
 
 {% block head_script %}
-    {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_js-handler.html.twig' %}
+    {% include 'AkeneoAssetBundle:ProductAsset:_js-handler.html.twig' %}
 {% endblock %}
 
 {% if elements is not defined %}
@@ -31,7 +31,7 @@
     {% endset %}
 
     {% set buttons %}
-        {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_buttons.html.twig' %}
+        {% include 'AkeneoAssetBundle:ProductAsset:_buttons.html.twig' %}
     {% endset %}
 
     {% set meta %}

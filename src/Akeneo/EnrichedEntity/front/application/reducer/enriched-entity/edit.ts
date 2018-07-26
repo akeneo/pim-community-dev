@@ -1,39 +1,22 @@
 import user, {UserState} from 'akeneoenrichedentity/application/reducer/user';
 import sidebar, {SidebarState} from 'akeneoenrichedentity/application/reducer/sidebar';
 import grid, {GridState} from 'akeneoenrichedentity/application/reducer/grid';
-import editForm from 'akeneoenrichedentity/application/reducer/enriched-entity/edit-form';
-import {FormState} from 'akeneoenrichedentity/application/reducer/form-state';
-import EnrichedEntity from 'akeneoenrichedentity/domain/model/enriched-entity/enriched-entity';
+import createRecord, {CreateState as CreateRecordState} from 'akeneoenrichedentity/application/reducer/record/create';
+import form, {EditionFormState} from 'akeneoenrichedentity/application/reducer/enriched-entity/edit/form';
 import Record from 'akeneoenrichedentity/domain/model/record/record';
 
-export interface State {
+export interface EditState {
   user: UserState;
   sidebar: SidebarState;
   grid: GridState<Record>;
-  enrichedEntity: EnrichedEntity | null;
-  editForm: FormState;
+  createRecord: CreateRecordState;
+  form: EditionFormState;
 }
 
 export default {
   user,
   sidebar,
   grid,
-  enrichedEntity: (
-    state: EnrichedEntity | null = null,
-    action: {type: string; enrichedEntity: EnrichedEntity}
-  ): EnrichedEntity | null => {
-    switch (action.type) {
-      case 'ENRICHED_ENTITY_RECEIVED':
-        state = action.enrichedEntity;
-        break;
-      case 'ENRICHED_ENTITY_UPDATED':
-        state = action.enrichedEntity;
-        break;
-      default:
-        break;
-    }
-
-    return state;
-  },
-  editForm,
+  createRecord,
+  form,
 };

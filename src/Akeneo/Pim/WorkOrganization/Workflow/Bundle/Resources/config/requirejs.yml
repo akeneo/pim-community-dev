@@ -1,0 +1,49 @@
+config:
+    config:
+        pimee/published-product-manager:
+            urls:
+                get: pimee_workflow_published_product_rest_get
+        pimee/product-edit-form/original-product:
+            urls:
+                product_edit: pim_enrich_product_edit
+        pim/fetcher-registry:
+            fetchers:
+                product_draft:
+                    module: pimee/product-draft-fetcher
+                    options:
+                        urls:
+                            product_index: pimee_workflow_rest_product_index
+
+    paths:
+        pimee/published-product-manager:         akeneopimworkflow/js/manager/published-product-manager
+        pimee/product-draft-fetcher:             akeneopimworkflow/js/fetcher/product-draft-fetcher
+        pimee/proposal/partial-proposal-builder: akeneopimworkflow/js/datagrid/partial-proposal-builder
+
+        # Form extensions
+        pimee/product-edit-form/meta/published:            akeneopimworkflow/js/product/form/meta/published
+        pimee/product-edit-form/meta/draft-status:         akeneopimworkflow/js/product/form/meta/draft-status
+        pimee/product-edit-form/tab/history/published:     akeneopimworkflow/js/product/form/tab/history/published
+        pimee/product-edit-form/proposals:                 akeneopimworkflow/js/product/form/proposals
+        pimee/product-edit-form/publish:                   akeneopimworkflow/js/product/form/publish
+        pimee/product-edit-form/unpublish:                 akeneopimworkflow/js/product/form/unpublish
+        pimee/product-edit-form/send-for-approval:         akeneopimworkflow/js/product/form/send-for-approval
+        pimee/product-edit-form/source-switcher:           akeneopimworkflow/js/product/form/source-switcher
+        pimee/product-edit-form/working-copy:              akeneopimworkflow/js/product/form/working-copy
+        pimee/product-edit-form/original-product:          akeneopimworkflow/js/product/form/original-product
+        pimee/product-edit-form/send-for-approval-comment: akeneopimworkflow/js/product/form/send-for-approval-comment
+        pimee/product-edit-form/proposal-add-comment:      akeneopimworkflow/js/product/form/proposal-add-comment
+        pimee/product-edit-form/abstract-add-notification-comment: akeneopimworkflow/js/product/form/abstract-add-notification-comment
+        pimee/proposal/partial-approve-proposal-comment:   akeneopimworkflow/js/proposal/form/partial-approve-proposal-comment
+
+        # Templates
+        pimee/template/product/meta/published:                  akeneopimworkflow/templates/product/meta/published.html
+        pimee/template/product/meta/draft-status:               akeneopimworkflow/templates/product/meta/draft-status.html
+        pimee/template/product/meta/notification-comment:       akeneopimworkflow/templates/product/meta/comment.html
+        pimee/template/product/tab/history/published:           akeneopimworkflow/templates/product/tab/history/published.html
+        pimee/template/product/tab/proposals:                   akeneopimworkflow/templates/product/tab/proposals.html
+        pimee/template/product/publish:                         akeneopimworkflow/templates/product/publish.html
+        pimee/template/product/unpublish:                       akeneopimworkflow/templates/product/unpublish.html
+        pimee/template/product/source-switcher:                 akeneopimworkflow/templates/product/source-switcher.html
+        pimee/template/product/submit-draft:                    akeneopimworkflow/templates/product/submit-draft.html
+        pimee/template/product/original-product:                akeneopimworkflow/templates/product/original-product.html
+        pimee/template/product/tab/attribute/modified-by-draft: akeneopimworkflow/templates/product/tab/attributes/modified-by-draft.html

@@ -33,7 +33,7 @@ class EnrichedEntityCollectionValueNormalizer extends AbstractProductValueNormal
     {
         $records = $value->getData();
         $recordsIdentifier = array_map(function (Record $record) {
-            return (string) $record->getIdentifier();
+            return $record->getIdentifier()->getIdentifier();
         }, $records);
 
         return implode($recordsIdentifier, ',');

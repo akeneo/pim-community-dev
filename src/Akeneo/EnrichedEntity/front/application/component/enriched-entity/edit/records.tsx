@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import Table from 'akeneoenrichedentity/application/component/record/index/table';
 import Record from 'akeneoenrichedentity/domain/model/record/record';
-import {State} from 'akeneoenrichedentity/application/reducer/record/index'
+import {State} from 'akeneoenrichedentity/application/reducer/record/index';
 import {redirectToRecord} from 'akeneoenrichedentity/application/action/record/router';
 
 interface StateProps {
@@ -35,7 +35,7 @@ const records = ({context, grid, events}: StateProps & DispatchProps) => {
 }
 
 export default connect((state: State): StateProps => {
-  const locale = undefined === state.user || undefined === state.user.uiLocale ? '' : state.user.uiLocale;
+  const locale = undefined === state.user || undefined === state.user.catalogLocale ? '' : state.user.catalogLocale;
   const records = undefined === state.grid || undefined === state.grid.items ? [] : state.grid.items;
   const total = undefined === state.grid || undefined === state.grid.total ? 0 : state.grid.total;
 

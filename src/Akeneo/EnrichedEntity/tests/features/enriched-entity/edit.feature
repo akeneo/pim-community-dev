@@ -27,7 +27,7 @@ Feature: Edit an enriched entity
     And the user shouldn't be notified that modification have been made
     And the user should see the saved notification
     And the enriched entity "designer" should be:
-      | identifier | labels                                      |
+      | identifier | labels                                       |
       | designer   | {"en_US": "Designer", "fr_FR": "Concepteur"} |
 
   @acceptance-front

@@ -1,202 +1,178 @@
-pimee_enrich.product_history.action.revert: このバージョンに戻す
-permission-changes:
-  category:
-    grant: グループ<strong>{{ group }}</strong>は、このカテゴリでは<strong>{{ permission }}</strong>される
-    revoke: グループ<strong>{{ group }}</strong>は、このカテゴリでは<strong>{{ permission }}</strong>されない
-  locale:
-    grant: グループ<strong>{{ group }}</strong>は、このロケールでは<strong>{{ permission }}</strong>される
-    revoke: グループ<strong>{{ group }}</strong>は、このロケールでは<strong>{{ permission }}</strong>されません
-  attribute group:
-    grant: グループ<strong>{{ group }}</strong>は、この属性グループでは<strong>{{ permission }}</strong>される
-    revoke: グループ<strong>{{ group }}</strong>は、この属性グループでは<strong>{{ permission }}</strong>されない
-  job profile:
-    grant: グループ<strong>{{ group }}</strong>は、<strong>{{ permission }}</strong>される
-    revoke: グループ<strong>{{ group }}</strong>は、<strong>{{ permission }}</strong>されません
 pim_enrich:
   entity:
-    attribute_label:
-      pim_assets_collection: アセットのコレクション
     attribute:
       property:
         is_read_only: 読み取り専用
-  form:
-    attribute:
-      tab:
-        properties:
-          label:
-            is_read_only: 読み取り専用
-pim:
-  grid:
-    mass_action:
+pim_datagrid:
+  mass_action:
+    mass_edit:
       asset_edit: アセット一括編集
-pimee_enrich:
-  form:
-    job_instance:
-      tab:
-        permission:
-          added: グループ {{ group }} は、{{ permission }} ジョブのプロファイルが許可されます。
-          execute.label: ジョブプロファイルの実行を許可
-          edit.label: ジョブプロファイルの編集を許可
-          removed: グループ {{ group }} は、{{ permission }} ジョブのプロファイルが許可されません
-    channel:
-      tab:
-        asset-transformation:
-          title: アセット変換
-    attribute_group:
-      tab:
-        permission:
-          title: パーミッション
-          view.label: 属性の表示を許可
-          edit.label: 属性の編集を許可
-          removed: グループ {{ group }} は、{{ permission }} 属性のグループが許可されません
-          added: グループ {{ group }} は、{{ permission }} 属性のグループが許可されます
-  entity:
-    product:
-      index_title: "] - Inf ファイル、1] {{ count }} 結果 |] 1、Inf [{{ count }} 結果"
-      navigation: 公開済み製品
-      history:
-        published: 公開済み
-        revert: 復元
-      smart_attribute:
-        come_from: "この属性は、ルールによって更新することができます。"
-      btn:
-        publish: 公開する
-        publish_this_version: このバージョンを公開する
-        unpublish: 非公開
-        save_draft: 下書きを保存
-      flash:
-        product_unpublished: 製品を非公開にしました
-        product_published: 製品を公開しました
-        product_not_published: この製品を公開できませんでした
-        product_not_unpublished: この製品を非公開にできませんでした
-        product_reverted: 製品を復元しました
-      meta:
-        published: 公開バージョン
-        owner_groups: 所有者グループ
-        draft_status: 下書き状態
-        draft:
-          in_progress: 処理中
-          sent_for_approval: 承認待ち
-          working_copy: 作業コピー
-      tab:
-        proposals:
-          title: 提案
-          messages:
-            approve:
-              success: 提案が正常に適用されました。
-              error: "この提案は、次のエラーのため適用できません。エラー：{{ error }}"
-            reject:
-              success: 提案は拒否されました。
-            remove:
-              success: 提案は削除されました。
-      confirmation:
-        revert:
-          title: 復元の確認
-          content: 本当にこのバージョンに製品を復元しますか？
-        publish:
-          title: この製品を公開する
-          content: この製品を公開してもよろしいですか？
-        unpublish:
-          title: 製品の取り下げ
-          content: この製品を非公開にしてもよろしいですか？
-      info:
-        update_successful: 製品の作業コピーが更新されました
-      copy:
-        source:
-          working_copy: 作業コピー
-          draft: 自分の下書き
-          draft_of: "{{ author }} の下書き"
-    product_draft:
-      info:
-        update_successful: 製品の下書きは正常に保存されました
-        update_failed: 製品の下書きを更新できませんでした。
-        value_modified: この値は現在の下書きによって編集される
-      flash:
-        sent_for_approval: 製品下書き承認のため送信
-        draft_not_sendable: 承認を得るためにこの下書きは送信できません。
-      btn:
-        send_for_approval: 承認のために送信
-        sent_for_approval: 承認のために送信
-      modal:
-        accept_proposal: 提案を受け入れる
-        accept_selected_proposal: 選択した提案を受け入れる
-        reject_proposal: 提案を拒否
-        reject_selected_proposal: 選択した提案を拒否
-        remove_proposal: 提案を削除する
-        send_for_approval: 承認のために送信
-        confirm: 送信
-        title: あなたの提案のコメント (オプション - 最大 255 文字)
-        characters: 文字数。
-      confirmation:
-        discard_changes: 未保存の変更は失われます。変更を保存せずに、下書きを承諾へ送信しますか？
-        discard_changes_title: この下書きを送信してもよろしいですか？
-  asset_transformation:
-    not_found: 変換を発見できませんでした
-    title:
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: グループ<strong>{{ group }}</strong>は、このカテゴリでは<strong>{{ permission }}</strong>される
+      revoke: グループ<strong>{{ group }}</strong>は、このカテゴリでは<strong>{{ permission }}</strong>されない
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: グループ<strong>{{ group }}</strong>は、このロケールでは<strong>{{ permission }}</strong>される
+      revoke: グループ<strong>{{ group }}</strong>は、このロケールでは<strong>{{ permission }}</strong>されません
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: グループ<strong>{{ group }}</strong>は、この属性グループでは<strong>{{ permission }}</strong>される
+      revoke: グループ<strong>{{ group }}</strong>は、この属性グループでは<strong>{{ permission }}</strong>されない
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: アセット変換
+      not_found: 変換を発見できませんでした
       transformation: 変換
       options: オプション
-    colorspace:
-      title: カラースペース
-      options:
-        colorspace: '%value% カラー スペース'
-    resize:
-      title: サイズを変更
-      options:
-        width: '幅 %value%px'
-        height: '高さ %value%px'
-    resolution:
-      title: 解決策
-      options:
-        resolution: '%value%'
-        resolution-unit: '%value%'
-    scale:
-      title: スケール
-      options:
-        width: '幅 %value%px'
-        height: '高さ %value%px'
-        ratio: '率 %value%%'
-    thumbnail:
-      title: サムネイル
-      options:
-        width: '幅 %value%px'
-        height: '高さ %value%px'
-  mass_edit:
-    cancel: キャンセル
-    product:
-      operation:
-        publish:
-          label: 公開する
-          label_count: "{1}公開 <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 公開 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
-          description: 製品を公開予定
-          warning: 選択した {{ itemsCount }} の製品を公開予定です。
-        unpublish:
-          label: 非公開
-          label_count: "{1}未公開 <span class=\"AknFullPage-title--highlight\"> 1 製品</span> |]1、Inf [ 未公開 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 製品</span>"
-          description: この製品は未公開予定
-          warning: 選択した {{ itemsCount }} の製品を未公開予定です。
-    asset:
-      step:
-        select:
-          label: アセットを選択する
-        choose:
-          title: アセット一括操作
-          label_count: "0, Inf [あなたのアクションを選択"
-        configure:
-          label: 構成
-        confirm:
-          label: 確認
-      operation:
-        add_tag:
-          label: タグをアセットに追加
-          description: タグはアセットに追加されます。
-          field: タグ
-        add_to_category:
-          label: アセットをカテゴリに分類
-  category:
-    tab:
-      permission:
-        title: パーミッション
+      colorspace:
+        title: カラースペース
+        options:
+          colorspace: '%value% カラー スペース'
+      resize:
+        title: サイズを変更
+        options:
+          width: '幅 %value%px'
+          height: '高さ %value%px'
+      resolution:
+        title: 解決策
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: スケール
+        options:
+          width: '幅 %value%px'
+          height: '高さ %value%px'
+          ratio: '率 %value%%'
+      thumbnail:
+        title: サムネイル
+        options:
+          width: '幅 %value%px'
+          height: '高さ %value%px'
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: グループ {{ group }} は、{{ permission }} 属性のグループが許可されます
+      view: 属性の表示を許可
+      edit: 属性の編集を許可
+      removed: グループ {{ group }} は、{{ permission }} 属性のグループが許可されません
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      added: グループ {{ group }} は、{{ permission }} ジョブのプロファイルが許可されます。
+      execute: ジョブプロファイルの実行を許可
+      edit: ジョブプロファイルの編集を許可
+      removed: グループ {{ group }} は、{{ permission }} ジョブのプロファイルが許可されません
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: 公開済み
+      revert: 復元
+    meta:
+      published_version: 公開バージョン
+      owner_groups: 所有者グループ
+      draft_status: 下書き状態
+      draft:
+        in_progress: 処理中
+        sent_for_approval: 承認待ち
+        working_copy: 作業コピー
+    revert:
+      title: 復元の確認
+      content: 本当にこのバージョンに製品を復元しますか？
+    publish:
+      title: この製品を公開する
+      content: この製品を公開してもよろしいですか？
+    unpublish:
+      title: 製品の取り下げ
+      content: この製品を非公開にしてもよろしいですか？
+    copy:
+      working_copy: 作業コピー
+      draft: 自分の下書き
+      draft_of: "{{ author }} の下書き"
+    approval:
+      send: 承認のために送信
+      sent: 承認のために送信
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: 製品を公開しました
+      fail: この製品を公開できませんでした
+    unpublish:
+      success: 製品を非公開にしました
+      fail: この製品を非公開にできませんでした
+    revert:
+      success: 製品を復元しました
+  module:
+    publish:
+      label: 公開する
+      publish_this_version: このバージョンを公開する
+    unpublish:
+      label: 非公開
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: 提案が正常に適用されました。
+      fail: "この提案は、次のエラーのため適用できません。エラー：{{ error }}"
+    reject:
+      success: 提案は拒否されました。
+    remove:
+      success: 提案は削除されました。
+    update:
+      success: 製品の下書きは正常に保存されました
+      fail: 製品の下書きを更新できませんでした。
+    create:
+      success: 製品下書き承認のため送信
+      fail: 承認を得るためにこの下書きは送信できません。
+  module:
+    create:
+      label: 下書きを保存
+    proposal:
+      accept: 提案を受け入れる
+      accept_selected: 選択した提案を受け入れる
+      reject: 提案を拒否
+      reject_selected: 選択した提案を拒否
+      remove: 提案を削除する
+      comment_title: あなたの提案のコメント (オプション - 最大 255 文字)
+      comment_chars: 文字数。
+      confirm: 送信
+    edit:
+      discard_changes: 未保存の変更は失われます。変更を保存せずに、下書きを承諾へ送信しますか？
+      discard_changes_title: この下書きを送信してもよろしいですか？
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: 公開する
+      description: 製品を公開予定
+      warning: 選択した {{ itemsCount }} の製品を公開予定です。
+    unpublish:
+      label: 非公開
+      description: この製品は未公開予定
+      warning: 選択した {{ itemsCount }} の製品を未公開予定です。
+pimee_enrich.mass_edit.asset:
+  step:
+    select:
+      label: アセットを選択する
+    choose:
+      title: アセット一括操作
+    configure:
+      label: 構成
+    confirm:
+      label: 確認
+  operation:
+    add_tag:
+      label: タグをアセットに追加
+      description: タグはアセットに追加されます。
+      field: タグ
+    add_to_category:
+      label: アセットをカテゴリに分類
 pim_menu:
+  navigation:
+    published_products: 公開済み製品
   tab:
     asset: アセット
   item:
@@ -245,7 +221,7 @@ batch_jobs:
     execute_rules.label: ルールの実行
   publish_product:
     perform.label: 公開製品
-catalog_volume:
+pim_catalog_volumne:
   axis:
     count_assets: アセット
     count_asset_categories: アセットカテゴリー

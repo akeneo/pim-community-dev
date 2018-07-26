@@ -3,7 +3,7 @@
         {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
     {% endif %}
 {% endspaceless %}
-{% import '@PimEnterpriseProductAsset/ProductAsset/macros.html.twig' as pamMacros %}
+{% import '@AkeneoAsset/ProductAsset/macros.html.twig' as pamMacros %}
 
 {{ form_start(form, {
     'action': path('pimee_product_asset_create', {dataLocale: app.request.get('dataLocale')}),

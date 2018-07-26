@@ -12,7 +12,7 @@
 
                 <div class="row-fluid">
                     {% if referenceModel.fileInfo %}
-                        {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_core.html.twig' %}
+                        {% include 'AkeneoAssetBundle:ProductAsset:_reference_core.html.twig' %}
                     {% else %}
                         {{ 'pimee_product_asset.enrich_asset.view.no_reference'|trans }}
                     {% endif %}
@@ -21,7 +21,7 @@
         </li>
 
         {% for variation in referenceModel.variations %}
-            {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_view.html.twig' with {'variationModel': variation} %}
+            {% include 'AkeneoAssetBundle:ProductAsset:_variation_view.html.twig' with {'variationModel': variation} %}
         {% endfor %}
 
     </ul>

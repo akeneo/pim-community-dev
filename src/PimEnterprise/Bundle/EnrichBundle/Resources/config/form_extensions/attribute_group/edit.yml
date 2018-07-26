@@ -6,6 +6,6 @@ extensions:
         aclResourceId: pimee_enrich_attribute_group_edit_permissions
         position: 125
         config:
-            title: pimee_enrich.form.attribute_group.tab.permission.title
+            title: pim_common.permissions
             tabCode: pim-attribute-group-permission
             entity: attribute_group

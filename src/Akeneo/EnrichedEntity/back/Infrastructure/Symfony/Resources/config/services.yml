@@ -12,7 +12,9 @@ services:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\CreateAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.create_enriched_entity_handler'
+            - '@serializer'
             - '@validator'
+            - '@oro_security.security_facade'
 
     akeneo_enrichedentity.infrastructure.action.enriched_entity.index:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\EnrichedEntity\IndexAction'
@@ -50,8 +52,15 @@ services:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\EditAction'
         arguments:
             - '@akeneo_enrichedentity.application.enriched_entity.edit_record_handler'
+            - '@validator'
+
+    akeneo_enrichedentity.infrastructure.action.record.create:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Record\CreateAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.create_record_handler'
             - '@serializer'
             - '@validator'
+            - '@oro_security.security_facade'
 
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlRecordRepository'
@@ -92,3 +101,8 @@ services:
         class: 'Akeneo\EnrichedEntity\Application\EnrichedEntity\CreateEnrichedEntity\CreateEnrichedEntityHandler'
         arguments:
             - '@akeneo_enrichedentity.infrastructure.persistence.enriched_entity'
+
+    akeneo_enrichedentity.application.enriched_entity.create_record_handler:
+        class: 'Akeneo\EnrichedEntity\Application\Record\CreateRecord\CreateRecordHandler'
+        arguments:
+            - '@akeneo_enrichedentity.infrastructure.persistence.record'

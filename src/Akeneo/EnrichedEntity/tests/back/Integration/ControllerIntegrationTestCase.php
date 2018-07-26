@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\EnrichedEntity\tests\back\Integration;
 
+use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -39,7 +40,6 @@ abstract class ControllerIntegrationTestCase extends KernelTestCase
 
     private function bootTestKernel(): void
     {
-        static::bootKernel(['debug' => false]);
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
     }
@@ -48,7 +48,19 @@ abstract class ControllerIntegrationTestCase extends KernelTestCase
     {
         $services = Yaml::parseFile(__DIR__ . '/controller_integration_services.yml');
         foreach ($services['services'] as $serviceId => $fqcn) {
-            $this->testKernel->getContainer()->set($serviceId, new $fqcn['class']);
+            $arguments = $this->getArgumentsAsServices($fqcn['arguments'] ?? []);
+            $reflector = new ReflectionClass($fqcn['class']);
+            $this->testKernel->getContainer()->set($serviceId, $reflector->newInstanceArgs($arguments));
         }
+    }
+
+    private function getArgumentsAsServices(array $arguments): array
+    {
+        $services = [];
+        foreach ($arguments as $dependency) {
+            $services[] = $this->get(ltrim($dependency, '@'));
+        }
+
+        return $services;
     }
 }

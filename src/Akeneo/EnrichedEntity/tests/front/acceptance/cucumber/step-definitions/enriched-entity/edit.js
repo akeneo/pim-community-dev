@@ -30,7 +30,7 @@ module.exports = async function(cucumber) {
       await document.getElementById('app').appendChild(controller.el);
     }, identifier);
 
-    await this.page.waitFor('.object-attributes');
+    await this.page.waitFor('.AknFormContainer.AknFormContainer--withPadding');
     const editPage = await await getElement(this.page, 'Edit');
     const properties = await editPage.getProperties();
     const isLoaded = await properties.isLoaded();
@@ -47,10 +47,14 @@ module.exports = async function(cucumber) {
     await properties.setLabel(labels.en_US);
   };
 
-  const savedEnrichedEntityWillBe = async function(page, identifier, updates) {
+  const savedEnrichedEntityWillBe = function(page, identifier, updates) {
     page.on('request', request => {
       if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'POST' === request.method()) {
-        answerJson(request, convertItemTable(updates)[0]);
+        answerJson(request, {}, 204);
+      }
+
+      if (`http://pim.com/rest/enriched_entity/${identifier}` === request.url() && 'GET' === request.method()) {
+        answerJson(request, convertItemTable(updates)[0], 200);
       }
     });
   };
@@ -100,8 +104,8 @@ module.exports = async function(cucumber) {
     assert.strictEqual(labelValue, enrichedEntity.labels.en_US);
   });
 
-  Then('the saved enriched entity {string} will be:', function(identifier, updates) {
-    savedEnrichedEntityWillBe(this.page, identifier, updates);
+  Then('the saved enriched entity {string} will be:', async function(identifier, updates) {
+    await savedEnrichedEntityWillBe(this.page, identifier, updates);
   });
 
   Then('the user saves the changes', async function() {

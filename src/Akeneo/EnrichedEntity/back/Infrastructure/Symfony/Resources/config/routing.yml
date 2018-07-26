@@ -32,6 +32,11 @@ akeneo_enriched_entities_record_index_rest:
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.record.index }
     methods: [GET]
 
+akeneo_enriched_entities_record_create_rest:
+    path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record'
+    defaults: { _controller: akeneo_enrichedentity.infrastructure.action.record.create }
+    methods: [POST]
+
 akeneo_enriched_entities_records_get_rest:
     path: '/rest/enriched_entity/{enrichedEntityIdentifier}/record/{recordIdentifier}'
     defaults: { _controller: akeneo_enrichedentity.infrastructure.action.record.get }

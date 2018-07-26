@@ -7,23 +7,22 @@ const _ = require('underscore');
 const UserContext = require('pim/user-context');
 const template = _.template(require('pim/template/form/common/fields/select'));
 
-
 /**
  * Enriched entity field for attribute form
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class EnrichedEntityField extends (BaseField as { new(config: any): any; }) {
+class EnrichedEntityField extends (BaseField as {new (config: any): any}) {
   constructor(config: any) {
     super(config);
 
     this.events = {
-        'change select': function (event: any) {
-            this.errors = [];
-            this.updateModel(this.getFieldValue(event.target));
-            this.getRoot().render();
-        }
+      'change select': function(event: any) {
+        this.errors = [];
+        this.updateModel(this.getFieldValue(event.target));
+        this.getRoot().render();
+      },
     };
   }
 
@@ -38,50 +37,45 @@ class EnrichedEntityField extends (BaseField as { new(config: any): any; }) {
       promise.resolve();
     });
 
-    return $.when(
-        BaseField.prototype.configure.apply(this, arguments),
-        promise.promise()
-    );
+    return $.when(BaseField.prototype.configure.apply(this, arguments), promise.promise());
   }
 
   /**
    * {@inheritdoc}
    */
   renderInput(templateContext: any) {
-    return template({...templateContext,
+    return template({
+      ...templateContext,
       value: this.getFormData()[this.fieldName],
       choices: this.getChoices(),
       multiple: false,
       readOnly: undefined !== this.getFormData().meta,
       labels: {
-        defaultLabel: __('pim_enrich.entity.attribute.property.enriched_entity.default_label')
-      }
+        defaultLabel: __('pim_enrich.entity.attribute.property.enriched_entity.default_label'),
+      },
     });
   }
 
   getChoices() {
-    return this.enrichedEntities.reduce(
-      (result: {[key: string]: string}, enrichedEntity: EnrichedEntity) => {
-        result[enrichedEntity.getIdentifier().stringValue()] = enrichedEntity.getLabel(UserContext.get('catalogLocale'));
+    return this.enrichedEntities.reduce((result: {[key: string]: string}, enrichedEntity: EnrichedEntity) => {
+      result[enrichedEntity.getIdentifier().stringValue()] = enrichedEntity.getLabel(UserContext.get('catalogLocale'));
 
-        return result;
-      },
-      {}
-    )
+      return result;
+    }, {});
   }
 
   /**
    * {@inheritdoc}
    */
-  postRender () {
-      this.$('select.select2').select2({allowClear: true});
+  postRender() {
+    this.$('select.select2').select2({allowClear: true});
   }
 
   /**
    * {@inheritdoc}
    */
-  getFieldValue (field: any) {
-      return $(field).val();
+  getFieldValue(field: any) {
+    return $(field).val();
   }
 }
 

@@ -2,19 +2,19 @@
 
 namespace spec\Akeneo\Pim\EnrichedEntity\Component\Factory;
 
+use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
-use Akeneo\EnrichedEntity\Domain\Repository\RecordRepository;
+use Akeneo\EnrichedEntity\Domain\Repository\RecordRepositoryInterface;
 use Akeneo\Pim\EnrichedEntity\Component\Factory\EnrichedEntityCollectionValueFactory;
 use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
-    function let(RecordRepository $recordRepository) {
+    function let(RecordRepositoryInterface $recordRepository) {
         $this->beConstructedWith($recordRepository);
     }
 
@@ -100,9 +100,9 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
 
-        $starckIdentifier = RecordIdentifier::fromString('starck');
+        $starckIdentifier = RecordIdentifier::create('designer', 'starck');
         $recordRepository->getByIdentifier($starckIdentifier)->willReturn($starck);
-        $dysonIdentifier = RecordIdentifier::fromString('dyson');
+        $dysonIdentifier = RecordIdentifier::create('designer', 'dyson');
         $recordRepository->getByIdentifier($dysonIdentifier)->willReturn($dyson);
 
         $productValue = $this->create(
@@ -133,9 +133,9 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $attribute->isBackendTypeReferenceData()->willReturn(true);
         $attribute->getReferenceDataName()->willReturn('designer');
 
-        $starckIdentifier = RecordIdentifier::fromString('starck');
+        $starckIdentifier = RecordIdentifier::create('designer', 'starck');
         $recordRepository->getByIdentifier($starckIdentifier)->willReturn($starck);
-        $dysonIdentifier = RecordIdentifier::fromString('dyson');
+        $dysonIdentifier = RecordIdentifier::create('designer', 'dyson');
         $recordRepository->getByIdentifier($dysonIdentifier)->willReturn($dyson);
 
         $productValue = $this->create(
@@ -191,31 +191,36 @@ class EnrichedEntityCollectionValueFactorySpec extends ObjectBehavior {
         $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['foo' => ['bar']]]);
     }
 
-    function it_throws_an_exception_when_provided_data_is_not_an_existing_record_code(
-        $recordRepository,
-        AttributeInterface $attribute
-    ) {
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->getCode()->willReturn('designer');
-        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
-        $attribute->getBackendType()->willReturn('reference_data_options');
-        $attribute->isBackendTypeReferenceData()->willReturn(true);
-        $attribute->getReferenceDataName()->willReturn('designer');
-
-        $dysonIdentifier = RecordIdentifier::fromString('dyson');
-        $recordRepository->getByIdentifier($dysonIdentifier)->willReturn(null);
-
-        $exception = InvalidPropertyException::validEntityCodeExpected(
-            'designer',
-            'record code',
-            'The code of the enriched entity "designer" does not exist',
-            EnrichedEntityCollectionValueFactory::class,
-            'dyson'
-        );
-
-        $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['dyson']]);
-    }
+// TODO: To reactivate once implementation with search is made
+//    function it_throws_an_exception_when_provided_data_is_not_an_existing_record_code(
+//        $recordRepository,
+//        AttributeInterface $attribute
+//    ) {
+//        $attribute->isScopable()->willReturn(false);
+//        $attribute->isLocalizable()->willReturn(false);
+//        $attribute->getCode()->willReturn('designer');
+//        $attribute->getType()->willReturn('akeneo_enriched_entity_collection');
+//        $attribute->getBackendType()->willReturn('reference_data_options');
+//        $attribute->isBackendTypeReferenceData()->willReturn(true);
+//        $attribute->getReferenceDataName()->willReturn('designer');
+//
+//        $enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+//        $dysonIdentifier = RecordIdentifier::fromString('dyson');
+//        $recordRepository->getByIdentifier($dysonIdentifier, $enrichedEntityIdentifier)->willReturn(null);
+//
+//        $exception = InvalidPropertyException::validEntityCodeExpected(
+//            'designer',
+//            'record code',
+//            sprintf(
+//                'The code of the enriched entity "%s" does not exist',
+//                'designer'
+//            ),
+//            static::class,
+//            'dyson'
+//        );
+//
+//        $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['dyson']]);
+//    }
 
     public function getMatchers()
     {

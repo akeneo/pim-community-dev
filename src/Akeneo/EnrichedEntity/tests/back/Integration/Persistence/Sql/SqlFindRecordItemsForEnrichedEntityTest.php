@@ -8,6 +8,7 @@ use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntity;
 use Akeneo\EnrichedEntity\Domain\Model\EnrichedEntity\EnrichedEntityIdentifier;
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use Akeneo\EnrichedEntity\Domain\Model\Record\Record;
+use Akeneo\EnrichedEntity\Domain\Model\Record\RecordCode;
 use Akeneo\EnrichedEntity\Domain\Model\Record\RecordIdentifier;
 use Akeneo\EnrichedEntity\Domain\Query\FindRecordItemsForEnrichedEntityInterface;
 use Akeneo\EnrichedEntity\Domain\Query\RecordItem;
@@ -43,12 +44,13 @@ class SqlFindRecordItemsForEnrichedEntityTest extends SqlIntegrationTestCase
         $recordItems = ($this->findRecordsForEnrichedEntity)(EnrichedEntityIdentifier::fromString('designer'));
 
         $starck = new RecordItem();
-        $starck->identifier = RecordIdentifier::fromString('starck');
+        $starck->identifier = RecordIdentifier::create('designer', 'starck');
         $starck->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
+        $starck->code = EnrichedEntityIdentifier::fromString('designer');
         $starck->labels = LabelCollection::fromArray(['fr_FR' => 'Philippe Starck']);
 
         $coco = new RecordItem();
-        $coco->identifier = RecordIdentifier::fromString('coco');
+        $coco->identifier = RecordIdentifier::create('designer', 'coco');
         $coco->enrichedEntityIdentifier = EnrichedEntityIdentifier::fromString('designer');
         $coco->labels = LabelCollection::fromArray(['fr_FR' => 'Coco Chanel']);
 
@@ -76,21 +78,19 @@ SQL;
                 'en_US' => 'Designer',
             ]
         );
-        $enrichedEntityRepository->save($enrichedEntity);
+        $enrichedEntityRepository->create($enrichedEntity);
 
         $recordRepository = $this->get('akeneo_enrichedentity.infrastructure.persistence.record');
-        $recordRepository->save(
+        $recordRepository->create(
             Record::create(
-                RecordIdentifier::fromString('starck'),
-                EnrichedEntityIdentifier::fromString('designer'),
-                ['fr_Fr' => 'Philippe Starck']
+                RecordIdentifier::create('designer', 'starck'), EnrichedEntityIdentifier::fromString('designer'),
+                RecordCode::fromString('starck'), ['fr_FR' => 'Philippe Starck']
             )
         );
-        $recordRepository->save(
+        $recordRepository->create(
             Record::create(
-                RecordIdentifier::fromString('coco'),
-                EnrichedEntityIdentifier::fromString('designer'),
-                ['fr_Fr' => 'Coco Chanel']
+                RecordIdentifier::create('designer', 'coco'), EnrichedEntityIdentifier::fromString('designer'),
+                RecordCode::fromString('coco'), ['fr_FR' => 'Coco Chanel']
             )
         );
     }

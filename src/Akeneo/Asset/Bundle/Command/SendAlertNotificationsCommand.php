@@ -28,10 +28,10 @@ use Symfony\Component\Routing\RouterInterface;
 class SendAlertNotificationsCommand extends ContainerAwareCommand
 {
     /** @var string */
-    protected $htmlBodyTemplate = '@PimEnterpriseProductAsset/Email/notification.html.twig';
+    protected $htmlBodyTemplate = '@AkeneoAsset/Email/notification.html.twig';
 
     /** @var string */
-    protected $textBodyTemplate = '@PimEnterpriseProductAsset/Email/notification.txt.twig';
+    protected $textBodyTemplate = '@AkeneoAsset/Email/notification.txt.twig';
 
     /** @var string */
     protected $baseUrl = null;

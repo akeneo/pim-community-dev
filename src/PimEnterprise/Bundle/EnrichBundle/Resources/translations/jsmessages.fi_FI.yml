@@ -1,189 +1,169 @@
-pimee_enrich.product_history.action.revert: Palaa tähän versioon
-permission-changes:
-  category:
-    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tässä kategoriassa
-    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tässä kategoriassa
-  locale:
-    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tällä alueella
-    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tällä alueella
-  attribute group:
-    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä
-    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä
-  job profile:
-    grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>
-    revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>
-pim_enrich:
-  entity:
-    attribute_label:
-      pim_assets_collection: Resurssien keruu
-pim:
-  grid:
-    mass_action:
+pim_datagrid:
+  mass_action:
+    mass_edit:
       asset_edit: Assettien massamuokkaus
-pimee_enrich:
-  form:
-    job_instance:
-      tab:
-        permission:
-          execute.label: Työprofiilin suorittaminen sallittu
-          edit.label: Työprofiilin muokkaaminen sallittu
-    channel:
-      tab:
-        asset-transformation:
-          title: Resurssien muunnokset
-    attribute_group:
-      tab:
-        permission:
-          title: Käyttöoikeudet
-          view.label: Attribuuttien katselu sallittu
-          edit.label: Attribuuttien muokkaaminen sallittu
-          removed: Käyttäjäryhmä {{ group }} ei ole oikeutettu {{ permission }} attribuuttiryhmää
-          added: Käyttäjäryhmä {{ group }} on oikeutettu {{ permission }} attribuuttiryhmää
-  entity:
-    product:
-      index_title: "] -Inf, 1] {{ count }} tulos|] 1, Inf [{{ count }} tulosta"
-      navigation: Julkaistut tuotteet
-      history:
-        published: Julkaistu
-        revert: Palauta
-      smart_attribute:
-        come_from: "Tämä attribuutti voidaan päivittää säännöllä:"
-      btn:
-        publish: Julkaise
-        publish_this_version: Julkaise tämä versio
-        unpublish: Peruuta julkaisu
-        save_draft: Tallenna luonnos
-      flash:
-        product_unpublished: Tuotteen julkaisu peruutettu onnistuneesti
-        product_published: Tuote julkaistu onnistuneesti
-        product_not_published: Tuotteen julkaisu epäonnistui
-        product_not_unpublished: Tuotteen julkaisun peruuttaminen epäonnistui
-        product_reverted: Tuote palautettu onnistuneesti
-      meta:
-        published: Julkaistu versio
-        owner_groups: Omistajaryhmät
-        draft_status: Luonnoksen tila
-        draft:
-          in_progress: Toiminto käynnissä
-          sent_for_approval: Odottaa hyväksyntää
-          working_copy: Työkopio
-      tab:
-        proposals:
-          title: Ehdotukset
-          messages:
-            approve:
-              success: Ehdotus on otettu käyttöön onnistuneesti.
-              error: "Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi: {{ error }}"
-            reject:
-              success: Ehdotus on hylätty.
-            remove:
-              success: Ehdotus on poistettu.
-      confirmation:
-        revert:
-          title: Palauta vahvistus
-          content: Oletko varma, että haluat palauttaa tuotteen tähän versioon?
-        publish:
-          title: Julkaise tämä tuote
-          content: Oletko varma että haluat julkaista tämän tuotteen?
-        unpublish:
-          title: Peruuta tuotteen julkaisu
-          content: Oletko varma että haluat peruuttaa tuotteen julkaisun?
-      info:
-        update_successful: Tuotteen työn alla oleva kopio on päivitetty
-      copy:
-        source:
-          working_copy: Työkopio
-          draft: Luonnokseni
-          draft_of: "{{ author }}: n luonnos"
-    product_draft:
-      info:
-        update_successful: Tuotteen luonnos tallennettu onnistuneesti
-        update_failed: Tuotteen luonnosta ei voitu päivittää
-        value_modified: Nykyinen luonnos muuttaa tätä arvoa
-      flash:
-        sent_for_approval: Tuotteen luonnos lähetetty hyväksyttäväksi
-        draft_not_sendable: Et voi lähettää tätä luonnosta hyväksyttäväksi
-      btn:
-        send_for_approval: Lähetä hyväksyttäväksi
-        sent_for_approval: Lähetetty hyväksyttäväksi
-      modal:
-        accept_proposal: Hyväksy ehdotus
-        accept_selected_proposal: Hyävksy valittu ehdotus / ehdotukset
-        reject_proposal: Hylkää ehdotus
-        reject_selected_proposal: Hylkää valittu ehdotus / ehdotukset
-        remove_proposal: Poista ehdotus
-        send_for_approval: Lähetä hyväksyttäväksi
-        confirm: Lähetä
-        title: Kommentoi ehdotustasi (valinnainen - 255 merkkiä max)
-        characters: merkkiä
-      confirmation:
-        discard_changes: Tallentamattomat muutokset menetetään. Oletko varma että haluat lähettää luonnoksesi hyväksyttäväksi ilman tallentamattomia muutoksia?
-        discard_changes_title: Oletko varma että haluat lähettää tämän luonnoksen?
-  asset_transformation:
-    not_found: Ei muunnosta löydettävissä
-    title:
+pimee_enrich.entity.category:
+  module:
+    permissions:
+      grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tässä kategoriassa
+      revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tässä kategoriassa
+pimee_enrich.entity.locale:
+  module:
+    permissions:
+      grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong> tällä alueella
+      revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong> tällä alueella
+pimee_enrich.entity.attribute group:
+  module:
+    permissions:
+      grant: Ryhmä <strong>{{ group }}</strong> tulee <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä
+      revoke: Ryhmä <strong>{{ group }}</strong> ei tule <strong>olemaan {{ permission }}</strong>tässä attribuuttiryhmässä
+pimee_enrich.entity.channel:
+  module:
+    asset_transformation:
+      title: Resurssien muunnokset
+      not_found: Ei muunnosta löydettävissä
       transformation: Muunnos
       options: Vaihtoehdot
-    colorspace:
-      title: Väriavaruus
-      options:
-        colorspace: '%value% väriavaruus'
-    resize:
-      title: Muokkaa kokoa
-      options:
-        width: '%value%px leveys'
-        height: '%value%px korkeus'
-    resolution:
-      title: Resoluutio
-      options:
-        resolution: '%value%'
-        resolution-unit: '%value%'
-    scale:
-      title: Asteikko
-      options:
-        width: '%value%px leveys'
-        height: '%value%px korkeus'
-        ratio: '%value%% suhde'
-    thumbnail:
-      title: Pikkukuva
-      options:
-        width: '%value%px leveys'
-        height: '%value%px korkeus'
-  mass_edit:
-    cancel: Peruuta
-    product:
-      operation:
-        publish:
-          label: Julkaise
-          label_count: "{1}Julkaise <span class=\"AknFullPage-title--highlight\">1 tuote</span>|] 1, Inf [Julkaise <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span>"
-          description: Tuotteet julkaistaan
-          warning: '{{ itemsCount }} valittua tuotetta julkaistaan.'
-        unpublish:
-          label: Peruuta julkaisu
-          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1 tuotteen </span>julkaisu peruttu|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen</span>julkaisu peruttu"
-          description: Tuotteen julkaisu perutaan
-          warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
-    asset:
-      step:
-        choose:
-          title: Assettien massatoiminnot
-          label_count: "] 0, Inf [Valitse toiminto"
-        configure:
-          label: Konfiguroi
-        confirm:
-          label: Vahvista
-      operation:
-        add_tag:
-          label: Lisää tunnisteita asseteille
-          description: Tunnisteita lisätään assetille.
-          field: Tunnisteet
-        add_to_category:
-          label: Luokittele assetit kategorioihin
-  category:
-    tab:
-      permission:
-        title: Käyttöoikeudet
+      colorspace:
+        title: Väriavaruus
+        options:
+          colorspace: '%value% väriavaruus'
+      resize:
+        title: Muokkaa kokoa
+        options:
+          width: '%value%px leveys'
+          height: '%value%px korkeus'
+      resolution:
+        title: Resoluutio
+        options:
+          resolution: '%value%'
+          resolution-unit: '%value%'
+      scale:
+        title: Asteikko
+        options:
+          width: '%value%px leveys'
+          height: '%value%px korkeus'
+          ratio: '%value%% suhde'
+      thumbnail:
+        title: Pikkukuva
+        options:
+          width: '%value%px leveys'
+          height: '%value%px korkeus'
+pimee_enrich.entity.attribute_group:
+  module:
+    permissions:
+      added: Käyttäjäryhmä {{ group }} on oikeutettu {{ permission }} attribuuttiryhmää
+      view: Attribuuttien katselu sallittu
+      edit: Attribuuttien muokkaaminen sallittu
+      removed: Käyttäjäryhmä {{ group }} ei ole oikeutettu {{ permission }} attribuuttiryhmää
+pimee_enrich.entity.job_instance:
+  module:
+    permissions:
+      execute: Työprofiilin suorittaminen sallittu
+      edit: Työprofiilin muokkaaminen sallittu
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: Julkaistu
+      revert: Palauta
+    meta:
+      published_version: Julkaistu versio
+      owner_groups: Omistajaryhmät
+      draft_status: Luonnoksen tila
+      draft:
+        in_progress: Toiminto käynnissä
+        sent_for_approval: Odottaa hyväksyntää
+        working_copy: Työkopio
+    revert:
+      title: Palauta vahvistus
+      content: Oletko varma, että haluat palauttaa tuotteen tähän versioon?
+    publish:
+      title: Julkaise tämä tuote
+      content: Oletko varma että haluat julkaista tämän tuotteen?
+    unpublish:
+      title: Peruuta tuotteen julkaisu
+      content: Oletko varma että haluat peruuttaa tuotteen julkaisun?
+    copy:
+      working_copy: Työkopio
+      draft: Luonnokseni
+      draft_of: "{{ author }}: n luonnos"
+    approval:
+      send: Lähetä hyväksyttäväksi
+      sent: Lähetetty hyväksyttäväksi
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: Tuote julkaistu onnistuneesti
+      fail: Tuotteen julkaisu epäonnistui
+    unpublish:
+      success: Tuotteen julkaisu peruutettu onnistuneesti
+      fail: Tuotteen julkaisun peruuttaminen epäonnistui
+    revert:
+      success: Tuote palautettu onnistuneesti
+  module:
+    publish:
+      label: Julkaise
+      publish_this_version: Julkaise tämä versio
+    unpublish:
+      label: Peruuta julkaisu
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: Ehdotus on otettu käyttöön onnistuneesti.
+      fail: "Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi: {{ error }}"
+    reject:
+      success: Ehdotus on hylätty.
+    remove:
+      success: Ehdotus on poistettu.
+    update:
+      success: Tuotteen luonnos tallennettu onnistuneesti
+      fail: Tuotteen luonnosta ei voitu päivittää
+    create:
+      success: Tuotteen luonnos lähetetty hyväksyttäväksi
+      fail: Et voi lähettää tätä luonnosta hyväksyttäväksi
+  module:
+    create:
+      label: Tallenna luonnos
+    proposal:
+      accept: Hyväksy ehdotus
+      accept_selected: Hyävksy valittu ehdotus / ehdotukset
+      reject: Hylkää ehdotus
+      reject_selected: Hylkää valittu ehdotus / ehdotukset
+      remove: Poista ehdotus
+      comment_title: Kommentoi ehdotustasi (valinnainen - 255 merkkiä max)
+      comment_chars: merkkiä
+      confirm: Lähetä
+    edit:
+      discard_changes: Tallentamattomat muutokset menetetään. Oletko varma että haluat lähettää luonnoksesi hyväksyttäväksi ilman tallentamattomia muutoksia?
+      discard_changes_title: Oletko varma että haluat lähettää tämän luonnoksen?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: Julkaise
+      description: Tuotteet julkaistaan
+      warning: '{{ itemsCount }} valittua tuotetta julkaistaan.'
+    unpublish:
+      label: Peruuta julkaisu
+      description: Tuotteen julkaisu perutaan
+      warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
+pimee_enrich.mass_edit.asset:
+  step:
+    choose:
+      title: Assettien massatoiminnot
+    configure:
+      label: Konfiguroi
+    confirm:
+      label: Vahvista
+  operation:
+    add_tag:
+      label: Lisää tunnisteita asseteille
+      description: Tunnisteita lisätään assetille.
+      field: Tunnisteet
+    add_to_category:
+      label: Luokittele assetit kategorioihin
 pim_menu:
+  navigation:
+    published_products: Julkaistut tuotteet
   tab:
     asset: Resurssit
   item:
@@ -212,7 +192,7 @@ batch_jobs:
     perform.label: Muokkaa attribuutteja
   publish_product:
     perform.label: Julkaise tuotteet
-catalog_volume:
+pim_catalog_volumne:
   axis:
     count_assets: Resurssit
     count_asset_categories: Assettikategoriat

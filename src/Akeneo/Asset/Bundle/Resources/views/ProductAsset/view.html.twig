@@ -74,7 +74,7 @@
                 {# VARIATIONS PANEL #}
                 <div class="tab-pane active" id="pimee_product_asset-tabs-variations">
                     {% for attachment in attachments %}
-                        {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_view.html.twig' with {'referenceModel': attachment.reference}%}
+                        {% include 'AkeneoAssetBundle:ProductAsset:_reference_view.html.twig' with {'referenceModel': attachment.reference}%}
                     {% endfor %}
                 </div>
             </div>

@@ -1,0 +1,69 @@
+parameters:
+    pimee_workflow.elasticsearch.from_size_cursor_factory.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\FromSizeCursorFactory
+    pimee_workflow.elasticsearch.cursor_factory.class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\CursorFactory
+
+services:
+    pimee_workflow.factory.published_product_cursor:
+        class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product'
+            - '@pimee_workflow.repository.published_product'
+            - '%akeneo_elasticsearch.cursor.cursor.class%'
+            - '%pim_job_product_batch_size%'
+            - 'pimee_workflow_published_product'
+
+    pimee_workflow.factory.published_product_from_size_cursor:
+        class: '%akeneo_elasticsearch.cursor.from_size_cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product'
+            - '@pimee_workflow.repository.published_product'
+            - '%akeneo_elasticsearch.cursor.from_size_cursor.class%'
+            - '%pim_job_product_batch_size%'
+            - 'pimee_workflow_published_product'
+
+    pimee_workflow.factory.published_product_search_after_size_cursor:
+        class: '%akeneo_elasticsearch.cursor.search_after_size_cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product'
+            - '@pimee_workflow.repository.published_product'
+            - '%akeneo_elasticsearch.cursor.search_after_size_cursor.class%'
+            - '%pim_job_product_batch_size%'
+            - 'pimee_workflow_published_product'
+
+    pimee_workflow.factory.product_proposal_cursor:
+        class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_proposal'
+            - '@pimee_workflow.repository.product_draft'
+            - '%akeneo_elasticsearch.cursor.cursor.class%'
+            - '%pim_job_product_batch_size%'
+            - 'pimee_workflow_product_proposal'
+
+    pimee_workflow.factory.product_proposal_from_size_cursor:
+        class: '%akeneo_elasticsearch.cursor.from_size_cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_proposal'
+            - '@pimee_workflow.repository.product_draft'
+            - '%akeneo_elasticsearch.cursor.from_size_cursor.class%'
+            - '%pim_job_product_batch_size%'
+            - 'pimee_workflow_product_proposal'
+
+    pimee_workflow.factory.product_and_product_model_proposal_from_size_cursor:
+        public: false
+        class: '%pimee_workflow.elasticsearch.from_size_cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_proposal'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '%pim_job_product_batch_size%'
+            - 'pimee_workflow_product_proposal'
+
+    pimee_workflow.factory.product_and_product_model_proposal_cursor:
+        public: false
+        class: '%pimee_workflow.elasticsearch.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_proposal'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.repository.product_model_draft'
+            - '%pim_job_product_batch_size%'
+            - 'pimee_workflow_product_proposal'

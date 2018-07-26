@@ -1,8 +1,0 @@
-parameters:
-    pimee_workflow.query.draft_authors.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Query\DraftAuthors
-
-services:
-    pimee_workflow.query.draft_authors:
-        class: '%pimee_workflow.query.draft_authors.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'

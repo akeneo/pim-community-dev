@@ -21,3 +21,11 @@ services:
 
     akeneo_enrichedentity.infrastructure.persistence.query.find_record_items_for_enriched_entity:
         class: Akeneo\EnrichedEntity\tests\back\Common\InMemoryFindRecordItemsForEnrichedEntity
+
+    oro_security.security_facade:
+        class: Akeneo\EnrichedEntity\tests\back\Common\SecurityFacadeStub
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_security.acl.annotation_provider'
+            - '@oro_security.acl.object_identity_factory'
+            - '@logger'

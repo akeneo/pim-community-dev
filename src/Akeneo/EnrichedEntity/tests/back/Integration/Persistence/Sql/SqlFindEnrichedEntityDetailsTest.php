@@ -68,7 +68,7 @@ SQL;
                 'en_US' => 'Designer',
             ]
         );
-        $enrichedEntityRepository->save($enrichedEntity);
+        $enrichedEntityRepository->create($enrichedEntity);
     }
 
     private function assertEnrichedEntityItem(EnrichedEntityDetails $expected, EnrichedEntityDetails $actual): void

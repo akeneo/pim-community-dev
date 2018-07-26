@@ -1,0 +1,83 @@
+parameters:
+    pimee_security.voter.attribute.class: Akeneo\Pim\Permission\Bundle\Voter\AttributeVoter
+    pimee_security.voter.attribute_group.class: Akeneo\Pim\Permission\Bundle\Voter\AttributeGroupVoter
+    pimee_security.voter.category.class: Akeneo\Pim\Permission\Bundle\Voter\CategoryVoter
+    pimee_security.voter.product_and_product_model.class: Akeneo\Pim\Permission\Bundle\Voter\ProductAndProductModelVoter
+    pimee_security.voter.job_profile.class: Akeneo\Pim\Permission\Bundle\Voter\JobProfileVoter
+    pimee_security.voter.locale.class: Akeneo\Pim\Permission\Bundle\Voter\LocaleVoter
+    pimee_security.voter.datagrid_view.class: Akeneo\Pim\Permission\Bundle\Voter\DatagridViewVoter
+    pimee_security.voter.category_owner.class: Akeneo\Pim\Permission\Bundle\Voter\CategoryOwnerVoter
+    pimee_security.cached_authorization_checker.class: Akeneo\Pim\Permission\Component\Authorization\CachedAuthorizationChecker
+    pimee_security.deny_not_granted_categorized_entity.class: Akeneo\Pim\Permission\Component\Authorization\DenyNotGrantedCategorizedEntity
+
+services:
+    pimee_security.voter.attribute:
+        class: '%pimee_security.voter.attribute.class%'
+        arguments:
+            - '@pimee_security.voter.attribute_group'
+        tags:
+            - { name: security.voter }
+
+    pimee_security.voter.attribute_group:
+        class: '%pimee_security.voter.attribute_group.class%'
+        arguments:
+            - '@pimee_security.manager.attribute_group_access'
+        tags:
+            - { name: security.voter }
+
+    pimee_security.voter.category:
+        class: '%pimee_security.voter.category.class%'
+        arguments:
+            - '@pimee_security.manager.category_access'
+            - '%pim_catalog.model.category.interface%'
+        tags:
+            - { name: security.voter }
+
+    pimee_security.voter.product_and_product_model:
+        class: '%pimee_security.voter.product_and_product_model.class%'
+        arguments:
+            - '@pimee_security.repository.category_access'
+        tags:
+            - { name: security.voter }
+
+    pimee_security.voter.job_profile:
+        class: '%pimee_security.voter.job_profile.class%'
+        arguments:
+            - '@pimee_security.manager.job_profile_access'
+        tags:
+            - { name: security.voter }
+
+    pimee_security.voter.locale:
+        class: '%pimee_security.voter.locale.class%'
+        arguments:
+            - '@pimee_security.manager.locale_access'
+        tags:
+            - { name: security.voter }
+
+    pimee_security.voter.datagrid_view:
+        class: '%pimee_security.voter.datagrid_view.class%'
+        arguments:
+            - '@pimee_security.manager.datagtrid_view_access'
+        tags:
+            - { name: security.voter }
+
+    pimee_security.voter.category_owner:
+        class: '%pimee_security.voter.category_owner.class%'
+        arguments:
+            - '@pimee_security.repository.category_access'
+        tags:
+            - { name: security.voter }
+
+    pimee_security.cached_authorization_checker:
+        class: '%pimee_security.cached_authorization_checker.class%'
+        decorates: security.authorization_checker
+        decoration_inner_name: security.base_authorization_checker
+        arguments:
+            - '@security.base_authorization_checker'
+            - '@security.token_storage'
+            - '@pimee_authorization_serializer'
+
+    pimee_security.deny_not_granted_categorized_entity:
+        class: '%pimee_security.deny_not_granted_categorized_entity.class%'
+        arguments:
+            - '@pimee_security.cached_authorization_checker'

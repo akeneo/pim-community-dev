@@ -10,7 +10,6 @@ use Akeneo\Pim\EnrichedEntity\Component\Value\EnrichedEntityCollectionValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Prophecy\Argument;
 
 class EnrichedEntityCollectionValueSpec extends ObjectBehavior {
     function let(
@@ -39,9 +38,9 @@ class EnrichedEntityCollectionValueSpec extends ObjectBehavior {
     function it_is_castable_into_a_string($starck, $dyson, RecordIdentifier $starckIdentifier, RecordIdentifier $dysonIdentifier)
     {
         $starck->getIdentifier()->willReturn($starckIdentifier);
-        $starckIdentifier->__toString()->willReturn('starck');
+        $starckIdentifier->getIdentifier()->willReturn('starck');
         $dyson->getIdentifier()->willReturn($dysonIdentifier);
-        $dysonIdentifier->__toString()->willReturn('dyson');
+        $dysonIdentifier->getIdentifier()->willReturn('dyson');
         $this->__toString()->shouldReturn('starck, dyson');
     }
 }
