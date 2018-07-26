@@ -46,6 +46,7 @@ class AkeneoPimPermissionExtension extends Extension
         $loader->load('writers.yml');
         $loader->load('filters.yml');
         $loader->load('query_builder.yml');
+        $loader->load('query_builders.yml');
         $loader->load('datagrid.yml');
         $loader->load('mass_edit.yml');
         $loader->load('renderers.yml');
