@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 
+use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
@@ -10,7 +11,6 @@ use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface;
 use Pim\Component\Catalog\Model\EntityWithAssociationsInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
