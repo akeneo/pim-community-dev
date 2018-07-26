@@ -4,7 +4,7 @@ config:
         pim/controller-registry:
             controllers:
                 akeneo_suggest_data_connection_index:
-                    module: pim/controller/common/index
+                    module: pimee/settings/mapping/index
                     aclResourceId: akeneo_suggest_data_connection
                     config:
                         entity: pim-ai-connection
@@ -16,7 +16,7 @@ config:
                         connectionCode: pim-ai
                         inactiveForm: pimee-suggest-data-settings-index-inactive-connection
                 akeneo_suggest_data_settings_attributes_index:
-                    module: pim/controller/common/index
+                    module: pimee/settings/mapping/index
                     aclResourceId: akeneo_suggest_data_settings_mapping
                     config:
                         entity: suggest-data-settings-attributes-mapping
@@ -61,6 +61,7 @@ config:
         pimee/settings/mapping/family-selector: akeneosuggestdata/js/settings/mapping/family-selector
         pimee/settings/mapping/attributes-mapping: akeneosuggestdata/js/settings/mapping/attributes-mapping
         pimee/settings/mapping/subscribe: akeneosuggestdata/js/settings/mapping/subscribe
+        pimee/settings/mapping/index: akeneosuggestdata/js/settings/mapping/index
 
         # Templates
         pimee/template/product/suggest-data-push:  akeneosuggestdata/templates/product/edit/suggest-data-push.html

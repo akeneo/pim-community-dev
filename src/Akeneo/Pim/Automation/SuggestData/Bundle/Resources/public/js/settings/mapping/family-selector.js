@@ -27,6 +27,11 @@ define(
                         .then((family) => {
                             this.setData(family);
                             this.getRoot().render();
+                            const stateExtension = this.getRoot().getExtension('state');
+                            if (stateExtension) {
+                                // Reinitialize the state
+                                stateExtension.collectAndRender();
+                            }
                         });
                 }
             },

@@ -26,7 +26,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             events: {
-                'click .tab-link': (event) => {
+                'click .tab-link': function (event) {
                     Router.redirectToRoute($(event.currentTarget).data('route'));
                 }
             },
