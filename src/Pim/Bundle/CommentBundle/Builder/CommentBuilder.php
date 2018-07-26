@@ -4,8 +4,8 @@ namespace Pim\Bundle\CommentBundle\Builder;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CommentBundle\Model\CommentInterface;
-use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
+use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
+use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

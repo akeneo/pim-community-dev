@@ -1,9 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CommentBundle\Entity;
+namespace Akeneo\Pim\Enrichment\Component\Comment\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CommentBundle\Model;
+namespace Akeneo\Pim\Enrichment\Component\Comment\Model;
 
 /**
  * Comment subject interface

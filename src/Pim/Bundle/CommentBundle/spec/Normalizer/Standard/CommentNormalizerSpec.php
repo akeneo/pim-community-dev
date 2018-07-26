@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CommentBundle\Normalizer\Standard;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CommentBundle\Model\CommentInterface;
+use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 

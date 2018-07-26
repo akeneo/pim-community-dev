@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CommentBundle\Normalizer\Standard;
 
-use Pim\Bundle\CommentBundle\Model\CommentInterface;
+use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
