@@ -42,7 +42,7 @@ define([
                 this.$el.html('');
 
                 const familyMapping = this.getFormData();
-                if (familyMapping.hasOwnProperty('mapping') && familyMapping.mapping.length) {
+                if (familyMapping.hasOwnProperty('mapping') && Object.keys(familyMapping.mapping).length) {
                     const mapping = familyMapping.mapping;
                     const locale = UserContext.get('uiLocale');
                     const statuses = {
@@ -52,27 +52,32 @@ define([
                     };
                     this.$el.html(this.template({
                         mapping,
-                        locale,
                         statuses,
-                        i18n,
                         pim_ai_attribute: __(this.config.labels.pim_ai_attribute),
                         catalog_attribute: __(this.config.labels.catalog_attribute),
                         suggest_data: __(this.config.labels.suggest_data)
                     }));
 
-                    mapping.forEach((row) => {
-                        // TODO Should be better to use unique code from PIM.ai here.
-                        const $dom = this.$el.find('.attribute-selector[data-pim-ai-attribute="' + row.pim_ai_attribute.label + '"]');
+                    Object.keys(mapping).forEach((pim_ai_attribute_code) => {
+                        const $dom = this.$el.find('.attribute-selector[data-pim-ai-attribute-code="' + pim_ai_attribute_code + '"]');
                         const attributeSelector = new SimpleSelectAttribute({
                             config: {
-                                fieldName: '', // TODO
+                                /**
+                                 * The normalized managed object looks like:
+                                 * { mapping: {
+                                 *     pim_ai_attribute_code_1: { attribute: 'foo' ... },
+                                 *     pim_ai_attribute_code_2: { attribute: 'bar' ... }
+                                 * } }
+                                 */
+                                fieldName: 'mapping.' + pim_ai_attribute_code + '.attribute',
                                 label: '',
                                 choiceRoute: 'pim_enrich_attribute_rest_index'
                             }
                         });
-                        attributeSelector.configure();
-                        attributeSelector.setParent(this);
-                        $dom.html(attributeSelector.render().$el);
+                        attributeSelector.configure().then(() => {
+                            attributeSelector.setParent(this);
+                            $dom.html(attributeSelector.render().$el);
+                        });
                     });
                 }
 

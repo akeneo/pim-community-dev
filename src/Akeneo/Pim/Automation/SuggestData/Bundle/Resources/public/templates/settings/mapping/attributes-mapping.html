@@ -4,24 +4,14 @@
         <th class="AknGrid-headerCell"><%- catalog_attribute %></th>
         <th class="AknGrid-headerCell"><%- suggest_data %></th>
     </tr>
-    <% mapping.forEach((row) => { %>
+    <% Object.keys(mapping).forEach((pim_ai_attribute_code) => { %>
         <tr class="AknGrid-bodyRow">
             <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight">
-                <%- row.pim_ai_attribute.label %>
+                <%- mapping[pim_ai_attribute_code].pim_ai_attribute.label %>
             </td>
-            <td class="AknGrid-bodyCell attribute-selector" data-pim-ai-attribute="<%- row.pim_ai_attribute.label %>">
-                <!-- TODO replace this by a selector
-                <% if (null !== row.attribute) { %>
-                    <%- i18n.getLabel(
-                        row.attribute.labels,
-                        locale,
-                        row.attribute.code
-                    ) %>
-                <% } %>
-                -->
-            </td>
+            <td class="AknGrid-bodyCell attribute-selector" data-pim-ai-attribute-code="<%- pim_ai_attribute_code %>"></td>
             <td class="AknGrid-bodyCell">
-                <%- statuses[row.status] %>
+                <%- statuses[mapping[pim_ai_attribute_code].status] %>
             </td>
         </tr>
     <% }) %>

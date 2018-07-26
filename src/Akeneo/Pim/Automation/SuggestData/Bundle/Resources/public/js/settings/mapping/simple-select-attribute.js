@@ -73,10 +73,13 @@ define([
                     id: item.code,
                     text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
                     group: {
-                        text: i18n.getLabel(
-                            this.attributeGroups[item.group].labels,
-                            UserContext.get('catalogLocale'),
-                            this.attributeGroups[item.group]
+                        text: (
+                            item.group ?
+                                i18n.getLabel(
+                                    this.attributeGroups[item.group].labels,
+                                    UserContext.get('catalogLocale'),
+                                    this.attributeGroups[item.group]
+                                ) : ''
                         )
                     }
                 };

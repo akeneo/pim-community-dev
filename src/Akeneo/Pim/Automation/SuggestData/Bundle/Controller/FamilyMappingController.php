@@ -99,26 +99,21 @@ class FamilyMappingController
                 'code' => 'camcorders',
                 'enabled' => true,
                 'mapping' => [
-                    [
+                    'pimaiattributecode1' => [
                         'pim_ai_attribute' => [
                             'label' => 'the pim.ai attribute label 1'
                         ],
-                        'attribute' => [ // TODO Use the standard attribute normalizer for this.
-                            'code' => 'weight',
-                            'labels' => [
-                                'en_US' => 'Weight',
-                                'fr_FR' => 'Hauteur',
-                                'de_DE' => 'Auf wiedersehen'
-                            ]
-                        ],
+                        'attribute' => 'weight',
                         'status' => self::ACTIVE
-                    ], [
+                    ],
+                    'pimaiattributecode2' => [
                         'pim_ai_attribute' => [
                             'label' => 'the pim.ai attribute label 2'
                         ],
                         'attribute' => null,
                         'status' => self::PENDING
-                    ], [
+                    ],
+                    'pimaiattributecode3' => [
                         'pim_ai_attribute' => [
                             'label' => 'the pim.ai attribute label 3'
                         ],
