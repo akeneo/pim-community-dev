@@ -19,7 +19,7 @@ interface CommentRepositoryInterface
      * @param string     $resourceName
      * @param int|string $resourceId
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection|\Pim\Bundle\CommentBundle\Model\CommentInterface[]
+     * @return \Doctrine\Common\Collections\ArrayCollection|\Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface[]
      */
     public function getComments($resourceName, $resourceId);
 }

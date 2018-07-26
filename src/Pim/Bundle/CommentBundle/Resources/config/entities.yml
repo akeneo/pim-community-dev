@@ -1,2 +1,2 @@
 parameters:
-    pim_comment.entity.comment.class: Pim\Bundle\CommentBundle\Entity\Comment
+    pim_comment.entity.comment.class: Akeneo\Pim\Enrichment\Component\Comment\Model\Comment
