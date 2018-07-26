@@ -47,7 +47,7 @@ class ProductCommentController
     /** @var SaverInterface */
     protected $commentSaver;
 
-    /** @var \Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder */
+    /** @var CommentBuilder */
     protected $commentBuilder;
 
     /** @var NormalizerInterface */
@@ -63,15 +63,15 @@ class ProductCommentController
     protected $localeResolver;
 
     /**
-     * @param TokenStorageInterface                                                          $tokenStorage
-     * @param FormFactoryInterface                                                           $formFactory
-     * @param ProductRepositoryInterface                                                     $productRepository
-     * @param \Akeneo\Pim\Enrichment\Component\Comment\Repository\CommentRepositoryInterface $commentRepository
-     * @param SaverInterface                                                                 $commentSaver
-     * @param \Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder                $commentBuilder
-     * @param NormalizerInterface                                                            $normalizer
-     * @param ValidatorInterface                                                             $validator
-     * @param PresenterInterface                                                             $datetimePresenter
+     * @param TokenStorageInterface                                           $tokenStorage
+     * @param FormFactoryInterface                                            $formFactory
+     * @param ProductRepositoryInterface                                      $productRepository
+     * @param CommentRepositoryInterface                                      $commentRepository
+     * @param SaverInterface                                                  $commentSaver
+     * @param \Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder $commentBuilder
+     * @param NormalizerInterface                                             $normalizer
+     * @param ValidatorInterface                                              $validator
+     * @param PresenterInterface                                              $datetimePresenter
      * @param LocaleResolver                                                  $localeResolver
      */
     public function __construct(
