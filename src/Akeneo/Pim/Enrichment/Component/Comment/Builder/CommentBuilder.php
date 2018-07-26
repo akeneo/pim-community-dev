@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CommentBundle\Builder;
+namespace Akeneo\Pim\Enrichment\Component\Comment\Builder;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
