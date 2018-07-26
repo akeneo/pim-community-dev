@@ -89,15 +89,6 @@ services:
         tags:
             - { name: fob.context_service }
 
-    test.family.context:
-        class: 'Akeneo\Test\Acceptance\Family\FamilyContext'
-        arguments:
-            - '@__symfony__.pim_catalog.repository.family'
-            - '@__symfony__.pim_catalog.factory.family'
-            - '@__symfony__.pim_catalog.repository.attribute'
-        tags:
-            - { name: fob.context_service }
-
     test.catalog.product_creation.context:
         class: 'Akeneo\Test\Acceptance\Catalog\Context\ProductCreation'
         arguments:
