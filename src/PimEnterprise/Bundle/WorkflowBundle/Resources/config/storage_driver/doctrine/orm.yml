@@ -57,3 +57,9 @@ services:
             - '%pim_catalog.entity.attribute.class%'
         tags:
             - { name: doctrine.event_subscriber }
+
+    pim_catalog.query.get_associated_product_codes_by_published_product:
+        class: '%pim_catalog.query.get_associated_product_codes_by_product.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pimee_workflow.entity.published_product_association.class%'

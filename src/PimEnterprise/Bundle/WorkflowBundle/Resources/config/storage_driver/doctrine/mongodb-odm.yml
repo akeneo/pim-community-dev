@@ -76,3 +76,9 @@ services:
             - '@pim_catalog.repository.attribute'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.query.get_associated_product_codes_by_published_product:
+        class: '%pim_catalog.query.get_associated_product_codes_by_product.class%'
+        arguments:
+            - '@service_container'
+            - '%pimee_workflow.entity.published_product.class%'
