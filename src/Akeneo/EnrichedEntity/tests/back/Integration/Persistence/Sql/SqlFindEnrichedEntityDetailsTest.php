@@ -75,8 +75,8 @@ SQL;
     private function assertEnrichedEntityItem(EnrichedEntityDetails $expected, EnrichedEntityDetails $actual): void
     {
         $this->assertTrue($expected->identifier->equals($actual->identifier), 'Enriched entity identifiers are not equal');
-        $expectedLabels = $this->normalizeLabels($expected->labels);
-        $actualLabels = $this->normalizeLabels($actual->labels);
+        $expectedLabels = $expected->labels->normalize();
+        $actualLabels = $actual->labels->normalize();
         $this->assertEmpty(
             array_merge(
                 array_diff($expectedLabels, $actualLabels),
@@ -84,15 +84,5 @@ SQL;
             ),
             'Labels for the enriched entity items are not the same'
         );
-    }
-
-    private function normalizeLabels(LabelCollection $labelCollection): array
-    {
-        $labels = [];
-        foreach ($labelCollection->getLocaleCodes() as $localeCode) {
-            $labels[$localeCode] = $labelCollection->getLabel($localeCode);
-        }
-
-        return $labels;
     }
 }

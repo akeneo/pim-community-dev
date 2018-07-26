@@ -5,7 +5,6 @@ namespace spec\Akeneo\EnrichedEntity\Domain\Model;
 
 use Akeneo\EnrichedEntity\Domain\Model\LabelCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\LocaleInterface;
 
 class LabelCollectionSpec extends ObjectBehavior
 {
@@ -56,5 +55,10 @@ class LabelCollectionSpec extends ObjectBehavior
     public function it_returns_the_locale_codes_it_has_translation_for()
     {
         $this->getLocaleCodes()->shouldReturn(['en_US', 'fr_FR']);
+    }
+
+    public function it_can_normalize_itself()
+    {
+        $this->normalize()->shouldReturn(['en_US' => 'A US label', 'fr_FR' => 'Un label français']);
     }
 }

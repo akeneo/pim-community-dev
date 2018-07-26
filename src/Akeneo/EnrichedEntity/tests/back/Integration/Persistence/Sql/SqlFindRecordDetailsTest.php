@@ -103,23 +103,13 @@ SQL;
     {
         $this->assertEquals($expected->identifier, $actual->identifier);
         $this->assertEquals($expected->enrichedEntityIdentifier, $actual->enrichedEntityIdentifier);
-        $expectedLabels = $this->normalizeLabels($expected->labels);
-        $actualLabels = $this->normalizeLabels($actual->labels);
+        $expectedLabels = $expected->labels->normalize();
+        $actualLabels = $actual->labels->normalize();
         $this->assertEmpty(
             array_merge(
                 array_diff($expectedLabels, $actualLabels),
                 array_diff($actualLabels, $expectedLabels)
             )
         );
-    }
-
-    private function normalizeLabels(LabelCollection $labelCollection): array
-    {
-        $labels = [];
-        foreach ($labelCollection->getLocaleCodes() as $localeCode) {
-            $labels[$localeCode] = $labelCollection->getLabel($localeCode);
-        }
-
-        return $labels;
     }
 }
