@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
+use Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder;
 use Pim\Bundle\CommentBundle\Form\Type\CommentType;
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
@@ -47,7 +47,7 @@ class ProductCommentController
     /** @var SaverInterface */
     protected $commentSaver;
 
-    /** @var CommentBuilder */
+    /** @var \Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder */
     protected $commentBuilder;
 
     /** @var NormalizerInterface */
@@ -63,16 +63,16 @@ class ProductCommentController
     protected $localeResolver;
 
     /**
-     * @param TokenStorageInterface      $tokenStorage
-     * @param FormFactoryInterface       $formFactory
-     * @param ProductRepositoryInterface $productRepository
-     * @param CommentRepositoryInterface $commentRepository
-     * @param SaverInterface             $commentSaver
-     * @param CommentBuilder             $commentBuilder
-     * @param NormalizerInterface        $normalizer
-     * @param ValidatorInterface         $validator
-     * @param PresenterInterface         $datetimePresenter
-     * @param LocaleResolver             $localeResolver
+     * @param TokenStorageInterface                                           $tokenStorage
+     * @param FormFactoryInterface                                            $formFactory
+     * @param ProductRepositoryInterface                                      $productRepository
+     * @param CommentRepositoryInterface                                      $commentRepository
+     * @param SaverInterface                                                  $commentSaver
+     * @param \Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder $commentBuilder
+     * @param NormalizerInterface                                             $normalizer
+     * @param ValidatorInterface                                              $validator
+     * @param PresenterInterface                                              $datetimePresenter
+     * @param LocaleResolver                                                  $localeResolver
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,

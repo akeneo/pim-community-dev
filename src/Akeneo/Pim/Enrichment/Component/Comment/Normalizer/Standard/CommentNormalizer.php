@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CommentBundle\Normalizer\Standard;
+namespace Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard;
 
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

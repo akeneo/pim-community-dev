@@ -1,5 +1,5 @@
 parameters:
-    pim_comment.normalizer.standard.comment.class: Pim\Bundle\CommentBundle\Normalizer\Standard\CommentNormalizer
+    pim_comment.normalizer.standard.comment.class: Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalizer
 
 services:
     pim_comment.normalizer.standard.comment:
