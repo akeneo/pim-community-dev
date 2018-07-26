@@ -9,7 +9,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder;
 use Pim\Bundle\CommentBundle\Form\Type\CommentType;
-use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Comment\Repository\CommentRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Resolver\LocaleResolver;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -63,15 +63,15 @@ class ProductCommentController
     protected $localeResolver;
 
     /**
-     * @param TokenStorageInterface                                           $tokenStorage
-     * @param FormFactoryInterface                                            $formFactory
-     * @param ProductRepositoryInterface                                      $productRepository
-     * @param CommentRepositoryInterface                                      $commentRepository
-     * @param SaverInterface                                                  $commentSaver
-     * @param \Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder $commentBuilder
-     * @param NormalizerInterface                                             $normalizer
-     * @param ValidatorInterface                                              $validator
-     * @param PresenterInterface                                              $datetimePresenter
+     * @param TokenStorageInterface                                                          $tokenStorage
+     * @param FormFactoryInterface                                                           $formFactory
+     * @param ProductRepositoryInterface                                                     $productRepository
+     * @param \Akeneo\Pim\Enrichment\Component\Comment\Repository\CommentRepositoryInterface $commentRepository
+     * @param SaverInterface                                                                 $commentSaver
+     * @param \Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder                $commentBuilder
+     * @param NormalizerInterface                                                            $normalizer
+     * @param ValidatorInterface                                                             $validator
+     * @param PresenterInterface                                                             $datetimePresenter
      * @param LocaleResolver                                                  $localeResolver
      */
     public function __construct(
