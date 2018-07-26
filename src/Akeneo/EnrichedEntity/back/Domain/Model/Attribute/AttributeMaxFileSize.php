@@ -33,4 +33,9 @@ class AttributeMaxFileSize
     {
         return new self($maxLength);
     }
+
+    public function floatValue(): float
+    {
+        return $this->maxLength;
+    }
 }

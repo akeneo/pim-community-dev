@@ -64,4 +64,14 @@ class ImageAttribute extends AbstractAttribute
         );
     }
 
+    public function normalize(): array
+    {
+        return array_merge(
+            parent::normalize(),
+            [
+                'max_file_size' => $this->maxFileSize->floatValue(),
+                'allowed_extensions' => $this->extensions->normalize()
+            ]
+        );
+    }
 }

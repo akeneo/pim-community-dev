@@ -56,4 +56,12 @@ class TextAttribute extends AbstractAttribute
             $maxLength
         );
     }
+
+    public function normalize(): array
+    {
+        return array_merge(
+            parent::normalize(),
+            ['max_length' => $this->maxLength->intValue()]
+        );
+    }
 }

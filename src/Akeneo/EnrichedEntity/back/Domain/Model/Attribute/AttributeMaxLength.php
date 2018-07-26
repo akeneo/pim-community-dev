@@ -33,4 +33,9 @@ class AttributeMaxLength
     {
         return new self($maxLength);
     }
+
+    public function intValue(): int
+    {
+        return $this->maxLength;
+    }
 }

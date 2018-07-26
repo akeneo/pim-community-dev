@@ -28,4 +28,9 @@ class AttributeAllowedExtensions
     {
         return new self($allowedExtensions);
     }
+
+    public function normalize(): array
+    {
+        return $this->allowedExtensions;
+    }
 }

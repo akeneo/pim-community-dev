@@ -66,4 +66,23 @@ class TextAttributeSpec extends ObjectBehavior
             AttributeMaxLength::fromInteger(300)
         ]);
     }
+
+    function it_normalizes_itself()
+    {
+        $this->normalize()->shouldReturn([
+                'identifier'                 => [
+                    'enriched_entity_identifier' => 'designer',
+                    'identifier'                 => 'name',
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'name',
+                'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
+                'order'                      => 0,
+                'required'                   => true,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'max_length'                 => 300,
+            ]
+        );
+    }
 }

@@ -73,8 +73,8 @@ abstract class AbstractAttribute
 
         $this->identifier = $identifier;
         $this->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-        $this->labelCollection = $labelCollection;
         $this->code = $code;
+        $this->labelCollection = $labelCollection;
         $this->order = $order;
         $this->required = $required;
         $this->valuePerChannel = $valuePerChannel;
@@ -110,5 +110,22 @@ abstract class AbstractAttribute
     public function updateLabels(LabelCollection $labelCollection): void
     {
         $this->labelCollection = $labelCollection;
+    }
+
+    public function normalize(): array
+    {
+        return [
+            'identifier' => [
+                'enriched_entity_identifier' => $this->identifier->getEnrichedEntityIdentifier(),
+                'identifier' => $this->identifier->getIdentifier()
+            ],
+            'enriched_entity_identifier' => (string) $this->enrichedEntityIdentifier,
+            'code' => (string) $this->code,
+            'labels' => $this->labelCollection->normalize(),
+            'order' => $this->order->intValue(),
+            'required' => $this->required->isYes(),
+            'value_per_channel' => $this->valuePerChannel->isYes(),
+            'value_per_locale' => $this->valuePerLocale->isYes(),
+        ];
     }
 }

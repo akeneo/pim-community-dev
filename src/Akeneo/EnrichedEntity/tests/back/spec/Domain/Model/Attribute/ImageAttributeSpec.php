@@ -49,7 +49,7 @@ class ImageAttributeSpec extends ObjectBehavior
             AttributeRequired::fromBoolean(true),
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true),
-            AttributeMaxFileSize::fromFloat(300),
+            AttributeMaxFileSize::fromFloat(300.0),
             AttributeAllowedExtensions::fromList(['pdf'])
         ]);
     }
@@ -68,5 +68,25 @@ class ImageAttributeSpec extends ObjectBehavior
             AttributeMaxFileSize::fromFloat(300),
             AttributeAllowedExtensions::fromList(['pdf'])
         ]);
+    }
+
+    function it_normalizes_itself()
+    {
+        $this->normalize()->shouldReturn([
+                'identifier'                 => [
+                    'enriched_entity_identifier' => "designer",
+                    'identifier'                 => "name",
+                ],
+                'enriched_entity_identifier' => 'designer',
+                'code'                       => 'name',
+                'labels'                     => ['fr_FR' => 'Nom', 'en_US' => 'Name'],
+                'order'                      => 0,
+                'required'                   => true,
+                'value_per_channel'          => true,
+                'value_per_locale'           => true,
+                'max_file_size'              => 300.0,
+                'allowed_extensions'         => ['pdf'],
+            ]
+        );
     }
 }
