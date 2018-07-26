@@ -2,10 +2,10 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Comment\Builder;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
