@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\SuggestData\Bundle\Controller;
 
-use Akeneo\Pim\Automation\SuggestData\Component\Service\ManageIdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidMappingException;
+use Akeneo\Pim\Automation\SuggestData\Component\Service\ManageIdentifiersMapping;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -54,7 +54,6 @@ class IdentifiersMappingController
 
             return new JsonResponse(json_encode($identifiersMapping));
         } catch (InvalidMappingException $e) {
-
             return new JsonResponse(
                 [
                     'message' => $e->getMessage(),

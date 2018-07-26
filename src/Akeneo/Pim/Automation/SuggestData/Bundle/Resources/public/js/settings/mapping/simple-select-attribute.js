@@ -7,8 +7,7 @@
  */
 define(
     ['pim/form/common/fields/simple-select-async'],
-    function (BaseSimpleSelect)
-    {
+    function (BaseSimpleSelect) {
         return BaseSimpleSelect.extend({
             className: 'AknFieldContainer AknFieldContainer--withoutMargin',
 
@@ -38,7 +37,7 @@ define(
                         page: page
                     }
                 };
-            },
+            }
         });
     }
 );
