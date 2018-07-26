@@ -159,8 +159,20 @@ class AttributeController
             $options['attribute_groups'] = explode(',', $request->request->get('attribute_groups'));
         }
 
+        if ($request->get('localizable', null) !== null) {
+            $options['localizable'] = $request->get('localizable') === 'true';
+        }
+
+        if ($request->get('scopable', null) !== null) {
+            $options['scopable'] = $request->get('scopable') === 'true';
+        }
+
+        if ($request->get('is_locale_specific', null) !== null) {
+            $options['is_locale_specific'] = $request->get('is_locale_specific') === 'true';
+        }
+
         if (empty($options)) {
-            $options = $request->request->get(
+            $options = $request->get(
                 'options',
                 ['limit' => SearchableRepositoryInterface::FETCH_LIMIT, 'locale' => null]
             );
@@ -173,7 +185,7 @@ class AttributeController
         $options['user_groups_ids'] = $token->getUser()->getGroupsIds();
 
         $attributes = $this->attributeSearchRepository->findBySearch(
-            $request->request->get('search'),
+            $request->get('search'),
             $options
         );
 

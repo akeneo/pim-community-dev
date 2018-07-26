@@ -64,7 +64,10 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 'user_groups_ids'      => null,
                 'types'                => null,
                 'attribute_groups'     => [],
-                'rights'               => true
+                'rights'               => true,
+                'localizable'          => null,
+                'scopable'             => null,
+                'is_locale_specific'   => null
             ]
         );
         $resolver->setAllowedTypes('identifiers', 'array');
@@ -77,6 +80,9 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
         $resolver->setAllowedTypes('types', ['array', 'null']);
         $resolver->setAllowedTypes('attribute_groups', ['array']);
         $resolver->setAllowedTypes('rights', ['bool']);
+        $resolver->setAllowedTypes('localizable', ['bool', 'null']);
+        $resolver->setAllowedTypes('scopable', ['bool', 'null']);
+        $resolver->setAllowedTypes('is_locale_specific', ['bool', 'null']);
 
         $options = $resolver->resolve($options);
 
@@ -122,6 +128,7 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
                 $qb->setParameter('locale', $localeCode);
             }
         }
+
         if (!empty($options['identifiers'])) {
             $qb->andWhere('a.code in (:codes)');
             $qb->setParameter('codes', $options['identifiers']);
@@ -137,6 +144,21 @@ class AttributeSearchableRepository implements SearchableRepositoryInterface
             if (null !== $options['page']) {
                 $qb->setFirstResult($options['limit'] * ($options['page'] - 1));
             }
+        }
+
+        if (null !== $options['localizable']) {
+            $qb->andWhere('a.localizable = :localizable');
+            $qb->setParameter('localizable', $options['localizable']);
+        }
+
+        if (null !== $options['scopable']) {
+            $qb->andWhere('a.scopable = :scopable');
+            $qb->setParameter('scopable', $options['scopable']);
+        }
+
+        if (null !== $options['is_locale_specific']) {
+            $qb->leftJoin('a.availableLocales', 'al');
+            $qb->andWhere(sprintf('al.id IS %s', $options['is_locale_specific'] ? 'NOT NULL' : 'NULL'));
         }
 
         //TODO: this part is specific to attributes
