@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Command;
+namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

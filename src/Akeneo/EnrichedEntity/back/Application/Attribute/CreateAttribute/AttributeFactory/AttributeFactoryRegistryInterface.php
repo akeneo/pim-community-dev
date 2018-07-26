@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Factory;
+namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Command\AbstractCreateAttributeCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 
 interface AttributeFactoryRegistryInterface
 {

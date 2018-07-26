@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Factory;
+namespace spec\Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Command\CreateImageAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Command\CreateTextAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Factory\TextAttributeFactory;
+use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory\TextAttributeFactory;
+use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use PhpSpec\ObjectBehavior;
 
 class TextAttributeFactorySpec extends ObjectBehavior
@@ -50,6 +50,7 @@ class TextAttributeFactorySpec extends ObjectBehavior
            'required' => true,
            'value_per_channel' => false,
            'value_per_locale' => false,
+           'type' => 'text',
            'max_length' => 155,
        ]);
     }

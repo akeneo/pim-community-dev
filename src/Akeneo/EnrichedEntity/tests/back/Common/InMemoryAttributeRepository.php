@@ -59,9 +59,16 @@ class InMemoryAttributeRepository implements AttributeRepositoryInterface
         return $enrichedEntity;
     }
 
-    private function getKey(AttributeIdentifier $identifier): string
+    public function getKey(AttributeIdentifier $identifier): string
     {
         return sprintf('%s_%s', $identifier->getEnrichedEntityIdentifier(), $identifier->getIdentifier());
     }
 
+    /**
+     * @return AbstractAttribute[]
+     */
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
 }

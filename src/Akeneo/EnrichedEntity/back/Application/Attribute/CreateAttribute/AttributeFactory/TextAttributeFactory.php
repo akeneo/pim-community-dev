@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Factory;
+namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Command\AbstractCreateAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Command\CreateTextAttributeCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AbstractAttribute;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeCode;
 use Akeneo\EnrichedEntity\Domain\Model\Attribute\AttributeIdentifier;
@@ -32,7 +32,7 @@ class TextAttributeFactory implements AttributeFactoryInterface
 
     public function create(AbstractCreateAttributeCommand $command): AbstractAttribute
     {
-        if (!$command instanceof CreateTextAttributeCommand) {
+        if (!$this->supports($command)) {
             throw new \RuntimeException(
                 sprintf(
                     'Expected command of type "%s", "%s" given',

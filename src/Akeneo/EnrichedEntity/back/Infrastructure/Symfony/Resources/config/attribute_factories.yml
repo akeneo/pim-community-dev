@@ -1,9 +1,13 @@
 services:
     akeneo_enrichedentity.application.registry.attribute_factory:
-        class: Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Factory\AttributeFactoryRegistry
+        class: Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory\AttributeFactoryRegistry
 
     akeneo_enrichedentity.application.factory.text_attribute_factory:
-        class: Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Factory\TextAttributeFactory
+        class: Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory\TextAttributeFactory
+        tags:
+            - { name: akeneo_enrichedentity.attribute_factory }
 
     akeneo_enrichedentity.application.factory.image_attribute_factory:
-        class: Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Factory\ImageAttributeFactory
+        class: Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory\ImageAttributeFactory
+        tags:
+            - { name: akeneo_enrichedentity.attribute_factory }

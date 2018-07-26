@@ -70,6 +70,12 @@ class ImageAttributeSpec extends ObjectBehavior
         ]);
     }
 
+    function it_determines_if_it_has_a_given_order()
+    {
+        $this->hasOrder(AttributeOrder::fromInteger(0))->shouldReturn(true);
+        $this->hasOrder(AttributeOrder::fromInteger(1))->shouldReturn(false);
+    }
+
     function it_normalizes_itself()
     {
         $this->normalize()->shouldReturn([

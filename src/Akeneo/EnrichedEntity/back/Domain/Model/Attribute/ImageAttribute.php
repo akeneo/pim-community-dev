@@ -25,8 +25,8 @@ class ImageAttribute extends AbstractAttribute
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         AttributeCode $code,
         LabelCollection $labelCollection,
-        AttributeRequired $required,
         AttributeOrder $order,
+        AttributeRequired $required,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
         AttributeMaxFileSize $maxFileSize,
@@ -55,8 +55,8 @@ class ImageAttribute extends AbstractAttribute
             $enrichedEntityIdentifier,
             $code,
             $labelCollection,
-            $required,
             $order,
+            $required,
             $valuePerChannel,
             $valuePerLocale,
             $maxFileSize,
@@ -73,5 +73,10 @@ class ImageAttribute extends AbstractAttribute
                 'allowed_extensions' => $this->extensions->normalize()
             ]
         );
+    }
+
+    protected function getType(): string
+    {
+        return self::ATTRIBUTE_TYPE;
     }
 }

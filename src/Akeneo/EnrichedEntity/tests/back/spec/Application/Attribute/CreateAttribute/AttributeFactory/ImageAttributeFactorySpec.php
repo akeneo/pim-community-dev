@@ -1,13 +1,11 @@
 <?php
 
-namespace spec\Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Factory;
+namespace spec\Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory;
 
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Command\CreateImageAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Command\CreateTextAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\Factory\ImageAttributeFactory;
-use Akeneo\EnrichedEntity\Domain\Model\Attribute\ImageAttribute;
+use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AttributeFactory\ImageAttributeFactory;
+use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ImageAttributeFactorySpec extends ObjectBehavior
 {
@@ -53,6 +51,7 @@ class ImageAttributeFactorySpec extends ObjectBehavior
             'required' => true,
             'value_per_channel' => false,
             'value_per_locale' => false,
+            'type' => 'image',
             'max_file_size' => 30.0,
             'allowed_extensions' => ['pdf', 'png'],
         ]);

@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterAttributeFactoryPass implements CompilerPassInterface
 {
     private const ATTRIBUTE_FACTORY_REGISTRY = 'akeneo_enrichedentity.application.registry.attribute_factory';
-    private const ATTRIBUTE_FACTORY_TAG = '';
+    private const ATTRIBUTE_FACTORY_TAG = 'akeneo_enrichedentity.attribute_factory';
 
     /**
      * {@inheritdoc}

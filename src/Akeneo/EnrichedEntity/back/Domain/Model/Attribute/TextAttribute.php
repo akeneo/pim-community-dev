@@ -64,4 +64,9 @@ class TextAttribute extends AbstractAttribute
             ['max_length' => $this->maxLength->intValue()]
         );
     }
+
+    protected function getType(): string
+    {
+        return self::ATTRIBUTE_TYPE;
+    }
 }

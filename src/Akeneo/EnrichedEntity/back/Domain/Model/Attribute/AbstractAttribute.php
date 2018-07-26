@@ -112,6 +112,12 @@ abstract class AbstractAttribute
         $this->labelCollection = $labelCollection;
     }
 
+    public function hasOrder(AttributeOrder $order): bool {
+        return $this->order->intValue() === $order->intValue();
+    }
+
+    protected abstract function getType(): string;
+
     public function normalize(): array
     {
         return [
