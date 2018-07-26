@@ -1,8 +1,8 @@
-import * as _ from "underscore";
+import * as _ from 'underscore';
 import BaseView = require('pimenrich/js/view/base');
+
 const simpleSelectAttribute = require('akeneosuggestdata/js/settings/mapping/simple-select-attribute');
 const fetcherRegistry = require('pim/fetcher-registry');
-
 const __ = require('oro/translator');
 const template = require('pimee/template/settings/mapping/identifiers');
 

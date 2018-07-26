@@ -11,17 +11,13 @@ define(
         'oro/translator',
         'pim/form/common/save',
         'oro/messenger',
-        'pimee/saver/identifier-mapping',
-        'pim/i18n',
-        'pim/user-context'
+        'pimee/saver/identifier-mapping'
     ], (
         $,
         __,
         BaseSave,
         messenger,
-        MappingSaver,
-        i18n,
-        UserContext
+        MappingSaver
     ) => {
         return BaseSave.extend({
             updateSuccessMessage: __('akeneo_suggest_data.settings.index.identifiers_mapping.save.flash.success'),
