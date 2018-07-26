@@ -16,7 +16,7 @@ use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterProductUpd
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterRendererPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass;
 use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterValueFactoryPass;
-use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
+use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Akeneo\Pim\Structure\Bundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
