@@ -38,7 +38,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         /** @var EntityManager $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->query(
-            'SELECT product_id, subscription_id, suggested_data from pim_suggest_data_pimai_product_subscription;'
+            'SELECT product_id, subscription_id, suggested_data from pim_suggest_data_product_subscription;'
         );
         $retrievedSubscriptions = $statement->fetchAll();
 
@@ -68,7 +68,7 @@ class ProductSubscriptionRepositoryIntegration extends TestCase
         /** @var EntityManager $entityManager */
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $statement = $entityManager->getConnection()->prepare(
-            'INSERT INTO pim_suggest_data_pimai_product_subscription (product_id, subscription_id, suggested_data) VALUES (:productId, :subscriptionId, :suggestedData)'
+            'INSERT INTO pim_suggest_data_product_subscription (product_id, subscription_id, suggested_data) VALUES (:productId, :subscriptionId, :suggestedData)'
         );
         $statement->execute(
             [
