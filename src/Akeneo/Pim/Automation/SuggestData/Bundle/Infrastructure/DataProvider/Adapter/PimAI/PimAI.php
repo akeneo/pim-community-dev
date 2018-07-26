@@ -7,6 +7,8 @@ use Akeneo\Pim\Automation\SuggestData\Component\DataProvider\DataProviderInterfa
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataCollectionInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\DataProvider\SuggestedDataInterface;
 use Akeneo\Pim\Automation\SuggestData\Bundle\Infrastructure\PimAiClient\Api\Authentication\AuthenticationApiInterface;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionRequest;
+use Akeneo\Pim\Automation\SuggestData\Component\Model\ProductSubscriptionResponse;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 /**
@@ -23,7 +25,7 @@ class PimAI implements DataProviderInterface
         $this->authenticationApi = $authenticationApi;
     }
 
-    public function push(ProductInterface $product): SuggestedDataInterface
+    public function subscribe(ProductSubscriptionRequest $request): ProductSubscriptionResponse
     {
         throw new \Exception(
             sprintf('"%s is not yet implemented'),

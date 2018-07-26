@@ -205,14 +205,6 @@ acceptance:
                 - 'test.attribute.context'
             filters:
                 tags: '@acceptance-back'
-        suggest-data:
-            paths:
-                - 'tests/features/suggest-data'
-            contexts_services:
-                - 'akeneo_acceptance.context.suggest_data.identifiers_mapping'
-                - 'test.attribute.context'
-            filters:
-                tags: '@acceptance-back'
         volume-monitoring:
             paths:
                 - '%paths.base%/tests/features/volume-monitoring'

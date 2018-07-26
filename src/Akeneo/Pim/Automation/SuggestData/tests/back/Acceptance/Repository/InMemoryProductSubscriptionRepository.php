@@ -22,7 +22,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
  */
 class InMemoryProductSubscriptionRepository implements ProductSubscriptionRepositoryInterface
 {
-    /** @var ProductSubscriptionInterface[] */
+    /** @var array */
     private $subscriptions = [];
 
     /**
