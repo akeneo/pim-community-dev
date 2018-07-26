@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Tool\Component\Api\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface as CatalogProductRepositoryInterface;

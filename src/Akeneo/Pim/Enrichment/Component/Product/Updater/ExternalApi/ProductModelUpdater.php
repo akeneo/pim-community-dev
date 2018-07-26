@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Component\Api\Updater;
+namespace Akeneo\Pim\Enrichment\Component\Product\ExternalApi\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;

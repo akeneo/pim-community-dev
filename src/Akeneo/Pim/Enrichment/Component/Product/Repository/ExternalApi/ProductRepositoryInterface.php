@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Component\Api\Repository;
+namespace Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
