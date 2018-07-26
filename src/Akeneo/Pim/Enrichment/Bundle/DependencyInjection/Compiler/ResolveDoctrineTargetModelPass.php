@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\DependencyInjection\CompilerPass;
+namespace Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface;
