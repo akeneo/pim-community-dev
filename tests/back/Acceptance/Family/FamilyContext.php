@@ -9,7 +9,7 @@ use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 
-class FamilyContext implements Context
+final class FamilyContext implements Context
 {
     /** @var InMemoryAttributeRepository */
     private $attributeRepository;
