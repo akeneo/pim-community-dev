@@ -13,9 +13,7 @@
             <div class="AknFormContainer attribute-selector" data-identifier="<%- pimAiAttributeCode %>"></div>
         </td>
         <td class="AknGrid-bodyCell">
-            <%- null === identifiers[pimAiAttributeCode]
-                ? __('akeneo_suggest_data.settings.index.identifiers_mapping.inactive')
-                : __('akeneo_suggest_data.settings.index.identifiers_mapping.active') %>
+            <%- __(`akeneo_suggest_data.settings.index.identifiers_mapping.${identifiersStatuses[pimAiAttributeCode]}`) %>
         </td>
     </tr>
     <% } %>
