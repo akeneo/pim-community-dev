@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CommentBundle\Repository;
+namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Comment\Repository\CommentRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**

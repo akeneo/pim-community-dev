@@ -1,5 +1,5 @@
 parameters:
-    pim_comment.repository.comment.class: Pim\Bundle\CommentBundle\Repository\CommentRepository
+    pim_comment.repository.comment.class: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\CommentRepository
 
 services:
     pim_comment.repository.comment:

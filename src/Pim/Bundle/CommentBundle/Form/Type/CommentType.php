@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CommentBundle\Form\Type;
 
-use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Comment\Repository\CommentRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;

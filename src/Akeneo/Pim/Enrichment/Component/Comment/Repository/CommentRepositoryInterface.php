@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CommentBundle\Repository;
+namespace Akeneo\Pim\Enrichment\Component\Comment\Repository;
 
 /**
  * Comment repository interface
