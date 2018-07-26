@@ -1,8 +1,0 @@
-parameters:
-    pim_comment.builder.comment.class: Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder
-
-services:
-    pim_comment.builder.comment:
-        class: '%pim_comment.builder.comment.class%'
-        arguments:
-            - '%pim_comment.entity.comment.class%'
