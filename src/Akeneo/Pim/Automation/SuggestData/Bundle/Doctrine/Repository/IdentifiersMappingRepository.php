@@ -61,7 +61,7 @@ class IdentifiersMappingRepository implements IdentifiersMappingRepositoryInterf
     {
         $identifiers = $this->em->getRepository(IdentifierMapping::class)->findAll();
 
-        $identifiersArray = [];
+        $identifiersArray = array_fill_keys(IdentifiersMapping::PIM_AI_IDENTIFIERS, null);
         foreach ($identifiers as $identifier) {
             $identifiersArray[$identifier->getPimAiCode()] = $identifier->getAttribute();
         }

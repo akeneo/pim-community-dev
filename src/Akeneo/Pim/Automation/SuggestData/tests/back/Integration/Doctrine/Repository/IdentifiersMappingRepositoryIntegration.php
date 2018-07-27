@@ -68,9 +68,18 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         $identifiersMappingRepository = $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping');
         $identifiersMappingRepository->save($identifiersMapping);
 
+        $this->get('doctrine.orm.entity_manager')->clear();
         $savedMapping = $identifiersMappingRepository->find();
 
-        $this->assertEquals($identifiersMapping, $savedMapping);
+        $this->assertEquals(
+            new IdentifiersMapping([
+                'brand' => $this->getAttribute('sku'),
+                'mpn' => null,
+                'upc' => null,
+                'asin' => null,
+            ]),
+            $savedMapping
+        );
     }
 
     private function updateMapping(array $newMapping)
