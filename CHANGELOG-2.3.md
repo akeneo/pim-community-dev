@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-7529: Fix error when a tree is removed
+- PIM-7536: Fix tool-tip error
 
 # 2.3.2 (2018-07-24)
 
