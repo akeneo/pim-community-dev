@@ -10,7 +10,6 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\ProductQueryBuilder\ProductAndProductModelQueryBuilder;
@@ -32,7 +31,6 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ItemReaderInterface $familyReader,
         BulkSaverInterface $productSaver,
-        ObjectDetacherInterface $objectDetacher,
         EntityManagerClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
@@ -43,7 +41,6 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
             $productQueryBuilderFactory,
             $familyReader,
             $productSaver,
-            $objectDetacher,
             $cacheClearer,
             $jobRepository,
             $keepOnlyValuesForVariation,

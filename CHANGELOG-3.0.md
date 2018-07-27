@@ -203,6 +203,8 @@
 - Change constructor of `Pim\Component\Catalog\Job\ComputeCompletenessOfProductsFamilyTasklet`, replace `Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` by `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
 - Change constructor of `Pim\Component\Catalog\Job\ComputeProductModelsDescendantsTasklet`, add `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface` argument
 
+- Change constructor of `Pim\Component\Connector\Job\ComputeDataRelatedToFamilyProductsTasklet`, add `Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation`, `Symfony\Component\Validator\Validator\ValidatorInterface` and a batch size arguments.
+
 - Move namespace `Pim\Component\Catalog\Value` to `Akeneo\Pim\Enrichment\Component\Product\Value`
 - Move namespace `Pim\Component\Api` to `Akeneo\Tool\Component\Api`
 - Move namespace `Pim\Bundle\ApiBundle` to `Akeneo\Tool\Bundle\ApiBundle`

@@ -12,7 +12,6 @@ use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
@@ -64,21 +63,14 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
     /** @var EntityManagerClearerInterface */
     private $cacheClearer;
 
-    /** @var ObjectDetacherInterface */
-    private $objectDetacher;
-
     /** @var int */
     private $batchSize;
 
     /**
-     * @todo merge master: remove the object detacher, the default value from $batchSize
-     *                     and the "= null" from the validator and keepOnlyValuesForVariation.
-     *
      * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
      * @param ItemReaderInterface                   $familyReader
      * @param BulkSaverInterface                    $productSaver
-     * @param ObjectDetacherInterface               $objectDetacher
      * @param EntityManagerClearerInterface         $cacheClearer
      * @param JobRepositoryInterface                $jobRepository
      * @param KeepOnlyValuesForVariation            $keepOnlyValuesForVariation
@@ -90,19 +82,17 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         ItemReaderInterface $familyReader,
         BulkSaverInterface $productSaver,
-        ObjectDetacherInterface $objectDetacher,
         EntityManagerClearerInterface $cacheClearer,
         JobRepositoryInterface $jobRepository,
-        KeepOnlyValuesForVariation $keepOnlyValuesForVariation = null,
-        ValidatorInterface $validator = null,
-        int $batchSize = 10
+        KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
+        ValidatorInterface $validator,
+        int $batchSize
     ) {
         $this->familyRepository = $familyRepository;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->familyReader = $familyReader;
         $this->productSaver = $productSaver;
         $this->jobRepository = $jobRepository;
-        $this->objectDetacher = $objectDetacher;
         $this->cacheClearer = $cacheClearer;
         $this->keepOnlyValuesForVariation = $keepOnlyValuesForVariation;
         $this->validator = $validator;
@@ -144,10 +134,7 @@ class ComputeDataRelatedToFamilyProductsTasklet implements TaskletInterface, Ini
             $products = $this->getProductsForFamily($family);
 
             foreach ($products as $product) {
-                if (null !== $this->keepOnlyValuesForVariation     // TODO merge master: remove these two "null !=="
-                    && null !== $this->validator
-                    && $product->isVariant()
-                ) {
+                if ($product->isVariant()) {
                     $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$product]);
 
                     if (!$this->isValid($product)) {
