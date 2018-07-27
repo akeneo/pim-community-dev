@@ -25,7 +25,7 @@ services:
     pim_catalog.normalizer.standard.locale:
         class: 'Akeneo\Channel\Component\Normalizer\Standard\LocaleNormalizer'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.locale:
         class: 'Akeneo\Channel\Component\Normalizer\Versioning\LocaleNormalizer'
@@ -114,7 +114,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
 
     pim_catalog.updater.channel:
         class: 'Akeneo\Channel\Component\Updater\ChannelUpdater'
@@ -137,7 +137,7 @@ services:
     pim_enrich.normalizer.channel:
         class: 'Akeneo\Channel\Component\Normalizer\InternalApi\ChannelNormalizer'
         arguments:
-            - '@pim_serializer'
+            - '@pim_standard_format_serializer'
             - '@pim_enrich.normalizer.locale'
             - '@pim_versioning.repository.version'
             - '@pim_enrich.normalizer.version'
@@ -181,7 +181,7 @@ services:
     pim_catalog.normalizer.standard.currency:
         class: 'Akeneo\Channel\Component\Normalizer\Standard\CurrencyNormalizer'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_standard_format_serializer.normalizer, priority: 90 }
 
     pim_catalog.event_subscriber.currency_disabling:
         class: 'Akeneo\Channel\Bundle\EventListener\CurrencyDisablingSubscriber'
