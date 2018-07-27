@@ -31,7 +31,6 @@ class PimEnterpriseCatalogExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('comparators.yml');
         $loader->load('managers.yml');
-        $loader->load('serializers_standard.yml');
         $loader->load('updaters.yml');
         $loader->load('versions.yml');
     }
