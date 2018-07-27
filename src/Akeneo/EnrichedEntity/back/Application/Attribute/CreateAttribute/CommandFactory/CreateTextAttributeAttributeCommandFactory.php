@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CommandFactory;
 
 use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
-use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand;
+use Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -20,10 +20,10 @@ class CreateTextAttributeAttributeCommandFactory implements CreateAttributeComma
 
     public function create(array $normalizedCommand): AbstractCreateAttributeCommand
     {
-        $command = new CreateImageAttributeCommand();
+        $command = new CreateTextAttributeCommand();
         $command->identifier = [
-            'identifier' => $normalizedCommand['identifier'],
-            'enriched_entity_identifier' => $normalizedCommand['enriched_entity_identifier']
+            'identifier' => $normalizedCommand['identifier']['identifier'],
+            'enriched_entity_identifier' => $normalizedCommand['identifier']['enriched_entity_identifier']
         ];
         $command->code = $normalizedCommand['code'];
         $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'];

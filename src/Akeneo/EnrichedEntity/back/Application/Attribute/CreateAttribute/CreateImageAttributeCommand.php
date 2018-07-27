@@ -14,5 +14,5 @@ class CreateImageAttributeCommand extends AbstractCreateAttributeCommand
     public $maxFileSize;
 
     /** @var array */
-    public $extensions;
+    public $allowedExtensions;
 }

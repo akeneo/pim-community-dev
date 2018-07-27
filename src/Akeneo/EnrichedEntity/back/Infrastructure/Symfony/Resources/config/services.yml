@@ -62,6 +62,15 @@ services:
             - '@validator'
             - '@oro_security.security_facade'
 
+    akeneo_enrichedentity.infrastructure.action.attribute.create:
+        class: 'Akeneo\EnrichedEntity\Infrastructure\Controller\Attribute\CreateAction'
+        arguments:
+            - '@akeneo_enrichedentity.application.enriched_entity.create_attribute_handler'
+            - '@akeneo_enrichedentity.application.registry.create_attribute_command_factory'
+            - '@serializer'
+            - '@validator'
+            - '@oro_security.security_facade'
+
     akeneo_enrichedentity.infrastructure.persistence.record:
         class: 'Akeneo\EnrichedEntity\Infrastructure\Persistence\Sql\SqlRecordRepository'
         arguments:

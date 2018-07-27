@@ -16,6 +16,7 @@ use Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier as
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -26,6 +27,10 @@ class IdentifierValidator extends ConstraintValidator
 {
     public function validate($identifier, Constraint $constraint)
     {
+        if (!$constraint instanceof Identifier) {
+            throw new UnexpectedTypeException($constraint, self::class);
+        }
+
         $validator = Validation::createValidator();
         $violations = $validator->validate($identifier,
             new Assert\Collection(

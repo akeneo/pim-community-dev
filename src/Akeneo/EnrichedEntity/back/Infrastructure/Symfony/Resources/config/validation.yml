@@ -46,3 +46,47 @@ Akeneo\EnrichedEntity\Application\Record\EditRecord\EditRecordCommand:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
         labels:
             - Akeneo\EnrichedEntity\Infrastructure\Validation\Record\LabelCollection: ~
+
+Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateTextAttributeCommand:
+    properties:
+        identifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
+        enrichedEntityIdentifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+        code:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Code: ~
+        labels:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\LabelCollection: ~
+        order:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Order: ~
+        required:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Required: ~
+        valuePerChannel:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+        valuePerLocale:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+        maxLength:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxLength: ~
+
+Akeneo\EnrichedEntity\Application\Attribute\CreateAttribute\CreateImageAttributeCommand:
+    properties:
+        identifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Identifier: ~
+        enrichedEntityIdentifier:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\EnrichedEntity\Identifier: ~
+        code:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Code: ~
+        labels:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\LabelCollection: ~
+        order:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Order: ~
+        required:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\Required: ~
+        valuePerChannel:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerChannel: ~
+        valuePerLocale:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\ValuePerLocale: ~
+        maxFileSize:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\MaxFileSize: ~
+        allowedExtensions:
+            - Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute\AllowedExtensions: ~

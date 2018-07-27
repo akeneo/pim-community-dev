@@ -118,7 +118,7 @@ class CreateAttributeContext implements Context
         $command->valuePerChannel = (bool) $attributeData['value_per_channel'];
         $command->valuePerLocale = (bool) $attributeData['value_per_locale'];
         $command->maxFileSize = (float) $attributeData['max_file_size'];
-        $command->extensions = json_decode($attributeData['allowed_extensions']);
+        $command->allowedExtensions = json_decode($attributeData['allowed_extensions']);
 
         ($this->handler)($command);
     }

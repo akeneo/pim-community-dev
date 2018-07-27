@@ -22,8 +22,8 @@ class CreateImageAttributeAttributeCommandFactory implements CreateAttributeComm
     {
         $command = new CreateImageAttributeCommand();
         $command->identifier = [
-            'identifier' => $normalizedCommand['identifier'],
-            'enriched_entity_identifier' => $normalizedCommand['enriched_entity_identifier']
+            'identifier' => $normalizedCommand['identifier']['identifier'],
+            'enriched_entity_identifier' => $normalizedCommand['identifier']['enriched_entity_identifier']
         ];
         $command->code = $normalizedCommand['code'];
         $command->enrichedEntityIdentifier = $normalizedCommand['enriched_entity_identifier'];
@@ -33,7 +33,7 @@ class CreateImageAttributeAttributeCommandFactory implements CreateAttributeComm
         $command->valuePerChannel = $normalizedCommand['value_per_channel'];
         $command->valuePerLocale = $normalizedCommand['value_per_locale'];
         $command->maxFileSize = $normalizedCommand['max_file_size'];
-        $command->extensions = $normalizedCommand['allowed_extensions'];
+        $command->allowedExtensions = $normalizedCommand['allowed_extensions'] ?? [];
 
         return $command;
     }

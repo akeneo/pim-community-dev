@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -10,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Record;
+namespace Akeneo\EnrichedEntity\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
@@ -19,30 +20,23 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
 
 /**
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class CodeValidator extends ConstraintValidator
+class AllowedExtensionsValidator extends ConstraintValidator
 {
-    private const MAX_IDENTIFIER_LENGTH = 255;
-
-    public function validate($identifier, Constraint $constraint)
+    public function validate($allowedExtensions, Constraint $constraint)
     {
-        if (!$constraint instanceof Code) {
+        if (!$constraint instanceof AllowedExtensions) {
             throw new UnexpectedTypeException($constraint, self::class);
         }
 
         $validator = Validation::createValidator();
-        $violations = $validator->validate($identifier, [
+        $violations = $validator->validate($allowedExtensions, [
                 new Constraints\NotBlank(),
-                new Constraints\NotNull(),
-                new Constraints\Type(['type' => 'string']),
-                new Constraints\Length(['max' => self::MAX_IDENTIFIER_LENGTH, 'min' => 1]),
-                new Constraints\Regex([
-                        'pattern' => '/^[a-zA-Z0-9_]+$/',
-                        'message' => 'pim_enriched_entity.record.validation.identifier.pattern',
-                    ]
-                ),
+                new Constraints\Collection([
+                    new Constraints\Type(['type' => 'string'])
+                ]),
             ]
         );
 
