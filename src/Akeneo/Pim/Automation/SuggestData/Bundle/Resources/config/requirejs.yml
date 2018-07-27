@@ -46,6 +46,9 @@ config:
                             get: akeneo_sugggest_data_family_mapping_get
 
     paths:
+        # Fetchers
+        pimee/fetcher/pim-ai-connection: akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher.ts
+
         # Controller
         pimee/settings/mapping/controller: akeneosuggestdata/js/settings/mapping/mapping-controller
 

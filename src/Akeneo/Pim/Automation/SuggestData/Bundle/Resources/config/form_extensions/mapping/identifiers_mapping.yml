@@ -1,10 +1,10 @@
 extensions:
-    pim-suggest-data-settings-identifiers-mapping-index:
+    pimee-suggest-data-settings-identifiers-mapping-index:
         module: pim/form/common/edit-form
 
     pimee-suggest-data-settings-identifiers-mapping-index-breadcrumb:
         module: pim/common/breadcrumbs
-        parent: pim-suggest-data-settings-identifiers-mapping-index
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
         targetZone: breadcrumbs
         config:
             tab: pim-menu-settings
@@ -12,7 +12,7 @@ extensions:
 
     pimee-suggest-data-settings-identifiers-mapping-index-user-navigation:
         module: pim/menu/user-navigation
-        parent: pim-suggest-data-settings-identifiers-mapping-index
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
         targetZone: user-menu
         config:
             userAccount: pim_menu.user.user_account
@@ -20,7 +20,7 @@ extensions:
 
     pimee-suggest-data-settings-identifiers-mapping-index-title:
         module: pim/common/title-with-subtitle
-        parent: pim-suggest-data-settings-identifiers-mapping-index
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
         targetZone: title
         config:
             main_title: akeneo_suggest_data.settings.page_title
@@ -32,19 +32,19 @@ extensions:
 
     pimee-suggest-data-settings-identifiers-mapping-index-save-buttons:
         module: pim/form/common/save-buttons
-        parent: pim-suggest-data-settings-identifiers-mapping-index
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
         targetZone: buttons
         position: 120
 
     pimee-suggest-data-settings-identifiers-mapping-index-save:
         module: pimee/settings/mapping/save
-        parent: pim-suggest-data-settings-identifiers-mapping-index
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
         targetZone: buttons
         position: 0
 
     pimee-suggest-data-settings-identifiers-mapping-index-tabs:
         module: pimee/settings/mapping/tabs
-        parent: pim-suggest-data-settings-identifiers-mapping-index
+        parent: pimee-suggest-data-settings-identifiers-mapping-index
         targetZone: content
         position: 90
         config:

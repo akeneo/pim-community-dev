@@ -19,13 +19,15 @@ akeneo_suggest_data:
                 identifier_label:
                     label: Identifier Label
                     values:
-                        brand_label: Brand
-                        asin_label: ASIN
-                        mpn_label: MPN
-                        upc_label: UPC
+                        brand: Brand
+                        asin: ASIN
+                        mpn: MPN
+                        upc: UPC
                 catalog_attribute: Catalog attribute
                 suggest_data: Suggest data
-
+                status:
+                    active: Active
+                    inactive: Inactive
         family_mapping:
             label: Family mapping
             fields:
@@ -69,18 +71,9 @@ akeneo_suggest_data:
                 description:
                     first_step: 'Please select the attributes in your catalog that correspond to the product identifiers of the product information AI assistant.'
                     second_step: 'Once the mappings are saved, the assistant will be able to collect and suggest product information in your catalog.'
-
-        # TODO
-        index:
             inactive_connection:
                 title: Sorry, nothing to show here yet
                 sub_title: Please activate your account on System > PIM.ai connection an comme back.
-            identifiers_mapping:
-                active: Active
-                inactive: Inactive
-                save.flash:
-                    success: Identifiers mapping has been successfully saved.
-                    fail: Identifiers mapping not saved due to an error.
 
     mass_edit:
         product:

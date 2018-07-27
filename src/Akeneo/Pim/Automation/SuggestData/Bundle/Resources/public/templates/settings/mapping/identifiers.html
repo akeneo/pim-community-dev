@@ -6,13 +6,13 @@
 <% for (pimAiAttributeCode in identifiers) { %>
 <tr class="AknGrid-bodyRow">
     <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight">
-        <%- __(`akeneo_sugget_data.entity.identifier_mapping.fields.identifier_label.values.${pimAiAttributeLabel}`) %>
+        <%- __(`akeneo_suggest_data.entity.identifier_mapping.fields.identifier_label.values.${pimAiAttributeCode}`) %>
     </td>
     <td class="AknGrid-bodyCell">
         <div class="AknFormContainer attribute-selector" data-identifier="<%- pimAiAttributeCode %>"></div>
     </td>
     <td class="AknGrid-bodyCell">
-        <%- __(`akeneo_suggest_data.settings.index.identifiers_mapping.${identifiersStatuses[pimAiAttributeCode]}`) %>
+        <%- __(`akeneo_suggest_data.entity.identifier_mapping.fields.status.${identifiersStatuses[pimAiAttributeCode]}`) %>
     </td>
 </tr>
 <% } %>
