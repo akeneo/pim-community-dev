@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle;
 
-use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterQueryGeneratorsPass;
-use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

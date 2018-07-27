@@ -1,25 +1,37 @@
-parameters:
-    # Serializer
-    pim_serializer.class: Symfony\Component\Serializer\Serializer
-
-    # Encoders
-    pim_serializer.encoder.xml.class:  Symfony\Component\Serializer\Encoder\XmlEncoder
-    pim_serializer.encoder.json.class: Symfony\Component\Serializer\Encoder\JsonEncoder
-
 services:
-    # Serializer, TODO : should be moved somewhere else
+    pim_external_api_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    pim_standard_format_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    pim_indexing_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    pim_storage_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
+    pim_datagrid_serializer:
+        class: 'Symfony\Component\Serializer\Serializer'
+
     pim_serializer:
-        class: '%pim_serializer.class%'
+        class: 'Symfony\Component\Serializer\Serializer'
 
     # Encoders
     pim_serializer.encoder.xml:
         public: false
-        class: '%pim_serializer.encoder.xml.class%'
+        class: 'Symfony\Component\Serializer\Encoder\XmlEncoder'
         tags:
             - { name: pim_serializer.encoder, priority: 90 }
 
     pim_serializer.encoder.json:
         public: false
-        class: '%pim_serializer.encoder.json.class%'
+        class: 'Symfony\Component\Serializer\Encoder\JsonEncoder'
         tags:
             - { name: pim_serializer.encoder, priority: 90 }
+
+    pim_internal_api.encoder.json:
+        public: false
+        class: 'Symfony\Component\Serializer\Encoder\JsonEncoder'
+        tags:
+            - { name: pim_internal_api_serializer.encoder, priority: 90 }

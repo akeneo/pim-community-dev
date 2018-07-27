@@ -50,6 +50,7 @@ class AkeneoPimEnrichmentBundle extends Bundle
             ->addCompilerPass(new RegisterCompleteCheckerPass())
             ->addCompilerPass(new RegisterLocalizersPass())
             ->addCompilerPass(new RegisterPresentersPass())
+            ->addCompilerPass(new RegisterSerializerPass('pim_internal_api_serializer'))
             ->addCompilerPass(new RegisterSerializerPass('pim_serializer'))
             ->addCompilerPass(new RegisterRendererPass());
         ;
