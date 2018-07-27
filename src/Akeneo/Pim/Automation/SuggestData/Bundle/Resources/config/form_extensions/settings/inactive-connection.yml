@@ -37,3 +37,4 @@ extensions:
             templateParams:
                 hint: akeneo_suggest_data.settings.index.inactive_connection.title
                 subHint: akeneo_suggest_data.settings.index.inactive_connection.sub_title
+                imageClass: AknGridContainer-noDataImage
