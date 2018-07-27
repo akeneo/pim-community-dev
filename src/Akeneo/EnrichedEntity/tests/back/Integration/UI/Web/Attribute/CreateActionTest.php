@@ -8,6 +8,7 @@ use Akeneo\EnrichedEntity\tests\back\Integration\ControllerIntegrationTestCase;
 use Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Helper\AuthenticatedClientFactory;
 use Akeneo\EnrichedEntity\tests\back\Integration\UI\Web\Helper\WebClientHelper;
 use Akeneo\UserManagement\Component\Model\User;
+use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -114,7 +115,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
      * @test
      * @dataProvider invalidAttributeTypes
      */
-    public function it_returns_an_error_if_the_attribute_type_is_not_provided($invalidAttributeType) {
+    public function it_returns_an_error_if_the_attribute_type_is_not_provided($invalidAttributeType)
+    {
         $this->webClientHelper->callRoute(
             $this->client,
             self::CREATE_RECORD_ROUTE,
@@ -201,7 +203,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
      * @test
      * @dataProvider invalidOrders
      */
-    public function it_returns_an_if_the_order_is_not_valid($order, string $expectedResponse) {
+    public function it_returns_an_if_the_order_is_not_valid($order, string $expectedResponse)
+    {
         $this->webClientHelper->callRoute(
             $this->client,
             self::CREATE_RECORD_ROUTE,
@@ -242,7 +245,8 @@ class CreateActionTest extends ControllerIntegrationTestCase
      * @test
      * @dataProvider invalidRequiredValues
      */
-    public function it_returns_an_error_if_the_required_flag_is_not_valid($requiredValue, string $expectedMessage) {
+    public function it_returns_an_error_if_the_required_flag_is_not_valid($requiredValue, string $expectedMessage)
+    {
         $this->webClientHelper->callRoute(
             $this->client,
             self::CREATE_RECORD_ROUTE,

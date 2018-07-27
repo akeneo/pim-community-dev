@@ -51,7 +51,7 @@ class CreateAttributeContext implements Context
         ];
         $command->code = $attributeCode;
         $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-        $command->labels = json_decode($attributeData['labels'],true);
+        $command->labels = json_decode($attributeData['labels'], true);
         $command->order = (int) $attributeData['order'];
         $command->required = (bool) $attributeData['required'];
         $command->valuePerChannel = (bool) $attributeData['value_per_channel'];
@@ -79,7 +79,7 @@ class CreateAttributeContext implements Context
             'identifier' => $attributeCode,
         ];
         $expected['enriched_entity_identifier'] = $enrichedEntityIdentifier;
-        $expected['labels'] = json_decode($expected['labels'],true);
+        $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['required'] = (bool) $expected['required'];
         $expected['value_per_channel'] = (bool) $expected['value_per_channel'];
@@ -112,7 +112,7 @@ class CreateAttributeContext implements Context
         ];
         $command->code = $attributeCode;
         $command->enrichedEntityIdentifier = $enrichedEntityIdentifier;
-        $command->labels = json_decode($attributeData['labels'],true);
+        $command->labels = json_decode($attributeData['labels'], true);
         $command->order = (int) $attributeData['order'];
         $command->required = (bool) $attributeData['required'];
         $command->valuePerChannel = (bool) $attributeData['value_per_channel'];
@@ -137,7 +137,7 @@ class CreateAttributeContext implements Context
             'identifier' => $attributeCode,
         ];
         $expected['enriched_entity_identifier'] = $enrichedEntityIdentifier;
-        $expected['labels'] = json_decode($expected['labels'],true);
+        $expected['labels'] = json_decode($expected['labels'], true);
         $expected['order'] = (int) $expected['order'];
         $expected['required'] = (bool) $expected['required'];
         $expected['value_per_channel'] = (bool) $expected['value_per_channel'];

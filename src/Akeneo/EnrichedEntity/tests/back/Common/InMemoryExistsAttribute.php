@@ -43,8 +43,7 @@ class InMemoryExistsAttribute implements ExistsAttributeInterface
     public function withEnrichedEntityIdentifierAndOrder(
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         AttributeOrder $order
-    ): bool
-    {
+    ): bool {
         $attributes = $this->attributeRepository->getAttributes();
         foreach ($attributes as $attribute) {
             if ((string) $enrichedEntityIdentifier === (string) $attribute->getEnrichedEntityIdentifier() &&

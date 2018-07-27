@@ -55,8 +55,7 @@ SQL;
     public function withEnrichedEntityIdentifierAndOrder(
         EnrichedEntityIdentifier $enrichedEntityIdentifier,
         AttributeOrder $order
-    ): bool
-    {
+    ): bool {
         $query = <<<SQL
         SELECT EXISTS (
             SELECT 1

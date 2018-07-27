@@ -74,8 +74,7 @@ class CreateAction
                 Response::HTTP_BAD_REQUEST
             );
         }
-        if (!$this->isAttributeTypeProvided($request))
-        {
+        if (!$this->isAttributeTypeProvided($request)) {
             return new JsonResponse(
                 'There was no valid attribute type provided in the request',
                 Response::HTTP_BAD_REQUEST

@@ -56,7 +56,7 @@ class ImageAttributeFactory implements AttributeFactoryInterface
             AttributeValuePerChannel::fromBoolean($command->valuePerChannel),
             AttributeValuePerLocale::fromBoolean($command->valuePerLocale),
             AttributeMaxFileSize::fromFloat($command->maxFileSize),
-            AttributeAllowedExtensions::fromList($command->extensions)
+            AttributeAllowedExtensions::fromList($command->allowedExtensions)
         );
     }
 }

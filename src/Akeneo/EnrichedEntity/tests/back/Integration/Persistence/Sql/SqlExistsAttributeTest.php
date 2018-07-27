@@ -39,7 +39,7 @@ class SqlExistsAttributeTest extends SqlIntegrationTestCase
     public function it_returns_true_if_the_attribute_exists_for_the_given_identifier()
     {
         $this->loadAttribute('designer', 'name');
-        $isExisting = $this->existsAttribute->withIdentifier(AttributeIdentifier::create('designer','name'));
+        $isExisting = $this->existsAttribute->withIdentifier(AttributeIdentifier::create('designer', 'name'));
         Assert::assertTrue($isExisting);
     }
 
@@ -48,7 +48,7 @@ class SqlExistsAttributeTest extends SqlIntegrationTestCase
      */
     public function it_returns_false_if_the_attribute_does_not_exist_for_the_given_identifier()
     {
-        $isExisting = $this->existsAttribute->withIdentifier(AttributeIdentifier::create('designer','name'));
+        $isExisting = $this->existsAttribute->withIdentifier(AttributeIdentifier::create('designer', 'name'));
         Assert::assertFalse($isExisting);
     }
 
