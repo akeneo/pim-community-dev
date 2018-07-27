@@ -3,7 +3,6 @@ parameters:
     pim_api.normalizer.exception.violation.class: Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer
     pim_api.normalizer.collection.class: Akeneo\Tool\Component\Api\Normalizer\CollectionNormalizer
     pim_api.normalizer.product_model.class: Pim\Component\Api\Normalizer\ProductModelNormalizer
-    pim_api.normalizer.category.class: Akeneo\Tool\Component\Api\Normalizer\CategoryNormalizer
     pim_api.normalizer.attribute_group.class: Akeneo\Pim\Structure\Component\Normalizer\ExternalApi\AttributeGroupNormalizer
     pim_api.normalizer.file.class: Akeneo\Tool\Component\Api\Normalizer\FileNormalizer
 
@@ -42,13 +41,6 @@ services:
             - '@pim_catalog.normalizer.standard.product_model'
             - '@pim_api.repository.attribute'
             - '@router'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_api.normalizer.category:
-        class: '%pim_api.normalizer.category.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.category'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

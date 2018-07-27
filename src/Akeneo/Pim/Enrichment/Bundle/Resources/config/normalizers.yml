@@ -12,3 +12,10 @@ services:
             - '@router'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.category:
+        class: 'Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi\CategoryNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.category'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

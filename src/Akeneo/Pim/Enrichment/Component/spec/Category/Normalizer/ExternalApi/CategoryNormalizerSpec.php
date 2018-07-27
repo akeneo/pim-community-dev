@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\Tool\Component\Api\Normalizer;
+namespace spec\Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Tool\Component\Api\Normalizer\CategoryNormalizer;
+use Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi\CategoryNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CategoryNormalizerSpec extends ObjectBehavior

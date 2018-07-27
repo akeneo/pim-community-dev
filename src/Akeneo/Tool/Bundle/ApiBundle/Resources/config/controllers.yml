@@ -1,5 +1,4 @@
 parameters:
-    pim_api.controller.category.class: Akeneo\Tool\Bundle\ApiBundle\Controller\CategoryController
     pim_api.controller.token.class: Akeneo\Tool\Bundle\ApiBundle\Controller\TokenController
     pim_api.controller.root_endpoint.class: Akeneo\Tool\Bundle\ApiBundle\Controller\RootEndpointController
     pim_api.controller.media_file.class: Akeneo\Tool\Bundle\ApiBundle\Controller\MediaFileController
@@ -7,21 +6,6 @@ parameters:
     pim_api.controller.measure_family.class: Akeneo\Tool\Bundle\ApiBundle\Controller\MeasureFamilyController
 
 services:
-    pim_api.controller.category:
-        class: '%pim_api.controller.category.class%'
-        arguments:
-            - '@pim_api.repository.category'
-            - '@pim_serializer'
-            - '@pim_catalog.factory.category'
-            - '@pim_catalog.updater.category'
-            - '@validator'
-            - '@pim_catalog.saver.category'
-            - '@router'
-            - '@pim_api.pagination.offset_hal_paginator'
-            - '@pim_api.pagination.parameter_validator'
-            - '@pim_api.stream.category_partial_update_stream'
-            - '%pim_api.configuration%'
-
     pim_api.controller.token:
         class: '%pim_api.controller.token.class%'
         arguments:

@@ -44,7 +44,6 @@ services:
             - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
             - '%pim_api.configuration%'
 
-
     pim_api.controller.product_model:
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
         arguments:
@@ -66,4 +65,19 @@ services:
             - '@pim_api.filter.product_model_attribute_filter'
             - '@pim_catalog.repository.product_model'
             - '@pim_api.stream.product_model_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.category:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CategoryController'
+        arguments:
+            - '@pim_api.repository.category'
+            - '@pim_serializer'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_catalog.saver.category'
+            - '@router'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.category_partial_update_stream'
             - '%pim_api.configuration%'
