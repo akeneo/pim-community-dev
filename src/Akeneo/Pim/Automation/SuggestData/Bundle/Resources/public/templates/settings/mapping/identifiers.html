@@ -4,13 +4,17 @@
         <th class="AknGrid-headerCell"><%- headers.attributeLabel %></th>
         <th class="AknGrid-headerCell"><%- headers.suggestDataLabel %></th>
     </tr>
-    <% Object.keys(identifiers).forEach(pimAiAttributeLabel => { %>
+    <% for (pimAiAttributeCode in identifiers) { %>
     <tr class="AknGrid-bodyRow">
-        <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight"><%- __(`akeneo_suggest_data.settings.index.tab.identifiers.headers.${pimAiAttributeLabel}_label`) %></td>
-        <td class="AknGrid-bodyCell">
-            <div class="AknFormContainer attribute-selector" data-identifier="<%- pimAiAttributeLabel %>"></div>
+        <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight">
+            <%- __(`akeneo_suggest_data.settings.index.tab.identifiers.headers.${pimAiAttributeCode}_label`) %>
         </td>
-        <td class="AknGrid-bodyCell">Active</td>
+        <td class="AknGrid-bodyCell">
+            <div class="AknFormContainer attribute-selector" data-identifier="<%- pimAiAttributeCode %>"></div>
+        </td>
+        <td class="AknGrid-bodyCell">
+            <%- __(`akeneo_suggest_data.settings.index.identifiers_mapping.${identifiersStatuses[pimAiAttributeCode]}`) %>
+        </td>
     </tr>
-    <% }) %>
+    <% } %>
 </table>

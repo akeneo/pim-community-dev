@@ -18,6 +18,9 @@ use Akeneo\Test\Integration\Configuration as TestConfiguration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 
+/**
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ */
 class IdentifiersMappingRepositoryIntegration extends TestCase
 {
     /**
@@ -82,13 +85,28 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         );
     }
 
-    private function updateMapping(array $newMapping)
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration(): TestConfiguration
+    {
+        return $this->catalog->useMinimalCatalog();
+    }
+
+    /**
+     * @param array $newMapping
+     *
+     * @return array
+     */
+    private function updateMapping(array $newMapping): array
     {
         $identifiersMapping = new IdentifiersMapping($newMapping);
 
         $this->get('akeneo.pim.automation.suggest_data.repository.identifiers_mapping')->save($identifiersMapping);
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
+        $entityManager->clear();
+
         $statement = $entityManager->getConnection()->query(
             'SELECT pim_ai_code, attribute_id from pim_suggest_data_pimai_identifier_mapping;'
         );
@@ -96,7 +114,10 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         return $statement->fetchAll();
     }
 
-    private function createAttribute(string $code)
+    /**
+     * @param string $code
+     */
+    private function createAttribute(string $code): void
     {
         $attribute = $this->getFromTestContainer('akeneo_ee_integration_tests.builder.attribute')->build([
             'code' => $code,
@@ -107,16 +128,13 @@ class IdentifiersMappingRepositoryIntegration extends TestCase
         $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return AttributeInterface
+     */
     private function getAttribute(string $name): AttributeInterface
     {
         return $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration(): TestConfiguration
-    {
-        return $this->catalog->useMinimalCatalog();
     }
 }

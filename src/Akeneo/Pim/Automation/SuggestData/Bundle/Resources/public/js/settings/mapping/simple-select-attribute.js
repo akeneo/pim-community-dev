@@ -7,7 +7,7 @@
  */
 define(
     ['pim/form/common/fields/simple-select-async'],
-    function (BaseSimpleSelect) {
+    BaseSimpleSelect => {
         return BaseSimpleSelect.extend({
             className: 'AknFieldContainer AknFieldContainer--withoutMargin',
 

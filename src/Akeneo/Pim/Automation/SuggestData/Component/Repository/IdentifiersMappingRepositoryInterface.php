@@ -15,6 +15,9 @@ namespace Akeneo\Pim\Automation\SuggestData\Component\Repository;
 
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 
+/**
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ */
 interface IdentifiersMappingRepositoryInterface
 {
     /**

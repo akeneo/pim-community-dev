@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Module to save identifiers mapping.
+ * Saves the connection configuration to PIM.ai.
  *
- * @author Willy MESNAGE <willy.mesnage@akeneo.com>
+ * @author Damien Carcel <damien.carcel@akeneo.com>
  */
 define([
     'underscore',
@@ -18,8 +18,8 @@ define([
         /**
          * {@inheritdoc}
          */
-        getUrl: function () {
-            return Routing.generate(__moduleConfig.url);
+        getUrl: function (code) {
+            return Routing.generate(__moduleConfig.url, {code: code});
         }
     });
 });

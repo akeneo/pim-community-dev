@@ -58,6 +58,8 @@ akeneo_suggest_data:
                 families.title: Families
                 attributes.title: Attributes
             identifiers_mapping:
+                active: Active
+                inactive: Inactive
                 save.flash:
                     success: Identifiers mapping has been successfully saved.
                     fail: Identifiers mapping not saved due to an error.

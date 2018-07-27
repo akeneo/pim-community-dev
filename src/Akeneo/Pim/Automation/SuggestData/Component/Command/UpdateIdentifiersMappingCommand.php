@@ -17,7 +17,9 @@ use Akeneo\Pim\Automation\SuggestData\Component\Exception\InvalidMappingExceptio
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 
 /**
- * Command that holds and validates the raw values of the identifiers mapping
+ * Command that holds and validates the raw values of the identifiers mapping.
+ *
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
  */
 class UpdateIdentifiersMappingCommand
 {

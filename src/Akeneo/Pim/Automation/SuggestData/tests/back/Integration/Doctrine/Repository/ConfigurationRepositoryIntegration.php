@@ -52,6 +52,8 @@ class ConfigurationRepositoryIntegration extends TestCase
         $configuration = new Configuration('pim-ai', ['token' => 'a_first_token']);
         $this->get('akeneo.pim.automation.suggest_data.repository.configuration')->save($configuration);
 
+        $this->get('doctrine.orm.entity_manager')->clear();
+
         $configuration->setValues(['token' => 'a_new_token']);
         $this->get('akeneo.pim.automation.suggest_data.repository.configuration')->save($configuration);
 
@@ -78,6 +80,7 @@ class ConfigurationRepositoryIntegration extends TestCase
         $repository = $this->get('akeneo.pim.automation.suggest_data.repository.configuration');
         $repository->save($configuration);
 
+        $this->get('doctrine.orm.entity_manager')->clear();
         $retrievedConfiguration = $repository->findOneByCode('pim-ai');
         $this->assertInstanceOf(Configuration::class, $retrievedConfiguration);
         $this->assertSame([

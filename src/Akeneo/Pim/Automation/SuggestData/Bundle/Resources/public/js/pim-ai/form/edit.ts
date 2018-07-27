@@ -4,7 +4,7 @@ import {EventsHash} from 'backbone';
 import {getConfiguration, isConnectionActivated} from 'akeneosuggestdata/js/pim-ai/fetcher/connection-fetcher';
 
 const __ = require('oro/translator');
-const ConnectionSaver = require('pimee/saver/pim_ai_connection');
+const ConnectionSaver = require('pimee/saver/pim-ai-connection');
 const Messenger = require('oro/messenger');
 const template = require('pimee/template/pim-ai-connection/edit');
 

@@ -23,6 +23,9 @@ use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRep
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ */
 class UpdateIdentifiersMappingHandlerSpec extends ObjectBehavior
 {
     function let(AttributeRepositoryInterface $attributeRepository, IdentifiersMappingRepositoryInterface $identifiersMappingRepository)

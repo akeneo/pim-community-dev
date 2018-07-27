@@ -16,6 +16,9 @@ namespace spec\Akeneo\Pim\Automation\SuggestData\Component\Model;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ */
 class IdentifiersMappingSpec extends ObjectBehavior
 {
     function let(
@@ -32,7 +35,8 @@ class IdentifiersMappingSpec extends ObjectBehavior
         ]);
     }
 
-    function it_gets_identifiers($manufacturer, $model, $ean, $sku) {
+    function it_gets_identifiers($manufacturer, $model, $ean, $sku)
+    {
         $this->getIdentifiers()->shouldReturn([
             'brand' => $manufacturer,
             'mpn' => $model,
@@ -41,11 +45,13 @@ class IdentifiersMappingSpec extends ObjectBehavior
         ]);
     }
 
-    function it_gets_an_identifier($manufacturer) {
+    function it_gets_an_identifier($manufacturer)
+    {
         $this->getIdentifier('brand')->shouldReturn($manufacturer);
     }
 
-    function it_fails_to_get_an_unknown_identifier() {
+    function it_fails_to_get_an_unknown_identifier()
+    {
         $this->getIdentifier('burger')->shouldReturn(null);
     }
 
@@ -63,13 +69,15 @@ class IdentifiersMappingSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_normalizes_empty_identifiers_mapping() {
+    public function it_normalizes_empty_identifiers_mapping()
+    {
         $this->beConstructedWith([]);
 
         $this->normalize()->shouldReturn([]);
     }
 
-    public function it_normalizes_incomplete_identifiers_mapping($manufacturer, $ean) {
+    public function it_normalizes_incomplete_identifiers_mapping($manufacturer, $ean)
+    {
         $manufacturer->getCode()->willReturn('brand');
         $ean->getCode()->willReturn('ean');
 
@@ -81,7 +89,8 @@ class IdentifiersMappingSpec extends ObjectBehavior
         ]);
     }
 
-    function it_is_traversable() {
+    function it_is_traversable()
+    {
         $this->shouldHaveType(\Traversable::class);
 
         $this->getIterator()->shouldReturnAnInstanceOf(\Iterator::class);

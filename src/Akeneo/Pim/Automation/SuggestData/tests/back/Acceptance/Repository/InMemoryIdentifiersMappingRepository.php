@@ -16,8 +16,12 @@ namespace Akeneo\Test\Pim\Automation\SuggestData\Acceptance\Repository;
 use Akeneo\Pim\Automation\SuggestData\Component\Model\IdentifiersMapping;
 use Akeneo\Pim\Automation\SuggestData\Component\Repository\IdentifiersMappingRepositoryInterface;
 
+/**
+ * @author Julian Prud'homme <julian.prudhomme@akeneo.com>
+ */
 class InMemoryIdentifiersMappingRepository implements IdentifiersMappingRepositoryInterface
 {
+    /** @var IdentifiersMapping */
     private $identifiers;
 
     /**
