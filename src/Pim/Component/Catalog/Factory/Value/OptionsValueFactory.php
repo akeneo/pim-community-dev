@@ -111,13 +111,15 @@ class OptionsValueFactory implements ValueFactoryInterface
      * Returns an array of attribute options.
      *
      * @param AttributeInterface $attribute
-     * @param string[]                                                 $data
+     * @param string[]           $data
      *
      * @throws InvalidOptionsException
      * @return array
      */
     protected function getOptions(AttributeInterface $attribute, array $data)
     {
+        sort($data);
+
         $options = [];
         $notFoundOptions = [];
 

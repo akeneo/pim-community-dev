@@ -82,27 +82,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             }
         }
 
-        $data = $this->sortData($data, $attributeType);
-
-        return $data;
-    }
-
-    /**
-     * @param array  $data
-     * @param string $attributeType
-     *
-     * @return array
-     */
-    protected function sortData(array $data, string $attributeType): array
-    {
-        if (AttributeTypes::PRICE_COLLECTION === $attributeType) {
-            usort($data, function ($a, $b) {
-                return strnatcasecmp($a['currency'], $b['currency']);
-            });
-        } else {
-            sort($data);
-        }
-
         return $data;
     }
 

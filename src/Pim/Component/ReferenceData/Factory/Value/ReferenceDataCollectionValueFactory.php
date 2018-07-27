@@ -56,6 +56,8 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
             $data = [];
         }
 
+        sort($data);
+
         $value = new $this->productValueClass(
             $attribute,
             $channelCode,
