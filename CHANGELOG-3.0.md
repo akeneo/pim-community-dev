@@ -105,6 +105,10 @@
 - Rename class `Akeneo\Pim\WorkOrganization\ProductRevert\PimEnterpriseRevertBundle` to `Akeneo\Pim\WorkOrganization\ProductRevert\AkeneoPimProductRevertBundle`
 - Rename class `Akeneo\Pim\WorkOrganization\Workflow\Bundle\PimEnterpriseWorkflowBundle` to `Akeneo\Pim\WorkOrganization\Workflow\Bundle\AkeneoPimWorkflowBundle`
 - Rename class `Akeneo\Pim\Automation\RuleEngine\Bundle\PimEnterpriseCatalogRuleBundle` to `Akeneo\Pim\Automation\RuleEngine\Bundle\AkeneoPimRuleEngineBundle`
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Bundle\EventSubscriber\RuleExecutionSubscriber`. Remove argument `Symfony\Component\Security\Core\User\ChainUserProvider`
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleApplier`. Remove arguments `Akeneo\Tool\Component\StorageUtils\Cursor\PaginatorFactoryInterface` and `Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface`. Add arguments `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface` and `integer`.
+- Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleBuilder`. Remove argument `Symfony\Component\Validator\Validator\ValidatorInterface`.
+- Change constructor of `Akeneo\Pim\Permission\Bundle\Filter\ProductValueLocaleRightFilter`. Add argument `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
 
 ## Security
 
