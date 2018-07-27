@@ -111,7 +111,7 @@ services:
             - '@pim_catalog.normalizer.standard.translation'
             - '@pim_catalog.repository.locale'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_indexing_serializer.normalizer, priority: 90 }
 
     ### Family Variant
     pim_enrich.normalizer.family_variant:
