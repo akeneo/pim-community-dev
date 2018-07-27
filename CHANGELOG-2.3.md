@@ -1,4 +1,12 @@
-# 2.3.x
+# 2.3.2 (2018-07-24)
+
+## Bug fixes
+
+- PIM-7443: Fix product mass action permissions also apply on other grid mass actions
+- PIM-7476: fix family select2 to have the right limit
+- PIM-7516: fix metric default value on product edit form
+
+# 2.3.1 (2018-07-04)
 
 ## Bug fixes
 

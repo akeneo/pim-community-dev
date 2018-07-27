@@ -91,6 +91,10 @@ class AddDefaultPermissionsSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if ($event->hasArgument('is_installation') && $event->getArgument('is_installation')) {
+            return;
+        }
+
         $subject = $event->getSubject();
         $defaultGroup = $this->groupRepository->getDefaultUserGroup();
 

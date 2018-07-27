@@ -8,6 +8,6 @@ services:
         decoration_inner_name: pim_catalog.resolver.attribute_values_without_permission
         arguments:
             - '@pim_catalog.resolver.attribute_values_without_permission'
-            - '@security.authorization_checker'
+            - '@pimee_security.cached_authorization_checker'
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_locale'

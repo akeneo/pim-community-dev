@@ -3,7 +3,7 @@ services:
         class: '%pim_catalog.saver.product_model_descendants.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.product_model_without_permission'
             - '@pim_catalog.query.product_query_builder_factory_without_permission'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.elasticsearch.indexer.product'
