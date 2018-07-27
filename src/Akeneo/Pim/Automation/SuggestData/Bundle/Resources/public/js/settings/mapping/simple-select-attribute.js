@@ -26,7 +26,7 @@ define([
             /**
              * {@inheritdoc}
              */
-            configure: function () {
+            configure() {
                 return $.when(
                     BaseSimpleSelect.prototype.configure.apply(this, arguments),
                     FetcherRegistry
@@ -57,7 +57,7 @@ define([
              *
              * @return {Object}
              */
-            onGetResult: function (item) {
+            onGetResult(item) {
                 return this.lineView({item});
             },
 
