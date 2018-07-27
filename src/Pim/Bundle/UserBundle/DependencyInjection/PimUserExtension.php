@@ -34,6 +34,7 @@ class PimUserExtension extends Extension
         $loader->load('form_types.yml');
         $loader->load('normalizers.yml');
         $loader->load('providers.yml');
+        $loader->load('queries.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
