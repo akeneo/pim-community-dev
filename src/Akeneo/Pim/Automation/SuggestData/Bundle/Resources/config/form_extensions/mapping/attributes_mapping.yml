@@ -1,10 +1,10 @@
 extensions:
-    pim-suggest-data-settings-attributes-mapping-index:
+    pim-suggest-data-settings-attributes-mapping-edit:
         module: pim/form/common/edit-form
 
     pimee-suggest-data-settings-attributes-mapping-index-breadcrumb:
         module: pim/common/breadcrumbs
-        parent: pim-suggest-data-settings-attributes-mapping-index
+        parent: pim-suggest-data-settings-attributes-mapping-edit
         targetZone: breadcrumbs
         config:
             tab: pim-menu-settings
@@ -12,7 +12,7 @@ extensions:
 
     pimee-suggest-data-settings-attributes-mapping-index-user-navigation:
         module: pim/menu/user-navigation
-        parent: pim-suggest-data-settings-attributes-mapping-index
+        parent: pim-suggest-data-settings-attributes-mapping-edit
         targetZone: user-menu
         config:
             userAccount: pim_menu.user.user_account
@@ -20,7 +20,7 @@ extensions:
 
     pimee-suggest-data-settings-attributes-mapping-index-title:
         module: pim/common/title-with-subtitle
-        parent: pim-suggest-data-settings-attributes-mapping-index
+        parent: pim-suggest-data-settings-attributes-mapping-edit
         targetZone: title
         config:
             main_title: akeneo_suggest_data.settings.page_title
@@ -32,13 +32,13 @@ extensions:
 
     pimee-suggest-data-settings-attributes-mapping-index-save-buttons:
         module: pim/form/common/save-buttons
-        parent: pim-suggest-data-settings-attributes-mapping-index
+        parent: pim-suggest-data-settings-attributes-mapping-edit
         targetZone: buttons
         position: 120
 
     pimee-suggest-data-settings-attributes-mapping-index-save-form:
         module: pim/form/common/save-form
-        parent: pim-suggest-data-settings-attributes-mapping-index
+        parent: pim-suggest-data-settings-attributes-mapping-edit
         targetZone: buttons
         position: 0
         config:
@@ -46,7 +46,7 @@ extensions:
 
     pimee-suggest-data-settings-attributes-mapping-index-state:
         module: pim/form/common/state
-        parent: pim-suggest-data-settings-attributes-mapping-index
+        parent: pim-suggest-data-settings-attributes-mapping-edit
         targetZone: state
         position: 900
         config:
@@ -54,7 +54,7 @@ extensions:
 
     pimee-suggest-data-settings-attributes-mapping-index-tabs:
         module: pimee/settings/mapping/tabs
-        parent: pim-suggest-data-settings-attributes-mapping-index
+        parent: pim-suggest-data-settings-attributes-mapping-edit
         targetZone: content
         position: 90
         config:

@@ -16,10 +16,13 @@ config:
                         connectionCode: pim-ai
                         inactiveForm: pimee-suggest-data-settings-index-inactive-connection
                 akeneo_suggest_data_settings_attributes_index:
-                    module: pimee/settings/mapping/index
+                    module: pimee/controller/attributes_mapping/index
                     aclResourceId: akeneo_suggest_data_settings_mapping
                     config:
                         entity: suggest-data-settings-attributes-mapping
+                akeneo_suggest_data_family_mapping_edit:
+                    module: pimee/controller/attributes_mapping/edit
+                    aclResourceId: akeneo_suggest_data_settings_mapping
 
         pimee/saver/pim-ai-connection:
             url: akeneo_suggest_data_connection_post
@@ -49,6 +52,10 @@ config:
         # Savers
         pimee/saver/pim-ai-connection: akeneosuggestdata/js/pim-ai/saver/connection-saver
         pimee/saver/identifier-mapping: akeneosuggestdata/js/settings/mapping/identifier-mapping-saver
+
+        # Controllers
+        pimee/controller/attributes_mapping/index: akeneosuggestdata/js/controllers/attributes_mapping/index
+        pimee/controller/attributes_mapping/edit: akeneosuggestdata/js/controllers/attributes_mapping/edit
 
         # Forms
         pimee/product-edit-form/suggest-data-push: akeneosuggestdata/js/product/edit/suggest-data-push

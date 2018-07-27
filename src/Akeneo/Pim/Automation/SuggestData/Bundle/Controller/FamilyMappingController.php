@@ -36,6 +36,7 @@ class FamilyMappingController
      */
     public function indexAction(Request $request): JsonResponse
     {
+        // TODO Change 'enabled' by 'has_mapping'
         $RESPONSE = [
             [
                 'code' => 'clothing',

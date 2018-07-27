@@ -6,7 +6,6 @@
  *
  * TODO
  * - Add badge for enabled families
- * - Automatically select the first one
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
  */
@@ -14,10 +13,12 @@ define(
     [
         'pim/form/common/fields/simple-select-async',
         'pim/fetcher-registry',
+        'pim/router'
     ],
     function (
         BaseSelect,
-        FetcherRegistry
+        FetcherRegistry,
+        Router
     ) {
         return BaseSelect.extend({
             events: {
@@ -25,12 +26,13 @@ define(
                     FetcherRegistry.getFetcher('suggest_data_family_mapping')
                         .fetch(this.getFieldValue(event.target), {cached: false})
                         .then((family) => {
-                            this.setData(family);
-                            this.getRoot().render();
-                            const stateExtension = this.getRoot().getExtension('state');
-                            if (stateExtension) {
-                                // Reinitialize the state
-                                stateExtension.collectAndRender();
+                            const hasRedirected = Router.redirectToRoute('akeneo_suggest_data_family_mapping_edit', {
+                                identifier: family.code
+                            });
+                            if (false === hasRedirected) {
+                                this.render();
+                            } else {
+                                return hasRedirected;
                             }
                         });
                 }
