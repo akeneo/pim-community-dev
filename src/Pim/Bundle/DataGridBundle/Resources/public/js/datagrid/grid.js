@@ -371,9 +371,9 @@ define(
                 }
 
                 const hint = __(key, {entityHint: entityHint}).replace('\n', '<br />');
-                const subHint = __('pim_datagrid.no_results_subtitle');
+                const subHint = 'pim_datagrid.no_results_subtitle';
 
-                return { hint, subHint, imageClass: '' };
+                return { hint, subHint, imageClass: '', __ };
             },
 
             /**
@@ -385,8 +385,7 @@ define(
 
                 if (null !== customOptions && undefined !== customOptions) {
                     options = customOptions;
-                    options.hint = __(options.hint);
-                    options.subHint = __(options.subHint);
+                    options.__ = __;
                 }
 
                 this.$(this.selectors.noDataBlock).html($(this.noDataTemplate(options))).hide();
